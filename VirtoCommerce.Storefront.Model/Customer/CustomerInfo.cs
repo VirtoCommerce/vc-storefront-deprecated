@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
+using VirtoCommerce.Storefront.Model.Quote;
 
-namespace VirtoCommerce.Storefront.Model
+namespace VirtoCommerce.Storefront.Model.Customer
 {
-    public class Customer : Entity
+    public class CustomerInfo : Entity
     {
-        public Customer()
+        public CustomerInfo()
         {
             Addresses = new List<Address>();
             DynamicProperties = new List<DynamicProperty>();
@@ -18,7 +20,7 @@ namespace VirtoCommerce.Storefront.Model
         /// </summary>
         public string Email { get; set; }
 
-        public string Name { get; set; }
+        public string FullName { get; set; }
         /// <summary>
         /// Returns the first name of the customer.
         /// </summary>
@@ -46,15 +48,7 @@ namespace VirtoCommerce.Storefront.Model
         /// </summary>
         public bool AcceptsMarketing { get; set; }
 
-        //Returns the number of addresses associated with a customer.
-        public int AddressesCount
-        {
-            get
-            {
-                return Addresses == null ? 0 : Addresses.Count;
-            }
-        }
-
+     
         /// <summary>
         /// Returns the default customer_address.
         /// </summary>
@@ -63,13 +57,21 @@ namespace VirtoCommerce.Storefront.Model
         /// <summary>
         /// Returns true if user registered  returns false if it anonynous. 
         /// </summary>
-        public bool HasAccount { get; set; }
+        public bool IsRegisteredUser { get; set; }
 
         /// <summary>
         /// Returns the list of tags associated with the customer.
         /// </summary>
         public ICollection<string> Tags { get; set; }
-        public ICollection<CustomerOrder> Orders { get; set; }
-        public int OrdersCount { get; set; }
+
+        [IgnoreDataMember]
+        public IStorefrontPagedList<CustomerOrder> Orders { get; set; }
+        [IgnoreDataMember]
+        public IStorefrontPagedList<QuoteRequest> QuoteRequests { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("user#{0} {1} {2}", Id ?? "undef", UserName ?? "undef", IsRegisteredUser ? "registered" : "anonymous");
+        }
     }
 }
