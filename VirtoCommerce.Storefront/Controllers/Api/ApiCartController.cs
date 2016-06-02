@@ -2,8 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using VirtoCommerce.Client.Api;
-using VirtoCommerce.Client.Model;
+using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -22,13 +21,13 @@ namespace VirtoCommerce.Storefront.Controllers.Api
     public class ApiCartController : StorefrontControllerBase
     {
         private readonly ICartBuilder _cartBuilder;
-        private readonly IOrderModuleApi _orderApi;
+        private readonly IVirtoCommerceOrdersApi _orderApi;
         private readonly ICartValidator _cartValidator;
         private readonly ICatalogSearchService _catalogSearchService;
         private readonly IEventPublisher<OrderPlacedEvent> _orderPlacedEventPublisher;
 
         public ApiCartController(WorkContext workContext, ICatalogSearchService catalogSearchService, ICartBuilder cartBuilder,
-                                 IOrderModuleApi orderApi, ICartValidator cartValidator, IStorefrontUrlBuilder urlBuilder,
+                                 IVirtoCommerceOrdersApi orderApi, ICartValidator cartValidator, IStorefrontUrlBuilder urlBuilder,
                                  IEventPublisher<OrderPlacedEvent> orderPlacedEventPublisher)
             : base(workContext, urlBuilder)
         {
@@ -217,7 +216,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
         // POST: storefrontapi/cart/createorder
         [HttpPost]
-        public async Task<ActionResult> CreateOrder(VirtoCommerceDomainPaymentModelBankCardInfo bankCardInfo)
+        public async Task<ActionResult> CreateOrder(OrderModule.Client.Model.BankCardInfo bankCardInfo)
         {
             EnsureThatCartExist();
 
@@ -231,7 +230,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
                 await _cartBuilder.RemoveCartAsync();
 
-                VirtoCommerceOrderModuleWebModelProcessPaymentResult processingResult = null;
+                OrderModule.Client.Model.ProcessPaymentResult processingResult = null;
                 var incomingPayment = order.InPayments != null ? order.InPayments.FirstOrDefault() : null;
                 if (incomingPayment != null)
                 {
@@ -241,6 +240,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 return Json(new { order, orderProcessingResult = processingResult });
             }
         }
+
 
         private static string GetAsyncLockCartKey(string cartId)
         {

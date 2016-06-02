@@ -19,11 +19,21 @@ using Microsoft.Practices.Unity.Mvc;
 using Newtonsoft.Json;
 using NLog;
 using Owin;
-using VirtoCommerce.Client.Api;
-using VirtoCommerce.Client.Client;
+using VirtoCommerce.CartModule.Client.Api;
+using VirtoCommerce.CatalogModule.Client.Api;
+using VirtoCommerce.ContentModule.Client.Api;
+using VirtoCommerce.CoreModule.Client.Api;
+using VirtoCommerce.CustomerModule.Client.Api;
+using VirtoCommerce.InventoryModule.Client.Api;
 using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.LiquidThemeEngine.Binders;
+using VirtoCommerce.MarketingModule.Client.Api;
+using VirtoCommerce.OrderModule.Client.Api;
+using VirtoCommerce.Platform.Client.Api;
 using VirtoCommerce.Platform.Client.Security;
+using VirtoCommerce.PricingModule.Client.Api;
+using VirtoCommerce.QuoteModule.Client.Api;
+using VirtoCommerce.SearchModule.Client.Api;
 using VirtoCommerce.Storefront;
 using VirtoCommerce.Storefront.App_Start;
 using VirtoCommerce.Storefront.Builders;
@@ -41,8 +51,10 @@ using VirtoCommerce.Storefront.Model.Pricing.Services;
 using VirtoCommerce.Storefront.Model.Quote.Events;
 using VirtoCommerce.Storefront.Model.Quote.Services;
 using VirtoCommerce.Storefront.Model.Services;
+using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Owin;
 using VirtoCommerce.Storefront.Services;
+using VirtoCommerce.StoreModule.Client.Api;
 
 [assembly: OwinStartup(typeof(Startup))]
 [assembly: PreApplicationStartMethod(typeof(Startup), "PreApplicationStart")]
@@ -159,23 +171,20 @@ namespace VirtoCommerce.Storefront
             var hmacHandler = new HmacRestRequestHandler(apiAppId, apiSecretKey);
             var currentUserHandler = new CurrentUserRestRequestHandler(workContextFactory);
 
-            var apiClient = new ApiClient(baseUrl, new VirtoCommerce.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest);
-            container.RegisterInstance<ApiClient>(apiClient);
+            container.RegisterInstance<IVirtoCommerceCartApi>(new VirtoCommerceCartApi(new CartModule.Client.Client.ApiClient(baseUrl, new CartModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommerceCatalogApi>(new VirtoCommerceCatalogApi(new CatalogModule.Client.Client.ApiClient(baseUrl, new CatalogModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommerceContentApi>(new VirtoCommerceContentApi(new ContentModule.Client.Client.ApiClient(baseUrl, new ContentModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommerceCoreApi>(new VirtoCommerceCoreApi(new CoreModule.Client.Client.ApiClient(baseUrl, new CoreModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommerceCustomerApi>(new VirtoCommerceCustomerApi(new CustomerModule.Client.Client.ApiClient(baseUrl, new CustomerModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommerceInventoryApi>(new VirtoCommerceInventoryApi(new InventoryModule.Client.Client.ApiClient(baseUrl, new InventoryModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommerceMarketingApi>(new VirtoCommerceMarketingApi(new MarketingModule.Client.Client.ApiClient(baseUrl, new MarketingModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommercePlatformApi>(new VirtoCommercePlatformApi(new Platform.Client.Client.ApiClient(baseUrl, new Platform.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommercePricingApi>(new VirtoCommercePricingApi(new PricingModule.Client.Client.ApiClient(baseUrl, new PricingModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommerceOrdersApi>(new VirtoCommerceOrdersApi(new OrderModule.Client.Client.ApiClient(baseUrl, new OrderModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommerceQuoteApi>(new VirtoCommerceQuoteApi(new QuoteModule.Client.Client.ApiClient(baseUrl, new QuoteModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommerceSearchApi>(new VirtoCommerceSearchApi(new SearchModule.Client.Client.ApiClient(baseUrl, new SearchModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
+            container.RegisterInstance<IVirtoCommerceStoreApi>(new VirtoCommerceStoreApi(new StoreModule.Client.Client.ApiClient(baseUrl, new StoreModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
 
-            container.RegisterType<IStoreModuleApi, StoreModuleApi>();
-            container.RegisterType<IVirtoCommercePlatformApi, VirtoCommercePlatformApi>();
-            container.RegisterType<ICustomerManagementModuleApi, CustomerManagementModuleApi>();
-            container.RegisterType<ICommerceCoreModuleApi, CommerceCoreModuleApi>();
-            container.RegisterType<ICustomerManagementModuleApi, CustomerManagementModuleApi>();
-            container.RegisterType<ICatalogModuleApi, CatalogModuleApi>();
-            container.RegisterType<IPricingModuleApi, PricingModuleApi>();
-            container.RegisterType<IInventoryModuleApi, InventoryModuleApi>();
-            container.RegisterType<IShoppingCartModuleApi, ShoppingCartModuleApi>();
-            container.RegisterType<IOrderModuleApi, OrderModuleApi>();
-            container.RegisterType<IMarketingModuleApi, MarketingModuleApi>();
-            container.RegisterType<ICMSContentModuleApi, CMSContentModuleApi>();
-            container.RegisterType<IQuoteModuleApi, QuoteModuleApi>();
-            container.RegisterType<ISearchModuleApi, SearchModuleApi>();
             container.RegisterType<IMarketingService, MarketingServiceImpl>();
             container.RegisterType<IPromotionEvaluator, PromotionEvaluator>();
             container.RegisterType<ICartValidator, CartValidator>();
@@ -237,7 +246,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterInstance<IStaticContentService>(staticContentService);
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters, workContextFactory, () => container.Resolve<CommonController>());
-            RouteConfig.RegisterRoutes(RouteTable.Routes, workContextFactory, container.Resolve<ICommerceCoreModuleApi>(), container.Resolve<IStaticContentService>(), localCacheManager);
+            RouteConfig.RegisterRoutes(RouteTable.Routes, workContextFactory, container.Resolve<IVirtoCommerceCoreApi>(), container.Resolve<IStaticContentService>(), localCacheManager);
             AuthConfig.ConfigureAuth(app, () => container.Resolve<IStorefrontUrlBuilder>());
 
             app.Use<WorkContextOwinMiddleware>(container);
@@ -282,24 +291,25 @@ namespace VirtoCommerce.Storefront
             return assembly;
         }
 
-
         private static string ResolveLocalPath(string path)
         {
-            var retVal = path;
+            string result;
+
             if (path.StartsWith("~"))
             {
-                retVal = HostingEnvironment.MapPath(path);
+                result = HostingEnvironment.MapPath(path);
             }
             else if (Path.IsPathRooted(path))
             {
-                retVal = path;
+                result = path;
             }
             else
             {
-                retVal = HostingEnvironment.MapPath("~/");
-                retVal += path;
+                result = HostingEnvironment.MapPath("~/");
+                result += path;
             }
-            return retVal;
+
+            return result;
         }
     }
 }

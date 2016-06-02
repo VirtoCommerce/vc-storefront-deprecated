@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Moq;
-using VirtoCommerce.Client.Api;
 using VirtoCommerce.Storefront.Builders;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
@@ -159,7 +158,7 @@ namespace VirtoCommerce.Storefront.Test
 
         private IQuoteRequestBuilder GetQuoteRequestBuilder()
         {
-            var quoteApi = new QuoteModuleApi(GetApiClient());
+            var quoteApi = GetQuoteApiClient();
             var cacheManager = new Mock<ILocalCacheManager>();
             var quoteRequestEventPublisher = new Mock<IEventPublisher<QuoteRequestUpdatedEvent>>();
 
@@ -168,18 +167,19 @@ namespace VirtoCommerce.Storefront.Test
 
         private ICatalogSearchService GetCatalogSearchService()
         {
-            var apiClient = GetApiClient();
+            var catalogApi = GetCatalogApiClient();
+            var commerceApi = GetCoreApiClient();
+            var inventoryApi = GetInventoryApiClient();
+            var marketingApi = GetMarketingApiClient();
+            var pricingApi = GetPricingApiClient();
+            var searchApi = GetSearchApiClient();
+
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
-            var commerceApi = new CommerceCoreModuleApi(apiClient);
-            var catalogApi = new CatalogModuleApi(apiClient);
-            var pricingApi = new PricingModuleApi(apiClient);
             var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, commerceApi);
-            var inventoryApi = new InventoryModuleApi(apiClient);
-            var searchApi = new SearchModuleApi(apiClient);
-            var marketingApi = new MarketingModuleApi(apiClient);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
 
-            return new CatalogSearchServiceImpl(workContextFactory, catalogApi, pricingService, inventoryApi, searchApi, promotionEvaluator);
+            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, pricingService, inventoryApi, searchApi, promotionEvaluator);
+            return result;
         }
     }
 }

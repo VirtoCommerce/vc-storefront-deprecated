@@ -1,16 +1,15 @@
-﻿using Omu.ValueInjecter;
+﻿using System.Collections.Generic;
 using System.Linq;
-using VirtoCommerce.Client.Model;
+using Omu.ValueInjecter;
+using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
-using System.Collections.Generic;
-using VirtoCommerce.Storefront.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class OperationConverter
     {
-        public static Operation ToWebModel(this VirtoCommerceOrderModuleWebModelOperation operation, IEnumerable<Currency> availCurrencies, Language language)
+        public static Operation ToWebModel(this OrderModule.Client.Model.Operation operation, IEnumerable<Currency> availCurrencies, Language language)
         {
             var operationWebModel = new Operation();
 

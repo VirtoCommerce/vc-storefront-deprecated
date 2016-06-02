@@ -1,12 +1,10 @@
-﻿using Omu.ValueInjecter;
-using System.Linq;
-using VirtoCommerce.Client.Model;
+﻿using System.Linq;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
-using System.Collections.Generic;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -17,8 +15,6 @@ namespace VirtoCommerce.Storefront.Converters
             var lineItemWebModel = new LineItem(product.Price.Currency, language);
 
             lineItemWebModel.InjectFrom<NullableAndEnumValueInjecter>(product);
-
-            var currency = product.Price.Currency;
 
             lineItemWebModel.ImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
             lineItemWebModel.ListPrice = product.Price.ListPrice;
@@ -33,9 +29,9 @@ namespace VirtoCommerce.Storefront.Converters
             return lineItemWebModel;
         }
 
-        public static LineItem ToWebModel(this VirtoCommerceCartModuleWebModelLineItem serviceModel, Currency currency, Language language)
+        public static LineItem ToWebModel(this CartModule.Client.Model.LineItem serviceModel, Currency currency, Language language)
         {
-         
+
             var webModel = new LineItem(currency, language);
 
             webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
@@ -50,16 +46,16 @@ namespace VirtoCommerce.Storefront.Converters
                 webModel.DynamicProperties = serviceModel.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
             }
 
-            if(!serviceModel.Discounts.IsNullOrEmpty())
+            if (!serviceModel.Discounts.IsNullOrEmpty())
             {
                 webModel.Discounts.AddRange(serviceModel.Discounts.Select(x => x.ToWebModel(new[] { currency }, language)));
             }
-            webModel.IsGift = (bool)serviceModel.IsGift;
-            webModel.IsReccuring = (bool)serviceModel.IsReccuring;
+            webModel.IsGift = serviceModel.IsGift == true;
+            webModel.IsReccuring = serviceModel.IsReccuring == true;
             webModel.ListPrice = new Money(serviceModel.ListPrice ?? 0, currency);
-            webModel.RequiredShipping = (bool)serviceModel.RequiredShipping;
+            webModel.RequiredShipping = serviceModel.RequiredShipping == true;
             webModel.SalePrice = new Money(serviceModel.SalePrice ?? 0, currency);
-            webModel.TaxIncluded = (bool)serviceModel.TaxIncluded;
+            webModel.TaxIncluded = serviceModel.TaxIncluded == true;
             webModel.TaxTotal = new Money(serviceModel.TaxTotal ?? 0, currency);
             webModel.Weight = (decimal?)serviceModel.Weight;
             webModel.Width = (decimal?)serviceModel.Width;
@@ -70,9 +66,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static VirtoCommerceCartModuleWebModelLineItem ToServiceModel(this LineItem webModel)
+        public static CartModule.Client.Model.LineItem ToServiceModel(this LineItem webModel)
         {
-            var serviceModel = new VirtoCommerceCartModuleWebModelLineItem();
+            var serviceModel = new CartModule.Client.Model.LineItem();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 
@@ -80,12 +76,12 @@ namespace VirtoCommerce.Storefront.Converters
             serviceModel.Discounts = webModel.Discounts.Select(d => d.ToServiceModel()).ToList();
             serviceModel.DiscountTotal = (double)webModel.DiscountTotal.Amount;
             serviceModel.ExtendedPrice = (double)webModel.ExtendedPrice.Amount;
-         
+
             serviceModel.ListPrice = (double)webModel.ListPrice.Amount;
             serviceModel.PlacedPrice = (double)webModel.PlacedPrice.Amount;
             serviceModel.SalePrice = (double)webModel.SalePrice.Amount;
-            serviceModel.TaxDetails = webModel.TaxDetails.Select(td => td.ToServiceModel()).ToList();
-            serviceModel.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToServiceModel()).ToList();
+            serviceModel.TaxDetails = webModel.TaxDetails.Select(td => td.ToCartApiModel()).ToList();
+            serviceModel.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToCartApiModel()).ToList();
             serviceModel.TaxTotal = (double)webModel.TaxTotal.Amount;
             serviceModel.VolumetricWeight = (double)(webModel.VolumetricWeight ?? 0);
             serviceModel.Weight = (double?)webModel.Weight;
@@ -113,11 +109,11 @@ namespace VirtoCommerce.Storefront.Converters
 
         public static CartShipmentItem ToShipmentItem(this LineItem lineItem)
         {
-            var shipmentItem = new CartShipmentItem();
-
-            shipmentItem.LineItem = lineItem;
-            shipmentItem.Quantity = lineItem.Quantity;
-
+            var shipmentItem = new CartShipmentItem
+            {
+                LineItem = lineItem,
+                Quantity = lineItem.Quantity
+            };
             return shipmentItem;
         }
     }

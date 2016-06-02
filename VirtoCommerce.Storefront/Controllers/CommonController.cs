@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using VirtoCommerce.Client.Api;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.StoreModule.Client.Api;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
@@ -15,9 +15,9 @@ namespace VirtoCommerce.Storefront.Controllers
     public class CommonController : StorefrontControllerBase
     {
         private readonly Country[] _countriesWithoutRegions;
-        private readonly IStoreModuleApi _storeModuleApi;
+        private readonly IVirtoCommerceStoreApi _storeModuleApi;
 
-        public CommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IStoreModuleApi storeModuleApi)
+        public CommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IVirtoCommerceStoreApi storeModuleApi)
             : base(workContext, urlBuilder)
         {
             _storeModuleApi = storeModuleApi;
@@ -30,28 +30,29 @@ namespace VirtoCommerce.Storefront.Controllers
         /// <summary>
         /// GET : /contact
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="viewName"></param>
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public ActionResult СontactUs(string viewName = "page.contact")
         {
-            return View(viewName, base.WorkContext);
+            return View(viewName, WorkContext);
         }
 
         /// <summary>
         /// POST : /contact
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="viewName"></param>
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public async Task<ActionResult> СontactUs(ContactUsForm model, string viewName = "page.contact")
         {
-            await _storeModuleApi.StoreModuleSendDynamicNotificationAnStoreEmailAsync(model.ToServiceModel(base.WorkContext));
+            await _storeModuleApi.StoreModuleSendDynamicNotificationAnStoreEmailAsync(model.ToServiceModel(WorkContext));
             WorkContext.ContactUsForm = model;
-            return View(viewName, base.WorkContext);
+            return View(viewName, WorkContext);
         }
 
         /// <summary>

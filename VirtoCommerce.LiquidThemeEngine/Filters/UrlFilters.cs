@@ -5,6 +5,7 @@ using System.Web;
 using DotLiquid;
 using VirtoCommerce.LiquidThemeEngine.Extensions;
 using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Storefront.Model.Stores;
 using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 using storefrontModel = VirtoCommerce.Storefront.Model;
 
@@ -190,7 +191,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
         {
             return AssetUrl(input);
         }
-        
+
         /// <summary>
         /// Method for switching between multiple stores
         /// </summary>
@@ -201,14 +202,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
         public static string StoreAbsoluteUrl(string input, string storeId = null, string languageCode = null)
         {
             var themeAdaptor = (ShopifyLiquidThemeEngine)Template.FileSystem;
-            storefrontModel.Store store = null;
+            Store store = null;
             if (!string.IsNullOrEmpty(storeId))
             {
                 store = themeAdaptor.WorkContext.AllStores.FirstOrDefault(x => string.Equals(x.Id, storeId, StringComparison.InvariantCultureIgnoreCase));
             }
             store = store ?? themeAdaptor.WorkContext.CurrentStore;
 
-            var retVal = AbsoluteUrl(input, storeId, languageCode); 
+            var retVal = AbsoluteUrl(input, storeId, languageCode);
 
             var isHttps = themeAdaptor.WorkContext.RequestUrl.Scheme == Uri.UriSchemeHttps;
             //If store has defined url need redirect to it
@@ -216,7 +217,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             {
                 retVal = String.IsNullOrEmpty(store.SecureUrl) ? retVal : store.SecureUrl;
             }
-            else 
+            else
             {
                 retVal = String.IsNullOrEmpty(store.Url) ? retVal : store.Url;
             }
@@ -233,7 +234,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
         public static string AbsoluteUrl(string input, string storeId = null, string languageCode = null)
         {
             var themeAdaptor = (ShopifyLiquidThemeEngine)Template.FileSystem;
-            storefrontModel.Store store = null;
+            Store store = null;
             storefrontModel.Language language = null;
             if (!string.IsNullOrEmpty(storeId))
             {
@@ -246,7 +247,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 language = store.Languages.FirstOrDefault(x => string.Equals(x.CultureName, languageCode, StringComparison.InvariantCultureIgnoreCase));
             }
             language = language ?? themeAdaptor.WorkContext.CurrentLanguage;
- 
+
             var retVal = themeAdaptor.UrlBuilder.ToAppAbsolute(input, store, language);
             return retVal;
         }

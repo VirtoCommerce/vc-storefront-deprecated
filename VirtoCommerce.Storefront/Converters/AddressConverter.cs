@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model;
-using ShopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
+using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class AddressConverter
     {
-        public static Address ToWebModel(this ShopifyModel.Address address, Country[] countries)
+        public static Address ToWebModel(this shopifyModel.Address address, Country[] countries)
         {
             var result = new Address();
             result.CopyFrom(address, countries);
             return result;
         }
 
-        public static VirtoCommerceDomainCommerceModelAddress ToServiceModel(this Address address)
+        public static CustomerModule.Client.Model.Address ToServiceModel(this Address address)
         {
-            var retVal = new VirtoCommerceDomainCommerceModelAddress();
+            var retVal = new CustomerModule.Client.Model.Address();
 
             retVal.InjectFrom<NullableAndEnumValueInjecter>(address);
             retVal.AddressType = address.Type.ToString();
@@ -27,18 +26,18 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static VirtoCommerceDomainCommerceModelAddress ToCustomerModel(this VirtoCommerceOrderModuleWebModelAddress orderAddress)
+        public static CustomerModule.Client.Model.Address ToCustomerModel(this OrderModule.Client.Model.Address orderAddress)
         {
-            var customerAddress = new VirtoCommerceDomainCommerceModelAddress();
+            var customerAddress = new CustomerModule.Client.Model.Address();
 
             customerAddress.InjectFrom<NullableAndEnumValueInjecter>(orderAddress);
             customerAddress.AddressType = orderAddress.AddressType;
-            customerAddress.Name = string.Format("{0} {1}", orderAddress.FirstName, orderAddress.LastName);
+            customerAddress.Name = string.Join(" ", orderAddress.FirstName, orderAddress.LastName);
 
             return customerAddress;
         }
 
-        public static Address CopyFrom(this Address result, ShopifyModel.Address address, Country[] countries)
+        public static Address CopyFrom(this Address result, shopifyModel.Address address, Country[] countries)
         {
             result.InjectFrom<NullableAndEnumValueInjecter>(address);
 
@@ -70,7 +69,17 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static Address ToWebModel(this VirtoCommerceCartModuleWebModelAddress address)
+        public static CartModule.Client.Model.Address ToCartServiceModel(this Address address)
+        {
+            var addressServiceModel = new CartModule.Client.Model.Address();
+
+            addressServiceModel.InjectFrom(address);
+            addressServiceModel.Type = address.Type.ToString();
+
+            return addressServiceModel;
+        }
+
+        public static Address ToWebModel(this CartModule.Client.Model.Address address)
         {
             var addressWebModel = new Address();
 
@@ -80,51 +89,39 @@ namespace VirtoCommerce.Storefront.Converters
             return addressWebModel;
         }
 
-        public static VirtoCommerceCartModuleWebModelAddress ToCartServiceModel(this Address address)
+        public static Address ToWebModel(this OrderModule.Client.Model.Address address)
         {
-            var addressServiceModel = new VirtoCommerceCartModuleWebModelAddress();
+            var result = new Address();
 
-            addressServiceModel.InjectFrom(address);
-            addressServiceModel.Type = address.Type.ToString();
+            result.InjectFrom(address);
+            result.Type = EnumUtility.SafeParse(address.AddressType, AddressType.BillingAndShipping);
 
-            return addressServiceModel;
+            return result;
         }
 
-        public static Address ToWebModel(this VirtoCommerceOrderModuleWebModelAddress address)
+        public static Address ToWebModel(this QuoteModule.Client.Model.Address address)
         {
-            var addressWebModel = new Address();
+            var result = new Address();
 
-            addressWebModel.InjectFrom(address);
-            addressWebModel.Type = (AddressType)Enum.Parse(typeof(AddressType), address.AddressType, true);
+            result.InjectFrom<NullableAndEnumValueInjecter>(address);
+            result.Type = EnumUtility.SafeParse(address.AddressType, AddressType.BillingAndShipping);
 
-            return addressWebModel;
+            return result;
         }
 
-        public static Address ToWebModel(this VirtoCommerceQuoteModuleWebModelAddress serviceModel)
+        public static Address ToWebModel(this CustomerModule.Client.Model.Address serviceModel)
         {
-            var webModel = new Address();
+            var result = new Address();
 
-            webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
+            result.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
+            result.Type = EnumUtility.SafeParse(serviceModel.AddressType, AddressType.BillingAndShipping);
 
-            webModel.Type = EnumUtility.SafeParse(serviceModel.AddressType, AddressType.BillingAndShipping);
-
-            return webModel;
+            return result;
         }
 
-        public static Address ToWebModel(this VirtoCommerceDomainCommerceModelAddress serviceModel)
+        public static QuoteModule.Client.Model.Address ToQuoteServiceModel(this Address webModel)
         {
-            var webModel = new Address();
-
-            webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
-
-            webModel.Type = EnumUtility.SafeParse(serviceModel.AddressType, AddressType.BillingAndShipping);
-
-            return webModel;
-        }
-
-        public static VirtoCommerceQuoteModuleWebModelAddress ToQuoteServiceModel(this Address webModel)
-        {
-            var serviceModel = new VirtoCommerceQuoteModuleWebModelAddress();
+            var serviceModel = new QuoteModule.Client.Model.Address();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 

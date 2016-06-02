@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Model.Quote.Services
 {
@@ -15,6 +16,8 @@ namespace VirtoCommerce.Storefront.Model.Quote.Services
         /// Load quotes from service by number or id and capture it for next changes
         /// </summary>
         /// <param name="number"></param>
+        /// <param name="language"></param>
+        /// <param name="availCurrencies"></param>
         /// <returns></returns>
         Task<IQuoteRequestBuilder> LoadQuoteRequestAsync(string number, Language language, IEnumerable<Currency> availCurrencies);
 
@@ -80,7 +83,7 @@ namespace VirtoCommerce.Storefront.Model.Quote.Services
         /// </summary>
         /// <param name="otherQuoteRequest"></param>
         /// <returns></returns>
-        Task <IQuoteRequestBuilder> MergeFromOtherAsync(QuoteRequest otherQuoteRequest);
+        Task<IQuoteRequestBuilder> MergeFromOtherAsync(QuoteRequest otherQuoteRequest);
 
         /// <summary>
         /// Calculated totals for current quote

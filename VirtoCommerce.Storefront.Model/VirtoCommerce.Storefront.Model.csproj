@@ -130,7 +130,7 @@
     <Compile Include="Quote\TierPriceFormModel.cs" />
     <Compile Include="StorefrontNotification.cs" />
     <Compile Include="StorefrontNotificationType.cs" />
-    <Compile Include="Store\StoreStatus.cs" />
+    <Compile Include="Stores\StoreStatus.cs" />
     <Compile Include="Tax\TaxLine.cs" />
     <Compile Include="Tax\TaxRate.cs" />
     <Compile Include="TierPrice.cs" />
@@ -211,7 +211,7 @@
     <Compile Include="Cart\Payment.cs" />
     <Compile Include="Cart\Shipment.cs" />
     <Compile Include="Cart\ShoppingCart.cs" />
-    <Compile Include="Store\Store.cs" />
+    <Compile Include="Stores\Store.cs" />
     <Compile Include="Tax\TaxDetail.cs" />
     <Compile Include="ValidationType.cs" />
     <Compile Include="Vendor.cs" />

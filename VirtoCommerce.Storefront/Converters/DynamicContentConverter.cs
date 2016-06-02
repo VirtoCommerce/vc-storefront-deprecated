@@ -1,6 +1,5 @@
-﻿using Omu.ValueInjecter;
-using System.Linq;
-using VirtoCommerce.Client.Model;
+﻿using System.Linq;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 
@@ -8,7 +7,7 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class DynamicContentConverter
     {
-        public static DynamicContentItem ToWebModel(this VirtoCommerceMarketingModuleWebModelDynamicContentItem serviceModel)
+        public static DynamicContentItem ToWebModel(this MarketingModule.Client.Model.DynamicContentItem serviceModel)
         {
             var webModel = new DynamicContentItem();
 

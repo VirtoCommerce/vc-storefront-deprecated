@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using CacheManager.Core;
-using VirtoCommerce.Client.Api;
-using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Services;
 
 namespace VirtoCommerce.Storefront.Routing
 {
@@ -40,6 +36,5 @@ namespace VirtoCommerce.Storefront.Routing
             languageWithStoreRoute.Constraints.Add("language", languageConstrain);
             routes.Add(name + "StoreWithLang", languageWithStoreRoute);
         }
-        
     }
 }

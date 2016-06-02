@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using VirtoCommerce.Client.Model;
+using VirtoCommerce.CoreModule.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
@@ -26,15 +24,17 @@ namespace VirtoCommerce.Storefront.Converters
 
         public static VirtoCommerceDomainTaxModelTaxLine[] ToListAndSaleTaxLines(this Product product)
         {
-            var retVal = new List<VirtoCommerceDomainTaxModelTaxLine>();
-            retVal.Add(new VirtoCommerceDomainTaxModelTaxLine
+            var retVal = new List<VirtoCommerceDomainTaxModelTaxLine>
             {
-                Id = product.Id,
-                Code = "list",
-                Name = product.Name,
-                TaxType = product.TaxType,
-                Amount = (double)product.Price.ListPrice.Amount
-            });
+                new VirtoCommerceDomainTaxModelTaxLine
+                {
+                    Id = product.Id,
+                    Code = "list",
+                    Name = product.Name,
+                    TaxType = product.TaxType,
+                    Amount = (double) product.Price.ListPrice.Amount
+                }
+            };
             //Need generate two tax line for List and Sale price to have tax amount for list price also
             if (product.Price.SalePrice != product.Price.ListPrice)
             {
@@ -64,16 +64,19 @@ namespace VirtoCommerce.Storefront.Converters
 
         public static VirtoCommerceDomainTaxModelTaxEvaluationContext ToTaxEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
         {
-            var retVal = new VirtoCommerceDomainTaxModelTaxEvaluationContext();
-            retVal.Id = workContext.CurrentStore.Id;
-            retVal.Currency = workContext.CurrentCurrency.Code;
-            retVal.Type = "";
-            retVal.Customer = new VirtoCommerceDomainCustomerModelContact
+            var retVal = new VirtoCommerceDomainTaxModelTaxEvaluationContext
             {
-                Id = workContext.CurrentCustomer.Id,
-                Name = workContext.CurrentCustomer.UserName
+                Id = workContext.CurrentStore.Id,
+                Currency = workContext.CurrentCurrency.Code,
+                Type = "",
+                Customer = new VirtoCommerceDomainCustomerModelContact
+                {
+                    Id = workContext.CurrentCustomer.Id,
+                    Name = workContext.CurrentCustomer.UserName
+                }
             };
-            if(products != null)
+
+            if (products != null)
             {
                 retVal.Lines = products.SelectMany(x => x.ToListAndSaleTaxLines()).ToList();
             }
@@ -82,12 +85,15 @@ namespace VirtoCommerce.Storefront.Converters
 
         public static VirtoCommerceDomainTaxModelTaxEvaluationContext ToTaxEvalContext(this ShoppingCart cart)
         {
-            var retVal = new VirtoCommerceDomainTaxModelTaxEvaluationContext();
-            retVal.Id = cart.Id;
-            retVal.Code = cart.Name;
-            retVal.Currency = cart.Currency.Code;
-            retVal.Type = "Cart";
-            retVal.Lines = new System.Collections.Generic.List<VirtoCommerceDomainTaxModelTaxLine>();
+            var retVal = new VirtoCommerceDomainTaxModelTaxEvaluationContext
+            {
+                Id = cart.Id,
+                Code = cart.Name,
+                Currency = cart.Currency.Code,
+                Type = "Cart",
+                Lines = new List<VirtoCommerceDomainTaxModelTaxLine>()
+            };
+
             foreach (var lineItem in cart.Items)
             {
                 var extendedTaxLine = new VirtoCommerceDomainTaxModelTaxLine
@@ -122,7 +128,7 @@ namespace VirtoCommerce.Storefront.Converters
                     };
                     retVal.Lines.Add(saleTaxLine);
                 }
-              
+
             }
             foreach (var shipment in cart.Shipments)
             {
@@ -157,7 +163,7 @@ namespace VirtoCommerce.Storefront.Converters
                     City = shipment.DeliveryAddress.City,
                     PostalCode = shipment.DeliveryAddress.PostalCode,
                     RegionId = shipment.DeliveryAddress.RegionId,
-                    RegionName= shipment.DeliveryAddress.RegionName,
+                    RegionName = shipment.DeliveryAddress.RegionName,
                     CountryCode = shipment.DeliveryAddress.CountryCode,
                     CountryName = shipment.DeliveryAddress.CountryName,
                     Phone = shipment.DeliveryAddress.Phone,

@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using VirtoCommerce.Client.Api;
-using VirtoCommerce.Client.Model;
+using VirtoCommerce.CoreModule.Client.Api;
+using VirtoCommerce.CoreModule.Client.Model;
+using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
@@ -13,10 +14,10 @@ namespace VirtoCommerce.Storefront.Controllers
 {
     public class CartController : StorefrontControllerBase
     {
-        private readonly IOrderModuleApi _orderApi;
-        private readonly ICommerceCoreModuleApi _commerceApi;
+        private readonly IVirtoCommerceOrdersApi _orderApi;
+        private readonly IVirtoCommerceCoreApi _commerceApi;
 
-        public CartController(WorkContext workContext, IOrderModuleApi orderApi, IStorefrontUrlBuilder urlBuilder, ICommerceCoreModuleApi commerceApi)
+        public CartController(WorkContext workContext, IVirtoCommerceOrdersApi orderApi, IStorefrontUrlBuilder urlBuilder, IVirtoCommerceCoreApi commerceApi)
             : base(workContext, urlBuilder)
         {
             _orderApi = orderApi;

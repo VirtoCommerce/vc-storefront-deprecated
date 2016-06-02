@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using VirtoCommerce.Client.Api;
-using VirtoCommerce.Client.Model;
+using VirtoCommerce.CoreModule.Client.Api;
+using VirtoCommerce.CoreModule.Client.Model;
+using VirtoCommerce.PricingModule.Client.Api;
+using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Pricing.Services;
-using VirtoCommerce.Storefront.Converters;
-using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Services
 {
     public class PricingServiceImpl : IPricingService
     {
-        private readonly IPricingModuleApi _pricingApi;
-        private readonly ICommerceCoreModuleApi _commerceApi;
+        private readonly IVirtoCommercePricingApi _pricingApi;
+        private readonly IVirtoCommerceCoreApi _commerceApi;
         private readonly Func<WorkContext> _workContextFactory;
-        public PricingServiceImpl(Func<WorkContext> workContextFactory, IPricingModuleApi pricingApi, ICommerceCoreModuleApi commerceApi)
+
+        public PricingServiceImpl(Func<WorkContext> workContextFactory, IVirtoCommercePricingApi pricingApi, IVirtoCommerceCoreApi commerceApi)
         {
             _pricingApi = pricingApi;
             _commerceApi = commerceApi;
@@ -26,6 +26,7 @@ namespace VirtoCommerce.Storefront.Services
         }
 
         #region IPricingService Members
+
         public async Task EvaluateProductPricesAsync(IEnumerable<Product> products)
         {
             var workContext = _workContextFactory();
@@ -56,17 +57,18 @@ namespace VirtoCommerce.Storefront.Services
         }
 
         #endregion
+
         private void ApplyProductTaxInternal(IEnumerable<Product> products, IEnumerable<VirtoCommerceDomainTaxModelTaxRate> taxes)
         {
             var workContext = _workContextFactory();
             var taxRates = taxes.Select(x => x.ToWebModel(workContext.CurrentCurrency));
-            foreach(var product in products)
+            foreach (var product in products)
             {
                 product.ApplyTaxRates(taxRates);
             }
         }
 
-        private void ApplyProductPricesInternal(IEnumerable<Product> products, IEnumerable<VirtoCommercePricingModuleWebModelPrice> prices)
+        private void ApplyProductPricesInternal(IEnumerable<Product> products, List<PricingModule.Client.Model.Price> prices)
         {
             var workContext = _workContextFactory();
 
@@ -76,7 +78,6 @@ namespace VirtoCommerce.Storefront.Services
                                           .Select(x => x.ToWebModel(workContext.AllCurrencies, workContext.CurrentLanguage));
                 product.ApplyPrices(productPrices, workContext.CurrentCurrency, workContext.CurrentStore.Currencies);
             }
-
         }
     }
 }

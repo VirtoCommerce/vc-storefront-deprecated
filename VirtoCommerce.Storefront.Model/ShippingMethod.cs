@@ -12,10 +12,10 @@ namespace VirtoCommerce.Storefront.Model
             Discounts = new List<Discount>();
         }
         public ShippingMethod(Currency currency)
-            :this()
+            : this()
         {
             Currency = currency;
-            Price = new Money(currency);           
+            Price = new Money(currency);
             TaxTotal = new Money(currency);
         }
         /// <summary>
@@ -60,7 +60,7 @@ namespace VirtoCommerce.Storefront.Model
         /// <summary>
         /// Resulting price with discount but without tax
         /// </summary>
-        public  Money Total
+        public Money Total
         {
             get
             {
@@ -127,13 +127,14 @@ namespace VirtoCommerce.Storefront.Model
         {
             var shippingMethodTaxRates = taxRates.Where(x => x.Line.Id == ShipmentMethodCode);
             TaxTotal = new Money(Currency);
-            if (shippingMethodTaxRates.Any())
+
+            var shippingMethodTaxRate = shippingMethodTaxRates.FirstOrDefault();
+            if (shippingMethodTaxRate != null)
             {
-                var shippingMethodTaxRate = shippingMethodTaxRates.First();
-              
                 TaxTotal += shippingMethodTaxRate.Rate;
             }
         }
+
         #endregion
 
         #region IDiscountable Members

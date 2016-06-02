@@ -1,6 +1,5 @@
-﻿using Omu.ValueInjecter;
-using System.Linq;
-using VirtoCommerce.Client.Model;
+﻿using System.Linq;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 
@@ -8,9 +7,9 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class PromotionProductEntryConverter
     {
-        public static VirtoCommerceDomainMarketingModelProductPromoEntry ToServiceModel(this PromotionProductEntry webModel)
+        public static MarketingModule.Client.Model.ProductPromoEntry ToServiceModel(this PromotionProductEntry webModel)
         {
-            var serviceModel = new VirtoCommerceDomainMarketingModelProductPromoEntry();
+            var serviceModel = new MarketingModule.Client.Model.ProductPromoEntry();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 

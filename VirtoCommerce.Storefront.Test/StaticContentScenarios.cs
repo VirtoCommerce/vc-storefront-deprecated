@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CacheManager.Core;
+using Moq;
 using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.StaticContent;
+using VirtoCommerce.Storefront.Model.StaticContent.Services;
+using VirtoCommerce.Storefront.Model.Stores;
 using VirtoCommerce.Storefront.Services;
 using Xunit;
-using Moq;
 
 namespace VirtoCommerce.Storefront.Test
 {
@@ -23,9 +20,9 @@ namespace VirtoCommerce.Storefront.Test
         {
             var language = new Model.Language("en-US");
             var service = GetStaticContentService();
-            var result = service.LoadStoreStaticContent(new Model.Store { Id = "TestStore" });
+            var result = service.LoadStoreStaticContent(new Store { Id = "TestStore" });
 
-            var page = result.Where(x=>x.Url.Equals("folder1/about_us") && x.Language == language).Single();
+            var page = result.Single(x => x.Url.Equals("folder1/about_us") && x.Language == language);
             Assert.IsType<ContentPage>(page);
             Assert.Equal(page.Language, language);
             Assert.NotEmpty(page.Content);
@@ -38,9 +35,9 @@ namespace VirtoCommerce.Storefront.Test
         {
             var language = new Model.Language("es-ES");
             var service = GetStaticContentService();
-            var result = service.LoadStoreStaticContent(new Model.Store { Id = "TestStore" });
+            var result = service.LoadStoreStaticContent(new Store { Id = "TestStore" });
 
-            var page = result.Where(x => x.Url.Equals("about_us") && (x.Language == language || x.Language.IsInvariant)).Single();
+            var page = result.Single(x => x.Url.Equals("about_us") && (x.Language == language || x.Language.IsInvariant));
             Assert.IsType<ContentPage>(page);
             Assert.NotEmpty(page.Content);
             Assert.Equal(page.Url, "about_us");
@@ -53,10 +50,9 @@ namespace VirtoCommerce.Storefront.Test
             var language = new Model.Language("en-US");
             var service = GetStaticContentService();
 
-            var result = service.LoadStoreStaticContent(new Model.Store { Id = "TestStore" });
+            var result = service.LoadStoreStaticContent(new Store { Id = "TestStore" });
 
-            var page = result.Where(x => x.Url.Equals("blogs/news/about_us_permalink") && (x.Language == language 
-                        || x.Language.IsInvariant)).Single();
+            var page = result.Single(x => x.Url.Equals("blogs/news/about_us_permalink") && (x.Language == language || x.Language.IsInvariant));
 
             Assert.IsType<ContentPage>(page);
             Assert.NotEmpty(page.Content);
@@ -70,10 +66,10 @@ namespace VirtoCommerce.Storefront.Test
             var language = new Model.Language("en-US");
             var service = GetStaticContentService();
 
-            var result = service.LoadStoreStaticContent(new Model.Store { Id = "TestStore" });
+            var result = service.LoadStoreStaticContent(new Store { Id = "TestStore" });
 
             var blog = result.OfType<Blog>().FirstOrDefault(x => x.Name == "news");
-     
+
             var page = result.Where(x => x.Url.Equals("blogs/news/post1") && (x.Language == language
                         || x.Language.IsInvariant)).Single();
 
@@ -86,14 +82,14 @@ namespace VirtoCommerce.Storefront.Test
 
         private IStaticContentService GetStaticContentService()
         {
-            var cacheManager = new Moq.Mock<ILocalCacheManager>();
+            var cacheManager = new Mock<ILocalCacheManager>();
             cacheManager.Setup(cache => cache.Get<ContentItem[]>(It.IsAny<string>(), It.IsAny<string>())).Returns<ContentItem[]>(null);
-            var urlBuilder = new Moq.Mock<IStorefrontUrlBuilder>();
-            var liquidEngine = new Moq.Mock<ILiquidThemeEngine>();
-            var markdown = new Moq.Mock<MarkdownSharp.Markdown>();
+            var urlBuilder = new Mock<IStorefrontUrlBuilder>();
+            var liquidEngine = new Mock<ILiquidThemeEngine>();
+            var markdown = new Mock<MarkdownSharp.Markdown>();
             var path = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName, "Pages");
             var blobProvider = new FileSystemContentBlobProvider(path);
-            var retVal = new StaticContentServiceImpl(markdown.Object, liquidEngine.Object, cacheManager.Object, ()=> null, ()=> urlBuilder.Object, StaticContentItemFactory.GetContentItemFromPath, blobProvider);
+            var retVal = new StaticContentServiceImpl(markdown.Object, liquidEngine.Object, cacheManager.Object, () => null, () => urlBuilder.Object, StaticContentItemFactory.GetContentItemFromPath, blobProvider);
             return retVal;
         }
     }

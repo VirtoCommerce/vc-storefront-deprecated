@@ -6,14 +6,14 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class InventoryConverter
     {
-        public static Inventory ToWebModel(this VirtoCommerce.Client.Model.VirtoCommerceInventoryModuleWebModelInventoryInfo inventoryInfo)
+        public static Inventory ToWebModel(this InventoryModule.Client.Model.InventoryInfo inventoryInfo)
         {
-            var retVal = new Inventory();
+            var result = new Inventory();
 
-            retVal.InjectFrom<NullableAndEnumValueInjecter>(inventoryInfo);
-            retVal.Status = EnumUtility.SafeParse(inventoryInfo.Status, InventoryStatus.Disabled);
+            result.InjectFrom<NullableAndEnumValueInjecter>(inventoryInfo);
+            result.Status = EnumUtility.SafeParse(inventoryInfo.Status, InventoryStatus.Disabled);
 
-            return retVal;
+            return result;
         }
     }
 }

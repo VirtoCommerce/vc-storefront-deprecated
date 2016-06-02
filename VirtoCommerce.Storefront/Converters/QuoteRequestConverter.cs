@@ -1,24 +1,23 @@
-﻿using Omu.ValueInjecter;
+﻿using System.Collections.Generic;
 using System.Linq;
-using VirtoCommerce.Client.Model;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Quote;
-using System.Collections.Generic;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class QuoteRequestConverter
     {
 
-        public static QuoteRequest ToWebModel(this VirtoCommerceQuoteModuleWebModelQuoteRequest serviceModel, IEnumerable<Currency> availCurrencies, Language language)
+        public static QuoteRequest ToWebModel(this QuoteModule.Client.Model.QuoteRequest serviceModel, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(serviceModel.Currency)) ?? new Currency(language, serviceModel.Currency);
             var webModel = new QuoteRequest(currency, language);
 
             webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
-           
+
             webModel.Currency = currency;
             webModel.Language = language;
             webModel.ManualRelDiscountAmount = new Money(serviceModel.ManualRelDiscountAmount ?? 0, currency);
@@ -53,7 +52,7 @@ namespace VirtoCommerce.Storefront.Converters
             // TODO
             if (serviceModel.ShipmentMethod != null)
             {
-                
+
             }
 
             if (serviceModel.TaxDetails != null)
@@ -69,22 +68,22 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static VirtoCommerceQuoteModuleWebModelQuoteRequest ToServiceModel(this QuoteRequest webModel)
+        public static QuoteModule.Client.Model.QuoteRequest ToServiceModel(this QuoteRequest webModel)
         {
-            var serviceModel = new VirtoCommerceQuoteModuleWebModelQuoteRequest();
+            var serviceModel = new QuoteModule.Client.Model.QuoteRequest();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 
             serviceModel.Currency = webModel.Currency.Code;
             serviceModel.Addresses = webModel.Addresses.Select(a => a.ToQuoteServiceModel()).ToList();
             serviceModel.Attachments = webModel.Attachments.Select(a => a.ToQuoteServiceModel()).ToList();
-            serviceModel.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToServiceModel()).ToList();
+            serviceModel.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToQuoteApiModel()).ToList();
             serviceModel.Items = webModel.Items.Select(i => i.ToQuoteServiceModel()).ToList();
             serviceModel.LanguageCode = webModel.Language.CultureName;
             serviceModel.ManualRelDiscountAmount = webModel.ManualRelDiscountAmount != null ? (double?)webModel.ManualRelDiscountAmount.Amount : null;
             serviceModel.ManualShippingTotal = webModel.ManualShippingTotal != null ? (double?)webModel.ManualShippingTotal.Amount : null;
             serviceModel.ManualSubTotal = webModel.ManualSubTotal != null ? (double?)webModel.ManualSubTotal.Amount : null;
-            serviceModel.TaxDetails = webModel.TaxDetails.Select(td => td.ToServiceModel()).ToList();
+            serviceModel.TaxDetails = webModel.TaxDetails.Select(td => td.ToQuoteApiModel()).ToList();
 
             if (webModel.Coupon != null && webModel.Coupon.AppliedSuccessfully)
             {

@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using VirtoCommerce.Client.Api;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart.Services;
@@ -18,16 +17,13 @@ namespace VirtoCommerce.Storefront.Controllers.Api
     [HandleJsonError]
     public class ApiQuoteRequestController : StorefrontControllerBase
     {
-        private readonly IQuoteModuleApi _quoteApi;
         private readonly IQuoteRequestBuilder _quoteRequestBuilder;
         private readonly ICartBuilder _cartBuilder;
         private readonly ICatalogSearchService _catalogSearchService;
 
-        public ApiQuoteRequestController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, ICartBuilder cartBuilder,
-            IQuoteModuleApi quoteApi, IQuoteRequestBuilder quoteRequestBuilder, ICatalogSearchService catalogSearchService)
+        public ApiQuoteRequestController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, ICartBuilder cartBuilder, IQuoteRequestBuilder quoteRequestBuilder, ICatalogSearchService catalogSearchService)
             : base(workContext, urlBuilder)
         {
-            _quoteApi = quoteApi;
             _quoteRequestBuilder = quoteRequestBuilder;
             _cartBuilder = cartBuilder;
             _catalogSearchService = catalogSearchService;
@@ -40,7 +36,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             await _quoteRequestBuilder.LoadQuoteRequestAsync(number, WorkContext.CurrentLanguage, WorkContext.AllCurrencies);
 
             var quoteRequest = _quoteRequestBuilder.QuoteRequest;
-            EnsureThatIsItCustomerQuoteRequest(quoteRequest);
+            EnsureQuoteRequestBelongsToCurrentCustomer(quoteRequest);
 
             return Json(new { Id = quoteRequest.Id, ItemsCount = quoteRequest.ItemsCount });
         }
@@ -52,7 +48,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             var builder = await _quoteRequestBuilder.LoadQuoteRequestAsync(number, WorkContext.CurrentLanguage, WorkContext.AllCurrencies);
             var quoteRequest = builder.QuoteRequest;
 
-            EnsureThatIsItCustomerQuoteRequest(quoteRequest);
+            EnsureQuoteRequestBelongsToCurrentCustomer(quoteRequest);
 
             quoteRequest.Customer = WorkContext.CurrentCustomer;
 
@@ -63,7 +59,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpGet]
         public ActionResult GetCurrent()
         {
-            EnsureThatIsItCustomerQuoteRequest(WorkContext.CurrentQuoteRequest);
+            EnsureQuoteRequestBelongsToCurrentCustomer(WorkContext.CurrentQuoteRequest);
 
             return Json(WorkContext.CurrentQuoteRequest);
         }
@@ -72,12 +68,12 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpPost]
         public async Task<ActionResult> AddItem(string productId, int quantity)
         {
-            EnsureThatIsItCustomerQuoteRequest(WorkContext.CurrentQuoteRequest);
+            EnsureQuoteRequestBelongsToCurrentCustomer(WorkContext.CurrentQuoteRequest);
             _quoteRequestBuilder.TakeQuoteRequest(WorkContext.CurrentQuoteRequest);
 
-            using (var lockObject = await AsyncLock.GetLockByKey(GetAsyncLockQuoteKey(_quoteRequestBuilder.QuoteRequest.Id)).LockAsync())
+            using (await AsyncLock.GetLockByKey(GetAsyncLockQuoteKey(_quoteRequestBuilder.QuoteRequest.Id)).LockAsync())
             {
-                var products = await _catalogSearchService.GetProductsAsync(new string[] { productId }, ItemResponseGroup.ItemLarge);
+                var products = await _catalogSearchService.GetProductsAsync(new[] { productId }, ItemResponseGroup.ItemLarge);
                 if (products != null && products.Any())
                 {
                     _quoteRequestBuilder.AddItem(products.First(), quantity);
@@ -94,7 +90,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         {
             await _quoteRequestBuilder.LoadQuoteRequestAsync(number, WorkContext.CurrentLanguage, WorkContext.AllCurrencies);
 
-            using (var lockObject = await AsyncLock.GetLockByKey(GetAsyncLockQuoteKey(_quoteRequestBuilder.QuoteRequest.Id)).LockAsync())
+            using (await AsyncLock.GetLockByKey(GetAsyncLockQuoteKey(_quoteRequestBuilder.QuoteRequest.Id)).LockAsync())
             {
                 _quoteRequestBuilder.RemoveItem(itemId);
                 await _quoteRequestBuilder.SaveAsync();
@@ -108,9 +104,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         {
             await _quoteRequestBuilder.LoadQuoteRequestAsync(number, WorkContext.CurrentLanguage, WorkContext.AllCurrencies);
 
-            EnsureThatIsItCustomerQuoteRequest(_quoteRequestBuilder.QuoteRequest);
+            EnsureQuoteRequestBelongsToCurrentCustomer(_quoteRequestBuilder.QuoteRequest);
 
-            using (var lockObject = await AsyncLock.GetLockByKey(WorkContext.CurrentQuoteRequest.Id).LockAsync())
+            using (await AsyncLock.GetLockByKey(WorkContext.CurrentQuoteRequest.Id).LockAsync())
             {
                 _quoteRequestBuilder.Update(quoteForm).Submit();
                 await _quoteRequestBuilder.SaveAsync();
@@ -125,9 +121,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         {
             await _quoteRequestBuilder.LoadQuoteRequestAsync(number, WorkContext.CurrentLanguage, WorkContext.AllCurrencies);
 
-            EnsureThatIsItCustomerQuoteRequest(_quoteRequestBuilder.QuoteRequest);
+            EnsureQuoteRequestBelongsToCurrentCustomer(_quoteRequestBuilder.QuoteRequest);
 
-            using (var lockObject = await AsyncLock.GetLockByKey(_quoteRequestBuilder.QuoteRequest.Id).LockAsync())
+            using (await AsyncLock.GetLockByKey(_quoteRequestBuilder.QuoteRequest.Id).LockAsync())
             {
                 _quoteRequestBuilder.Reject();
                 await _quoteRequestBuilder.SaveAsync();
@@ -141,9 +137,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         {
             await _quoteRequestBuilder.LoadQuoteRequestAsync(number, WorkContext.CurrentLanguage, WorkContext.AllCurrencies);
 
-            EnsureThatIsItCustomerQuoteRequest(_quoteRequestBuilder.QuoteRequest);
+            EnsureQuoteRequestBelongsToCurrentCustomer(_quoteRequestBuilder.QuoteRequest);
 
-            using (var lockObject = await AsyncLock.GetLockByKey(_quoteRequestBuilder.QuoteRequest.Id).LockAsync())
+            using (await AsyncLock.GetLockByKey(_quoteRequestBuilder.QuoteRequest.Id).LockAsync())
             {
                 _quoteRequestBuilder.Update(quoteRequest);
                 await _quoteRequestBuilder.SaveAsync();
@@ -158,7 +154,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         {
             await _quoteRequestBuilder.LoadQuoteRequestAsync(number, WorkContext.CurrentLanguage, WorkContext.AllCurrencies);
 
-            EnsureThatIsItCustomerQuoteRequest(_quoteRequestBuilder.QuoteRequest);
+            EnsureQuoteRequestBelongsToCurrentCustomer(_quoteRequestBuilder.QuoteRequest);
 
             //Apply user changes without saving
             _quoteRequestBuilder.Update(quoteRequest);
@@ -173,7 +169,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         {
             await _quoteRequestBuilder.LoadQuoteRequestAsync(number, WorkContext.CurrentLanguage, WorkContext.AllCurrencies);
 
-            EnsureThatIsItCustomerQuoteRequest(_quoteRequestBuilder.QuoteRequest);
+            EnsureQuoteRequestBelongsToCurrentCustomer(_quoteRequestBuilder.QuoteRequest);
 
             _quoteRequestBuilder.Update(quoteRequest).Confirm();
             await _quoteRequestBuilder.SaveAsync();
@@ -190,7 +186,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             return "quote-request:" + quoteId;
         }
 
-        private void EnsureThatIsItCustomerQuoteRequest(QuoteRequest quote)
+        private void EnsureQuoteRequestBelongsToCurrentCustomer(QuoteRequest quote)
         {
             if (WorkContext.CurrentCustomer.Id != quote.CustomerId)
             {

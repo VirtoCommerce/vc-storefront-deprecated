@@ -1,18 +1,16 @@
-﻿using Omu.ValueInjecter;
-using System;
+﻿using System;
 using System.Linq;
-using VirtoCommerce.Client.Model;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
-using System.Collections.Generic;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class CartConverter
     {
-        public static ShoppingCart ToWebModel(this VirtoCommerceCartModuleWebModelShoppingCart serviceModel, Currency currency, Language language)
+        public static ShoppingCart ToWebModel(this CartModule.Client.Model.ShoppingCart serviceModel, Currency currency, Language language)
         {
             var webModel = new ShoppingCart(currency, language);
 
@@ -90,10 +88,10 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-    
-        public static VirtoCommerceCartModuleWebModelShoppingCart ToServiceModel(this ShoppingCart webModel)
+
+        public static CartModule.Client.Model.ShoppingCart ToServiceModel(this ShoppingCart webModel)
         {
-            var serviceModel = new VirtoCommerceCartModuleWebModelShoppingCart();
+            var serviceModel = new CartModule.Client.Model.ShoppingCart();
 
             serviceModel.InjectFrom(webModel);
 
@@ -110,8 +108,8 @@ namespace VirtoCommerce.Storefront.Converters
             serviceModel.Shipments = webModel.Shipments.Select(s => s.ToServiceModel()).ToList();
             serviceModel.ShippingTotal = (double)webModel.ShippingTotal.Amount;
             serviceModel.SubTotal = (double)webModel.SubTotal.Amount;
-            serviceModel.TaxDetails = webModel.TaxDetails.Select(td => td.ToServiceModel()).ToList();
-            serviceModel.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToServiceModel()).ToList();
+            serviceModel.TaxDetails = webModel.TaxDetails.Select(td => td.ToCartApiModel()).ToList();
+            serviceModel.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToCartApiModel()).ToList();
             serviceModel.TaxTotal = (double)webModel.TaxTotal.Amount;
             serviceModel.Total = (double)webModel.Total.Amount;
             serviceModel.VolumetricWeight = (double)webModel.VolumetricWeight;

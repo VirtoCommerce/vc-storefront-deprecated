@@ -1,5 +1,4 @@
 ﻿using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 
@@ -7,7 +6,7 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class TierPriceConverter
     {
-        public static TierPrice ToTierPrice(this VirtoCommercePricingModuleWebModelPrice serviceModel, Currency currency)
+        public static TierPrice ToTierPrice(this PricingModule.Client.Model.Price serviceModel, Currency currency)
         {
             var listPrice = new Money(serviceModel.List ?? 0, currency);
 
@@ -18,25 +17,19 @@ namespace VirtoCommerce.Storefront.Converters
             };
         }
 
-        public static TierPrice ToWebModel(this VirtoCommerceQuoteModuleWebModelTierPrice serviceModel, Currency currency)
+        public static TierPrice ToWebModel(this QuoteModule.Client.Model.TierPrice serviceModel, Currency currency)
         {
             var webModel = new TierPrice(currency);
-
             webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
-
             webModel.Price = new Money(serviceModel.Price ?? 0, currency);
-
             return webModel;
         }
 
-        public static VirtoCommerceQuoteModuleWebModelTierPrice ToQuoteServiceModel(this TierPrice webModel)
+        public static QuoteModule.Client.Model.TierPrice ToQuoteServiceModel(this TierPrice webModel)
         {
-            var serviceModel = new VirtoCommerceQuoteModuleWebModelTierPrice();
-
+            var serviceModel = new QuoteModule.Client.Model.TierPrice();
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
-
             serviceModel.Price = (double)webModel.Price.Amount;
-
             return serviceModel;
         }
     }

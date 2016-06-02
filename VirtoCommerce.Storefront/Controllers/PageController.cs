@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.StaticContent;
 
 namespace VirtoCommerce.Storefront.Controllers
@@ -14,12 +12,9 @@ namespace VirtoCommerce.Storefront.Controllers
     [OutputCache(CacheProfile = "StaticContentCachingProfile")]
     public class PageController : StorefrontControllerBase
     {
-        private readonly IStaticContentService _contentService;
-
-        public PageController(WorkContext context, IStorefrontUrlBuilder urlBuilder, IStaticContentService contentService)
+        public PageController(WorkContext context, IStorefrontUrlBuilder urlBuilder)
             : base(context, urlBuilder)
         {
-            _contentService = contentService;
         }
 
         //Called from SEO route by page permalink
@@ -29,14 +24,14 @@ namespace VirtoCommerce.Storefront.Controllers
             var contentPage = page as ContentPage;
             if (blogArticle != null)
             {
-                base.WorkContext.CurrentBlogArticle = blogArticle;
-                base.WorkContext.CurrentBlog = base.WorkContext.Blogs.Where(x => x.Name.Equals(blogArticle.BlogName, StringComparison.OrdinalIgnoreCase)).SingleOrDefault();
-                return View("article", page.Layout, base.WorkContext);
+                WorkContext.CurrentBlogArticle = blogArticle;
+                WorkContext.CurrentBlog = WorkContext.Blogs.SingleOrDefault(x => x.Name.Equals(blogArticle.BlogName, StringComparison.OrdinalIgnoreCase));
+                return View("article", page.Layout, WorkContext);
             }
             else
             {
-                base.WorkContext.CurrentPage = contentPage;
-                return View("page", page.Layout, base.WorkContext);
+                WorkContext.CurrentPage = contentPage;
+                return View("page", page.Layout, WorkContext);
             }
         }
 
@@ -44,13 +39,13 @@ namespace VirtoCommerce.Storefront.Controllers
         public ActionResult GetContentPageByName(string page)
         {
 
-            var contentPages = base.WorkContext.Pages.Where(x => string.Equals(x.Url, page, StringComparison.OrdinalIgnoreCase));
-            var contentPage = contentPages.FindWithLanguage(base.WorkContext.CurrentLanguage);        
+            var contentPages = WorkContext.Pages.Where(x => string.Equals(x.Url, page, StringComparison.OrdinalIgnoreCase));
+            var contentPage = contentPages.FindWithLanguage(WorkContext.CurrentLanguage);
             if (contentPage != null)
             {
-                base.WorkContext.CurrentPage = contentPage as ContentPage;
+                WorkContext.CurrentPage = contentPage as ContentPage;
 
-                return View("page", base.WorkContext);
+                return View("page", WorkContext);
             }
             throw new HttpException(404, "Page with " + page + " not found.");
         }

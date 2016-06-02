@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Linq;
-using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Common;
-using System.Web.Mvc;
-using VirtoCommerce.Storefront.Common;
 using System.Net;
 using System.Threading.Tasks;
-using VirtoCommerce.Client.Api;
+using System.Web.Mvc;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
+using VirtoCommerce.Storefront.Model;
+using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.StoreModule.Client.Api;
 
 namespace VirtoCommerce.Storefront.Controllers.Api
 {
     [HandleJsonError]
     public class ApiCommonController : StorefrontControllerBase
     {
-        private readonly IStoreModuleApi _storeModuleApi;
+        private readonly IVirtoCommerceStoreApi _storeModuleApi;
         private readonly Country[] _countriesWithoutRegions;
 
-        public ApiCommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IStoreModuleApi storeModuleApi)
+        public ApiCommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IVirtoCommerceStoreApi storeModuleApi)
             : base(workContext, urlBuilder)
         {
             _storeModuleApi = storeModuleApi;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
+using VirtoCommerce.SearchModule.Client.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 

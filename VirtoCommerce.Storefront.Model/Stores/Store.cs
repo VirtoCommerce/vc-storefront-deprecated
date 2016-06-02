@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Storefront.Model.Common;
 
-namespace VirtoCommerce.Storefront.Model
+namespace VirtoCommerce.Storefront.Model.Stores
 {
     /// <summary>
     /// Represent store - main ecommerce aggregate unit
@@ -107,8 +107,10 @@ namespace VirtoCommerce.Storefront.Model
             }
         }
 
-        #region IhasSettings Member
+        #region IHasSettings Members
+
         public ICollection<SettingEntry> Settings { get; set; }
+
         #endregion
 
         public SeoLinksType SeoLinksType { get; set; }

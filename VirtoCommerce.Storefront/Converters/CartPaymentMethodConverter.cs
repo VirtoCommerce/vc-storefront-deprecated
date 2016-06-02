@@ -1,5 +1,4 @@
 ﻿using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
@@ -8,7 +7,7 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class CartPaymentMethodConverter
     {
-        public static PaymentMethod ToWebModel(this VirtoCommerceCartModuleWebModelPaymentMethod paymentMethod)
+        public static PaymentMethod ToWebModel(this CartModule.Client.Model.PaymentMethod paymentMethod)
         {
             var paymentMethodWebModel = new PaymentMethod();
 

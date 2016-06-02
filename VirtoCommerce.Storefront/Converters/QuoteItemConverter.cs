@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Quote;
 
@@ -8,7 +7,7 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class QuoteItemConverter
     {
-        public static QuoteItem ToWebModel(this VirtoCommerceQuoteModuleWebModelQuoteItem serviceModel, Currency currency)
+        public static QuoteItem ToWebModel(this QuoteModule.Client.Model.QuoteItem serviceModel, Currency currency)
         {
             var webModel = new QuoteItem();
 
@@ -31,9 +30,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static VirtoCommerceQuoteModuleWebModelQuoteItem ToQuoteServiceModel(this QuoteItem webModel)
+        public static QuoteModule.Client.Model.QuoteItem ToQuoteServiceModel(this QuoteItem webModel)
         {
-            var serviceModel = new VirtoCommerceQuoteModuleWebModelQuoteItem();
+            var serviceModel = new QuoteModule.Client.Model.QuoteItem();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 

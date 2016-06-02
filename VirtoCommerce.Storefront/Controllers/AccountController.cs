@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Owin.Security;
-using VirtoCommerce.Client.Api;
-using VirtoCommerce.Client.Model;
+using VirtoCommerce.CoreModule.Client.Api;
+using VirtoCommerce.CoreModule.Client.Model;
+using VirtoCommerce.OrderModule.Client.Api;
+using VirtoCommerce.Platform.Client.Api;
+using VirtoCommerce.Platform.Client.Model;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -24,16 +27,16 @@ namespace VirtoCommerce.Storefront.Controllers
     [Authorize]
     public class AccountController : StorefrontControllerBase
     {
-        private readonly ICommerceCoreModuleApi _commerceCoreApi;
+        private readonly IVirtoCommerceCoreApi _commerceCoreApi;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly IVirtoCommercePlatformApi _platformApi;
         private readonly ICustomerService _customerService;
-        private readonly IOrderModuleApi _orderApi;
+        private readonly IVirtoCommerceOrdersApi _orderApi;
         private readonly IEventPublisher<UserLoginEvent> _userLoginEventPublisher;
 
-        public AccountController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, ICommerceCoreModuleApi commerceCoreApi,
+        public AccountController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IVirtoCommerceCoreApi commerceCoreApi,
             IAuthenticationManager authenticationManager, IVirtoCommercePlatformApi platformApi,
-            ICustomerService customerService, IOrderModuleApi orderApi, IEventPublisher<UserLoginEvent> userLoginEventPublisher)
+            ICustomerService customerService, IVirtoCommerceOrdersApi orderApi, IEventPublisher<UserLoginEvent> userLoginEventPublisher)
             : base(workContext, urlBuilder)
         {
             _commerceCoreApi = commerceCoreApi;
@@ -440,7 +443,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpPost]
         public async Task<ActionResult> ChangePassword(ChangePassword formModel)
         {
-            var changePassword = new VirtoCommercePlatformWebModelSecurityChangePasswordInfo
+            var changePassword = new ChangePasswordInfo
             {
                 OldPassword = formModel.OldPassword,
                 NewPassword = formModel.NewPassword,

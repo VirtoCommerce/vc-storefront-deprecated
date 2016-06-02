@@ -1,31 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using PagedList;
-using VirtoCommerce.Client.Api;
-using VirtoCommerce.Storefront.Converters;
+﻿using System.Web.Mvc;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Catalog;
-using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Services;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
     [OutputCache(CacheProfile = "HomeCachingProfile")]
     public class StorefrontHomeController : Controller
     {
-        private readonly ICatalogSearchService _catalogSearchService;
         private readonly WorkContext _workContext;
-        private readonly ICatalogModuleApi _catalogModuleApi;
-        private readonly ISearchModuleApi _searchApi;
 
-        public StorefrontHomeController(WorkContext context, ICatalogSearchService catalogSearchService, ICatalogModuleApi catalogModuleApi, ISearchModuleApi searchApi)
+        public StorefrontHomeController(WorkContext context)
         {
-            _catalogSearchService = catalogSearchService;
             _workContext = context;
-            _catalogModuleApi = catalogModuleApi;
-            _searchApi = searchApi;
         }
 
         [HttpGet]
@@ -39,11 +24,9 @@ namespace VirtoCommerce.Storefront.Controllers
             //    SortBy = "Priority",
             //    SearchInChildren = false
             //};
-        
-           // _workContext.CurrentCatalogSearchResult = await _catalogSearchService.SearchAsync(catalogSearchCriteria);
+
+            // _workContext.CurrentCatalogSearchResult = await _catalogSearchService.SearchAsync(catalogSearchCriteria);
             return View("index", _workContext);
         }
-
-       
     }
 }

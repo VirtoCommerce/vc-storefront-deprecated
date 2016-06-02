@@ -1,4 +1,6 @@
-﻿namespace VirtoCommerce.Storefront.Model.Common
+﻿using VirtoCommerce.Storefront.Model.Stores;
+
+namespace VirtoCommerce.Storefront.Model.Common
 {
     public interface IStorefrontUrlBuilder
     {

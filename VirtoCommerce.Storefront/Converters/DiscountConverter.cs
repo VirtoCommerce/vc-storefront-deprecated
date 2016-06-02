@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
@@ -10,7 +9,7 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class DiscountConverter
     {
-        public static Discount ToWebModel(this VirtoCommerceCartModuleWebModelDiscount serviceModel, IEnumerable<Currency> availCurrencies, Language language)
+        public static Discount ToWebModel(this CartModule.Client.Model.Discount serviceModel, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(serviceModel.Currency)) ?? new Currency(language, serviceModel.Currency);
             var webModel = new Discount(currency);
@@ -21,9 +20,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static VirtoCommerceCartModuleWebModelDiscount ToServiceModel(this Discount webModel)
+        public static CartModule.Client.Model.Discount ToServiceModel(this Discount webModel)
         {
-            var serviceModel = new VirtoCommerceCartModuleWebModelDiscount();
+            var serviceModel = new CartModule.Client.Model.Discount();
 
             serviceModel.InjectFrom(webModel);
 
@@ -33,13 +32,13 @@ namespace VirtoCommerce.Storefront.Converters
             return serviceModel;
         }
 
-        public static Discount ToWebModel(this VirtoCommerceOrderModuleWebModelDiscount serviceModel, IEnumerable<Currency> availCurrencies, Language language)
+        public static Discount ToWebModel(this OrderModule.Client.Model.Discount serviceModel, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(serviceModel.Currency)) ?? new Currency(language, serviceModel.Currency);
             var webModel = new Discount(currency);
 
             webModel.InjectFrom(serviceModel);
-           
+
             webModel.Amount = new Money(serviceModel.DiscountAmount ?? 0, currency);
 
             return webModel;

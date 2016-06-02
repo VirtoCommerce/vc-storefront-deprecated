@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using VirtoCommerce.Client.Api;
+using VirtoCommerce.CoreModule.Client.Api;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Services;
+using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Routing;
 
 namespace VirtoCommerce.Storefront
 {
     public class RouteConfig
     {
-        public static void RegisterRoutes(RouteCollection routes, Func<WorkContext> workContextFactory, ICommerceCoreModuleApi commerceCoreApi, IStaticContentService staticContentService, ILocalCacheManager cacheManager)
+        public static void RegisterRoutes(RouteCollection routes, Func<WorkContext> workContextFactory, IVirtoCommerceCoreApi commerceCoreApi, IStaticContentService staticContentService, ILocalCacheManager cacheManager)
         {
             routes.IgnoreRoute("favicon.ico");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -125,7 +125,7 @@ namespace VirtoCommerce.Storefront
 
             // Product routes
             routes.AddStorefrontRoute("Product.GetProduct", "product/{productId}", defaults: new { controller = "Product", action = "ProductDetails" });
-           
+
             // Assets
             routes.AddStorefrontRoute("Assets", "themes/assets/{*asset}", defaults: new { controller = "Asset", action = "GetAssets" });
             routes.AddStorefrontRoute("GlobalAssets", "themes/global/assets/{*asset}", defaults: new { controller = "Asset", action = "GetGlobalAssets" });

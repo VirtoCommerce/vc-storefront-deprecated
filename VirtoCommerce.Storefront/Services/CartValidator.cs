@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.Client.Api;
+using VirtoCommerce.CartModule.Client.Api;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
@@ -10,20 +10,17 @@ using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Services;
-using VirtoCommerce.Storefront.Model.Marketing.Services;
-using System.Collections.Generic;
 
 namespace VirtoCommerce.Storefront.Services
 {
-
     public class CartValidator : ICartValidator
     {
         private readonly Func<WorkContext> _workContextFactory;
-        private readonly IShoppingCartModuleApi _cartApi;
+        private readonly IVirtoCommerceCartApi _cartApi;
         private readonly ICatalogSearchService _catalogService;
         private readonly ILocalCacheManager _cacheManager;
 
-        public CartValidator(Func<WorkContext> workContextFaxtory, IShoppingCartModuleApi cartApi, ICatalogSearchService catalogService, ILocalCacheManager cacheManager)
+        public CartValidator(Func<WorkContext> workContextFaxtory, IVirtoCommerceCartApi cartApi, ICatalogSearchService catalogService, ILocalCacheManager cacheManager)
         {
             _workContextFactory = workContextFaxtory;
             _cartApi = cartApi;
@@ -46,18 +43,18 @@ namespace VirtoCommerce.Storefront.Services
             var workContext = _workContextFactory();
             var productIds = cart.Items.Select(i => i.ProductId).ToArray();
             var cacheKey = "CartValidator.ValidateItemsAsync-" + workContext.CurrentCurrency.Code + ":" + workContext.CurrentLanguage + ":" + string.Join(":", productIds);
-            var products = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => { return await _catalogService.GetProductsAsync(productIds, ItemResponseGroup.ItemWithPrices | ItemResponseGroup.ItemWithDiscounts | ItemResponseGroup.Inventory); });
-       
+            var products = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => await _catalogService.GetProductsAsync(productIds, ItemResponseGroup.ItemWithPrices | ItemResponseGroup.ItemWithDiscounts | ItemResponseGroup.Inventory));
+
             foreach (var lineItem in cart.Items.ToList())
             {
                 lineItem.ValidationErrors.Clear();
 
                 var product = products.FirstOrDefault(p => p.Id == lineItem.ProductId);
-                if (product == null || (product != null && (!product.IsActive || !product.IsBuyable)))
+                if (product == null || !product.IsActive || !product.IsBuyable)
                 {
                     lineItem.ValidationErrors.Add(new ProductUnavailableError());
                 }
-                else if (product != null)
+                else
                 {
                     if (product.TrackInventory && product.Inventory != null &&
                         (lineItem.ValidationType == ValidationType.PriceAndQuantity || lineItem.ValidationType == ValidationType.Quantity))
@@ -92,7 +89,7 @@ namespace VirtoCommerce.Storefront.Services
             foreach (var shipment in cart.Shipments.ToArray())
             {
                 shipment.ValidationErrors.Clear();
-                var availableShippingMethods = await _cacheManager.GetAsync("CartValidator.ValidateShipmentsAsync-" + workContext.CurrentCurrency + ":" + cart.Id, "ApiRegion", async () => { return await _cartApi.CartModuleGetShipmentMethodsAsync(cart.Id); });
+                var availableShippingMethods = await _cacheManager.GetAsync("CartValidator.ValidateShipmentsAsync-" + workContext.CurrentCurrency + ":" + cart.Id, "ApiRegion", async () => await _cartApi.CartModuleGetShipmentMethodsAsync(cart.Id));
                 if (availableShippingMethods.Count == 0)
                 {
                     shipment.ValidationWarnings.Add(new ShippingUnavailableError());
@@ -106,7 +103,7 @@ namespace VirtoCommerce.Storefront.Services
                         shipment.ValidationWarnings.Add(new ShippingUnavailableError());
                         break;
                     }
-                    if (existingShippingMethod != null)
+                    else
                     {
                         var shippingMethod = existingShippingMethod.ToWebModel(cart.Currency);
                         if (shippingMethod.Price != shipment.ShippingPrice &&

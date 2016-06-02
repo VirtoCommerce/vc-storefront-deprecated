@@ -4,6 +4,7 @@ using System.Linq;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Stores;
 using Xunit;
 
 namespace VirtoCommerce.Storefront.Test

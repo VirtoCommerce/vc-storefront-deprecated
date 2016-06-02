@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
@@ -11,7 +9,6 @@ namespace VirtoCommerce.Storefront.Converters
     public static class CustomerConverter
     {
         private static readonly char[] _nameSeparator = { ' ' };
-
 
         public static CustomerInfo ToWebModel(this Register formModel)
         {
@@ -30,7 +27,7 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static CustomerInfo ToWebModel(this VirtoCommerceDomainCustomerModelContact contact)
+        public static CustomerInfo ToWebModel(this CustomerModule.Client.Model.Contact contact)
         {
             var retVal = new CustomerInfo();
             retVal.InjectFrom(contact);
@@ -67,15 +64,15 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (!contact.DynamicProperties.IsNullOrEmpty())
             {
-                retVal.DynamicProperties = contact.DynamicProperties.Select(x => x.ToWebModel()).ToList();            
+                retVal.DynamicProperties = contact.DynamicProperties.Select(x => x.ToWebModel()).ToList();
             }
 
             return retVal;
         }
 
-        public static VirtoCommerceDomainCustomerModelContact ToServiceModel(this CustomerInfo customer)
+        public static CustomerModule.Client.Model.Contact ToServiceModel(this CustomerInfo customer)
         {
-            var retVal = new VirtoCommerceDomainCustomerModelContact();
+            var retVal = new CustomerModule.Client.Model.Contact();
             retVal.InjectFrom<NullableAndEnumValueInjecter>(customer);
             if (customer.Addresses != null)
             {

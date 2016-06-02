@@ -1,33 +1,38 @@
 ﻿using System;
 using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Common;
-using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Quote;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class ProductConverter
     {
-        public static Product ToWebModel(this VirtoCommerceCatalogModuleWebModelProduct product, Language currentLanguage, Currency currentCurrency, Store store)
+        public static Product ToWebModel(this SearchModule.Client.Model.VirtoCommerceCatalogModuleWebModelProduct product, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            var retVal = new Product(currentCurrency, currentLanguage);
+            return product.JsonConvert<CatalogModule.Client.Model.VirtoCommerceCatalogModuleWebModelProduct>().ToWebModel(currentLanguage, currentCurrency, store);
+        }
 
-            retVal.Currency = currentCurrency;
-            retVal.Price = new ProductPrice(currentCurrency);
-            retVal.Weight = (decimal?)product.Weight;
-            retVal.Height = (decimal?)product.Height;
-            retVal.Width = (decimal?)product.Width;
-            retVal.Length = (decimal?)product.Length;
+        public static Product ToWebModel(this CatalogModule.Client.Model.VirtoCommerceCatalogModuleWebModelProduct product, Language currentLanguage, Currency currentCurrency, Store store)
+        {
+            var retVal = new Product(currentCurrency, currentLanguage)
+            {
+                Currency = currentCurrency,
+                Price = new ProductPrice(currentCurrency),
+                Weight = (decimal?)product.Weight,
+                Height = (decimal?)product.Height,
+                Width = (decimal?)product.Width,
+                Length = (decimal?)product.Length
+            };
+
             retVal.InjectFrom<NullableAndEnumValueInjecter>(product);
 
             retVal.Sku = product.Code;
-
 
             if (product.Properties != null)
             {
@@ -115,7 +120,5 @@ namespace VirtoCommerce.Storefront.Converters
 
             return promoItem;
         }
-
-     
     }
 }

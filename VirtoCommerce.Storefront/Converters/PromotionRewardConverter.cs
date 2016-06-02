@@ -1,5 +1,4 @@
 ﻿using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
@@ -8,7 +7,7 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class PromotionRewardConverter
     {
-        public static PromotionReward ToWebModel(this VirtoCommerceMarketingModuleWebModelPromotionReward serviceModel, Currency currency)
+        public static PromotionReward ToWebModel(this MarketingModule.Client.Model.PromotionReward serviceModel, Currency currency)
         {
             var webModel = new PromotionReward();
 

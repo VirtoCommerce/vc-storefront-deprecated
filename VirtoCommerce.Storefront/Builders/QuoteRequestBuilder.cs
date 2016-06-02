@@ -1,35 +1,33 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using CacheManager.Core;
+using VirtoCommerce.QuoteModule.Client.Api;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Customer;
-using VirtoCommerce.Storefront.Model.Marketing.Services;
-using VirtoCommerce.Storefront.Model.Quote;
-using VirtoCommerce.Storefront.Model.Quote.Services;
-using VirtoCommerce.Storefront.Model.Order.Events;
-using VirtoCommerce.Client.Api;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model.Common.Events;
-using VirtoCommerce.Storefront.Model.Quote.Events;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
-using System.Collections.Generic;
+using VirtoCommerce.Storefront.Model.Customer;
+using VirtoCommerce.Storefront.Model.Order.Events;
+using VirtoCommerce.Storefront.Model.Quote;
+using VirtoCommerce.Storefront.Model.Quote.Events;
+using VirtoCommerce.Storefront.Model.Quote.Services;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Builders
 {
     public class QuoteRequestBuilder : IQuoteRequestBuilder, IAsyncObserver<UserLoginEvent>
     {
-        private readonly IQuoteModuleApi _quoteApi;
+        private readonly IVirtoCommerceQuoteApi _quoteApi;
         private readonly ILocalCacheManager _cacheManager;
         private readonly IEventPublisher<QuoteRequestUpdatedEvent> _quoteRequestUpdatedEventPublisher;
 
         private QuoteRequest _quoteRequest;
         private const string _quoteRequestCacheRegion = "QuoteRequestRegion";
 
-        public QuoteRequestBuilder(IQuoteModuleApi quoteApi, ILocalCacheManager cacheManager,
+        public QuoteRequestBuilder(IVirtoCommerceQuoteApi quoteApi, ILocalCacheManager cacheManager,
             IEventPublisher<QuoteRequestUpdatedEvent> quoteRequestUpdatedEventPublisher)
         {
             _quoteApi = quoteApi;
@@ -63,24 +61,27 @@ namespace VirtoCommerce.Storefront.Builders
 
             _quoteRequest = await _cacheManager.GetAsync(cacheKey, _quoteRequestCacheRegion, async () =>
             {
-                QuoteRequest quoteRequest = null;
-                var activeQuoteSearchCriteria = new VirtoCommerceDomainQuoteModelQuoteRequestSearchCriteria
+                var activeQuoteSearchCriteria = new QuoteModule.Client.Model.QuoteRequestSearchCriteria
                 {
                     Tag = "actual",
                     CustomerId = customer.Id,
                     StoreId = store.Id
                 };
+
                 var searchResult = await _quoteApi.QuoteModuleSearchAsync(activeQuoteSearchCriteria);
-                quoteRequest = searchResult.QuoteRequests.Select(x => x.ToWebModel(store.Currencies, language)).FirstOrDefault();
+
+                var quoteRequest = searchResult.QuoteRequests.Select(x => x.ToWebModel(store.Currencies, language)).FirstOrDefault();
                 if (quoteRequest == null)
                 {
-                    quoteRequest = new QuoteRequest(currency, language);
-                    quoteRequest.Currency = currency;
-                    quoteRequest.CustomerId = customer.Id;
-                    quoteRequest.Language = language;
-                    quoteRequest.Status = "New";
-                    quoteRequest.StoreId = store.Id;
-                    quoteRequest.Tag = "actual";
+                    quoteRequest = new QuoteRequest(currency, language)
+                    {
+                        Currency = currency,
+                        CustomerId = customer.Id,
+                        Language = language,
+                        Status = "New",
+                        StoreId = store.Id,
+                        Tag = "actual"
+                    };
 
                     if (!customer.IsRegisteredUser)
                     {
@@ -219,7 +220,7 @@ namespace VirtoCommerce.Storefront.Builders
                 _quoteRequest.Addresses = quoteRequest.Addresses;
             }
 
-            await _quoteApi.QuoteModuleDeleteAsync(new string[] { quoteRequest.Id }.ToList());
+            await _quoteApi.QuoteModuleDeleteAsync(new[] { quoteRequest.Id }.ToList());
             _cacheManager.Remove(GetQuoteRequestCacheKey(_quoteRequest.StoreId, _quoteRequest.CustomerId), _quoteRequestCacheRegion);
 
             return this;

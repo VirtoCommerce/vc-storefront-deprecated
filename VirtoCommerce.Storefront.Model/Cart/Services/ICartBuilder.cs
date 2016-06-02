@@ -4,6 +4,7 @@ using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Quote;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Model.Cart.Services
 {
@@ -84,10 +85,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// <summary>
         /// Add or update shipment to cart
         /// </summary>
-        /// <param name="shipmentId"></param>
-        /// <param name="shippingAddress"></param>
-        /// <param name="itemIds"></param>
-        /// <param name="shippingMethodCode"></param>
+        /// <param name="updateModel"></param>
         /// <returns></returns>
         Task<ICartBuilder> AddOrUpdateShipmentAsync(ShipmentUpdateModel updateModel);
 
@@ -101,10 +99,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// <summary>
         /// Add or update payment in cart
         /// </summary>
-        /// <param name="paymentId"></param>
-        /// <param name="billingAddress"></param>
-        /// <param name="paymentMethodCode"></param>
-        /// <param name="outerId"></param>
+        /// <param name="updateModel"></param>
         /// <returns></returns>
         Task<ICartBuilder> AddOrUpdatePaymentAsync(PaymentUpdateModel updateModel);
 

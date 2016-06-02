@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
+using VirtoCommerce.CatalogModule.Client.Model;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Converters
 {

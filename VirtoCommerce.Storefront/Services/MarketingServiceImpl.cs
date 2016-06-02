@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CacheManager.Core;
-using VirtoCommerce.Client.Api;
-using VirtoCommerce.Client.Model;
+using VirtoCommerce.MarketingModule.Client.Api;
+using VirtoCommerce.MarketingModule.Client.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Services;
 
@@ -11,10 +10,10 @@ namespace VirtoCommerce.Storefront.Services
 {
     public class MarketingServiceImpl : IMarketingService
     {
-        private readonly IMarketingModuleApi _marketingApi;
+        private readonly IVirtoCommerceMarketingApi _marketingApi;
         private readonly ILocalCacheManager _cacheManager;
 
-        public MarketingServiceImpl(IMarketingModuleApi marketingApi, ILocalCacheManager cacheManager)
+        public MarketingServiceImpl(IVirtoCommerceMarketingApi marketingApi, ILocalCacheManager cacheManager)
         {
             _marketingApi = marketingApi;
             _cacheManager = cacheManager;
@@ -25,7 +24,7 @@ namespace VirtoCommerce.Storefront.Services
             string htmlContent = null;
 
             //TODO: make full context
-            var evaluationContext = new VirtoCommerceDomainMarketingModelDynamicContentDynamicContentEvaluationContext
+            var evaluationContext = new DynamicContentEvaluationContext
             {
                 StoreId = storeId,
                 PlaceName = placeholderName

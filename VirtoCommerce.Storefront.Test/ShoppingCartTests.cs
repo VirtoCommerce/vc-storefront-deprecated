@@ -1,5 +1,4 @@
 ﻿using System;
-using VirtoCommerce.Client.Api;
 using VirtoCommerce.Storefront.Builders;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart.Services;
@@ -55,19 +54,21 @@ namespace VirtoCommerce.Storefront.Test
 
         private ICartBuilder GetCartBuilder()
         {
-            var apiClient = GetApiClient();
-            var marketingApi = new MarketingModuleApi(apiClient);
-            var cartApi = new ShoppingCartModuleApi(apiClient);
+            var catalogModuleApi = GetCatalogApiClient();
+            var cartApi = GetCartApiClient();
+            var commerceApi = GetCoreApiClient();
+            var marketingApi = GetMarketingApiClient();
+            var inventoryApi = GetInventoryApiClient();
+            var pricingApi = GetPricingApiClient();
+            var searchApi = GetSearchApiClient();
+
             var cacheManager = new Moq.Mock<ILocalCacheManager>();
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
-            var catalogModuleApi = new CatalogModuleApi(apiClient);
-            var pricingApi = new PricingModuleApi(apiClient);
-            var commerceApi = new CommerceCoreModuleApi(apiClient);
+
             var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, commerceApi);
-            var inventoryApi = new InventoryModuleApi(apiClient);
-            var searchApi = new SearchModuleApi(apiClient);
             var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogModuleApi, pricingService, inventoryApi, searchApi, promotionEvaluator);
+
             var retVal = new CartBuilder(cartApi, promotionEvaluator, catalogSearchService, commerceApi, cacheManager.Object);
             return retVal;
         }

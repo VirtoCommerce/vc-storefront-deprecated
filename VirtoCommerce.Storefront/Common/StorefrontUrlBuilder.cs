@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Hosting;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Common
 {
@@ -18,6 +19,7 @@ namespace VirtoCommerce.Storefront.Common
         {
             _workContext = workContext;
         }
+
         #region IStorefrontUrlBuilder members
 
         public string ToAppAbsolute(string virtualPath)

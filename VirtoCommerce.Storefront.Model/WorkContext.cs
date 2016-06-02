@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using PagedList;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
@@ -10,6 +8,7 @@ using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Pricing;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.StaticContent;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Model
 {
@@ -103,7 +102,7 @@ namespace VirtoCommerce.Storefront.Model
         /// <summary>
         /// List of all active system currencies
         /// </summary>
-        public IEnumerable<Currency> AllCurrencies { get; set; }
+        public ICollection<Currency> AllCurrencies { get; set; }
 
         public string ErrorMessage { get; set; }
         /// <summary>

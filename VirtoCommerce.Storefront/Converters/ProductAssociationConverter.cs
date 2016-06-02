@@ -1,11 +1,8 @@
-﻿using VirtoCommerce.Client.Model;
-using Omu.ValueInjecter;
-using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Catalog;
-using VirtoCommerce.Storefront.Model.Marketing;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Omu.ValueInjecter;
+using VirtoCommerce.CatalogModule.Client.Model;
 using VirtoCommerce.Storefront.Model;
+using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Converters
 {

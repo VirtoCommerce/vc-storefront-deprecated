@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.Client.Api;
-using VirtoCommerce.Client.Model;
+using VirtoCommerce.MarketingModule.Client.Api;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Marketing.Services;
@@ -11,9 +10,9 @@ namespace VirtoCommerce.Storefront.Services
 {
     public class PromotionEvaluator : IPromotionEvaluator
     {
-        private readonly IMarketingModuleApi _marketingApi;
+        private readonly IVirtoCommerceMarketingApi _marketingApi;
 
-        public PromotionEvaluator(IMarketingModuleApi marketingApi)
+        public PromotionEvaluator(IVirtoCommerceMarketingApi marketingApi)
         {
             _marketingApi = marketingApi;
         }
@@ -29,10 +28,11 @@ namespace VirtoCommerce.Storefront.Services
         {
             var rewards = _marketingApi.MarketingModulePromotionEvaluatePromotions(context.ToServiceModel());
             InnerEvaluateDiscounts(rewards, owners);
-        } 
+        }
+
         #endregion
 
-        private void InnerEvaluateDiscounts(IEnumerable<VirtoCommerceMarketingModuleWebModelPromotionReward> rewards, IEnumerable<IDiscountable> owners)
+        private void InnerEvaluateDiscounts(IEnumerable<MarketingModule.Client.Model.PromotionReward> rewards, IEnumerable<IDiscountable> owners)
         {
             if (rewards == null)
             {

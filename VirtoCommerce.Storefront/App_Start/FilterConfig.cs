@@ -7,6 +7,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using VirtoCommerce.Storefront.Controllers;
 using VirtoCommerce.Storefront.Model;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront
 {
@@ -59,7 +60,7 @@ namespace VirtoCommerce.Storefront
                         filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Common", action = "Maintenance" }));
                     }
                     if (workContext.CurrentCustomer != null && !workContext.CurrentCustomer.IsRegisteredUser &&
-                        workContext.CurrentStore.StoreState == StoreStatus.RestrictedAccess && filterContext.ActionDescriptor.ActionName != "Login" 
+                        workContext.CurrentStore.StoreState == StoreStatus.RestrictedAccess && filterContext.ActionDescriptor.ActionName != "Login"
                         && filterContext.ActionDescriptor.ControllerDescriptor.ControllerType != typeof(AssetController))
                     {
                         filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "Login" }));

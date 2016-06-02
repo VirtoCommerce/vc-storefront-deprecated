@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using Omu.ValueInjecter;
+using VirtoCommerce.CatalogModule.Client.Model;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Client.Model;
-using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model.Catalog;
 
 namespace VirtoCommerce.Storefront.Converters
@@ -20,7 +18,7 @@ namespace VirtoCommerce.Storefront.Converters
             if (property.DisplayNames != null)
             {
                 retVal.DisplayNames = property.DisplayNames.Select(x => new LocalizedString(new Language(x.LanguageCode), x.Name)).ToList();
-                retVal.DisplayName = retVal.DisplayNames.FindWithLanguage(currentLanguage, (x)=> x.Value, null);
+                retVal.DisplayName = retVal.DisplayNames.FindWithLanguage(currentLanguage, x => x.Value, null);
             }
             //if display name for requested language not set get system property name
             if (String.IsNullOrEmpty(retVal.DisplayName))
@@ -31,19 +29,19 @@ namespace VirtoCommerce.Storefront.Converters
             //For multilingual properties need populate LocalizedValues collection and set value for requested language
             if (property.Multilanguage ?? false)
             {
-                if(property.Values != null)
+                if (property.Values != null)
                 {
-                    retVal.LocalizedValues = property.Values.Where(x=>x.Value != null).Select(x => new LocalizedString(new Language(x.LanguageCode), x.Value.ToString())).ToList();
+                    retVal.LocalizedValues = property.Values.Where(x => x.Value != null).Select(x => new LocalizedString(new Language(x.LanguageCode), x.Value.ToString())).ToList();
                 }
             }
             //Set property value
             if (property.Values != null)
             {
-                var propValue = property.Values.Where(x => x.Value != null).FirstOrDefault();
+                var propValue = property.Values.FirstOrDefault(x => x.Value != null);
                 if (propValue != null)
                 {
                     //Use only one prop value (reserve multi values to other scenarios)
-                    retVal.Value = propValue.Value.ToString();
+                    retVal.Value = propValue.Value;
                     retVal.ValueId = propValue.ValueId;
                 }
             }
@@ -51,9 +49,9 @@ namespace VirtoCommerce.Storefront.Converters
             if (retVal.LocalizedValues.Any())
             {
                 retVal.Value = retVal.LocalizedValues.FindWithLanguage(currentLanguage, x => x.Value, retVal.Value);
-             }
+            }
             return retVal;
         }
-     
+
     }
 }

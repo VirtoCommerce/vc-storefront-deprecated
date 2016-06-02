@@ -1,12 +1,11 @@
-﻿using Omu.ValueInjecter;
+﻿using System.Collections.Generic;
 using System.Linq;
-using VirtoCommerce.Client.Model;
+using Omu.ValueInjecter;
+using VirtoCommerce.Storefront.Model;
+using VirtoCommerce.Storefront.Model.Cart;
+using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
-using VirtoCommerce.Storefront.Model;
-using System.Collections.Generic;
-using VirtoCommerce.Storefront.Model.Catalog;
-using VirtoCommerce.Storefront.Model.Cart;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -16,16 +15,19 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var promotionItems = cart.Items.Select(i => i.ToPromotionItem()).ToList();
 
-            var retVal = new PromotionEvaluationContext();
-            retVal.CartPromoEntries = promotionItems;
-            retVal.CartTotal = cart.Total;
-            retVal.Coupon = cart.Coupon != null ? cart.Coupon.Code : null;
-            retVal.Currency = cart.Currency;
-            retVal.CustomerId = cart.Customer.Id;
-            retVal.IsRegisteredUser = cart.Customer.IsRegisteredUser;
-            retVal.Language = cart.Language;
-            retVal.PromoEntries = promotionItems;
-            retVal.StoreId = cart.StoreId;
+            var retVal = new PromotionEvaluationContext
+            {
+                CartPromoEntries = promotionItems,
+                CartTotal = cart.Total,
+                Coupon = cart.Coupon != null ? cart.Coupon.Code : null,
+                Currency = cart.Currency,
+                CustomerId = cart.Customer.Id,
+                IsRegisteredUser = cart.Customer.IsRegisteredUser,
+                Language = cart.Language,
+                PromoEntries = promotionItems,
+                StoreId = cart.StoreId
+            };
+
             return retVal;
         }
         public static PromotionEvaluationContext ToPromotionEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
@@ -48,16 +50,16 @@ namespace VirtoCommerce.Storefront.Converters
                 retVal.PromoEntry = workContext.CurrentProduct.ToPromotionItem();
             }
 
-            if(products != null )
+            if (products != null)
             {
                 retVal.PromoEntries = products.Select(x => x.ToPromotionItem()).ToList();
             }
             return retVal;
         }
 
-        public static VirtoCommerceDomainMarketingModelPromotionEvaluationContext ToServiceModel(this PromotionEvaluationContext webModel)
+        public static MarketingModule.Client.Model.PromotionEvaluationContext ToServiceModel(this PromotionEvaluationContext webModel)
         {
-            var serviceModel = new VirtoCommerceDomainMarketingModelPromotionEvaluationContext();
+            var serviceModel = new MarketingModule.Client.Model.PromotionEvaluationContext();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 

@@ -1,5 +1,4 @@
 ﻿using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 
@@ -7,22 +6,39 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class TaxDetailConverter
     {
-        public static TaxDetail ToWebModel(this VirtoCommerceDomainCommerceModelTaxDetail taxDetail, Currency currency)
+        public static TaxDetail ToWebModel(this CartModule.Client.Model.TaxDetail taxDetail, Currency currency)
         {
-            var taxDetailWebModel = new TaxDetail(currency);
-
-            taxDetailWebModel.InjectFrom(taxDetail);
-
-            return taxDetailWebModel;
+            var result = new TaxDetail(currency);
+            result.InjectFrom(taxDetail);
+            return result;
         }
 
-        public static VirtoCommerceDomainCommerceModelTaxDetail ToServiceModel(this TaxDetail taxDetail)
+        public static TaxDetail ToWebModel(this OrderModule.Client.Model.TaxDetail taxDetail, Currency currency)
         {
-            var taxDetailServiceModel = new VirtoCommerceDomainCommerceModelTaxDetail();
+            var result = new TaxDetail(currency);
+            result.InjectFrom(taxDetail);
+            return result;
+        }
 
-            taxDetailServiceModel.InjectFrom(taxDetail);
+        public static TaxDetail ToWebModel(this QuoteModule.Client.Model.TaxDetail taxDetail, Currency currency)
+        {
+            var result = new TaxDetail(currency);
+            result.InjectFrom(taxDetail);
+            return result;
+        }
 
-            return taxDetailServiceModel;
+        public static CartModule.Client.Model.TaxDetail ToCartApiModel(this TaxDetail taxDetail)
+        {
+            var result = new CartModule.Client.Model.TaxDetail();
+            result.InjectFrom(taxDetail);
+            return result;
+        }
+
+        public static QuoteModule.Client.Model.TaxDetail ToQuoteApiModel(this TaxDetail taxDetail)
+        {
+            var result = new QuoteModule.Client.Model.TaxDetail();
+            result.InjectFrom(taxDetail);
+            return result;
         }
     }
 }

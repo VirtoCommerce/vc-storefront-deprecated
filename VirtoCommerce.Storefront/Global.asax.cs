@@ -3,13 +3,12 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using NLog;
-using VirtoCommerce.Client.Client;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Controllers;
 
 namespace VirtoCommerce.Storefront
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         /// <summary>
         /// We Use this method for generate current user id for caching keys

@@ -1,16 +1,15 @@
-﻿using Omu.ValueInjecter;
+﻿using System.Collections.Generic;
 using System.Linq;
-using VirtoCommerce.Client.Model;
-using VirtoCommerce.Storefront.Model.Order;
-using System.Collections.Generic;
-using VirtoCommerce.Storefront.Model.Common;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
+using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Order;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class ShipmentPackageConverter
     {
-        public static ShipmentPackage ToWebModel(this VirtoCommerceOrderModuleWebModelShipmentPackage shipmentPackage, IEnumerable<Currency> currencies, Language language)
+        public static ShipmentPackage ToWebModel(this OrderModule.Client.Model.ShipmentPackage shipmentPackage, IEnumerable<Currency> currencies, Language language)
         {
             var webModel = new ShipmentPackage();
 

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using CacheManager.Core;
 using MarkdownSharp;
 using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.LiquidThemeEngine.Converters;
@@ -12,6 +11,8 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.StaticContent;
+using VirtoCommerce.Storefront.Model.StaticContent.Services;
+using VirtoCommerce.Storefront.Model.Stores;
 using YamlDotNet.RepresentationModel;
 
 namespace VirtoCommerce.Storefront.Services
@@ -21,8 +22,8 @@ namespace VirtoCommerce.Storefront.Services
     /// </summary>
     public class StaticContentServiceImpl : IStaticContentService
     {
-        private static Regex _headerRegExp = new Regex(@"(?s:^---(.*?)---)");
-        private static string[] _extensions = new[] { ".md", ".html" };
+        private static readonly Regex _headerRegExp = new Regex(@"(?s:^---(.*?)---)");
+        private static readonly string[] _extensions = { ".md", ".html" };
         private readonly Markdown _markdownRender;
         private readonly ILiquidThemeEngine _liquidEngine;
         private readonly ILocalCacheManager _cacheManager;
@@ -39,7 +40,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             _markdownRender = markdownRender;
             _liquidEngine = liquidEngine;
-            
+
             _cacheManager = cacheManager;
             _workContextFactory = workContextFactory;
             _urlBuilderFactory = urlBuilderFactory;
@@ -105,13 +106,13 @@ namespace VirtoCommerce.Storefront.Services
 
         private void LoadAndRenderContentItem(string contentPath, ContentItem contentItem)
         {
-            string content = null;
+            string content;
             using (var stream = _contentBlobProvider.OpenRead(contentPath))
-        {
-            //Load raw content with metadata
+            {
+                //Load raw content with metadata
                 content = stream.ReadToString();
             }
-            IDictionary<string, IEnumerable<string>> metaHeaders = null;
+            IDictionary<string, IEnumerable<string>> metaHeaders;
             IDictionary themeSettings = null;
             try
             {
@@ -119,7 +120,7 @@ namespace VirtoCommerce.Storefront.Services
             }
             catch (Exception ex)
             {
-                throw new ApplicationException(String.Format("Failed to read yaml header from \"{0}\"", contentItem.StoragePath), ex);
+                throw new ApplicationException(string.Format("Failed to read yaml header from \"{0}\"", contentItem.StoragePath), ex);
             }
 
             content = RemoveYamlHeader(content);
@@ -129,7 +130,7 @@ namespace VirtoCommerce.Storefront.Services
             {
                 var shopifyContext = workContext.ToShopifyModel(_urlBuilderFactory());
                 var parameters = shopifyContext.ToLiquid() as Dictionary<string, object>;
-              
+
                 themeSettings = _liquidEngine.GetSettings();
                 parameters.Add("settings", themeSettings);
                 //Render content by liquid engine
@@ -190,19 +191,12 @@ namespace VirtoCommerce.Storefront.Services
 
         private static IEnumerable<string> GetYamlNodeValues(YamlNode value)
         {
-            var retVal = new List<String>();
+            var retVal = new List<string>();
             var list = value as YamlSequenceNode;
 
             if (list != null)
             {
-                foreach (var entry in list.Children)
-                {
-                    var node = entry as YamlScalarNode;
-                    if (node != null)
-                    {
-                        retVal.Add(node.Value);
-                    }
-                }
+                retVal.AddRange(list.Children.OfType<YamlScalarNode>().Select(node => node.Value));
             }
             else
             {
@@ -228,7 +222,7 @@ namespace VirtoCommerce.Storefront.Services
                     {
                         Language = new Language(parts[1]);
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         Language = Language.InvariantLanguage;
                     }

@@ -4,12 +4,13 @@ using VirtoCommerce.LiquidThemeEngine.Objects;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using PagedList;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
     public static class ShopConverter
     {
-        public static Shop ToShopifyModel(this StorefrontModel.Store store, StorefrontModel.WorkContext workContext)
+        public static Shop ToShopifyModel(this Store store, StorefrontModel.WorkContext workContext)
         {
             Shop result = new Shop();
             if (workContext.Categories != null)
@@ -20,7 +21,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     return new StaticPagedList<Collection>(workContext.Categories.Select(x => x.ToShopifyModel(workContext)), workContext.Categories);
                 });
             }
-            result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(store);
+            result.InjectFrom<NullableAndEnumValueInjecter>(store);
             result.CustomerAccountsEnabled = true;
             result.CustomerAccountsOptional = true;
             result.Currency = workContext.CurrentCurrency.Code;

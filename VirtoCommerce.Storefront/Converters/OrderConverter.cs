@@ -1,20 +1,19 @@
-﻿using Omu.ValueInjecter;
+﻿using System.Collections.Generic;
 using System.Linq;
-using VirtoCommerce.Client.Model;
+using Omu.ValueInjecter;
+using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
-using System.Collections.Generic;
-using VirtoCommerce.Storefront.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class OrderConverter
     {
-        public static CustomerOrder ToWebModel(this VirtoCommerceOrderModuleWebModelCustomerOrder order, IEnumerable<Currency> availCurrencies, Language language)
+        public static CustomerOrder ToWebModel(this OrderModule.Client.Model.CustomerOrder order, ICollection<Currency> availCurrencies, Language language)
         {
             var webModel = new CustomerOrder();
 
-            var currency = availCurrencies.FirstOrDefault(x=> x.Equals(order.Currency)) ?? new Currency(language, order.Currency);
+            var currency = availCurrencies.FirstOrDefault(x => x.Equals(order.Currency)) ?? new Currency(language, order.Currency);
 
             webModel.InjectFrom(order);
 

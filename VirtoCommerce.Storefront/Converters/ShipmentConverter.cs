@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
@@ -10,9 +9,9 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class ShipmentConverter
     {
-        public static Model.Cart.Shipment ToWebModel(this VirtoCommerceCartModuleWebModelShipment shipment, ShoppingCart cart)
+        public static Shipment ToWebModel(this CartModule.Client.Model.Shipment shipment, ShoppingCart cart)
         {
-            var webModel = new Model.Cart.Shipment(cart.Currency);
+            var webModel = new Shipment(cart.Currency);
 
             webModel.InjectFrom(shipment);
             webModel.Currency = cart.Currency;
@@ -41,9 +40,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static VirtoCommerceCartModuleWebModelShipment ToServiceModel(this Model.Cart.Shipment shipment)
+        public static CartModule.Client.Model.Shipment ToServiceModel(this Shipment shipment)
         {
-            var serviceModel = new VirtoCommerceCartModuleWebModelShipment();
+            var serviceModel = new CartModule.Client.Model.Shipment();
 
             serviceModel.InjectFrom(shipment);
             serviceModel.Currency = shipment.Currency.Code;
@@ -69,13 +68,13 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (shipment.TaxDetails != null)
             {
-                serviceModel.TaxDetails = shipment.TaxDetails.Select(td => td.ToServiceModel()).ToList();
+                serviceModel.TaxDetails = shipment.TaxDetails.Select(td => td.ToCartApiModel()).ToList();
             }
 
             return serviceModel;
         }
 
-        public static Model.Order.Shipment ToWebModel(this VirtoCommerceOrderModuleWebModelShipment shipment, IEnumerable<Currency> availCurrencies, Language language)
+        public static Model.Order.Shipment ToWebModel(this OrderModule.Client.Model.Shipment shipment, ICollection<Currency> availCurrencies, Language language)
         {
             var webModel = new Model.Order.Shipment();
 

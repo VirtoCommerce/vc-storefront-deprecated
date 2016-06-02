@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using VirtoCommerce.Client.Model;
+using VirtoCommerce.CatalogModule.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Common
 {
@@ -78,7 +78,7 @@ namespace VirtoCommerce.Storefront.Common
                     .Select(s =>
                     {
                         var score = 0;
-                        if(!string.IsNullOrEmpty(slug))
+                        if (!string.IsNullOrEmpty(slug))
                         {
                             score += slug.EqualsInvariant(s.SemanticUrl) ? 8 : 0;
                         }

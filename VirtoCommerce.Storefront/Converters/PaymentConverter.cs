@@ -1,5 +1,4 @@
 ﻿using Omu.ValueInjecter;
-using VirtoCommerce.Client.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
 
@@ -7,7 +6,7 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class PaymentConverter
     {
-        public static Payment TowebModel(this VirtoCommerceCartModuleWebModelPayment payment, Currency currency)
+        public static Payment TowebModel(this CartModule.Client.Model.Payment payment, Currency currency)
         {
             var webModel = new Payment(currency);
 
@@ -25,9 +24,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static VirtoCommerceCartModuleWebModelPayment ToServiceModel(this Payment payment)
+        public static CartModule.Client.Model.Payment ToServiceModel(this Payment payment)
         {
-            var serviceModel = new VirtoCommerceCartModuleWebModelPayment();
+            var serviceModel = new CartModule.Client.Model.Payment();
 
             serviceModel.InjectFrom(payment);
 
