@@ -42,7 +42,7 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static catalogModel.VirtoCommerceDomainCommerceModelSeoInfo ToCatalogModel(this coreModel.VirtoCommerceDomainCommerceModelSeoInfo seoDto)
+        public static catalogModel.VirtoCommerceDomainCommerceModelSeoInfo ToCatalogModel(this coreModel.SeoInfo seoDto)
         {
             catalogModel.VirtoCommerceDomainCommerceModelSeoInfo retVal = null;
 

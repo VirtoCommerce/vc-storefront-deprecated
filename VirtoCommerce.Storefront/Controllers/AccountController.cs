@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.Owin.Security;
 using VirtoCommerce.CoreModule.Client.Api;
-using VirtoCommerce.CoreModule.Client.Model;
 using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.Platform.Client.Api;
 using VirtoCommerce.Platform.Client.Model;
@@ -20,6 +19,7 @@ using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Customer.Services;
 using VirtoCommerce.Storefront.Model.Order.Events;
+using coreModel = VirtoCommerce.CoreModule.Client.Model;
 using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.Storefront.Controllers
@@ -157,7 +157,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Register(Register formModel)
         {
-            var user = new VirtoCommercePlatformCoreSecurityApplicationUserExtended
+            var user = new coreModel.ApplicationUserExtended
             {
                 Email = formModel.Email,
                 Password = formModel.Password,
@@ -310,15 +310,15 @@ namespace VirtoCommerce.Storefront.Controllers
             }
             else
             {
-                var newUser = new VirtoCommercePlatformCoreSecurityApplicationUserExtended
+                var newUser = new coreModel.ApplicationUserExtended
                 {
                     Email = loginInfo.Email,
                     UserName = string.Join("--", loginInfo.Login.LoginProvider, loginInfo.Login.ProviderKey),
                     UserType = "Customer",
                     StoreId = WorkContext.CurrentStore.Id,
-                    Logins = new List<VirtoCommercePlatformCoreSecurityApplicationUserLogin>
+                    Logins = new List<coreModel.ApplicationUserLogin>
                     {
-                        new VirtoCommercePlatformCoreSecurityApplicationUserLogin
+                        new coreModel.ApplicationUserLogin
                         {
                             LoginProvider = loginInfo.Login.LoginProvider,
                             ProviderKey = loginInfo.Login.ProviderKey
@@ -495,7 +495,7 @@ namespace VirtoCommerce.Storefront.Controllers
             }
         }
 
-        private async Task<CustomerInfo> GetStorefrontCustomerByUserAsync(VirtoCommerceCoreModuleWebModelStorefrontUser user)
+        private async Task<CustomerInfo> GetStorefrontCustomerByUserAsync(coreModel.StorefrontUser user)
         {
             if (user == null)
             {

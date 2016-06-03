@@ -1,13 +1,13 @@
 ﻿using Omu.ValueInjecter;
-using VirtoCommerce.CoreModule.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using coreModel = VirtoCommerce.CoreModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class TaxRateConverter
     {
-        public static TaxRate ToWebModel(this VirtoCommerceDomainTaxModelTaxRate serviceModel, Currency currency)
+        public static TaxRate ToWebModel(this coreModel.TaxRate serviceModel, Currency currency)
         {
             var retVal = new TaxRate(currency)
             {

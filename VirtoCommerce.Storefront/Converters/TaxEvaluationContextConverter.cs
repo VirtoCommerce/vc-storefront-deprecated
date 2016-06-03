@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using VirtoCommerce.CoreModule.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
+using coreModel = VirtoCommerce.CoreModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class TaxEvaluationContextConverter
     {
-        public static VirtoCommerceDomainTaxModelTaxLine ToTaxLine(this ShippingMethod shipmentMethod)
+        public static coreModel.TaxLine ToTaxLine(this ShippingMethod shipmentMethod)
         {
-            var retVal = new VirtoCommerceDomainTaxModelTaxLine
+            var retVal = new coreModel.TaxLine
             {
                 Id = shipmentMethod.ShipmentMethodCode,
                 Code = shipmentMethod.ShipmentMethodCode,
@@ -22,11 +22,11 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static VirtoCommerceDomainTaxModelTaxLine[] ToListAndSaleTaxLines(this Product product)
+        public static coreModel.TaxLine[] ToListAndSaleTaxLines(this Product product)
         {
-            var retVal = new List<VirtoCommerceDomainTaxModelTaxLine>
+            var retVal = new List<coreModel.TaxLine>
             {
-                new VirtoCommerceDomainTaxModelTaxLine
+                new coreModel.TaxLine
                 {
                     Id = product.Id,
                     Code = "list",
@@ -35,10 +35,11 @@ namespace VirtoCommerce.Storefront.Converters
                     Amount = (double) product.Price.ListPrice.Amount
                 }
             };
+
             //Need generate two tax line for List and Sale price to have tax amount for list price also
             if (product.Price.SalePrice != product.Price.ListPrice)
             {
-                retVal.Add(new VirtoCommerceDomainTaxModelTaxLine
+                retVal.Add(new coreModel.TaxLine
                 {
                     Id = product.Id,
                     Code = "sale",
@@ -47,10 +48,11 @@ namespace VirtoCommerce.Storefront.Converters
                     Amount = (double)product.Price.SalePrice.Amount
                 });
             }
+
             //Need generate tax line for each tier price
             foreach (var tierPrice in product.Price.TierPrices)
             {
-                retVal.Add(new VirtoCommerceDomainTaxModelTaxLine
+                retVal.Add(new coreModel.TaxLine
                 {
                     Id = product.Id,
                     Code = tierPrice.Quantity.ToString(),
@@ -62,14 +64,14 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal.ToArray();
         }
 
-        public static VirtoCommerceDomainTaxModelTaxEvaluationContext ToTaxEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
+        public static coreModel.TaxEvaluationContext ToTaxEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
         {
-            var retVal = new VirtoCommerceDomainTaxModelTaxEvaluationContext
+            var retVal = new coreModel.TaxEvaluationContext
             {
                 Id = workContext.CurrentStore.Id,
                 Currency = workContext.CurrentCurrency.Code,
                 Type = "",
-                Customer = new VirtoCommerceDomainCustomerModelContact
+                Customer = new coreModel.Contact
                 {
                     Id = workContext.CurrentCustomer.Id,
                     Name = workContext.CurrentCustomer.UserName
@@ -83,20 +85,20 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static VirtoCommerceDomainTaxModelTaxEvaluationContext ToTaxEvalContext(this ShoppingCart cart)
+        public static coreModel.TaxEvaluationContext ToTaxEvalContext(this ShoppingCart cart)
         {
-            var retVal = new VirtoCommerceDomainTaxModelTaxEvaluationContext
+            var retVal = new coreModel.TaxEvaluationContext
             {
                 Id = cart.Id,
                 Code = cart.Name,
                 Currency = cart.Currency.Code,
                 Type = "Cart",
-                Lines = new List<VirtoCommerceDomainTaxModelTaxLine>()
+                Lines = new List<coreModel.TaxLine>()
             };
 
             foreach (var lineItem in cart.Items)
             {
-                var extendedTaxLine = new VirtoCommerceDomainTaxModelTaxLine
+                var extendedTaxLine = new coreModel.TaxLine
                 {
                     Id = lineItem.Id,
                     Code = "extended",
@@ -106,7 +108,7 @@ namespace VirtoCommerce.Storefront.Converters
                 };
                 retVal.Lines.Add(extendedTaxLine);
 
-                var listTaxLine = new VirtoCommerceDomainTaxModelTaxLine
+                var listTaxLine = new coreModel.TaxLine
                 {
                     Id = lineItem.Id,
                     Code = "list",
@@ -118,7 +120,7 @@ namespace VirtoCommerce.Storefront.Converters
 
                 if (lineItem.ListPrice != lineItem.SalePrice)
                 {
-                    var saleTaxLine = new VirtoCommerceDomainTaxModelTaxLine
+                    var saleTaxLine = new coreModel.TaxLine
                     {
                         Id = lineItem.Id,
                         Code = "sale",
@@ -132,7 +134,7 @@ namespace VirtoCommerce.Storefront.Converters
             }
             foreach (var shipment in cart.Shipments)
             {
-                var totalTaxLine = new VirtoCommerceDomainTaxModelTaxLine
+                var totalTaxLine = new coreModel.TaxLine
                 {
                     Id = shipment.Id,
                     Code = "total",
@@ -141,7 +143,7 @@ namespace VirtoCommerce.Storefront.Converters
                     Amount = (double)shipment.Total.Amount
                 };
                 retVal.Lines.Add(totalTaxLine);
-                var priceTaxLine = new VirtoCommerceDomainTaxModelTaxLine
+                var priceTaxLine = new coreModel.TaxLine
                 {
                     Id = shipment.Id,
                     Code = "price",
@@ -153,7 +155,7 @@ namespace VirtoCommerce.Storefront.Converters
 
 
                 //*** alex fix shipping address & customerId to the taxevalcontext
-                retVal.Address = new VirtoCommerceDomainCommerceModelAddress
+                retVal.Address = new coreModel.Address
                 {
                     FirstName = shipment.DeliveryAddress.FirstName,
                     LastName = shipment.DeliveryAddress.LastName,
@@ -170,18 +172,15 @@ namespace VirtoCommerce.Storefront.Converters
                     AddressType = ((int)shipment.DeliveryAddress.Type).ToString()
                 };
 
-                retVal.Customer = new VirtoCommerceDomainCustomerModelContact
+                retVal.Customer = new coreModel.Contact
                 {
                     Id = cart.CustomerId,
                     Name = cart.CustomerName
                 };
                 //*** end alex fix shipping address & customerId to the taxevalcontext
-
             }
-
 
             return retVal;
         }
-
     }
 }

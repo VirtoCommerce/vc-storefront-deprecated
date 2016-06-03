@@ -3,12 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using VirtoCommerce.CoreModule.Client.Api;
-using VirtoCommerce.CoreModule.Client.Model;
 using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
+using coreModel = VirtoCommerce.CoreModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
@@ -62,14 +62,14 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> ExternalPaymentCallback()
         {
-            var callback = new VirtoCommerceCoreModuleWebModelPaymentCallbackParameters
+            var callback = new coreModel.PaymentCallbackParameters
             {
-                Parameters = new List<VirtoCommerceCoreModuleWebModelKeyValuePair>()
+                Parameters = new List<coreModel.KeyValuePair>()
             };
 
             foreach (var key in HttpContext.Request.QueryString.AllKeys)
             {
-                callback.Parameters.Add(new VirtoCommerceCoreModuleWebModelKeyValuePair
+                callback.Parameters.Add(new coreModel.KeyValuePair
                 {
                     Key = key,
                     Value = HttpContext.Request.QueryString[key]
@@ -78,7 +78,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
             foreach (var key in HttpContext.Request.Form.AllKeys)
             {
-                callback.Parameters.Add(new VirtoCommerceCoreModuleWebModelKeyValuePair
+                callback.Parameters.Add(new coreModel.KeyValuePair
                 {
                     Key = key,
                     Value = HttpContext.Request.Form[key]

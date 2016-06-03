@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.CoreModule.Client.Api;
-using VirtoCommerce.CoreModule.Client.Model;
 using VirtoCommerce.PricingModule.Client.Api;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Pricing.Services;
+using coreModel = VirtoCommerce.CoreModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Services
 {
@@ -27,7 +27,7 @@ namespace VirtoCommerce.Storefront.Services
 
         #region IPricingService Members
 
-        public async Task EvaluateProductPricesAsync(IEnumerable<Product> products)
+        public async Task EvaluateProductPricesAsync(ICollection<Product> products)
         {
             var workContext = _workContextFactory();
             //Evaluate products prices
@@ -41,7 +41,7 @@ namespace VirtoCommerce.Storefront.Services
             ApplyProductTaxInternal(products, taxRates);
         }
 
-        public void EvaluateProductPrices(IEnumerable<Product> products)
+        public void EvaluateProductPrices(ICollection<Product> products)
         {
             var workContext = _workContextFactory();
             //Evaluate products prices
@@ -58,10 +58,11 @@ namespace VirtoCommerce.Storefront.Services
 
         #endregion
 
-        private void ApplyProductTaxInternal(IEnumerable<Product> products, IEnumerable<VirtoCommerceDomainTaxModelTaxRate> taxes)
+        private void ApplyProductTaxInternal(IEnumerable<Product> products, IEnumerable<coreModel.TaxRate> taxes)
         {
             var workContext = _workContextFactory();
-            var taxRates = taxes.Select(x => x.ToWebModel(workContext.CurrentCurrency));
+            var taxRates = taxes.Select(x => x.ToWebModel(workContext.CurrentCurrency)).ToList();
+
             foreach (var product in products)
             {
                 product.ApplyTaxRates(taxRates);
