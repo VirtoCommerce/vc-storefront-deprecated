@@ -77,7 +77,7 @@
                 {
                     "type": "config",
                     "name": "web",
-                    "apiVersion": "2015-06-01",
+                    "apiVersion": "2014-06-01",
                     "dependsOn": [
                         "[concat('Microsoft.Web/Sites/', parameters('siteName'))]"
                     ],
