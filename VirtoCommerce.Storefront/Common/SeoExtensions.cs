@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using VirtoCommerce.CatalogModule.Client.Model;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
+using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Common
 {
@@ -21,7 +21,7 @@ namespace VirtoCommerce.Storefront.Common
         /// <param name="language"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static string GetSeoPath(this IEnumerable<VirtoCommerceDomainCatalogModelOutline> outlines, Store store, Language language, string defaultValue)
+        public static string GetSeoPath(this IEnumerable<catalogModel.Outline> outlines, Store store, Language language, string defaultValue)
         {
             var result = defaultValue;
 
@@ -68,9 +68,9 @@ namespace VirtoCommerce.Storefront.Common
         /// <param name="language"></param>
         /// <param name="slug"></param>
         /// <returns></returns>
-        public static VirtoCommerceDomainCommerceModelSeoInfo GetBestMatchedSeoInfo(this IEnumerable<VirtoCommerceDomainCommerceModelSeoInfo> seoRecords, Store store, Language language, string slug = null)
+        public static catalogModel.SeoInfo GetBestMatchedSeoInfo(this IEnumerable<catalogModel.SeoInfo> seoRecords, Store store, Language language, string slug = null)
         {
-            VirtoCommerceDomainCommerceModelSeoInfo result = null;
+            catalogModel.SeoInfo result = null;
 
             if (seoRecords != null)
             {
@@ -96,7 +96,7 @@ namespace VirtoCommerce.Storefront.Common
         }
 
 
-        private static string GetBestMatchedSeoKeyword(IEnumerable<VirtoCommerceDomainCommerceModelSeoInfo> seoRecords, Store store, Language language)
+        private static string GetBestMatchedSeoKeyword(IEnumerable<catalogModel.SeoInfo> seoRecords, Store store, Language language)
         {
             string result = null;
 

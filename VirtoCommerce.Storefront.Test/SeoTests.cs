@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using VirtoCommerce.CatalogModule.Client.Model;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Stores;
 using Xunit;
+using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Test
 {
@@ -24,7 +24,7 @@ namespace VirtoCommerce.Storefront.Test
         [Fact]
         public void When_HasNoSeoRecords_Expect_Null()
         {
-            var category = new VirtoCommerceCatalogModuleWebModelCategory();
+            var category = new catalogModel.Category();
 
             var result = category.Outlines.GetSeoPath(_store, new Language("en-US"), null);
             Assert.Null(result);
@@ -33,25 +33,25 @@ namespace VirtoCommerce.Storefront.Test
         [Fact]
         public void When_HasSeoRecords_Expect_ShortPath()
         {
-            var category = new VirtoCommerceCatalogModuleWebModelCategory
+            var category = new catalogModel.Category
             {
-                Outlines = new List<VirtoCommerceDomainCatalogModelOutline>
+                Outlines = new List<catalogModel.Outline>
                 {
-                    new VirtoCommerceDomainCatalogModelOutline
+                    new catalogModel.Outline
                     {
-                        Items = new List<VirtoCommerceDomainCatalogModelOutlineItem>
+                        Items = new List<catalogModel.OutlineItem>
                         {
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Catalog",
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
                                 },
                             }
                         },
@@ -66,43 +66,43 @@ namespace VirtoCommerce.Storefront.Test
         [Fact]
         public void When_HasParentSeoRecords_Expect_LongPath()
         {
-            var category = new VirtoCommerceCatalogModuleWebModelCategory
+            var category = new catalogModel.Category
             {
-                Outlines = new List<VirtoCommerceDomainCatalogModelOutline>
+                Outlines = new List<catalogModel.Outline>
                 {
-                    new VirtoCommerceDomainCatalogModelOutline
+                    new catalogModel.Outline
                     {
-                        Items = new List<VirtoCommerceDomainCatalogModelOutlineItem>
+                        Items = new List<catalogModel.OutlineItem>
                         {
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Catalog",
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "grandparent1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "grandparent2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "grandparent1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "grandparent2" },
                                 }
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "parent1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "parent2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "parent1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "parent2" },
                                 }
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
                                 },
                             },
                         },
@@ -117,39 +117,39 @@ namespace VirtoCommerce.Storefront.Test
         [Fact]
         public void When_MissingAnyParentSeoRecord_Expect_Null()
         {
-            var category = new VirtoCommerceCatalogModuleWebModelCategory
+            var category = new catalogModel.Category
             {
-                Outlines = new List<VirtoCommerceDomainCatalogModelOutline>
+                Outlines = new List<catalogModel.Outline>
                 {
-                    new VirtoCommerceDomainCatalogModelOutline
+                    new catalogModel.Outline
                     {
-                        Items = new List<VirtoCommerceDomainCatalogModelOutlineItem>
+                        Items = new List<catalogModel.OutlineItem>
                         {
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Catalog",
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>(),
+                                SeoInfos = new List<catalogModel.SeoInfo>(),
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "parent1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "parent2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "parent1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "parent2" },
                                 }
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
                                 },
                             },
                         },
@@ -179,9 +179,9 @@ namespace VirtoCommerce.Storefront.Test
         [Fact]
         public void When_HasNoSeoRecords_Expect_Null()
         {
-            var product = new VirtoCommerceCatalogModuleWebModelProduct
+            var product = new catalogModel.Product
             {
-                Category = new VirtoCommerceCatalogModuleWebModelCategory(),
+                Category = new catalogModel.Category(),
             };
 
             var result = product.Outlines.GetSeoPath(_store, new Language("en-US"), null);
@@ -191,29 +191,29 @@ namespace VirtoCommerce.Storefront.Test
         [Fact]
         public void When_HasSeoRecordsAndNoCategorySeoRecords_Expect_Null()
         {
-            var product = new VirtoCommerceCatalogModuleWebModelProduct
+            var product = new catalogModel.Product
             {
-                Outlines = new List<VirtoCommerceDomainCatalogModelOutline>
+                Outlines = new List<catalogModel.Outline>
                 {
-                    new VirtoCommerceDomainCatalogModelOutline
+                    new catalogModel.Outline
                     {
-                        Items = new List<VirtoCommerceDomainCatalogModelOutlineItem>
+                        Items = new List<catalogModel.OutlineItem>
                         {
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Catalog",
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "CatalogProduct",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "product1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "product2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "product1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "product2" },
                                 },
                             },
                         },
@@ -228,34 +228,34 @@ namespace VirtoCommerce.Storefront.Test
         [Fact]
         public void When_HasCategorySeoRecords_Expect_LongPath()
         {
-            var product = new VirtoCommerceCatalogModuleWebModelProduct
+            var product = new catalogModel.Product
             {
-                Outlines = new List<VirtoCommerceDomainCatalogModelOutline>
+                Outlines = new List<catalogModel.Outline>
                 {
-                    new VirtoCommerceDomainCatalogModelOutline
+                    new catalogModel.Outline
                     {
-                        Items = new List<VirtoCommerceDomainCatalogModelOutlineItem>
+                        Items = new List<catalogModel.OutlineItem>
                         {
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Catalog",
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
                                 },
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "CatalogProduct",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "product1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "product2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "product1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "product2" },
                                 },
                             },
                         },
@@ -270,52 +270,52 @@ namespace VirtoCommerce.Storefront.Test
         [Fact]
         public void When_HasParentCategorySeoRecords_Expect_LongPath()
         {
-            var product = new VirtoCommerceCatalogModuleWebModelProduct
+            var product = new catalogModel.Product
             {
-                Outlines = new List<VirtoCommerceDomainCatalogModelOutline>
+                Outlines = new List<catalogModel.Outline>
                 {
-                    new VirtoCommerceDomainCatalogModelOutline
+                    new catalogModel.Outline
                     {
-                        Items = new List<VirtoCommerceDomainCatalogModelOutlineItem>
+                        Items = new List<catalogModel.OutlineItem>
                         {
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Catalog",
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "grandparent1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "grandparent2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "grandparent1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "grandparent2" },
                                 }
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "parent1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "parent2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "parent1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "parent2" },
                                 }
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
                                 },
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "CatalogProduct",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "product1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "product2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "product1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "product2" },
                                 },
                             },
                         },
@@ -330,48 +330,48 @@ namespace VirtoCommerce.Storefront.Test
         [Fact]
         public void When_MissingAnyParentSeoRecord_Expect_Null()
         {
-            var product = new VirtoCommerceCatalogModuleWebModelProduct
+            var product = new catalogModel.Product
             {
-                Outlines = new List<VirtoCommerceDomainCatalogModelOutline>
+                Outlines = new List<catalogModel.Outline>
                 {
-                    new VirtoCommerceDomainCatalogModelOutline
+                    new catalogModel.Outline
                     {
-                        Items = new List<VirtoCommerceDomainCatalogModelOutlineItem>
+                        Items = new List<catalogModel.OutlineItem>
                         {
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Catalog",
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>(),
+                                SeoInfos = new List<catalogModel.SeoInfo>(),
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "parent1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "parent2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "parent1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "parent2" },
                                 }
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
                                 },
                             },
-                            new VirtoCommerceDomainCatalogModelOutlineItem
+                            new catalogModel.OutlineItem
                             {
                                 SeoObjectType = "Category",
-                                SeoInfos = new List<VirtoCommerceDomainCommerceModelSeoInfo>
+                                SeoInfos = new List<catalogModel.SeoInfo>
                                 {
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "product1" },
-                                    new VirtoCommerceDomainCommerceModelSeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "product2" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "product1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "product2" },
                                 },
                             },
                         },

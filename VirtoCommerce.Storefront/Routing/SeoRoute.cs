@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Routing;
-using VirtoCommerce.CatalogModule.Client.Model;
 using VirtoCommerce.CoreModule.Client.Api;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent;
+using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Routing
 {
@@ -119,9 +119,9 @@ namespace VirtoCommerce.Storefront.Routing
             return result;
         }
 
-        private List<VirtoCommerceDomainCommerceModelSeoInfo> GetSeoRecords(string slug)
+        private List<catalogModel.SeoInfo> GetSeoRecords(string slug)
         {
-            var seoRecords = new List<VirtoCommerceDomainCommerceModelSeoInfo>();
+            var seoRecords = new List<catalogModel.SeoInfo>();
 
             if (!string.IsNullOrEmpty(slug))
             {

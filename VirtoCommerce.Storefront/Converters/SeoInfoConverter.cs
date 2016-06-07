@@ -8,7 +8,7 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class SeoInfoConverter
     {
-        public static SeoInfo ToWebModel(this catalogModel.VirtoCommerceDomainCommerceModelSeoInfo seoDto)
+        public static SeoInfo ToWebModel(this catalogModel.SeoInfo seoDto)
         {
             SeoInfo retVal = null;
 
@@ -42,13 +42,13 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static catalogModel.VirtoCommerceDomainCommerceModelSeoInfo ToCatalogModel(this coreModel.SeoInfo seoDto)
+        public static catalogModel.SeoInfo ToCatalogModel(this coreModel.SeoInfo seoDto)
         {
-            catalogModel.VirtoCommerceDomainCommerceModelSeoInfo retVal = null;
+            catalogModel.SeoInfo retVal = null;
 
             if (seoDto != null)
             {
-                retVal = new catalogModel.VirtoCommerceDomainCommerceModelSeoInfo();
+                retVal = new catalogModel.SeoInfo();
                 retVal.InjectFrom(seoDto);
             }
 

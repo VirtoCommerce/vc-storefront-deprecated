@@ -8,6 +8,7 @@ using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Stores;
+using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -15,10 +16,10 @@ namespace VirtoCommerce.Storefront.Converters
     {
         public static Product ToWebModel(this SearchModule.Client.Model.VirtoCommerceCatalogModuleWebModelProduct product, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            return product.JsonConvert<CatalogModule.Client.Model.VirtoCommerceCatalogModuleWebModelProduct>().ToWebModel(currentLanguage, currentCurrency, store);
+            return product.JsonConvert<catalogModel.Product>().ToWebModel(currentLanguage, currentCurrency, store);
         }
 
-        public static Product ToWebModel(this CatalogModule.Client.Model.VirtoCommerceCatalogModuleWebModelProduct product, Language currentLanguage, Currency currentCurrency, Store store)
+        public static Product ToWebModel(this catalogModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
         {
             var retVal = new Product(currentCurrency, currentLanguage)
             {

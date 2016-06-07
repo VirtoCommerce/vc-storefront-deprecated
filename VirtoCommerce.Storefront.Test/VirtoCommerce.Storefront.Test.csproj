@@ -87,8 +87,8 @@
       <HintPath>..\packages\VirtoCommerce.CartModule.Client.2.10.4\lib\net451\VirtoCommerce.CartModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.CatalogModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.CatalogModule.Client.2.10.4\lib\net451\VirtoCommerce.CatalogModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.CatalogModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.CatalogModule.Client.2.10.5\lib\net451\VirtoCommerce.CatalogModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.ContentModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -115,8 +115,8 @@
       <HintPath>..\packages\VirtoCommerce.OrderModule.Client.2.10.4\lib\net451\VirtoCommerce.OrderModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Client.2.10.4\lib\net451\VirtoCommerce.Platform.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Client.2.10.5\lib\net451\VirtoCommerce.Platform.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.Platform.Client.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

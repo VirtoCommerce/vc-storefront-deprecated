@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.CatalogModule.Client.Model;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
+using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class CatalogPropertyConverter
     {
-        public static CatalogProperty ToWebModel(this VirtoCommerceCatalogModuleWebModelProperty property, Language currentLanguage)
+        public static CatalogProperty ToWebModel(this catalogModel.Property property, Language currentLanguage)
         {
             var retVal = new CatalogProperty();
             retVal.InjectFrom(property);

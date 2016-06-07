@@ -1,14 +1,15 @@
 ﻿using System.Linq;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
+using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class CatalogSearchCriteriaConverter
     {
-        public static CatalogModule.Client.Model.VirtoCommerceDomainCatalogModelSearchCriteria ToCatalogApiModel(this CatalogSearchCriteria criteria, WorkContext workContext)
+        public static catalogModel.SearchCriteria ToCatalogApiModel(this CatalogSearchCriteria criteria, WorkContext workContext)
         {
-            var result = new CatalogModule.Client.Model.VirtoCommerceDomainCatalogModelSearchCriteria
+            var result = new catalogModel.SearchCriteria
             {
                 StoreId = workContext.CurrentStore.Id,
                 Keyword = criteria.Keyword,

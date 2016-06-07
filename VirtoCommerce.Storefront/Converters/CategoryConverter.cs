@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.CatalogModule.Client.Model;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
+using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class CategoryConverter
     {
-        public static Category ToWebModel(this VirtoCommerceCatalogModuleWebModelCategory category, Language currentLanguage, Store store, VirtoCommerceCatalogModuleWebModelProduct[] products = null)
+        public static Category ToWebModel(this catalogModel.Category category, Language currentLanguage, Store store, catalogModel.Product[] products = null)
         {
             var retVal = new Category();
             retVal.InjectFrom<NullableAndEnumValueInjecter>(category);
