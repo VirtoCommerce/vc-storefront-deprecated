@@ -2,6 +2,7 @@
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
+using searchModel = VirtoCommerce.SearchModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -28,9 +29,9 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static SearchModule.Client.Model.VirtoCommerceDomainCatalogModelSearchCriteria ToSearchApiModel(this CatalogSearchCriteria criteria, WorkContext workContext)
+        public static searchModel.SearchCriteria ToSearchApiModel(this CatalogSearchCriteria criteria, WorkContext workContext)
         {
-            var result = new SearchModule.Client.Model.VirtoCommerceDomainCatalogModelSearchCriteria
+            var result = new searchModel.SearchCriteria
             {
                 StoreId = workContext.CurrentStore.Id,
                 Keyword = criteria.Keyword,

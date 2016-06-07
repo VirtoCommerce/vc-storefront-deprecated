@@ -131,8 +131,8 @@
       <HintPath>..\packages\VirtoCommerce.QuoteModule.Client.2.10.4\lib\net451\VirtoCommerce.QuoteModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.SearchModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.SearchModule.Client.2.10.4\lib\net451\VirtoCommerce.SearchModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.SearchModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.SearchModule.Client.2.10.5\lib\net451\VirtoCommerce.SearchModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.StoreModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">

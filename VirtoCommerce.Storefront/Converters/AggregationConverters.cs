@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.SearchModule.Client.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
+using searchModel = VirtoCommerce.SearchModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class AggregationConverters
     {
-        public static Aggregation ToWebModel(this VirtoCommerceCatalogModuleWebModelAggregation aggregation, string currentLanguage)
+        public static Aggregation ToWebModel(this searchModel.Aggregation aggregation, string currentLanguage)
         {
             var result = new Aggregation();
             result.InjectFrom<NullableAndEnumValueInjecter>(aggregation);
@@ -37,7 +37,7 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static AggregationItem ToWebModel(this VirtoCommerceCatalogModuleWebModelAggregationItem item, string currentLanguage)
+        public static AggregationItem ToWebModel(this searchModel.AggregationItem item, string currentLanguage)
         {
             var result = new AggregationItem();
             result.InjectFrom<NullableAndEnumValueInjecter>(item);
