@@ -83,60 +83,60 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="VirtoCommerce.CartModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.CartModule.Client.2.10.4\lib\net451\VirtoCommerce.CartModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.CartModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.CartModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.CartModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.CatalogModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.CatalogModule.Client.2.10.5\lib\net451\VirtoCommerce.CatalogModule.Client.dll</HintPath>
+      <HintPath>..\packages\VirtoCommerce.CatalogModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.CatalogModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.ContentModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.ContentModule.Client.2.10.4\lib\net451\VirtoCommerce.ContentModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.ContentModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.ContentModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.ContentModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.CoreModule.Client, Version=2.10.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.CoreModule.Client.2.10.5\lib\net451\VirtoCommerce.CoreModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.CoreModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.CoreModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.CoreModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.CustomerModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.CustomerModule.Client.2.10.4\lib\net451\VirtoCommerce.CustomerModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.CustomerModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.CustomerModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.CustomerModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.InventoryModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.InventoryModule.Client.2.10.4\lib\net451\VirtoCommerce.InventoryModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.InventoryModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.InventoryModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.InventoryModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.MarketingModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.MarketingModule.Client.2.10.4\lib\net451\VirtoCommerce.MarketingModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.MarketingModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.MarketingModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.MarketingModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.OrderModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.OrderModule.Client.2.10.4\lib\net451\VirtoCommerce.OrderModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.OrderModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.OrderModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.OrderModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.Platform.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Client.2.10.5\lib\net451\VirtoCommerce.Platform.Client.dll</HintPath>
+      <HintPath>..\packages\VirtoCommerce.Platform.Client.2.11.0-rc1\lib\net451\VirtoCommerce.Platform.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Client.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Client.Security.2.10.2\lib\net451\VirtoCommerce.Platform.Client.Security.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Client.Security, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Client.Security.2.11.0-rc1\lib\net451\VirtoCommerce.Platform.Client.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.PricingModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.PricingModule.Client.2.10.4\lib\net451\VirtoCommerce.PricingModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.PricingModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.PricingModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.PricingModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.QuoteModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.QuoteModule.Client.2.10.4\lib\net451\VirtoCommerce.QuoteModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.QuoteModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.QuoteModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.QuoteModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.SearchModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.SearchModule.Client.2.10.5\lib\net451\VirtoCommerce.SearchModule.Client.dll</HintPath>
+      <HintPath>..\packages\VirtoCommerce.SearchModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.SearchModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.StoreModule.Client, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.StoreModule.Client.2.10.4\lib\net451\VirtoCommerce.StoreModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.StoreModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.StoreModule.Client.2.11.0-rc1\lib\net451\VirtoCommerce.StoreModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
@@ -157,6 +157,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ConcurrentAsyncLockTests.cs" />
     <Compile Include="MutablePagedListTests.cs" />
     <None Include="Pages\TestStore\blogs\news\default.md" />

@@ -12,7 +12,7 @@ namespace VirtoCommerce.Storefront.Test
     [Trait("Category", "CI")]
     public class PermalinkUrlTests
     {
-  
+
         [Fact]
         public void GetUrl_returns_folder_and_original_value_when_no_timestamp()
         {
@@ -78,6 +78,7 @@ namespace VirtoCommerce.Storefront.Test
         [InlineData("/:categories/:title/", "/cat1/cat2/foobar-baz/", "cat1,cat2")]
         [InlineData("/:categories/:title", "/cat1/cat2/foobar-baz", "cat1,cat2")]
         [Theory]
+        [CLSCompliant(false)]
         public void EvaluatePermalink_url_is_well_formatted(string permalink, string expectedUrl, string categories)
         {
             var page = new ContentPage

@@ -96,6 +96,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Binders\AddressModelBinder.cs" />
     <Compile Include="Binders\BaseModelBinder.cs" />
     <Compile Include="Binders\LoginModelBinder.cs" />
