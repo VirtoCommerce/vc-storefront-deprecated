@@ -153,24 +153,26 @@ namespace VirtoCommerce.Storefront.Converters
                 };
                 retVal.Lines.Add(priceTaxLine);
 
-
-                //*** alex fix shipping address & customerId to the taxevalcontext
-                retVal.Address = new coreModel.Address
+                if (shipment.DeliveryAddress != null)
                 {
-                    FirstName = shipment.DeliveryAddress.FirstName,
-                    LastName = shipment.DeliveryAddress.LastName,
-                    Organization = shipment.DeliveryAddress.Organization,
-                    Line1 = shipment.DeliveryAddress.Line1,
-                    Line2 = shipment.DeliveryAddress.Line2,
-                    City = shipment.DeliveryAddress.City,
-                    PostalCode = shipment.DeliveryAddress.PostalCode,
-                    RegionId = shipment.DeliveryAddress.RegionId,
-                    RegionName = shipment.DeliveryAddress.RegionName,
-                    CountryCode = shipment.DeliveryAddress.CountryCode,
-                    CountryName = shipment.DeliveryAddress.CountryName,
-                    Phone = shipment.DeliveryAddress.Phone,
-                    AddressType = ((int)shipment.DeliveryAddress.Type).ToString()
-                };
+                    //*** alex fix shipping address & customerId to the taxevalcontext
+                    retVal.Address = new coreModel.Address
+                    {
+                        FirstName = shipment.DeliveryAddress.FirstName,
+                        LastName = shipment.DeliveryAddress.LastName,
+                        Organization = shipment.DeliveryAddress.Organization,
+                        Line1 = shipment.DeliveryAddress.Line1,
+                        Line2 = shipment.DeliveryAddress.Line2,
+                        City = shipment.DeliveryAddress.City,
+                        PostalCode = shipment.DeliveryAddress.PostalCode,
+                        RegionId = shipment.DeliveryAddress.RegionId,
+                        RegionName = shipment.DeliveryAddress.RegionName,
+                        CountryCode = shipment.DeliveryAddress.CountryCode,
+                        CountryName = shipment.DeliveryAddress.CountryName,
+                        Phone = shipment.DeliveryAddress.Phone,
+                        AddressType = ((int)shipment.DeliveryAddress.Type).ToString()
+                    };
+                }
 
                 retVal.Customer = new coreModel.Contact
                 {

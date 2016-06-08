@@ -17,6 +17,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             ValidationErrors = new List<ValidationError>();
             ValidationWarnings = new List<ValidationError>();
         }
+
         public Shipment(Currency currency)
             :this()
         {
@@ -26,7 +27,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             ShippingPriceWithTax = new Money(currency);
             TaxTotal = new Money(currency);
         }
-
+     
         /// <summary>
         /// Gets or sets the value of shipping method code
         /// </summary>
@@ -250,7 +251,13 @@ namespace VirtoCommerce.Storefront.Model.Cart
                     Discounts.Add(discount);
                 }
             }
-        } 
+        }
         #endregion
+
+        public bool HasSameMethod(ShippingMethod method)
+        {           
+            // Return true if the fields match:
+            return (ShipmentMethodCode.EqualsInvariant(method.ShipmentMethodCode)) && (ShipmentMethodOption.EqualsInvariant(method.OptionName));
+        }
     }
 }

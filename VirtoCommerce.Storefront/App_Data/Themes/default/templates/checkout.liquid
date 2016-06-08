@@ -109,7 +109,7 @@
                             <div class="field field--three-eights field--required field--show-floating-label" ng-if="checkout.countryRegions.length && checkout.shipment.deliveryAddress.countryName.length" ng-class="{ 'field--error': formShippingAddress.$submitted && formShippingAddress.RegionName.$invalid }">
                                 <div class="field__input-wrapper field__input-wrapper--select">
                                     <label class="field__label" for="RegionName" ng-bind="checkout.selectedCountry.regionType"></label>
-                                    <select class="field__input field__input--select" id="RegionName" name="RegionName" placeholder="{% raw %}{{ checkout.selectedCountry.regionType }}{% raw %}" required="required" size="1" ng-model="checkout.shipment.deliveryAddress.regionName" ng-change="setCountryRegion('Shipping', checkout.shipment.deliveryAddress.regionName)" ng-disabled="checkout.shippingAddressProcessing">
+                                    <select class="field__input field__input--select" id="RegionName" name="RegionName" placeholder="{% raw %}{{ checkout.selectedCountry.regionType }}{% endraw %}" required="required" size="1" ng-model="checkout.shipment.deliveryAddress.regionName" ng-change="setCountryRegion('Shipping', checkout.shipment.deliveryAddress.regionName)" ng-disabled="checkout.shippingAddressProcessing">
                                         <option disabled="disabled" value="" ng-bind="'Select ' + checkout.selectedCountry.regionType"></option>
                                         <option ng-repeat="countryRegion in checkout.countryRegions" ng-value="countryRegion.name" ng-bind="countryRegion.name" ng-selected="countryRegion.name == checkout.shipment.deliveryAddress.regionName"></option>
                                     </select>
@@ -182,28 +182,26 @@
                             </div>
                         </div>
                         <div class="content-box" ng-repeat="availableShippingMethod in checkout.availableShippingMethods" ng-if="!checkout.shipment.validationWarnings.length">
-                            <div class="content-box__row">
-							
-								<div class="radio-wrapper">
+                            <div class="content-box__row" ng-if="availableShippingMethod.length > 1" ng-bind="availableShippingMethod[0].name"></div>
+                            <div class="content-box__row" ng-repeat="availableShippingRate in availableShippingMethod">
+                                <div class="radio-wrapper">
                                     <div class="radio__input">
-                                        <input class="input-radio" id="{% raw %}{{ availableShippingMethod.shipmentMethodCode }}{% endraw %}" name="ShipmentMethodCode" type="radio" ng-model="checkout.shipment.shipmentMethodCode" ng-required="true" ng-change="setShippingMethod()" ng-value="availableShippingMethod.shipmentMethodCode" ng-disabled="checkout.shippingMethodProcessing" />
+                                        <input class="input-radio" id="{% raw %}{{ availableShippingRate.id }}{% endraw %}" name="ShipmentMethodCode" type="radio" required="required" ng-model="checkout.shipment.extendedCode" ng-value="availableShippingRate.id" ng-change="setShippingMethod()" />
                                     </div>
-                                    <label class="radio__label" for="{% raw %}{{ availableShippingMethod.shipmentMethodCode }}{% endraw %}" ng-bind="availableShippingMethod.name"></label>
-									{% if settings.show_prices_with_taxes %}
-										<span class="order-summary__emphasis" ng-bind="availableShippingMethod.totalWithTax.formatedAmount"></span>
-										<span ng-if="availableShippingMethod.discountTotalWithTax.amount > 0">
-											<br />
-											<span class="order-summary__small-text strikethrough" ng-bind="availableShippingMethod.priceWithTax.formatedAmount"></span>
-										</span>									
-									{% else %}
-										<span class="order-summary__emphasis" ng-bind="availableShippingMethod.total.formatedAmount"></span>
-										<span ng-if="availableShippingMethod.discountTotal.amount > 0">
-											<br />
-											<span class="order-summary__small-text strikethrough" ng-bind="availableShippingMethod.price.formatedAmount"></span>
-										</span>
-									{% endif %}
-							</div>
-								
+                                    <label class="radio__label" for="{% raw %}{{ availableShippingRate.id }}{% endraw %}" ng-bind="availableShippingMethod[0].name" ng-if="availableShippingMethod.length === 1"></label>
+                                    <label class="radio__label" for="{% raw %}{{ availableShippingRate.id }}{% endraw %}" ng-bind="availableShippingRate.optionDescription" ng-if="availableShippingMethod.length > 1"></label>
+                                    {% if settings.show_prices_with_taxes %}
+                                        <span class="order-summary__emphasis" ng-bind="availableShippingRate.totalWithTax.formatedAmount"></span>
+                                        <span ng-if="availableShippingRate.discountTotalWithTax.amount > 0">
+                                            <span class="order-summary__small-text strikethrough" ng-bind="availableShippingRate.priceWithTax.formatedAmount"></span>
+                                        </span>
+                                    {% else %}
+                                        <span class="order-summary__emphasis" ng-bind="availableShippingRate.total.formatedAmount"></span>
+                                        <span ng-if="availableShippingRate.discountTotal.amount > 0">
+                                            <span class="order-summary__small-text strikethrough" ng-bind="availableShippingRate.price.formatedAmount"></span>
+                                        </span>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                         <div class="alert alert-error" style="margin-top: 20px;" ng-if="formShippingMethod.$submitted && formShippingMethod.ShipmentMethodCode.$error.required">
@@ -213,7 +211,7 @@
                 </div>
             </div>
             <div class="step__footer">
-                <button class="step__footer__continue-btn btn" name="button" type="button" ng-class="{ 'btn--disabled': !checkout.availableShippingMethods.length, 'btn--loading': checkout.shippingMethodProcessing }" ng-click="submitShippingMethod()" ng-disabled="!checkout.availableShippingMethods.length || checkout.shippingMethodProcessing">
+                <button class="step__footer__continue-btn btn" name="button" type="button" ng-class="{ 'btn--disabled': !checkout.shipment.shipmentMethodCode, 'btn--loading': checkout.shippingMethodProcessing }" ng-click="submitShippingMethod()" ng-disabled="!checkout.shipment.shipmentMethodCode || checkout.shippingMethodProcessing">
                     <span class="btn__content">Continue to payment method</span>
                     <i class="btn__spinner icon icon--button-spinner"></i>
                 </button>

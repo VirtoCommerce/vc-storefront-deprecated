@@ -261,13 +261,14 @@ namespace VirtoCommerce.Storefront.Builders
             if (!string.IsNullOrEmpty(changedShipment.ShipmentMethodCode))
             {
                 var availableShippingMethods = await GetAvailableShippingMethodsAsync();
-                var shippingMethod = availableShippingMethods.FirstOrDefault(sm => sm.ShipmentMethodCode == changedShipment.ShipmentMethodCode);
+                var shippingMethod = availableShippingMethods.FirstOrDefault(sm => changedShipment.HasSameMethod(sm));
                 if (shippingMethod == null)
                 {
                     throw new StorefrontException("Unknown shipment method " + changedShipment.ShipmentMethodCode);
                 }
 
                 shipment.ShipmentMethodCode = shippingMethod.ShipmentMethodCode;
+                shipment.ShipmentMethodOption = shippingMethod.OptionName;
                 shipment.ShippingPrice = shippingMethod.Price;
                 shipment.TaxType = shippingMethod.TaxType;
             }
