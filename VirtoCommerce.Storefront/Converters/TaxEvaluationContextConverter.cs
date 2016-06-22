@@ -13,11 +13,12 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var retVal = new coreModel.TaxLine
             {
-                Id = shipmentMethod.ShipmentMethodCode,
+                Id = shipmentMethod.ShipmentMethodCode + shipmentMethod.OptionName,
                 Code = shipmentMethod.ShipmentMethodCode,
                 Name = shipmentMethod.ShipmentMethodCode,
                 TaxType = shipmentMethod.TaxType,
-                Amount = (double)shipmentMethod.Price.Amount
+                Amount = 1D,
+                Price = (double)shipmentMethod.Price.Amount
             };
             return retVal;
         }
@@ -32,7 +33,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = "list",
                     Name = product.Name,
                     TaxType = product.TaxType,
-                    Amount = (double) product.Price.ListPrice.Amount
+                    Amount = 1D,
+                    Price = (double) product.Price.ListPrice.Amount
                 }
             };
 
@@ -45,7 +47,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = "sale",
                     Name = product.Name,
                     TaxType = product.TaxType,
-                    Amount = (double)product.Price.SalePrice.Amount
+                    Amount = 1D,
+                    Price = (double)product.Price.SalePrice.Amount
                 });
             }
 
@@ -58,7 +61,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = tierPrice.Quantity.ToString(),
                     Name = product.Name,
                     TaxType = product.TaxType,
-                    Amount = (double)tierPrice.Price.Amount
+                    Amount = 1D,
+                    Price = (double)tierPrice.Price.Amount
                 });
             }
             return retVal.ToArray();
@@ -104,7 +108,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = "extended",
                     Name = lineItem.Name,
                     TaxType = lineItem.TaxType,
-                    Amount = (double)lineItem.ExtendedPrice.Amount
+                    Amount = lineItem.Quantity,
+                    Price = (double)lineItem.ExtendedPrice.Amount
                 };
                 retVal.Lines.Add(extendedTaxLine);
 
@@ -114,7 +119,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = "list",
                     Name = lineItem.Name,
                     TaxType = lineItem.TaxType,
-                    Amount = (double)lineItem.ListPrice.Amount
+                    Amount = lineItem.Quantity,
+                    Price = (double)lineItem.ListPrice.Amount
                 };
                 retVal.Lines.Add(listTaxLine);
 
@@ -126,7 +132,8 @@ namespace VirtoCommerce.Storefront.Converters
                         Code = "sale",
                         Name = lineItem.Name,
                         TaxType = lineItem.TaxType,
-                        Amount = (double)lineItem.SalePrice.Amount
+                        Amount = lineItem.Quantity,
+                        Price = (double)lineItem.SalePrice.Amount
                     };
                     retVal.Lines.Add(saleTaxLine);
                 }
@@ -140,7 +147,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = "total",
                     Name = shipment.ShipmentMethodCode,
                     TaxType = shipment.TaxType,
-                    Amount = (double)shipment.Total.Amount
+                    Amount = 1D,
+                    Price = (double)shipment.Total.Amount
                 };
                 retVal.Lines.Add(totalTaxLine);
                 var priceTaxLine = new coreModel.TaxLine
@@ -149,7 +157,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = "price",
                     Name = shipment.ShipmentMethodCode,
                     TaxType = shipment.TaxType,
-                    Amount = (double)shipment.ShippingPrice.Amount
+                    Amount = 1D,
+                    Price = (double)shipment.ShippingPrice.Amount
                 };
                 retVal.Lines.Add(priceTaxLine);
 
