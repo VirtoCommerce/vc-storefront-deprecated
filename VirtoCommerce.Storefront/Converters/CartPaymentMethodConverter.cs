@@ -10,8 +10,8 @@ namespace VirtoCommerce.Storefront.Converters
         public static PaymentMethod ToWebModel(this CartModule.Client.Model.PaymentMethod paymentMethod)
         {
             var paymentMethodWebModel = new PaymentMethod();
-
             paymentMethodWebModel.InjectFrom(paymentMethod);
+            paymentMethodWebModel.Priority = paymentMethod.Priority.HasValue ? paymentMethod.Priority.Value : 0;
 
             return paymentMethodWebModel;
         }

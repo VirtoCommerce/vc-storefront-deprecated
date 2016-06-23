@@ -215,7 +215,7 @@ namespace VirtoCommerce.Storefront.Builders
                 shipment = _cart.Shipments.FirstOrDefault(s => s.Id == changedShipment.Id);
                 if (shipment == null)
                 {
-                    throw new StorefrontException(string.Format("Shipment with {0} not found", changedShipment.Id));
+                    throw new StorefrontException(string.Format("Shipment {0} not found", changedShipment.Id));
                 }
             }
             if (shipment == null)
@@ -264,7 +264,7 @@ namespace VirtoCommerce.Storefront.Builders
                 var shippingMethod = availableShippingMethods.FirstOrDefault(sm => changedShipment.HasSameMethod(sm));
                 if (shippingMethod == null)
                 {
-                    throw new StorefrontException("Unknown shipment method " + changedShipment.ShipmentMethodCode);
+                    throw new StorefrontException(string.Format("Unknown shipment method: {0} with option: {1}", changedShipment.ShipmentMethodCode, changedShipment.ShipmentMethodOption));
                 }
 
                 shipment.ShipmentMethodCode = shippingMethod.ShipmentMethodCode;
