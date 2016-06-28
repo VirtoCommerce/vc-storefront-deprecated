@@ -49,7 +49,7 @@ namespace VirtoCommerce.Storefront.Controllers
             var incomingPayment = order.InPayments != null ? order.InPayments.FirstOrDefault(x => string.Equals(x.PaymentMethod.PaymentMethodType, "PreparedForm", System.StringComparison.InvariantCultureIgnoreCase)) : null;
             if (incomingPayment == null)
             {
-                throw new StorefrontException("Order not have any payment with PreparedForm type");
+                throw new StorefrontException("Order doesn't have any payment of type: PreparedForm");
             }
             var processingResult = await _orderApi.OrderModuleProcessOrderPaymentsAsync(order.Id, incomingPayment.Id);
 
