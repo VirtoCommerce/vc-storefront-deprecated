@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.StaticContent
@@ -27,7 +25,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
             { "none", ":folder/:categories/:title" },
         };
 
-        public ContentItem()
+        protected ContentItem()
         {
             Tags = new List<string>();
             Categories = new List<string>();
@@ -77,10 +75,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
 
         public string FileName { get; set; }
 
-
-        #region IHasLanguage Members
         public Language Language { get; set; }
-        #endregion
 
         public virtual void LoadContent(string content, IDictionary<string, IEnumerable<string>> metaInfoMap, IDictionary themeSettings)
         {
@@ -92,36 +87,44 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                     switch (setting.Key.ToLower())
                     {
                         case "permalink":
-                            this.Permalink = settingValue;
+                            Permalink = settingValue;
                             break;
 
                         case "title":
-                            this.Title = settingValue;
+                            Title = settingValue;
                             break;
 
                         case "author":
-                            this.Author = settingValue;
+                            Author = settingValue;
                             break;
 
                         case "published":
-                            this.PublicationStatus = EnumUtility.SafeParse<ContentPublicationStatus>(settingValue, ContentPublicationStatus.Draft);
+                            PublicationStatus = EnumUtility.SafeParse(settingValue, ContentPublicationStatus.Draft);
                             break;
-
+                        case "date":
+                            var createdDate = new DateTime();
+                            if (settingValue != null)
+                            {
+                                DateTime.TryParse(settingValue, out createdDate);
+                            }
+                            CreatedDate = createdDate;
+                            PublishedDate = createdDate;
+                            break;
                         case "tags":
-                            this.Tags = setting.Value.ToList();
+                            Tags = setting.Value.ToList();
                             break;
 
                         case "categories":
-                            this.Categories = setting.Value.ToList();
+                            Categories = setting.Value.ToList();
                             break;
 
                         case "category":
-                            this.Category = settingValue;
+                            Category = settingValue;
                             break;
 
 
                         case "layout":
-                            this.Layout = settingValue;
+                            Layout = settingValue;
                             break;
                     }
                 }
@@ -156,15 +159,12 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                 permalink = _builtInPermalinks[permalink];
             }
 
-            var removeLeadingSlash = true;
-            if (permalink.StartsWith("/"))
-                removeLeadingSlash = false;
-
+            var removeLeadingSlash = !permalink.StartsWith("/");
             var date = PublishedDate ?? CreatedDate;
 
             permalink = permalink.Replace(":folder", Path.GetDirectoryName(StoragePath).Replace("\\", "/"));
 
-            if (!String.IsNullOrEmpty(Category))
+            if (!string.IsNullOrEmpty(Category))
                 permalink = permalink.Replace(":categories", Category);
             else
                 permalink = permalink.Replace(":categories", string.Join("/", Categories.ToArray()));
@@ -182,14 +182,14 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
             if (permalink.Contains(":category"))
             {
                 var matches = _categoryRegex.Matches(permalink);
-                if (matches != null && matches.Count > 0)
+                if (matches.Count > 0)
                 {
                     foreach (Match match in matches)
                     {
                         var replacementValue = string.Empty;
-                        int categoryIndex;
                         if (match.Success)
                         {
+                            int categoryIndex;
                             if (int.TryParse(match.Groups[1].Value, out categoryIndex) && categoryIndex > 0)
                             {
                                 replacementValue = Categories.Skip(categoryIndex - 1).FirstOrDefault();
