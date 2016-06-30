@@ -7,6 +7,7 @@ using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Test
 {
+
     [Trait("Category", "CI")]
     public class CategorySeoTests
     {
