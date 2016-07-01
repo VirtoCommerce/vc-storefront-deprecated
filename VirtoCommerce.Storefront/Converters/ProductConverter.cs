@@ -67,7 +67,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (!product.Associations.IsNullOrEmpty())
             {
-                retVal.Associations.AddRange(product.Associations.Select(x => x.ToWebModel()));
+                retVal.Associations.AddRange(product.Associations.Select(x => x.ToWebModel()).Where(x => x != null));
             }
 
             retVal.SeoInfo = product.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage).ToWebModel();

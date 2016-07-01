@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Omu.ValueInjecter;
+using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
@@ -78,14 +80,33 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.Type = product.ProductType;
             result.Url = product.Url;
 
-            if (product.Associations.Any())
+            if (!product.Associations.IsNullOrEmpty())
             {
-                result.RelatedProducts = product.Associations.Where(a => a.Product != null)
-                    .OrderBy(a => a.Priority)
-                    .Select(a => a.Product.ToShopifyModel()).ToList();
-            }
-
-        
+                result.RelatedProducts = new MutablePagedList<Product>((pageNumber, pageSize) =>
+                {
+                    //Need to load related products from associated  product and categories
+                    var skip = (pageNumber - 1) * pageSize;
+                    var take = pageSize;
+                    var productAssociations = product.Associations.OfType<StorefrontModel.Catalog.ProductAssociation>().OrderBy(x => x.Priority);
+                    var retVal = productAssociations.Select(x => x.Product).Skip(skip).Take(take).ToList();
+                    var totalCount = productAssociations.Count();
+                    skip = Math.Max(0, skip - totalCount);
+                    take = Math.Max(0, take - retVal.Count());
+                    //Load product from associated categories with correct pagination
+                    foreach (var categoryAssociation in product.Associations.OfType<StorefrontModel.Catalog.CategoryAssociation>().OrderBy(x => x.Priority))
+                    {
+                        if (categoryAssociation.Category != null && categoryAssociation.Category.Products != null)
+                        {
+                            categoryAssociation.Category.Products.Slice(skip / pageSize + 1, take);
+                            retVal.AddRange(categoryAssociation.Category.Products);
+                            totalCount += categoryAssociation.Category.Products.GetTotalCount();
+                            skip = Math.Max(0, skip - totalCount);
+                            take = Math.Max(0, take - categoryAssociation.Category.Products.Count());
+                        }
+                    }
+                    return new StaticPagedList<Product>(retVal.Select(x => x.ToShopifyModel()), pageNumber, pageSize, totalCount);
+                });
+            }        
             return result;
         }
 
