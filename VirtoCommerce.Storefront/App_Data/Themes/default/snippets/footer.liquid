@@ -1,5 +1,3 @@
-{% capture theme_settings_link %}<a href="admin/themes/{{ theme.id }}/settings">{{ 'layout.footer.theme_settings' | t }}</a>{% endcapture %}
-
 <footer class="site-footer small--text-center" role="contentinfo">
 
   <div class="wrapper">
@@ -24,11 +22,7 @@
       <div class="grid-item medium--one-half large--five-twelfths">
         <h3>{{ 'layout.footer.get_in_touch' | t }}</h3>
         <p>
-          {% if settings.footer_content_text != blank %}
-            {{ settings.footer_content_text }}
-          {% else %}
-            {{ 'layout.footer.instructions_for_text_content_html' | t: theme_settings_link: theme_settings_link }}
-          {% endif %}
+            {{ settings.footer_content_text }}       
         </p>
 
         {% if settings.footer_social_enable %}

@@ -1,6 +1,7 @@
 ﻿using DotLiquid;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
@@ -241,6 +242,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// <summary>
         /// Gets or sets the collection of related products
         /// </summary>
-        public ICollection<Product> RelatedProducts { get; set; }
+        public IMutablePagedList<Product> RelatedProducts { get; set; }
     }
 }

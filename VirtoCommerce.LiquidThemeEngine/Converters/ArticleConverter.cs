@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
@@ -20,6 +16,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             retVal.Handle = article.Url;
             retVal.CreatedAt = article.CreatedDate;
             retVal.PublishedAt = article.PublishedDate ?? article.CreatedDate;
+            retVal.ImageUrl = article.ImageUrl;
+            retVal.Tags = article.Tags != null ? article.Tags.OrderBy(t => t).ToArray() : null;
 
             return retVal;
         }

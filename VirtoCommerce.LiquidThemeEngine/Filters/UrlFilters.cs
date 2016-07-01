@@ -224,6 +224,18 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             return retVal;
         }
 
+        public static string FullUrl(string input, string storeId = null, string languageCode = null)
+        {
+            var absoluteUrl = AbsoluteUrl(input, storeId, languageCode);
+
+            var themeEngine = (ShopifyLiquidThemeEngine)Template.FileSystem;
+            var workContext = themeEngine.WorkContext;
+
+            var fullUrl = new Uri(workContext.RequestUrl, absoluteUrl);
+
+            return fullUrl.AbsoluteUri;
+        }
+
         /// <summary>
         /// Get app absolute storefront url with specified store and language
         /// </summary>

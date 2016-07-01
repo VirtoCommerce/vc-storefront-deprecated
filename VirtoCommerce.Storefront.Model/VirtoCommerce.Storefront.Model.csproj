@@ -80,9 +80,11 @@
     <Compile Include="Catalog\Aggregation.cs" />
     <Compile Include="Catalog\AggregationItem.cs" />
     <Compile Include="Catalog\Asset.cs" />
+    <Compile Include="Catalog\Association.cs" />
     <Compile Include="Catalog\CatalogProperty.cs" />
     <Compile Include="Catalog\CatalogSearchResponseGroup.cs" />
     <Compile Include="Catalog\CatalogSearchResult.cs" />
+    <Compile Include="Catalog\CategoryAssociation.cs" />
     <Compile Include="Catalog\CategoryResponseGroup.cs" />
     <Compile Include="Catalog\IHasProperties.cs" />
     <Compile Include="Catalog\InventoryStatus.cs" />

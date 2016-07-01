@@ -129,5 +129,17 @@ namespace VirtoCommerce.Storefront.Converters
 
             return serviceModel;
         }
+
+        public static CoreModule.Client.Model.Address ToCoreServiceModel(this Address webModel)
+        {
+            CoreModule.Client.Model.Address serviceModel = null;
+            if (webModel != null)
+            {
+                serviceModel = new CoreModule.Client.Model.Address();
+                serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
+                serviceModel.AddressType = webModel.Type.ToString();
+            }
+            return serviceModel;
+        }
     }
 }

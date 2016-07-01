@@ -152,7 +152,7 @@
     </form>
 </script>
 
-<script id="storefront.checkout.shipping-method.tpl" type="text/ng-template" ng-cloak>
+<script id="storefront.checkout.shipping-method.tpl" type="text/ng-template" ng-cloak="">
     <form accept-charset="UTF8" class="step" name="formShippingMethod" novalidate="novalidate">
         <div class="edit_checkout animate-floating-labels" ng-init="setShippingMethodForm(formShippingMethod)">
             <div class="step__sections">
@@ -178,7 +178,7 @@
                     <div class="section__content">
                         <div ng-if="checkout.shipment.validationWarnings.length">
                             <div class="alert alert-error" ng-if="checkout.shipment.validationWarnings[0].errorCode == 'ShippingUnavailableError'">
-                              There is no shipping method for current shipping address and items available!
+                                There is no shipping method for current shipping address and items available!
                             </div>
                         </div>
                         <div class="content-box" ng-repeat="availableShippingMethod in checkout.availableShippingMethods" ng-if="!checkout.shipment.validationWarnings.length">
@@ -191,15 +191,15 @@
                                     <label class="radio__label" for="{% raw %}{{ availableShippingRate.id }}{% endraw %}" ng-bind="availableShippingMethod[0].name" ng-if="availableShippingMethod.length === 1"></label>
                                     <label class="radio__label" for="{% raw %}{{ availableShippingRate.id }}{% endraw %}" ng-bind="availableShippingRate.optionDescription" ng-if="availableShippingMethod.length > 1"></label>
                                     {% if settings.show_prices_with_taxes %}
-                                        <span class="order-summary__emphasis" ng-bind="availableShippingRate.totalWithTax.formatedAmount"></span>
-                                        <span ng-if="availableShippingRate.discountTotalWithTax.amount > 0">
-                                            <span class="order-summary__small-text strikethrough" ng-bind="availableShippingRate.priceWithTax.formatedAmount"></span>
-                                        </span>
+                                    <span class="order-summary__emphasis" ng-bind="availableShippingRate.totalWithTax.formatedAmount"></span>
+                                    <span ng-if="availableShippingRate.discountTotalWithTax.amount > 0">
+                                        <span class="order-summary__small-text strikethrough" ng-bind="availableShippingRate.priceWithTax.formatedAmount"></span>
+                                    </span>
                                     {% else %}
-                                        <span class="order-summary__emphasis" ng-bind="availableShippingRate.total.formatedAmount"></span>
-                                        <span ng-if="availableShippingRate.discountTotal.amount > 0">
-                                            <span class="order-summary__small-text strikethrough" ng-bind="availableShippingRate.price.formatedAmount"></span>
-                                        </span>
+                                    <span class="order-summary__emphasis" ng-bind="availableShippingRate.total.formatedAmount"></span>
+                                    <span ng-if="availableShippingRate.discountTotal.amount > 0">
+                                        <span class="order-summary__small-text strikethrough" ng-bind="availableShippingRate.price.formatedAmount"></span>
+                                    </span>
                                     {% endif %}
                                 </div>
                             </div>
@@ -261,7 +261,7 @@
                         <p class="section__text">All transactions are secure and encrypted. Credit card information is never stored.</p>
                     </div>
                     <div class="section__content">
-                        <div class="content-box" ng-repeat="availablePaymentMethod in checkout.availablePaymentMethods">
+                        <div class="content-box" ng-repeat="availablePaymentMethod in checkout.availablePaymentMethods | orderBy: 'priority'">
                             <div class="radio-wrapper content-box__row">
                                 <div class="radio__input">
                                     <input class="input-radio" id="{% raw %}{{ availablePaymentMethod.gatewayCode }}{% endraw %}" name="PaymentMethodCode" type="radio" ng-model="checkout.payment.paymentGatewayCode" ng-required="true" ng-value="availablePaymentMethod.gatewayCode" ng-disabled="checkout.orderProcessing" />
@@ -273,23 +273,23 @@
                                     <div class="field field--required" ng-class="{ 'field--show-floating-label': !formPaymentMethod.BankCardNumber.$error.required, 'field--error': (formPaymentMethod.BankCardNumber.$dirty || formPaymentMethod.$submitted) && formPaymentMethod.BankCardNumber.$invalid }">
                                         <div class="field__input-wrapper">
                                             <label class="field__label" for="BankCardNumber">Card number</label>
-                                            <input class="field__input" id="BankCardNumber" name="BankCardNumber" placeholder="Card number" required="required" size="30" type="text" ng-model="checkout.bankCardInfo.cardNumber" ng-pattern="checkout.bankCardInfo.cardNumberPattern" ng-change="validateBankCardNumber()" ng-disabled="checkout.orderProcessing" />
+                                            <input class="field__input" id="BankCardNumber" name="BankCardNumber" placeholder="Card number" required="required" size="30" type="text" ng-model="checkout.bankCardInfo.bankCardNumber" ng-pattern="checkout.bankCardInfo.cardNumberPattern" ng-change="validateBankCardNumber()" ng-disabled="checkout.orderProcessing" />
                                             <span class="field__icon icon icon--lock">
                                                 <span class="visually-hidden">Secure field</span>
                                             </span>
                                             <span class="field__icon icon payment-icon has-tooltip" style="right: 40px; top: 23%;" ng-class="{
-                                                'payment-icon--american-express': checkout.bankCardInfo.type == 'AmericanExpress',
-                                                'payment-icon--dankort': checkout.bankCardInfo.type == 'Dankort',
-                                                'payment-icon--diners-club': checkout.bankCardInfo.type == 'Diners',
-                                                'payment-icon--discover': checkout.bankCardInfo.type == 'Discover',
-                                                'payment-icon--jcb': checkout.bankCardInfo.type == 'Jcb',
-                                                'payment-icon--laser': checkout.bankCardInfo.type == 'Laser',
-                                                'payment-icon--maestro': checkout.bankCardInfo.type == 'Maestro',
-                                                'payment-icon--master': checkout.bankCardInfo.type == 'MasterCard',
-                                                'payment-icon--unionpay': checkout.bankCardInfo.type == 'UnionPay',
-                                                'payment-icon--visa': checkout.bankCardInfo.type == 'Visa' }" ng-if="formPaymentMethod.BankCardNumber.$valid">
-                                                <span class="tooltip" ng-bind="checkout.bankCardInfo.type"></span>
-                                                <span class="visually-hidden" ng-bind="checkout.bankCardInfo.type"></span>
+                                                'payment-icon--american-express': checkout.bankCardInfo.bankCardType == 'AmericanExpress',
+                                                'payment-icon--dankort': checkout.bankCardInfo.bankCardType == 'Dankort',
+                                                'payment-icon--diners-club': checkout.bankCardInfo.bankCardType == 'Diners',
+                                                'payment-icon--discover': checkout.bankCardInfo.bankCardType == 'Discover',
+                                                'payment-icon--jcb': checkout.bankCardInfo.bankCardType == 'Jcb',
+                                                'payment-icon--laser': checkout.bankCardInfo.bankCardType == 'Laser',
+                                                'payment-icon--maestro': checkout.bankCardInfo.bankCardType == 'Maestro',
+                                                'payment-icon--master': checkout.bankCardInfo.bankCardType == 'MasterCard',
+                                                'payment-icon--unionpay': checkout.bankCardInfo.bankCardType == 'UnionPay',
+                                                'payment-icon--visa': checkout.bankCardInfo.bankCardType == 'Visa' }" ng-if="formPaymentMethod.BankCardNumber.$valid">
+                                                <span class="tooltip" ng-bind="checkout.bankCardInfo.bankCardType"></span>
+                                                <span class="visually-hidden" ng-bind="checkout.bankCardInfo.bankCardType"></span>
                                             </span>
                                         </div>
                                         <p class="field__message field__message--error" ng-if="(formPaymentMethod.BankCardNumber.$dirty || formPaymentMethod.$submitted) && formPaymentMethod.BankCardNumber.$error.required">
@@ -326,7 +326,7 @@
                                     <div class="field field--quarter field--required" ng-class="{ 'field--show-floating-label': !formPaymentMethod.BankCardCvv.$error.required, 'field--error': (formPaymentMethod.BankCardCvv.$dirty || formPaymentMethod.$submitted) && formPaymentMethod.BankCardCvv.$invalid }">
                                         <div class="field__input-wrapper">
                                             <label class="field__label" for="BankCardCvv">CVV</label>
-                                            <input class="field__input" id="BankCardCvv" name="BankCardCvv" placeholder="CVV" required="required" size="30" type="text" ng-model="checkout.bankCardInfo.cvv" ng-pattern="checkout.bankCardInfo.cvvPattern" ng-disabled="checkout.orderProcessing" />
+                                            <input class="field__input" id="BankCardCvv" name="BankCardCvv" placeholder="CVV" required="required" size="30" type="text" ng-model="checkout.bankCardInfo.bankCardCVV2" ng-pattern="checkout.bankCardInfo.cvvPattern" ng-disabled="checkout.orderProcessing" />
                                             <span class="field__icon icon icon--question has-tooltip">
                                                 <span class="tooltip">
                                                     3-digit security code usually found on the back of the card. American Express cards have a 4-digit code located on the front.

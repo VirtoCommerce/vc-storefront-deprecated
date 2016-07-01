@@ -2,26 +2,23 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using VirtoCommerce.CoreModule.Client.Api;
 using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
-using coreModel = VirtoCommerce.CoreModule.Client.Model;
+using orderApiModel = VirtoCommerce.OrderModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
     public class CartController : StorefrontControllerBase
     {
         private readonly IVirtoCommerceOrdersApi _orderApi;
-        private readonly IVirtoCommerceCoreApi _commerceApi;
 
-        public CartController(WorkContext workContext, IVirtoCommerceOrdersApi orderApi, IStorefrontUrlBuilder urlBuilder, IVirtoCommerceCoreApi commerceApi)
+        public CartController(WorkContext workContext, IVirtoCommerceOrdersApi orderApi, IStorefrontUrlBuilder urlBuilder)
             : base(workContext, urlBuilder)
         {
             _orderApi = orderApi;
-            _commerceApi = commerceApi;
         }
 
         // GET: /cart
@@ -49,7 +46,7 @@ namespace VirtoCommerce.Storefront.Controllers
             var incomingPayment = order.InPayments != null ? order.InPayments.FirstOrDefault(x => string.Equals(x.PaymentMethod.PaymentMethodType, "PreparedForm", System.StringComparison.InvariantCultureIgnoreCase)) : null;
             if (incomingPayment == null)
             {
-                throw new StorefrontException("Order not have any payment with PreparedForm type");
+                throw new StorefrontException("Order doesn't have any payment of type: PreparedForm");
             }
             var processingResult = await _orderApi.OrderModuleProcessOrderPaymentsAsync(order.Id, incomingPayment.Id);
 
@@ -62,14 +59,14 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> ExternalPaymentCallback()
         {
-            var callback = new coreModel.PaymentCallbackParameters
+            var callback = new orderApiModel.PaymentCallbackParameters
             {
-                Parameters = new List<coreModel.KeyValuePair>()
+                Parameters = new List<orderApiModel.KeyValuePair>()
             };
 
             foreach (var key in HttpContext.Request.QueryString.AllKeys)
             {
-                callback.Parameters.Add(new coreModel.KeyValuePair
+                callback.Parameters.Add(new orderApiModel.KeyValuePair
                 {
                     Key = key,
                     Value = HttpContext.Request.QueryString[key]
@@ -78,14 +75,14 @@ namespace VirtoCommerce.Storefront.Controllers
 
             foreach (var key in HttpContext.Request.Form.AllKeys)
             {
-                callback.Parameters.Add(new coreModel.KeyValuePair
+                callback.Parameters.Add(new orderApiModel.KeyValuePair
                 {
                     Key = key,
                     Value = HttpContext.Request.Form[key]
                 });
             }
 
-            var postProcessingResult = await _commerceApi.CommercePostProcessPaymentAsync(callback);
+            var postProcessingResult = await _orderApi.OrderModulePostProcessPaymentAsync(callback);
             if (postProcessingResult.IsSuccess.HasValue && postProcessingResult.IsSuccess.Value)
             {
                 return StoreFrontRedirect("~/cart/thanks/" + postProcessingResult.OrderId);

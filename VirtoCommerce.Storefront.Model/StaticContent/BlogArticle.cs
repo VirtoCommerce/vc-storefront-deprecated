@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VirtoCommerce.Storefront.Model.StaticContent
 {
@@ -25,13 +23,24 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
         public override void LoadContent(string content, IDictionary<string, IEnumerable<string>> metaInfoMap, IDictionary themeSettings)
         {
             var parts = content.Split(new[] { _excerpToken }, StringSplitOptions.None);
-            if(parts.Count() > 1)
+
+            if (parts.Length > 1)
             {
                 Excerpt = parts[0];
-                content.Replace(_excerpToken, String.Empty);
+                content.Replace(_excerpToken, string.Empty);
             }
+
+            if (metaInfoMap.ContainsKey("main-image"))
+            {
+                ImageUrl = metaInfoMap["main-image"].FirstOrDefault();
+            }
+
+            if (metaInfoMap.ContainsKey("excerpt"))
+            {
+                Excerpt = metaInfoMap["excerpt"].FirstOrDefault();
+            }
+
             base.LoadContent(content, metaInfoMap, themeSettings);
-            //TODO: load image from meta info            
         }
     }
 }
