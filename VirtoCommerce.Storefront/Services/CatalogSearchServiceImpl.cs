@@ -200,12 +200,49 @@ namespace VirtoCommerce.Storefront.Services
 
         private async Task LoadProductsAssociationsAsync(IEnumerable<Product> products)
         {
+            var workContext = _workContextFactory();
+
             var allAssociations = products.SelectMany(x => x.Associations).ToList();
-            var associatedProducts = await GetProductsAsync(allAssociations.Select(x => x.ProductId).Distinct().ToArray(), ItemResponseGroup.ItemInfo | ItemResponseGroup.ItemWithPrices | ItemResponseGroup.Seo);
-            foreach (var association in allAssociations)
+
+            var allProductAssociations = allAssociations.OfType<ProductAssociation>();
+            var allCategoriesAssociations = allAssociations.OfType<CategoryAssociation>();
+
+            if (allProductAssociations.Any())
             {
-                association.Product = associatedProducts.FirstOrDefault(x => x.Id == association.ProductId);
+                var allAssociatedProducts = await GetProductsAsync(allProductAssociations.Select(x => x.ProductId).ToArray(), ItemResponseGroup.ItemInfo | ItemResponseGroup.ItemWithPrices | ItemResponseGroup.Seo);
+                foreach (var productAssociation in allProductAssociations)
+                {
+                    productAssociation.Product = allAssociatedProducts.FirstOrDefault(x => x.Id == productAssociation.ProductId);
+                }
             }
+
+            if (allCategoriesAssociations.Any())
+            {
+                var allAssociatedCategories = await GetCategoriesAsync(allCategoriesAssociations.Select(x => x.CategoryId).ToArray(), CategoryResponseGroup.Info | CategoryResponseGroup.WithSeo | CategoryResponseGroup.WithOutlines | CategoryResponseGroup.WithImages);
+
+                foreach (var categoryAssociation in allCategoriesAssociations)
+                {
+                    categoryAssociation.Category = allAssociatedCategories.FirstOrDefault(x => x.Id == categoryAssociation.CategoryId);
+                    if (categoryAssociation.Category != null && categoryAssociation.Category.Products == null)
+                    {
+                        categoryAssociation.Category.Products = new MutablePagedList<Product>((pageNumber, pageSize) =>
+                       {
+                           var criteria = new CatalogSearchCriteria
+                           {
+                               PageNumber = pageNumber,
+                               PageSize = pageSize,
+                               CatalogId = workContext.CurrentStore.Catalog,
+                               CategoryId = categoryAssociation.CategoryId,
+                               SearchInChildren = true,
+                               ResponseGroup = CatalogSearchResponseGroup.WithProducts
+                           };
+                           var searchResult = SearchProducts(criteria);
+                           return searchResult.Products;
+                       });
+                    }
+                }
+            }
+
         }
 
         private async Task LoadProductsInventoriesAsync(List<Product> products)

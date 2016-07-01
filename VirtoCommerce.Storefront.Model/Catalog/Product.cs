@@ -18,7 +18,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             Images = new List<Image>();
             Descriptions = new List<EditorialReview>();
             Discounts = new List<Discount>();
-            Associations = new List<ProductAssociation>();
+            Associations = new List<Association>();
             TaxDetails = new List<TaxDetail>();
         }
 
@@ -116,6 +116,10 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public decimal? Weight { get; set; }
 
         /// <summary>
+        /// Package type
+        /// </summary>
+        public string PackageType { get; set; }
+        /// <summary>
         /// Dimensions measure unit of size (for physical product only)
         /// </summary>
         public string MeasureUnit { get; set; }
@@ -188,7 +192,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         /// <summary>
         /// Related or associated products
         /// </summary>
-        public ICollection<ProductAssociation> Associations { get; set; }
+        public ICollection<Association> Associations { get; set; }
 
         /// <summary>
         /// Product description in current language
