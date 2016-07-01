@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StorefrontModel = VirtoCommerce.Storefront.Model.StaticContent;
-using VirtoCommerce.LiquidThemeEngine.Objects;
+﻿using System.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.Storefront.Model.Common;
 using PagedList;
+using VirtoCommerce.LiquidThemeEngine.Objects;
+using VirtoCommerce.Storefront.Model.Common;
+using StorefrontModel = VirtoCommerce.Storefront.Model.StaticContent;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -19,14 +15,18 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             retVal.InjectFrom<NullableAndEnumValueInjecter>(blog);
             retVal.Handle = blog.Name;
+
             if (blog.Articles != null)
             {
                 retVal.Articles = new MutablePagedList<Article>((pageNumber, pageSize) =>
                 {
                     var articlesForLanguage = blog.Articles.Where(x => x.Language == language || x.Language.IsInvariant).GroupBy(x => x.Name).Select(x => x.OrderByDescending(y => y.Language).FirstOrDefault());
-                    return new PagedList<Article>(articlesForLanguage.Select(x => x.ToShopifyModel()), pageNumber, pageSize);
+                    return new PagedList<Article>(articlesForLanguage.Select(x => x.ToShopifyModel()).OrderByDescending(x => x.CreatedAt), pageNumber, pageSize);
                 }, blog.Articles.PageNumber, blog.Articles.PageSize);
             }
+
+            retVal.Handle = blog.Name.Replace(" ", "-").ToLower();
+
             return retVal;
         }
     }

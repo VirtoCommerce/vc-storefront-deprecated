@@ -30,17 +30,32 @@ namespace VirtoCommerce.Storefront.Controllers
             var articleUrl = string.Join("/", "blogs", blog, article);
 
             context.CurrentBlog = context.Blogs.SingleOrDefault(x => x.Name.Equals(blog, StringComparison.OrdinalIgnoreCase));
-            var blogArticles = context.CurrentBlog.Articles.Where(x => x.Url.Equals(articleUrl));
-            //Need return article with current  or  invariant language
-            var blogArticle = blogArticles.FirstOrDefault(x => x.Language == context.CurrentLanguage);
-            if (blogArticle == null)
+            if (context.CurrentBlog != null)
             {
-                blogArticle = blogArticles.FirstOrDefault(x => x.Language.IsInvariant);
-            }
-            if (blogArticle != null)
-            {
-                context.CurrentBlogArticle = blogArticle;
-                return View("article", WorkContext);
+                var blogArticles = context.CurrentBlog.Articles.Where(x => x.Url.Equals(articleUrl)).ToList();
+
+                // Return article with current or invariant language
+                var blogArticle = blogArticles.FirstOrDefault(x => x.Language == context.CurrentLanguage);
+
+                if (blogArticle == null)
+                {
+                    blogArticle = blogArticles.FirstOrDefault(x => x.Language.IsInvariant);
+                }
+
+                if (blogArticle != null)
+                {
+                    context.CurrentBlogArticle = blogArticle;
+
+                    context.CurrentPageSeo = new SeoInfo
+                    {
+                        Language = blogArticle.Language,
+                        MetaDescription = blogArticle.Excerpt,
+                        Title = blogArticle.Title,
+                        Slug = blogArticle.Permalink
+                    };
+
+                    return View("article", WorkContext);
+                }
             }
 
             throw new HttpException(404, articleUrl);
