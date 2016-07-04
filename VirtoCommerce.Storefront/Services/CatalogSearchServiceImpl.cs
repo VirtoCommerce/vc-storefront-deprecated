@@ -36,9 +36,13 @@ namespace VirtoCommerce.Storefront.Services
         }
 
         #region ICatalogSearchService Members
-        public async Task<Product[]> GetProductsAsync(string[] ids, ItemResponseGroup responseGroup = ItemResponseGroup.ItemInfo)
+        public async Task<Product[]> GetProductsAsync(string[] ids, ItemResponseGroup responseGroup = ItemResponseGroup.None)
         {
             var workContext = _workContextFactory();
+            if(responseGroup == ItemResponseGroup.None)
+            {
+                responseGroup = workContext.CurrentProductResponseGroup;
+            }
 
             var retVal = (await _catalogModuleApi.CatalogModuleProductsGetProductByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToArray();
 

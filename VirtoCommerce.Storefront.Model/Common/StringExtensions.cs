@@ -45,5 +45,15 @@ namespace VirtoCommerce.Storefront.Model.Common
             var mask = new Regex(fileMask.Replace(".", "[.]").Replace("*", ".*").Replace("?", "."), RegexOptions.IgnoreCase);
             return mask.IsMatch(fileName);
         }
+
+        public static int? ToNullableInt(this string str)
+        {
+            int retVal;
+            if (int.TryParse(str, out retVal))
+            {
+                return retVal;
+            }
+            return null;
+        }
     }
 }

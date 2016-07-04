@@ -102,6 +102,11 @@ namespace VirtoCommerce.Storefront.Owin
                     {
                         CatalogId = workContext.CurrentStore.Catalog
                     };
+                    //Initialize product response group
+                    workContext.CurrentProductResponseGroup = EnumUtility.SafeParse(qs.Get("resp_group"), ItemResponseGroup.ItemLarge);
+
+                    workContext.PageNumber = qs.Get("page").ToNullableInt();
+                    workContext.PageSize = qs.Get("count").ToNullableInt() ?? qs.Get("page_size").ToNullableInt();
 
                     //This line make delay categories loading initialization (categories can be evaluated on view rendering time)
                     workContext.Categories = new MutablePagedList<Category>((pageNumber, pageSize) =>

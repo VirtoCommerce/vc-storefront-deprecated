@@ -145,7 +145,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 result.RequestUrl = workContext.RequestUrl.ToString();
                 //Populate current page number
                 var qs = HttpUtility.ParseQueryString(workContext.RequestUrl.Query);
-                result.CurrentPage = Convert.ToInt32(qs.Get("page") ?? 1.ToString());
+                result.CurrentPage = workContext.PageNumber ?? 1;
+                result.PageSize = workContext.PageSize ?? 0;
             }
             return result;
         }

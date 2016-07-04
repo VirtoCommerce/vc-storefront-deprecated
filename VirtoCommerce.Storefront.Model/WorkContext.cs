@@ -136,6 +136,10 @@ namespace VirtoCommerce.Storefront.Model
         /// Current search catalog criterias
         /// </summary>
         public CatalogSearchCriteria CurrentCatalogSearchCriteria { get; set; }
+        /// <summary>
+        /// Current product response group
+        /// </summary>
+        public ItemResponseGroup CurrentProductResponseGroup { get; set; }     
 
         #endregion
 
@@ -193,6 +197,15 @@ namespace VirtoCommerce.Storefront.Model
         /// Gets or sets the dictionary of application settings
         /// </summary>
         public IDictionary<string, object> ApplicationSettings { get; set; }
+
+        /// <summary>
+        /// Current page number
+        /// </summary>
+        public int? PageNumber { get; set; }
+        /// <summary>
+        /// Current page size
+        /// </summary>
+        public int? PageSize { get; set; }
 
         #region IDisposable Implementation
 

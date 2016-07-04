@@ -33,12 +33,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> ProductDetails(string productId)
         {
-            var product = (await _catalogSearchService.GetProductsAsync(new[] { productId },
-                Model.Catalog.ItemResponseGroup.Variations |
-                Model.Catalog.ItemResponseGroup.ItemProperties |
-                Model.Catalog.ItemResponseGroup.ItemSmall |
-                Model.Catalog.ItemResponseGroup.ItemWithPrices | 
-                Model.Catalog.ItemResponseGroup.ItemAssociations)).FirstOrDefault();
+            var product = (await _catalogSearchService.GetProductsAsync(new[] { productId }, WorkContext.CurrentProductResponseGroup)).FirstOrDefault();
             WorkContext.CurrentProduct = product;          
          
             if(product.CategoryId != null)
