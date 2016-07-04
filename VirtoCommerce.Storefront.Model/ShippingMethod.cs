@@ -125,7 +125,7 @@ namespace VirtoCommerce.Storefront.Model
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-            var shippingMethodTaxRates = taxRates.Where(x => x.Line.Id == ShipmentMethodCode);
+            var shippingMethodTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == ShipmentMethodCode && x.Line.Id.SplitIntoTuple('&').Item2 == OptionName);
             TaxTotal = new Money(Currency);
 
             var shippingMethodTaxRate = shippingMethodTaxRates.FirstOrDefault();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
@@ -215,12 +216,14 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-            var shipmentTaxRates = taxRates.Where(x=>x.Line.Id == Id);
+            ShippingPriceWithTax = ShippingPrice;
+            //Because TaxLine.Id may contains composite string id & extra info
+            var shipmentTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == Id);
             TaxTotal = new Money(Currency);
             if(shipmentTaxRates.Any())
             {
-                var totalTaxRate = shipmentTaxRates.First(x => x.Line.Code.EqualsInvariant("total"));
-                var priceTaxRate = shipmentTaxRates.First(x => x.Line.Code.EqualsInvariant("price"));
+                var totalTaxRate = shipmentTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("total"));
+                var priceTaxRate = shipmentTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("price"));
                 TaxTotal += totalTaxRate.Rate;
                 ShippingPriceWithTax = ShippingPrice + priceTaxRate.Rate;
             }        

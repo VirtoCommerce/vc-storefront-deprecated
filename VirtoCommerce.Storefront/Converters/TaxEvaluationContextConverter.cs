@@ -13,9 +13,9 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var retVal = new coreModel.TaxLine
             {
-                Id = shipmentMethod.ShipmentMethodCode,
-                Code = shipmentMethod.ShipmentMethodCode,
-                Name = shipmentMethod.ShipmentMethodCode,
+                Id = string.Join("&", shipmentMethod.ShipmentMethodCode, shipmentMethod.OptionName),
+                Code = string.Join("&", shipmentMethod.ShipmentMethodCode, shipmentMethod.OptionName),
+                Name = string.Join("&", shipmentMethod.Name, shipmentMethod.OptionDescription),
                 TaxType = shipmentMethod.TaxType,
                 Amount = (double)shipmentMethod.Price.Amount
             };
@@ -28,8 +28,8 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 new coreModel.TaxLine
                 {
-                    Id = product.Id,
-                    Code = "list",
+                    Id = product.Id + "&list",
+                    Code = product.Sku,
                     Name = product.Name,
                     TaxType = product.TaxType,
                     Amount = (double) product.Price.ListPrice.Amount
@@ -41,8 +41,8 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.Add(new coreModel.TaxLine
                 {
-                    Id = product.Id,
-                    Code = "sale",
+                    Id = product.Id + "&sale",
+                    Code = product.Sku,
                     Name = product.Name,
                     TaxType = product.TaxType,
                     Amount = (double)product.Price.SalePrice.Amount
@@ -54,8 +54,8 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.Add(new coreModel.TaxLine
                 {
-                    Id = product.Id,
-                    Code = tierPrice.Quantity.ToString(),
+                    Id = product.Id + "&" + tierPrice.Quantity.ToString(),
+                    Code = product.Sku,
                     Name = product.Name,
                     TaxType = product.TaxType,
                     Amount = (double)tierPrice.Price.Amount
@@ -101,8 +101,8 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 var extendedTaxLine = new coreModel.TaxLine
                 {
-                    Id = lineItem.Id,
-                    Code = "extended",
+                    Id = lineItem.Id + "&extended",
+                    Code = lineItem.Sku,
                     Name = lineItem.Name,
                     TaxType = lineItem.TaxType,
                     Amount = (double)lineItem.ExtendedPrice.Amount
@@ -111,8 +111,8 @@ namespace VirtoCommerce.Storefront.Converters
 
                 var listTaxLine = new coreModel.TaxLine
                 {
-                    Id = lineItem.Id,
-                    Code = "list",
+                    Id = lineItem.Id + "&list",
+                    Code = lineItem.Sku,
                     Name = lineItem.Name,
                     TaxType = lineItem.TaxType,
                     Amount = (double)lineItem.ListPrice.Amount
@@ -123,8 +123,8 @@ namespace VirtoCommerce.Storefront.Converters
                 {
                     var saleTaxLine = new coreModel.TaxLine
                     {
-                        Id = lineItem.Id,
-                        Code = "sale",
+                        Id = lineItem.Id + "&sale",
+                        Code = lineItem.Sku,
                         Name = lineItem.Name,
                         TaxType = lineItem.TaxType,
                         Amount = (double)lineItem.SalePrice.Amount
@@ -137,8 +137,8 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 var totalTaxLine = new coreModel.TaxLine
                 {
-                    Id = shipment.Id,
-                    Code = "total",
+                    Id = shipment.Id + "&total",
+                    Code = shipment.ShipmentMethodCode,
                     Name = shipment.ShipmentMethodCode,
                     TaxType = shipment.TaxType,
                     Amount = (double)shipment.Total.Amount
@@ -146,8 +146,8 @@ namespace VirtoCommerce.Storefront.Converters
                 retVal.Lines.Add(totalTaxLine);
                 var priceTaxLine = new coreModel.TaxLine
                 {
-                    Id = shipment.Id,
-                    Code = "price",
+                    Id = shipment.Id + "&price",
+                    Code = shipment.ShipmentMethodCode,
                     Name = shipment.ShipmentMethodCode,
                     TaxType = shipment.TaxType,
                     Amount = (double)shipment.ShippingPrice.Amount
