@@ -59,10 +59,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Tags
             Uri requestUrl;
             Uri.TryCreate(context["request_url"] as string, UriKind.RelativeOrAbsolute, out requestUrl);
             var pageNumber = (int)context["current_page"];
- 
+            var pageSize = (int)context["page_size"];
+
             if (mutablePagedList != null)
             {
-                mutablePagedList.Slice(pageNumber, _pageSize > 0 ? _pageSize : 20);
+                mutablePagedList.Slice(pageNumber, pageSize > 0 ? pageSize : _pageSize);
                 pagedList = mutablePagedList;
             }
             else if (collection != null)

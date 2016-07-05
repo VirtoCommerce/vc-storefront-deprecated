@@ -84,6 +84,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public Collections Collections { get; set; }
 
         public int CurrentPage { get; set; }
+        public int PageSize { get; set; }
 
         public TagCollection CurrentTags { get; set; }
 

@@ -334,13 +334,17 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-            var lineItemTaxRates = taxRates.Where(x => x.Line.Id == Id);
+            ListPriceWithTax = ListPrice;
+            SalePriceWithTax = SalePrice;
+
+            //Because TaxLine.Id may contains composite string id & extra info
+            var lineItemTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == Id);
             TaxTotal = new Money(Currency);
             if (lineItemTaxRates.Any())
             {
-                var extendedPriceRate = lineItemTaxRates.First(x => x.Line.Code.EqualsInvariant("extended"));
-                var listPriceRate = lineItemTaxRates.First(x => x.Line.Code.EqualsInvariant("list"));
-                var salePriceRate = lineItemTaxRates.FirstOrDefault(x => x.Line.Code.EqualsInvariant("sale"));
+                var extendedPriceRate = lineItemTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("extended"));
+                var listPriceRate = lineItemTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("list"));
+                var salePriceRate = lineItemTaxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("sale"));
                 if (salePriceRate == null)
                 {
                     salePriceRate = listPriceRate;

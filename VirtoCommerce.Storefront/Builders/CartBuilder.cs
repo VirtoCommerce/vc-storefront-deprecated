@@ -440,7 +440,6 @@ namespace VirtoCommerce.Storefront.Builders
             }
             //Evaluate tax for shipping methods
             var taxEvalContext = _cart.ToTaxEvalContext();
-            taxEvalContext.Lines.Clear();
             taxEvalContext.Lines.AddRange(availableShippingMethods.Select(x => x.ToTaxLine()));
             var taxResult = await _commerceApi.CommerceEvaluateTaxesAsync(_cart.StoreId, taxEvalContext);
             if (taxResult != null)

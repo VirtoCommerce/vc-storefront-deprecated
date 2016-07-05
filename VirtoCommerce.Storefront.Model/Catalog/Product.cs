@@ -310,12 +310,16 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-            var productTaxRates = taxRates.Where(x => x.Line.Id == Id);
+            Price.ListPriceWithTax = Price.ListPrice;
+            Price.SalePriceWithTax = Price.SalePrice;
+
+            //Because TaxLine.Id may contains composite string id & extra info
+            var productTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == Id);
             TaxTotal = new Money(Currency);
             if (productTaxRates.Any())
             {
-                var listPriceRate = productTaxRates.First(x => x.Line.Code.EqualsInvariant("list"));
-                var salePriceRate = productTaxRates.FirstOrDefault(x => x.Line.Code.EqualsInvariant("sale"));
+                var listPriceRate = productTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("list"));
+                var salePriceRate = productTaxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("sale"));
                 if(salePriceRate == null)
                 {
                     salePriceRate = listPriceRate;
@@ -327,7 +331,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
                 //Apply tax for tier prices
                 foreach (var tierPrice in Price.TierPrices)
                 {
-                    var tierPriceTaxRate = productTaxRates.FirstOrDefault(x => x.Line.Code.EqualsInvariant(tierPrice.Quantity.ToString()));
+                    var tierPriceTaxRate = productTaxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant(tierPrice.Quantity.ToString()));
                     if(tierPrice != null)
                     {
                         tierPrice.Tax = tierPriceTaxRate.Rate;

@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 namespace VirtoCommerce.Storefront.Model.Common
 {
     public class PagedSearchCriteria
-    {
+    {  
         public PagedSearchCriteria(NameValueCollection queryString)
         {
             PageNumber = Convert.ToInt32(queryString.Get("page") ?? 1.ToString());
-            PageSize = Convert.ToInt32(queryString.Get("count") ?? 10.ToString());
+            PageSize = Convert.ToInt32(queryString.Get("count") ?? queryString.Get("page_size") ?? 20.ToString());
         }
+
         public int Start
         {
             get

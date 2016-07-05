@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -44,6 +45,27 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             var mask = new Regex(fileMask.Replace(".", "[.]").Replace("*", ".*").Replace("?", "."), RegexOptions.IgnoreCase);
             return mask.IsMatch(fileName);
+        }
+
+        public static int? ToNullableInt(this string str)
+        {
+            int retVal;
+            if (int.TryParse(str, out retVal))
+            {
+                return retVal;
+            }
+            return null;
+        }
+
+        public static Tuple<string, string> SplitIntoTuple(this string input, char separator)
+        {
+            if(input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            var pieces = input.Split(separator);
+            return Tuple.Create(pieces.FirstOrDefault(), pieces.Skip(1).FirstOrDefault());
         }
     }
 }
