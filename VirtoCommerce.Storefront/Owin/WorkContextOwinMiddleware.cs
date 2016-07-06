@@ -260,7 +260,7 @@ namespace VirtoCommerce.Storefront.Owin
             var retVal = string.Equals(request.Method, "GET", StringComparison.OrdinalIgnoreCase);
             if (retVal)
             {
-                retVal = request.Uri.AbsolutePath.Contains("themes/assets") || !string.IsNullOrEmpty(Path.GetExtension(request.Uri.ToString()));
+                retVal = request.Uri.AbsolutePath.Contains("themes/assets") || request.Uri.IsFile;
             }
             return retVal;
         }
