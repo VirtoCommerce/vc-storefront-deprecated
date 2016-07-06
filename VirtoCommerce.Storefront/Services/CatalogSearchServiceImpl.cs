@@ -146,10 +146,11 @@ namespace VirtoCommerce.Storefront.Services
 
             if (!products.IsNullOrEmpty())
             {
+                var productsWithVariations = products.Concat(products.SelectMany(x => x.Variations)).ToList();
                 var taskList = new List<Task>
                 {
-                    LoadProductsInventoriesAsync(products),
-                    _pricingService.EvaluateProductPricesAsync(products)
+                    LoadProductsInventoriesAsync(productsWithVariations),
+                    _pricingService.EvaluateProductPricesAsync(productsWithVariations)
                 };
                 await Task.WhenAll(taskList.ToArray());
             }
@@ -180,10 +181,10 @@ namespace VirtoCommerce.Storefront.Services
 
             var result = _searchApi.SearchModuleSearch(searchCriteria);
             var products = result.Products.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
-
+            var productsWithVariations = products.Concat(products.SelectMany(x => x.Variations)).ToList();
             //Unable to make parallel call because its synchronous method (in future this information pricing and inventory will be getting from search index) and this lines can be removed
-            _pricingService.EvaluateProductPrices(products);
-            LoadProductsInventories(products);
+            _pricingService.EvaluateProductPrices(productsWithVariations);
+            LoadProductsInventories(productsWithVariations);
 
             return new CatalogSearchResult
             {
