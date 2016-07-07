@@ -3,6 +3,7 @@ using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model.StaticContent;
+using System.Collections.Generic;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -18,7 +19,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             retVal.PublishedAt = article.PublishedDate ?? article.CreatedDate;
             retVal.ImageUrl = article.ImageUrl;
             retVal.Tags = article.Tags != null ? article.Tags.OrderBy(t => t).ToArray() : null;
-
+            retVal.Comments = new MutablePagedList<Comment>(new List<Comment>());
             return retVal;
         }
     }
