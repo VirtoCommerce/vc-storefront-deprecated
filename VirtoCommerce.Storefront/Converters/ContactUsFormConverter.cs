@@ -13,7 +13,7 @@ namespace VirtoCommerce.Storefront.Converters
                 Language = workContext.CurrentLanguage.CultureName,
                 StoreId = workContext.CurrentStore.Id,
                 Type = contactUsForm.FormType,
-                Fields = contactUsForm.Contact.ToDictionary(x => x.Key, x => x.Value != null ? x.Value.ToString() : string.Empty)
+                Fields = contactUsForm.Contact.ToDictionary(x => x.Key, x => x.Value != null ? string.Join(", ", x.Value) : string.Empty)
             };
             return retVal;
         }

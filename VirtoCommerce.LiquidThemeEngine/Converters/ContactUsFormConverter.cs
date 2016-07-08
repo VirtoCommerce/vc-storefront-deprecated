@@ -1,4 +1,5 @@
-﻿using VirtoCommerce.LiquidThemeEngine.Objects;
+﻿using System.Linq;
+using VirtoCommerce.LiquidThemeEngine.Objects;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
@@ -8,11 +9,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
         public static Form ToShopifyModel(this StorefrontModel.ContactUsForm contactUsForm)
         {
             var retVal = new Form();
-            if(contactUsForm.Contact != null)
+            if (contactUsForm.Contact != null)
             {
-                retVal.Properties = contactUsForm.Contact;
+                retVal.Properties = contactUsForm.Contact.ToDictionary(x => x.Key, x => x.Value != null ? string.Join(", ", x.Value) : string.Empty);
             }
-          
+
             return retVal;
         }
     }
