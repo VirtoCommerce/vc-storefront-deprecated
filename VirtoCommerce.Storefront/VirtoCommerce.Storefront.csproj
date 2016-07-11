@@ -372,6 +372,16 @@
     <Content Include="App_Data\Themes\default\assets\jcb.svg" />
     <Content Include="App_Data\Themes\default\assets\jquery.zoom.min.js" />
     <Content Include="App_Data\Themes\default\assets\js\cart.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.js" />
+    <None Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-step.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-step.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout2.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-address.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-address.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout2.js" />
     <Content Include="App_Data\Themes\default\assets\js\quote-request.js" />
     <Content Include="App_Data\Themes\default\assets\klarna-big.png" />
     <Content Include="App_Data\Themes\default\assets\laser.svg" />
@@ -556,6 +566,9 @@
     </Content>
     <Content Include="App_Data\Themes\default\templates\maintenance.liquid" />
     <Content Include="App_Data\Themes\default\layout\empty.liquid" />
+    <Content Include="App_Data\Themes\default\templates\checkout2.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

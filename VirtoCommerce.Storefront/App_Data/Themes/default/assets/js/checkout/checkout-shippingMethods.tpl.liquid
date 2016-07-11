@@ -1,0 +1,32 @@
+﻿<form accept-charset="UTF8" class="step" name="$ctrl.form" novalidate="novalidate">
+    <div ng-if="$ctrl.shipment.validationWarnings.length">
+        <div class="alert alert-error" ng-if="$ctrl.shipment.validationWarnings[0].errorCode == 'ShippingUnavailableError'">
+            There is no shipping method for current shipping address and items available!
+        </div>
+    </div> 
+    <div class="content-box" ng-repeat="method in $ctrl.availShippingMethods">
+        <div class="content-box__row" ng-bind="method.name"></div>
+        <div class="content-box__row" ng-repeat="option in method.options">
+            <div class="radio-wrapper">
+                <div class="radio__input">
+                    <input class="input-radio" id="{% raw %}{{ option.id }}{% endraw %}" name="ShipmentMethodCode" type="radio" required="required" ng-value="option" ng-model="$ctrl.selectedOption" ng-change="$ctrl.selectMethodOption(option)" />
+                </div>
+                <label class="radio__label" for="{% raw %}{{ option.id }}{% endraw %}" ng-bind="option.name"></label>
+                {% if settings.show_prices_with_taxes %}
+                <span class="order-summary__emphasis" ng-bind="option.totalWithTax.formatedAmount"></span>
+                <span ng-if="option.discountTotalWithTax.amount > 0">
+                    <span class="order-summary__small-text strikethrough" ng-bind="option.priceWithTax.formatedAmount"></span>
+                </span>
+                {% else %}
+                <span class="order-summary__emphasis" ng-bind="option.total.formatedAmount"></span>
+                <span ng-if="option.discountTotal.amount > 0">
+                    <span class="order-summary__small-text strikethrough" ng-bind="option.price.formatedAmount"></span>
+                </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-error" style="margin-top: 20px;" ng-if="$ctrl.form.$submitted && $ctrl.form.ShipmentMethodCode.$error.required">
+        Please select shipping method
+    </div>
+</form>

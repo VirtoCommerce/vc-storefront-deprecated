@@ -1,0 +1,55 @@
+﻿<div ng-controller="checkoutController2">
+	<vc-checkout cart="checkout.cart" baseUrl="baseUrl">
+		<vc-checkout-step title="Shipping address">
+			<div class="edit_checkout animate-floating-labels">
+				<div class="step__sections">
+					<div class="section section--contact-information">
+						<div class="section__header">
+							<h2 class="section__title">Customer information</h2>
+						</div>
+						<div class="section__content">
+							<vc-checkout-email email="checkout.cart.email"></vc-checkout-email>
+							<p class="section__content__text" ng-if="!customer.isRegisteredUser">
+								Already have an account with us?
+								<a href="{{ 'account/login' | absolute_url }}">Log in</a>
+							</p>
+						</div>
+					</div>
+					<div class="section section--shipping-address">
+						<div class="section__header">
+							<h2 class="section__title">Shipping address</h2>
+						</div>
+						<div class="section__content">
+							<vc-checkout-address address="checkout.cart.shipment.deliveryAddress" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-checkout-address>
+						</div>
+					</div>
+				</div>			
+			</div>	
+		</vc-checkout-step>
+		<vc-checkout-step on-next-step="updateShipment(checkout.cart.shipment)">
+			<div class="edit_checkout animate-floating-labels">
+				<div class="section section--shipping-address-recap">
+					<div class="section__header">
+						<h2 class="section__title">Shipping address</h2>
+					</div>
+					<div class="section__content">
+						<p>
+							<vc-checkout-address address="checkout.cart.shipment.deliveryAddress" edit-mode="false"></vc-checkout-address>
+						</p>
+					</div>
+				</div>
+				<div class="section section--shipping-method">
+					<div class="section__header">
+						<h2 class="section__title">Shipping method</h2>
+					</div>
+					<div class="section__content">
+						<vc-checkout-shipping-methods shipment="checkout.shipment"></vc-checkout-shipping-methods>
+					</div>
+				</div>
+			</div>
+		</vc-checkout-step>
+		<vc-checkout-step>
+			<h1>The end</h1>
+		</vc-checkout-step>
+	</vc-checkout>
+</div>

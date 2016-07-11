@@ -228,7 +228,9 @@ storefrontApp.controller('checkoutController', ['$rootScope', '$scope', '$window
 
         function getCart(updateOnlyTotals) {
             cartService.getCart().then(function (response) {
-                var cart = response.data;
+
+            	var cart = response.data;
+            	$scope.checkout.cart = cart;
                 if (updateOnlyTotals) {
                     updateTotals(cart);
                     return;

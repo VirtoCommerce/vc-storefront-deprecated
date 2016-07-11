@@ -45,7 +45,13 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public void Clear()
         {
-            _cacheManager.Clear();
+            try
+            {
+                _cacheManager.Clear();
+            }
+            catch(ObjectDisposedException)
+            {
+            }
         }
 
         public void ClearRegion(string region)

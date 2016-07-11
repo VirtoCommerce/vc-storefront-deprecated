@@ -111,7 +111,7 @@ namespace VirtoCommerce.Storefront.Services
 
                     foreach (var address in workContext.CurrentCustomer.Addresses)
                     {
-                        address.Name = string.Join(" ", address.FirstName, address.LastName);
+                        address.Name = address.ToString();
                     }
 
                     await UpdateCustomerAsync(workContext.CurrentCustomer);
