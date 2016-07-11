@@ -71,7 +71,8 @@
 
     <span class="divider" aria-hidden="true">&rsaquo;</span>
     {% if current_tags %}
-      {{ blog.title | link_to: blog.url }}
+      {% assign blog_url = blog.url | absolute_url %}
+      {{ blog.title | link_to: blog_url }}
       <span class="divider" aria-hidden="true">&rsaquo;</span>
       <span>{{ current_tags | join: " + " }}</span>
     {% else %}
@@ -81,7 +82,8 @@
   {% elsif template == 'article' %}
 
     <span class="divider" aria-hidden="true">&rsaquo;</span>
-    {{ blog.title | link_to: blog.url }}
+    {% assign blog_url = blog.url | absolute_url %}
+    {{ blog.title | link_to: blog_url }}
     <span class="divider" aria-hidden="true">&rsaquo;</span>
     <span>{{ article.title }}</span>
 
