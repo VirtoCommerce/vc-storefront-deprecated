@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp', ['ngRoute', 'ui.bootstrap']);
+﻿var storefrontApp = angular.module('storefrontApp', ['ngRoute', 'ui.bootstrap', 'credit-cards']);
 
 storefrontApp.factory('httpErrorInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
     var httpErrorInterceptor = {};

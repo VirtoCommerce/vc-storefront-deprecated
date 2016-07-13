@@ -1,5 +1,6 @@
 ﻿<div ng-controller="checkoutController2">
-	<vc-checkout cart="checkout.cart" baseUrl="baseUrl">
+	<vc-checkout cart="checkout.cart">
+	
 		<vc-checkout-step title="Shipping address">
 			<div class="edit_checkout animate-floating-labels">
 				<div class="step__sections">
@@ -20,13 +21,13 @@
 							<h2 class="section__title">Shipping address</h2>
 						</div>
 						<div class="section__content">
-							<vc-checkout-address address="checkout.cart.shipment.deliveryAddress" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-checkout-address>
+							<vc-checkout-address address="checkout.shipment.deliveryAddress" get-avail-countries="getAvailCountries()" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-checkout-address>
 						</div>
 					</div>
-				</div>			
-			</div>	
+				</div>
+			</div>
 		</vc-checkout-step>
-		<vc-checkout-step on-next-step="updateShipment(checkout.cart.shipment)">
+		<vc-checkout-step title="Shipping method" on-next-step="updateShipment(checkout.shipment)">
 			<div class="edit_checkout animate-floating-labels">
 				<div class="section section--shipping-address-recap">
 					<div class="section__header">
@@ -34,7 +35,7 @@
 					</div>
 					<div class="section__content">
 						<p>
-							<vc-checkout-address address="checkout.cart.shipment.deliveryAddress" edit-mode="false"></vc-checkout-address>
+							<vc-checkout-address address="checkout.shipment.deliveryAddress" edit-mode="false"></vc-checkout-address>
 						</p>
 					</div>
 				</div>
@@ -43,13 +44,47 @@
 						<h2 class="section__title">Shipping method</h2>
 					</div>
 					<div class="section__content">
-						<vc-checkout-shipping-methods shipment="checkout.shipment"></vc-checkout-shipping-methods>
+						<vc-checkout-shipping-methods shipment="checkout.shipment" get-avail-shipping-methods="getAvailShippingMethods(checkout.shipment)"></vc-checkout-shipping-methods>
 					</div>
 				</div>
 			</div>
 		</vc-checkout-step>
-		<vc-checkout-step>
-			<h1>The end</h1>
+		<vc-checkout-step title="Payment method" on-next-step="updatePayment(checkout.payment)">
+			<div class="edit_checkout animate-floating-labels">
+				<div class="step__sections">
+					<div class="section section--payment-method">
+						<div class="section__header">
+							<h2 class="section__title">Payment method {{ checkout.paymentMethod.name }}</h2>
+							<p class="section__text">All transactions are secure and encrypted. Credit card information is never stored.</p>
+						</div>
+						<div class="section__content">
+							<vc-checkout-payment-methods get-avail-payment-methods="getAvailPaymentMethods()" payment-method="checkout.paymentMethod"  on-select-method="selectPaymentMethod(paymentMethod)"></vc-checkout-payment-methods>
+						</div>
+					</div>
+					<div class="section section--billing-address">
+						<div class="section__header">
+							<h2 class="section__title">Billing address</h2>
+						</div>
+						<div class="section__content">
+							<div class="content-box">
+								<div class="checkbox-wrapper content-box__row">
+									<div class="checkbox__input">
+										<h1>{{checkout.billingAddressEqualsShipping}}</h1>
+										<input class="input-checkbox" id="BillingAddressEqualsShipping" name="BillingAddressEqualsShipping" ng-model="checkout.billingAddressEqualsShipping" type="checkbox" ng-checked="checkout.billingAddressEqualsShipping"  />
+									</div>
+									<label class="checkbox__label" for="BillingAddressEqualsShipping">Billing address is equal to shipping address</label>
+								</div>
+								<div class="radio-group__row content-box__row content-box__row--secondary" ng-if="!checkout.billingAddressEqualsShipping">
+									<vc-checkout-address address="checkout.payment.billingAddress" get-avail-countries="getAvailCountries()"  addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-checkout-address>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</vc-checkout-step>
+		<vc-checkout-step title="Create order">
+			<div ng-init="createOrder()"></div>
 		</vc-checkout-step>
 	</vc-checkout>
 </div>

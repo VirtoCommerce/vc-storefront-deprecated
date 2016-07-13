@@ -1,4 +1,5 @@
-﻿using VirtoCommerce.Storefront.Model.Common;
+﻿using System;
+using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
 {
@@ -25,7 +26,8 @@ namespace VirtoCommerce.Storefront.Model
 
         public override string ToString()
         {
-            return string.Join(" ", FirstName, LastName, Organization, Line1, City, RegionName, PostalCode, CountryName).Substring(0, 120);
+            var retVal = string.Join(" ", FirstName, LastName, Organization, Line1, City, RegionName, PostalCode, CountryName);
+            return retVal;
         }
 
     }

@@ -56,14 +56,14 @@
                 Please enter your city
             </p>
         </div>
-        <div class="field field--required field--show-floating-label" ng-class="{ 'field--three-eights': $ctrl.address.country.regions.length, 'field--half':  !$ctrl.address.country.regions.length, 'field--error': $ctrl.form.$submitted && $ctrl.form.CountryName.$invalid }">
+        <div class="field field--required field--show-floating-label" ng-class="{ 'field--three-eights': $ctrl.address.country.regions.length, 'field--half':  !$ctrl.address.country.regions.length, 'field--error': $ctrl.form.$submitted && $ctrl.form.Country.$invalid }">
             <div class="field__input-wrapper field__input-wrapper--select">
                 <label class="field__label" for="Country">Country</label>
                 <select class="field__input field__input--select" if="Country" name="Country" required="required" size="1" ng-model="$ctrl.address.country" ng-options="x as x.name for x in $ctrl.countries" ng-change="$ctrl.selectCountry($ctrl.address.country)">
                     <option value="">Select country</option>
                 </select>
             </div>
-            <p class="field__message field__message--error" ng-if="$ctrl.form.$submitted && $ctrl.form.CountryName.$error.required">
+            <p class="field__message field__message--error" ng-if="$ctrl.form.$submitted && $ctrl.form.Country.$error.required">
                 Please select your country
             </p>
         </div>

@@ -6,15 +6,18 @@ storefrontApp.component('vcCheckoutShippingMethods', {
 		checkoutStep: '^vcCheckoutStep'
 	},
 	bindings: {
-		shipment: '='
+		shipment: '=',
+		getAvailShippingMethods: '&'
 	},
-	controller: ['cartService', function (cartService) {
+	controller: [function () {
+
 		var ctrl = this;
 		ctrl.availShippingMethods = [];
 		ctrl.selectedOption = {};
 		this.$onInit = function () {
 			ctrl.checkoutStep.addComponent(this);
-			getAvailableShippingMethods().then(function (availMethods) {
+
+			innerGetAvailShippingMethods().then(function (availMethods) {
 				ctrl.availShippingMethods = availMethods;
 			});
 		};		
@@ -23,8 +26,8 @@ storefrontApp.component('vcCheckoutShippingMethods', {
 			ctrl.checkoutStep.removeComponent(this);
 		};
 
-		function getAvailableShippingMethods() {
-			return cartService.getAvailableShippingMethods(ctrl.shipment.id).then(function (response) {
+		function innerGetAvailShippingMethods() {
+			return ctrl.getAvailShippingMethods(ctrl.shipment).then(function (response) {
 				var availMethods = [];
 				_.each(response.data, function (method) {
 					var existMethod = _.find(availMethods, function (x) {

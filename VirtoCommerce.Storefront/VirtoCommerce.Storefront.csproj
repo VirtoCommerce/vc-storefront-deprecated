@@ -372,6 +372,10 @@
     <Content Include="App_Data\Themes\default\assets\jcb.svg" />
     <Content Include="App_Data\Themes\default\assets\jquery.zoom.min.js" />
     <Content Include="App_Data\Themes\default\assets\js\cart.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.tpl.html" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.js" />
     <None Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.tpl.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-step.js" />

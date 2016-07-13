@@ -16,6 +16,7 @@
     {{ '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js' | script_tag }}
     {{ '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.min.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap-tpls.min.js' | script_tag }}
+    {{ '//rawgit.com/bendrucker/angular-credit-cards/v3.0.1/release/angular-credit-cards.js' | script_tag }}
     {{ 'app.js' | global_asset_url | script_tag }}
     {{ 'services.js' | global_asset_url | script_tag }}
     {{ 'directives.js' | global_asset_url | script_tag }}
@@ -26,6 +27,8 @@
     {{ 'js/checkout/checkout-step.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout-email.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout-shippingMethods.js' | asset_url | script_tag }}
+    {{ 'js/checkout/checkout-paymentMethods.js' | asset_url | script_tag }}
+    {{ 'js/checkout/checkout-creditCard.js' | asset_url | script_tag }}
 
     {{ content_for_header }}
 </head>
