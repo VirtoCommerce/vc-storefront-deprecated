@@ -3,7 +3,7 @@
 storefrontApp.component('vcCheckoutEmail', {
 	templateUrl: "themes/assets/js/checkout/checkout-email.tpl.html",
 	require: {
-		checkoutStep: '^vcCheckoutStep'
+		checkoutStep: '^vcCheckoutWizardStep'
 	},
 	bindings: {
 		email: '='

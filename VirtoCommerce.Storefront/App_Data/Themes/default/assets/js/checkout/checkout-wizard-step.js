@@ -1,12 +1,13 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcCheckoutStep', {
-	templateUrl: "themes/assets/js/checkout/checkout-step.tpl.html",
+storefrontApp.component('vcCheckoutWizardStep', {
+	templateUrl: "themes/assets/js/checkout/checkout-wizard-step.tpl.html",
 	transclude: true,
 	require: {
-		checkout: '^vcCheckout'
+		wizard: '^vcCheckoutWizard'
 	},
 	bindings: {
 		title: '@',
+		hidden: '<',
 		onNextStep: '&'
 	},
 	controller: ['$scope', 'cartService', function ($scope, cartService) {
@@ -14,7 +15,7 @@ storefrontApp.component('vcCheckoutStep', {
 		ctrl.components = [];
 
 		this.$onInit = function () {
-			ctrl.checkout.addStep(this);
+			ctrl.wizard.addStep(this);
 		};
 
 		ctrl.addComponent = function (component) {		

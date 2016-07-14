@@ -3,7 +3,7 @@
 storefrontApp.component('vcCheckoutShippingMethods', {
 	templateUrl: "themes/assets/js/checkout/checkout-shippingMethods.tpl.liquid",
 	require: {
-		checkoutStep: '^vcCheckoutStep'
+		checkoutStep: '^vcCheckoutWizardStep'
 	},
 	bindings: {
 		shipment: '=',
@@ -16,7 +16,6 @@ storefrontApp.component('vcCheckoutShippingMethods', {
 		ctrl.selectedOption = {};
 		this.$onInit = function () {
 			ctrl.checkoutStep.addComponent(this);
-
 			innerGetAvailShippingMethods().then(function (availMethods) {
 				ctrl.availShippingMethods = availMethods;
 			});

@@ -23,16 +23,20 @@
     {{ 'main.js' | asset_url | script_tag }}
     {{ 'checkout.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout2.js' | asset_url | script_tag }}
+    {{ 'js/checkout/checkout-wizard.js' | asset_url | script_tag }}
+    {{ 'js/checkout/checkout-wizard-step.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout-address.js' | asset_url | script_tag }}
-    {{ 'js/checkout/checkout-step.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout-email.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout-shippingMethods.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout-paymentMethods.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout-creditCard.js' | asset_url | script_tag }}
+    {{ 'js/checkout/checkout-coupon.js' | asset_url | script_tag }}
+    {{ 'js/checkout/checkout-lineItems.js' | asset_url | script_tag }}
+    {{ 'js/checkout/checkout-totals.js' | asset_url | script_tag }}
 
     {{ content_for_header }}
 </head>
-<body ng-controller="checkoutController" ng-init="baseUrl='{{ '/' | absolute_url }}'">
+<body ng-controller="checkoutController2" ng-init="baseUrl='{{ '/' | absolute_url }}'">
     <div class="banner">
         <div class="wrap">
             <a class="logo logo--left" href="{{ '/' | absolute_url }}">
@@ -40,7 +44,7 @@
             </a>
         </div>
     </div>
-    <button class="order-summary-toggle" ng-class="{ 'order-summary-toggle--show': !checkout.orderSummaryVisible, 'order-summary-toggle--hide': checkout.orderSummaryVisible }" ng-click="toggleOrderSummary(checkout.orderSummaryVisible)">
+    <button class="order-summary-toggle" ng-class="{ 'order-summary-toggle--show': !orderSummaryVisible, 'order-summary-toggle--hide': orderSummaryVisible }" ng-click="orderSummaryVisible = !orderSummaryVisible">
         <div class="wrap">
             <div class="order-summary-toggle__inner">
                 <div class="order-summary-toggle__icon-wrapper">
@@ -68,23 +72,7 @@
     </button>
     <div class="content">
         <div class="wrap">
-            <div class="sidebar">
-                {% include 'checkout-sidebar' %}
-            </div>
-            <div class="main" role="main">
-                <div class="main__header">
-                    <a class="logo logo--left" href="{{ '/' | absolute_url }}">
-                        <h1 class="logo__text">{{ shop.name }}</h1>
-                    </a>
-                    {% include 'checkout-breadcrumbs' %}
-                </div>
-                <div class="main__content">
-                    {{ content_for_layout }}
-                </div>
-                <div class="main__footer" role="contentinfo">
-                    {% include 'checkout-footer' %}
-                </div>
-            </div>
+            {{ content_for_layout }}
         </div>
     </div>
     {% include 'notification' %}

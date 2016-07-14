@@ -3,7 +3,7 @@
 storefrontApp.component('vcCheckoutPaymentMethods', {
 	templateUrl: "themes/assets/js/checkout/checkout-paymentMethods.tpl.html",
 	require: {
-		checkoutStep: '^vcCheckoutStep'
+		checkoutStep: '^vcCheckoutWizardStep'
 	},
 	bindings: {
 		getAvailPaymentMethods: '&',

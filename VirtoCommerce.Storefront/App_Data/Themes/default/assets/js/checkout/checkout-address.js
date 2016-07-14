@@ -9,7 +9,7 @@ storefrontApp.component('vcCheckoutAddress', {
 		onUpdate: '&'
 	},
 	require: {
-		checkoutStep: '^vcCheckoutStep'
+		checkoutStep: '^vcCheckoutWizardStep'
 	},
 
 	controller: ['$scope', 'cartService', function ($scope, cartService) {
@@ -27,11 +27,30 @@ storefrontApp.component('vcCheckoutAddress', {
 			ctrl.checkoutStep.removeComponent(this);
 		};
 		
-		function prepareAddress(address, countries) {
-			//Set country object for address
-			address.country = _.find(countries, function (x) { return x.name == address.countryName || x.code2 == address.countryCode || x.code3 == address.countryCode; });
+	
+		function loadCountryRegions(country) {
+			return cartService.getCountryRegions(country.code3).then(function (result) {
+				country.regions = result.data;
+				return country.regions;
+			});
+		};
 
-			if (ctrl.address.country) {
+		ctrl.selectAddress = function (address) {
+			ctrl.address = address;
+			//Set country object for address
+			address.country = _.find(ctrl.countries, function (x) { return x.name == address.countryName || x.code2 == address.countryCode || x.code3 == address.countryCode; });
+			if (address.country) {
+				loadCountryRegions(address.country).then(function (regions) {
+					address.region = _.find(regions, function (x) { return x.code == address.regionId || x.name == address.regionName; });
+				});
+			}
+		};
+
+		ctrl.selectCountry = function (country) {
+			if (country) {
+				if (!country.regions) {
+					loadCountryRegions(country);
+				}
 				ctrl.address.countryName = ctrl.address.country.name;
 				ctrl.address.countryCode = ctrl.address.country.code3;
 			}
@@ -39,32 +58,18 @@ storefrontApp.component('vcCheckoutAddress', {
 				ctrl.address.countryName = undefined;
 				ctrl.address.countryCode = undefined;
 			}
+		};
 
-			if (address.country) {
-				loadCountryRegions(address.country).then(function (regions) {
-					address.region = _.find(regions, function (x) { return x.code == address.regionId || x.name == address.regionName; });
-					if (ctrl.address.region) {
-						ctrl.address.regionId = ctrl.address.region.code;
-						ctrl.address.regionName = ctrl.address.region.name;
-					}
-					else {
-						ctrl.address.regionId = undefined;
-						ctrl.address.regionName = undefined;
-					}
-				});
-			}		
-		}
-
-		function loadCountryRegions(country) {
-			return cartService.getCountryRegions(country.code3).then(function (result) {
-				country.regions = result.data;
-				return country.regions;
-			});
-		}
-
-		ctrl.selectCountry = function (country) {		
-			loadCountryRegions(country);
-		};	
+		ctrl.selectRegion = function (region) {
+			if (region) {
+				ctrl.address.regionId = ctrl.address.region.code;
+				ctrl.address.regionName = ctrl.address.region.name;
+			}
+			else {
+				ctrl.address.regionId = undefined;
+				ctrl.address.regionName = undefined;
+			}
+		};
 
 		ctrl.validate = function () {
 			if (ctrl.form) {
@@ -88,18 +93,7 @@ storefrontApp.component('vcCheckoutAddress', {
 
 		$scope.$watch('$ctrl.address', function () {
 			if (ctrl.form && ctrl.address) {
-				if (!ctrl.address.country)
-				{
-					if (!ctrl.countries) {
-						ctrl.getAvailCountries().then(function (countries) {
-							prepareAddress(ctrl.address, countries);
-						});
-					}
-					else
-					{
-						prepareAddress(ctrl.address, ctrl.countries);
-					}
-				}
+				
 				ctrl.address.name = stringifyAddress(ctrl.address);
 		
 				ctrl.onUpdate({ address: ctrl.address });

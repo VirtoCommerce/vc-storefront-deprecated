@@ -3,30 +3,62 @@
 storefrontApp.controller('checkoutController2', ['$rootScope', '$scope', '$window', 'cartService',
     function ($rootScope, $scope, $window, cartService) {
     	$scope.checkout = {
+    		wizard : {},
     		paymentMethod: {},
     		shipment: {},
-    		payment: {}
+    		payment: {},
+    		coupon: {}
     	};
-    	$scope.reloadCart = function () {
 
+    	$scope.reloadCart = function () {
     		cartService.getCart().then(function (response) {
     			var cart = response.data;
-    			$scope.checkout.cart = cart;
-    			$scope.checkout.payment = cart.payments.length ? cart.payments[0] : $scope.checkout.payment;
-    			$scope.checkout.paymentMethod.gatewayCode = cart.payments.length ? cart.payments[0].paymentGatewayCode : $scope.checkout.paymentMethod.gatewayCode;
-    			$scope.checkout.shipment = cart.shipments.length ? cart.shipments[0] : $scope.checkout.shipment;
-    			$scope.checkout.billingAddressEqualsShipping = angular.isDefined($scope.checkout.payment.billingAddress);
+    			if (!cart || !cart.id) {
+    				$scope.outerRedirect($scope.baseUrl + 'cart');
+    			}
+    			else {
+    				$scope.checkout.cart = cart;
+    				$scope.checkout.coupon = cart.coupon || $scope.checkout.coupon;
+    				$scope.checkout.payment = cart.payments.length ? cart.payments[0] : $scope.checkout.payment;
+    				$scope.checkout.paymentMethod.gatewayCode = cart.payments.length ? cart.payments[0].paymentGatewayCode : $scope.checkout.paymentMethod.gatewayCode;
+    				$scope.checkout.shipment = cart.shipments.length ? cart.shipments[0] : $scope.checkout.shipment;
+    				$scope.checkout.billingAddressEqualsShipping = angular.isDefined($scope.checkout.payment.billingAddress);
+    			}
     		});
-    	};
+    	};	
 
-    	$scope.selectPaymentMethod = function(paymentMethod)
-    	{
+    	$scope.applyCoupon = function (coupon) {
+    		coupon.processing = true;
+    		cartService.addCoupon(coupon.code).then(function (response) {
+    			var coupon = response.data;
+    			coupon.processing = false;
+    			$scope.checkout.coupon = coupon;
+    			if (!coupon.appliedSuccessfully) {
+    				coupon.errorCode = 'InvalidCouponCode';
+    			}
+    			$scope.reloadCart();
+    		}, function (response) {
+    			coupon.processing = false;
+    		});
+    	}
+
+    	$scope.removeCoupon = function (coupon) {
+    		coupon.processing = true;
+    		cartService.removeCoupon().then(function (response) {
+    			coupon.processing = false;
+    			$scope.checkout.coupon = null;
+    			$scope.reloadCart();
+    		}, function (response) {
+    			coupon.processing = false;
+    		});
+    	}
+
+    	$scope.selectPaymentMethod = function (paymentMethod) {
     		$scope.checkout.payment.paymentGatewayCode = paymentMethod.gatewayCode;
     	};
 
     	$scope.updatePayment = function () {
-    		if ($scope.checkout.billingAddressEqualsShipping)
-    		{
+    		if ($scope.checkout.billingAddressEqualsShipping) {
     			$scope.checkout.payment.billingAddress = undefined;
     		}
 
@@ -63,7 +95,7 @@ storefrontApp.controller('checkoutController2', ['$rootScope', '$scope', '$windo
     		})
     	};
 
-    	$scope.createOrder = function() {
+    	$scope.createOrder = function () {
     		cartService.createOrder($scope.checkout.bankCardInfo).then(function (response) {
     			var order = response.data.order;
     			var orderProcessingResult = response.data.orderProcessingResult;
@@ -97,54 +129,3 @@ storefrontApp.controller('checkoutController2', ['$rootScope', '$scope', '$windo
 
     	$scope.reloadCart();
     }]);
-
-storefrontApp.component('vcCheckout', {
-	transclude: true,
-	templateUrl: 'themes/assets/js/checkout/checkout2.tpl.html',
-	bindings: {
-	},
-	controller: ['$scope', function ($scope) {
-		var ctrl = this;	
-		ctrl.address = {};
-		ctrl.steps = [];
-		ctrl.currentStep = {};
-
-		this.$onInit = function () {
-		};
-
-		ctrl.selectStep = function (step) {
-			if (ctrl.currentStep != step) {
-				step.isActive = true;
-				ctrl.currentStep.isActive = false;
-				ctrl.currentStep = step;
-			}
-		};
-
-		ctrl.nextStep = function () {
-			if (ctrl.currentStep.validate()) {
-				if (ctrl.currentStep.onNextStep) {
-					ctrl.currentStep.onNextStep();
-				}
-				ctrl.selectStep(ctrl.currentStep.nextStep);
-			}
-		};
-
-		ctrl.prevStep = function () {
-			ctrl.selectStep(ctrl.currentStep.prevStep);
-		};
-
-		ctrl.addStep = function (step) {
-			step.isActive = false;
-			if (ctrl.steps.length === 0) {
-				ctrl.selectStep(step);
-			}
-			step.prevStep = ctrl.steps[ctrl.steps.length - 1];
-			if (step.prevStep)
-			{
-				step.prevStep.nextStep = step;
-			}
-			ctrl.steps.push(step);
-		};
-
-	}]
-});

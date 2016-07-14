@@ -3,7 +3,7 @@
 storefrontApp.component('vcCheckoutCreditCard', {
 	templateUrl: "themes/assets/js/checkout/checkout-creditCard.tpl.html",
 	require: {
-		checkoutStep: '^vcCheckoutStep'
+		checkoutStep: '^vcCheckoutWizardStep'
 	},
 	bindings: {
 		card: '='
