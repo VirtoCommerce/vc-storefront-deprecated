@@ -7,12 +7,15 @@ storefrontApp.component('vcCheckoutWizardStep', {
 	},
 	bindings: {
 		title: '@',
-		hidden: '<',
-		onNextStep: '&'
+		disabled: '=?',
+		onNextStep: '&?',
+		canEnter: '=?',
+		final: '<?'
 	},
 	controller: ['$scope', 'cartService', function ($scope, cartService) {
 		var ctrl = this;
 		ctrl.components = [];
+		ctrl.canEnter = true;
 
 		this.$onInit = function () {
 			ctrl.wizard.addStep(this);

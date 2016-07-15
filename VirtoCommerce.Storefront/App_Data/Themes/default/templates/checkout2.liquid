@@ -31,15 +31,15 @@
 				<li class="breadcrumb__item breadcrumb__item--completed">
 					<a class="breadcrumb__link" ng-href="{{ 'cart' | absolute_url }}">{{ 'checkout.cart' | t }}</a>
 				</li>
-				<li class="breadcrumb__item" ng-repeat="step in checkout.wizard.steps" ng-class="{ 'breadcrumb__item--current': step.isActive, 'breadcrumb__item--completed': !step.isActive }">
-					<a class="breadcrumb__link" ng-href="javascript:;" ng-click="checkout.wizard.selectStep(step)" ng-if="!step.isActive" ng-bind="step.title"></a>
+				<li class="breadcrumb__item" ng-repeat="step in checkout.wizard.steps" ng-if="!step.disabled && !step.final" ng-class="{ 'breadcrumb__item--current': step.isActive, 'breadcrumb__item--completed': !step.isActive }">
+					<a class="breadcrumb__link" ng-href="javascript:;" ng-click="checkout.wizard.goToStep(step)" ng-if="!step.isActive" ng-bind="step.title"></a>
 					<span ng-class="current" ng-if="step.isActive" ng-bind="step.title"></span>
 				</li>
 			</ul>
 		</div>
-		<div class="main__content">
-			<vc-checkout-wizard cart="checkout.cart" wizard="checkout.wizard">
-				<vc-checkout-wizard-step title="Shipping address">
+		<div class="main__content">		
+			<vc-checkout-wizard cart="checkout.cart" wizard="checkout.wizard" on-finish="createOrder()" loading="checkout.loading">
+				<vc-checkout-wizard-step title="Shipping address" disabled="!checkout.cart.hasPhysicalProducts">
 					<div class="edit_checkout animate-floating-labels">
 						<div class="step__sections">
 							<div class="section section--contact-information">
@@ -59,13 +59,13 @@
 									<h2 class="section__title">Shipping address</h2>
 								</div>
 								<div class="section__content">
-									<vc-checkout-address address="checkout.shipment.deliveryAddress" get-avail-countries="getAvailCountries()" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-checkout-address>
+									<vc-checkout-address address="checkout.shipment.deliveryAddress" countries="checkout.availCountries"  get-country-regions="getCountryRegions(country)" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-checkout-address>
 								</div>
 							</div>
 						</div>
 					</div>
 				</vc-checkout-wizard-step>
-				<vc-checkout-wizard-step title="Shipping method" on-next-step="updateShipment(checkout.shipment)">
+				<vc-checkout-wizard-step title="Shipping method" on-next-step="updateShipment(checkout.shipment)" disabled="!checkout.cart.hasPhysicalProducts">
 					<div class="edit_checkout animate-floating-labels">
 						<div class="section section--shipping-address-recap">
 							<div class="section__header">
@@ -82,7 +82,7 @@
 								<h2 class="section__title">Shipping method</h2>
 							</div>
 							<div class="section__content">
-								<vc-checkout-shipping-methods shipment="checkout.shipment" get-avail-shipping-methods="getAvailShippingMethods(checkout.shipment)"></vc-checkout-shipping-methods>
+								<vc-checkout-shipping-methods shipment="checkout.shipment" on-select-shipping-method="selectShippingMethod(shippingMethod)" get-avail-shipping-methods="getAvailShippingMethods(checkout.shipment)"></vc-checkout-shipping-methods>
 							</div>
 						</div>
 					</div>
@@ -113,7 +113,7 @@
 											<label class="checkbox__label" for="BillingAddressEqualsShipping">Billing address is equal to shipping address</label>
 										</div>
 										<div class="radio-group__row content-box__row content-box__row--secondary" ng-if="!checkout.billingAddressEqualsShipping">
-											<vc-checkout-address address="checkout.payment.billingAddress" get-avail-countries="getAvailCountries()"  addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-checkout-address>
+											<vc-checkout-address address="checkout.payment.billingAddress" countries="checkout.availCountries" get-country-regions="getCountryRegions(country)" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-checkout-address>
 										</div>
 									</div>
 								</div>
@@ -121,8 +121,7 @@
 						</div>
 					</div>
 				</vc-checkout-wizard-step>
-				<vc-checkout-wizard-step title="Create order">
-
+				<vc-checkout-wizard-step title="Create order" final="true" can-enter="checkout.isValid">					
 				</vc-checkout-wizard-step>
 			</vc-checkout-wizard>
 		</div>

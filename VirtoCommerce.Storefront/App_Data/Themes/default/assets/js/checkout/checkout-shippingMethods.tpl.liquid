@@ -4,23 +4,23 @@
             There is no shipping method for current shipping address and items available!
         </div>
     </div> 
-    <div class="content-box" ng-repeat="method in $ctrl.availShippingMethods">
-        <div class="content-box__row" ng-bind="method.name"></div>
-        <div class="content-box__row" ng-repeat="option in method.options">
+    <div class="content-box" ng-repeat="(key, value) in $ctrl.availShippingMethods | groupBy: 'name' ">
+        <div class="content-box__row" ng-bind="key"></div>
+        <div class="content-box__row" ng-repeat="method in value">
             <div class="radio-wrapper">
                 <div class="radio__input">
-                    <input class="input-radio" id="{% raw %}{{ option.id }}{% endraw %}" name="ShipmentMethodCode" type="radio" required="required" ng-value="option" ng-model="$ctrl.selectedOption" ng-change="$ctrl.selectMethodOption(option)" />
+                    <input class="input-radio" id="{% raw %}{{ method.id }}{% endraw %}" name="ShipmentMethodCode" type="radio" required="required" ng-value="method" ng-model="$ctrl.selectedMethod" ng-change="$ctrl.selectMethod(method)" />
                 </div>
-                <label class="radio__label" for="{% raw %}{{ option.id }}{% endraw %}" ng-bind="option.name"></label>
+                <label class="radio__label" for="{% raw %}{{ method.id }}{% endraw %}" ng-bind="method.optionName ? method.optionName : method.name"></label>
                 {% if settings.show_prices_with_taxes %}
-                <span class="order-summary__emphasis" ng-bind="option.totalWithTax.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="method.totalWithTax.formatedAmount"></span>
                 <span ng-if="option.discountTotalWithTax.amount > 0">
-                    <span class="order-summary__small-text strikethrough" ng-bind="option.priceWithTax.formatedAmount"></span>
+                    <span class="order-summary__small-text strikethrough" ng-bind="method.priceWithTax.formatedAmount"></span>
                 </span>
                 {% else %}
-                <span class="order-summary__emphasis" ng-bind="option.total.formatedAmount"></span>
-                <span ng-if="option.discountTotal.amount > 0">
-                    <span class="order-summary__small-text strikethrough" ng-bind="option.price.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="method.total.formatedAmount"></span>
+                <span ng-if="method.discountTotal.amount > 0">
+                    <span class="order-summary__small-text strikethrough" ng-bind="method.price.formatedAmount"></span>
                 </span>
                 {% endif %}
             </div>

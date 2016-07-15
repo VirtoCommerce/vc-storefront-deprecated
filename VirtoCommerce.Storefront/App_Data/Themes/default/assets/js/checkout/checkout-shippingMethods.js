@@ -7,63 +7,40 @@ storefrontApp.component('vcCheckoutShippingMethods', {
 	},
 	bindings: {
 		shipment: '=',
-		getAvailShippingMethods: '&'
+		getAvailShippingMethods: '&',
+		onSelectShippingMethod: '&'
 	},
 	controller: [function () {
 
 		var ctrl = this;
 		ctrl.availShippingMethods = [];
-		ctrl.selectedOption = {};
+		ctrl.selectedMethod = {};
 		this.$onInit = function () {
 			ctrl.checkoutStep.addComponent(this);
-			innerGetAvailShippingMethods().then(function (availMethods) {
+			ctrl.getAvailShippingMethods(ctrl.shipment).then(function (availMethods) {
 				ctrl.availShippingMethods = availMethods;
+				_.each(ctrl.availShippingMethods, function (x) {
+					x.id = getMethodId(x);
+				});
+				ctrl.selectedMethod = _.find(ctrl.availShippingMethods, function (x) { return ctrl.shipment.shipmentMethodCode == x.shipmentMethodCode && ctrl.shipment.shipmentMethodOption == x.optionName });
 			});
 		};		
 		
 		this.$onDestroy = function () {
 			ctrl.checkoutStep.removeComponent(this);
 		};
-
-		function innerGetAvailShippingMethods() {
-			return ctrl.getAvailShippingMethods(ctrl.shipment).then(function (response) {
-				var availMethods = [];
-				_.each(response.data, function (method) {
-					var existMethod = _.find(availMethods, function (x) {
-						return x.shipmentMethodCode = method.shipmentMethodCode;
-					});
-					if(!existMethod)
-					{
-						existMethod = {
-							name : method.name,
-							options : []
-						};
-						availMethods.push(existMethod);
-					}
-					method.id = getMethodId(method.shipmentMethodCode, method.optionName);
-					method.name = method.optionName ? method.optionName : method.name;
-					existMethod.options.push(method);
-					
-					if (ctrl.shipment.shipmentMethodCode == method.shipmentMethodCode && ctrl.shipment.shipmentMethodOption == method.optionName)
-					{
-						ctrl.selectedOption = method;
-					}
-				});
-				return availMethods;
-			});
-		}
-
-		function getMethodId(code, option) {
-			var retVal = code;
-			if (option) {
-				retVal += ':' + option;
+			
+		function getMethodId(method) {
+			var retVal = method.shipmentMethodCode;
+			if (method.optionName) {
+				retVal += ':' + method.optionName;
 			}
 			return retVal;
 		}
 
-		ctrl.selectMethodOption = function(option){
-			ctrl.shipment.shipmentMethodCode = option.shipmentMethodCode;
-			ctrl.shipment.shipmentMethodOption = option.optionName;
+		ctrl.selectMethod = function (method) {
+			ctrl.selectedMethod = method;
+			ctrl.onSelectShippingMethod({ shippingMethod: method });
 		};
 	
 		ctrl.validate = function () {

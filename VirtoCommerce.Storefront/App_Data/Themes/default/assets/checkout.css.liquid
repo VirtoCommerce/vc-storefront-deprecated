@@ -315,6 +315,27 @@ h2 {
     font-family: "Helvetica Neue", sans-serif;
     font-size: 1.28571em
 }
+.main {
+   position: relative;
+}
+ .main .processing {
+    background: rgba(0, 0, 0, .3);
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+
+.main .processing .btn__spinner {
+    -webkit-animation: rotate 0.5s linear infinite;
+    animation: rotate 0.5s linear infinite;
+    opacity: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
+    filter: alpha(opacity=100)
+}
 .main h2 {
     color: #333333
 }

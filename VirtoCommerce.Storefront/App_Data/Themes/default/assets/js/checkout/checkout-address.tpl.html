@@ -3,7 +3,7 @@
         <div class="field field--optional field--show-floating-label" ng-if="$ctrl.addresses.length">
             <div class="field__input-wrapper field__input-wrapper--select">
                 <label class="field__label" for="Addresses">Customer addresses</label>
-                <select class="field__input field__input--select text-truncate" id="Addresses" name="Addresses" size="1" ng-model="$ctrl.address" ng-options="x as x.name for x in $ctrl.addresses" ng-change="$ctrl.selectAddress($ctrl.address)">
+                <select class="field__input field__input--select text-truncate" id="Addresses" name="Addresses" size="1" ng-model="$ctrl.address" ng-options="x as x.name for x in $ctrl.addresses">
                     <option value="" ng-bind="'Select address'"></option>
                 </select>
             </div>
@@ -59,7 +59,7 @@
         <div class="field field--required field--show-floating-label" ng-class="{ 'field--three-eights': $ctrl.address.country.regions.length, 'field--half':  !$ctrl.address.country.regions.length, 'field--error': $ctrl.form.$submitted && $ctrl.form.Country.$invalid }">
             <div class="field__input-wrapper field__input-wrapper--select">
                 <label class="field__label" for="Country">Country</label>
-                <select class="field__input field__input--select" if="Country" name="Country" required="required" size="1" ng-model="$ctrl.address.country" ng-options="x as x.name for x in $ctrl.countries" ng-change="$ctrl.selectCountry($ctrl.address.country)">
+                <select class="field__input field__input--select" if="Country" name="Country" required="required" size="1" ng-model="$ctrl.address.countryCode" ng-options="x.code3 as x.name for x in $ctrl.countries">
                     <option value="">Select country</option>
                 </select>
             </div>
@@ -70,7 +70,7 @@
         <div class="field field--three-eights field--required field--show-floating-label" ng-if="$ctrl.address.country.regions.length" ng-class="{ 'field--error': $ctrl.form.$submitted && $ctrl.form.Region.$invalid }">
             <div class="field__input-wrapper field__input-wrapper--select">
                 <label class="field__label" for="Region" ng-bind="$ctrl.address.country.regionType"></label>
-                <select class="field__input field__input--select" id="Region" name="Region" placeholder="{% raw %}{{ $ctrl.address.country.regionType }}{% endraw %}" required="required" size="1" ng-model="$ctrl.address.region" ng-options="x as x.name for x in $ctrl.address.country.regions" ng-change="$ctrl.selectRegion($ctrl.address.region)">
+                <select class="field__input field__input--select" id="Region" name="Region" placeholder="{{ $ctrl.address.country.regionType }}" required="required" size="1" ng-model="$ctrl.address.regionId" ng-options="x.code as x.name for x in $ctrl.address.country.regions">
                     <option value="" ng-bind="'Select ' + $ctrl.address.country.regionType"></option>
                 </select>
             </div>
