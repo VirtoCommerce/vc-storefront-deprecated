@@ -1,0 +1,79 @@
+﻿<form accept-charset="UTF8" class="step" name="$ctrl.form" novalidate="novalidate">
+    <div class="fieldset">
+        <div class="field field--required" ng-class="{ 'field--show-floating-label': !$ctrl.form.BankCardNumber.$error.required, 'field--error': ($ctrl.form.BankCardNumber.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardNumber.$valid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="BankCardNumber">Card number</label>
+                <input type="text" placeholder="Card number" class="field__input" id="BankCardNumber" cc-number cc-eager-type name="BankCardNumber" ng-model="$ctrl.card.bankCardNumber" required="required">
+                <span class="field__icon icon icon--lock">
+                    <span class="visually-hidden">Secure field</span>
+                </span>
+                <span class="field__icon icon payment-icon has-tooltip" style="right: 40px; top: 23%;"
+                      ng-class="{ 'American Express': 'payment-icon--american-express', 'Dankort': 'payment-icon--dankort', 'Diners Club' : 'payment-icon--diners-club',
+                                  'Discover' : 'payment-icon--discover', 'JCB' :'payment-icon--jcb', 'Laser' : 'payment-icon--laser',
+                                  'Maestro' : 'payment-icon--maestro', 'MasterCard' : 'payment-icon--master', 'UnionPay' : 'payment-icon--unionpay', 'Visa' : 'payment-icon--visa'}[$ctrl.form.BankCardNumber.$ccEagerType]"
+                      ng-if="$ctrl.form.BankCardNumber.$valid">
+                    <span class="tooltip" ng-bind="$ctrl.form.BankCardNumber.$ccEagerType"></span>
+                    <span class="visually-hidden" ng-bind="$ctrl.form.BankCardNumber.$ccEagerType"></span>
+                </span>
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardNumber.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardNumber.$error.required">
+                Please enter your bank card number
+            </p>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardNumber.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardNumber.$error.$valid">
+                Please enter correct card number
+            </p>
+        </div>
+        <div class="field field--half field--required" ng-class="{ 'field--show-floating-label': $ctrl.card.cardholderName.length, 'field--error': ($ctrl.form.BankCardCardholderName.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardCardholderName.$invalid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="BankCardCardholderName">Cardholder name</label>
+                <input class="field__input" id="BankCardCardholderName" name="BankCardCardholderName" placeholder="Cardholder name" required="required" size="30" type="text" ng-model="$ctrl.card.bankCardHolderName">
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardCardholderName.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardCardholderName.$error.required">
+                Please enter cardholder name
+            </p>
+        </div>
+        <div class="field field--eight field--required" ng-class="{ 'field--show-floating-label': !$ctrl.form.BankCardExpirationMonth.$error.required, 'field--error': ($ctrl.form.BankCardExpirationMonth.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardExpirationMonth.$valid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="BankCardExpirationMonth">MM</label>
+                <input placeholder="MM" type="text" id="BankCardExpirationMonth" class="field__input" cc-exp-month name="BankCardExpirationMonth" required="required" ng-model="$ctrl.card.bankCardMonth">
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardExpirationMonth.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardExpirationMonth.$error.required">
+                Please enter expiration month
+            </p>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardExpirationMonth.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardExpirationMonth.$valid">
+                The month invalid
+            </p>
+        </div>
+        <div class="field field--separator">/</div>
+        <div class="field field--eight field--required" ng-class="{ 'field--show-floating-label': !$ctrl.form.BankCardExpirationYear.$error.required, 'field--error': ($ctrl.form.BankCardExpirationYear.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardExpirationYear.$valid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="BankCardExpirationYear">YY</label>
+                <input placeholder="YY" type="text" id="BankCardExpirationYear" class="field__input" cc-exp-year name="BankCardExpirationYear" required="required" ng-model="$ctrl.card.bankCardYear">
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardExpirationYear.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardExpirationYear.$error.required">
+                Please enter expiration year
+            </p>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardExpirationYear.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardExpirationYear.$valid">
+                The year invalid
+            </p>
+        </div>
+        <div class="field field--quarter field--required" ng-class="{ 'field--show-floating-label': !$ctrl.form.BankCardCvv.$error.required, 'field--error': ($ctrl.form.BankCardCvv.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardCvv.$valid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="BankCardCvv">CVV</label>
+                <input type="text" placeholder="CVV" class="field__input" id="BankCardCvv" cc-cvc cc-type="$ctrl.form.BankCardNumber.$ccType" name="BankCardCvv" required="required" ng-model="$ctrl.card.bankCardCVV2">
+                <span class="field__icon icon icon--question has-tooltip">
+                    <span class="tooltip">
+                        3-digit security code usually found on the back of the card. American Express cards have a 4-digit code located on the front.
+                    </span>
+                </span>
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardCvv.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardCvv.$error.required">
+                Please enter CVV
+            </p>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardCvv.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardCvv.$valid">
+                Please enter correct CVV
+            </p>
+        </div>
+    </div>
+</form>
+

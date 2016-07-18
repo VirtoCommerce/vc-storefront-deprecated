@@ -48,7 +48,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.Line2 = address.Address2;
             result.RegionName = address.Province;
 
-            result.Name = string.Join(" ", result.FirstName, result.LastName).Trim();
+            result.Name = result.ToString();
 
             var country = countries.FirstOrDefault(c => string.Equals(c.Name, address.Country, StringComparison.OrdinalIgnoreCase));
             if (country != null)
