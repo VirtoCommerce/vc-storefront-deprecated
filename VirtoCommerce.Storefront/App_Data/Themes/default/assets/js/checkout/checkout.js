@@ -1,9 +1,10 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('checkoutController2', ['$rootScope', '$scope', '$window', 'cartService',
+storefrontApp.controller('checkoutController', ['$rootScope', '$scope', '$window', 'cartService',
     function ($rootScope, $scope, $window, cartService) {
     	$scope.checkout = {
-    		wizard : {},
+    		wizard: {},
+			email: {},
     		paymentMethod: {},
     		shipment: {},
     		payment: {},
@@ -13,36 +14,47 @@ storefrontApp.controller('checkoutController2', ['$rootScope', '$scope', '$windo
     		isValid: false
     	};
 
-    	function validateCheckout(checkout) {
+    	$scope.validateCheckout = function (checkout) {
     		checkout.isValid = checkout.payment && angular.isDefined(checkout.payment.paymentGatewayCode);
-    		if (checkout.isValid) {
-    			checkout.isValid = checkout.shipment && angular.isDefined(checkout.shipment.shipmentMethodCode);
-    		}
-    		if (checkout.isValid && checkout.cart.hasPhysicalProducts) {
-    			checkout.isValid = checkout.shipment.deliveryAddress && angular.isDefined(checkout.shipment.deliveryAddress);
-    		}
     		if (checkout.isValid && !checkout.billingAddressEqualsShipping) {
     			checkout.isValid = checkout.payment.billingAddress && angular.isDefined(checkout.payment.billingAddress);
+    		}
+    		if ($scope.checkout.cart && $scope.checkout.cart.hasPhysicalProducts) {
+    			if (checkout.isValid) {
+    				checkout.isValid = checkout.shipment && angular.isDefined(checkout.shipment.shipmentMethodCode);
+    			}
+    			if (checkout.isValid && checkout.cart.hasPhysicalProducts) {
+    				checkout.isValid = checkout.shipment.deliveryAddress && angular.isDefined(checkout.shipment.deliveryAddress);
+    			}    		
     		}
     	};
 
     	$scope.reloadCart = function () {
-    		return wrapLoading(function() {
-    			return cartService.getCart();
-    		}).then(function (response) {
+    		return cartService.getCart().then(function (response) {
     			var cart = response.data;
     			if (!cart || !cart.id) {
     				$scope.outerRedirect($scope.baseUrl + 'cart');
     			}
     			else {
     				$scope.checkout.cart = cart;
+    				$scope.checkout.email = cart.email;
     				$scope.checkout.coupon = cart.coupon || $scope.checkout.coupon;
-    				$scope.checkout.payment = cart.payments.length ? cart.payments[0] : $scope.checkout.payment;
-    				$scope.checkout.paymentMethod.gatewayCode = cart.payments.length ? cart.payments[0].paymentGatewayCode : $scope.checkout.paymentMethod.gatewayCode;
-    				$scope.checkout.shipment = cart.shipments.length ? cart.shipments[0] : $scope.checkout.shipment;
+    				if (cart.payments.length) {
+    					$scope.checkout.payment = cart.payments[0];
+    					$scope.checkout.paymentMethod.gatewayCode = cart.payments[0].paymentGatewayCode;
+    				}       				
+    				if (cart.shipments.length)
+    				{
+    					$scope.checkout.shipment = cart.shipments[0];
+    				}
     				$scope.checkout.billingAddressEqualsShipping = !angular.isDefined($scope.checkout.payment.billingAddress);
+    				if(!cart.hasPhysicalProducts)
+    				{
+    					$scope.checkout.billingAddressEqualsShipping = false;
+    				}
     			}
-    			validateCheckout($scope.checkout);
+    			$scope.validateCheckout($scope.checkout);
+    			return cart;
     		});
     	};
 
@@ -74,23 +86,10 @@ storefrontApp.controller('checkoutController2', ['$rootScope', '$scope', '$windo
 
     	$scope.selectPaymentMethod = function (paymentMethod) {
     		$scope.checkout.payment.paymentGatewayCode = paymentMethod.gatewayCode;
-    		validateCheckout($scope.checkout);
+    		$scope.validateCheckout($scope.checkout);
     	};
 
-    	$scope.updatePayment = function () {
-    		if ($scope.checkout.billingAddressEqualsShipping) {
-    			$scope.checkout.payment.billingAddress = undefined;
-    		}
-
-    		if ($scope.checkout.payment.billingAddress) {
-    			$scope.checkout.payment.billingAddress.email = $scope.checkout.email;
-    			$scope.checkout.payment.billingAddress.type = 'Billing';
-
-    		}
-    		return wrapLoading(function() {
-    			return cartService.addOrUpdatePayment($scope.checkout.payment)
-    		});
-    	}
+    
 
     	function getAvailCountries() {
     		//Load avail countries
@@ -107,17 +106,17 @@ storefrontApp.controller('checkoutController2', ['$rootScope', '$scope', '$windo
 
     	$scope.getAvailShippingMethods = function (shipment) {
     		return wrapLoading(function () {
-    			return cartService.getAvailableShippingMethods(shipment.id);
-    		}).then(function (response) {
-    			return response.data;
+    			return cartService.getAvailableShippingMethods(shipment.id).then(function (response) {
+    				return response.data;
+    			});
     		});
     	}
 
     	$scope.getAvailPaymentMethods = function () {
     		return wrapLoading(function () {
-    			return cartService.getAvailablePaymentMethods();
-    		}).then(function (response) {
-    			return response.data;
+    			return cartService.getAvailablePaymentMethods().then(function (response) {
+    				return response.data;
+    			});
     		});
     	};
 
@@ -139,22 +138,34 @@ storefrontApp.controller('checkoutController2', ['$rootScope', '$scope', '$windo
     		if (shipment.deliveryAddress) {
     			$scope.checkout.shipment.deliveryAddress.email = $scope.checkout.email;
     			$scope.checkout.shipment.deliveryAddress.type = 'Shipping';
-    		};    	
+    		};
     		return wrapLoading(function () {
-    			return cartService.addOrUpdateShipment(shipment)
-    		}).then(function (response) {
-    			$scope.reloadCart();
+    			return cartService.addOrUpdateShipment(shipment).then($scope.reloadCart);
     		});
     	};
 
     	$scope.createOrder = function () {
-    		return wrapLoading(function () {
-    			return cartService.createOrder($scope.checkout.bankCardInfo);
-    		}).then(function (response) {
-    			var order = response.data.order;
-    			var orderProcessingResult = response.data.orderProcessingResult;
-    			handlePostPaymentResult(order, orderProcessingResult);
-    		});
+    		$scope.checkout.loading = true;
+		    updatePayment($scope.checkout.payment).then(function () {
+    				return cartService.createOrder($scope.checkout.bankCardInfo);
+    			}).then(function (response) {
+    				var order = response.data.order;
+    				var orderProcessingResult = response.data.orderProcessingResult;
+    				handlePostPaymentResult(order, orderProcessingResult);
+    			});
+    	}
+
+    	function updatePayment(payment) {
+    		if ($scope.checkout.billingAddressEqualsShipping) {
+    			payment.billingAddress = undefined;
+    		}
+
+    		if (payment.billingAddress) {
+    			payment.billingAddress.email = $scope.checkout.email;
+    			payment.billingAddress.type = 'Billing';
+
+    		}
+    		return cartService.addOrUpdatePayment(payment)
     	}
 
     	function handlePostPaymentResult(order, orderProcessingResult) {
@@ -191,7 +202,13 @@ storefrontApp.controller('checkoutController2', ['$rootScope', '$scope', '$windo
 					$scope.checkout.loading = false;
 				});
     	}
-    	$scope.reloadCart();
+
+    	$scope.initialize = function () {
+
+    		$scope.reloadCart().then(function (cart) {
+    			$scope.checkout.wizard.goToStep(cart.hasPhysicalProducts ? 'shipping-address' : 'payment-method');
+    		});
+    	};    
 
     	getAvailCountries().then(function (countries) {
     		$scope.checkout.availCountries = countries;

@@ -6,6 +6,7 @@ storefrontApp.component('vcCheckoutWizardStep', {
 		wizard: '^vcCheckoutWizard'
 	},
 	bindings: {
+		name: '@',
 		title: '@',
 		disabled: '=?',
 		onNextStep: '&?',

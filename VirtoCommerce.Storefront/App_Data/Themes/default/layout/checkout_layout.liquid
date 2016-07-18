@@ -22,8 +22,7 @@
     {{ 'services.js' | global_asset_url | script_tag }}
     {{ 'directives.js' | global_asset_url | script_tag }}
     {{ 'main.js' | asset_url | script_tag }}
-    {{ 'checkout.js' | asset_url | script_tag }}
-    {{ 'js/checkout/checkout2.js' | asset_url | script_tag }}
+    {{ 'js/checkout/checkout.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout-wizard.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout-wizard-step.js' | asset_url | script_tag }}
     {{ 'js/checkout/checkout-address.js' | asset_url | script_tag }}
@@ -37,7 +36,7 @@
 
     {{ content_for_header }}
 </head>
-<body ng-controller="checkoutController2" ng-init="baseUrl='{{ '/' | absolute_url }}'">
+<body ng-controller="checkoutController" ng-init="baseUrl='{{ '/' | absolute_url }}'">
     <div class="banner">
         <div class="wrap">
             <a class="logo logo--left" href="{{ '/' | absolute_url }}">
@@ -66,7 +65,7 @@
                     </svg>
                 </div>
                 <div class="order-summary-toggle__total-recap total-recap">
-                    <span class="total-recap__final-price">{% raw %}{{ cart.Total.Amount | currency: cart.Total.CurrencySymbol }}{% endraw %}</span>
+                    <span class="total-recap__final-price">{% raw %}{{ checkout.cart.total.formatedAmount }}{% endraw %}</span>
                 </div>
             </div>
         </div>

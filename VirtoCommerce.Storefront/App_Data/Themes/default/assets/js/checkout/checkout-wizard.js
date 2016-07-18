@@ -5,19 +5,24 @@ storefrontApp.component('vcCheckoutWizard', {
 	bindings: {
 		wizard: '=',
 		loading: '=',
-		onFinish: '&?'
+		onFinish: '&?',
+		onInitialized: '&?'
 	},
 	controller: ['$scope', function ($scope) {
 		var ctrl = this;
 		ctrl.wizard = ctrl;
-		ctrl.steps = [];
-		ctrl.currentStep = {};
-
+		ctrl.steps = [];	
 		ctrl.goToStep = function (step) {
+			if (angular.isString(step))
+			{
+				step = _.find(ctrl.steps, function (x) { return x.name == step; });
+			}
 			if (step && ctrl.currentStep != step && step.canEnter) {
 				if (!step.final) {
 					step.isActive = true;
-					ctrl.currentStep.isActive = false;
+					if (ctrl.currentStep) {
+						ctrl.currentStep.isActive = false;
+					}
 					ctrl.currentStep = step;
 				}
 				else if (ctrl.onFinish)
@@ -54,17 +59,23 @@ storefrontApp.component('vcCheckoutWizard', {
 					steps[i].nextStep = nextStep;
 					nextStep = steps[i];
 				}
-			}
+			}		
 		};
 		
 		ctrl.addStep = function (step) {
-			if (!ctrl.currentStep || !ctrl.currentStep.isActive) {
-				ctrl.goToStep(step);
-			}		
 			ctrl.steps.push(step);
 			$scope.$watch(function () { return step.disabled; }, function () {
-				rebuildStepsLinkedList(ctrl.steps);
+				rebuildStepsLinkedList(ctrl.steps);			
 			});
+			rebuildStepsLinkedList(ctrl.steps);
+			if(!ctrl.currentStep)
+			{
+				ctrl.goToStep(step);
+			}
+			if (step.final && ctrl.onInitialized)
+			{
+				ctrl.onInitialized();
+			}
 		};
 
 	}]

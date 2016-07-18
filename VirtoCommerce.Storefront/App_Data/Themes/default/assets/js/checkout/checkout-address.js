@@ -82,9 +82,9 @@ storefrontApp.component('vcCheckoutAddress', {
 		$scope.$watch('$ctrl.address', function () {		
 			if (ctrl.address) {
 				populateRegionalDataForAddress(ctrl.address);				
-				ctrl.address.name = stringifyAddress(ctrl.address);				
-				ctrl.onUpdate({ address: ctrl.address });
+				ctrl.address.name = stringifyAddress(ctrl.address);
 			}
+			ctrl.onUpdate({ address: ctrl.address });
 		}, true);
 
 	}]

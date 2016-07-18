@@ -33,7 +33,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public ActionResult Checkout()
         {
-            return View("checkout2", "checkout_layout", WorkContext);
+            return View("checkout", "checkout_layout", WorkContext);
         }
 
 
