@@ -119,6 +119,8 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("Common.ContactUs", "contact/{viewName}", defaults: new { controller = "Common", action = "СontactUs", viewName = UrlParameter.Optional }, constraints: new { httpMethod = new HttpMethodConstraint("GET") });
             routes.AddStorefrontRoute("Common.NoStore", "common/nostore", defaults: new { controller = "Common", action = "NoStore" });
             routes.AddStorefrontRoute("Common.Maintenance", "maintenance", defaults: new { controller = "Common", action = "Maintenance" });
+            routes.AddStorefrontRoute("Common.ResetCache", "common/resetcache", defaults: new { controller = "Common", action = "ResetCache" });
+
 
             // Category routes
             routes.AddStorefrontRoute("Category.BrowseCategory", "category/{categoryId}", defaults: new { controller = "CatalogSearch", action = "CategoryBrowsing" });

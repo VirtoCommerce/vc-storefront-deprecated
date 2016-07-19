@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using VirtoCommerce.Platform.Client.Api;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -16,15 +18,37 @@ namespace VirtoCommerce.Storefront.Controllers
     {
         private readonly Country[] _countriesWithoutRegions;
         private readonly IVirtoCommerceStoreApi _storeModuleApi;
+        private readonly IVirtoCommercePlatformApi _platformApi;
+        private readonly ILocalCacheManager _cacheManager;
 
-        public CommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IVirtoCommerceStoreApi storeModuleApi)
+        public CommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IVirtoCommerceStoreApi storeModuleApi, 
+                               IVirtoCommercePlatformApi platformApi, ILocalCacheManager cacheManager)
             : base(workContext, urlBuilder)
         {
+            _cacheManager = cacheManager;
             _storeModuleApi = storeModuleApi;
+            _platformApi = platformApi;
             _countriesWithoutRegions = workContext.AllCountries
                 .Select(c => new Country { Name = c.Name, Code2 = c.Code2, Code3 = c.Code3, RegionType = c.RegionType })
                 .ToArray();
 
+        }
+
+        /// <summary>
+        /// POST : /resetcache
+        /// </summary>
+        /// <param name="viewName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ResetCache()
+        {
+            //check permissions
+            if (_platformApi.SecurityUserHasAnyPermission(WorkContext.CurrentCustomer.UserName, new[] { "cache:reset" }.ToList(), new List<string>()).Result ?? false)
+            {
+                _cacheManager.Clear();
+                return StoreFrontRedirect("~/");
+            }
+            return new HttpUnauthorizedResult();
         }
 
         /// <summary>
