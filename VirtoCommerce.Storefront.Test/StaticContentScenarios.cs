@@ -9,6 +9,7 @@ using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Model.Stores;
 using VirtoCommerce.Storefront.Services;
 using Xunit;
+using Markdig.Renderers;
 
 namespace VirtoCommerce.Storefront.Test
 {
@@ -86,10 +87,9 @@ namespace VirtoCommerce.Storefront.Test
             cacheManager.Setup(cache => cache.Get<ContentItem[]>(It.IsAny<string>(), It.IsAny<string>())).Returns<ContentItem[]>(null);
             var urlBuilder = new Mock<IStorefrontUrlBuilder>();
             var liquidEngine = new Mock<ILiquidThemeEngine>();
-            var markdown = new Mock<MarkdownSharp.Markdown>();
             var path = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName, "Pages");
             var blobProvider = new FileSystemContentBlobProvider(path);
-            var retVal = new StaticContentServiceImpl(markdown.Object, liquidEngine.Object, cacheManager.Object, () => null, () => urlBuilder.Object, StaticContentItemFactory.GetContentItemFromPath, blobProvider);
+            var retVal = new StaticContentServiceImpl(liquidEngine.Object, cacheManager.Object, () => null, () => urlBuilder.Object, StaticContentItemFactory.GetContentItemFromPath, blobProvider);
             return retVal;
         }
     }
