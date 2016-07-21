@@ -1,6 +1,11 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+﻿//Call this to register our module to main application
+var moduleName = "storefront.checkout";
 
-storefrontApp.controller('checkoutController', ['$rootScope', '$scope', '$window', 'cartService',
+if (storefrontAppDependencies != undefined) {
+	storefrontAppDependencies.push(moduleName);
+}
+angular.module(moduleName, ['credit-cards', 'angular.filter'])
+.controller('checkoutController', ['$rootScope', '$scope', '$window', 'cartService',
     function ($rootScope, $scope, $window, cartService) {
     	$scope.checkout = {
     		wizard: {},
