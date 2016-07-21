@@ -12,9 +12,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
         {
             var retVal = new Search
             {
-                Results = new MutablePagedList<Drop>((pageNumber, pageSize) =>
+                Results = new MutablePagedList<Drop>((pageNumber, pageSize, sortInfos) =>
                 {
-                    products.Slice(pageNumber, pageSize);
+                    products.Slice(pageNumber, pageSize, sortInfos);
                     return new StaticPagedList<Drop>(products.Select(x => x.ToShopifyModel()).OfType<Drop>(), products);
                 }),
                 Terms = terms,

@@ -10,7 +10,7 @@ using VirtoCommerce.Storefront.Model.Services;
 
 namespace VirtoCommerce.Storefront.Services
 {
-    public class AzureBlobContentProvider : IContentBlobProvider
+    public class AzureBlobContentProvider : IContentBlobProvider, IStaticContentBlobProvider
     {
         private readonly CloudBlobClient _cloudBlobClient;
         private readonly CloudStorageAccount _cloudStorageAccount;

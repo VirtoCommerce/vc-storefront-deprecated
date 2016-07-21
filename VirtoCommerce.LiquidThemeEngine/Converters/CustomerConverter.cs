@@ -41,18 +41,18 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (customer.Orders != null)
             {
-                result.Orders = new MutablePagedList<Order>((pageNumber, pageSize) =>
+                result.Orders = new MutablePagedList<Order>((pageNumber, pageSize, sortInfos) =>
                 {
-                    customer.Orders.Slice(pageNumber, pageSize);
+                    customer.Orders.Slice(pageNumber, pageSize, sortInfos);
                     return new StaticPagedList<Order>(customer.Orders.Select(x => x.ToShopifyModel(urlBuilder)), customer.Orders);
                 }, customer.Orders.PageNumber, customer.Orders.PageSize);
             }
 
             if (customer.QuoteRequests != null)
             {
-                result.QuoteRequests = new MutablePagedList<QuoteRequest>((pageNumber, pageSize) =>
+                result.QuoteRequests = new MutablePagedList<QuoteRequest>((pageNumber, pageSize, sortInfos) =>
                 {
-                    customer.QuoteRequests.Slice(pageNumber, pageSize);
+                    customer.QuoteRequests.Slice(pageNumber, pageSize, sortInfos);
                     return new StaticPagedList<QuoteRequest>(customer.QuoteRequests.Select(x => x.ToShopifyModel()), customer.QuoteRequests);
                 }, customer.QuoteRequests.PageNumber, customer.QuoteRequests.PageSize);
             }

@@ -83,6 +83,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
 
         public Collections Collections { get; set; }
 
+        public IMutablePagedList<Product> Products { get; set; }
+
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
 

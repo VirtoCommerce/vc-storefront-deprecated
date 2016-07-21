@@ -28,18 +28,18 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (category.Products != null)
             {
-                result.Products = new MutablePagedList<Product>((pageNumber, pageSize) =>
+                result.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                 {
-                    category.Products.Slice(pageNumber, pageSize);
+                    category.Products.Slice(pageNumber, pageSize, sortInfos);
                     return new StaticPagedList<Product>(category.Products.Select(x => x.ToShopifyModel()), category.Products);
                 }, category.Products.PageNumber, category.Products.PageSize);
             }
 
             if (workContext.Aggregations != null)
             {
-                result.Tags = new TagCollection(new MutablePagedList<Tag>((pageNumber, pageSize) =>
+                result.Tags = new TagCollection(new MutablePagedList<Tag>((pageNumber, pageSize, sortInfos) =>
                 {
-                    workContext.Aggregations.Slice(pageNumber, pageSize);
+                    workContext.Aggregations.Slice(pageNumber, pageSize, sortInfos);
                     var tags = workContext.Aggregations.Where(a => a.Items != null)
                                            .SelectMany(a => a.Items.Select(item => item.ToShopifyModel(a.Field, a.Label)));
                     return new StaticPagedList<Tag>(tags, workContext.Aggregations);

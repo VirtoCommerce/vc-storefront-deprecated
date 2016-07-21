@@ -1,0 +1,16 @@
+﻿<div class="edit_checkout animate-floating-labels">
+    <div class="step__sections" ng-transclude>
+    </div>
+    <div class="step__footer">
+        <button class="step__footer__continue-btn btn" ng-if="$ctrl.currentStep.nextStep" name="button" type="button" ng-class="{ 'btn--disabled': !$ctrl.currentStep.nextStep.canEnter, 'btn--loading': $ctrl.loading }" ng-click="$ctrl.nextStep()">
+            <span class="btn__content" >{{ $ctrl.currentStep.nextStep.title }}</span>
+            <i class="btn__spinner icon icon--button-spinner"></i>
+        </button>
+        <a class="step__footer__previous-link" ng-if="$ctrl.currentStep.prevStep" href="" ng-click="$ctrl.prevStep()">
+            <svg class="previous-link__icon icon--chevron icon" height="11.3" width="6.7" viewBox="0 0 6.7 11.3" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 6.7 1.1 l -1 -1.1 l -4.6 4.6 l -1.1 1.1 l 1.1 1 l 4.6 4.6 l 1 -1 l -4.6 -4.6 Z"></path>
+            </svg>
+           {{ $ctrl.currentStep.prevStep.title }}
+        </a>
+    </div>
+</div>

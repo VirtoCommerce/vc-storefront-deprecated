@@ -1,0 +1,98 @@
+﻿<form accept-charset="UTF8" class="step" name="$ctrl.form" novalidate="novalidate" ng-if="$ctrl.editMode">
+    <div class="fieldset">
+        <div class="field field--optional field--show-floating-label" ng-if="$ctrl.addresses.length">
+            <div class="field__input-wrapper field__input-wrapper--select">
+                <label class="field__label" for="Addresses">Customer addresses</label>
+                <select class="field__input field__input--select text-truncate" id="Addresses" name="Addresses" size="1" ng-model="$ctrl.address" ng-options="x as x.name for x in $ctrl.addresses">
+                    <option value="" ng-bind="'Select address'"></option>
+                </select>
+            </div>
+        </div>
+        <div class="field field--half field--required" ng-class="{ 'field--show-floating-label': $ctrl.address.firstName.length, 'field--error': ($ctrl.form.FirstName.$dirty || $ctrl.form.$submitted) && $ctrl.form.FirstName.$invalid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="FirstName">First name</label>
+                <input class="field__input" id="FirstName" name="FirstName" placeholder="First name" required="required" size="30" type="text" ng-model="$ctrl.address.firstName" />
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.FirstName.$dirty || $ctrl.form.$submitted) && $ctrl.form.FirstName.$error.required">
+                Please enter your first name
+            </p>
+        </div>
+        <div class="field field--half field--required" ng-class="{ 'field--show-floating-label': $ctrl.address.lastName.length, 'field--error': ($ctrl.form.LastName.$dirty || $ctrl.form.$submitted) && $ctrl.form.LastName.$invalid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="LastName">Last name</label>
+                <input class="field__input" id="LastName" name="LastName" placeholder="Last name" required="required" size="30" type="text" ng-model="$ctrl.address.lastName" />
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.LastName.$dirty || $ctrl.form.$submitted) && $ctrl.form.LastName.$error.required">
+                Please enter your last name
+            </p>
+        </div>
+        <div class="field field--optional" ng-class="{ 'field--show-floating-label': $ctrl.address.organization.length }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="Organization">Company (optional)</label>
+                <input class="field__input" id="Organization" name="Organization" placeholder="Company (optional)" size="30" type="text" ng-model="$ctrl.address.organization" />
+            </div>
+        </div>
+        <div class="field field--two-thirds field--required" ng-class="{ 'field--show-floating-label': $ctrl.address.line1.length, 'field--error': ($ctrl.form.Line1.$dirty || $ctrl.form.$submitted) && $ctrl.form.Line1.$invalid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="Line1">Address</label>
+                <input class="field__input" id="Line1" name="Line1" placeholder="Address" required="required" size="30" type="text" ng-model="$ctrl.address.line1" />
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.Line1.$dirty || $ctrl.form.$submitted) && $ctrl.form.Line1.$error.required">
+                Please enter your address
+            </p>
+        </div>
+        <div class="field field--third field--optional" ng-class="{ 'field--show-floating-label': $ctrl.address.line2.length }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="Line2">Apt, suite, etc. (optional)</label>
+                <input class="field__input" id="Line2" name="Line2" placeholder="Apt, suite, etc. (optional)" size="30" type="text" ng-model="$ctrl.address.line2" />
+            </div>
+        </div>
+        <div class="field field--required" ng-class="{ 'field--show-floating-label': $ctrl.address.city.length, 'field--error': ($ctrl.form.City.$dirty || $ctrl.form.$submitted) && $ctrl.form.City.$invalid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="City">City</label>
+                <input class="field__input" id="City" name="City" placeholder="City" required="required" size="30" type="text" ng-model="$ctrl.address.city" />
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.City.$dirty || $ctrl.form.$submitted) && $ctrl.form.City.$error.required">
+                Please enter your city
+            </p>
+        </div>
+        <div class="field field--required field--show-floating-label" ng-class="{ 'field--three-eights': $ctrl.address.country.regions.length, 'field--half':  !$ctrl.address.country.regions.length, 'field--error': $ctrl.form.$submitted && $ctrl.form.Country.$invalid }">
+            <div class="field__input-wrapper field__input-wrapper--select">
+                <label class="field__label" for="Country">Country</label>
+                <select class="field__input field__input--select" if="Country" name="Country" required="required" size="1" ng-model="$ctrl.address.countryCode" ng-options="x.code3 as x.name for x in $ctrl.countries">
+                    <option value="">Select country</option>
+                </select>
+            </div>
+            <p class="field__message field__message--error" ng-if="$ctrl.form.$submitted && $ctrl.form.Country.$error.required">
+                Please select your country
+            </p>
+        </div>
+        <div class="field field--three-eights field--required field--show-floating-label" ng-if="$ctrl.address.country.regions.length" ng-class="{ 'field--error': $ctrl.form.$submitted && $ctrl.form.Region.$invalid }">
+            <div class="field__input-wrapper field__input-wrapper--select">
+                <label class="field__label" for="Region" ng-bind="$ctrl.address.country.regionType"></label>
+                <select class="field__input field__input--select" id="Region" name="Region" placeholder="{{ $ctrl.address.country.regionType }}" required="required" size="1" ng-model="$ctrl.address.regionId" ng-options="x.code as x.name for x in $ctrl.address.country.regions">
+                    <option value="" ng-bind="'Select ' + $ctrl.address.country.regionType"></option>
+                </select>
+            </div>
+            <p class="field__message field__message--error" ng-if="$ctrl.form.$submitted && $ctrl.form.Region.$error.required" ng-bind="'Please select your ' + $ctrl.address.country.regionType"></p>
+        </div>
+        <div class="field field--required" ng-class="{ 'field--half': !$ctrl.address.country.regions.length, 'field--quarter': $ctrl.address.country.regions.length, 'field--show-floating-label': $ctrl.address.postalCode, 'field--error': ($ctrl.form.PostalCode.$dirty || $ctrl.form.$submitted) && $ctrl.form.PostalCode.$invalid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="PostalCode">Postal code</label>
+                <input class="field__input" id="PostalCode" name="PostalCode" placeholder="Postal code" required="required" size="30" type="text" ng-model="$ctrl.address.postalCode" />
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.PostalCode.$dirty || form.$submitted) && $ctrl.form.PostalCode.$error.required">
+                Please enter your postal code
+            </p>
+        </div>
+        <div class="field field--optional" ng-class="{ 'field--show-floating-label': $ctrl.address.phone.length }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="Phone">Phone (optional)</label>
+                <input class="field__input" id="Phone" name="Phone" placeholder="Phone (optional)" size="30" type="text" ng-model="$ctrl.address.phone" />
+            </div>
+        </div>
+    </div>
+    </form>
+<p ng-if="!$ctrl.editMode">
+    <span>{{$ctrl.address.name}}</span>
+</p>

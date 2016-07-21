@@ -42,8 +42,8 @@
       <HintPath>..\packages\DotLiquid.VirtoCommerce.1.8.3\lib\NET45\DotLiquid.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MarkdownSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Markdown.1.14.4\lib\net45\MarkdownSharp.dll</HintPath>
+    <Reference Include="Markdig, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.0.7.2\lib\net40\Markdig.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -115,13 +115,13 @@
       <HintPath>..\packages\VirtoCommerce.OrderModule.Client.2.11.1\lib\net451\VirtoCommerce.OrderModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Client, Version=2.11.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\VirtoCommerce.Platform.Client.2.11.2\lib\net451\VirtoCommerce.Platform.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Client, Version=2.11.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Client.2.11.5\lib\net451\VirtoCommerce.Platform.Client.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Client.Security, Version=2.11.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\VirtoCommerce.Platform.Client.Security.2.11.2\lib\net451\VirtoCommerce.Platform.Client.Security.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Client.Security, Version=2.11.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Client.Security.2.11.4\lib\net451\VirtoCommerce.Platform.Client.Security.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.PricingModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VirtoCommerce.PricingModule.Client.2.11.0\lib\net451\VirtoCommerce.PricingModule.Client.dll</HintPath>

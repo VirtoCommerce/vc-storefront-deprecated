@@ -12,6 +12,7 @@ using DotLiquid.ViewEngine.Exceptions;
 using LibSassNetProxy;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using VirtoCommerce.LiquidThemeEngine.Converters;
 using VirtoCommerce.LiquidThemeEngine.Extensions;
 using VirtoCommerce.LiquidThemeEngine.Filters;
 using VirtoCommerce.LiquidThemeEngine.Operators;
@@ -67,6 +68,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             Template.RegisterFilter(typeof(MoneyFilters));
             Template.RegisterFilter(typeof(HtmlFilters));
             Template.RegisterFilter(typeof(StringFilters));
+            Template.RegisterFilter(typeof(ArrayFilters));
 
             Condition.Operators["contains"] = CommonOperators.ContainsMethod;
 
@@ -175,9 +177,18 @@ namespace VirtoCommerce.LiquidThemeEngine
                     currentThemePath = _themeBlobProvider.Search(CurrentThemePath + "\\assets", fileName, true).FirstOrDefault();
                 }
             }
-
+         
+            if(fileExtensions.EndsWith("liquid"))
+            {
+                var shopifyContext = WorkContext.ToShopifyModel(UrlBuilder);
+                var parameters = shopifyContext.ToLiquid() as Dictionary<string, object>;
+                var themeSettings = GetSettings();
+                parameters.Add("settings", themeSettings);
+                var content = RenderTemplateByName(fileName.Replace(".liquid", ""), parameters);
+                retVal = new MemoryStream(Encoding.UTF8.GetBytes(content));
+            }
             //We find requested asset need return resulting stream
-            if (currentThemePath != null)
+            else if (currentThemePath != null)
             {
                 retVal = _themeBlobProvider.OpenRead(currentThemePath);
             }

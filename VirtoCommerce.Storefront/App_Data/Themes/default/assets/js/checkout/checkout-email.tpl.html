@@ -1,0 +1,16 @@
+﻿<form accept-charset="UTF8" class="step" name="$ctrl.form" novalidate="novalidate">
+    <div class="fieldset">
+        <div class="field field--required" ng-class="{ 'field--show-floating-label': !$ctrl.form.Email.$error.required, 'field--error': ($ctrl.form.Email.$dirty || $ctrl.form.$submitted) && $ctrl.form.Email.$invalid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="Email">Email</label>
+                <input class="field__input" id="Email" name="Email" placeholder="Email" required="required" size="30" type="email" ng-model="$ctrl.email" />
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.Email.$dirty || $ctrl.form.$submitted) && $ctrl.form.Email.$error.required">
+                Please enter your E-mail address
+            </p>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.Email.$dirty || $ctrl.form.$submitted) && $ctrl.form.Email.$error.email">
+                Please enter valid E-mail address
+            </p>
+        </div>
+    </div>
+</form>

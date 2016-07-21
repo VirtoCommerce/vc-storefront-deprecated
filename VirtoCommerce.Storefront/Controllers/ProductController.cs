@@ -40,12 +40,16 @@ namespace VirtoCommerce.Storefront.Controllers
             {
                 var category = (await _catalogSearchService.GetCategoriesAsync(new[] { product.CategoryId }, Model.Catalog.CategoryResponseGroup.Full)).FirstOrDefault();
                 WorkContext.CurrentCategory = category;
-                category.Products = new MutablePagedList<Product>((pageNumber, pageSize) =>
+                category.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                 {
                     var criteria = WorkContext.CurrentCatalogSearchCriteria.Clone();                    
                     criteria.CategoryId = product.CategoryId;
                     criteria.PageNumber = pageNumber;
                     criteria.PageSize = pageSize;
+                    if(string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
+                    {
+                        criteria.SortBy = SortInfo.ToString(sortInfos);
+                    }
                     return _catalogSearchService.SearchProducts(criteria).Products;
                 });
             }
