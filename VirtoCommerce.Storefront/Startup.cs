@@ -217,7 +217,7 @@ namespace VirtoCommerce.Storefront
             //Use always file system provider for global theme
             var globalThemesBlobProvider = new FileSystemContentBlobProvider(ResolveLocalPath("~/App_Data/Themes/default"));
             IContentBlobProvider themesBlobProvider;
-            IContentBlobProvider staticContentBlobProvider;
+            IStaticContentBlobProvider staticContentBlobProvider;
             if ("AzureBlobStorage".Equals(cmsContentConnectionString.Provider, StringComparison.OrdinalIgnoreCase))
             {
                 themesBlobProvider = new AzureBlobContentProvider(cmsContentConnectionString.ConnectionString, themesBasePath, localCacheManager);
@@ -228,6 +228,8 @@ namespace VirtoCommerce.Storefront
                 themesBlobProvider = new FileSystemContentBlobProvider(ResolveLocalPath(themesBasePath));
                 staticContentBlobProvider = new FileSystemContentBlobProvider(ResolveLocalPath(staticContentBasePath));
             }
+            container.RegisterInstance<IStaticContentBlobProvider>(staticContentBlobProvider);
+
             var shopifyLiquidEngine = new ShopifyLiquidThemeEngine(localCacheManager, workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>(), themesBlobProvider, globalThemesBlobProvider, "~/themes/assets", "~/themes/global/assets");
             container.RegisterInstance<ILiquidThemeEngine>(shopifyLiquidEngine);
 

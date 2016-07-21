@@ -30,14 +30,14 @@ namespace VirtoCommerce.Storefront.Services
         private readonly Func<WorkContext> _workContextFactory;
         private readonly Func<IStorefrontUrlBuilder> _urlBuilderFactory;
         private readonly Func<string, ContentItem> _contentItemFactory;
-        private readonly IContentBlobProvider _contentBlobProvider;
+        private readonly IStaticContentBlobProvider _contentBlobProvider;
         private readonly MarkdownPipeline _markdownPipeline;
 
         [CLSCompliant(false)]
         public StaticContentServiceImpl(ILiquidThemeEngine liquidEngine,
                                         ILocalCacheManager cacheManager, Func<WorkContext> workContextFactory,
                                         Func<IStorefrontUrlBuilder> urlBuilderFactory, Func<string, ContentItem> contentItemFactory,
-                                        IContentBlobProvider contentBlobProvider)
+                                        IStaticContentBlobProvider contentBlobProvider)
         {
             _liquidEngine = liquidEngine;
             

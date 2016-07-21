@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Services;
 
 namespace VirtoCommerce.Storefront.Services
 {
-    public class FileSystemContentBlobProvider : IContentBlobProvider
+    public class FileSystemContentBlobProvider : IContentBlobProvider, IStaticContentBlobProvider
     {
         private readonly string _basePath;
         private readonly FileSystemWatcher _fileSystemWatcher;

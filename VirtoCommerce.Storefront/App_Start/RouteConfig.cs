@@ -129,8 +129,9 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("Product.GetProduct", "product/{productId}", defaults: new { controller = "Product", action = "ProductDetails" });
 
             // Assets
-            routes.AddStorefrontRoute("Assets", "themes/assets/{*asset}", defaults: new { controller = "Asset", action = "GetAssets" });
-            routes.AddStorefrontRoute("GlobalAssets", "themes/global/assets/{*asset}", defaults: new { controller = "Asset", action = "GetGlobalAssets" });
+            routes.AddStorefrontRoute("ThemeAssets", "themes/assets/{*path}", defaults: new { controller = "Asset", action = "GetThemeAssets" });
+            routes.AddStorefrontRoute("GlobalThemeAssets", "themes/global/assets/{*path}", defaults: new { controller = "Asset", action = "GetGlobalThemeAssets" });
+            routes.AddStorefrontRoute("StaticContentAssets", "assets/{*path}", defaults: new { controller = "Asset", action = "GetStaticContentAssets" });
 
             // Static content (no cms)
             routes.AddStorefrontRoute("Pages.GetPage", "pages/{*page}", defaults: new { controller = "Page", action = "GetContentPageByName" });
