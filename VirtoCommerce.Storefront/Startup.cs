@@ -10,7 +10,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using CacheManager.Core;
 using CacheManager.Web;
-using MarkdownSharp;
 using Microsoft.Owin;
 using Microsoft.Owin.Extensions;
 using Microsoft.Owin.Security;
