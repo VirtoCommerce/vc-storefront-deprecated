@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
+using System;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
@@ -58,7 +59,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
 
         public override object BeforeMethod(string method)
         {
-            var val = Properties.Where(x => x.Key == method).Select(x => x.Value).SingleOrDefault();
+            var val = Properties.Where(x => x.Key.Equals(method, StringComparison.OrdinalIgnoreCase)).Select(x => x.Value).SingleOrDefault();
             return val;
         }
     }

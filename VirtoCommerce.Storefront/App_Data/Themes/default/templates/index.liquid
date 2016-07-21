@@ -144,13 +144,13 @@
 {% unless settings.home_featured_row1_enable == false or settings.home_featured_row1 == blank or collections[settings.home_featured_row1].empty? %}
   {% if settings.home_featured_collections_enable %}
   <hr>
-  {% endif %}
-  {% assign featured_row = settings.home_featured_row1 %}
-  {% assign row_limit_setting = settings.home_featured_row1_number %}
-  {% if collections[featured_row].all_products_count == 0 %}
+    {% endif %}
+    {% assign featured_row = settings.home_featured_row1 %}
+    {% assign row_limit_setting = settings.home_featured_row1_number %}
+    {% if collections[featured_row].all_products_count == 0 %}
     <div class="section-header">
       <p class="h1">{{ 'homepage.featured_collection_rows.heading' | t }}</p>
-      <div class="section-header--right">
+      <div class="section-header--right"> 
         <a href="{{ collections[featured_row].url }}">{{ 'homepage.featured_collection_rows.more' | t }} &rsaquo;</a>
       </div>
     </div>

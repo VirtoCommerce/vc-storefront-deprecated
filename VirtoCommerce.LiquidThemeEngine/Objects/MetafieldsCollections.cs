@@ -96,7 +96,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         #region Public Methods and Operators
         public override object BeforeMethod(string method)
         {
-            var result = this.SingleOrDefault(x => x.Namespace == method);
+            var result = this.SingleOrDefault(x => x.Namespace.Equals(method, StringComparison.OrdinalIgnoreCase));
             return result;
         }
         #endregion
