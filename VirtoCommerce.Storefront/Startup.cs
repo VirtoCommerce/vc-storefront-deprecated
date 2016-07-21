@@ -10,7 +10,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using CacheManager.Core;
 using CacheManager.Web;
-using MarkdownSharp;
 using Microsoft.Owin;
 using Microsoft.Owin.Extensions;
 using Microsoft.Owin.Security;
@@ -55,6 +54,7 @@ using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Owin;
 using VirtoCommerce.Storefront.Services;
 using VirtoCommerce.StoreModule.Client.Api;
+using Markdig.Renderers;
 
 [assembly: OwinStartup(typeof(Startup))]
 [assembly: PreApplicationStartMethod(typeof(Startup), "PreApplicationStart")]
@@ -237,12 +237,8 @@ namespace VirtoCommerce.Storefront
             // Shopify model binders convert Shopify form fields with bad names to VirtoCommerce model properties.
             container.RegisterType<IModelBinderProvider, ShopifyModelBinderProvider>("shopify");
 
-            var markdownOptions = new MarkdownOptions
-            {
-                LinkEmails = false // Render mailto: links as is without markup transformations
-            };
             //Static content service
-            var staticContentService = new StaticContentServiceImpl(new Markdown(markdownOptions), shopifyLiquidEngine, localCacheManager, workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>(), StaticContentItemFactory.GetContentItemFromPath, staticContentBlobProvider);
+            var staticContentService = new StaticContentServiceImpl(shopifyLiquidEngine, localCacheManager, workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>(), StaticContentItemFactory.GetContentItemFromPath, staticContentBlobProvider);
             container.RegisterInstance<IStaticContentService>(staticContentService);
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters, workContextFactory, () => container.Resolve<CommonController>());
