@@ -93,6 +93,12 @@ namespace VirtoCommerce.Storefront.Services
             var info = await _storeApi.StoreModuleGetLoginOnBehalfInfoAsync(storeId, customerId);
             return info.CanLoginOnBehalf == true;
         }
+
+        public async Task<Vendor> GetVendorByIdAsync(string vendorId)
+        {
+            return (await _customerApi.CustomerModuleGetVendorByIdAsync(vendorId)).ToWebModel();
+        }
+
         #endregion
 
         #region IObserver<CreateOrderEvent> Members

@@ -111,6 +111,7 @@ namespace VirtoCommerce.Storefront.Model
         public ICollection<Pricelist> CurrentPricelists { get; set; }
 
         #region Catalog Properties
+
         /// <summary>
         /// Represent current product
         /// </summary>
@@ -139,7 +140,9 @@ namespace VirtoCommerce.Storefront.Model
         /// <summary>
         /// Current product response group
         /// </summary>
-        public ItemResponseGroup CurrentProductResponseGroup { get; set; }     
+        public ItemResponseGroup CurrentProductResponseGroup { get; set; }
+
+        public Vendor CurrentVendor { get; set; }
 
         #endregion
 
@@ -161,7 +164,7 @@ namespace VirtoCommerce.Storefront.Model
         {
             get
             {
-                return _utcNow == null ? DateTime.UtcNow : _utcNow.Value;
+                return _utcNow ?? DateTime.UtcNow;
             }
             set
             {

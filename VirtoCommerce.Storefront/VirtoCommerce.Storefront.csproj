@@ -232,8 +232,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\VirtoCommerce.CoreModule.Client.2.14.0\lib\net451\VirtoCommerce.CoreModule.Client.dll</HintPath>
     </Reference>
-    <Reference Include="VirtoCommerce.CustomerModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.CustomerModule.Client.2.11.0\lib\net451\VirtoCommerce.CustomerModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.CustomerModule.Client, Version=2.11.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.CustomerModule.Client.2.11.2\lib\net451\VirtoCommerce.CustomerModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.InventoryModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -482,6 +482,7 @@
     <Compile Include="Controllers\Api\ApiAccountController.cs" />
     <Compile Include="Controllers\Api\ApiPricingController.cs" />
     <Compile Include="Controllers\Api\ApiMarketingController.cs" />
+    <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Controllers\QuoteRequestController.cs" />
     <Compile Include="Converters\AssociationConverter.cs" />
     <Compile Include="Converters\AttachmentConverter.cs" />
@@ -498,6 +499,7 @@
     <Compile Include="Converters\QuoteRequestTotalsConverter.cs" />
     <Compile Include="Converters\ShippingMethodConverter.cs" />
     <Compile Include="Converters\TierPriceConverter.cs" />
+    <Compile Include="Converters\VendorConverters.cs" />
     <Compile Include="Owin\StorefrontUrlRewriterOwinMiddleware.cs" />
     <Compile Include="Services\CartValidator.cs" />
     <Compile Include="Services\ContentBlobProviders\AzureBlobContentProvider.cs" />
@@ -575,6 +577,7 @@
     </Content>
     <Content Include="App_Data\Themes\default\templates\maintenance.liquid" />
     <Content Include="App_Data\Themes\default\layout\empty.liquid" />
+    <Content Include="App_Data\Themes\default\templates\vendor.liquid" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

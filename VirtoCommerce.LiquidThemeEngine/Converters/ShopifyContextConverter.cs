@@ -1,7 +1,5 @@
-﻿using PagedList;
-using System;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
+using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent;
@@ -11,7 +9,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
     public static class ShopifyContextConverter
     {
-        private static string[] _poweredLinks = {
+        private static readonly string[] _poweredLinks = {
                                              "<a href=\"http://virtocommerce.com\" rel=\"nofollow\" target=\"_blank\">.NET ecommerce platform</a> by Virto",
                                              "<a href=\"http://virtocommerce.com/shopping-cart\" rel=\"nofollow\" target=\"_blank\">Shopping Cart</a> by Virto",
                                              "<a href=\"http://virtocommerce.com/shopping-cart\" rel=\"nofollow\" target=\"_blank\">.NET Shopping Cart</a> by Virto",
@@ -27,20 +25,21 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public static ShopifyThemeWorkContext ToShopifyModel(this storefrontModel.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
         {
-            var result = new ShopifyThemeWorkContext();
-
-            result.CurrentPage = 1;
-            result.CountryOptionTags = string.Join("\r\n", workContext.AllCountries.OrderBy(c => c.Name).Select(c => c.ToOptionTag()));
-            result.PageDescription = workContext.CurrentPageSeo != null ? workContext.CurrentPageSeo.MetaDescription : string.Empty;
-            result.PageTitle = workContext.CurrentPageSeo != null ? workContext.CurrentPageSeo.Title : string.Empty;
-            result.Shop = workContext.CurrentStore != null ? workContext.CurrentStore.ToShopifyModel(workContext) : null;
-            result.Cart = workContext.CurrentCart != null ? workContext.CurrentCart.ToShopifyModel(workContext) : null;
-            result.Product = workContext.CurrentProduct != null ? workContext.CurrentProduct.ToShopifyModel() : null;
-            result.Customer = workContext.CurrentCustomer != null && workContext.CurrentCustomer.IsRegisteredUser ? workContext.CurrentCustomer.ToShopifyModel(workContext, urlBuilder) : null;
-            result.AllStores = workContext.AllStores.Select(x => x.ToShopifyModel(workContext)).ToArray();
-
-            result.CurrentCurrency = workContext.CurrentCurrency != null ? workContext.CurrentCurrency.ToShopifyModel() : null;
-            result.CurrentLanguage = workContext.CurrentLanguage != null ? workContext.CurrentLanguage.ToShopifyModel() : null;
+            var result = new ShopifyThemeWorkContext
+            {
+                CurrentPage = 1,
+                CountryOptionTags = string.Join("\r\n", workContext.AllCountries.OrderBy(c => c.Name).Select(c => c.ToOptionTag())),
+                PageDescription = workContext.CurrentPageSeo != null ? workContext.CurrentPageSeo.MetaDescription : string.Empty,
+                PageTitle = workContext.CurrentPageSeo != null ? workContext.CurrentPageSeo.Title : string.Empty,
+                Shop = workContext.CurrentStore != null ? workContext.CurrentStore.ToShopifyModel(workContext) : null,
+                Cart = workContext.CurrentCart != null ? workContext.CurrentCart.ToShopifyModel(workContext) : null,
+                Product = workContext.CurrentProduct != null ? workContext.CurrentProduct.ToShopifyModel() : null,
+                Vendor = workContext.CurrentVendor != null ? workContext.CurrentVendor.ToShopifyModel() : null,
+                Customer = workContext.CurrentCustomer != null && workContext.CurrentCustomer.IsRegisteredUser ? workContext.CurrentCustomer.ToShopifyModel(workContext, urlBuilder) : null,
+                AllStores = workContext.AllStores.Select(x => x.ToShopifyModel(workContext)).ToArray(),
+                CurrentCurrency = workContext.CurrentCurrency != null ? workContext.CurrentCurrency.ToShopifyModel() : null,
+                CurrentLanguage = workContext.CurrentLanguage != null ? workContext.CurrentLanguage.ToShopifyModel() : null
+            };
 
             if (workContext.CurrentCatalogSearchCriteria != null && workContext.CurrentCatalogSearchCriteria.Terms.Any())
             {
@@ -49,7 +48,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                         workContext.CurrentCatalogSearchCriteria.Terms.Select(t => t.ToShopifyModel()).ToList());
             }
 
-            if(workContext.CurrentCategory != null)
+            if (workContext.CurrentCategory != null)
             {
                 result.Collection = workContext.CurrentCategory.ToShopifyModel(workContext);
             }
@@ -98,7 +97,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 result.QuoteRequest = workContext.CurrentQuoteRequest.ToShopifyModel();
             }
 
-            
             result.PaymentFormHtml = workContext.PaymentFormHtml;
 
             if (workContext.CurrentPage != null)
@@ -153,7 +151,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             {
                 result.RequestUrl = workContext.RequestUrl.ToString();
                 //Populate current page number
-                var qs = HttpUtility.ParseQueryString(workContext.RequestUrl.Query);
+                //var qs = HttpUtility.ParseQueryString(workContext.RequestUrl.Query);
                 result.CurrentPage = workContext.PageNumber ?? 1;
                 result.PageSize = workContext.PageSize ?? 0;
             }

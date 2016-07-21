@@ -2,7 +2,12 @@
 <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
   <a href="{{ "/" | absolute_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
 
-  {% if template contains 'product' %}
+  {% if template contains 'vendor' %}
+
+    <span class="divider" aria-hidden="true">&rsaquo;</span>
+    <span class="breadcrumb--truncate">{{ vendor.name }}</span>
+
+  {% elsif template contains 'product' %}
 
     {% if collection %}
       <span class="divider" aria-hidden="true">&rsaquo;</span>
@@ -37,7 +42,7 @@
           Track whether the tag gets printed
         {% endcomment %}
         {% assign found_tag = false %}
-		
+
         {% for cat_item in collection.all_tags %}
           {% unless cat_item == '' %}
 
