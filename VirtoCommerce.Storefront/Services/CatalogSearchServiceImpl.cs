@@ -230,7 +230,7 @@ namespace VirtoCommerce.Storefront.Services
                     categoryAssociation.Category = allAssociatedCategories.FirstOrDefault(x => x.Id == categoryAssociation.CategoryId);
                     if (categoryAssociation.Category != null && categoryAssociation.Category.Products == null)
                     {
-                        categoryAssociation.Category.Products = new MutablePagedList<Product>((pageNumber, pageSize) =>
+                        categoryAssociation.Category.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                        {
                            var criteria = new CatalogSearchCriteria
                            {
@@ -239,8 +239,12 @@ namespace VirtoCommerce.Storefront.Services
                                CatalogId = workContext.CurrentStore.Catalog,
                                CategoryId = categoryAssociation.CategoryId,
                                SearchInChildren = true,
-                               ResponseGroup = CatalogSearchResponseGroup.WithProducts
+                               ResponseGroup = CatalogSearchResponseGroup.WithProducts,
                            };
+                           if(!sortInfos.IsNullOrEmpty())
+                           {
+                               criteria.SortBy = SortInfo.ToString(sortInfos);
+                           }
                            var searchResult = SearchProducts(criteria);
                            return searchResult.Products;
                        });

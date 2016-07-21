@@ -141,6 +141,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TemplateExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
+    <Compile Include="Filters\ArrayFilters.cs" />
     <Compile Include="Filters\DateFilters.cs" />
     <Compile Include="Filters\HtmlFilters.cs" />
     <Compile Include="Filters\MoneyFilters.cs" />

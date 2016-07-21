@@ -38,7 +38,6 @@ namespace VirtoCommerce.Storefront.Controllers
         // GET: /pages/{page}
         public ActionResult GetContentPageByName(string page)
         {
-
             var contentPages = WorkContext.Pages.Where(x => string.Equals(x.Url, page, StringComparison.OrdinalIgnoreCase));
             var contentPage = contentPages.FindWithLanguage(WorkContext.CurrentLanguage);
             if (contentPage != null)

@@ -78,7 +78,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (!product.Associations.IsNullOrEmpty())
             {
-                result.RelatedProducts = new MutablePagedList<Product>((pageNumber, pageSize) =>
+                result.RelatedProducts = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                 {
                     //Need to load related products from associated  product and categories
                     var skip = (pageNumber - 1) * pageSize;
@@ -93,7 +93,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     {
                         if (categoryAssociation.Category != null && categoryAssociation.Category.Products != null)
                         {
-                            categoryAssociation.Category.Products.Slice(skip / pageSize + 1, take);
+                            categoryAssociation.Category.Products.Slice(skip / pageSize + 1, take, sortInfos);
                             retVal.AddRange(categoryAssociation.Category.Products);
                             totalCount += categoryAssociation.Category.Products.GetTotalCount();
                             skip = Math.Max(0, skip - totalCount);

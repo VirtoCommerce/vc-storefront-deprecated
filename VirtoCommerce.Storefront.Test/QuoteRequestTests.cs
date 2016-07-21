@@ -16,7 +16,7 @@ using Xunit;
 namespace VirtoCommerce.Storefront.Test
 {
     public class QuoteRequestTests : StorefrontTestBase
-    {
+    {   
         [Fact]
         public void CreateAnonymousQuoteRequest()
         {

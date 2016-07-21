@@ -63,7 +63,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Tags
 
             if (mutablePagedList != null)
             {
-                mutablePagedList.Slice(pageNumber, pageSize > 0 ? pageSize : _pageSize);
+                mutablePagedList.Slice(pageNumber, pageSize > 0 ? pageSize : _pageSize, mutablePagedList.SortInfos);
                 pagedList = mutablePagedList;
             }
             else if (collection != null)
