@@ -165,6 +165,15 @@ namespace VirtoCommerce.Storefront.Controllers
             return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext));
         }
 
+        /// GET collections
+        /// This method used for display all categories
+        /// <returns></returns>
+        [OutputCache(CacheProfile = "CatalogSearchCachingProfile")]
+        public ActionResult Collections()
+        {
+            return View("list-collections", WorkContext);
+        }
+
         private JsonResult LiquidJson(object obj)
         {
             var serializedString = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
