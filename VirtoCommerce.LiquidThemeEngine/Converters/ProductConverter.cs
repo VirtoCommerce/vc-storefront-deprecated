@@ -103,6 +103,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     return new StaticPagedList<Product>(retVal.Select(x => x.ToShopifyModel()), pageNumber, pageSize, totalCount);
                 });
             }
+
+            if (product.Vendor != null)
+            {
+                result.Vendor = product.Vendor.ToShopifyModel();
+            }
             return result;
         }
 

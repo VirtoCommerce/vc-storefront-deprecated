@@ -35,6 +35,7 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.InjectFrom<NullableAndEnumValueInjecter>(product);
 
             retVal.Sku = product.Code;
+            retVal.VendorId = product.Vendor;
 
             if (product.Properties != null)
             {

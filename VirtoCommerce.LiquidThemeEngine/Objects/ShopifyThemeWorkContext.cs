@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using DotLiquid;
 using VirtoCommerce.Storefront.Model.Common;
@@ -56,6 +55,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public Blogs Blogs { get; set; }
 
         public Product Product { get; set; }
+        public Vendor Vendor { get; set; }
 
         public Page Page { get; set; }
 
@@ -101,11 +101,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// Current request url
         /// </summary>
         public string RequestUrl { get; set; }
+
         /// <summary>
         /// Search result (products, articles, blogs)
         /// </summary>
         public Search Search { get; set; }
+
         #endregion
+
         /// <summary>
         /// template returns the name of the template used to render the current page, with the .liquid extension omitted.
         /// </summary>
@@ -120,6 +123,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public ICollection<LoginProvider> ExternalLoginProviders { get; set; }
 
         public MetafieldsCollection ApplicationSettings { get; set; }
+
         #endregion
 
         #region ILiquidizable members

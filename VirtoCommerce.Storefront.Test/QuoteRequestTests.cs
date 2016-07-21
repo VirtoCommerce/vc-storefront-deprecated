@@ -173,12 +173,18 @@ namespace VirtoCommerce.Storefront.Test
             var marketingApi = GetMarketingApiClient();
             var pricingApi = GetPricingApiClient();
             var searchApi = GetSearchApiClient();
+            var customerApi = GetCustomerApiClient();
+            var orderApi = GetOrderApiClient();
+            var quoteApi = GetQuoteApiClient();
+            var storeApi = GetStoreApiClient();
 
+            var cacheManager = new Mock<ILocalCacheManager>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
             var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, commerceApi);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
 
-            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, pricingService, inventoryApi, searchApi, promotionEvaluator);
+            var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
+            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, pricingService, inventoryApi, searchApi, promotionEvaluator, customerService);
             return result;
         }
     }
