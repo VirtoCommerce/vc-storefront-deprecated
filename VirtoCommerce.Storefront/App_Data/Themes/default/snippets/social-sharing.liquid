@@ -1,11 +1,10 @@
 {% if template contains 'article' or template contains 'blog' %}
-  {% capture permalinkURL %}{{ shop.url }}{{ article.url }}{% endcapture %}
+  {% capture permalinkURL %}{{ article.url | absolute_url}}{% endcapture %}
   {% capture shareTitle %}{{ article.title }}{% endcapture %}
 
 {% elsif template contains 'product' %}
-  {% capture permalinkURL %}{{ shop.url }}{{ product.url }}{% endcapture %}
+  {% capture permalinkURL %}{{ product.url | absolute_url }}{% endcapture %}
   {% capture shareTitle %}{{ product.title }}{% endcapture %}
-
 {% endif %}
 
 {% assign shareButtonStyle = settings.social_sharing_style %}
