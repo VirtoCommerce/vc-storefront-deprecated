@@ -32,6 +32,10 @@ namespace VirtoCommerce.Storefront.Controllers
             if (vendor != null)
             {
                 WorkContext.CurrentVendor = vendor;
+                WorkContext.CurrentPageSeo = new SeoInfo
+                {
+                    Title = vendor.Name,
+                };
                 return View("vendor", WorkContext);
             }
 

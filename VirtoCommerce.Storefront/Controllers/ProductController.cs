@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using PagedList;
-using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
@@ -34,26 +29,35 @@ namespace VirtoCommerce.Storefront.Controllers
         public async Task<ActionResult> ProductDetails(string productId)
         {
             var product = (await _catalogSearchService.GetProductsAsync(new[] { productId }, WorkContext.CurrentProductResponseGroup)).FirstOrDefault();
-            WorkContext.CurrentProduct = product;          
-         
-            if(product.CategoryId != null)
+            WorkContext.CurrentProduct = product;
+
+            if (product != null)
             {
-                var category = (await _catalogSearchService.GetCategoriesAsync(new[] { product.CategoryId }, Model.Catalog.CategoryResponseGroup.Full)).FirstOrDefault();
-                WorkContext.CurrentCategory = category;
-                category.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
+                WorkContext.CurrentPageSeo = product.SeoInfo;
+
+                if (product.CategoryId != null)
                 {
-                    var criteria = WorkContext.CurrentCatalogSearchCriteria.Clone();                    
-                    criteria.CategoryId = product.CategoryId;
-                    criteria.PageNumber = pageNumber;
-                    criteria.PageSize = pageSize;
-                    if(string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
+                    var category = (await _catalogSearchService.GetCategoriesAsync(new[] { product.CategoryId }, CategoryResponseGroup.Full)).FirstOrDefault();
+                    WorkContext.CurrentCategory = category;
+
+                    if (category != null)
                     {
-                        criteria.SortBy = SortInfo.ToString(sortInfos);
+                        category.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
+                        {
+                            var criteria = WorkContext.CurrentCatalogSearchCriteria.Clone();
+                            criteria.CategoryId = product.CategoryId;
+                            criteria.PageNumber = pageNumber;
+                            criteria.PageSize = pageSize;
+                            if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
+                            {
+                                criteria.SortBy = SortInfo.ToString(sortInfos);
+                            }
+                            return _catalogSearchService.SearchProducts(criteria).Products;
+                        });
                     }
-                    return _catalogSearchService.SearchProducts(criteria).Products;
-                });
+                }
             }
-     
+
             return View("product", WorkContext);
         }
     }
