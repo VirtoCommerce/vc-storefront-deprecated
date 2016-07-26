@@ -15,14 +15,14 @@ storefrontApp.component('vcCheckoutPaymentMethods', {
 
 		this.$onInit = function () {
 			ctrl.getAvailPaymentMethods().then(function (methods) {
-				ctrl.availPaymentMethods = _.sortBy(methods, function (x) { return x.Priority; });
+				ctrl.availPaymentMethods = _.sortBy(methods, function (x) { return x.priority; });
 				if (ctrl.paymentMethod) {
 					ctrl.paymentMethod = _.find(ctrl.availPaymentMethods, function (x) { return x.gatewayCode == ctrl.paymentMethod.gatewayCode; })
 				}
 				if (!ctrl.paymentMethod && ctrl.availPaymentMethods.length > 0)
 				{
 					ctrl.paymentMethod = ctrl.availPaymentMethods[0];
-					ctrl.onSelectMethod({ paymentMethod : ctrl.paymentMethod });
+					//ctrl.onSelectMethod({ paymentMethod : ctrl.paymentMethod }); // can't pass parameter???
 				}
 			})
 			ctrl.checkoutStep.addComponent(this);
