@@ -114,7 +114,7 @@ namespace VirtoCommerce.Storefront.Owin
                         var criteria = workContext.CurrentCatalogSearchCriteria.Clone();
                         criteria.PageNumber = pageNumber;
                         criteria.PageSize = pageSize;
-                        if(string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
+                        if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
                         {
                             criteria.SortBy = SortInfo.ToString(sortInfos);
                         }
@@ -258,7 +258,6 @@ namespace VirtoCommerce.Storefront.Owin
             return !request.Path.StartsWithSegments(new PathString("/admin"))
                 && !request.Path.StartsWithSegments(new PathString("/areas/admin"))
                 && !request.Path.StartsWithSegments(new PathString("/api"))
-                && !request.Path.StartsWithSegments(new PathString("/assets"))
                 && !request.Path.StartsWithSegments(new PathString("/favicon.ico"));
         }
 
@@ -275,7 +274,7 @@ namespace VirtoCommerce.Storefront.Owin
             var retVal = string.Equals(request.Method, "GET", StringComparison.OrdinalIgnoreCase);
             if (retVal)
             {
-                retVal = request.Uri.AbsolutePath.Contains("themes/assets") || request.Uri.IsFile;
+                retVal = request.Uri.IsFile || request.Uri.AbsolutePath.Contains("/assets/");
             }
             return retVal;
         }
