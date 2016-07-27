@@ -152,7 +152,8 @@ namespace VirtoCommerce.LiquidThemeEngine
         #region IFileSystem members
         public string ReadTemplateFile(Context context, string templateName)
         {
-            var templatePath = ResolveTemplatePath(templateName);
+            string[] locations;
+            var templatePath = ResolveTemplatePath(templateName, out locations);
             return ReadTemplateByPath(templatePath);
         }
         #endregion
@@ -201,8 +202,9 @@ namespace VirtoCommerce.LiquidThemeEngine
                 //Otherwise it may be liquid template 
                 fileName = fileName.Replace(".scss.css", ".scss");
                 var settings = GetSettings("''");
+                string[] searchedLocations;
                 //Try to parse liquid asset resource
-                var themeAssetPath = ResolveTemplatePath(fileName, searchInGlobalThemeOnly);
+                var themeAssetPath = ResolveTemplatePath(fileName, out searchedLocations, searchInGlobalThemeOnly);
                 if (themeAssetPath != null)
                 {
                     var templateContent = ReadTemplateByPath(themeAssetPath);
@@ -235,13 +237,15 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// </summary>
         /// <param name="templateName"></param>
         /// <returns></returns>
-        public string ResolveTemplatePath(string templateName, bool searchInGlobalThemeOnly = false)
+        public string ResolveTemplatePath(string templateName, out string[] searchedLocations, bool searchInGlobalThemeOnly = false)
         {
+            searchedLocations = null;
             if (WorkContext.CurrentStore == null)
                 return null;
 
             var liquidTemplateFileName = String.Format(_liquidTemplateFormat, templateName);
             var curentThemediscoveryPaths = _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x, liquidTemplateFileName));
+
             //First try to find template in current theme folder
             var retVal = curentThemediscoveryPaths.FirstOrDefault(x => _themeBlobProvider.PathExists(x));
             if (searchInGlobalThemeOnly || retVal == null)
@@ -250,6 +254,10 @@ namespace VirtoCommerce.LiquidThemeEngine
                 var globalThemeDiscoveyPaths = _templatesDiscoveryFolders.Select(x => Path.Combine(x, liquidTemplateFileName));
                 retVal = globalThemeDiscoveyPaths.FirstOrDefault(x => _globalThemeBlobProvider.PathExists(x));
             }
+
+            if(retVal == null) // only return search locations when no results found
+                searchedLocations = curentThemediscoveryPaths.ToArray();
+
             return retVal;
         }
 
@@ -265,7 +273,8 @@ namespace VirtoCommerce.LiquidThemeEngine
             {
                 throw new ArgumentNullException("templateName");
             }
-            var templatePath = ResolveTemplatePath(templateName);
+            string[] locations;
+            var templatePath = ResolveTemplatePath(templateName, out locations);
             var templateContent = ReadTemplateByPath(templatePath);
             var retVal = RenderTemplate(templateContent, parameters);
             return retVal;

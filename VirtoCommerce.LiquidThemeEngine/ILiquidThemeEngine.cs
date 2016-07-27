@@ -7,7 +7,7 @@ namespace VirtoCommerce.LiquidThemeEngine
 {
     public interface ILiquidThemeEngine
     {
-        string ResolveTemplatePath(string templateName, bool searchInGlobalThemeOnly = false);
+        string ResolveTemplatePath(string templateName, out string[] searchedLocations, bool searchInGlobalThemeOnly = false);
         string RenderTemplateByName(string templateName, Dictionary<string, object> parameters);
         string RenderTemplate(string templateContent, Dictionary<string, object> parameters);
         IDictionary GetSettings(string defaultValue = null);
