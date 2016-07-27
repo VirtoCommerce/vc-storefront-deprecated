@@ -152,13 +152,20 @@ namespace VirtoCommerce.LiquidThemeEngine
         #region IFileSystem members
         public string ReadTemplateFile(Context context, string templateName)
         {
-            string[] locations;
-            var templatePath = ResolveTemplatePath(templateName, out locations);
+            var templatePath = ResolveTemplatePath(templateName);
             return ReadTemplateByPath(templatePath);
         }
         #endregion
 
         #region ILiquidThemeEngine Members
+        public IEnumerable<string> DiscoveryPaths
+        {
+            get
+            {
+                return  _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x)).Concat(_templatesDiscoveryFolders);
+
+            }
+        }
         /// <summary>
         /// Return stream for requested  asset file  (used for search current and base themes assets)
         /// </summary>
@@ -202,9 +209,8 @@ namespace VirtoCommerce.LiquidThemeEngine
                 //Otherwise it may be liquid template 
                 fileName = fileName.Replace(".scss.css", ".scss");
                 var settings = GetSettings("''");
-                string[] searchedLocations;
                 //Try to parse liquid asset resource
-                var themeAssetPath = ResolveTemplatePath(fileName, out searchedLocations, searchInGlobalThemeOnly);
+                var themeAssetPath = ResolveTemplatePath(fileName, searchInGlobalThemeOnly);
                 if (themeAssetPath != null)
                 {
                     var templateContent = ReadTemplateByPath(themeAssetPath);
@@ -237,9 +243,8 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// </summary>
         /// <param name="templateName"></param>
         /// <returns></returns>
-        public string ResolveTemplatePath(string templateName, out string[] searchedLocations, bool searchInGlobalThemeOnly = false)
+        public string ResolveTemplatePath(string templateName, bool searchInGlobalThemeOnly = false)
         {
-            searchedLocations = null;
             if (WorkContext.CurrentStore == null)
                 return null;
 
@@ -253,10 +258,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 //Then try to find in global theme
                 var globalThemeDiscoveyPaths = _templatesDiscoveryFolders.Select(x => Path.Combine(x, liquidTemplateFileName));
                 retVal = globalThemeDiscoveyPaths.FirstOrDefault(x => _globalThemeBlobProvider.PathExists(x));
-            }
-
-            if(retVal == null) // only return search locations when no results found
-                searchedLocations = curentThemediscoveryPaths.ToArray();
+            }        
 
             return retVal;
         }
@@ -273,8 +275,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             {
                 throw new ArgumentNullException("templateName");
             }
-            string[] locations;
-            var templatePath = ResolveTemplatePath(templateName, out locations);
+            var templatePath = ResolveTemplatePath(templateName);
             var templateContent = ReadTemplateByPath(templatePath);
             var retVal = RenderTemplate(templateContent, parameters);
             return retVal;
@@ -495,9 +496,6 @@ namespace VirtoCommerce.LiquidThemeEngine
             }
             return String.Join(":", retVal).GetHashCode().ToString();
         }
-
-
-
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace VirtoCommerce.LiquidThemeEngine
@@ -15,29 +16,27 @@ namespace VirtoCommerce.LiquidThemeEngine
         #region IViewEngine members
         public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            string[] locations;
-            if (_themeEngine.ResolveTemplatePath(partialViewName, out locations) != null)
+            if (_themeEngine.ResolveTemplatePath(partialViewName) != null)
             {
                 return new ViewEngineResult(new DotLiquidThemedView(_themeEngine, partialViewName, null), this);
             }
 
-            return new NullViewEngineResult(locations);
+            return new NullViewEngineResult(_themeEngine.DiscoveryPaths.ToArray());
         }
 
         public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            string[] locations;
             if (String.IsNullOrEmpty(masterName))
             {
                 masterName = _themeEngine.MasterViewName;
             }
 
-            if (_themeEngine.ResolveTemplatePath(viewName, out locations) != null)
+            if (_themeEngine.ResolveTemplatePath(viewName) != null)
             {
                 return new ViewEngineResult(new DotLiquidThemedView(_themeEngine, viewName, masterName), this);
             }
 
-            return new NullViewEngineResult(locations);
+            return new NullViewEngineResult(_themeEngine.DiscoveryPaths.ToArray());
         }
 
         public void ReleaseView(ControllerContext controllerContext, IView view)

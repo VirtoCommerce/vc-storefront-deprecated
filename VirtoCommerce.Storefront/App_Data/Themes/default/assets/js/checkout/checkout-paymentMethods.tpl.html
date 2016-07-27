@@ -1,11 +1,11 @@
 ﻿<div class="content-box" ng-repeat="paymentMethod in $ctrl.availPaymentMethods | orderBy: 'priority'">
     <div class="radio-wrapper content-box__row">
         <div class="radio__input">
-            <input class="input-radio" id="{{ paymentMethod.gatewayCode }}" name="PaymentMethodCode" type="radio" ng-model="$ctrl.paymentMethod" ng-required="true" ng-value="paymentMethod" ng-change="$ctrl.onSelectMethod({ method : paymentMethod })" />
+            <input class="input-radio" id="{{ paymentMethod.gatewayCode }}" name="PaymentMethodCode" type="radio" ng-model="$ctrl.paymentMethod" ng-required="true" ng-value="paymentMethod" ng-change="$ctrl.selectMethod(paymentMethod)" />
         </div>
         <label class="radio__label" for="{{ paymentMethod.gatewayCode }}" ng-bind="paymentMethod.name"></label>
     </div>
-    <div class="radio-wrapper content-box__row content-box__row--secondary" ng-if="paymentMethod === $ctrl.paymentMethod && paymentMethod.type == 'Standard'">
+    <div class="radio-wrapper content-box__row content-box__row--secondary" ng-if="$ctrl.paymentMethod.type == 'Standard'">
         <vc-checkout-credit-card card="$ctrl.paymentMethod.card"></vc-checkout-credit-card>
     </div>
 </div>
