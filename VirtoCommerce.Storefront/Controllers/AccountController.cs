@@ -220,6 +220,21 @@ namespace VirtoCommerce.Storefront.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Login(Login formModel, string returnUrl)
         {
+            if (string.IsNullOrWhiteSpace(formModel.Email))
+            {
+                ModelState.AddModelError("email", "must not be empty");
+            }
+
+            if (string.IsNullOrWhiteSpace(formModel.Password))
+            {
+                ModelState.AddModelError("password", "must not be empty");
+            }
+
+            if (ModelState.Count > 0)
+            {
+                return View("customers/login", WorkContext);
+            }
+
             var loginResult = await _commerceCoreApi.StorefrontSecurityPasswordSignInAsync(formModel.Email, formModel.Password);
 
             if (string.Equals(loginResult.Status, "success", StringComparison.InvariantCultureIgnoreCase))
