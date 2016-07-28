@@ -15,7 +15,7 @@ storefrontApp.component('vcCheckoutPaymentMethods', {
 
 		this.$onInit = function () {
 			ctrl.getAvailPaymentMethods().then(function (methods) {
-				ctrl.availPaymentMethods = _.sortBy(methods, function (x) { return x.Priority; });
+				ctrl.availPaymentMethods = _.sortBy(methods, function (x) { return x.priority; });
 				if (ctrl.paymentMethod) {
 					ctrl.paymentMethod = _.find(ctrl.availPaymentMethods, function (x) { return x.gatewayCode == ctrl.paymentMethod.gatewayCode; })
 				}
