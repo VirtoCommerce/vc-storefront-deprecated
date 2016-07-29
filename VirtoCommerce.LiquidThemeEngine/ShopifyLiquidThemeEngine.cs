@@ -162,76 +162,80 @@ namespace VirtoCommerce.LiquidThemeEngine
         {
             get
             {
-                return  _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x)).Concat(_templatesDiscoveryFolders);
+                return _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x)).Concat(_templatesDiscoveryFolders);
 
             }
         }
         /// <summary>
         /// Return stream for requested  asset file  (used for search current and base themes assets)
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="filePath"></param>
         /// <returns></returns>
-        public Stream GetAssetStream(string fileName, bool searchInGlobalThemeOnly = false)
+        public Stream GetAssetStream(string filePath, bool searchInGlobalThemeOnly = false)
         {
             Stream retVal = null;
-            var fileExtensions = System.IO.Path.GetExtension(fileName);
-            string currentThemePath = null;
-            string globalThemePath = _globalThemeBlobProvider.Search("assets", fileName, true).FirstOrDefault();
+            //file.*.* => file.*.* || file.* || file.*.liquid
+            //file.* => file.* || file.*.liquid
+            var searchPatterns = new List<string>(new[] { filePath });
+            var parts = filePath.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+            if (!parts.IsNullOrEmpty())
+            {
+                if (parts.Count() > 2)
+                {
+                    //file.* 
+                    searchPatterns.Add(parts[0] + "." + parts[1]);
+                }
+                //file.*.liquid
+                searchPatterns.Add(string.Format(_liquidTemplateFormat, parts[0] + "." + parts[1]));
+            }
+
+            string currentThemeFilePath = null;
+            //search in global theme first 
+            var globalThemeFilePath = searchPatterns.SelectMany(x => _globalThemeBlobProvider.Search("assets", x, true)).FirstOrDefault();
             if (!searchInGlobalThemeOnly)
             {
                 //try to search in current store theme 
                 if (_themeBlobProvider.PathExists(CurrentThemePath + "\\assets"))
                 {
-                    currentThemePath = _themeBlobProvider.Search(CurrentThemePath + "\\assets", fileName, true).FirstOrDefault();
+                    currentThemeFilePath = searchPatterns.SelectMany(x => _themeBlobProvider.Search(CurrentThemePath + "\\assets", x, true)).FirstOrDefault();
                 }
             }
          
-            if(fileExtensions.EndsWith("liquid"))
+            if (currentThemeFilePath != null)
+            {
+                retVal = _themeBlobProvider.OpenRead(currentThemeFilePath);
+                filePath = currentThemeFilePath;
+            }
+            else if (globalThemeFilePath != null)
+            {
+                retVal = _globalThemeBlobProvider.OpenRead(globalThemeFilePath);
+                filePath = globalThemeFilePath;
+            }
+
+            if (retVal != null && filePath.EndsWith(".liquid"))
             {
                 var shopifyContext = WorkContext.ToShopifyModel(UrlBuilder);
                 var parameters = shopifyContext.ToLiquid() as Dictionary<string, object>;
-                var themeSettings = GetSettings();
-                parameters.Add("settings", themeSettings);
-                var content = RenderTemplateByName(fileName.Replace(".liquid", ""), parameters);
-                retVal = new MemoryStream(Encoding.UTF8.GetBytes(content));
-            }
-            //We find requested asset need return resulting stream
-            else if (currentThemePath != null)
-            {
-                retVal = _themeBlobProvider.OpenRead(currentThemePath);
-            }
-            else if (globalThemePath != null)
-            {
-                retVal = _globalThemeBlobProvider.OpenRead(globalThemePath);
-            }
-            else
-            {
-                //Otherwise it may be liquid template 
-                fileName = fileName.Replace(".scss.css", ".scss");
                 var settings = GetSettings("''");
-                //Try to parse liquid asset resource
-                var themeAssetPath = ResolveTemplatePath(fileName, searchInGlobalThemeOnly);
-                if (themeAssetPath != null)
-                {
-                    var templateContent = ReadTemplateByPath(themeAssetPath);
-                    var content = RenderTemplate(templateContent, new Dictionary<string, object>() { { "settings", settings } });
+                parameters.Add("settings", settings);
+                var templateContent = retVal.ReadToString();
+                var template = RenderTemplate(templateContent, parameters);
+                retVal = new MemoryStream(Encoding.UTF8.GetBytes(template));
+            }
 
-                    if (fileName.EndsWith(".scss"))
-                    {
-                        try
-                        {
-                            //handle scss resources
-                            content = _saasCompiler.Compile(content);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new SaasCompileException(fileName, content, ex);
-                        }
-                    }
-                    if (content != null)
-                    {
-                        retVal = new MemoryStream(Encoding.UTF8.GetBytes(content));
-                    }
+            if (retVal != null && (filePath.Contains(".scss.") || filePath.EndsWith(".scss")))
+            {
+                var content = retVal.ReadToString();
+                try
+                {
+                    //handle scss resources
+                    content = _saasCompiler.Compile(content);
+                    retVal = new MemoryStream(Encoding.UTF8.GetBytes(content));
+                }
+                catch (Exception ex)
+                {
+                    throw new SaasCompileException(filePath, content, ex);
                 }
             }
 
@@ -258,7 +262,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 //Then try to find in global theme
                 var globalThemeDiscoveyPaths = _templatesDiscoveryFolders.Select(x => Path.Combine(x, liquidTemplateFileName));
                 retVal = globalThemeDiscoveyPaths.FirstOrDefault(x => _globalThemeBlobProvider.PathExists(x));
-            }        
+            }
 
             return retVal;
         }
