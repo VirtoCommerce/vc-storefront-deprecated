@@ -111,9 +111,15 @@ namespace VirtoCommerce.Storefront.Owin
                     //This line make delay categories loading initialization (categories can be evaluated on view rendering time)
                     workContext.Categories = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos) =>
                     {
-                        var criteria = workContext.CurrentCatalogSearchCriteria.Clone();
-                        criteria.PageNumber = pageNumber;
-                        criteria.PageSize = pageSize;
+                        var criteria = new CatalogSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency)
+                        {
+                            CatalogId = workContext.CurrentStore.Catalog,
+                            SearchInChildren = true,
+                            PageNumber = pageNumber,
+                            PageSize = pageSize,
+                            ResponseGroup = CatalogSearchResponseGroup.WithCategories | CatalogSearchResponseGroup.WithOutlines
+                        };
+
                         if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
                         {
                             criteria.SortBy = SortInfo.ToString(sortInfos);
