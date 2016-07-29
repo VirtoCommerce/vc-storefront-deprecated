@@ -174,22 +174,10 @@ namespace VirtoCommerce.LiquidThemeEngine
         public Stream GetAssetStream(string filePath, bool searchInGlobalThemeOnly = false)
         {
             Stream retVal = null;
-            //file.*.* => file.*.* || file.* || file.*.liquid
-            //file.* => file.* || file.*.liquid
-            var searchPatterns = new List<string>(new[] { filePath });
-            var parts = filePath.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-
-            if (!parts.IsNullOrEmpty())
-            {
-                if (parts.Count() > 2)
-                {
-                    //file.* 
-                    searchPatterns.Add(parts[0] + "." + parts[1]);
-                }
-                //file.*.liquid
-                searchPatterns.Add(string.Format(_liquidTemplateFormat, parts[0] + "." + parts[1]));
-            }
-
+            var filePathWithoutExtension = Path.Combine(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath)).Replace("\\", "/");
+            //file.ext => file.ext || file || file.liquid || file.ext.liquid        
+            var searchPatterns = new[] { filePath, filePathWithoutExtension, string.Format(_liquidTemplateFormat, filePathWithoutExtension), string.Format(_liquidTemplateFormat, filePath) };
+         
             string currentThemeFilePath = null;
             //search in global theme first 
             var globalThemeFilePath = searchPatterns.SelectMany(x => _globalThemeBlobProvider.Search("assets", x, true)).FirstOrDefault();
