@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
+using System;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
@@ -15,7 +16,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public Form()
         {
             PostedSuccessfully = true;
-            Properties = new Dictionary<string, object>();
+            Properties = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -54,11 +55,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// </summary>
         public bool PasswordNeeded { get; set; }
 
-        public IDictionary<string, object> Properties { get; set; }
+        public IDictionary<string, string> Properties { get; set; }
 
         public override object BeforeMethod(string method)
         {
-            var val = this.Properties.Where(x => x.Key == method).Select(x => x.Value).SingleOrDefault();
+            var val = Properties.Where(x => x.Key.Equals(method, StringComparison.OrdinalIgnoreCase)).Select(x => x.Value).SingleOrDefault();
             return val;
         }
     }

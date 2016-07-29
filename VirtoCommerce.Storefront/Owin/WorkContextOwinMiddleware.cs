@@ -56,7 +56,7 @@ namespace VirtoCommerce.Storefront.Owin
             : base(next)
         {
             //Be AWARE! WorkContextOwinMiddleware crated once in first application start
-            //and  there can not be resolved and stored in fields services using WorkContext as dependency (WorkCOntext has a per request lifetime)
+            //and  there can not be resolved and stored in fields services using WorkContext as dependency (WorkContext has a per request lifetime)
             _storeApi = container.Resolve<IVirtoCommerceStoreApi>();
             _quoteRequestBuilder = container.Resolve<IQuoteRequestBuilder>();
             _pricingModuleApi = container.Resolve<IVirtoCommercePricingApi>();
@@ -109,19 +109,33 @@ namespace VirtoCommerce.Storefront.Owin
                     workContext.PageSize = qs.Get("count").ToNullableInt() ?? qs.Get("page_size").ToNullableInt();
 
                     //This line make delay categories loading initialization (categories can be evaluated on view rendering time)
-                    workContext.Categories = new MutablePagedList<Category>((pageNumber, pageSize) =>
+                    workContext.Categories = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos) =>
                     {
-                        var criteria = workContext.CurrentCatalogSearchCriteria.Clone();
-                        criteria.PageNumber = pageNumber;
-                        criteria.PageSize = pageSize;
+                        var criteria = new CatalogSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency)
+                        {
+                            CatalogId = workContext.CurrentStore.Catalog,
+                            SearchInChildren = true,
+                            PageNumber = pageNumber,
+                            PageSize = pageSize,
+                            ResponseGroup = CatalogSearchResponseGroup.WithCategories | CatalogSearchResponseGroup.WithOutlines
+                        };
+
+                        if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
+                        {
+                            criteria.SortBy = SortInfo.ToString(sortInfos);
+                        }
                         var result = catalogSearchService.SearchCategories(criteria);
                         foreach (var category in result)
                         {
-                            category.Products = new MutablePagedList<Product>((pageNumber2, pageSize2) =>
+                            category.Products = new MutablePagedList<Product>((pageNumber2, pageSize2, sortInfos2) =>
                             {
                                 criteria.CategoryId = category.Id;
                                 criteria.PageNumber = pageNumber2;
                                 criteria.PageSize = pageSize2;
+                                if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos2.IsNullOrEmpty())
+                                {
+                                    criteria.SortBy = SortInfo.ToString(sortInfos2);
+                                }
                                 var searchResult = catalogSearchService.SearchProducts(criteria);
                                 //Because catalog search products returns also aggregations we can use it to populate workContext using C# closure
                                 //now workContext.Aggregation will be contains preloaded aggregations for current category
@@ -132,12 +146,15 @@ namespace VirtoCommerce.Storefront.Owin
                         return result;
                     });
                     //This line make delay products loading initialization (products can be evaluated on view rendering time)
-                    workContext.Products = new MutablePagedList<Product>((pageNumber, pageSize) =>
+                    workContext.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                     {
                         var criteria = workContext.CurrentCatalogSearchCriteria.Clone();
                         criteria.PageNumber = pageNumber;
                         criteria.PageSize = pageSize;
-
+                        if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
+                        {
+                            criteria.SortBy = SortInfo.ToString(sortInfos);
+                        }
                         var result = catalogSearchService.SearchProducts(criteria);
                         //Prevent double api request for get aggregations
                         //Because catalog search products returns also aggregations we can use it to populate workContext using C# closure
@@ -146,13 +163,17 @@ namespace VirtoCommerce.Storefront.Owin
                         return result.Products;
                     });
                     //This line make delay aggregation loading initialization (aggregation can be evaluated on view rendering time)
-                    workContext.Aggregations = new MutablePagedList<Aggregation>((pageNumber, pageSize) =>
+                    workContext.Aggregations = new MutablePagedList<Aggregation>((pageNumber, pageSize, sortInfos) =>
                     {
                         var criteria = workContext.CurrentCatalogSearchCriteria.Clone();
                         criteria.PageNumber = pageNumber;
                         criteria.PageSize = pageSize;
+                        if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
+                        {
+                            criteria.SortBy = SortInfo.ToString(sortInfos);
+                        }
                         //Force to load products and its also populate workContext.Aggregations by preloaded values
-                        workContext.Products.Slice(pageNumber, pageSize);
+                        workContext.Products.Slice(pageNumber, pageSize, sortInfos);
                         return workContext.Aggregations;
                     });
 
@@ -243,7 +264,6 @@ namespace VirtoCommerce.Storefront.Owin
             return !request.Path.StartsWithSegments(new PathString("/admin"))
                 && !request.Path.StartsWithSegments(new PathString("/areas/admin"))
                 && !request.Path.StartsWithSegments(new PathString("/api"))
-                && !request.Path.StartsWithSegments(new PathString("/assets"))
                 && !request.Path.StartsWithSegments(new PathString("/favicon.ico"));
         }
 
@@ -260,7 +280,7 @@ namespace VirtoCommerce.Storefront.Owin
             var retVal = string.Equals(request.Method, "GET", StringComparison.OrdinalIgnoreCase);
             if (retVal)
             {
-                retVal = request.Uri.AbsolutePath.Contains("themes/assets") || !string.IsNullOrEmpty(Path.GetExtension(request.Uri.ToString()));
+                retVal = request.Uri.IsFile || request.Uri.AbsolutePath.Contains("/assets/");
             }
             return retVal;
         }

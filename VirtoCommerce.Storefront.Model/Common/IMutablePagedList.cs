@@ -12,7 +12,16 @@ namespace VirtoCommerce.Storefront.Model.Common
     /// </summary>
     public interface IMutablePagedList : IPagedList 
     {
-        void Slice(int pageNumber, int pageSize);
+        /// <summary>
+        /// Contains information for sorting order
+        /// </summary>
+        IEnumerable<SortInfo> SortInfos { get; }
+        /// <summary>
+        /// Slice  the current set of data by new page sizes
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        void Slice(int pageNumber, int pageSize, IEnumerable<SortInfo> sortInfos);
     }
 
     public interface IMutablePagedList<T> : IMutablePagedList, IPagedList<T>

@@ -1,0 +1,23 @@
+{% include 'breadcrumb' %}
+
+<div class="grid">
+  <div class="grid-item large--four-fifths">
+    <div class="grid">
+      <div class="grid-item large--ten-twelfths">
+        <header class="section-header">
+          <div class="section-header--left">
+            <h1>{{ vendor.name }}</h1>
+          </div>
+        </header>
+        <div class="rte">
+          {{ vendor.description }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="sidebar grid-item large--one-fifth">
+    <a href="{{ vendor.site_url | absolute_url }}">
+      <img alt="" src="{{ vendor.logo_url | absolute_url }}" />
+    </a>
+  </aside>
+</div>

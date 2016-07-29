@@ -103,6 +103,9 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("ShopifyCart.Clear", "cart/clear", defaults: new { controller = "ShopifyCompatibility", action = "Clear" }, constraints: new { httpMethod = new HttpMethodConstraint("GET") });
             routes.AddStorefrontRoute("ShopifyCart.ClearJs", "cart/clear.js", defaults: new { controller = "ShopifyCompatibility", action = "ClearJs" });
             routes.AddStorefrontRoute("ShopifyCart.UpdateJs", "cart/update.js", defaults: new { controller = "ShopifyCompatibility", action = "UpdateJs" });
+            //Collections  (Shopify compatible)
+            routes.AddStorefrontRoute("Shopify.Collections", "collections", defaults: new { controller = "ShopifyCompatibility", action = "Collections" });
+
 
             // QuoteRequest
             routes.AddStorefrontRoute("QuoteRequest.CurrentQuoteRequest", "quoterequest", defaults: new { controller = "QuoteRequest", action = "CurrentQuoteRequest" });
@@ -119,16 +122,22 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("Common.ContactUs", "contact/{viewName}", defaults: new { controller = "Common", action = "СontactUs", viewName = UrlParameter.Optional }, constraints: new { httpMethod = new HttpMethodConstraint("GET") });
             routes.AddStorefrontRoute("Common.NoStore", "common/nostore", defaults: new { controller = "Common", action = "NoStore" });
             routes.AddStorefrontRoute("Common.Maintenance", "maintenance", defaults: new { controller = "Common", action = "Maintenance" });
+            routes.AddStorefrontRoute("Common.ResetCache", "common/resetcache", defaults: new { controller = "Common", action = "ResetCache" });
+
 
             // Category routes
             routes.AddStorefrontRoute("Category.BrowseCategory", "category/{categoryId}", defaults: new { controller = "CatalogSearch", action = "CategoryBrowsing" });
-
+           
             // Product routes
             routes.AddStorefrontRoute("Product.GetProduct", "product/{productId}", defaults: new { controller = "Product", action = "ProductDetails" });
 
+            // Vendor routes
+            routes.AddStorefrontRoute("Vendor.GetVendor", "vendor/{vendorId}", defaults: new { controller = "Vendor", action = "VendorDetails" });
+
             // Assets
-            routes.AddStorefrontRoute("Assets", "themes/assets/{*asset}", defaults: new { controller = "Asset", action = "GetAssets" });
-            routes.AddStorefrontRoute("GlobalAssets", "themes/global/assets/{*asset}", defaults: new { controller = "Asset", action = "GetGlobalAssets" });
+            routes.AddStorefrontRoute("ThemeAssets", "themes/assets/{*path}", defaults: new { controller = "Asset", action = "GetThemeAssets" });
+            routes.AddStorefrontRoute("GlobalThemeAssets", "themes/global/assets/{*path}", defaults: new { controller = "Asset", action = "GetGlobalThemeAssets" });
+            routes.AddStorefrontRoute("StaticContentAssets", "assets/{*path}", defaults: new { controller = "Asset", action = "GetStaticContentAssets" });
 
             // Static content (no cms)
             routes.AddStorefrontRoute("Pages.GetPage", "pages/{*page}", defaults: new { controller = "Page", action = "GetContentPageByName" });

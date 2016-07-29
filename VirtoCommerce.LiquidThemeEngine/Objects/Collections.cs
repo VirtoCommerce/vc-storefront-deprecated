@@ -16,7 +16,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         #region Public Methods and Operators
         public override object BeforeMethod(string method)
         {
-            return this.SingleOrDefault(x => x.Handle == method);
+            return this.SingleOrDefault(x => x.Handle.Equals(method, StringComparison.OrdinalIgnoreCase));
         }
         #endregion
         

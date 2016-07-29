@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
@@ -23,7 +24,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         }
 
         public Product(Currency currency, Language language)
-            :this()
+            : this()
         {
             Currency = currency;
             TaxTotal = new Money(currency);
@@ -169,10 +170,12 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         /// </summary>
         public string ShippingType { get; set; }
 
+        public string VendorId { get; set; }
+
         /// <summary>
         /// Product's vendor
         /// </summary>
-        public string Vendor { get; set; }
+        public Vendor Vendor { get; set; }
 
         /// <summary>
         /// List og variation properties
@@ -247,6 +250,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         /// </summary>
         /// <param name="prices"></param>
         /// <param name="currentCurrency"></param>
+        /// <param name="allCurrencies"></param>
         public void ApplyPrices(IEnumerable<ProductPrice> prices, Currency currentCurrency, IEnumerable<Currency> allCurrencies)
         {
             Prices.Clear();
@@ -290,6 +294,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         #endregion
 
         #region ITaxable Members
+
         /// <summary>
         /// Gets or sets the value of total shipping tax amount
         /// </summary>
@@ -313,14 +318,15 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             Price.ListPriceWithTax = Price.ListPrice;
             Price.SalePriceWithTax = Price.SalePrice;
 
-            //Because TaxLine.Id may contains composite string id & extra info
-            var productTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == Id);
             TaxTotal = new Money(Currency);
+
+            // TaxLine.Id can be a composite string: id&extra_info
+            var productTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == Id).ToList();
             if (productTaxRates.Any())
             {
                 var listPriceRate = productTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("list"));
                 var salePriceRate = productTaxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("sale"));
-                if(salePriceRate == null)
+                if (salePriceRate == null)
                 {
                     salePriceRate = listPriceRate;
                 }
@@ -331,14 +337,15 @@ namespace VirtoCommerce.Storefront.Model.Catalog
                 //Apply tax for tier prices
                 foreach (var tierPrice in Price.TierPrices)
                 {
-                    var tierPriceTaxRate = productTaxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant(tierPrice.Quantity.ToString()));
-                    if(tierPrice != null)
+                    if (tierPrice != null)
                     {
+                        var tierPriceTaxRate = productTaxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant(tierPrice.Quantity.ToString()));
                         tierPrice.Tax = tierPriceTaxRate.Rate;
                     }
                 }
             }
         }
+
         #endregion
 
         #region IDiscountable Members
@@ -360,7 +367,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             {
                 //Apply discount to main price
                 var discount = reward.ToDiscountModel(Price.SalePrice, Price.SalePriceWithTax);
- 
+
                 if (reward.IsValid)
                 {
                     Discounts.Add(discount);
@@ -371,16 +378,17 @@ namespace VirtoCommerce.Storefront.Model.Catalog
                         discount = reward.ToDiscountModel(tierPrice.Price, tierPrice.PriceWithTax);
                         tierPrice.ActiveDiscount = discount;
                     }
-                }            
-            }          
+                }
+            }
         }
+
         #endregion
 
         public string Url { get; set; }
 
         public override string ToString()
         {
-            return String.Format("product #{0} sku: {1} name: {2}", Id ?? "undef", Sku ?? "undef", Name ?? "undef");
+            return string.Format(CultureInfo.InvariantCulture, "product #{0} sku: {1} name: {2}", Id ?? "undef", Sku ?? "undef", Name ?? "undef");
         }
     }
 }

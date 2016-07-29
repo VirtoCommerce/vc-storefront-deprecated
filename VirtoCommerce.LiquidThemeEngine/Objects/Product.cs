@@ -228,7 +228,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// Returns the vendor of the product. 
         /// </summary>
         [DataMember]
-        public string Vendor { get; set; }
+        public Vendor Vendor { get; set; }
 
         /// <summary>
         /// Gets or sets the sign of product can be added to quote request

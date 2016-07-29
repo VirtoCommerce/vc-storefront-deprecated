@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PagedList;
@@ -92,6 +93,12 @@ namespace VirtoCommerce.Storefront.Services
             var info = await _storeApi.StoreModuleGetLoginOnBehalfInfoAsync(storeId, customerId);
             return info.CanLoginOnBehalf == true;
         }
+
+        public async Task<Vendor> GetVendorByIdAsync(string vendorId)
+        {
+            return (await _customerApi.CustomerModuleGetVendorByIdAsync(vendorId)).ToWebModel();
+        }
+
         #endregion
 
         #region IObserver<CreateOrderEvent> Members
@@ -111,7 +118,7 @@ namespace VirtoCommerce.Storefront.Services
 
                     foreach (var address in workContext.CurrentCustomer.Addresses)
                     {
-                        address.Name = string.Join(" ", address.FirstName, address.LastName);
+                        address.Name = address.ToString();
                     }
 
                     await UpdateCustomerAsync(workContext.CurrentCustomer);
@@ -139,7 +146,7 @@ namespace VirtoCommerce.Storefront.Services
         private IMutablePagedList<QuoteRequest> GetCustomerQuotes(CustomerInfo customer)
         {
             var workContext = _workContextFactory();
-            Func<int, int, IPagedList<QuoteRequest>> quotesGetter = (pageNumber, pageSize) =>
+            Func<int, int, IEnumerable<SortInfo>, IPagedList<QuoteRequest>> quotesGetter = (pageNumber, pageSize, sortInfos) =>
             {
                 var quoteSearchCriteria = new QuoteModule.Client.Model.QuoteRequestSearchCriteria
                 {
@@ -166,11 +173,11 @@ namespace VirtoCommerce.Storefront.Services
                 ResponseGroup = "full"
             };
 
-            Func<int, int, IPagedList<CustomerOrder>> ordersGetter = (pageNumber, pageSize) =>
+            Func<int, int, IEnumerable<SortInfo>, IPagedList<CustomerOrder>> ordersGetter = (pageNumber, pageSize, sortInfos) =>
             {
                 //TODO: add caching
                 orderSearchcriteria.Start = (pageNumber - 1) * pageSize;
-                orderSearchcriteria.Count = pageSize;
+                orderSearchcriteria.Count = pageSize;             
                 var cacheKey = "GetCustomerOrders-" + orderSearchcriteria.GetHashCode();
                 var ordersResponse = _cacheManager.Get(cacheKey, string.Format(_customerOrdersCacheRegionFormat, customer.Id), () => _orderApi.OrderModuleSearch(orderSearchcriteria));
                 return new StaticPagedList<CustomerOrder>(ordersResponse.CustomerOrders.Select(x => x.ToWebModel(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,

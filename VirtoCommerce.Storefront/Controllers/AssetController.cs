@@ -1,50 +1,81 @@
-﻿using System.Web;
+﻿using System.IO;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using VirtoCommerce.LiquidThemeEngine;
+using VirtoCommerce.Storefront.Model;
+using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Services;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
     [OutputCache(CacheProfile = "AssetsCachingProfile")]
-    public class AssetController : Controller
+    public class AssetController : StorefrontControllerBase
     {
         private readonly ILiquidThemeEngine _themeEngine;
+        private readonly IStaticContentBlobProvider _staticContentBlobProvider;
 
-        public AssetController(ILiquidThemeEngine themeEngine)
+        public AssetController(WorkContext context, IStorefrontUrlBuilder urlBuilder, ILiquidThemeEngine themeEngine, IStaticContentBlobProvider staticContentBlobProvider)
+            : base(context, urlBuilder)
         {
             _themeEngine = themeEngine;
+            _staticContentBlobProvider = staticContentBlobProvider;
         }
 
         /// <summary>
         /// GET: /themes/assets/{*asset}
-        /// Handles all asset requests because it may be liquid and scss files which should be preprocessed
+        /// Handle theme assets requests
         /// </summary>
-        /// <param name="asset"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult GetAssets(string asset)
+        public ActionResult GetThemeAssets(string path)
         {
-            var stream = _themeEngine.GetAssetStream(asset);
+            var stream = _themeEngine.GetAssetStream(path);
             if (stream != null)
             {
-                return File(stream, MimeMapping.GetMimeMapping(asset));
+                return File(stream, MimeMapping.GetMimeMapping(path));
             }
-            throw new HttpException(404, asset);
+            throw new HttpException(404, path);
         }
 
         /// <summary>
         /// GET: /themes/global/assets/{*asset}
+        /// Handle global theme assets requests
         /// </summary>
-        /// <param name="asset"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult GetGlobalAssets(string asset)
+        public ActionResult GetGlobalThemeAssets(string path)
         {
-            var stream = _themeEngine.GetAssetStream(asset, searchInGlobalThemeOnly: true);
+            var stream = _themeEngine.GetAssetStream(path, searchInGlobalThemeOnly: true);
             if (stream != null)
             {
-                return File(stream, MimeMapping.GetMimeMapping(asset));
+                return File(stream, MimeMapping.GetMimeMapping(path));
             }
-            throw new HttpException(404, asset);
+            throw new HttpException(404, path);
+        }
+
+        /// <summary>
+        /// GET: /assets/{*asset}
+        /// Handle all static content assets requests
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetStaticContentAssets(string path)
+        {
+            string blobPath = _staticContentBlobProvider.Search(Path.Combine(WorkContext.CurrentStore.Id, "assets"), path, true).FirstOrDefault();
+            if(!string.IsNullOrEmpty(blobPath))
+            {
+                var stream = _staticContentBlobProvider.OpenRead(blobPath);
+                if(stream != null)
+                {
+                    return File(stream, MimeMapping.GetMimeMapping(blobPath));
+                }
+            }
+        
+            throw new HttpException(404, path);
         }
     }
 }

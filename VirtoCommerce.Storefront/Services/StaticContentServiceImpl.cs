@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Markdig;
+using Markdig.Renderers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using MarkdownSharp;
 using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.LiquidThemeEngine.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -24,23 +25,22 @@ namespace VirtoCommerce.Storefront.Services
     {
         private static readonly Regex _headerRegExp = new Regex(@"(?s:^---(.*?)---)");
         private static readonly string[] _extensions = { ".md", ".html" };
-        private readonly Markdown _markdownRender;
         private readonly ILiquidThemeEngine _liquidEngine;
         private readonly ILocalCacheManager _cacheManager;
         private readonly Func<WorkContext> _workContextFactory;
         private readonly Func<IStorefrontUrlBuilder> _urlBuilderFactory;
         private readonly Func<string, ContentItem> _contentItemFactory;
-        private readonly IContentBlobProvider _contentBlobProvider;
+        private readonly IStaticContentBlobProvider _contentBlobProvider;
+        private readonly MarkdownPipeline _markdownPipeline;
 
         [CLSCompliant(false)]
-        public StaticContentServiceImpl(Markdown markdownRender, ILiquidThemeEngine liquidEngine,
+        public StaticContentServiceImpl(ILiquidThemeEngine liquidEngine,
                                         ILocalCacheManager cacheManager, Func<WorkContext> workContextFactory,
                                         Func<IStorefrontUrlBuilder> urlBuilderFactory, Func<string, ContentItem> contentItemFactory,
-                                        IContentBlobProvider contentBlobProvider)
+                                        IStaticContentBlobProvider contentBlobProvider)
         {
-            _markdownRender = markdownRender;
             _liquidEngine = liquidEngine;
-
+            
             _cacheManager = cacheManager;
             _workContextFactory = workContextFactory;
             _urlBuilderFactory = urlBuilderFactory;
@@ -56,6 +56,8 @@ namespace VirtoCommerce.Storefront.Services
             {
                 _cacheManager.Clear();
             };
+
+            _markdownPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
         }
 
         #region IStaticContentService Members
@@ -140,9 +142,8 @@ namespace VirtoCommerce.Storefront.Services
             //Render markdown content
             if (string.Equals(Path.GetExtension(contentItem.StoragePath), ".md", StringComparison.InvariantCultureIgnoreCase))
             {
-                content = _markdownRender.Transform(content);
+                content = Markdown.ToHtml(content, _markdownPipeline);
             }
-
 
             contentItem.LoadContent(content, metaHeaders, themeSettings);
         }

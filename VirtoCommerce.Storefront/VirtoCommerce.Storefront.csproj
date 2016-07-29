@@ -76,8 +76,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Shared\LibSassNetProxy.dll</HintPath>
     </Reference>
-    <Reference Include="MarkdownSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Markdown.1.14.4\lib\net45\MarkdownSharp.dll</HintPath>
+    <Reference Include="Markdig, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.0.7.2\lib\net40\Markdig.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -220,8 +220,8 @@
       <HintPath>..\packages\VirtoCommerce.CartModule.Client.2.11.0\lib\net451\VirtoCommerce.CartModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.CatalogModule.Client, Version=2.12.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.CatalogModule.Client.2.12.1\lib\net451\VirtoCommerce.CatalogModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.CatalogModule.Client, Version=2.13.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.CatalogModule.Client.2.13.0\lib\net451\VirtoCommerce.CatalogModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.ContentModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -232,8 +232,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\VirtoCommerce.CoreModule.Client.2.14.0\lib\net451\VirtoCommerce.CoreModule.Client.dll</HintPath>
     </Reference>
-    <Reference Include="VirtoCommerce.CustomerModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.CustomerModule.Client.2.11.0\lib\net451\VirtoCommerce.CustomerModule.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.CustomerModule.Client, Version=2.11.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.CustomerModule.Client.2.11.2\lib\net451\VirtoCommerce.CustomerModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.InventoryModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -248,12 +248,12 @@
       <HintPath>..\packages\VirtoCommerce.OrderModule.Client.2.11.1\lib\net451\VirtoCommerce.OrderModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Client, Version=2.11.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Client.2.11.2\lib\net451\VirtoCommerce.Platform.Client.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Client, Version=2.11.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Client.2.11.5\lib\net451\VirtoCommerce.Platform.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Client.Security, Version=2.11.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Client.Security.2.11.2\lib\net451\VirtoCommerce.Platform.Client.Security.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Client.Security, Version=2.11.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Client.Security.2.11.4\lib\net451\VirtoCommerce.Platform.Client.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.PricingModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -372,6 +372,27 @@
     <Content Include="App_Data\Themes\default\assets\jcb.svg" />
     <Content Include="App_Data\Themes\default\assets\jquery.zoom.min.js" />
     <Content Include="App_Data\Themes\default\assets\js\cart.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-totals.js" />
+    <None Include="App_Data\Themes\default\assets\js\checkout\checkout-totals.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-lineItems.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-lineItems.tpl.liquid" />
+    <None Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.js" />
+    <None Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard-step.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard-step.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-address.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-address.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.js" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout.js" />
     <Content Include="App_Data\Themes\default\assets\js\quote-request.js" />
     <Content Include="App_Data\Themes\default\assets\klarna-big.png" />
     <Content Include="App_Data\Themes\default\assets\laser.svg" />
@@ -407,10 +428,8 @@
     <Content Include="App_Data\Themes\default\assets\status-sold-out.svg" />
     <Content Include="App_Data\Themes\default\assets\shopify_common.js" />
     <Content Include="App_Data\Themes\default\assets\storefront.css" />
-    <Content Include="App_Data\Themes\default\snippets\checkout-footer.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\app.js" />
     <Content Include="App_Data\Themes\default\assets\js\product-list.js" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout.js" />
     <Content Include="App_Data\Themes\default\assets\js\directives.js" />
     <Content Include="App_Data\Themes\default\assets\js\main.js" />
     <Content Include="App_Data\Themes\default\assets\js\product.js" />
@@ -463,6 +482,7 @@
     <Compile Include="Controllers\Api\ApiAccountController.cs" />
     <Compile Include="Controllers\Api\ApiPricingController.cs" />
     <Compile Include="Controllers\Api\ApiMarketingController.cs" />
+    <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Controllers\QuoteRequestController.cs" />
     <Compile Include="Converters\AssociationConverter.cs" />
     <Compile Include="Converters\AttachmentConverter.cs" />
@@ -479,6 +499,7 @@
     <Compile Include="Converters\QuoteRequestTotalsConverter.cs" />
     <Compile Include="Converters\ShippingMethodConverter.cs" />
     <Compile Include="Converters\TierPriceConverter.cs" />
+    <Compile Include="Converters\VendorConverters.cs" />
     <Compile Include="Owin\StorefrontUrlRewriterOwinMiddleware.cs" />
     <Compile Include="Services\CartValidator.cs" />
     <Compile Include="Services\ContentBlobProviders\AzureBlobContentProvider.cs" />
@@ -556,6 +577,7 @@
     </Content>
     <Content Include="App_Data\Themes\default\templates\maintenance.liquid" />
     <Content Include="App_Data\Themes\default\layout\empty.liquid" />
+    <Content Include="App_Data\Themes\default\templates\vendor.liquid" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -583,7 +605,6 @@
     <Content Include="App_Data\Themes\default\locales\pt-PT.json" />
     <Content Include="App_Data\Themes\default\snippets\blog-sidebar.liquid" />
     <Content Include="App_Data\Themes\default\snippets\breadcrumb.liquid" />
-    <Content Include="App_Data\Themes\default\snippets\checkout_totals.liquid" />
     <Content Include="App_Data\Themes\default\snippets\collection-grid-item.liquid" />
     <Content Include="App_Data\Themes\default\snippets\collection-list-item.liquid" />
     <Content Include="App_Data\Themes\default\snippets\collection-sidebar.liquid" />
@@ -665,8 +686,6 @@
     <Content Include="App_Data\Themes\default\templates\send-code.liquid" />
     <Content Include="App_Data\Themes\default\templates\verify-code.liquid" />
     <Content Include="App_Data\Themes\default\layout\checkout_layout.liquid" />
-    <Content Include="App_Data\Themes\default\snippets\checkout-sidebar.liquid" />
-    <Content Include="App_Data\Themes\default\snippets\checkout-breadcrumbs.liquid" />
     <Content Include="App_Data\Themes\default\templates\checkout.liquid">
       <SubType>Designer</SubType>
     </Content>

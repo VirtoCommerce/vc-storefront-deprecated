@@ -15,9 +15,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             Shop result = new Shop();
             if (workContext.Categories != null)
             {
-                result.Collections = new MutablePagedList<Collection>((pageNumber, pageSize) =>
+                result.Collections = new MutablePagedList<Collection>((pageNumber, pageSize, sortInfos) =>
                 {
-                    workContext.Categories.Slice(pageNumber, pageSize);
+                    workContext.Categories.Slice(pageNumber, pageSize, sortInfos);
                     return new StaticPagedList<Collection>(workContext.Categories.Select(x => x.ToShopifyModel(workContext)), workContext.Categories);
                 });
             }

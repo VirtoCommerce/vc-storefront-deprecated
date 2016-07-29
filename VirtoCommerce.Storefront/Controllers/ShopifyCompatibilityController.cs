@@ -71,14 +71,9 @@ namespace VirtoCommerce.Storefront.Controllers
 
             if (Request.Form.Get("checkout") != null)
             {
-                if (_cartBuilder.Cart.HasPhysicalProducts)
-                {
-                    virtualRedirectUrl = "~/cart/checkout/#/shipping-address";
-                }
-                else
-                {
-                    virtualRedirectUrl = "~/cart/checkout/#/payment-method";
-                }
+
+                virtualRedirectUrl = "~/cart/checkout";
+
             }
 
             return StoreFrontRedirect(virtualRedirectUrl);
@@ -168,6 +163,15 @@ namespace VirtoCommerce.Storefront.Controllers
             await _cartBuilder.SaveAsync();
 
             return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext));
+        }
+
+        /// GET collections
+        /// This method used for display all categories
+        /// <returns></returns>
+        [OutputCache(CacheProfile = "CatalogSearchCachingProfile")]
+        public ActionResult Collections()
+        {
+            return View("list-collections", WorkContext);
         }
 
         private JsonResult LiquidJson(object obj)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace VirtoCommerce.Storefront.Model
 {
@@ -10,10 +6,10 @@ namespace VirtoCommerce.Storefront.Model
     {
         public ContactUsForm()
         {
-            Contact = new Dictionary<string, object>();
+            Contact = new Dictionary<string, string[]>();
         }
 
-        public IDictionary<string, object> Contact { get; set; }
+        public IDictionary<string, string[]> Contact { get; set; }
         public string FormType { get; set; }
     }
 }

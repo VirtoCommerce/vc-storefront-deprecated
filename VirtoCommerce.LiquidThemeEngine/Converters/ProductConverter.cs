@@ -6,7 +6,6 @@ using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 
-
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
     public static class ProductConverter
@@ -14,19 +13,16 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
         public static Product ToShopifyModel(this StorefrontModel.Catalog.Product product)
         {
             var result = new Product();
-            result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(product);
+            result.InjectFrom<NullableAndEnumValueInjecter>(product);
 
-            if (product.IsBuyable)
-            {
-                result.Variants.Add(product.ToVariant());
-            }
+            result.Variants.Add(product.ToVariant());
 
             if (product.Variations != null)
             {
                 result.Variants.AddRange(product.Variations.Select(x => x.ToVariant()));
             }
 
-            result.Available = true;// product.IsActive && product.IsBuyable;
+            result.Available = true; // product.IsActive && product.IsBuyable;
 
             result.CatalogId = product.CatalogId;
             result.CategoryId = product.CategoryId;
@@ -37,9 +33,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             result.CompareAtPrice = product.Price.ListPrice.Amount * 100;
             result.CompareAtPriceWithTax = product.Price.ListPriceWithTax.Amount * 100;
-            result.Price = product.Price.ActualPrice.Amount * 100;           
+            result.Price = product.Price.ActualPrice.Amount * 100;
             result.PriceWithTax = product.Price.ActualPriceWithTax.Amount * 100;
-           
+
             result.PriceMax = result.Variants.Select(x => x.Price).Max();
             result.PriceMin = result.Variants.Select(x => x.Price).Min();
             result.PriceVaries = result.PriceMax != result.PriceMin;
@@ -82,7 +78,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (!product.Associations.IsNullOrEmpty())
             {
-                result.RelatedProducts = new MutablePagedList<Product>((pageNumber, pageSize) =>
+                result.RelatedProducts = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                 {
                     //Need to load related products from associated  product and categories
                     var skip = (pageNumber - 1) * pageSize;
@@ -91,13 +87,13 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     var retVal = productAssociations.Select(x => x.Product).Skip(skip).Take(take).ToList();
                     var totalCount = productAssociations.Count();
                     skip = Math.Max(0, skip - totalCount);
-                    take = Math.Max(0, take - retVal.Count());
+                    take = Math.Max(0, take - retVal.Count);
                     //Load product from associated categories with correct pagination
                     foreach (var categoryAssociation in product.Associations.OfType<StorefrontModel.Catalog.CategoryAssociation>().OrderBy(x => x.Priority))
                     {
                         if (categoryAssociation.Category != null && categoryAssociation.Category.Products != null)
                         {
-                            categoryAssociation.Category.Products.Slice(skip / pageSize + 1, take);
+                            categoryAssociation.Category.Products.Slice(skip / pageSize + 1, take, sortInfos);
                             retVal.AddRange(categoryAssociation.Category.Products);
                             totalCount += categoryAssociation.Category.Products.GetTotalCount();
                             skip = Math.Max(0, skip - totalCount);
@@ -106,20 +102,26 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     }
                     return new StaticPagedList<Product>(retVal.Select(x => x.ToShopifyModel()), pageNumber, pageSize, totalCount);
                 });
-            }        
+            }
+
+            if (product.Vendor != null)
+            {
+                result.Vendor = product.Vendor.ToShopifyModel();
+            }
             return result;
         }
 
         public static Variant ToVariant(this StorefrontModel.Catalog.Product product)
         {
-            var result = new Variant();
-            result.Available = true; //product.IsActive && product.IsBuyable;
-            result.Barcode = product.Gtin;
+            var result = new Variant
+            {
+                Available = true, //product.IsActive && product.IsBuyable
+                Barcode = product.Gtin,
+                CatalogId = product.CatalogId,
+                CategoryId = product.CategoryId,
+                FeaturedImage = product.PrimaryImage != null ? product.PrimaryImage.ToShopifyModel() : null
+            };
 
-            result.CatalogId = product.CatalogId;
-            result.CategoryId = product.CategoryId;
-
-            result.FeaturedImage = product.PrimaryImage != null ? product.PrimaryImage.ToShopifyModel() : null;
             if (result.FeaturedImage != null)
             {
                 result.FeaturedImage.ProductId = product.Id;

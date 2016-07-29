@@ -44,6 +44,7 @@ namespace VirtoCommerce.Storefront.Controllers
             WorkContext.CurrentCategory = (await _searchService.GetCategoriesAsync(new[] { categoryId }, CategoryResponseGroup.Full)).FirstOrDefault();
             if (WorkContext.CurrentCategory != null)
             {
+                WorkContext.CurrentPageSeo = WorkContext.CurrentCategory.SeoInfo;
                 WorkContext.CurrentCategory.Products = WorkContext.Products;
             }
 
