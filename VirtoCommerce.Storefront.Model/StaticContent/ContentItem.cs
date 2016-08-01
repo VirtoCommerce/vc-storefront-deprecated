@@ -154,12 +154,18 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
         // http://jekyllrb.com/docs/permalinks/
         protected virtual string EvaluateUrlFromPermalink(string permalink)
         {
+            if (permalink.StartsWith("~/"))
+            {
+                permalink = permalink.Replace("~/", string.Empty);
+            }
+
             if (_builtInPermalinks.ContainsKey(permalink))
             {
                 permalink = _builtInPermalinks[permalink];
             }
 
             var removeLeadingSlash = !permalink.StartsWith("/");
+
             var date = PublishedDate ?? CreatedDate;
 
             permalink = permalink.Replace(":folder", Path.GetDirectoryName(StoragePath).Replace("\\", "/"));
