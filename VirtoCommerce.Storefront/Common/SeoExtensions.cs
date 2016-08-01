@@ -78,6 +78,7 @@ namespace VirtoCommerce.Storefront.Common
                     .Select(s =>
                     {
                         var score = 0;
+                        score += s.IsActive != false ? 16 : 0;
                         if (!string.IsNullOrEmpty(slug))
                         {
                             score += slug.EqualsInvariant(s.SemanticUrl) ? 8 : 0;
