@@ -19,7 +19,7 @@ namespace VirtoCommerce.Storefront.Test
             {
                 new Language("en-US"),
             }),
-            SeoLinksType = SeoLinksType.Long,
+            SeoLinksType = SeoLinksType.Collapsed,
         };
 
         [Fact]
@@ -206,6 +206,58 @@ namespace VirtoCommerce.Storefront.Test
 
             var result = category.Outlines.GetSeoPath(_store, new Language("ru-RU"), null);
             Assert.Equal("active-parent2/active-category2", result);
+        }
+
+        [Fact]
+        public void When_HasVirtualParent_Expect_SkipLinkedPhysicalParent()
+        {
+            var category = new catalogModel.Category
+            {
+                Outlines = new List<catalogModel.Outline>
+                {
+                    new catalogModel.Outline
+                    {
+                        Items = new List<catalogModel.OutlineItem>
+                        {
+                            new catalogModel.OutlineItem
+                            {
+                                SeoObjectType = "Catalog",
+                            },
+                            new catalogModel.OutlineItem
+                            {
+                                SeoObjectType = "Category",
+                                SeoInfos = new List<catalogModel.SeoInfo>
+                                {
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "virtual-parent1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "virtual-parent2" },
+                                }
+                            },
+                            new catalogModel.OutlineItem
+                            {
+                                SeoObjectType = "Category",
+                                HasVirtualParent = true,
+                                SeoInfos = new List<catalogModel.SeoInfo>
+                                {
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "physical-parent1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "physical-parent2" },
+                                }
+                            },
+                            new catalogModel.OutlineItem
+                            {
+                                SeoObjectType = "Category",
+                                SeoInfos = new List<catalogModel.SeoInfo>
+                                {
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "category1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "category2" },
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+
+            var result = category.Outlines.GetSeoPath(_store, new Language("ru-RU"), null);
+            Assert.Equal("virtual-parent2/category2", result);
         }
     }
 

@@ -39,6 +39,12 @@ namespace VirtoCommerce.Storefront.Common
                             .Where(i => i.SeoObjectType != "Catalog")
                             .Select(i => GetBestMatchedSeoKeyword(i.SeoInfos, store, language)));
                     }
+                    else if (store.SeoLinksType == SeoLinksType.Collapsed)
+                    {
+                        pathSegments.AddRange(outline.Items
+                            .Where(i => i.SeoObjectType != "Catalog" && i.HasVirtualParent != true)
+                            .Select(i => GetBestMatchedSeoKeyword(i.SeoInfos, store, language)));
+                    }
                     else
                     {
                         var lastItem = outline.Items.LastOrDefault();
