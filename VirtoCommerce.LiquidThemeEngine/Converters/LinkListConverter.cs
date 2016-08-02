@@ -24,7 +24,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
         {
             var shopifyModel = new Link();
 
-            shopifyModel.Active = storefrontModel.IsActive;
             shopifyModel.Object = "";
             shopifyModel.Title = storefrontModel.Title;
             shopifyModel.Type = "";

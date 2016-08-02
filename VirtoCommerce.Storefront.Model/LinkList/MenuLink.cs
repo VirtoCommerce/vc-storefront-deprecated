@@ -25,11 +25,6 @@ namespace VirtoCommerce.Storefront.Model
         public int Priority { get; set; }
 
         /// <summary>
-        /// Gets or sets the activity sign of site navigation menu link
-        /// </summary>
-        public bool IsActive { get; set; }
-
-        /// <summary>
         /// Each link element can has a associated object like a Product, Category, Promotion etc.
         /// Is a primary key for associated object
         /// </summary>

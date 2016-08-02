@@ -67,7 +67,7 @@ namespace VirtoCommerce.Storefront.Routing
                         else
                         {
                             var response = httpContext.Response;
-                            response.Status = "302 Moved Temporarily";
+                            response.Status = "301 Moved Permanently";
                             response.RedirectLocation = string.Concat(workContext.CurrentStore.Url, seoRecord.SemanticUrl);
                             response.End();
                             data = null;

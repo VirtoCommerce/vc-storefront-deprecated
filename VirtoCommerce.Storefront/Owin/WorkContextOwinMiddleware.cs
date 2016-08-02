@@ -212,7 +212,7 @@ namespace VirtoCommerce.Storefront.Owin
                         }
 
                         var linkLists = await _cacheManager.GetAsync("GetAllStoreLinkLists-" + workContext.CurrentStore.Id, "ApiRegion", async () => await linkListService.LoadAllStoreLinkListsAsync(workContext.CurrentStore.Id));
-                        workContext.CurrentLinkLists = linkLists.Where(x => x.Language == workContext.CurrentLanguage).ToList();
+                        workContext.CurrentLinkLists = linkLists.Where(x => x.Language.IsInvariant || x.Language == workContext.CurrentLanguage ).ToList();
                         // load all static content
                         var staticContents = _cacheManager.Get(string.Join(":", "AllStoreStaticContent", workContext.CurrentStore.Id), "ContentRegion", () =>
                         {
