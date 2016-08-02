@@ -39,7 +39,7 @@
 		</div>
 		<div class="main__content">
 			<vc-checkout-wizard wizard="checkout.wizard" on-initialized="initialize()" on-finish="createOrder()" loading="checkout.loading">
-				<vc-checkout-wizard-step name="shipping-address" title="Shipping address" disabled="!checkout.cart.hasPhysicalProducts">
+				<vc-checkout-wizard-step name="shipping-address"  on-next-step="updateShipment(checkout.shipment)" title="Shipping address" disabled="!checkout.cart.hasPhysicalProducts">
 					<div class="edit_checkout animate-floating-labels">
 						<div class="step__sections">
 							<div class="section section--contact-information">
