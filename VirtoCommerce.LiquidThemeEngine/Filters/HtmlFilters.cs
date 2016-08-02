@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtoCommerce.LiquidThemeEngine.Objects;
-
-namespace VirtoCommerce.LiquidThemeEngine.Filters
+﻿namespace VirtoCommerce.LiquidThemeEngine.Filters
 {
     /// <summary>
     /// https://docs.shopify.com/themes/liquid-documentation/filters/html-filters
@@ -20,7 +13,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
         /// <returns></returns>
         public static string ScriptTag(string input)
         {
-            return String.Format("<script src=\"{0}\" type=\"text/javascript\"></script>", input);
+            return string.Format("<script type=\"text/javascript\" src=\"{0}\"></script>", input);
         }
 
         /// <summary>
@@ -31,7 +24,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
         /// <returns></returns>
         public static string StylesheetTag(string input)
         {
-            return String.Format("<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" media=\"all\" />", input);
+            return string.Format("<link type=\"text/css\" rel=\"stylesheet\" media=\"all\" href=\"{0}\" />", input);
         }
 
         /// <summary>
@@ -47,10 +40,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             return input == null ? null : GetImageTag(input, alt, css);
         }
 
-             
+
         private static string GetImageTag(string src, string alt, string css)
         {
-            return String.Format("<img src=\"{0}\" alt=\"{1}\" class=\"{2}\" />", src, alt, css);
+            return string.Format("<img alt=\"{0}\" src=\"{1}\" class=\"{2}\" />", alt, src, css);
         }
     }
 }
