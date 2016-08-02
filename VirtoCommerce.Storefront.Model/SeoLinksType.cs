@@ -16,9 +16,14 @@
         /// </summary>
         Short,
         /// <summary>
-        /// /grandparent-category/parent-category/my-cool-category
-        /// /grandparent-category/parent-category/my-cool-category/my-cool-product
+        /// /virtual-parent-category/physical-parent-category/my-cool-category
+        /// /virtual-parent-category/physical-parent-category/my-cool-category/my-cool-product
         /// </summary>
         Long,
+        /// <summary>
+        /// virtual-parent-category/my-cool-category
+        /// virtual-parent-category/my-cool-category/my-cool-product
+        /// </summary>
+        Collapsed,
     }
 }
