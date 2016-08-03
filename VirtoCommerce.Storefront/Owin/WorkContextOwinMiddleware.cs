@@ -41,6 +41,7 @@ namespace VirtoCommerce.Storefront.Owin
     /// </summary>
     public sealed class WorkContextOwinMiddleware : OwinMiddleware
     {
+        private static readonly PathString[] _owinIgnorePathsStrings = GetOwinIgnorePathStrings();
         private static readonly Country[] _allCountries = GetAllCounries();
 
         private readonly IVirtoCommerceStoreApi _storeApi;
@@ -259,23 +260,12 @@ namespace VirtoCommerce.Storefront.Owin
         }
 
 
-        private bool IsStorefrontRequest(IOwinRequest request)
+        private static bool IsStorefrontRequest(IOwinRequest request)
         {
-            return !request.Path.StartsWithSegments(new PathString("/admin"))
-                && !request.Path.StartsWithSegments(new PathString("/areas/admin"))
-                && !request.Path.StartsWithSegments(new PathString("/api"))
-                && !request.Path.StartsWithSegments(new PathString("/favicon.ico"));
+            return !_owinIgnorePathsStrings.Any(p => request.Path.StartsWithSegments(p));
         }
 
-        private async Task<Store[]> GetAllStoresAsync()
-        {
-            var stores = await _storeApi.StoreModuleGetStoresAsync();
-            var result = stores.Select(s => s.ToWebModel()).ToArray();
-            return result.Any() ? result : null;
-        }
-
-
-        private bool IsAssetRequest(IOwinRequest request)
+        private static bool IsAssetRequest(IOwinRequest request)
         {
             var retVal = string.Equals(request.Method, "GET", StringComparison.OrdinalIgnoreCase);
             if (retVal)
@@ -283,6 +273,27 @@ namespace VirtoCommerce.Storefront.Owin
                 retVal = request.Uri.IsFile || request.Uri.AbsolutePath.Contains("/assets/");
             }
             return retVal;
+        }
+
+        private static PathString[] GetOwinIgnorePathStrings()
+        {
+            var result = new List<PathString>();
+
+            var owinIgnore = ConfigurationManager.AppSettings["VirtoCommerce:Storefront:OwinIgnore"];
+
+            if (!string.IsNullOrEmpty(owinIgnore))
+            {
+                result.AddRange(owinIgnore.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(p => new PathString(p)));
+            }
+
+            return result.ToArray();
+        }
+
+        private async Task<Store[]> GetAllStoresAsync()
+        {
+            var stores = await _storeApi.StoreModuleGetStoresAsync();
+            var result = stores.Select(s => s.ToWebModel()).ToArray();
+            return result.Any() ? result : null;
         }
 
         private void ValidateUserStoreLogin(IOwinContext context, CustomerInfo customer, Store currentStore)
