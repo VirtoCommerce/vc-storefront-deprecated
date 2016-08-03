@@ -84,8 +84,9 @@ namespace VirtoCommerce.Storefront.Routing
                         }
                         else
                         {
-                            data.Values["controller"] = "Error";
-                            data.Values["action"] = "Http404";
+                            //Try to find static files by requested path
+                            data.Values["controller"] = "Asset";
+                            data.Values["action"] = "HandleStaticFiles";
                         }
                     }
                 }

@@ -16,8 +16,8 @@ namespace VirtoCommerce.Storefront
             routes.IgnoreRoute("favicon.ico");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            // We disable simultanous using Convention and Attribute routing because we have SEO slug urls and optional Store and Languages url parts 
-            // this leads to different kinds of collisions and we deside to use only Convention routing 
+            // We disable simultaneous using Convention and Attribute routing because we have SEO slug urls and optional Store and Languages url parts 
+            // this leads to different kinds of collisions and we decide to use only Convention routing 
             //routes.MapMvcAttributeRoutes();
 
             #region Storefront API routes

@@ -77,5 +77,21 @@ namespace VirtoCommerce.Storefront.Controllers
         
             throw new HttpException(404, path);
         }
+
+        /// <summary>
+        /// Serve static files. This controller called from SeoRoute when it cannot find any other routes for request.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public ActionResult HandleStaticFiles(string path)
+        {
+            path = Server.MapPath("~/" + path);
+            if(System.IO.File.Exists(path))
+            {
+                return File(path, MimeMapping.GetMimeMapping(path));
+            }         
+            throw new HttpException(404, path);
+        }
+
     }
 }
