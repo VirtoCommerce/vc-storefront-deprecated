@@ -89,7 +89,7 @@ namespace VirtoCommerce.Storefront.Services
             foreach (var shipment in cart.Shipments.ToArray())
             {
                 shipment.ValidationErrors.Clear();
-                var availableShippingMethods = await _cacheManager.GetAsync("CartValidator.ValidateShipmentsAsync-" + workContext.CurrentCurrency + ":" + cart.Id, "ApiRegion", async () => await _cartApi.CartModuleGetShipmentMethodsAsync(cart.Id));
+                var availableShippingMethods = await _cartApi.CartModuleGetShipmentMethodsAsync(cart.Id);
                 if (availableShippingMethods.Count == 0)
                 {
                     shipment.ValidationWarnings.Add(new ShippingUnavailableError());
