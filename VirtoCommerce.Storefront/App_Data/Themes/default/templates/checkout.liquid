@@ -31,7 +31,7 @@
 				<li class="breadcrumb__item breadcrumb__item--completed">
 					<a class="breadcrumb__link" ng-href="{{ 'cart' | absolute_url }}">{{ 'checkout.cart' | t }}</a>
 				</li>
-				<li class="breadcrumb__item" ng-repeat="step in checkout.wizard.steps" ng-if="!step.disabled && !step.final" ng-class="{ 'breadcrumb__item--current': step.isActive, 'breadcrumb__item--completed': !step.isActive }">
+				<li class="breadcrumb__item" ng-repeat="step in checkout.wizard.steps" ng-if="!step.stepDisabled && !step.final" ng-class="{ 'breadcrumb__item--current': step.isActive, 'breadcrumb__item--completed': !step.isActive }">
 					<a class="breadcrumb__link" ng-href="javascript:;" ng-click="checkout.wizard.goToStep(step)" ng-if="!step.isActive" ng-bind="step.title"></a>
 					<span ng-class="current" ng-if="step.isActive" ng-bind="step.title"></span>
 				</li>
@@ -39,7 +39,7 @@
 		</div>
 		<div class="main__content">
 			<vc-checkout-wizard wizard="checkout.wizard" on-initialized="initialize()" on-finish="createOrder()" loading="checkout.loading">
-				<vc-checkout-wizard-step name="shipping-address"  on-next-step="updateShipment(checkout.shipment)" title="Shipping address" disabled="!checkout.cart.hasPhysicalProducts">
+				<vc-checkout-wizard-step name="shipping-address"  on-next-step="updateShipment(checkout.shipment)" title="Shipping address" step-disabled="!checkout.cart.hasPhysicalProducts">
 					<div class="edit_checkout animate-floating-labels">
 						<div class="step__sections">
 							<div class="section section--contact-information">
@@ -65,7 +65,7 @@
 						</div>
 					</div>
 				</vc-checkout-wizard-step>
-				<vc-checkout-wizard-step  name="shipping-method" title="Shipping method" on-next-step="updateShipment(checkout.shipment)" disabled="!checkout.cart.hasPhysicalProducts">
+				<vc-checkout-wizard-step  name="shipping-method" title="Shipping method" on-next-step="updateShipment(checkout.shipment)" step-disabled="!checkout.cart.hasPhysicalProducts">
 					<div class="edit_checkout animate-floating-labels">
 						<div class="section section--shipping-address-recap">
 							<div class="section__header">

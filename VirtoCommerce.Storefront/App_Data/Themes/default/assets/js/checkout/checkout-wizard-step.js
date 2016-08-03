@@ -8,7 +8,7 @@ storefrontApp.component('vcCheckoutWizardStep', {
 	bindings: {
 		name: '@',
 		title: '@',
-		disabled: '=?',
+		stepDisabled: '=?',
 		onNextStep: '&?',
 		canEnter: '=?',
 		final: '<?'
