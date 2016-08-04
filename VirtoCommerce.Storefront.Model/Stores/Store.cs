@@ -89,6 +89,7 @@ namespace VirtoCommerce.Storefront.Model.Stores
         /// Seo info for current language
         /// </summary>
         public SeoInfo CurrentSeoInfo { get; set; }
+
         /// <summary>
         /// All store seo informations for all languages
         /// </summary>

@@ -18,8 +18,16 @@ namespace VirtoCommerce.Storefront.Controllers
         // GET: /blogs/{blog}
         public ActionResult GetBlog(string blog)
         {
-            WorkContext.CurrentBlog = WorkContext.Blogs.SingleOrDefault(x => x.Name.Equals(blog, StringComparison.OrdinalIgnoreCase));
+            var context = WorkContext;
+            context.CurrentBlog = WorkContext.Blogs.SingleOrDefault(x => x.Name.Equals(blog, StringComparison.OrdinalIgnoreCase));
 
+            context.CurrentPageSeo = new SeoInfo
+            {
+                Language = context.CurrentBlog.Language,
+                MetaDescription = context.CurrentBlog.Name,
+                Title = context.CurrentBlog.Name,
+                Slug = string.Format("/blogs/{0}", blog)
+            };
             return View("blog", WorkContext);
         }
 
@@ -51,7 +59,7 @@ namespace VirtoCommerce.Storefront.Controllers
                         Language = blogArticle.Language,
                         MetaDescription = blogArticle.Excerpt,
                         Title = blogArticle.Title,
-                        Slug = blogArticle.Permalink
+                        Slug = blogArticle.Url
                     };
 
                     return View("article", WorkContext);

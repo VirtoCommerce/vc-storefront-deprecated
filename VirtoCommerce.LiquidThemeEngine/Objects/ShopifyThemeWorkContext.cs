@@ -55,6 +55,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public Blogs Blogs { get; set; }
 
         public Product Product { get; set; }
+
         public Vendor Vendor { get; set; }
 
         public Page Page { get; set; }
@@ -86,6 +87,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public IMutablePagedList<Product> Products { get; set; }
 
         public int CurrentPage { get; set; }
+
         public int PageSize { get; set; }
 
         public TagCollection CurrentTags { get; set; }
@@ -103,6 +105,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// Current request url
         /// </summary>
         public string RequestUrl { get; set; }
+
+        /// <summary>
+        /// The canonical_url object returns the canonical URL for the current page. The canonical URL is the page's "default" URL with any URL parameters removed.
+        /// </summary>
+        public string CanonicalUrl { get; set; }
 
         /// <summary>
         /// Search result (products, articles, blogs)
