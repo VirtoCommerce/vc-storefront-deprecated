@@ -21,13 +21,16 @@ namespace VirtoCommerce.Storefront.Controllers
             var context = WorkContext;
             context.CurrentBlog = WorkContext.Blogs.SingleOrDefault(x => x.Name.Equals(blog, StringComparison.OrdinalIgnoreCase));
 
-            context.CurrentPageSeo = new SeoInfo
+            if (context.CurrentBlog != null)
             {
-                Language = context.CurrentBlog.Language,
-                MetaDescription = context.CurrentBlog.Name,
-                Title = context.CurrentBlog.Name,
-                Slug = string.Format("/blogs/{0}", blog)
-            };
+                context.CurrentPageSeo = new SeoInfo
+                {
+                    Language = context.CurrentBlog.Language,
+                    MetaDescription = context.CurrentBlog.Name,
+                    Title = context.CurrentBlog.Name,
+                    Slug = string.Format("/blogs/{0}", blog)
+                };
+            }
             return View("blog", WorkContext);
         }
 
