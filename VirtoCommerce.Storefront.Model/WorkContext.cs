@@ -56,7 +56,7 @@ namespace VirtoCommerce.Storefront.Model
                     // if no SEO is found, set meta data to the site root and set url to the currently requested one
                     _seoInfo = CurrentStore.CurrentSeoInfo;
 
-                    if (RequestUrl != null)
+                    if (_seoInfo != null && RequestUrl != null)
                     {
                         _seoInfo.Slug = RequestUrl.ToString();
                     }
