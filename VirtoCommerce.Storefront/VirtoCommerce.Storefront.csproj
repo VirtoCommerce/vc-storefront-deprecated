@@ -475,6 +475,7 @@
     <Compile Include="Common\LocalizationExtension.cs" />
     <Compile Include="Common\NameValueCollectionExtensions.cs" />
     <Compile Include="Common\ObjectExtensions.cs" />
+    <Compile Include="Common\RequireHttps.cs" />
     <Compile Include="Common\SeoExtensions.cs" />
     <Compile Include="Common\CurrentUserRestRequestHandler.cs" />
     <Compile Include="Controllers\Api\ApiQuoteRequestController.cs" />
