@@ -152,12 +152,13 @@ namespace VirtoCommerce.Storefront.Services
             var result = await _searchApi.SearchModuleSearchAsync(searchCriteria);
             var products = result.Products.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
 
-            if (!products.IsNullOrEmpty())
+            if (products.Any())
             {
                 var productsWithVariations = products.Concat(products.SelectMany(x => x.Variations)).ToList();
                 var taskList = new List<Task>
                 {
                     LoadProductInventoriesAsync(productsWithVariations),
+                    LoadProductVendorsAsync(productsWithVariations),
                     _pricingService.EvaluateProductPricesAsync(productsWithVariations)
                 };
                 await Task.WhenAll(taskList.ToArray());
@@ -178,21 +179,25 @@ namespace VirtoCommerce.Storefront.Services
         /// <returns></returns>
         public CatalogSearchResult SearchProducts(CatalogSearchCriteria criteria)
         {
-            var workContext = _workContextFactory();
             criteria = criteria.Clone();
             //exclude categories
             criteria.ResponseGroup = criteria.ResponseGroup & (~CatalogSearchResponseGroup.WithCategories);
             //include products
             criteria.ResponseGroup = criteria.ResponseGroup | CatalogSearchResponseGroup.WithProducts;
 
+            var workContext = _workContextFactory();
             var searchCriteria = criteria.ToSearchApiModel(workContext);
-
             var result = _searchApi.SearchModuleSearch(searchCriteria);
             var products = result.Products.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
-            var productsWithVariations = products.Concat(products.SelectMany(x => x.Variations)).ToList();
-            //Unable to make parallel call because its synchronous method (in future this information pricing and inventory will be getting from search index) and this lines can be removed
-            _pricingService.EvaluateProductPrices(productsWithVariations);
-            LoadProductInventories(productsWithVariations);
+
+            if (products.Any())
+            {
+                var productsWithVariations = products.Concat(products.SelectMany(x => x.Variations)).ToList();
+                //Unable to make parallel call because its synchronous method (in future this information pricing and inventory will be getting from search index) and this lines can be removed
+                _pricingService.EvaluateProductPrices(productsWithVariations);
+                LoadProductInventories(productsWithVariations);
+                LoadProductVendors(productsWithVariations);
+            }
 
             return new CatalogSearchResult
             {
@@ -208,6 +213,18 @@ namespace VirtoCommerce.Storefront.Services
             var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToList();
             var vendorTasks = vendorIds.Select(id => _customerService.GetVendorByIdAsync(id));
             var vendors = await Task.WhenAll(vendorTasks);
+
+            foreach (var product in products)
+            {
+                product.Vendor = vendors.FirstOrDefault(v => v.Id == product.VendorId);
+            }
+        }
+
+        private void LoadProductVendors(List<Product> products)
+        {
+            var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToList();
+            var vendors = vendorIds.Select(id => _customerService.GetVendorById(id)).ToList();
+
             foreach (var product in products)
             {
                 product.Vendor = vendors.FirstOrDefault(v => v.Id == product.VendorId);
@@ -260,7 +277,7 @@ namespace VirtoCommerce.Storefront.Services
                                SearchInChildren = true,
                                ResponseGroup = CatalogSearchResponseGroup.WithProducts,
                            };
-                           if(!sortInfos.IsNullOrEmpty())
+                           if (!sortInfos.IsNullOrEmpty())
                            {
                                criteria.SortBy = SortInfo.ToString(sortInfos);
                            }
@@ -270,7 +287,6 @@ namespace VirtoCommerce.Storefront.Services
                     }
                 }
             }
-
         }
 
         private async Task LoadProductInventoriesAsync(List<Product> products)

@@ -99,6 +99,11 @@ namespace VirtoCommerce.Storefront.Services
             return (await _customerApi.CustomerModuleGetVendorByIdAsync(vendorId)).ToWebModel();
         }
 
+        public Vendor GetVendorById(string vendorId)
+        {
+            return _customerApi.CustomerModuleGetVendorById(vendorId).ToWebModel();
+        }
+
         #endregion
 
         #region IObserver<CreateOrderEvent> Members
@@ -177,7 +182,7 @@ namespace VirtoCommerce.Storefront.Services
             {
                 //TODO: add caching
                 orderSearchcriteria.Start = (pageNumber - 1) * pageSize;
-                orderSearchcriteria.Count = pageSize;             
+                orderSearchcriteria.Count = pageSize;
                 var cacheKey = "GetCustomerOrders-" + orderSearchcriteria.GetHashCode();
                 var ordersResponse = _cacheManager.Get(cacheKey, string.Format(_customerOrdersCacheRegionFormat, customer.Id), () => _orderApi.OrderModuleSearch(orderSearchcriteria));
                 return new StaticPagedList<CustomerOrder>(ordersResponse.CustomerOrders.Select(x => x.ToWebModel(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,
