@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using CacheManager.Core;
 using CacheManager.Web;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Owin;
 using Microsoft.Owin.Extensions;
 using Microsoft.Owin.Security;
@@ -54,7 +55,6 @@ using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Owin;
 using VirtoCommerce.Storefront.Services;
 using VirtoCommerce.StoreModule.Client.Api;
-using Markdig.Renderers;
 
 [assembly: OwinStartup(typeof(Startup))]
 [assembly: PreApplicationStartMethod(typeof(Startup), "PreApplicationStart")]
@@ -84,6 +84,12 @@ namespace VirtoCommerce.Storefront
 
         public void Configuration(IAppBuilder app)
         {
+            var applicationInsightsKey = ConfigurationManager.AppSettings.GetValue("ApplicationInsightsInstrumentationKey", string.Empty);
+            if (!string.IsNullOrEmpty(applicationInsightsKey))
+            {
+                TelemetryConfiguration.Active.InstrumentationKey = applicationInsightsKey;
+            }
+
             if (_managerAssembly != null)
             {
                 AreaRegistration.RegisterAllAreas();
