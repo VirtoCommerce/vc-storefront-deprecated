@@ -31,6 +31,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 CountryOptionTags = string.Join("\r\n", workContext.AllCountries.OrderBy(c => c.Name).Select(c => c.ToOptionTag())),
                 PageDescription = workContext.CurrentPageSeo != null ? workContext.CurrentPageSeo.MetaDescription : string.Empty,
                 PageTitle = workContext.CurrentPageSeo != null ? workContext.CurrentPageSeo.Title : string.Empty,
+                CanonicalUrl = workContext.CurrentPageSeo != null ? urlBuilder.ToAppAbsolute(workContext.CurrentPageSeo.Slug) : null,
                 Shop = workContext.CurrentStore != null ? workContext.CurrentStore.ToShopifyModel(workContext) : null,
                 Cart = workContext.CurrentCart != null ? workContext.CurrentCart.ToShopifyModel(workContext) : null,
                 Product = workContext.CurrentProduct != null ? workContext.CurrentProduct.ToShopifyModel() : null,
@@ -150,8 +151,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             if (workContext.RequestUrl != null)
             {
                 result.RequestUrl = workContext.RequestUrl.ToString();
+
                 //Populate current page number
-                //var qs = HttpUtility.ParseQueryString(workContext.RequestUrl.Query);
                 result.CurrentPage = workContext.PageNumber ?? 1;
                 result.PageSize = workContext.PageSize ?? 0;
             }

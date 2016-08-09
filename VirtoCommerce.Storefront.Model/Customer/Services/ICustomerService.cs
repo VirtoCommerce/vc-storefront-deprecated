@@ -9,5 +9,6 @@ namespace VirtoCommerce.Storefront.Model.Customer.Services
         Task UpdateCustomerAsync(CustomerInfo customer);
         Task<bool> CanLoginOnBehalfAsync(string storeId, string customerId);
         Task<Vendor> GetVendorByIdAsync(string vendorId);
+        Vendor GetVendorById(string vendorId);
     }
 }

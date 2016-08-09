@@ -52,8 +52,14 @@ namespace VirtoCommerce.Storefront.Model
             {
                 if (_seoInfo == null)
                 {
-                    //TODO: next need detec seo from category or product or cart etc
+                    // SEO for category, product and blogs is set inside corresponding controllers
+                    // if no SEO is found, set meta data to the site root and set url to the currently requested one
                     _seoInfo = CurrentStore.CurrentSeoInfo;
+
+                    if (_seoInfo != null && RequestUrl != null)
+                    {
+                        _seoInfo.Slug = RequestUrl.ToString();
+                    }
                 }
                 return _seoInfo;
             }
