@@ -82,34 +82,32 @@
             "resources": [
                 {
                     "type": "config",
-                    "name": "web",
-                    "apiVersion": "2014-04-01",
+                    "name": "connectionstrings",
+                    "apiVersion": "2014-11-01",
                     "dependsOn": [
-                        "[concat('Microsoft.Web/Sites/', parameters('siteName'))]"
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
                     ],
                     "properties": {
-                        "connectionStrings": [
-                            {
-                                "Name": "VirtoCommerceBaseUrl",
-                                "ConnectionString": "[parameters('virtoCommerceManagerUrl')]",
-                                "Type": 3
-                            },
-                            {
-                                "Name": "ContentConnectionString",
-                                "ConnectionString": "[parameters('contentStorageConnectionString')]",
-                                "Type": 3
-                            }
-                        ],
-                        "appSettings": [
-                            {
-                                "name": "vc-public-ApiAppId",
-                                "value": "[parameters('virtoCommerceApiHmacAppId')]"
-                            },
-                            {
-                                "name": "vc-public-ApiSecretKey",
-                                "value": "[parameters('virtoCommerceApiHmacSecretKey')]"
-                            }
-                        ]
+                        "VirtoCommerceBaseUrl": {
+                            "value": "[parameters('virtoCommerceManagerUrl')]",
+                            "type": "custom"
+                        },
+                        "ContentConnectionString": {
+                            "value": "[parameters('contentStorageConnectionString')]",
+                            "type": "custom"
+                        }
+                    }
+                },
+                {
+                    "type": "config",
+                    "name": "appsettings",
+                    "apiVersion": "2014-11-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
+                    ],
+                    "properties": {
+                        "vc-public-ApiAppId": "[parameters('virtoCommerceApiHmacAppId')]",
+                        "vc-public-ApiSecretKey": "[parameters('virtoCommerceApiHmacSecretKey')]"
                     }
                 },
                 {
@@ -118,7 +116,8 @@
                     "apiVersion": "2014-06-01",
                     "dependsOn": [
                         "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]",
-                        "[concat('Microsoft.Web/Sites/', parameters('siteName'), '/config/web')]"
+                        "[concat('Microsoft.Web/Sites/', parameters('siteName'), '/config/connectionstrings')]",
+                        "[concat('Microsoft.Web/Sites/', parameters('siteName'), '/config/appsettings')]"
                     ],
                     "properties": {
                         "RepoUrl": "[parameters('repoUrl')]",
