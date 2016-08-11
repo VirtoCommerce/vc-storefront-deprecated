@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
@@ -41,11 +42,15 @@ namespace VirtoCommerce.Storefront.Controllers
         {
             WorkContext.CurrentCatalogSearchCriteria.CategoryId = categoryId;
 
-            WorkContext.CurrentCategory = (await _searchService.GetCategoriesAsync(new[] { categoryId }, CategoryResponseGroup.Full)).FirstOrDefault();
-            if (WorkContext.CurrentCategory != null)
+            var category = (await _searchService.GetCategoriesAsync(new[] { categoryId }, CategoryResponseGroup.Full)).FirstOrDefault();
+            WorkContext.CurrentCategory = category;
+
+            if (category != null)
             {
-                WorkContext.CurrentPageSeo = WorkContext.CurrentCategory.SeoInfo;
-                WorkContext.CurrentCategory.Products = WorkContext.Products;
+                category.Products = WorkContext.Products;
+
+                WorkContext.CurrentPageSeo = category.SeoInfo.JsonClone();
+                WorkContext.CurrentPageSeo.Slug = category.Url;
             }
 
             if (string.IsNullOrEmpty(view))
