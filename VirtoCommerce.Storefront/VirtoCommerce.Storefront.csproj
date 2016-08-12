@@ -727,6 +727,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Common\NoStore.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="ServerMaintenance.aspx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
