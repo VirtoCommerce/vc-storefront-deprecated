@@ -16,8 +16,6 @@ using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using VirtoCommerce.CoreModule.Client.Api;
-using VirtoCommerce.PricingModule.Client.Api;
-using VirtoCommerce.PricingModule.Client.Model;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -47,7 +45,7 @@ namespace VirtoCommerce.Storefront.Owin
 
         private readonly IVirtoCommerceStoreApi _storeApi;
         private readonly IVirtoCommerceCoreApi _commerceApi;
-        private readonly IVirtoCommercePricingApi _pricingModuleApi;
+        private readonly PricingModule.Client.Api.IVirtoCommercePricingApi _pricingModuleApi;
         private readonly IQuoteRequestBuilder _quoteRequestBuilder;
         private readonly ILocalCacheManager _cacheManager;
         private readonly IStaticContentService _staticContentService;
@@ -61,7 +59,7 @@ namespace VirtoCommerce.Storefront.Owin
             //and  there can not be resolved and stored in fields services using WorkContext as dependency (WorkContext has a per request lifetime)
             _storeApi = container.Resolve<IVirtoCommerceStoreApi>();
             _quoteRequestBuilder = container.Resolve<IQuoteRequestBuilder>();
-            _pricingModuleApi = container.Resolve<IVirtoCommercePricingApi>();
+            _pricingModuleApi = container.Resolve<PricingModule.Client.Api.IVirtoCommercePricingApi>();
             _commerceApi = container.Resolve<IVirtoCommerceCoreApi>();
             _cacheManager = container.Resolve<ILocalCacheManager>();
             _staticContentService = container.Resolve<IStaticContentService>();
@@ -286,7 +284,7 @@ namespace VirtoCommerce.Storefront.Owin
                     var pricelistCacheKey = string.Join("-", "EvaluatePriceLists", workContext.CurrentStore.Id, workContext.CurrentCustomer.Id);
                     workContext.CurrentPricelists = await _cacheManager.GetAsync(pricelistCacheKey, "ApiRegion", async () =>
                     {
-                        var evalContext = new PriceEvaluationContext
+                        var evalContext = new PricingModule.Client.Model.PriceEvaluationContext
                         {
                             StoreId = workContext.CurrentStore.Id,
                             CatalogId = workContext.CurrentStore.Catalog,
