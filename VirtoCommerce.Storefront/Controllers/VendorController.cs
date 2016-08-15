@@ -35,6 +35,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 WorkContext.CurrentPageSeo = new SeoInfo
                 {
                     Title = vendor.Name,
+                    Slug = string.Concat("/vendor/", vendorId)
                 };
                 return View("vendor", WorkContext);
             }

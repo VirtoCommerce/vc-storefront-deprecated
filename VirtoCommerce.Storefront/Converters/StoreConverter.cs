@@ -45,7 +45,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             retVal.TrustedGroups = storeDto.TrustedGroups;
             retVal.StoreState = EnumUtility.SafeParse(storeDto.StoreState, StoreStatus.Open);
-            retVal.SeoLinksType = EnumUtility.SafeParse(retVal.Settings.GetSettingValue("Stores.SeoLinksType", ""), SeoLinksType.Long);
+            retVal.SeoLinksType = EnumUtility.SafeParse(retVal.Settings.GetSettingValue("Stores.SeoLinksType", ""), SeoLinksType.Collapsed);
 
             return retVal;
         }

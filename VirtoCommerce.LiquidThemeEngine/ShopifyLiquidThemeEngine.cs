@@ -162,8 +162,12 @@ namespace VirtoCommerce.LiquidThemeEngine
         {
             get
             {
-                return _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x)).Concat(_templatesDiscoveryFolders);
-
+                IEnumerable<string> retVal = _templatesDiscoveryFolders;
+                if (WorkContext.CurrentStore != null)
+                {
+                    retVal = retVal.Select(x => Path.Combine(CurrentThemePath, x)).Concat(retVal);
+                }
+                return retVal;
             }
         }
         /// <summary>

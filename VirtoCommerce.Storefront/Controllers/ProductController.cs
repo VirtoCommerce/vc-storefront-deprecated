@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
@@ -33,7 +34,8 @@ namespace VirtoCommerce.Storefront.Controllers
 
             if (product != null)
             {
-                WorkContext.CurrentPageSeo = product.SeoInfo;
+                WorkContext.CurrentPageSeo = product.SeoInfo.JsonClone();
+                WorkContext.CurrentPageSeo.Slug = product.Url;
 
                 if (product.CategoryId != null)
                 {

@@ -36,9 +36,22 @@ storefrontApp.component('vcCheckoutWizard', {
 			if (!ctrl.currentStep.validate || ctrl.currentStep.validate()) {
 				if (ctrl.currentStep.nextStep) {
 					if (ctrl.currentStep.onNextStep) {
-						ctrl.currentStep.onNextStep();
+						//evaluate onNextStep function
+						var promise = ctrl.currentStep.onNextStep();
+						//For promise function need to delay going to next step
+						if (promise && angular.isFunction(promise.then)) {
+							promise.then(function () {
+								ctrl.goToStep(ctrl.currentStep.nextStep);
+							});
+						}
+						else
+						{
+							ctrl.goToStep(ctrl.currentStep.nextStep);
+						}
 					}
-					ctrl.goToStep(ctrl.currentStep.nextStep);
+					else {
+						ctrl.goToStep(ctrl.currentStep.nextStep);
+					}
 				}			
 			}
 		};
