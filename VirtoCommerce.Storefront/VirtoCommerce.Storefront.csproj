@@ -408,7 +408,7 @@
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-lineItems.tpl.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.tpl.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.js" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.tpl.html.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.tpl.html" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.tpl.liquid" />
@@ -416,8 +416,8 @@
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard-step.tpl.html" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard.tpl.html" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.tpl.html" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-address.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.tpl.html.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-address.tpl.html.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-address.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout.js" />

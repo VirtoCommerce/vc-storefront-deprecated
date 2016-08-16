@@ -53,6 +53,7 @@ namespace VirtoCommerce.Storefront.Controllers
                     blogArticle = blogArticles.FirstOrDefault(x => x.Language.IsInvariant);
                 }
 
+
                 if (blogArticle != null)
                 {
                     context.CurrentBlogArticle = blogArticle;
@@ -66,6 +67,15 @@ namespace VirtoCommerce.Storefront.Controllers
                     };
 
                     return View("article", WorkContext);
+                }
+                else
+                {
+                    blogArticle = context.CurrentBlog.Articles.FirstOrDefault(x => x.AliasesUrls.Contains(articleUrl, StringComparer.OrdinalIgnoreCase));
+                    if(blogArticle != null)
+                    {
+                        var articleRedirectUrl = UrlBuilder.ToAppAbsolute(blogArticle.Url, WorkContext.CurrentStore, WorkContext.CurrentLanguage);
+                        return RedirectPermanent(articleRedirectUrl);
+                    }
                 }
             }
 

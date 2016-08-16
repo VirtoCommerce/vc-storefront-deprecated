@@ -29,6 +29,8 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
         {
             Tags = new List<string>();
             Categories = new List<string>();
+            Aliases = new List<string>();
+            AliasesUrls = new List<string>();
         }
 
         public virtual string Type { get { return "page"; } }
@@ -47,6 +49,12 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
         public string Url { get; set; }
 
         public string Permalink { get; set; }
+
+        /// <summary>
+        /// Represent alternative urls which will be used for redirection to main url
+        /// </summary>
+        public ICollection<string> Aliases { get; set; }
+        public ICollection<string> AliasesUrls { get; set; }
 
         public List<string> Tags { get; set; }
 
@@ -90,6 +98,10 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                             Permalink = settingValue;
                             break;
 
+                        case "aliases":
+                            Aliases = setting.Value.ToList();
+                            break;
+
                         case "title":
                             Title = settingValue;
                             break;
@@ -122,7 +134,6 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                             Category = settingValue;
                             break;
 
-
                         case "layout":
                             Layout = settingValue;
                             break;
@@ -142,6 +153,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
             }
 
             Url = EvaluateUrlFromPermalink(Permalink);
+            AliasesUrls = Aliases.Select(x => EvaluateUrlFromPermalink(x)).ToList();
 
             Content = content;
             if (Title == null)
