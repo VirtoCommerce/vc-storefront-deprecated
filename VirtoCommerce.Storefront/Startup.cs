@@ -250,7 +250,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterInstance<IStaticContentService>(staticContentService);
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters, workContextFactory, () => container.Resolve<CommonController>());
-            RouteConfig.RegisterRoutes(RouteTable.Routes, workContextFactory, container.Resolve<IVirtoCommerceCoreApi>(), container.Resolve<IStaticContentService>(), localCacheManager);
+            RouteConfig.RegisterRoutes(RouteTable.Routes, workContextFactory, container.Resolve<IVirtoCommerceCoreApi>(), container.Resolve<IStaticContentService>(), localCacheManager, () => container.Resolve<IStorefrontUrlBuilder>());
             AuthConfig.ConfigureAuth(app, () => container.Resolve<IStorefrontUrlBuilder>());
 
             app.Use<WorkContextOwinMiddleware>(container);

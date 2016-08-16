@@ -18,13 +18,15 @@ namespace VirtoCommerce.Storefront.Routing
         private readonly Func<WorkContext> _workContextFactory;
         private readonly IVirtoCommerceCoreApi _commerceCoreApi;
         private readonly ILocalCacheManager _cacheManager;
+        private readonly Func<IStorefrontUrlBuilder> _storefrontUrlBuilderFactory;
 
-        public SeoRoute(string url, IRouteHandler routeHandler, Func<WorkContext> workContextFactory, IVirtoCommerceCoreApi commerceCoreApi, ILocalCacheManager cacheManager)
+        public SeoRoute(string url, IRouteHandler routeHandler, Func<WorkContext> workContextFactory, IVirtoCommerceCoreApi commerceCoreApi, ILocalCacheManager cacheManager, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
             : base(url, routeHandler)
         {
             _workContextFactory = workContextFactory;
             _commerceCoreApi = commerceCoreApi;
             _cacheManager = cacheManager;
+            _storefrontUrlBuilderFactory = storefrontUrlBuilderFactory;
         }
 
         public override RouteData GetRouteData(HttpContextBase httpContext)
@@ -68,13 +70,16 @@ namespace VirtoCommerce.Storefront.Routing
                         {
                             var response = httpContext.Response;
                             response.Status = "301 Moved Permanently";
-                            response.RedirectLocation = string.Concat(workContext.CurrentStore.Url, seoRecord.SemanticUrl);
-                            response.End();
+                            response.RedirectLocation = _storefrontUrlBuilderFactory().ToAppAbsolute(seoRecord.SemanticUrl);                             response.End();
                             data = null;
                         }
                     }
                     else if (!string.IsNullOrEmpty(path))
                     {
+                        //Try to find static files by requested path
+                        data.Values["controller"] = "Asset";
+                        data.Values["action"] = "HandleStaticFiles";
+
                         var contentPage = TryToFindContentPageWithUrl(workContext, path);
                         if (contentPage != null)
                         {
@@ -84,9 +89,15 @@ namespace VirtoCommerce.Storefront.Routing
                         }
                         else
                         {
-                            //Try to find static files by requested path
-                            data.Values["controller"] = "Asset";
-                            data.Values["action"] = "HandleStaticFiles";
+                            contentPage = workContext.Pages.FirstOrDefault(x => x.AliasesUrls.Contains(path, StringComparer.OrdinalIgnoreCase));
+                            if (contentPage != null)
+                            {
+                                var response = httpContext.Response;
+                                response.Status = "301 Moved Permanently";
+                                response.RedirectLocation = _storefrontUrlBuilderFactory().ToAppAbsolute(contentPage.Url);
+                                response.End();
+                                data = null;
+                            }                        
                         }
                     }
                 }
@@ -115,6 +126,7 @@ namespace VirtoCommerce.Storefront.Routing
                 {
                     result = pages.FirstOrDefault(x => x.Language.IsInvariant);
                 }
+              
             }
 
             return result;
