@@ -2,8 +2,8 @@
     <div class="fieldset">
         <div class="field field--required" ng-class="{ 'field--show-floating-label': !$ctrl.form.BankCardNumber.$error.required, 'field--error': ($ctrl.form.BankCardNumber.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardNumber.$valid }">
             <div class="field__input-wrapper">
-                <label class="field__label" for="BankCardNumber">Card number</label>
-                <input type="text" placeholder="Card number" class="field__input" id="BankCardNumber" cc-number cc-eager-type name="BankCardNumber" ng-model="$ctrl.card.bankCardNumber" required="required">
+                <label class="field__label" for="BankCardNumber">{{ 'checkout.payment_method.card_number' | t }}</label>
+                <input type="text" placeholder="{{ 'checkout.payment_method.card_number' | t }}" class="field__input" id="BankCardNumber" cc-number cc-eager-type name="BankCardNumber" ng-model="$ctrl.card.bankCardNumber" required="required">
                 <span class="field__icon icon icon--lock">
                     <span class="visually-hidden">Secure field</span>
                 </span>
@@ -17,61 +17,61 @@
                 </span>
             </div>
             <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardNumber.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardNumber.$error.required">
-                Please enter your bank card number
+                {{ 'checkout.payment_method.required_card_number_message' | t }}
             </p>
             <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardNumber.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardNumber.$error.$valid">
-                Please enter correct card number
+                {{ 'checkout.payment_method.invalid_card_number_message' | t }}
             </p>
         </div>
         <div class="field field--half field--required" ng-class="{ 'field--show-floating-label': $ctrl.card.cardholderName.length, 'field--error': ($ctrl.form.BankCardCardholderName.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardCardholderName.$invalid }">
             <div class="field__input-wrapper">
-                <label class="field__label" for="BankCardCardholderName">Cardholder name</label>
-                <input class="field__input" id="BankCardCardholderName" name="BankCardCardholderName" placeholder="Cardholder name" required="required" size="30" type="text" ng-model="$ctrl.card.bankCardHolderName">
+                <label class="field__label" for="BankCardCardholderName">{{ 'checkout.payment_method.cardholder_name' | t }}</label>
+                <input class="field__input" id="BankCardCardholderName" name="BankCardCardholderName" placeholder="{{ 'checkout.payment_method.cardholder_name' | t }}" required="required" size="30" type="text" ng-model="$ctrl.card.bankCardHolderName">
             </div>
             <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardCardholderName.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardCardholderName.$error.required">
-                Please enter cardholder name
+                {{ 'checkout.payment_method.required_cardholder_name_message' | t }}
             </p>
         </div>
         <div class="field field--eight field--required" ng-class="{ 'field--show-floating-label': !$ctrl.form.BankCardExpirationMonth.$error.required, 'field--error': ($ctrl.form.BankCardExpirationMonth.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardExpirationMonth.$valid }">
             <div class="field__input-wrapper">
-                <label class="field__label" for="BankCardExpirationMonth">MM</label>
-                <input placeholder="MM" type="text" id="BankCardExpirationMonth" class="field__input" cc-exp-month name="BankCardExpirationMonth" required="required" ng-model="$ctrl.card.bankCardMonth">
+                <label class="field__label" for="BankCardExpirationMonth">{{ 'checkout.payment_method.expiry_month' | t }}</label>
+                <input placeholder="{{ 'checkout.payment_method.expiry_month' | t }}" type="text" id="BankCardExpirationMonth" class="field__input" cc-exp-month name="BankCardExpirationMonth" required="required" ng-model="$ctrl.card.bankCardMonth">
             </div>
             <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardExpirationMonth.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardExpirationMonth.$error.required">
-                Please enter expiration month
+                {{ 'checkout.payment_method.required_expiration_month_message' | t }}
             </p>
             <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardExpirationMonth.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardExpirationMonth.$valid">
-                The month invalid
+                {{ 'checkout.payment_method.invalid_expiration_month_message' | t }}
             </p>
         </div>
         <div class="field field--separator">/</div>
         <div class="field field--eight field--required" ng-class="{ 'field--show-floating-label': !$ctrl.form.BankCardExpirationYear.$error.required, 'field--error': ($ctrl.form.BankCardExpirationYear.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardExpirationYear.$valid }">
             <div class="field__input-wrapper">
-                <label class="field__label" for="BankCardExpirationYear">YY</label>
-                <input placeholder="YY" type="text" id="BankCardExpirationYear" class="field__input" cc-exp-year name="BankCardExpirationYear" required="required" ng-model="$ctrl.card.bankCardYear">
+                <label class="field__label" for="BankCardExpirationYear">{{ 'checkout.payment_method.expiry_year' | t }}</label>
+                <input placeholder="{{ 'checkout.payment_method.expiry_year' | t }}" type="text" id="BankCardExpirationYear" class="field__input" cc-exp-year name="BankCardExpirationYear" required="required" ng-model="$ctrl.card.bankCardYear">
             </div>
             <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardExpirationYear.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardExpirationYear.$error.required">
-                Please enter expiration year
+                {{ 'checkout.payment_method.required_expiration_year_message' | t }}
             </p>
             <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardExpirationYear.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardExpirationYear.$valid">
-                The year invalid
+                {{ 'checkout.payment_method.invalid_expiration_year_message' | t }}
             </p>
         </div>
         <div class="field field--quarter field--required" ng-class="{ 'field--show-floating-label': !$ctrl.form.BankCardCvv.$error.required, 'field--error': ($ctrl.form.BankCardCvv.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardCvv.$valid }">
             <div class="field__input-wrapper">
-                <label class="field__label" for="BankCardCvv">CVV</label>
+                <label class="field__label" for="BankCardCvv">{{ 'checkout.payment_method.cvv' | t }}</label>
                 <input type="text" placeholder="CVV" class="field__input" id="BankCardCvv" cc-cvc cc-type="$ctrl.form.BankCardNumber.$ccType" name="BankCardCvv" required="required" ng-model="$ctrl.card.bankCardCVV2">
                 <span class="field__icon icon icon--question has-tooltip">
                     <span class="tooltip">
-                        3-digit security code usually found on the back of the card. American Express cards have a 4-digit code located on the front.
+                        {{ 'checkout.payment_method.cvv_unknown_tooltip_text' | t }}                       
                     </span>
                 </span>
             </div>
             <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardCvv.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardCvv.$error.required">
-                Please enter CVV
+                {{ 'checkout.payment_method.required_cvv_message' | t }}
             </p>
             <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardCvv.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardCvv.$valid">
-                Please enter correct CVV
+                {{ 'checkout.payment_method.invalid_cvv_message' | t }}
             </p>
         </div>
     </div>

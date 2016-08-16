@@ -19,6 +19,7 @@
         "optional_field_sign": "(optional)",
         "secure_field": "Secure field",
         "shipping_address": "Shipping address",
+        "shipping_address_select_placeholder": "Select address",
         "edit_shipping_address": "Edit shipping address",
         "customer_subscribes_marketing": "Subscribe to our newsletter",
         "email_required_message": "Please enter your email address",
@@ -74,19 +75,29 @@
             "billing_address_equals_shipping": "Same as shipping address",
             "billing_address_different": "Use a different billing address",
             "continue_text": "Complete order",
-            "return_text": "Return to shipping method"
+            "return_text": "Return to shipping method",
+            "required_card_number_message": "Please enter your bank card number",
+            "invalid_card_number_message": "Please enter your bank card number",
+            "required_cardholder_name_message": "Please enter card holder name",
+            "required_expiration_month_message": "Please enter expiration month",
+            "invalid_expiration_month_message": "The month invalid",
+            "required_expiration_year_message": "Please enter expiration year",
+            "invalid_expiration_year_message": "The year invalid",
+            "required_cvv_message": "Please enter CVV",
+            "invalid_cvv_message": "Please enter correct CVV"
         },
         "address": {
             "first_name": "First name",
             "last_name": "Last name",
-            "company": "Company",
+            "company": "Company (optional)",
             "address1": "Address",
-            "address2": "Apt, suite, etc.",
+            "address2": "Apt, suite, etc. (optional)",
             "city": "City",
             "country": "Country",
+            "country_select_placeholder": "Select country",
             "province": "State",
-            "zip": "Zip code",
-            "phone": "Phone"
+            "zip": "Zip / Postal code",
+            "phone": "Phone (optional)"
         }
     },
     "date_formats": {

@@ -39,24 +39,24 @@
 		</div>
 		<div class="main__content">
 			<vc-checkout-wizard wizard="checkout.wizard" on-initialized="initialize()" on-finish="createOrder()" loading="checkout.loading">
-				<vc-checkout-wizard-step name="shipping-address"  on-next-step="updateShipment(checkout.shipment)" title="Shipping address" step-disabled="!checkout.cart.hasPhysicalProducts">
+				<vc-checkout-wizard-step name="shipping-address"  on-next-step="updateShipment(checkout.shipment)" title="{{ 'checkout.customer_information.title' | t }}" step-disabled="!checkout.cart.hasPhysicalProducts">
 					<div class="edit_checkout animate-floating-labels">
 						<div class="step__sections">
 							<div class="section section--contact-information">
 								<div class="section__header">
-									<h2 class="section__title">Customer information</h2>
+									<h2 class="section__title">{{ 'checkout.customer_information.title' | t }}</h2>
 								</div>
 								<div class="section__content">
 									<vc-checkout-email email="checkout.email"></vc-checkout-email>
 									<p class="section__content__text" ng-if="!customer.isRegisteredUser">
-										Already have an account with us?
-										<a href="{{ 'account/login' | absolute_url }}">Log in</a>
+										{{ 'checkout.customer_information.has_account_text' | t }}
+										<a href="{{ 'account/login' | absolute_url }}">{{ 'checkout.customer_information.log_in' | t }}</a>
 									</p>
 								</div>
 							</div>
 							<div class="section section--shipping-address">
 								<div class="section__header">
-									<h2 class="section__title">Shipping address</h2>
+									<h2 class="section__title">{{ 'checkout.shipping_address' | t }}</h2>
 								</div>
 								<div class="section__content">
 									<vc-checkout-address address="checkout.shipment.deliveryAddress" countries="checkout.availCountries"  get-country-regions="getCountryRegions(country)" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-checkout-address>
@@ -65,11 +65,11 @@
 						</div>
 					</div>
 				</vc-checkout-wizard-step>
-				<vc-checkout-wizard-step  name="shipping-method" title="Shipping method" on-next-step="updateShipment(checkout.shipment)" step-disabled="!checkout.cart.hasPhysicalProducts">
+				<vc-checkout-wizard-step  name="shipping-method" title="{{ 'checkout.shipping_method.title' | t }}" on-next-step="updateShipment(checkout.shipment)" step-disabled="!checkout.cart.hasPhysicalProducts">
 					<div class="edit_checkout animate-floating-labels">
 						<div class="section section--shipping-address-recap">
 							<div class="section__header">
-								<h2 class="section__title">Shipping address</h2>
+								<h2 class="section__title">{{ 'checkout.shipping_address' | t }}</h2>
 							</div>
 							<div class="section__content">
 								<p>
@@ -79,7 +79,7 @@
 						</div>
 						<div class="section section--shipping-method">
 							<div class="section__header">
-								<h2 class="section__title">Shipping method</h2>
+								<h2 class="section__title">{{ 'checkout.shipping_method.title' | t }}</h2>
 							</div>
 							<div class="section__content">
 								<vc-checkout-shipping-methods shipment="checkout.shipment" on-select-shipping-method="selectShippingMethod(shippingMethod)" get-avail-shipping-methods="getAvailShippingMethods(checkout.shipment)"></vc-checkout-shipping-methods>
@@ -87,13 +87,13 @@
 						</div>
 					</div>
 				</vc-checkout-wizard-step>
-				<vc-checkout-wizard-step  name="payment-method" title="Payment method">
+				<vc-checkout-wizard-step  name="payment-method" title="{{ 'checkout.payment_method.title' | t }}">
 					<div class="edit_checkout animate-floating-labels">
 						<div class="step__sections">
 							<div class="section section--payment-method">
 								<div class="section__header">
-									<h2 class="section__title">Payment method {{ checkout.paymentMethod.name }}</h2>
-									<p class="section__text">All transactions are secure and encrypted. Credit card information is never stored.</p>
+									<h2 class="section__title">{{ 'checkout.payment_method.title' | t }}</h2>
+									<p class="section__text">{{ 'checkout.payment_method.subtitle' | t }}</p>
 								</div>
 								<div class="section__content">
 									<vc-checkout-payment-methods get-avail-payment-methods="getAvailPaymentMethods()" payment-method="checkout.paymentMethod" on-select-method="selectPaymentMethod(paymentMethod)"></vc-checkout-payment-methods>
@@ -101,16 +101,15 @@
 							</div>
 							<div class="section section--billing-address">
 								<div class="section__header">
-									<h2 class="section__title">Billing address</h2>
+									<h2 class="section__title">{{ 'checkout.payment_method.billing_address' | t }}</h2>
 								</div>
 								<div class="section__content">
 									<div class="content-box">
 										<div class="checkbox-wrapper content-box__row" ng-if="checkout.cart.hasPhysicalProducts">
 											<div class="checkbox__input">
-												<h1>{{checkout.billingAddressEqualsShipping}}</h1>
 												<input class="input-checkbox" id="BillingAddressEqualsShipping" name="BillingAddressEqualsShipping" ng-model="checkout.billingAddressEqualsShipping" type="checkbox" ng-checked="checkout.billingAddressEqualsShipping"  />
 											</div>
-											<label class="checkbox__label" for="BillingAddressEqualsShipping">Billing address is equal to shipping address</label>
+											<label class="checkbox__label" for="BillingAddressEqualsShipping">{{ 'checkout.payment_method.billing_address_equals_shipping' | t }}</label>
 										</div>
 										<div class="radio-group__row content-box__row content-box__row--secondary" ng-if="!checkout.billingAddressEqualsShipping">
 											<vc-checkout-address address="checkout.payment.billingAddress" countries="checkout.availCountries" get-country-regions="getCountryRegions(country)" addresses="checkout.cart.customer.addresses" on-update="validateCheckout(checkout)" edit-mode="true"></vc-checkout-address>
