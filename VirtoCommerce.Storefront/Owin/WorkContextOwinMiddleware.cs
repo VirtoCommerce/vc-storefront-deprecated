@@ -122,7 +122,7 @@ namespace VirtoCommerce.Storefront.Owin
             // Initialize common properties
             workContext.RequestUrl = context.Request.Uri;
             workContext.AllCountries = _allCountries;
-            workContext.AllStores = await _cacheManager.GetAsync("GetAllStores", "ApiRegion", async () => await GetAllStoresAsync());
+            workContext.AllStores = await _cacheManager.GetAsync("GetAllStores", "ApiRegion", async () => await GetAllStoresAsync(), cacheNullValue: false);
             if (workContext.AllStores != null && workContext.AllStores.Any())
             {
                 // Initialize request specific properties
