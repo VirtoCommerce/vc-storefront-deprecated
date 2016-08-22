@@ -20,4 +20,19 @@
       <img alt="" src="{{ vendor.logo_url | absolute_url }}" />
     </a>
   </aside>
+    <div class="grid-uniform">
+
+        {% for product in vendor.products %}
+
+        {% include 'product-list-item' %}
+
+        {% else %}
+
+        <div class="grid-item">
+            <p>{{ 'collections.general.no_matches' | t }}</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
 </div>

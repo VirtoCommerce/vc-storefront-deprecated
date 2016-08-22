@@ -29,7 +29,11 @@ namespace VirtoCommerce.Storefront.Model.Common
         }
         public static string ToString(IEnumerable<SortInfo> sortInfos)
         {
-            return string.Join(";", sortInfos);
+            if (!sortInfos.IsNullOrEmpty())
+            {
+                return string.Join(";", sortInfos);
+            }
+            return null;
         }
         public static IEnumerable<SortInfo> Parse(string sortExpr)
         {

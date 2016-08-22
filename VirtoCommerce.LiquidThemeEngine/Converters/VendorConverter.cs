@@ -3,22 +3,33 @@ using System.Linq;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
+using PagedList;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
     public static class VendorConverter
     {
-        public static Vendor ToShopifyModel(this StorefrontModel.Vendor storefrontModel)
+        public static Vendor ToShopifyModel(this StorefrontModel.Vendor vendor)
         {
-            var shopifyModel = new Vendor();
+            var retVal = new Vendor();
 
-            shopifyModel.InjectFrom<NullableAndEnumValueInjecter>(storefrontModel);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(vendor);
+            retVal.Handle = vendor.SeoInfo != null ? vendor.SeoInfo.Slug : vendor.Id;
 
-            var shopifyAddressModels = storefrontModel.Addresses.Select(a => a.ToShopifyModel());
-            shopifyModel.Addresses = new MutablePagedList<Address>(shopifyAddressModels);
-            shopifyModel.DynamicProperties = storefrontModel.DynamicProperties;
+            var shopifyAddressModels = vendor.Addresses.Select(a => a.ToShopifyModel());
+            retVal.Addresses = new MutablePagedList<Address>(shopifyAddressModels);
+            retVal.DynamicProperties = vendor.DynamicProperties;
 
-            return shopifyModel;
+            if (vendor.Products != null)
+            {
+                retVal.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
+                {
+                    vendor.Products.Slice(pageNumber, pageSize, sortInfos);
+                    return new StaticPagedList<Product>(vendor.Products.Select(x => x.ToShopifyModel()), vendor.Products);
+                }, vendor.Products.PageNumber, vendor.Products.PageSize);
+            }
+
+            return retVal;
         }
     }
 }

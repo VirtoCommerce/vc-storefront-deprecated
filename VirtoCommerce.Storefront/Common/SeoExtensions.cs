@@ -4,6 +4,7 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
 using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
+using customerModel = VirtoCommerce.CustomerModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Common
 {
@@ -66,11 +67,29 @@ namespace VirtoCommerce.Storefront.Common
         }
 
         /// <summary>
+        /// Duplicate method special for Customer.SeoInfo type
+        /// </summary>
+        public static customerModel.SeoInfo GetBestMatchedSeoInfo(this IEnumerable<customerModel.SeoInfo> seoRecords, Store store, Language language, string slug = null)
+        {
+            customerModel.SeoInfo retVal = null;
+            if (!seoRecords.IsNullOrEmpty())
+            {
+                var catalogSeoInfos = seoRecords.Select(x => x.JsonConvert<catalogModel.SeoInfo>());
+                var catalogSeoInfo = GetBestMatchedSeoInfo(catalogSeoInfos, store, language, slug);
+                if (catalogSeoInfo != null)
+                {
+                    retVal = catalogSeoInfo.JsonConvert<customerModel.SeoInfo>();
+                }
+            }
+            return retVal;
+        }
+     
+        /// <summary>
         /// Find best SEO record using score base rules
         /// http://docs.virtocommerce.com/display/vc2devguide/SEO
         /// </summary>
         /// <param name="seoRecords"></param>
-        /// <param name="store"></param>
+        /// <param name="store"></param> 
         /// <param name="language"></param>
         /// <param name="slug"></param>
         /// <returns></returns>

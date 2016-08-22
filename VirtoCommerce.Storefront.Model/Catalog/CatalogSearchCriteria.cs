@@ -34,6 +34,8 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public Currency Currency { get; set; }
         public Language Language { get; set; }
         public string Keyword { get; set; }
+        public string VendorId { get; set; }
+        public string[] VendorIds { get; set; }
 
         public Term[] Terms { get; set; }
         public string SortBy { get; set; }
@@ -48,6 +50,8 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             retVal.Currency = Currency;
             retVal.Language = Language;
             retVal.Keyword = Keyword;
+            retVal.VendorId = VendorId;
+            retVal.VendorIds = VendorIds;
             retVal.SortBy = SortBy;
             retVal.SearchInChildren = SearchInChildren;
             retVal.PageNumber = PageNumber;
@@ -73,6 +77,8 @@ namespace VirtoCommerce.Storefront.Model.Catalog
                 .Where(a => a.Length == 2)
                 .SelectMany(a => a[1].Split(',').Select(v => new Term { Name = a[0], Value = v }))
                 .ToArray();
+            VendorId = queryString.Get("vendor");
+            VendorIds = (queryString.GetValues("vendors") ?? new string[0]);
         }
 
 
@@ -105,9 +111,14 @@ namespace VirtoCommerce.Storefront.Model.Catalog
                 if (this.Keyword != null)
                     hash = hash * 59 + this.Keyword.GetHashCode();
 
+                if (this.VendorId != null)
+                    hash = hash * 59 + this.VendorId.GetHashCode();
+
+                if (!this.VendorIds.IsNullOrEmpty())
+                    hash = hash * 59 + string.Join(",", this.VendorIds).GetHashCode();
+
                 if (this.SortBy != null)
                     hash = hash * 59 + this.SortBy.GetHashCode();
-
 
                 return hash;
             }
@@ -127,7 +138,14 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             {
                 retVal.Add(string.Format("categoryId={0}", CategoryId));
             }
-
+            if (VendorId != null)
+            {
+                retVal.Add(string.Format("vendor={0}", VendorId));
+            }
+            if (VendorIds != null)
+            {
+                retVal.Add(string.Format("vendors={0}", string.Join(",", this.VendorIds)));
+            }
             return string.Join("&", retVal);
         }
     }

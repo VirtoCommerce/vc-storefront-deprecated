@@ -64,6 +64,11 @@ namespace VirtoCommerce.Storefront.Routing
                                     data.Values["action"] = "CategoryBrowsing";
                                     data.Values["categoryId"] = seoRecord.ObjectId;
                                     break;
+                                case "Vendor":
+                                    data.Values["controller"] = "Vendor";
+                                    data.Values["action"] = "VendorDetails";
+                                    data.Values["vendorId"] = seoRecord.ObjectId;
+                                    break;
                             }
                         }
                         else

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
 {
@@ -22,8 +24,15 @@ namespace VirtoCommerce.Storefront.Model
 
         public string GroupName { get; set; }
 
+        /// <summary>
+        /// Vendor seo info
+        /// </summary>
+        public SeoInfo SeoInfo { get; set; }
+
         public ICollection<Address> Addresses { get; set; }
 
         public ICollection<DynamicProperty> DynamicProperties { get; set; }
+
+        public IMutablePagedList<Product> Products { get; set; }
     }
 }
