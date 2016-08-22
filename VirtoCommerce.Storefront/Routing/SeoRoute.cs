@@ -64,13 +64,19 @@ namespace VirtoCommerce.Storefront.Routing
                                     data.Values["action"] = "CategoryBrowsing";
                                     data.Values["categoryId"] = seoRecord.ObjectId;
                                     break;
+                                case "Vendor":
+                                    data.Values["controller"] = "Vendor";
+                                    data.Values["action"] = "VendorDetails";
+                                    data.Values["vendorId"] = seoRecord.ObjectId;
+                                    break;
                             }
                         }
                         else
                         {
                             var response = httpContext.Response;
                             response.Status = "301 Moved Permanently";
-                            response.RedirectLocation = _storefrontUrlBuilderFactory().ToAppAbsolute(seoRecord.SemanticUrl);                             response.End();
+                            response.RedirectLocation = _storefrontUrlBuilderFactory().ToAppAbsolute(seoRecord.SemanticUrl);
+                            response.End();
                             data = null;
                         }
                     }
@@ -87,7 +93,7 @@ namespace VirtoCommerce.Storefront.Routing
                             data.Values["action"] = "GetContentPage";
                             data.Values["page"] = contentPage;
                         }
-                        else
+                        else if (workContext.Pages != null)
                         {
                             contentPage = workContext.Pages.FirstOrDefault(x => x.AliasesUrls.Contains(path, StringComparer.OrdinalIgnoreCase));
                             if (contentPage != null)
@@ -97,7 +103,7 @@ namespace VirtoCommerce.Storefront.Routing
                                 response.RedirectLocation = _storefrontUrlBuilderFactory().ToAppAbsolute(contentPage.Url);
                                 response.End();
                                 data = null;
-                            }                        
+                            }
                         }
                     }
                 }
@@ -126,7 +132,7 @@ namespace VirtoCommerce.Storefront.Routing
                 {
                     result = pages.FirstOrDefault(x => x.Language.IsInvariant);
                 }
-              
+
             }
 
             return result;

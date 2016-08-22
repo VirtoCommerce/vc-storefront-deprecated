@@ -17,6 +17,7 @@ using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Quote.Events;
+using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.StoreModule.Client.Api;
 
 namespace VirtoCommerce.Storefront.Services
@@ -96,14 +97,37 @@ namespace VirtoCommerce.Storefront.Services
 
         public async Task<Vendor> GetVendorByIdAsync(string vendorId)
         {
-            return (await _customerApi.CustomerModuleGetVendorByIdAsync(vendorId)).ToWebModel();
+            var workContext = _workContextFactory();
+            return (await _customerApi.CustomerModuleGetVendorByIdAsync(vendorId)).ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore);
         }
 
         public Vendor GetVendorById(string vendorId)
         {
-            return _customerApi.CustomerModuleGetVendorById(vendorId).ToWebModel();
+            var workContext = _workContextFactory();
+            var retVal = _customerApi.CustomerModuleGetVendorById(vendorId).ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore);
+
+            return retVal;
         }
 
+        public IPagedList<Vendor> SearchVendors(string keyword, int pageNumber, int pageSize, IEnumerable<SortInfo> sortInfos)
+        {
+            var workContext = _workContextFactory();
+            var criteria = new CustomerModule.Client.Model.MembersSearchCriteria
+            {
+                Keyword = keyword,
+                DeepSearch = true,               
+                Skip = (pageNumber - 1) * pageSize,
+                Take = pageSize
+            };
+
+            if(!sortInfos.IsNullOrEmpty())
+            {
+                criteria.Sort = SortInfo.ToString(sortInfos);
+            }
+            var result = _customerApi.CustomerModuleSearchVendors(criteria);
+            return new StaticPagedList<Vendor>(result.Vendors.Select(x=>x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)), pageNumber, pageSize, result.TotalCount.Value);
+
+        }
         #endregion
 
         #region IObserver<CreateOrderEvent> Members

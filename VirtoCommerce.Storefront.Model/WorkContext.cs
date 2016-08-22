@@ -148,6 +148,8 @@ namespace VirtoCommerce.Storefront.Model
         /// </summary>
         public ItemResponseGroup CurrentProductResponseGroup { get; set; }
 
+        public IMutablePagedList<Vendor> Vendors { get; set; }
+
         public Vendor CurrentVendor { get; set; }
 
         #endregion

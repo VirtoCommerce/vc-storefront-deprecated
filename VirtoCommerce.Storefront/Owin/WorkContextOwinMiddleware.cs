@@ -122,7 +122,7 @@ namespace VirtoCommerce.Storefront.Owin
             // Initialize common properties
             workContext.RequestUrl = context.Request.Uri;
             workContext.AllCountries = _allCountries;
-            workContext.AllStores = await _cacheManager.GetAsync("GetAllStores", "ApiRegion", async () => await GetAllStoresAsync());
+            workContext.AllStores = await _cacheManager.GetAsync("GetAllStores", "ApiRegion", async () => await GetAllStoresAsync(), cacheNullValue: false);
             if (workContext.AllStores != null && workContext.AllStores.Any())
             {
                 // Initialize request specific properties
@@ -293,6 +293,32 @@ namespace VirtoCommerce.Storefront.Owin
                         };
                         var pricingResult = await _pricingModuleApi.PricingModuleEvaluatePriceListsAsync(evalContext);
                         return pricingResult.Select(p => p.ToWebModel()).ToList();
+                    });
+
+                    //Vendors with their products
+                    workContext.Vendors = new MutablePagedList<Vendor>((pageNumber, pageSize, sortInfos) =>
+                    {
+                        var customerService = _container.Resolve<ICustomerService>();
+                        var vendors = customerService.SearchVendors(null, pageNumber, pageSize, sortInfos);
+                        foreach (var vendor in vendors)
+                        {
+                            vendor.Products = new MutablePagedList<Product>((pageNumber2, pageSize2, sortInfos2) =>
+                            {
+                                var criteria = new CatalogSearchCriteria
+                                {
+                                    CatalogId = workContext.CurrentStore.Catalog,
+                                    VendorId = vendor.Id,
+                                    SearchInChildren = true,
+                                    PageNumber = pageNumber2,
+                                    PageSize = pageSize2,
+                                    SortBy = SortInfo.ToString(sortInfos2),
+                                    ResponseGroup = CatalogSearchResponseGroup.WithProducts
+                                };
+                                var searchResult = catalogSearchService.SearchProducts(criteria);
+                                return searchResult.Products;
+                            });
+                        }
+                        return vendors;
                     });
                 }
             }

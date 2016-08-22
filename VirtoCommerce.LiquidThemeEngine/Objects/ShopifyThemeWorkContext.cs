@@ -101,6 +101,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
 
         public Shop[] AllStores { get; set; }
 
+        public IMutablePagedList<Vendor> Vendors { get; set; }
+
         /// <summary>
         /// Current request url
         /// </summary>

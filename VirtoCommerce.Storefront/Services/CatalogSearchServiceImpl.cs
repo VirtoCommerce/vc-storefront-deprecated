@@ -228,6 +228,24 @@ namespace VirtoCommerce.Storefront.Services
             foreach (var product in products)
             {
                 product.Vendor = vendors.FirstOrDefault(v => v.Id == product.VendorId);
+                if (product.Vendor != null)
+                {
+                    product.Vendor.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
+                    {
+                        var workContext = _workContextFactory();
+                        var criteria = new CatalogSearchCriteria
+                        {
+                            CatalogId = workContext.CurrentStore.Catalog,
+                            SearchInChildren = true,
+                            PageNumber = pageNumber,
+                            PageSize = pageSize,
+                            SortBy = SortInfo.ToString(sortInfos),
+                            ResponseGroup = CatalogSearchResponseGroup.WithProducts
+                        };
+                        var searchResult = SearchProducts(criteria);
+                        return searchResult.Products;
+                    });
+                }
             }
         }
 

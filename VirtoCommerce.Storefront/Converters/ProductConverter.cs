@@ -71,7 +71,11 @@ namespace VirtoCommerce.Storefront.Converters
                 retVal.Associations.AddRange(product.Associations.Select(x => x.ToWebModel()).Where(x => x != null));
             }
 
-            retVal.SeoInfo = product.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage).ToWebModel();
+            var productSeoInfo = product.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage);
+            if(productSeoInfo != null)
+            {
+                retVal.SeoInfo = productSeoInfo.ToWebModel();
+            }
             retVal.Url = "~/" + product.Outlines.GetSeoPath(store, currentLanguage, "product/" + product.Id);
 
             if (product.Reviews != null)

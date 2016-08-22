@@ -72,6 +72,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 }, workContext.Products.PageNumber, workContext.Products.PageSize);
             }
 
+            if (workContext.Vendors != null)
+            {
+                result.Vendors = new MutablePagedList<Vendor>((pageNumber, pageSize, sortInfos) =>
+                {
+                    workContext.Vendors.Slice(pageNumber, pageSize, sortInfos);
+                    return new StaticPagedList<Vendor>(workContext.Vendors.Select(x => x.ToShopifyModel()), workContext.Vendors);
+                }, workContext.Vendors.PageNumber, workContext.Vendors.PageSize);
+            }
+
             if (!string.IsNullOrEmpty(workContext.CurrentCatalogSearchCriteria.Keyword) && workContext.Products != null)
             {
                 result.Search = workContext.Products.ToShopifyModel(workContext.CurrentCatalogSearchCriteria.Keyword);

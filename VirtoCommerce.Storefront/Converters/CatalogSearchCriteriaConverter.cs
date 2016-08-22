@@ -18,6 +18,7 @@ namespace VirtoCommerce.Storefront.Converters
                 SearchInChildren = criteria.SearchInChildren,
                 CategoryId = criteria.CategoryId,
                 CatalogId = criteria.CatalogId,
+                VendorId = criteria.VendorId,
                 Currency = criteria.Currency == null ? workContext.CurrentCurrency.Code : criteria.Currency.Code,
                 HideDirectLinkedCategories = true,
                 Terms = criteria.Terms.ToStrings(),
@@ -26,6 +27,11 @@ namespace VirtoCommerce.Storefront.Converters
                 Take = criteria.PageSize,
                 Sort = criteria.SortBy
             };
+
+            if(criteria.VendorIds != null)
+            {
+                result.VendorIds = criteria.VendorIds.ToList();
+            }
             return result;
         }
 
@@ -39,6 +45,7 @@ namespace VirtoCommerce.Storefront.Converters
                 SearchInChildren = criteria.SearchInChildren,
                 CategoryId = criteria.CategoryId,
                 CatalogId = criteria.CatalogId,
+                VendorId = criteria.VendorId,
                 Currency = criteria.Currency == null ? workContext.CurrentCurrency.Code : criteria.Currency.Code,
                 HideDirectLinkedCategories = true,
                 Terms = criteria.Terms.ToStrings(),
@@ -47,6 +54,10 @@ namespace VirtoCommerce.Storefront.Converters
                 Take = criteria.PageSize,
                 Sort = criteria.SortBy
             };
+            if (criteria.VendorIds != null)
+            {
+                result.VendorIds = criteria.VendorIds.ToList();
+            }
             return result;
         }
     }
