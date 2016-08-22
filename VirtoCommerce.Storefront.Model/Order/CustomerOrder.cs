@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 
@@ -230,5 +231,18 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets Id
         /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Gets the value of order subtotal
+        /// </summary>
+        public Money SubTotal
+        {
+            get
+            {
+                var subtotal = Items.Sum(i => i.Price.Amount * i.Quantity.Value);
+                return new Money(subtotal, Currency);
+            }
+        }    
+
     }
 }

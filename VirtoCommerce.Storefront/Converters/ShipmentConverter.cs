@@ -129,6 +129,11 @@ namespace VirtoCommerce.Storefront.Converters
                 webModel.TaxDetails = shipment.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
             }
 
+            if(shipment.ShippingMethod != null)
+            {
+                webModel.ShipmentMethodCode = shipment.ShippingMethod.Code;
+                webModel.ShipmentMethodOption = shipment.ShippingMethod.OptionName;
+            }
             return webModel;
         }
 

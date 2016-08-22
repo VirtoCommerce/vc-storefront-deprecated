@@ -88,7 +88,7 @@
         {% for discount in order.discounts %}
           <tr class="order_summary discount">
             <td colspan="4">{{ discount.code }} {{ 'customer.order.discount' | t }}:</td>
-            <td class="text-right">{{ discount.savings | money }}</td>
+            <td class="text-right">{{ discount.amount | money }}</td>
           </tr>
         {% endfor %}
 
@@ -178,17 +178,17 @@
             }
         </style>
 
-        {% form 'pay_order' %}
-            <input name="order[order_id]" type="hidden" value="{{ order.id }}" />
-            {% for payment_method in order.payment_methods %}
-                <div class="payment_method" style="cursor: pointer; margin-bottom: 20px;">
-                    <input id="order_payment_method_{{ payment_method.handle }}" name="order[payment_method_id]" type="radio" value="{{ payment_method.handle }}" required="required" />
-                    <label for="order_payment_method_{{ payment_method.handle }}"></label>
-                    <img src="{{ payment_method.icon_url }}" width="150" />
-                </div>
-            {% endfor %}
-            <input class="btn" type="submit" title="Pay order" value="Pay order" />
-        {% endform %}
+      <form name="pay_form">
+          <input name="order[order_id]" type="hidden" value="{{ order.id }}" />
+          {% for payment_method in order.payment_methods %}
+          <div class="payment_method" style="cursor: pointer; margin-bottom: 20px;">
+              <input id="order_payment_method_{{ payment_method.handle }}" name="order[payment_method_id]" type="radio" value="{{ payment_method.handle }}" required="required" />
+              <label for="order_payment_method_{{ payment_method.handle }}"></label>
+              <img src="{{ payment_method.icon_url }}" width="150" />
+          </div>
+          {% endfor %}
+          <input class="btn" type="submit" title="Pay order" value="Pay order" />
+      </form>
     {% endif %}
 
     <h4>{{ 'customer.order.shipping_address' | t }}</h4>

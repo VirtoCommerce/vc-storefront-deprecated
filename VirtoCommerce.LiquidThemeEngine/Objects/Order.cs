@@ -185,6 +185,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// <summary>
         /// Returns an array of transactions from the order.
         /// </summary>
-        public object[] Transactions { get; set; }
+        public Transaction[] Transactions { get; set; }
     }
 }

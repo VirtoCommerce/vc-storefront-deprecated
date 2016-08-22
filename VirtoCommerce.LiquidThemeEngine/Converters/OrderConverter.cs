@@ -67,8 +67,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (order.InPayments != null)
             {
-                var inPayment = order.InPayments
-                    .OrderByDescending(p => p.CreatedDate)
+                var inPayment = order.InPayments.OrderByDescending(p => p.CreatedDate)
                     .FirstOrDefault();
 
                 if (inPayment != null)
@@ -82,11 +81,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     {
                         result.FinancialStatus = inPayment.Status;
                         result.FinancialStatusLabel = inPayment.Status;
-                    }
-
-                    if (inPayment.TaxIncluded == true)
-                    {
-                        taxLines.Add(new Objects.TaxLine { Title = "Payments tax", Price = inPayment.Tax.Amount * 100 });
                     }
                 }
             }
@@ -112,14 +106,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                         result.FulfillmentStatusLabel = orderShipment.Status;
                     }
 
-                    if (orderShipment.TaxIncluded == true)
+                    if (orderShipment.TaxIncluded == true && orderShipment.Sum.Amount > 0)
                     {
-                        taxLines.Add(new Objects.TaxLine { Title = "Shipping tax", Price = orderShipment.Tax.Amount * 100 });
+                        taxLines.Add(new Objects.TaxLine { Title = "Shipping tax", Price = orderShipment.Tax.Amount * 100, Rate = orderShipment.Tax.Amount / (orderShipment.Sum.Amount + orderShipment.DiscountAmount.Amount)});
                     }
                 }
 
                 var shipmentsWithTax = order.Shipments
-                    .Where(s => s.Tax.Amount > 0)
+                    .Where(s => s.Tax.Amount > 0 && s.Sum.Amount > 0)
                     .ToList();
 
                 if (shipmentsWithTax.Count > 0)
@@ -127,7 +121,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     taxLines.Add(new Objects.TaxLine
                     {
                         Title = "Shipping",
-                        Price = shipmentsWithTax.Sum(s => s.Tax.Amount) * 100
+                        Price = shipmentsWithTax.Sum(s => s.Tax.Amount) * 100,
+                        Rate = shipmentsWithTax.Sum(s => s.Tax.Amount) / shipmentsWithTax.Sum(s => (s.Sum + s.DiscountAmount).Amount)
                     });
                 }
 
@@ -145,7 +140,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                         Type = "ShippingDiscount",
                         Code = "Shipping",
                         Amount = shipmentDiscount * 100,
-                        Savings = -shipmentDiscount,
                     });
                 }
             }
@@ -160,13 +154,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     .Where(i => i.Tax.Amount > 0m)
                     .ToList();
 
-                if (itemsWithTax.Any())
+                if (itemsWithTax.Any() && order.SubTotal.Amount > 0)
                 {
                     taxLines.Add(new Objects.TaxLine
                     {
                         Title = "Line items",
-                        Price = itemsWithTax.Sum(i => i.Tax.Amount * 100)
-                     });
+                        Price = itemsWithTax.Sum(i => i.Tax.Amount * 100),
+                        Rate = itemsWithTax.Sum(i => i.Tax.Amount) / order.SubTotal.Amount
+                    });
                 }
 
                 var itemsWithDiscount = order.Items
@@ -183,9 +178,13 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                         Type = "FixedAmountDiscount",
                         Code = "Items",
                         Amount = itemsDiscount * 100,
-                        Savings = -itemsDiscount * 100,
                     });
                 }
+            }
+
+            if(!order.InPayments.IsNullOrEmpty())
+            {
+                result.Transactions = order.InPayments.Select(x => x.ToShopifyModel()).ToArray();
             }
 
             result.TaxLines = taxLines.ToArray();
