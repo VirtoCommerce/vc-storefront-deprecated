@@ -9,9 +9,17 @@ namespace VirtoCommerce.Storefront.Converters
     {
         public static ShippingMethod ToWebModel(this CartModule.Client.Model.ShippingMethod shippingMethod, Currency currency)
         {
+            var shippingMethodCurrency = new Currency(new Language(currency.CultureName), shippingMethod.Currency);
+            var shipppingMethodPrice = new Money(shippingMethod.Price ?? 0, shippingMethodCurrency);
+            if(shippingMethodCurrency != currency)
+            {
+                shipppingMethodPrice = shipppingMethodPrice.ConvertTo(currency);
+            }
             var shippingMethodModel = new ShippingMethod(currency);
             shippingMethodModel.InjectFrom(shippingMethod);
-            shippingMethodModel.Price = new Money(shippingMethod.Price ?? 0, currency);
+
+            shippingMethodModel.Price = shipppingMethodPrice;
+
             return shippingMethodModel;
         }
 
