@@ -31,7 +31,10 @@ namespace VirtoCommerce.Storefront.Converters
 
             webModel.Sum = new Money(paymentIn.Sum ?? 0, currency);
             webModel.Tax = new Money(paymentIn.Tax ?? 0, currency);
-
+            if (paymentIn.PaymentMethod != null)
+            {
+                webModel.GatewayCode = paymentIn.PaymentMethod.Code;
+            }
             return webModel;
         }
     }
