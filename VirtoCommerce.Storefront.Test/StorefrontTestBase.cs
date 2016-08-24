@@ -12,7 +12,8 @@ using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.Platform.Client.Security;
 using VirtoCommerce.PricingModule.Client.Api;
 using VirtoCommerce.QuoteModule.Client.Api;
-using VirtoCommerce.SearchModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients;
+using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Customer;
@@ -83,9 +84,9 @@ namespace VirtoCommerce.Storefront.Test
             return new VirtoCommerceQuoteApi(new QuoteModule.Client.Client.ApiClient(GetApiBaseUrl(), new QuoteModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
         }
 
-        protected IVirtoCommerceSearchApi GetSearchApiClient()
+        protected ISearchModule GetSearchApiClient()
         {
-            return new VirtoCommerceSearchApi(new SearchModule.Client.Client.ApiClient(GetApiBaseUrl(), new SearchModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new SearchModule(new SearchModuleApiClient(GetApiBaseUri(), GetClientCredentials()));
         }
 
         protected IVirtoCommerceStoreApi GetStoreApiClient()
@@ -104,9 +105,21 @@ namespace VirtoCommerce.Storefront.Test
         }
 
 
+        protected Uri GetApiBaseUri()
+        {
+            return new Uri(ConfigurationManager.ConnectionStrings["VirtoCommerceBaseUrl"].ConnectionString);
+        }
+
         protected string GetApiBaseUrl()
         {
             return ConfigurationManager.ConnectionStrings["VirtoCommerceBaseUrl"].ConnectionString;
+        }
+
+        protected VirtoCommerceApiRequestHandler GetClientCredentials()
+        {
+            var apiAppId = ConfigurationManager.AppSettings["vc-public-ApiAppId"];
+            var apiSecretKey = ConfigurationManager.AppSettings["vc-public-ApiSecretKey"];
+            return new VirtoCommerceApiRequestHandler(new HmacCredentials(apiAppId, apiSecretKey), null);
         }
 
         protected Action<IRestRequest> GetHmacRestRequestHandler()

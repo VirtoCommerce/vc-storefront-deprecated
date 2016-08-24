@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using PagedList;
 using VirtoCommerce.CatalogModule.Client.Api;
 using VirtoCommerce.InventoryModule.Client.Api;
-using VirtoCommerce.SearchModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
@@ -22,12 +22,12 @@ namespace VirtoCommerce.Storefront.Services
         private readonly IVirtoCommerceCatalogApi _catalogModuleApi;
         private readonly IPricingService _pricingService;
         private readonly IVirtoCommerceInventoryApi _inventoryModuleApi;
-        private readonly IVirtoCommerceSearchApi _searchApi;
+        private readonly ISearchModule _searchApi;
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ICustomerService _customerService;
         private readonly Func<WorkContext> _workContextFactory;
 
-        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, IVirtoCommerceCatalogApi catalogModuleApi, IPricingService pricingService, IVirtoCommerceInventoryApi inventoryModuleApi, IVirtoCommerceSearchApi searchApi, IPromotionEvaluator promotionEvaluator, ICustomerService customerService)
+        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, IVirtoCommerceCatalogApi catalogModuleApi, IPricingService pricingService, IVirtoCommerceInventoryApi inventoryModuleApi, ISearchModule searchApi, IPromotionEvaluator promotionEvaluator, ICustomerService customerService)
         {
             _workContextFactory = workContextFactory;
             _catalogModuleApi = catalogModuleApi;
@@ -149,7 +149,7 @@ namespace VirtoCommerce.Storefront.Services
 
             var workContext = _workContextFactory();
             var searchCriteria = criteria.ToSearchApiModel(workContext);
-            var result = await _searchApi.SearchModuleSearchAsync(searchCriteria);
+            var result = await _searchApi.SearchAsync(searchCriteria);
             var products = result.Products.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
 
             if (products.Any())
@@ -187,7 +187,7 @@ namespace VirtoCommerce.Storefront.Services
 
             var workContext = _workContextFactory();
             var searchCriteria = criteria.ToSearchApiModel(workContext);
-            var result = _searchApi.SearchModuleSearch(searchCriteria);
+            var result = _searchApi.Search(searchCriteria);
             var products = result.Products.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
 
             if (products.Any())
