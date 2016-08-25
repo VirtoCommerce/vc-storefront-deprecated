@@ -84,9 +84,9 @@ namespace VirtoCommerce.Storefront.Test
             return new VirtoCommerceQuoteApi(new QuoteModule.Client.Client.ApiClient(GetApiBaseUrl(), new QuoteModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
         }
 
-        protected ISearchModule GetSearchApiClient()
+        protected ISearchModuleApiClient GetSearchApiClient()
         {
-            return new SearchModule(new SearchModuleApiClient(GetApiBaseUri(), GetClientCredentials()));
+            return new SearchModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
         protected IVirtoCommerceStoreApi GetStoreApiClient()

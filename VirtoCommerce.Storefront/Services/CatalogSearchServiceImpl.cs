@@ -22,12 +22,12 @@ namespace VirtoCommerce.Storefront.Services
         private readonly IVirtoCommerceCatalogApi _catalogModuleApi;
         private readonly IPricingService _pricingService;
         private readonly IVirtoCommerceInventoryApi _inventoryModuleApi;
-        private readonly ISearchModule _searchApi;
+        private readonly ISearchModuleApiClient _searchApi;
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ICustomerService _customerService;
         private readonly Func<WorkContext> _workContextFactory;
 
-        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, IVirtoCommerceCatalogApi catalogModuleApi, IPricingService pricingService, IVirtoCommerceInventoryApi inventoryModuleApi, ISearchModule searchApi, IPromotionEvaluator promotionEvaluator, ICustomerService customerService)
+        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, IVirtoCommerceCatalogApi catalogModuleApi, IPricingService pricingService, IVirtoCommerceInventoryApi inventoryModuleApi, ISearchModuleApiClient searchApi, IPromotionEvaluator promotionEvaluator, ICustomerService customerService)
         {
             _workContextFactory = workContextFactory;
             _catalogModuleApi = catalogModuleApi;
@@ -149,7 +149,7 @@ namespace VirtoCommerce.Storefront.Services
 
             var workContext = _workContextFactory();
             var searchCriteria = criteria.ToSearchApiModel(workContext);
-            var result = await _searchApi.SearchAsync(searchCriteria);
+            var result = await _searchApi.SearchModule.SearchAsync(searchCriteria);
             var products = result.Products.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
 
             if (products.Any())
@@ -187,7 +187,7 @@ namespace VirtoCommerce.Storefront.Services
 
             var workContext = _workContextFactory();
             var searchCriteria = criteria.ToSearchApiModel(workContext);
-            var result = _searchApi.Search(searchCriteria);
+            var result = _searchApi.SearchModule.Search(searchCriteria);
             var products = result.Products.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
 
             if (products.Any())

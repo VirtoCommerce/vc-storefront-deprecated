@@ -194,7 +194,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterInstance(new HmacCredentials(apiAppId, apiSecretKey));
 
             var baseUri = new Uri(baseUrl);
-            container.RegisterType<ISearchModule>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SearchModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>()).SearchModule));
+            container.RegisterType<ISearchModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SearchModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
 
             container.RegisterType<IMarketingService, MarketingServiceImpl>();
             container.RegisterType<IPromotionEvaluator, PromotionEvaluator>();
