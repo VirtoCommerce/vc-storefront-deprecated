@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using VirtoCommerce.Platform.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.StoreModule.Client.Api;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
@@ -17,11 +17,11 @@ namespace VirtoCommerce.Storefront.Controllers
     public class CommonController : StorefrontControllerBase
     {
         private readonly Country[] _countriesWithoutRegions;
-        private readonly IVirtoCommerceStoreApi _storeModuleApi;
+        private readonly IStoreModuleApiClient _storeModuleApi;
         private readonly IVirtoCommercePlatformApi _platformApi;
         private readonly ILocalCacheManager _cacheManager;
 
-        public CommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IVirtoCommerceStoreApi storeModuleApi, 
+        public CommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IStoreModuleApiClient storeModuleApi,
                                IVirtoCommercePlatformApi platformApi, ILocalCacheManager cacheManager)
             : base(workContext, urlBuilder)
         {
@@ -37,7 +37,6 @@ namespace VirtoCommerce.Storefront.Controllers
         /// <summary>
         /// POST : /resetcache
         /// </summary>
-        /// <param name="viewName"></param>
         /// <returns></returns>
         [HttpGet]
         public ActionResult ResetCache()
@@ -74,7 +73,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public async Task<ActionResult> СontactUs(ContactUsForm model, string viewName = "page.contact")
         {
-            await _storeModuleApi.StoreModuleSendDynamicNotificationAnStoreEmailAsync(model.ToServiceModel(WorkContext));
+            await _storeModuleApi.StoreModule.SendDynamicNotificationAnStoreEmailAsync(model.ToServiceModel(WorkContext));
             WorkContext.ContactUsForm = model;
             return View(viewName, WorkContext);
         }

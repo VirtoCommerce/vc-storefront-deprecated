@@ -6,6 +6,7 @@ using PagedList;
 using VirtoCommerce.CustomerModule.Client.Api;
 using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.QuoteModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -17,8 +18,6 @@ using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Quote.Events;
-using VirtoCommerce.Storefront.Model.Services;
-using VirtoCommerce.StoreModule.Client.Api;
 
 namespace VirtoCommerce.Storefront.Services
 {
@@ -28,14 +27,14 @@ namespace VirtoCommerce.Storefront.Services
         private readonly IVirtoCommerceOrdersApi _orderApi;
         private readonly Func<WorkContext> _workContextFactory;
         private readonly IVirtoCommerceQuoteApi _quoteApi;
-        private readonly IVirtoCommerceStoreApi _storeApi;
+        private readonly IStoreModuleApiClient _storeApi;
         private readonly ILocalCacheManager _cacheManager;
         private const string _customerOrdersCacheRegionFormat = "customer/{0}/orders/region";
         private const string _customerQuotesCacheRegionFormat = "customer/{0}/quotes/region";
         private const string _customerCacheKeyFormat = "customer/{0}";
         private const string _customerCacheRegionFormat = "customer/{0}/region";
         public CustomerServiceImpl(Func<WorkContext> workContextFactory, IVirtoCommerceCustomerApi customerApi, IVirtoCommerceOrdersApi orderApi,
-            IVirtoCommerceQuoteApi quoteApi, IVirtoCommerceStoreApi storeApi, ILocalCacheManager cacheManager)
+            IVirtoCommerceQuoteApi quoteApi, IStoreModuleApiClient storeApi, ILocalCacheManager cacheManager)
         {
             _workContextFactory = workContextFactory;
             _customerApi = customerApi;
@@ -91,7 +90,7 @@ namespace VirtoCommerce.Storefront.Services
 
         public async Task<bool> CanLoginOnBehalfAsync(string storeId, string customerId)
         {
-            var info = await _storeApi.StoreModuleGetLoginOnBehalfInfoAsync(storeId, customerId);
+            var info = await _storeApi.StoreModule.GetLoginOnBehalfInfoAsync(storeId, customerId);
             return info.CanLoginOnBehalf == true;
         }
 
@@ -115,17 +114,17 @@ namespace VirtoCommerce.Storefront.Services
             var criteria = new CustomerModule.Client.Model.MembersSearchCriteria
             {
                 Keyword = keyword,
-                DeepSearch = true,               
+                DeepSearch = true,
                 Skip = (pageNumber - 1) * pageSize,
                 Take = pageSize
             };
 
-            if(!sortInfos.IsNullOrEmpty())
+            if (!sortInfos.IsNullOrEmpty())
             {
                 criteria.Sort = SortInfo.ToString(sortInfos);
             }
             var result = _customerApi.CustomerModuleSearchVendors(criteria);
-            return new StaticPagedList<Vendor>(result.Vendors.Select(x=>x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)), pageNumber, pageSize, result.TotalCount.Value);
+            return new StaticPagedList<Vendor>(result.Vendors.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)), pageNumber, pageSize, result.TotalCount.Value);
 
         }
         #endregion

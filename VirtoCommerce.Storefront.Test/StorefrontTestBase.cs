@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Linq;
 using RestSharp;
 using VirtoCommerce.CartModule.Client.Api;
-using VirtoCommerce.CatalogModule.Client.Api;
 using VirtoCommerce.CoreModule.Client.Api;
 using VirtoCommerce.CustomerModule.Client.Api;
 using VirtoCommerce.InventoryModule.Client.Api;
@@ -13,11 +12,12 @@ using VirtoCommerce.Platform.Client.Security;
 using VirtoCommerce.PricingModule.Client.Api;
 using VirtoCommerce.QuoteModule.Client.Api;
 using VirtoCommerce.Storefront.AutoRestClients;
+using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Customer;
-using VirtoCommerce.StoreModule.Client.Api;
 
 namespace VirtoCommerce.Storefront.Test
 {
@@ -28,7 +28,7 @@ namespace VirtoCommerce.Storefront.Test
             var coreApi = GetCoreApiClient();
             var storeApi = GetStoreApiClient();
 
-            var allStores = storeApi.StoreModuleGetStores().Select(x => x.ToWebModel());
+            var allStores = storeApi.StoreModule.GetStores().Select(x => x.ToWebModel());
             var defaultStore = allStores.FirstOrDefault(x => string.Equals(x.Id, "Electronics", StringComparison.InvariantCultureIgnoreCase));
             var currencies = coreApi.CommerceGetAllCurrencies().Select(x => x.ToWebModel(defaultStore.DefaultLanguage));
             defaultStore.SyncCurrencies(currencies, defaultStore.DefaultLanguage);
@@ -54,9 +54,9 @@ namespace VirtoCommerce.Storefront.Test
             return new VirtoCommerceCartApi(new CartModule.Client.Client.ApiClient(GetApiBaseUrl(), new CartModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
         }
 
-        protected IVirtoCommerceCatalogApi GetCatalogApiClient()
+        protected ICatalogModuleApiClient GetCatalogApiClient()
         {
-            return new VirtoCommerceCatalogApi(new CatalogModule.Client.Client.ApiClient(GetApiBaseUrl(), new CatalogModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new CatalogModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
         protected IVirtoCommerceCoreApi GetCoreApiClient()
@@ -89,9 +89,9 @@ namespace VirtoCommerce.Storefront.Test
             return new SearchModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceStoreApi GetStoreApiClient()
+        protected IStoreModuleApiClient GetStoreApiClient()
         {
-            return new VirtoCommerceStoreApi(new StoreModule.Client.Client.ApiClient(GetApiBaseUrl(), new StoreModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new StoreModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
         protected IVirtoCommerceCustomerApi GetCustomerApiClient()

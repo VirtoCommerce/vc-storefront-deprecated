@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PagedList;
-using VirtoCommerce.CatalogModule.Client.Api;
 using VirtoCommerce.InventoryModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -19,7 +19,7 @@ namespace VirtoCommerce.Storefront.Services
 {
     public class CatalogSearchServiceImpl : ICatalogSearchService
     {
-        private readonly IVirtoCommerceCatalogApi _catalogModuleApi;
+        private readonly ICatalogModuleApiClient _catalogModuleApi;
         private readonly IPricingService _pricingService;
         private readonly IVirtoCommerceInventoryApi _inventoryModuleApi;
         private readonly ISearchModuleApiClient _searchApi;
@@ -27,7 +27,7 @@ namespace VirtoCommerce.Storefront.Services
         private readonly ICustomerService _customerService;
         private readonly Func<WorkContext> _workContextFactory;
 
-        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, IVirtoCommerceCatalogApi catalogModuleApi, IPricingService pricingService, IVirtoCommerceInventoryApi inventoryModuleApi, ISearchModuleApiClient searchApi, IPromotionEvaluator promotionEvaluator, ICustomerService customerService)
+        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, ICatalogModuleApiClient catalogModuleApi, IPricingService pricingService, IVirtoCommerceInventoryApi inventoryModuleApi, ISearchModuleApiClient searchApi, IPromotionEvaluator promotionEvaluator, ICustomerService customerService)
         {
             _workContextFactory = workContextFactory;
             _catalogModuleApi = catalogModuleApi;
@@ -47,7 +47,7 @@ namespace VirtoCommerce.Storefront.Services
                 responseGroup = workContext.CurrentProductResponseGroup;
             }
 
-            var retVal = (await _catalogModuleApi.CatalogModuleProductsGetProductByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToArray();
+            var retVal = (await _catalogModuleApi.CatalogModuleProducts.GetProductByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToArray();
 
             var allProducts = retVal.Concat(retVal.SelectMany(x => x.Variations)).ToList();
 
@@ -89,7 +89,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             var workContext = _workContextFactory();
 
-            var retVal = (await _catalogModuleApi.CatalogModuleCategoriesGetCategoriesByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
+            var retVal = (await _catalogModuleApi.CatalogModuleCategories.GetCategoriesByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
 
             return retVal;
         }
@@ -108,7 +108,7 @@ namespace VirtoCommerce.Storefront.Services
             //include categories
             criteria.ResponseGroup = criteria.ResponseGroup | CatalogSearchResponseGroup.WithCategories;
             var searchCriteria = criteria.ToCatalogApiModel(workContext);
-            var result = await _catalogModuleApi.CatalogModuleSearchSearchAsync(searchCriteria);
+            var result = await _catalogModuleApi.CatalogModuleSearch.SearchAsync(searchCriteria);
 
             //API temporary does not support paginating request to categories (that's uses PagedList with superset instead StaticPagedList)
             return new PagedList<Category>(result.Categories.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
@@ -128,7 +128,7 @@ namespace VirtoCommerce.Storefront.Services
             //include categories
             criteria.ResponseGroup = criteria.ResponseGroup | CatalogSearchResponseGroup.WithCategories;
             var searchCriteria = criteria.ToCatalogApiModel(workContext);
-            var categories = _catalogModuleApi.CatalogModuleSearchSearch(searchCriteria).Categories.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)).ToList();
+            var categories = _catalogModuleApi.CatalogModuleSearch.Search(searchCriteria).Categories.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)).ToList();
 
             //API temporary does not support paginating request to categories (that's uses PagedList with superset)
             return new PagedList<Category>(categories, criteria.PageNumber, criteria.PageSize);

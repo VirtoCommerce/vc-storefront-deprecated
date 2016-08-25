@@ -2,7 +2,7 @@
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
-using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
+using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -11,14 +11,14 @@ namespace VirtoCommerce.Storefront.Converters
         public static Association ToWebModel(this catalogModel.ProductAssociation association)
         {
             Association retVal = null;
-            if(association.AssociatedObjectType.EqualsInvariant("product"))
+            if (association.AssociatedObjectType.EqualsInvariant("product"))
             {
                 retVal = new ProductAssociation
                 {
-                    ProductId = association.AssociatedObjectId            
+                    ProductId = association.AssociatedObjectId
                 };
             }
-            else if(association.AssociatedObjectType.EqualsInvariant("category"))
+            else if (association.AssociatedObjectType.EqualsInvariant("category"))
             {
                 retVal = new CategoryAssociation
                 {
@@ -31,7 +31,7 @@ namespace VirtoCommerce.Storefront.Converters
                 retVal.InjectFrom<NullableAndEnumValueInjecter>(association);
                 retVal.Image = new Image { Url = association.AssociatedObjectImg };
             }
-       
+
             return retVal;
         }
     }

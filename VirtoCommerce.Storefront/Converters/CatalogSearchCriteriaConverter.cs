@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
-using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
+using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters

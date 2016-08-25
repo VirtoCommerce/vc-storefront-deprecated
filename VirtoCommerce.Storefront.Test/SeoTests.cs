@@ -3,7 +3,7 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Stores;
 using Xunit;
-using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
+using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Test
 {

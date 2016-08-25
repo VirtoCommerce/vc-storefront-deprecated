@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.StoreModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {

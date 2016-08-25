@@ -1,10 +1,10 @@
 ﻿using Omu.ValueInjecter;
-using VirtoCommerce.Storefront.Model;
-using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
-using coreModel = VirtoCommerce.CoreModule.Client.Model;
-using storeModel = VirtoCommerce.StoreModule.Client.Model;
-using customerModel = VirtoCommerce.CustomerModule.Client.Model;
 using VirtoCommerce.Storefront.Common;
+using VirtoCommerce.Storefront.Model;
+using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using coreModel = VirtoCommerce.CoreModule.Client.Model;
+using customerModel = VirtoCommerce.CustomerModule.Client.Model;
+using storeModel = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -37,7 +37,7 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-      
+
         public static catalogModel.SeoInfo ToCatalogModel(this coreModel.SeoInfo seoDto)
         {
             catalogModel.SeoInfo retVal = null;

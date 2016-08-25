@@ -16,6 +16,7 @@ using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using VirtoCommerce.CoreModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -30,7 +31,6 @@ using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.StaticContent;
 using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Model.Stores;
-using VirtoCommerce.StoreModule.Client.Api;
 
 namespace VirtoCommerce.Storefront.Owin
 {
@@ -43,7 +43,7 @@ namespace VirtoCommerce.Storefront.Owin
         private static readonly PathString[] _owinIgnorePathsStrings = GetOwinIgnorePathStrings();
         private static readonly Country[] _allCountries = GetAllCounries();
 
-        private readonly IVirtoCommerceStoreApi _storeApi;
+        private readonly IStoreModuleApiClient _storeApi;
         private readonly IVirtoCommerceCoreApi _commerceApi;
         private readonly PricingModule.Client.Api.IVirtoCommercePricingApi _pricingModuleApi;
         private readonly IQuoteRequestBuilder _quoteRequestBuilder;
@@ -57,7 +57,7 @@ namespace VirtoCommerce.Storefront.Owin
         {
             //Be AWARE! WorkContextOwinMiddleware crated once in first application start
             //and  there can not be resolved and stored in fields services using WorkContext as dependency (WorkContext has a per request lifetime)
-            _storeApi = container.Resolve<IVirtoCommerceStoreApi>();
+            _storeApi = container.Resolve<IStoreModuleApiClient>();
             _quoteRequestBuilder = container.Resolve<IQuoteRequestBuilder>();
             _pricingModuleApi = container.Resolve<PricingModule.Client.Api.IVirtoCommercePricingApi>();
             _commerceApi = container.Resolve<IVirtoCommerceCoreApi>();
@@ -351,7 +351,7 @@ namespace VirtoCommerce.Storefront.Owin
 
         private async Task<Store[]> GetAllStoresAsync()
         {
-            var stores = await _storeApi.StoreModuleGetStoresAsync();
+            var stores = await _storeApi.StoreModule.GetStoresAsync();
             var result = stores.Select(s => s.ToWebModel()).ToArray();
             return result.Any() ? result : null;
         }
