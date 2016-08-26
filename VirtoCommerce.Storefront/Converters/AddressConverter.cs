@@ -6,6 +6,7 @@ using VirtoCommerce.Storefront.Model.Common;
 using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.Storefront.Converters
@@ -29,7 +30,7 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static customerModel.Address ToCustomerModel(this OrderModule.Client.Model.Address orderAddress)
+        public static customerModel.Address ToCustomerModel(this orderModel.Address orderAddress)
         {
             var customerAddress = new customerModel.Address();
 
@@ -92,7 +93,7 @@ namespace VirtoCommerce.Storefront.Converters
             return addressWebModel;
         }
 
-        public static Address ToWebModel(this OrderModule.Client.Model.Address address)
+        public static Address ToWebModel(this orderModel.Address address)
         {
             var result = new Address();
 

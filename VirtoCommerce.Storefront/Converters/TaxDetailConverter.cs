@@ -2,6 +2,7 @@
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -14,7 +15,7 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static TaxDetail ToWebModel(this OrderModule.Client.Model.TaxDetail taxDetail, Currency currency)
+        public static TaxDetail ToWebModel(this orderModel.TaxDetail taxDetail, Currency currency)
         {
             var result = new TaxDetail(currency);
             result.InjectFrom(taxDetail);

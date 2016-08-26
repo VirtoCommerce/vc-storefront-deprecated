@@ -5,6 +5,7 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
 using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -75,7 +76,7 @@ namespace VirtoCommerce.Storefront.Converters
             return serviceModel;
         }
 
-        public static Model.Order.Shipment ToWebModel(this OrderModule.Client.Model.Shipment shipment, ICollection<Currency> availCurrencies, Language language)
+        public static Model.Order.Shipment ToWebModel(this orderModel.Shipment shipment, ICollection<Currency> availCurrencies, Language language)
         {
             var webModel = new Model.Order.Shipment();
 

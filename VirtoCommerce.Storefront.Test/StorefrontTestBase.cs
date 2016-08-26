@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.Linq;
 using RestSharp;
-using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.Platform.Client.Security;
 using VirtoCommerce.QuoteModule.Client.Api;
 using VirtoCommerce.Storefront.AutoRestClients;
@@ -12,6 +11,7 @@ using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
@@ -99,9 +99,9 @@ namespace VirtoCommerce.Storefront.Test
             return new CustomerModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceOrdersApi GetOrderApiClient()
+        protected IOrdersModuleApiClient GetOrderApiClient()
         {
-            return new VirtoCommerceOrdersApi(new OrderModule.Client.Client.ApiClient(GetApiBaseUrl(), new OrderModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new OrdersModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
 

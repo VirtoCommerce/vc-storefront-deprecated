@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using VirtoCommerce.OrderModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -13,6 +13,7 @@ using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
 using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Services;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Controllers.Api
 {
@@ -21,13 +22,13 @@ namespace VirtoCommerce.Storefront.Controllers.Api
     public class ApiCartController : StorefrontControllerBase
     {
         private readonly ICartBuilder _cartBuilder;
-        private readonly IVirtoCommerceOrdersApi _orderApi;
+        private readonly IOrdersModuleApiClient _orderApi;
         private readonly ICartValidator _cartValidator;
         private readonly ICatalogSearchService _catalogSearchService;
         private readonly IEventPublisher<OrderPlacedEvent> _orderPlacedEventPublisher;
 
         public ApiCartController(WorkContext workContext, ICatalogSearchService catalogSearchService, ICartBuilder cartBuilder,
-                                 IVirtoCommerceOrdersApi orderApi, ICartValidator cartValidator, IStorefrontUrlBuilder urlBuilder,
+                                 IOrdersModuleApiClient orderApi, ICartValidator cartValidator, IStorefrontUrlBuilder urlBuilder,
                                  IEventPublisher<OrderPlacedEvent> orderPlacedEventPublisher)
             : base(workContext, urlBuilder)
         {
@@ -216,25 +217,25 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
         // POST: storefrontapi/cart/createorder
         [HttpPost]
-        public async Task<ActionResult> CreateOrder(OrderModule.Client.Model.BankCardInfo bankCardInfo)
+        public async Task<ActionResult> CreateOrder(orderModel.BankCardInfo bankCardInfo)
         {
             EnsureThatCartExist();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart.Id)).LockAsync())
             {
-                var order = await _orderApi.OrderModuleCreateOrderFromCartAsync(_cartBuilder.Cart.Id);
+                var order = await _orderApi.OrderModule.CreateOrderFromCartAsync(_cartBuilder.Cart.Id);
 
                 //Raise domain event
                 await _orderPlacedEventPublisher.PublishAsync(new OrderPlacedEvent(order.ToWebModel(WorkContext.AllCurrencies, WorkContext.CurrentLanguage), _cartBuilder.Cart));
 
                 await _cartBuilder.RemoveCartAsync();
 
-                OrderModule.Client.Model.ProcessPaymentResult processingResult = null;
+                orderModel.ProcessPaymentResult processingResult = null;
                 var incomingPayment = order.InPayments != null ? order.InPayments.FirstOrDefault() : null;
                 if (incomingPayment != null)
                 {
-                    processingResult = await _orderApi.OrderModuleProcessOrderPaymentsAsync(order.Id, incomingPayment.Id, bankCardInfo);
+                    processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(order.Id, incomingPayment.Id, bankCardInfo);
                 }
 
                 return Json(new { order, orderProcessingResult = processingResult });

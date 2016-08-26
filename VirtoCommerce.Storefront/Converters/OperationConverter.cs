@@ -4,12 +4,13 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class OperationConverter
     {
-        public static Operation ToWebModel(this OrderModule.Client.Model.Operation operation, IEnumerable<Currency> availCurrencies, Language language)
+        public static Operation ToWebModel(this orderModel.Operation operation, IEnumerable<Currency> availCurrencies, Language language)
         {
             var operationWebModel = new Operation();
 

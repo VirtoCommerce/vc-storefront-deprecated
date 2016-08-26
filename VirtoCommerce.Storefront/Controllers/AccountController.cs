@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Owin.Security;
-using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.Platform.Client.Api;
 using VirtoCommerce.Platform.Client.Model;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -31,12 +31,12 @@ namespace VirtoCommerce.Storefront.Controllers
         private readonly IAuthenticationManager _authenticationManager;
         private readonly IVirtoCommercePlatformApi _platformApi;
         private readonly ICustomerService _customerService;
-        private readonly IVirtoCommerceOrdersApi _orderApi;
+        private readonly IOrdersModuleApiClient _orderApi;
         private readonly IEventPublisher<UserLoginEvent> _userLoginEventPublisher;
 
         public AccountController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, ICoreModuleApiClient commerceCoreApi,
             IAuthenticationManager authenticationManager, IVirtoCommercePlatformApi platformApi,
-            ICustomerService customerService, IVirtoCommerceOrdersApi orderApi, IEventPublisher<UserLoginEvent> userLoginEventPublisher)
+            ICustomerService customerService, IOrdersModuleApiClient orderApi, IEventPublisher<UserLoginEvent> userLoginEventPublisher)
             : base(workContext, urlBuilder)
         {
             _commerceCoreApi = commerceCoreApi;
@@ -83,7 +83,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> GetOrderDetails(string number)
         {
-            var order = await _orderApi.OrderModuleGetByNumberAsync(number);
+            var order = await _orderApi.OrderModule.GetByNumberAsync(number);
 
             if (order == null || order.CustomerId != WorkContext.CurrentCustomer.Id)
             {

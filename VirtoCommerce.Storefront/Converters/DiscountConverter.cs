@@ -5,6 +5,7 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -33,7 +34,7 @@ namespace VirtoCommerce.Storefront.Converters
             return serviceModel;
         }
 
-        public static Discount ToWebModel(this OrderModule.Client.Model.Discount serviceModel, IEnumerable<Currency> availCurrencies, Language language)
+        public static Discount ToWebModel(this orderModel.Discount serviceModel, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(serviceModel.Currency)) ?? new Currency(language, serviceModel.Currency);
             var webModel = new Discount(currency);

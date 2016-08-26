@@ -4,12 +4,13 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class InPaymentConverter
     {
-        public static PaymentIn ToWebModel(this OrderModule.Client.Model.PaymentIn paymentIn, IEnumerable<Currency> availCurrencies, Language language)
+        public static PaymentIn ToWebModel(this orderModel.PaymentIn paymentIn, IEnumerable<Currency> availCurrencies, Language language)
         {
             var webModel = new PaymentIn();
 

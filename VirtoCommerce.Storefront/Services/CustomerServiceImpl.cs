@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PagedList;
-using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.QuoteModule.Client.Api;
 using VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
@@ -19,13 +19,14 @@ using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Quote.Events;
 using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Services
 {
     public class CustomerServiceImpl : ICustomerService, IAsyncObserver<OrderPlacedEvent>, IAsyncObserver<QuoteRequestUpdatedEvent>
     {
         private readonly ICustomerModuleApiClient _customerApi;
-        private readonly IVirtoCommerceOrdersApi _orderApi;
+        private readonly IOrdersModuleApiClient _orderApi;
         private readonly Func<WorkContext> _workContextFactory;
         private readonly IVirtoCommerceQuoteApi _quoteApi;
         private readonly IStoreModuleApiClient _storeApi;
@@ -34,7 +35,7 @@ namespace VirtoCommerce.Storefront.Services
         private const string _customerQuotesCacheRegionFormat = "customer/{0}/quotes/region";
         private const string _customerCacheKeyFormat = "customer/{0}";
         private const string _customerCacheRegionFormat = "customer/{0}/region";
-        public CustomerServiceImpl(Func<WorkContext> workContextFactory, ICustomerModuleApiClient customerApi, IVirtoCommerceOrdersApi orderApi,
+        public CustomerServiceImpl(Func<WorkContext> workContextFactory, ICustomerModuleApiClient customerApi, IOrdersModuleApiClient orderApi,
             IVirtoCommerceQuoteApi quoteApi, IStoreModuleApiClient storeApi, ILocalCacheManager cacheManager)
         {
             _workContextFactory = workContextFactory;
@@ -196,7 +197,7 @@ namespace VirtoCommerce.Storefront.Services
         private IMutablePagedList<CustomerOrder> GetCustomerOrders(CustomerInfo customer)
         {
             var workContext = _workContextFactory();
-            var orderSearchcriteria = new OrderModule.Client.Model.SearchCriteria
+            var orderSearchcriteria = new orderModel.SearchCriteria
             {
                 CustomerId = customer.Id,
                 ResponseGroup = "full"
@@ -208,7 +209,7 @@ namespace VirtoCommerce.Storefront.Services
                 orderSearchcriteria.Start = (pageNumber - 1) * pageSize;
                 orderSearchcriteria.Count = pageSize;
                 var cacheKey = "GetCustomerOrders-" + orderSearchcriteria.GetHashCode();
-                var ordersResponse = _cacheManager.Get(cacheKey, string.Format(_customerOrdersCacheRegionFormat, customer.Id), () => _orderApi.OrderModuleSearch(orderSearchcriteria));
+                var ordersResponse = _cacheManager.Get(cacheKey, string.Format(_customerOrdersCacheRegionFormat, customer.Id), () => _orderApi.OrderModule.Search(orderSearchcriteria));
                 return new StaticPagedList<CustomerOrder>(ordersResponse.CustomerOrders.Select(x => x.ToWebModel(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,
                                                           ordersResponse.TotalCount.Value);
             };
