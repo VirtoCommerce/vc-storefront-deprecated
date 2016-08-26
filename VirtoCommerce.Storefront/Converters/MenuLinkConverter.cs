@@ -1,12 +1,13 @@
 ﻿using System.Linq;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
+using contentModel = VirtoCommerce.Storefront.AutoRestClients.ContentModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class MenuLinkConverter
     {
-        public static MenuLinkList ToWebModel(this ContentModule.Client.Model.MenuLinkList serviceModel)
+        public static MenuLinkList ToWebModel(this contentModel.MenuLinkList serviceModel)
         {
             var webModel = new MenuLinkList();
 
@@ -22,7 +23,7 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static MenuLink ToWebModel(this ContentModule.Client.Model.MenuLink serviceModel)
+        public static MenuLink ToWebModel(this contentModel.MenuLink serviceModel)
         {
             var webModel = new MenuLink();
 
