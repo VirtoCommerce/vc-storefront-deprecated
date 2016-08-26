@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.Linq;
 using RestSharp;
-using VirtoCommerce.CartModule.Client.Api;
 using VirtoCommerce.CustomerModule.Client.Api;
 using VirtoCommerce.InventoryModule.Client.Api;
 using VirtoCommerce.MarketingModule.Client.Api;
@@ -11,6 +10,7 @@ using VirtoCommerce.Platform.Client.Security;
 using VirtoCommerce.PricingModule.Client.Api;
 using VirtoCommerce.QuoteModule.Client.Api;
 using VirtoCommerce.Storefront.AutoRestClients;
+using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
@@ -49,9 +49,9 @@ namespace VirtoCommerce.Storefront.Test
             return retVal;
         }
 
-        protected IVirtoCommerceCartApi GetCartApiClient()
+        protected ICartModuleApiClient GetCartApiClient()
         {
-            return new VirtoCommerceCartApi(new CartModule.Client.Client.ApiClient(GetApiBaseUrl(), new CartModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new CartModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
         protected ICatalogModuleApiClient GetCatalogApiClient()

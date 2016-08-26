@@ -5,6 +5,7 @@ using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
+using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -29,7 +30,7 @@ namespace VirtoCommerce.Storefront.Converters
             return lineItemWebModel;
         }
 
-        public static LineItem ToWebModel(this CartModule.Client.Model.LineItem serviceModel, Currency currency, Language language)
+        public static LineItem ToWebModel(this cartModel.LineItem serviceModel, Currency currency, Language language)
         {
 
             var webModel = new LineItem(currency, language);
@@ -66,9 +67,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static CartModule.Client.Model.LineItem ToServiceModel(this LineItem webModel)
+        public static cartModel.LineItem ToServiceModel(this LineItem webModel)
         {
-            var serviceModel = new CartModule.Client.Model.LineItem();
+            var serviceModel = new cartModel.LineItem();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 

@@ -19,7 +19,6 @@ using Microsoft.Practices.Unity.Mvc;
 using Newtonsoft.Json;
 using NLog;
 using Owin;
-using VirtoCommerce.CartModule.Client.Api;
 using VirtoCommerce.ContentModule.Client.Api;
 using VirtoCommerce.CustomerModule.Client.Api;
 using VirtoCommerce.InventoryModule.Client.Api;
@@ -34,6 +33,7 @@ using VirtoCommerce.QuoteModule.Client.Api;
 using VirtoCommerce.Storefront;
 using VirtoCommerce.Storefront.App_Start;
 using VirtoCommerce.Storefront.AutoRestClients;
+using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
@@ -178,7 +178,6 @@ namespace VirtoCommerce.Storefront
             var hmacHandler = new HmacRestRequestHandler(apiAppId, apiSecretKey);
             var currentUserHandler = new CurrentUserRestRequestHandler(workContextFactory);
 
-            container.RegisterInstance<IVirtoCommerceCartApi>(new VirtoCommerceCartApi(new CartModule.Client.Client.ApiClient(baseUrl, new CartModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
             container.RegisterInstance<IVirtoCommerceContentApi>(new VirtoCommerceContentApi(new ContentModule.Client.Client.ApiClient(baseUrl, new ContentModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
             container.RegisterInstance<IVirtoCommerceCustomerApi>(new VirtoCommerceCustomerApi(new CustomerModule.Client.Client.ApiClient(baseUrl, new CustomerModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
             container.RegisterInstance<IVirtoCommerceInventoryApi>(new VirtoCommerceInventoryApi(new InventoryModule.Client.Client.ApiClient(baseUrl, new InventoryModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
@@ -191,6 +190,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterInstance(new HmacCredentials(apiAppId, apiSecretKey));
 
             var baseUri = new Uri(baseUrl);
+            container.RegisterType<ICartModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CartModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
             container.RegisterType<ICatalogModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CatalogModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
             container.RegisterType<ICoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
             container.RegisterType<ISearchModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SearchModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));

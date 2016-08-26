@@ -3,6 +3,7 @@ using System.Linq;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 
@@ -70,9 +71,9 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static CartModule.Client.Model.Address ToCartServiceModel(this Address address)
+        public static cartModel.Address ToCartServiceModel(this Address address)
         {
-            var addressServiceModel = new CartModule.Client.Model.Address();
+            var addressServiceModel = new cartModel.Address();
 
             addressServiceModel.InjectFrom(address);
             addressServiceModel.Type = address.Type.ToString();
@@ -80,7 +81,7 @@ namespace VirtoCommerce.Storefront.Converters
             return addressServiceModel;
         }
 
-        public static Address ToWebModel(this CartModule.Client.Model.Address address)
+        public static Address ToWebModel(this cartModel.Address address)
         {
             var addressWebModel = new Address();
 

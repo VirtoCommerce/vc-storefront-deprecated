@@ -1,12 +1,13 @@
 ﻿using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class TaxDetailConverter
     {
-        public static TaxDetail ToWebModel(this CartModule.Client.Model.TaxDetail taxDetail, Currency currency)
+        public static TaxDetail ToWebModel(this cartModel.TaxDetail taxDetail, Currency currency)
         {
             var result = new TaxDetail(currency);
             result.InjectFrom(taxDetail);
@@ -27,9 +28,9 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static CartModule.Client.Model.TaxDetail ToCartApiModel(this TaxDetail taxDetail)
+        public static cartModel.TaxDetail ToCartApiModel(this TaxDetail taxDetail)
         {
-            var result = new CartModule.Client.Model.TaxDetail();
+            var result = new cartModel.TaxDetail();
             result.InjectFrom(taxDetail);
             return result;
         }

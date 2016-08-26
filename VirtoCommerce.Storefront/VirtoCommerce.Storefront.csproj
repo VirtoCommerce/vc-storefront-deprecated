@@ -250,10 +250,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="VirtoCommerce.CartModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.CartModule.Client.2.11.0\lib\net451\VirtoCommerce.CartModule.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="VirtoCommerce.ContentModule.Client, Version=2.11.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VirtoCommerce.ContentModule.Client.2.11.4\lib\net451\VirtoCommerce.ContentModule.Client.dll</HintPath>
       <Private>True</Private>

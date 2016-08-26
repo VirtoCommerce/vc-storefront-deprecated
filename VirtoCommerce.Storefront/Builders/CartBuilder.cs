@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.CartModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
@@ -26,7 +26,7 @@ namespace VirtoCommerce.Storefront.Builders
     public class CartBuilder : ICartBuilder, IAsyncObserver<UserLoginEvent>
     {
         private readonly ICoreModuleApiClient _commerceApi;
-        private readonly IVirtoCommerceCartApi _cartApi;
+        private readonly ICartModuleApiClient _cartApi;
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ICatalogSearchService _catalogSearchService;
         private readonly ILocalCacheManager _cacheManager;
@@ -35,7 +35,7 @@ namespace VirtoCommerce.Storefront.Builders
         private const string _cartCacheRegion = "CartRegion";
 
         [CLSCompliant(false)]
-        public CartBuilder(IVirtoCommerceCartApi cartApi, IPromotionEvaluator promotionEvaluator, ICatalogSearchService catalogSearchService, ICoreModuleApiClient commerceApi, ILocalCacheManager cacheManager)
+        public CartBuilder(ICartModuleApiClient cartApi, IPromotionEvaluator promotionEvaluator, ICatalogSearchService catalogSearchService, ICoreModuleApiClient commerceApi, ILocalCacheManager cacheManager)
         {
             _cartApi = cartApi;
             _promotionEvaluator = promotionEvaluator;
@@ -72,7 +72,7 @@ namespace VirtoCommerce.Storefront.Builders
             {
                 ShoppingCart retVal;
 
-                var cart = await _cartApi.CartModuleGetCurrentCartAsync(store.Id, customer.Id);
+                var cart = await _cartApi.CartModule.GetCurrentCartAsync(store.Id, customer.Id);
                 if (cart == null)
                 {
                     retVal = new ShoppingCart(currency, language)
@@ -348,7 +348,7 @@ namespace VirtoCommerce.Storefront.Builders
 
             await EvaluatePromotionsAndTaxes();
 
-            await _cartApi.CartModuleDeleteCartsAsync(new List<string> { cart.Id });
+            await _cartApi.CartModule.DeleteCartsAsync(new List<string> { cart.Id });
             _cacheManager.Remove(CartCaheKey, _cartCacheRegion);
 
             return this;
@@ -356,7 +356,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task<ICartBuilder> RemoveCartAsync()
         {
-            await _cartApi.CartModuleDeleteCartsAsync(new List<string> { _cart.Id });
+            await _cartApi.CartModule.DeleteCartsAsync(new List<string> { _cart.Id });
             _cacheManager.Remove(CartCaheKey, _cartCacheRegion);
 
             return this;
@@ -433,7 +433,7 @@ namespace VirtoCommerce.Storefront.Builders
             var availableShippingMethods = new List<ShippingMethod>();
 
             // TODO: Remake with shipmentId
-            var serviceModels = await _cartApi.CartModuleGetShipmentMethodsAsync(_cart.Id);
+            var serviceModels = await _cartApi.CartModule.GetShipmentMethodsAsync(_cart.Id);
             foreach (var serviceModel in serviceModels)
             {
                 availableShippingMethods.Add(serviceModel.ToWebModel(_cart.Currency));
@@ -459,7 +459,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task<ICollection<PaymentMethod>> GetAvailablePaymentMethodsAsync()
         {
-            var serviceModels = await _cartApi.CartModuleGetPaymentMethodsAsync(_cart.Id);
+            var serviceModels = await _cartApi.CartModule.GetPaymentMethodsAsync(_cart.Id);
             return serviceModels.Select(serviceModel => serviceModel.ToWebModel()).ToList();
         }
 
@@ -495,11 +495,11 @@ namespace VirtoCommerce.Storefront.Builders
 
             if (_cart.IsTransient())
             {
-                _cart = (await _cartApi.CartModuleCreateAsync(cart)).ToWebModel(_cart.Currency, _cart.Language);
+                _cart = (await _cartApi.CartModule.CreateAsync(cart)).ToWebModel(_cart.Currency, _cart.Language);
             }
             else
             {
-                await _cartApi.CartModuleUpdateAsync(cart);
+                await _cartApi.CartModule.UpdateAsync(cart);
             }
         }
 

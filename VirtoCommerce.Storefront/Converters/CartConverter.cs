@@ -5,12 +5,13 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
+using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class CartConverter
     {
-        public static ShoppingCart ToWebModel(this CartModule.Client.Model.ShoppingCart serviceModel, Currency currency, Language language)
+        public static ShoppingCart ToWebModel(this cartModel.ShoppingCart serviceModel, Currency currency, Language language)
         {
             var webModel = new ShoppingCart(currency, language);
 
@@ -89,9 +90,9 @@ namespace VirtoCommerce.Storefront.Converters
         }
 
 
-        public static CartModule.Client.Model.ShoppingCart ToServiceModel(this ShoppingCart webModel)
+        public static cartModel.ShoppingCart ToServiceModel(this ShoppingCart webModel)
         {
-            var serviceModel = new CartModule.Client.Model.ShoppingCart();
+            var serviceModel = new cartModel.ShoppingCart();
 
             serviceModel.InjectFrom(webModel);
 

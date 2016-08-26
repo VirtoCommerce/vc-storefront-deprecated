@@ -4,13 +4,14 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using storeModel = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class DynamicPropertyConverter
     {
-        public static DynamicProperty ToWebModel(this CartModule.Client.Model.DynamicObjectProperty dto)
+        public static DynamicProperty ToWebModel(this cartModel.DynamicObjectProperty dto)
         {
             return dto.JsonConvert<OrderModule.Client.Model.DynamicObjectProperty>().ToWebModel();
         }
@@ -72,9 +73,9 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static CartModule.Client.Model.DynamicObjectProperty ToCartApiModel(this DynamicProperty dynamicProperty)
+        public static cartModel.DynamicObjectProperty ToCartApiModel(this DynamicProperty dynamicProperty)
         {
-            var result = new CartModule.Client.Model.DynamicObjectProperty();
+            var result = new cartModel.DynamicObjectProperty();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(dynamicProperty);
 
@@ -107,15 +108,15 @@ namespace VirtoCommerce.Storefront.Converters
             return new LocalizedString(new Language(dto.Locale), dto.Value.ToString());
         }
 
-        private static CartModule.Client.Model.DynamicPropertyObjectValue ToCartApiModel(this DynamicPropertyDictionaryItem dictItem)
+        private static cartModel.DynamicPropertyObjectValue ToCartApiModel(this DynamicPropertyDictionaryItem dictItem)
         {
-            var result = new CartModule.Client.Model.DynamicPropertyObjectValue { Value = dictItem };
+            var result = new cartModel.DynamicPropertyObjectValue { Value = dictItem };
             return result;
         }
 
-        private static CartModule.Client.Model.DynamicPropertyObjectValue ToCartApiModel(this LocalizedString dynamicPropertyObjectValue)
+        private static cartModel.DynamicPropertyObjectValue ToCartApiModel(this LocalizedString dynamicPropertyObjectValue)
         {
-            var result = new CartModule.Client.Model.DynamicPropertyObjectValue
+            var result = new cartModel.DynamicPropertyObjectValue
             {
                 Value = dynamicPropertyObjectValue.Value,
                 Locale = dynamicPropertyObjectValue.Language.CultureName

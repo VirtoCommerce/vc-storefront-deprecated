@@ -2,16 +2,17 @@
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
+using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class CartShipmentMethodConverter
     {
-        public static ShippingMethod ToWebModel(this CartModule.Client.Model.ShippingMethod shippingMethod, Currency currency)
+        public static ShippingMethod ToWebModel(this cartModel.ShippingMethod shippingMethod, Currency currency)
         {
             var shippingMethodCurrency = new Currency(new Language(currency.CultureName), shippingMethod.Currency);
             var shipppingMethodPrice = new Money(shippingMethod.Price ?? 0, shippingMethodCurrency);
-            if(shippingMethodCurrency != currency)
+            if (shippingMethodCurrency != currency)
             {
                 shipppingMethodPrice = shipppingMethodPrice.ConvertTo(currency);
             }

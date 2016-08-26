@@ -4,12 +4,13 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
+using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class ShipmentConverter
     {
-        public static Shipment ToWebModel(this CartModule.Client.Model.Shipment shipment, ShoppingCart cart)
+        public static Shipment ToWebModel(this cartModel.Shipment shipment, ShoppingCart cart)
         {
             var webModel = new Shipment(cart.Currency);
 
@@ -40,9 +41,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static CartModule.Client.Model.Shipment ToServiceModel(this Shipment shipment)
+        public static cartModel.Shipment ToServiceModel(this Shipment shipment)
         {
-            var serviceModel = new CartModule.Client.Model.Shipment();
+            var serviceModel = new cartModel.Shipment();
 
             serviceModel.InjectFrom(shipment);
             serviceModel.Currency = shipment.Currency.Code;
@@ -129,7 +130,7 @@ namespace VirtoCommerce.Storefront.Converters
                 webModel.TaxDetails = shipment.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
             }
 
-            if(shipment.ShippingMethod != null)
+            if (shipment.ShippingMethod != null)
             {
                 webModel.ShipmentMethodCode = shipment.ShippingMethod.Code;
                 webModel.ShipmentMethodOption = shipment.ShippingMethod.OptionName;

@@ -2,12 +2,13 @@
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
+using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class CartShipmentItemConverter
     {
-        public static CartShipmentItem ToWebModel(this CartModule.Client.Model.ShipmentItem serviceModel, ShoppingCart cart)
+        public static CartShipmentItem ToWebModel(this cartModel.ShipmentItem serviceModel, ShoppingCart cart)
         {
             var webModel = new CartShipmentItem();
 
@@ -18,9 +19,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static CartModule.Client.Model.ShipmentItem ToServiceModel(this CartShipmentItem webModel)
+        public static cartModel.ShipmentItem ToServiceModel(this CartShipmentItem webModel)
         {
-            var result = new CartModule.Client.Model.ShipmentItem();
+            var result = new cartModel.ShipmentItem();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 
