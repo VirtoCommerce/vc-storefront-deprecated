@@ -21,10 +21,8 @@ using NLog;
 using Owin;
 using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.LiquidThemeEngine.Binders;
-using VirtoCommerce.Platform.Client.Security;
 using VirtoCommerce.Storefront;
 using VirtoCommerce.Storefront.App_Start;
-using VirtoCommerce.Storefront.AutoRestClients;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.ContentModuleApi;
@@ -158,7 +156,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterInstance<ILogger>(logger);
 
             // Create new work context for each request
-            container.RegisterType<WorkContext, WorkContext>(new PerRequestLifetimeManager());
+            container.RegisterType<WorkContext>(new PerRequestLifetimeManager());
             Func<WorkContext> workContextFactory = () => container.Resolve<WorkContext>();
             container.RegisterInstance(workContextFactory);
 
@@ -175,10 +173,9 @@ namespace VirtoCommerce.Storefront
 
             var apiAppId = ConfigurationManager.AppSettings["vc-public-ApiAppId"];
             var apiSecretKey = ConfigurationManager.AppSettings["vc-public-ApiSecretKey"];
-            var hmacHandler = new HmacRestRequestHandler(apiAppId, apiSecretKey);
-            var currentUserHandler = new CurrentUserRestRequestHandler(workContextFactory);
-
             container.RegisterInstance(new HmacCredentials(apiAppId, apiSecretKey));
+
+            container.RegisterType<VirtoCommerceApiRequestHandler>(new PerRequestLifetimeManager());
 
             var baseUri = new Uri(baseUrl);
             container.RegisterType<ICartModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CartModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));

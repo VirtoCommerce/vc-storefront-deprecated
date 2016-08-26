@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
-using RestSharp;
-using VirtoCommerce.Platform.Client.Security;
-using VirtoCommerce.Storefront.AutoRestClients;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
@@ -15,6 +12,7 @@ using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Customer;
@@ -110,23 +108,11 @@ namespace VirtoCommerce.Storefront.Test
             return new Uri(ConfigurationManager.ConnectionStrings["VirtoCommerceBaseUrl"].ConnectionString);
         }
 
-        protected string GetApiBaseUrl()
-        {
-            return ConfigurationManager.ConnectionStrings["VirtoCommerceBaseUrl"].ConnectionString;
-        }
-
         protected VirtoCommerceApiRequestHandler GetClientCredentials()
         {
             var apiAppId = ConfigurationManager.AppSettings["vc-public-ApiAppId"];
             var apiSecretKey = ConfigurationManager.AppSettings["vc-public-ApiSecretKey"];
             return new VirtoCommerceApiRequestHandler(new HmacCredentials(apiAppId, apiSecretKey), null);
-        }
-
-        protected Action<IRestRequest> GetHmacRestRequestHandler()
-        {
-            var apiAppId = ConfigurationManager.AppSettings["vc-public-ApiAppId"];
-            var apiSecretKey = ConfigurationManager.AppSettings["vc-public-ApiSecretKey"];
-            return new HmacRestRequestHandler(apiAppId, apiSecretKey).PrepareRequest;
         }
     }
 }

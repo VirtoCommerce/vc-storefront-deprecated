@@ -4,10 +4,9 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Rest;
-using VirtoCommerce.Platform.Client.Security;
 using VirtoCommerce.Storefront.Model;
 
-namespace VirtoCommerce.Storefront.AutoRestClients
+namespace VirtoCommerce.Storefront.Common
 {
     public class VirtoCommerceApiRequestHandler : ServiceClientCredentials
     {

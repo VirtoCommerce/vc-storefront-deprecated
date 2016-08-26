@@ -1,4 +1,4 @@
-﻿namespace VirtoCommerce.Storefront.AutoRestClients
+﻿namespace VirtoCommerce.Storefront.Common
 {
     public class HmacCredentials
     {
