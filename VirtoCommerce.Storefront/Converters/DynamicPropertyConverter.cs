@@ -8,6 +8,7 @@ using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 using marketingModel = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
+using platformModel = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
 using quoteModel = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
 using storeModel = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 
@@ -63,7 +64,7 @@ namespace VirtoCommerce.Storefront.Converters
                     var dictValues = dto.Values.Where(x => x.Value != null)
                         .Select(x => x.Value)
                         .Cast<JObject>()
-                        .Select(x => x.ToObject<Platform.Client.Model.DynamicPropertyDictionaryItem>())
+                        .Select(x => x.ToObject<platformModel.DynamicPropertyDictionaryItem>())
                         .ToArray();
 
                     result.DictionaryValues = dictValues.Select(x => x.ToWebModel()).ToList();
@@ -96,7 +97,7 @@ namespace VirtoCommerce.Storefront.Converters
         }
 
 
-        private static DynamicPropertyDictionaryItem ToWebModel(this Platform.Client.Model.DynamicPropertyDictionaryItem dto)
+        private static DynamicPropertyDictionaryItem ToWebModel(this platformModel.DynamicPropertyDictionaryItem dto)
         {
             var result = new DynamicPropertyDictionaryItem();
             result.InjectFrom<NullableAndEnumValueInjecter>(dto);

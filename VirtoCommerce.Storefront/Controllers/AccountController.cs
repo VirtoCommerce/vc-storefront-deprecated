@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Owin.Security;
-using VirtoCommerce.Platform.Client.Api;
-using VirtoCommerce.Platform.Client.Model;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -29,13 +29,13 @@ namespace VirtoCommerce.Storefront.Controllers
     {
         private readonly ICoreModuleApiClient _commerceCoreApi;
         private readonly IAuthenticationManager _authenticationManager;
-        private readonly IVirtoCommercePlatformApi _platformApi;
+        private readonly IPlatformModuleApiClient _platformApi;
         private readonly ICustomerService _customerService;
         private readonly IOrdersModuleApiClient _orderApi;
         private readonly IEventPublisher<UserLoginEvent> _userLoginEventPublisher;
 
         public AccountController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, ICoreModuleApiClient commerceCoreApi,
-            IAuthenticationManager authenticationManager, IVirtoCommercePlatformApi platformApi,
+            IAuthenticationManager authenticationManager, IPlatformModuleApiClient platformApi,
             ICustomerService customerService, IOrdersModuleApiClient orderApi, IEventPublisher<UserLoginEvent> userLoginEventPublisher)
             : base(workContext, urlBuilder)
         {
@@ -464,7 +464,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 NewPassword = formModel.NewPassword,
             };
 
-            var result = await _platformApi.SecurityChangePasswordAsync(WorkContext.CurrentCustomer.UserName, changePassword);
+            var result = await _platformApi.Security.ChangePasswordAsync(WorkContext.CurrentCustomer.UserName, changePassword);
 
             if (result.Succeeded == true)
             {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using VirtoCommerce.Platform.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
@@ -18,11 +18,11 @@ namespace VirtoCommerce.Storefront.Controllers
     {
         private readonly Country[] _countriesWithoutRegions;
         private readonly IStoreModuleApiClient _storeModuleApi;
-        private readonly IVirtoCommercePlatformApi _platformApi;
+        private readonly IPlatformModuleApiClient _platformApi;
         private readonly ILocalCacheManager _cacheManager;
 
         public CommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IStoreModuleApiClient storeModuleApi,
-                               IVirtoCommercePlatformApi platformApi, ILocalCacheManager cacheManager)
+                               IPlatformModuleApiClient platformApi, ILocalCacheManager cacheManager)
             : base(workContext, urlBuilder)
         {
             _cacheManager = cacheManager;
@@ -42,7 +42,7 @@ namespace VirtoCommerce.Storefront.Controllers
         public ActionResult ResetCache()
         {
             //check permissions
-            if (_platformApi.SecurityUserHasAnyPermission(WorkContext.CurrentCustomer.UserName, new[] { "cache:reset" }.ToList(), new List<string>()).Result ?? false)
+            if (_platformApi.Security.UserHasAnyPermission(WorkContext.CurrentCustomer.UserName, new[] { "cache:reset" }.ToList(), new List<string>()).Result ?? false)
             {
                 _cacheManager.Clear();
                 return StoreFrontRedirect("~/");
