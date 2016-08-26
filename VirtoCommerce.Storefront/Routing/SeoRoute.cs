@@ -16,15 +16,15 @@ namespace VirtoCommerce.Storefront.Routing
     public class SeoRoute : Route
     {
         private readonly Func<WorkContext> _workContextFactory;
-        private readonly ICoreModuleApiClient _commerceCoreApi;
+        private readonly Func<ICoreModuleApiClient> _commerceCoreApiFactory;
         private readonly ILocalCacheManager _cacheManager;
         private readonly Func<IStorefrontUrlBuilder> _storefrontUrlBuilderFactory;
 
-        public SeoRoute(string url, IRouteHandler routeHandler, Func<WorkContext> workContextFactory, ICoreModuleApiClient commerceCoreApi, ILocalCacheManager cacheManager, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
+        public SeoRoute(string url, IRouteHandler routeHandler, Func<WorkContext> workContextFactory, Func<ICoreModuleApiClient> commerceCoreApiFactory, ILocalCacheManager cacheManager, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
             : base(url, routeHandler)
         {
             _workContextFactory = workContextFactory;
-            _commerceCoreApi = commerceCoreApi;
+            _commerceCoreApiFactory = commerceCoreApiFactory;
             _cacheManager = cacheManager;
             _storefrontUrlBuilderFactory = storefrontUrlBuilderFactory;
         }
@@ -144,8 +144,10 @@ namespace VirtoCommerce.Storefront.Routing
 
             if (!string.IsNullOrEmpty(slug))
             {
+                var commerceCoreApi = _commerceCoreApiFactory();
+
                 seoRecords = _cacheManager.Get(string.Join(":", "CommerceGetSeoInfoBySlug", slug), "ApiRegion", () =>
-                    _commerceCoreApi.Commerce.GetSeoInfoBySlug(slug).Select(s => s.ToCatalogModel()).ToList());
+                    commerceCoreApi.Commerce.GetSeoInfoBySlug(slug).Select(s => s.ToCatalogModel()).ToList());
             }
 
             return seoRecords;
