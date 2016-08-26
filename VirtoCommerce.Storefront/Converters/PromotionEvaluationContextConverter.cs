@@ -6,6 +6,7 @@ using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
+using marketingModel = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -57,9 +58,9 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static MarketingModule.Client.Model.PromotionEvaluationContext ToServiceModel(this PromotionEvaluationContext webModel)
+        public static marketingModel.PromotionEvaluationContext ToServiceModel(this PromotionEvaluationContext webModel)
         {
-            var serviceModel = new MarketingModule.Client.Model.PromotionEvaluationContext();
+            var serviceModel = new marketingModel.PromotionEvaluationContext();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 

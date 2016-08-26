@@ -250,10 +250,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="VirtoCommerce.MarketingModule.Client, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.MarketingModule.Client.2.11.0\lib\net451\VirtoCommerce.MarketingModule.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="VirtoCommerce.OrderModule.Client, Version=2.11.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VirtoCommerce.OrderModule.Client.2.11.1\lib\net451\VirtoCommerce.OrderModule.Client.dll</HintPath>
       <Private>True</Private>
