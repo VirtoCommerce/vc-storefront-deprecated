@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PagedList;
-using VirtoCommerce.InventoryModule.Client.Api;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -21,13 +21,13 @@ namespace VirtoCommerce.Storefront.Services
     {
         private readonly ICatalogModuleApiClient _catalogModuleApi;
         private readonly IPricingService _pricingService;
-        private readonly IVirtoCommerceInventoryApi _inventoryModuleApi;
+        private readonly IInventoryModuleApiClient _inventoryModuleApi;
         private readonly ISearchModuleApiClient _searchApi;
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ICustomerService _customerService;
         private readonly Func<WorkContext> _workContextFactory;
 
-        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, ICatalogModuleApiClient catalogModuleApi, IPricingService pricingService, IVirtoCommerceInventoryApi inventoryModuleApi, ISearchModuleApiClient searchApi, IPromotionEvaluator promotionEvaluator, ICustomerService customerService)
+        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, ICatalogModuleApiClient catalogModuleApi, IPricingService pricingService, IInventoryModuleApiClient inventoryModuleApi, ISearchModuleApiClient searchApi, IPromotionEvaluator promotionEvaluator, ICustomerService customerService)
         {
             _workContextFactory = workContextFactory;
             _catalogModuleApi = catalogModuleApi;
@@ -309,7 +309,7 @@ namespace VirtoCommerce.Storefront.Services
 
         private async Task LoadProductInventoriesAsync(List<Product> products)
         {
-            var inventories = await _inventoryModuleApi.InventoryModuleGetProductsInventoriesAsync(products.Select(x => x.Id).ToList());
+            var inventories = await _inventoryModuleApi.InventoryModule.GetProductsInventoriesAsync(products.Select(x => x.Id).ToList());
             foreach (var item in products)
             {
                 item.Inventory = inventories.Where(x => x.ProductId == item.Id).Select(x => x.ToWebModel()).FirstOrDefault();
@@ -318,7 +318,7 @@ namespace VirtoCommerce.Storefront.Services
 
         private void LoadProductInventories(List<Product> products)
         {
-            var inventories = _inventoryModuleApi.InventoryModuleGetProductsInventories(products.Select(x => x.Id).ToList());
+            var inventories = _inventoryModuleApi.InventoryModule.GetProductsInventories(products.Select(x => x.Id).ToList());
             foreach (var item in products)
             {
                 item.Inventory = inventories.Where(x => x.ProductId == item.Id).Select(x => x.ToWebModel()).FirstOrDefault();
