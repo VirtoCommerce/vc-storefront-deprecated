@@ -16,6 +16,7 @@ using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
@@ -31,6 +32,7 @@ using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.StaticContent;
 using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Model.Stores;
+using pricingModel = VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Owin
 {
@@ -45,7 +47,7 @@ namespace VirtoCommerce.Storefront.Owin
 
         private readonly IStoreModuleApiClient _storeApi;
         private readonly ICoreModuleApiClient _commerceApi;
-        private readonly PricingModule.Client.Api.IVirtoCommercePricingApi _pricingModuleApi;
+        private readonly IPricingModuleApiClient _pricingModuleApi;
         private readonly IQuoteRequestBuilder _quoteRequestBuilder;
         private readonly ILocalCacheManager _cacheManager;
         private readonly IStaticContentService _staticContentService;
@@ -59,7 +61,7 @@ namespace VirtoCommerce.Storefront.Owin
             //and  there can not be resolved and stored in fields services using WorkContext as dependency (WorkContext has a per request lifetime)
             _storeApi = container.Resolve<IStoreModuleApiClient>();
             _quoteRequestBuilder = container.Resolve<IQuoteRequestBuilder>();
-            _pricingModuleApi = container.Resolve<PricingModule.Client.Api.IVirtoCommercePricingApi>();
+            _pricingModuleApi = container.Resolve<IPricingModuleApiClient>();
             _commerceApi = container.Resolve<ICoreModuleApiClient>();
             _cacheManager = container.Resolve<ILocalCacheManager>();
             _staticContentService = container.Resolve<IStaticContentService>();
@@ -284,14 +286,14 @@ namespace VirtoCommerce.Storefront.Owin
                     var pricelistCacheKey = string.Join("-", "EvaluatePriceLists", workContext.CurrentStore.Id, workContext.CurrentCustomer.Id);
                     workContext.CurrentPricelists = await _cacheManager.GetAsync(pricelistCacheKey, "ApiRegion", async () =>
                     {
-                        var evalContext = new PricingModule.Client.Model.PriceEvaluationContext
+                        var evalContext = new pricingModel.PriceEvaluationContext
                         {
                             StoreId = workContext.CurrentStore.Id,
                             CatalogId = workContext.CurrentStore.Catalog,
                             CustomerId = workContext.CurrentCustomer.Id,
                             Quantity = 1
                         };
-                        var pricingResult = await _pricingModuleApi.PricingModuleEvaluatePriceListsAsync(evalContext);
+                        var pricingResult = await _pricingModuleApi.PricingModule.EvaluatePriceListsAsync(evalContext);
                         return pricingResult.Select(p => p.ToWebModel()).ToList();
                     });
 

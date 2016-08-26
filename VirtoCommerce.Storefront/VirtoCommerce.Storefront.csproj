@@ -262,10 +262,6 @@
       <HintPath>..\packages\VirtoCommerce.Platform.Client.Security.2.11.4\lib\net451\VirtoCommerce.Platform.Client.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.PricingModule.Client, Version=2.13.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.PricingModule.Client.2.13.0\lib\net451\VirtoCommerce.PricingModule.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="VirtoCommerce.QuoteModule.Client, Version=2.11.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VirtoCommerce.QuoteModule.Client.2.11.1\lib\net451\VirtoCommerce.QuoteModule.Client.dll</HintPath>
       <Private>True</Private>

@@ -1,12 +1,13 @@
 ﻿using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using pricingModel = VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class TierPriceConverter
     {
-        public static TierPrice ToTierPrice(this PricingModule.Client.Model.Price serviceModel, Currency currency)
+        public static TierPrice ToTierPrice(this pricingModel.Price serviceModel, Currency currency)
         {
             var listPrice = new Money(serviceModel.List ?? 0, currency);
 

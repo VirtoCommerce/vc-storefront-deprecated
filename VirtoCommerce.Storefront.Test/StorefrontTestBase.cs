@@ -4,7 +4,6 @@ using System.Linq;
 using RestSharp;
 using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.Platform.Client.Security;
-using VirtoCommerce.PricingModule.Client.Api;
 using VirtoCommerce.QuoteModule.Client.Api;
 using VirtoCommerce.Storefront.AutoRestClients;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
@@ -13,6 +12,7 @@ using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Converters;
@@ -74,9 +74,9 @@ namespace VirtoCommerce.Storefront.Test
             return new MarketingModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommercePricingApi GetPricingApiClient()
+        protected IPricingModuleApiClient GetPricingApiClient()
         {
-            return new VirtoCommercePricingApi(new PricingModule.Client.Client.ApiClient(GetApiBaseUrl(), new PricingModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new PricingModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
         protected IVirtoCommerceQuoteApi GetQuoteApiClient()
