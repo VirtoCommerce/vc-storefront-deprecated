@@ -3,6 +3,7 @@ using System.Linq;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.Storefront.Converters
@@ -130,12 +131,12 @@ namespace VirtoCommerce.Storefront.Converters
             return serviceModel;
         }
 
-        public static CoreModule.Client.Model.Address ToCoreServiceModel(this Address webModel)
+        public static coreModel.Address ToCoreServiceModel(this Address webModel)
         {
-            CoreModule.Client.Model.Address serviceModel = null;
+            coreModel.Address serviceModel = null;
             if (webModel != null)
             {
-                serviceModel = new CoreModule.Client.Model.Address();
+                serviceModel = new coreModel.Address();
                 serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
                 serviceModel.AddressType = webModel.Type.ToString();
             }

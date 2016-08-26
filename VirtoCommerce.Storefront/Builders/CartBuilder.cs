@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.CartModule.Client.Api;
-using VirtoCommerce.CoreModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -25,7 +25,7 @@ namespace VirtoCommerce.Storefront.Builders
 {
     public class CartBuilder : ICartBuilder, IAsyncObserver<UserLoginEvent>
     {
-        private readonly IVirtoCommerceCoreApi _commerceApi;
+        private readonly ICoreModuleApiClient _commerceApi;
         private readonly IVirtoCommerceCartApi _cartApi;
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ICatalogSearchService _catalogSearchService;
@@ -35,7 +35,7 @@ namespace VirtoCommerce.Storefront.Builders
         private const string _cartCacheRegion = "CartRegion";
 
         [CLSCompliant(false)]
-        public CartBuilder(IVirtoCommerceCartApi cartApi, IPromotionEvaluator promotionEvaluator, ICatalogSearchService catalogSearchService, IVirtoCommerceCoreApi commerceApi, ILocalCacheManager cacheManager)
+        public CartBuilder(IVirtoCommerceCartApi cartApi, IPromotionEvaluator promotionEvaluator, ICatalogSearchService catalogSearchService, ICoreModuleApiClient commerceApi, ILocalCacheManager cacheManager)
         {
             _cartApi = cartApi;
             _promotionEvaluator = promotionEvaluator;
@@ -441,7 +441,7 @@ namespace VirtoCommerce.Storefront.Builders
             //Evaluate tax for shipping methods
             var taxEvalContext = _cart.ToTaxEvalContext();
             taxEvalContext.Lines.AddRange(availableShippingMethods.Select(x => x.ToTaxLine()));
-            var taxResult = await _commerceApi.CommerceEvaluateTaxesAsync(_cart.StoreId, taxEvalContext);
+            var taxResult = await _commerceApi.Commerce.EvaluateTaxesAsync(_cart.StoreId, taxEvalContext);
             if (taxResult != null)
             {
                 var taxRates = taxResult.Select(x => x.ToWebModel(_cart.Currency)).ToList();
@@ -478,7 +478,7 @@ namespace VirtoCommerce.Storefront.Builders
         /// <returns></returns>
         public async Task<ICartBuilder> EvaluateTaxAsync()
         {
-            var taxResult = await _commerceApi.CommerceEvaluateTaxesAsync(_cart.StoreId, _cart.ToTaxEvalContext());
+            var taxResult = await _commerceApi.Commerce.EvaluateTaxesAsync(_cart.StoreId, _cart.ToTaxEvalContext());
             if (taxResult != null)
             {
                 _cart.ApplyTaxRates(taxResult.Select(x => x.ToWebModel(_cart.Currency)));

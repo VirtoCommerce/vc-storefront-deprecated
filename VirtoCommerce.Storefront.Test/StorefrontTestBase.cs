@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Linq;
 using RestSharp;
 using VirtoCommerce.CartModule.Client.Api;
-using VirtoCommerce.CoreModule.Client.Api;
 using VirtoCommerce.CustomerModule.Client.Api;
 using VirtoCommerce.InventoryModule.Client.Api;
 using VirtoCommerce.MarketingModule.Client.Api;
@@ -13,6 +12,7 @@ using VirtoCommerce.PricingModule.Client.Api;
 using VirtoCommerce.QuoteModule.Client.Api;
 using VirtoCommerce.Storefront.AutoRestClients;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Converters;
@@ -30,7 +30,7 @@ namespace VirtoCommerce.Storefront.Test
 
             var allStores = storeApi.StoreModule.GetStores().Select(x => x.ToWebModel());
             var defaultStore = allStores.FirstOrDefault(x => string.Equals(x.Id, "Electronics", StringComparison.InvariantCultureIgnoreCase));
-            var currencies = coreApi.CommerceGetAllCurrencies().Select(x => x.ToWebModel(defaultStore.DefaultLanguage));
+            var currencies = coreApi.Commerce.GetAllCurrencies().Select(x => x.ToWebModel(defaultStore.DefaultLanguage));
             defaultStore.SyncCurrencies(currencies, defaultStore.DefaultLanguage);
 
             var retVal = new WorkContext
@@ -59,9 +59,9 @@ namespace VirtoCommerce.Storefront.Test
             return new CatalogModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceCoreApi GetCoreApiClient()
+        protected ICoreModuleApiClient GetCoreApiClient()
         {
-            return new VirtoCommerceCoreApi(new CoreModule.Client.Client.ApiClient(GetApiBaseUrl(), new CoreModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new CoreModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
         protected IVirtoCommerceInventoryApi GetInventoryApiClient()

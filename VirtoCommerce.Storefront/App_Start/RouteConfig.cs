@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using VirtoCommerce.CoreModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent.Services;
@@ -11,7 +11,7 @@ namespace VirtoCommerce.Storefront
 {
     public class RouteConfig
     {
-        public static void RegisterRoutes(RouteCollection routes, Func<WorkContext> workContextFactory, IVirtoCommerceCoreApi commerceCoreApi, IStaticContentService staticContentService, ILocalCacheManager cacheManager, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
+        public static void RegisterRoutes(RouteCollection routes, Func<WorkContext> workContextFactory, ICoreModuleApiClient commerceCoreApi, IStaticContentService staticContentService, ILocalCacheManager cacheManager, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
         {
             routes.IgnoreRoute("favicon.ico");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -127,7 +127,7 @@ namespace VirtoCommerce.Storefront
 
             // Category routes
             routes.AddStorefrontRoute("Category.BrowseCategory", "category/{categoryId}", defaults: new { controller = "CatalogSearch", action = "CategoryBrowsing" });
-           
+
             // Product routes
             routes.AddStorefrontRoute("Product.GetProduct", "product/{productId}", defaults: new { controller = "Product", action = "ProductDetails" });
 

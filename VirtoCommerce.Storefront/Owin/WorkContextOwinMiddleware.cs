@@ -15,7 +15,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using VirtoCommerce.CoreModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
@@ -44,7 +44,7 @@ namespace VirtoCommerce.Storefront.Owin
         private static readonly Country[] _allCountries = GetAllCounries();
 
         private readonly IStoreModuleApiClient _storeApi;
-        private readonly IVirtoCommerceCoreApi _commerceApi;
+        private readonly ICoreModuleApiClient _commerceApi;
         private readonly PricingModule.Client.Api.IVirtoCommercePricingApi _pricingModuleApi;
         private readonly IQuoteRequestBuilder _quoteRequestBuilder;
         private readonly ILocalCacheManager _cacheManager;
@@ -60,7 +60,7 @@ namespace VirtoCommerce.Storefront.Owin
             _storeApi = container.Resolve<IStoreModuleApiClient>();
             _quoteRequestBuilder = container.Resolve<IQuoteRequestBuilder>();
             _pricingModuleApi = container.Resolve<PricingModule.Client.Api.IVirtoCommercePricingApi>();
-            _commerceApi = container.Resolve<IVirtoCommerceCoreApi>();
+            _commerceApi = container.Resolve<ICoreModuleApiClient>();
             _cacheManager = container.Resolve<ILocalCacheManager>();
             _staticContentService = container.Resolve<IStaticContentService>();
             _container = container;
@@ -128,7 +128,7 @@ namespace VirtoCommerce.Storefront.Owin
                 // Initialize request specific properties
                 workContext.CurrentStore = GetStore(context, workContext.AllStores);
                 workContext.CurrentLanguage = GetLanguage(context, workContext.AllStores, workContext.CurrentStore);
-                workContext.AllCurrencies = await _cacheManager.GetAsync("GetAllCurrencies-" + workContext.CurrentLanguage.CultureName, "ApiRegion", async () => { return (await _commerceApi.CommerceGetAllCurrenciesAsync()).Select(x => x.ToWebModel(workContext.CurrentLanguage)).ToArray(); });
+                workContext.AllCurrencies = await _cacheManager.GetAsync("GetAllCurrencies-" + workContext.CurrentLanguage.CultureName, "ApiRegion", async () => { return (await _commerceApi.Commerce.GetAllCurrenciesAsync()).Select(x => x.ToWebModel(workContext.CurrentLanguage)).ToArray(); });
                 //Sync store currencies with avail in system
                 foreach (var store in workContext.AllStores)
                 {
@@ -380,7 +380,7 @@ namespace VirtoCommerce.Storefront.Owin
                 if (userId == null)
                 {
                     //If somehow claim not found in user cookies need load user by name from API
-                    var user = await _commerceApi.StorefrontSecurityGetUserByNameAsync(identity.Name);
+                    var user = await _commerceApi.StorefrontSecurity.GetUserByNameAsync(identity.Name);
                     if (user != null)
                     {
                         userId = user.Id;

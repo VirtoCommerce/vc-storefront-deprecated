@@ -258,10 +258,6 @@
       <HintPath>..\packages\VirtoCommerce.ContentModule.Client.2.11.4\lib\net451\VirtoCommerce.ContentModule.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.CoreModule.Client, Version=2.14.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\VirtoCommerce.CoreModule.Client.2.14.0\lib\net451\VirtoCommerce.CoreModule.Client.dll</HintPath>
-    </Reference>
     <Reference Include="VirtoCommerce.CustomerModule.Client, Version=2.11.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VirtoCommerce.CustomerModule.Client.2.11.3\lib\net451\VirtoCommerce.CustomerModule.Client.dll</HintPath>
       <Private>True</Private>

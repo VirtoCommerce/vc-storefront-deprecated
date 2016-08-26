@@ -21,7 +21,6 @@ using NLog;
 using Owin;
 using VirtoCommerce.CartModule.Client.Api;
 using VirtoCommerce.ContentModule.Client.Api;
-using VirtoCommerce.CoreModule.Client.Api;
 using VirtoCommerce.CustomerModule.Client.Api;
 using VirtoCommerce.InventoryModule.Client.Api;
 using VirtoCommerce.LiquidThemeEngine;
@@ -36,6 +35,7 @@ using VirtoCommerce.Storefront;
 using VirtoCommerce.Storefront.App_Start;
 using VirtoCommerce.Storefront.AutoRestClients;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Builders;
@@ -180,7 +180,6 @@ namespace VirtoCommerce.Storefront
 
             container.RegisterInstance<IVirtoCommerceCartApi>(new VirtoCommerceCartApi(new CartModule.Client.Client.ApiClient(baseUrl, new CartModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
             container.RegisterInstance<IVirtoCommerceContentApi>(new VirtoCommerceContentApi(new ContentModule.Client.Client.ApiClient(baseUrl, new ContentModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
-            container.RegisterInstance<IVirtoCommerceCoreApi>(new VirtoCommerceCoreApi(new CoreModule.Client.Client.ApiClient(baseUrl, new CoreModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
             container.RegisterInstance<IVirtoCommerceCustomerApi>(new VirtoCommerceCustomerApi(new CustomerModule.Client.Client.ApiClient(baseUrl, new CustomerModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
             container.RegisterInstance<IVirtoCommerceInventoryApi>(new VirtoCommerceInventoryApi(new InventoryModule.Client.Client.ApiClient(baseUrl, new InventoryModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
             container.RegisterInstance<IVirtoCommerceMarketingApi>(new VirtoCommerceMarketingApi(new MarketingModule.Client.Client.ApiClient(baseUrl, new MarketingModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
@@ -193,6 +192,7 @@ namespace VirtoCommerce.Storefront
 
             var baseUri = new Uri(baseUrl);
             container.RegisterType<ICatalogModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CatalogModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
+            container.RegisterType<ICoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
             container.RegisterType<ISearchModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SearchModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
             container.RegisterType<IStoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new StoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
 
@@ -255,7 +255,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterInstance<IStaticContentService>(staticContentService);
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters, workContextFactory, () => container.Resolve<CommonController>());
-            RouteConfig.RegisterRoutes(RouteTable.Routes, workContextFactory, container.Resolve<IVirtoCommerceCoreApi>(), container.Resolve<IStaticContentService>(), localCacheManager, () => container.Resolve<IStorefrontUrlBuilder>());
+            RouteConfig.RegisterRoutes(RouteTable.Routes, workContextFactory, container.Resolve<ICoreModuleApiClient>(), container.Resolve<IStaticContentService>(), localCacheManager, () => container.Resolve<IStorefrontUrlBuilder>());
             AuthConfig.ConfigureAuth(app, () => container.Resolve<IStorefrontUrlBuilder>());
 
             app.Use<WorkContextOwinMiddleware>(container);
