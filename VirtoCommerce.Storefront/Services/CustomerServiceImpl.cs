@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PagedList;
-using VirtoCommerce.CustomerModule.Client.Api;
 using VirtoCommerce.OrderModule.Client.Api;
 using VirtoCommerce.QuoteModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
@@ -18,12 +18,13 @@ using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Quote.Events;
+using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Services
 {
     public class CustomerServiceImpl : ICustomerService, IAsyncObserver<OrderPlacedEvent>, IAsyncObserver<QuoteRequestUpdatedEvent>
     {
-        private readonly IVirtoCommerceCustomerApi _customerApi;
+        private readonly ICustomerModuleApiClient _customerApi;
         private readonly IVirtoCommerceOrdersApi _orderApi;
         private readonly Func<WorkContext> _workContextFactory;
         private readonly IVirtoCommerceQuoteApi _quoteApi;
@@ -33,7 +34,7 @@ namespace VirtoCommerce.Storefront.Services
         private const string _customerQuotesCacheRegionFormat = "customer/{0}/quotes/region";
         private const string _customerCacheKeyFormat = "customer/{0}";
         private const string _customerCacheRegionFormat = "customer/{0}/region";
-        public CustomerServiceImpl(Func<WorkContext> workContextFactory, IVirtoCommerceCustomerApi customerApi, IVirtoCommerceOrdersApi orderApi,
+        public CustomerServiceImpl(Func<WorkContext> workContextFactory, ICustomerModuleApiClient customerApi, IVirtoCommerceOrdersApi orderApi,
             IVirtoCommerceQuoteApi quoteApi, IStoreModuleApiClient storeApi, ILocalCacheManager cacheManager)
         {
             _workContextFactory = workContextFactory;
@@ -52,7 +53,7 @@ namespace VirtoCommerce.Storefront.Services
             var retVal = await _cacheManager.GetAsync(string.Format(_customerCacheKeyFormat, customerId), string.Format(_customerCacheRegionFormat, customerId), async () =>
             {
                 //TODO: Make parallels call
-                var contact = await _customerApi.CustomerModuleGetContactByIdAsync(customerId);
+                var contact = await _customerApi.CustomerModule.GetContactByIdAsync(customerId);
                 CustomerInfo result = null;
                 if (contact != null)
                 {
@@ -77,13 +78,13 @@ namespace VirtoCommerce.Storefront.Services
         public async Task CreateCustomerAsync(CustomerInfo customer)
         {
             var contact = customer.ToServiceModel();
-            await _customerApi.CustomerModuleCreateContactAsync(contact);
+            await _customerApi.CustomerModule.CreateContactAsync(contact);
         }
 
         public async Task UpdateCustomerAsync(CustomerInfo customer)
         {
             var contact = customer.ToServiceModel();
-            await _customerApi.CustomerModuleUpdateContactAsync(contact);
+            await _customerApi.CustomerModule.UpdateContactAsync(contact);
             //Invalidate cache
             _cacheManager.ClearRegion(string.Format(_customerCacheRegionFormat, customer.Id));
         }
@@ -97,13 +98,13 @@ namespace VirtoCommerce.Storefront.Services
         public async Task<Vendor> GetVendorByIdAsync(string vendorId)
         {
             var workContext = _workContextFactory();
-            return (await _customerApi.CustomerModuleGetVendorByIdAsync(vendorId)).ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore);
+            return (await _customerApi.CustomerModule.GetVendorByIdAsync(vendorId)).ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore);
         }
 
         public Vendor GetVendorById(string vendorId)
         {
             var workContext = _workContextFactory();
-            var retVal = _customerApi.CustomerModuleGetVendorById(vendorId).ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore);
+            var retVal = _customerApi.CustomerModule.GetVendorById(vendorId).ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore);
 
             return retVal;
         }
@@ -111,7 +112,7 @@ namespace VirtoCommerce.Storefront.Services
         public IPagedList<Vendor> SearchVendors(string keyword, int pageNumber, int pageSize, IEnumerable<SortInfo> sortInfos)
         {
             var workContext = _workContextFactory();
-            var criteria = new CustomerModule.Client.Model.MembersSearchCriteria
+            var criteria = new customerModel.MembersSearchCriteria
             {
                 Keyword = keyword,
                 DeepSearch = true,
@@ -123,7 +124,7 @@ namespace VirtoCommerce.Storefront.Services
             {
                 criteria.Sort = SortInfo.ToString(sortInfos);
             }
-            var result = _customerApi.CustomerModuleSearchVendors(criteria);
+            var result = _customerApi.CustomerModule.SearchVendors(criteria);
             return new StaticPagedList<Vendor>(result.Vendors.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)), pageNumber, pageSize, result.TotalCount.Value);
 
         }

@@ -5,6 +5,7 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
+using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 using storeModel = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
@@ -16,7 +17,7 @@ namespace VirtoCommerce.Storefront.Converters
             return dto.JsonConvert<OrderModule.Client.Model.DynamicObjectProperty>().ToWebModel();
         }
 
-        public static DynamicProperty ToWebModel(this CustomerModule.Client.Model.DynamicObjectProperty dto)
+        public static DynamicProperty ToWebModel(this customerModel.DynamicObjectProperty dto)
         {
             return dto.JsonConvert<OrderModule.Client.Model.DynamicObjectProperty>().ToWebModel();
         }

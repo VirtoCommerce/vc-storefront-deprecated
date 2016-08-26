@@ -4,7 +4,7 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
 using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
-using customerModel = VirtoCommerce.CustomerModule.Client.Model;
+using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Common
 {

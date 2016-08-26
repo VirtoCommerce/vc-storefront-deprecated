@@ -3,6 +3,7 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
+using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -27,7 +28,7 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static CustomerInfo ToWebModel(this CustomerModule.Client.Model.Contact contact)
+        public static CustomerInfo ToWebModel(this customerModel.Contact contact)
         {
             var retVal = new CustomerInfo();
             retVal.InjectFrom(contact);
@@ -70,9 +71,9 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static CustomerModule.Client.Model.Contact ToServiceModel(this CustomerInfo customer)
+        public static customerModel.Contact ToServiceModel(this CustomerInfo customer)
         {
-            var retVal = new CustomerModule.Client.Model.Contact();
+            var retVal = new customerModel.Contact();
             retVal.InjectFrom<NullableAndEnumValueInjecter>(customer);
             if (customer.Addresses != null)
             {

@@ -5,6 +5,7 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.Storefront.Converters
@@ -18,9 +19,9 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static CustomerModule.Client.Model.Address ToServiceModel(this Address address)
+        public static customerModel.Address ToServiceModel(this Address address)
         {
-            var retVal = new CustomerModule.Client.Model.Address();
+            var retVal = new customerModel.Address();
 
             retVal.InjectFrom<NullableAndEnumValueInjecter>(address);
             retVal.AddressType = address.Type.ToString();
@@ -28,9 +29,9 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static CustomerModule.Client.Model.Address ToCustomerModel(this OrderModule.Client.Model.Address orderAddress)
+        public static customerModel.Address ToCustomerModel(this OrderModule.Client.Model.Address orderAddress)
         {
-            var customerAddress = new CustomerModule.Client.Model.Address();
+            var customerAddress = new customerModel.Address();
 
             customerAddress.InjectFrom<NullableAndEnumValueInjecter>(orderAddress);
             customerAddress.AddressType = orderAddress.AddressType;
@@ -111,7 +112,7 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static Address ToWebModel(this CustomerModule.Client.Model.Address serviceModel)
+        public static Address ToWebModel(this customerModel.Address serviceModel)
         {
             var result = new Address();
 

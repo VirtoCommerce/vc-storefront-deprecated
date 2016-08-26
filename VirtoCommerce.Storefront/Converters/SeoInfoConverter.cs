@@ -3,7 +3,7 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
-using customerModel = VirtoCommerce.CustomerModule.Client.Model;
+using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 using storeModel = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
