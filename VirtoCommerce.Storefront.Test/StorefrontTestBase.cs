@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Linq;
 using RestSharp;
 using VirtoCommerce.Platform.Client.Security;
-using VirtoCommerce.QuoteModule.Client.Api;
 using VirtoCommerce.Storefront.AutoRestClients;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
@@ -13,6 +12,7 @@ using VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Converters;
@@ -79,9 +79,9 @@ namespace VirtoCommerce.Storefront.Test
             return new PricingModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceQuoteApi GetQuoteApiClient()
+        protected IQuoteModuleApiClient GetQuoteApiClient()
         {
-            return new VirtoCommerceQuoteApi(new QuoteModule.Client.Client.ApiClient(GetApiBaseUrl(), new QuoteModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new QuoteModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
         protected ISearchModuleApiClient GetSearchApiClient()

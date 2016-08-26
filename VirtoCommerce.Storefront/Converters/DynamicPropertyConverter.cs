@@ -8,6 +8,7 @@ using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 using marketingModel = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
+using quoteModel = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
 using storeModel = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
@@ -29,7 +30,7 @@ namespace VirtoCommerce.Storefront.Converters
             return dto.JsonConvert<orderModel.DynamicObjectProperty>().ToWebModel();
         }
 
-        public static DynamicProperty ToWebModel(this QuoteModule.Client.Model.DynamicObjectProperty dto)
+        public static DynamicProperty ToWebModel(this quoteModel.DynamicObjectProperty dto)
         {
             return dto.JsonConvert<orderModel.DynamicObjectProperty>().ToWebModel();
         }
@@ -39,9 +40,9 @@ namespace VirtoCommerce.Storefront.Converters
             return dto.JsonConvert<orderModel.DynamicObjectProperty>().ToWebModel();
         }
 
-        public static QuoteModule.Client.Model.DynamicObjectProperty ToQuoteApiModel(this DynamicProperty dto)
+        public static quoteModel.DynamicObjectProperty ToQuoteApiModel(this DynamicProperty dto)
         {
-            return dto.ToCartApiModel().JsonConvert<QuoteModule.Client.Model.DynamicObjectProperty>();
+            return dto.ToCartApiModel().JsonConvert<quoteModel.DynamicObjectProperty>();
         }
 
         public static DynamicProperty ToWebModel(this orderModel.DynamicObjectProperty dto)

@@ -7,6 +7,7 @@ using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
+using quoteModel = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
 using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.Storefront.Converters
@@ -103,7 +104,7 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static Address ToWebModel(this QuoteModule.Client.Model.Address address)
+        public static Address ToWebModel(this quoteModel.Address address)
         {
             var result = new Address();
 
@@ -123,9 +124,9 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public static QuoteModule.Client.Model.Address ToQuoteServiceModel(this Address webModel)
+        public static quoteModel.Address ToQuoteServiceModel(this Address webModel)
         {
-            var serviceModel = new QuoteModule.Client.Model.Address();
+            var serviceModel = new quoteModel.Address();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 

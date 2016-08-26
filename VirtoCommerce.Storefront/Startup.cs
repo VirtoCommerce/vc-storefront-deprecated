@@ -23,7 +23,6 @@ using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.LiquidThemeEngine.Binders;
 using VirtoCommerce.Platform.Client.Api;
 using VirtoCommerce.Platform.Client.Security;
-using VirtoCommerce.QuoteModule.Client.Api;
 using VirtoCommerce.Storefront;
 using VirtoCommerce.Storefront.App_Start;
 using VirtoCommerce.Storefront.AutoRestClients;
@@ -36,6 +35,7 @@ using VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Builders;
@@ -179,7 +179,6 @@ namespace VirtoCommerce.Storefront
             var currentUserHandler = new CurrentUserRestRequestHandler(workContextFactory);
 
             container.RegisterInstance<IVirtoCommercePlatformApi>(new VirtoCommercePlatformApi(new Platform.Client.Client.ApiClient(baseUrl, new Platform.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
-            container.RegisterInstance<IVirtoCommerceQuoteApi>(new VirtoCommerceQuoteApi(new QuoteModule.Client.Client.ApiClient(baseUrl, new QuoteModule.Client.Client.Configuration(), hmacHandler.PrepareRequest, currentUserHandler.PrepareRequest)));
 
             container.RegisterInstance(new HmacCredentials(apiAppId, apiSecretKey));
 
@@ -193,6 +192,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IMarketingModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new MarketingModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
             container.RegisterType<IOrdersModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new OrdersModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
             container.RegisterType<IPricingModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new PricingModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
+            container.RegisterType<IQuoteModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new QuoteModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
             container.RegisterType<ISearchModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SearchModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
             container.RegisterType<IStoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new StoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>())));
 

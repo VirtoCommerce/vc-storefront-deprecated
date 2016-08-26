@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.QuoteModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -15,19 +15,20 @@ using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Quote.Events;
 using VirtoCommerce.Storefront.Model.Quote.Services;
 using VirtoCommerce.Storefront.Model.Stores;
+using quoteModel = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Builders
 {
     public class QuoteRequestBuilder : IQuoteRequestBuilder, IAsyncObserver<UserLoginEvent>
     {
-        private readonly IVirtoCommerceQuoteApi _quoteApi;
+        private readonly IQuoteModuleApiClient _quoteApi;
         private readonly ILocalCacheManager _cacheManager;
         private readonly IEventPublisher<QuoteRequestUpdatedEvent> _quoteRequestUpdatedEventPublisher;
 
         private QuoteRequest _quoteRequest;
         private const string _quoteRequestCacheRegion = "QuoteRequestRegion";
 
-        public QuoteRequestBuilder(IVirtoCommerceQuoteApi quoteApi, ILocalCacheManager cacheManager,
+        public QuoteRequestBuilder(IQuoteModuleApiClient quoteApi, ILocalCacheManager cacheManager,
             IEventPublisher<QuoteRequestUpdatedEvent> quoteRequestUpdatedEventPublisher)
         {
             _quoteApi = quoteApi;
@@ -38,7 +39,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public async Task<IQuoteRequestBuilder> LoadQuoteRequestAsync(string number, Language language, IEnumerable<Currency> availCurrencies)
         {
-            var quoteRequest = await _quoteApi.QuoteModuleGetByIdAsync(number);
+            var quoteRequest = await _quoteApi.QuoteModule.GetByIdAsync(number);
             if (quoteRequest == null)
             {
                 throw new StorefrontException("Quote request for number " + number + " not found");
@@ -61,14 +62,14 @@ namespace VirtoCommerce.Storefront.Builders
 
             _quoteRequest = await _cacheManager.GetAsync(cacheKey, _quoteRequestCacheRegion, async () =>
             {
-                var activeQuoteSearchCriteria = new QuoteModule.Client.Model.QuoteRequestSearchCriteria
+                var activeQuoteSearchCriteria = new quoteModel.QuoteRequestSearchCriteria
                 {
                     Tag = "actual",
                     CustomerId = customer.Id,
                     StoreId = store.Id
                 };
 
-                var searchResult = await _quoteApi.QuoteModuleSearchAsync(activeQuoteSearchCriteria);
+                var searchResult = await _quoteApi.QuoteModule.SearchAsync(activeQuoteSearchCriteria);
 
                 var quoteRequest = searchResult.QuoteRequests.Select(x => x.ToWebModel(store.Currencies, language)).FirstOrDefault();
                 if (quoteRequest == null)
@@ -94,7 +95,7 @@ namespace VirtoCommerce.Storefront.Builders
                 }
                 else
                 {
-                    quoteRequest = (await _quoteApi.QuoteModuleGetByIdAsync(quoteRequest.Id)).ToWebModel(store.Currencies, language);
+                    quoteRequest = (await _quoteApi.QuoteModule.GetByIdAsync(quoteRequest.Id)).ToWebModel(store.Currencies, language);
                 }
 
                 quoteRequest.Customer = customer;
@@ -220,7 +221,7 @@ namespace VirtoCommerce.Storefront.Builders
                 _quoteRequest.Addresses = quoteRequest.Addresses;
             }
 
-            await _quoteApi.QuoteModuleDeleteAsync(new[] { quoteRequest.Id }.ToList());
+            await _quoteApi.QuoteModule.DeleteAsync(new[] { quoteRequest.Id }.ToList());
             _cacheManager.Remove(GetQuoteRequestCacheKey(_quoteRequest.StoreId, _quoteRequest.CustomerId), _quoteRequestCacheRegion);
 
             return this;
@@ -233,11 +234,11 @@ namespace VirtoCommerce.Storefront.Builders
             var quoteDto = _quoteRequest.ToServiceModel();
             if (_quoteRequest.IsTransient())
             {
-                await _quoteApi.QuoteModuleCreateAsync(quoteDto);
+                await _quoteApi.QuoteModule.CreateAsync(quoteDto);
             }
             else
             {
-                await _quoteApi.QuoteModuleUpdateAsync(quoteDto);
+                await _quoteApi.QuoteModule.UpdateAsync(quoteDto);
             }
 
             await _quoteRequestUpdatedEventPublisher.PublishAsync(new QuoteRequestUpdatedEvent(_quoteRequest));
@@ -253,7 +254,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public async Task<IQuoteRequestBuilder> CalculateTotalsAsync()
         {
-            var result = await _quoteApi.QuoteModuleCalculateTotalsAsync(_quoteRequest.ToServiceModel());
+            var result = await _quoteApi.QuoteModule.CalculateTotalsAsync(_quoteRequest.ToServiceModel());
             _quoteRequest.Totals = result.Totals.ToWebModel(_quoteRequest.Currency);
             return this;
         }

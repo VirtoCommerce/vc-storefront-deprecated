@@ -2,6 +2,7 @@
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using pricingModel = VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models;
+using quoteModel = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -18,7 +19,7 @@ namespace VirtoCommerce.Storefront.Converters
             };
         }
 
-        public static TierPrice ToWebModel(this QuoteModule.Client.Model.TierPrice serviceModel, Currency currency)
+        public static TierPrice ToWebModel(this quoteModel.TierPrice serviceModel, Currency currency)
         {
             var webModel = new TierPrice(currency);
             webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
@@ -26,9 +27,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static QuoteModule.Client.Model.TierPrice ToQuoteServiceModel(this TierPrice webModel)
+        public static quoteModel.TierPrice ToQuoteServiceModel(this TierPrice webModel)
         {
-            var serviceModel = new QuoteModule.Client.Model.TierPrice();
+            var serviceModel = new quoteModel.TierPrice();
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
             serviceModel.Price = (double)webModel.Price.Amount;
             return serviceModel;
