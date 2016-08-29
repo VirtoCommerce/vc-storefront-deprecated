@@ -433,10 +433,20 @@ namespace VirtoCommerce.Storefront.Owin
             {
                 if (string.IsNullOrEmpty(anonymousCustomerId))
                 {
-                    // Add anonymous customer cookie for nonregistered customer
+
+                    // Add anonymous customer cookie for non registered customer
                     anonymousCustomerId = Guid.NewGuid().ToString();
                     workContext.CurrentCustomer.Id = anonymousCustomerId;
-                    context.Response.Cookies.Append(StorefrontConstants.AnonymousCustomerIdCookie, anonymousCustomerId, new CookieOptions { Expires = DateTime.UtcNow.AddDays(30) });
+
+                    ///Workaround of the next problem:
+                    //You set a cookie in your OWIN middleware, but the cookie is not returned in the response received by a browser.
+                    //http://appetere.com/post/owinresponse-cookies-not-set-when-remove-an-httpresponse-cookie
+                    //Need to maintain cookies through  owinContext.Response.OnSendingHeaders
+                    context.Response.OnSendingHeaders(state =>
+                    {
+                        context.Response.Cookies.Append(StorefrontConstants.AnonymousCustomerIdCookie, anonymousCustomerId, new CookieOptions { Expires = DateTime.UtcNow.AddDays(30) });
+                    },  null);
+                 
                 }
             }
         }
