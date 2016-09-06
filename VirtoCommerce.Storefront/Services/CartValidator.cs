@@ -85,6 +85,7 @@ namespace VirtoCommerce.Storefront.Services
 
         private async Task ValidateShipmentsAsync(ShoppingCart cart)
         {
+            var workContext = _workContextFactory();
             foreach (var shipment in cart.Shipments.ToArray())
             {
                 shipment.ValidationErrors.Clear();
@@ -96,7 +97,7 @@ namespace VirtoCommerce.Storefront.Services
                 }
                 if (!string.IsNullOrEmpty(shipment.ShipmentMethodCode))
                 {
-                    var existingShippingMethod = availableShippingMethods.Select(sm => sm.ToWebModel(cart.Currency)).FirstOrDefault(sm => shipment.HasSameMethod(sm));
+                    var existingShippingMethod = availableShippingMethods.Select(sm => sm.ToWebModel(cart.Currency, workContext.AllCurrencies)).FirstOrDefault(sm => shipment.HasSameMethod(sm));
                     if (existingShippingMethod == null)
                     {
                         shipment.ValidationWarnings.Add(new ShippingUnavailableError());

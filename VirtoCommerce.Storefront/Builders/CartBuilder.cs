@@ -30,18 +30,19 @@ namespace VirtoCommerce.Storefront.Builders
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ICatalogSearchService _catalogSearchService;
         private readonly ILocalCacheManager _cacheManager;
-
+        private readonly Func<WorkContext> _workContextFactory;
         private ShoppingCart _cart;
         private const string _cartCacheRegion = "CartRegion";
 
         [CLSCompliant(false)]
-        public CartBuilder(ICartModuleApiClient cartApi, IPromotionEvaluator promotionEvaluator, ICatalogSearchService catalogSearchService, ICoreModuleApiClient commerceApi, ILocalCacheManager cacheManager)
+        public CartBuilder(ICartModuleApiClient cartApi, IPromotionEvaluator promotionEvaluator, ICatalogSearchService catalogSearchService, ICoreModuleApiClient commerceApi, ILocalCacheManager cacheManager, Func<WorkContext> workContextFactory)
         {
             _cartApi = cartApi;
             _promotionEvaluator = promotionEvaluator;
             _catalogSearchService = catalogSearchService;
             _cacheManager = cacheManager;
             _commerceApi = commerceApi;
+            _workContextFactory = workContextFactory;
         }
 
         public string CartCaheKey
@@ -431,12 +432,12 @@ namespace VirtoCommerce.Storefront.Builders
         public virtual async Task<ICollection<ShippingMethod>> GetAvailableShippingMethodsAsync()
         {
             var availableShippingMethods = new List<ShippingMethod>();
-
+            var workContext = _workContextFactory();
             // TODO: Remake with shipmentId
             var serviceModels = await _cartApi.CartModule.GetShipmentMethodsAsync(_cart.Id);
             foreach (var serviceModel in serviceModels)
             {
-                availableShippingMethods.Add(serviceModel.ToWebModel(_cart.Currency));
+                availableShippingMethods.Add(serviceModel.ToWebModel(_cart.Currency, workContext.AllCurrencies));
             }
             //Evaluate tax for shipping methods
             var taxEvalContext = _cart.ToTaxEvalContext();

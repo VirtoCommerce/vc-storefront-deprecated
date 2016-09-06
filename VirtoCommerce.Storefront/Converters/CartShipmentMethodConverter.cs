@@ -1,4 +1,6 @@
-﻿using Omu.ValueInjecter;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
@@ -8,9 +10,9 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class CartShipmentMethodConverter
     {
-        public static ShippingMethod ToWebModel(this cartModel.ShippingMethod shippingMethod, Currency currency)
+        public static ShippingMethod ToWebModel(this cartModel.ShippingMethod shippingMethod, Currency currency, IEnumerable<Currency> availCurrencies)
         {
-            var shippingMethodCurrency = new Currency(new Language(currency.CultureName), shippingMethod.Currency);
+            var shippingMethodCurrency = availCurrencies.FirstOrDefault(x => x.Equals(shippingMethod.Currency)) ?? new Currency(new Language(currency.CultureName), shippingMethod.Currency);
             var shipppingMethodPrice = new Money(shippingMethod.Price ?? 0, shippingMethodCurrency);
             if (shippingMethodCurrency != currency)
             {
