@@ -410,13 +410,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// </summary>
         public CatalogModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Get Catalogs list
-        /// </summary>
-        /// <remarks>
-        /// Get common and virtual Catalogs list with minimal information included.
-        /// Returns array of Catalog
-        /// </remarks>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -538,14 +531,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Updates the specified catalog.
-        /// </summary>
-        /// <remarks>
-        /// Updates the specified catalog.
-        /// </remarks>
         /// <param name='catalog'>
-        /// The catalog.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -661,14 +647,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Creates the specified catalog.
-        /// </summary>
-        /// <remarks>
-        /// Creates the specified catalog
-        /// </remarks>
         /// <param name='catalog'>
-        /// The catalog to create
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -805,14 +784,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets Catalog by id.
-        /// </summary>
-        /// <remarks>
-        /// Gets Catalog by id with full information loaded
-        /// </remarks>
         /// <param name='id'>
-        /// The Catalog id.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -944,14 +916,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Deletes catalog by id.
-        /// </summary>
-        /// <remarks>
-        /// Deletes catalog by id
-        /// </remarks>
         /// <param name='id'>
-        /// Catalog id.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1062,12 +1027,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets the template for a new catalog.
-        /// </summary>
-        /// <remarks>
-        /// Gets the template for a new common catalog
-        /// </remarks>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -1189,9 +1148,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets the template for a new virtual catalog.
-        /// </summary>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -1329,13 +1285,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public static partial class CatalogModuleCatalogsExtensions
     {
-            /// <summary>
-            /// Get Catalogs list
-            /// </summary>
-            /// <remarks>
-            /// Get common and virtual Catalogs list with minimal information included.
-            /// Returns array of Catalog
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1344,13 +1293,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCatalogs)s).GetCatalogsAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get Catalogs list
-            /// </summary>
-            /// <remarks>
-            /// Get common and virtual Catalogs list with minimal information included.
-            /// Returns array of Catalog
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1365,34 +1307,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Updates the specified catalog.
-            /// </summary>
-            /// <remarks>
-            /// Updates the specified catalog.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalog'>
-            /// The catalog.
             /// </param>
             public static void Update(this ICatalogModuleCatalogs operations, Catalog catalog)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCatalogs)s).UpdateAsync(catalog), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Updates the specified catalog.
-            /// </summary>
-            /// <remarks>
-            /// Updates the specified catalog.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalog'>
-            /// The catalog.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1402,34 +1330,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.UpdateWithHttpMessagesAsync(catalog, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Creates the specified catalog.
-            /// </summary>
-            /// <remarks>
-            /// Creates the specified catalog
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalog'>
-            /// The catalog to create
             /// </param>
             public static Catalog Create(this ICatalogModuleCatalogs operations, Catalog catalog)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCatalogs)s).CreateAsync(catalog), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Creates the specified catalog.
-            /// </summary>
-            /// <remarks>
-            /// Creates the specified catalog
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalog'>
-            /// The catalog to create
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1442,34 +1356,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Gets Catalog by id.
-            /// </summary>
-            /// <remarks>
-            /// Gets Catalog by id with full information loaded
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// The Catalog id.
             /// </param>
             public static Catalog Get(this ICatalogModuleCatalogs operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCatalogs)s).GetAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets Catalog by id.
-            /// </summary>
-            /// <remarks>
-            /// Gets Catalog by id with full information loaded
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// The Catalog id.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1482,34 +1382,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Deletes catalog by id.
-            /// </summary>
-            /// <remarks>
-            /// Deletes catalog by id
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Catalog id.
             /// </param>
             public static void Delete(this ICatalogModuleCatalogs operations, string id)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCatalogs)s).DeleteAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Deletes catalog by id.
-            /// </summary>
-            /// <remarks>
-            /// Deletes catalog by id
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Catalog id.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1519,12 +1405,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.DeleteWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Gets the template for a new catalog.
-            /// </summary>
-            /// <remarks>
-            /// Gets the template for a new common catalog
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1533,12 +1413,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCatalogs)s).GetNewCatalogAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets the template for a new catalog.
-            /// </summary>
-            /// <remarks>
-            /// Gets the template for a new common catalog
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1553,9 +1427,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Gets the template for a new virtual catalog.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1564,9 +1435,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCatalogs)s).GetNewVirtualCatalogAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets the template for a new virtual catalog.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1596,13 +1464,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public partial interface ICatalogModuleCatalogs
     {
-        /// <summary>
-        /// Get Catalogs list
-        /// </summary>
-        /// <remarks>
-        /// Get common and virtual Catalogs list with minimal information
-        /// included. Returns array of Catalog
-        /// </remarks>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -1616,14 +1477,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<Catalog>>> GetCatalogsWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Updates the specified catalog.
-        /// </summary>
-        /// <remarks>
-        /// Updates the specified catalog.
-        /// </remarks>
         /// <param name='catalog'>
-        /// The catalog.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1638,14 +1492,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateWithHttpMessagesAsync(Catalog catalog, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Creates the specified catalog.
-        /// </summary>
-        /// <remarks>
-        /// Creates the specified catalog
-        /// </remarks>
         /// <param name='catalog'>
-        /// The catalog to create
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1663,14 +1510,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Catalog>> CreateWithHttpMessagesAsync(Catalog catalog, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets Catalog by id.
-        /// </summary>
-        /// <remarks>
-        /// Gets Catalog by id with full information loaded
-        /// </remarks>
         /// <param name='id'>
-        /// The Catalog id.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1688,14 +1528,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Catalog>> GetWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Deletes catalog by id.
-        /// </summary>
-        /// <remarks>
-        /// Deletes catalog by id
-        /// </remarks>
         /// <param name='id'>
-        /// Catalog id.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1710,12 +1543,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets the template for a new catalog.
-        /// </summary>
-        /// <remarks>
-        /// Gets the template for a new common catalog
-        /// </remarks>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -1729,9 +1556,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Catalog>> GetNewCatalogWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets the template for a new virtual catalog.
-        /// </summary>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -1784,11 +1608,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// </summary>
         public CatalogModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Gets category by id.
-        /// </summary>
         /// <param name='id'>
-        /// Category id.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1920,16 +1740,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets categories by ids
-        /// </summary>
         /// <param name='ids'>
-        /// Categories ids
         /// </param>
         /// <param name='respGroup'>
-        /// Response group. Possible values include: 'none', 'info', 'withImages',
-        /// 'withProperties', 'withLinks', 'withSeo', 'withParents', 'withOutlines',
-        /// 'full'
+        /// Possible values include: 'none', 'info', 'withImages', 'withProperties',
+        /// 'withLinks', 'withSeo', 'withParents', 'withOutlines', 'full'
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2084,14 +1899,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Creates or updates the specified category.
-        /// </summary>
-        /// <remarks>
-        /// If category.id is null, a new category is created. It's updated otherwise
-        /// </remarks>
         /// <param name='category'>
-        /// The category.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2207,11 +2015,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Deletes the specified categories by id.
-        /// </summary>
         /// <param name='ids'>
-        /// The categories ids.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2340,14 +2144,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets the template for a new category.
-        /// </summary>
         /// <param name='catalogId'>
-        /// The catalog id.
         /// </param>
         /// <param name='parentCategoryId'>
-        /// The parent category id. (Optional)
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2505,28 +2304,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public static partial class CatalogModuleCategoriesExtensions
     {
-            /// <summary>
-            /// Gets category by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Category id.
             /// </param>
             public static Category Get(this ICatalogModuleCategories operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCategories)s).GetAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets category by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Category id.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2539,38 +2330,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Gets categories by ids
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// Categories ids
             /// </param>
             /// <param name='respGroup'>
-            /// Response group. Possible values include: 'none', 'info', 'withImages',
-            /// 'withProperties', 'withLinks', 'withSeo', 'withParents', 'withOutlines',
-            /// 'full'
+            /// Possible values include: 'none', 'info', 'withImages', 'withProperties',
+            /// 'withLinks', 'withSeo', 'withParents', 'withOutlines', 'full'
             /// </param>
             public static System.Collections.Generic.IList<Category> GetCategoriesByIds(this ICatalogModuleCategories operations, System.Collections.Generic.IList<string> ids, string respGroup = default(string))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCategories)s).GetCategoriesByIdsAsync(ids, respGroup), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets categories by ids
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// Categories ids
             /// </param>
             /// <param name='respGroup'>
-            /// Response group. Possible values include: 'none', 'info', 'withImages',
-            /// 'withProperties', 'withLinks', 'withSeo', 'withParents', 'withOutlines',
-            /// 'full'
+            /// Possible values include: 'none', 'info', 'withImages', 'withProperties',
+            /// 'withLinks', 'withSeo', 'withParents', 'withOutlines', 'full'
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2583,34 +2364,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Creates or updates the specified category.
-            /// </summary>
-            /// <remarks>
-            /// If category.id is null, a new category is created. It's updated otherwise
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='category'>
-            /// The category.
             /// </param>
             public static void CreateOrUpdateCategory(this ICatalogModuleCategories operations, Category category)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCategories)s).CreateOrUpdateCategoryAsync(category), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Creates or updates the specified category.
-            /// </summary>
-            /// <remarks>
-            /// If category.id is null, a new category is created. It's updated otherwise
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='category'>
-            /// The category.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2620,28 +2387,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.CreateOrUpdateCategoryWithHttpMessagesAsync(category, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Deletes the specified categories by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// The categories ids.
             /// </param>
             public static void Delete(this ICatalogModuleCategories operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCategories)s).DeleteAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Deletes the specified categories by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// The categories ids.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2651,34 +2410,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.DeleteWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Gets the template for a new category.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalogId'>
-            /// The catalog id.
             /// </param>
             /// <param name='parentCategoryId'>
-            /// The parent category id. (Optional)
             /// </param>
             public static Category GetNewCategory(this ICatalogModuleCategories operations, string catalogId, string parentCategoryId = default(string))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCategories)s).GetNewCategoryAsync(catalogId, parentCategoryId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets the template for a new category.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalogId'>
-            /// The catalog id.
             /// </param>
             /// <param name='parentCategoryId'>
-            /// The parent category id. (Optional)
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2706,11 +2455,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public partial interface ICatalogModuleCategories
     {
-        /// <summary>
-        /// Gets category by id.
-        /// </summary>
         /// <param name='id'>
-        /// Category id.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2728,16 +2473,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Category>> GetWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets categories by ids
-        /// </summary>
         /// <param name='ids'>
-        /// Categories ids
         /// </param>
         /// <param name='respGroup'>
-        /// Response group. Possible values include: 'none', 'info',
-        /// 'withImages', 'withProperties', 'withLinks', 'withSeo',
-        /// 'withParents', 'withOutlines', 'full'
+        /// Possible values include: 'none', 'info', 'withImages',
+        /// 'withProperties', 'withLinks', 'withSeo', 'withParents',
+        /// 'withOutlines', 'full'
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2755,15 +2496,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<Category>>> GetCategoriesByIdsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, string respGroup = default(string), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Creates or updates the specified category.
-        /// </summary>
-        /// <remarks>
-        /// If category.id is null, a new category is created. It's updated
-        /// otherwise
-        /// </remarks>
         /// <param name='category'>
-        /// The category.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2778,11 +2511,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> CreateOrUpdateCategoryWithHttpMessagesAsync(Category category, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Deletes the specified categories by id.
-        /// </summary>
         /// <param name='ids'>
-        /// The categories ids.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2797,14 +2526,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets the template for a new category.
-        /// </summary>
         /// <param name='catalogId'>
-        /// The catalog id.
         /// </param>
         /// <param name='parentCategoryId'>
-        /// The parent category id. (Optional)
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2861,15 +2585,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// </summary>
         public CatalogModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Start catalog data export process.
-        /// </summary>
-        /// <remarks>
-        /// Data export is an async process. An ExportNotification is returned for
-        /// progress reporting.
-        /// </remarks>
         /// <param name='exportInfo'>
-        /// The export configuration.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -3006,18 +2722,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets the CSV mapping configuration.
-        /// </summary>
-        /// <remarks>
-        /// Analyses the supplied file's structure and returns automatic column
-        /// mapping.
-        /// </remarks>
         /// <param name='fileUrl'>
-        /// The file URL.
         /// </param>
         /// <param name='delimiter'>
-        /// The CSV delimiter.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -3162,15 +2869,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Start catalog data import process.
-        /// </summary>
-        /// <remarks>
-        /// Data import is an async process. An ImportNotification is returned for
-        /// progress reporting.
-        /// </remarks>
         /// <param name='importInfo'>
-        /// The import data configuration.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -3323,36 +3022,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public static partial class CatalogModuleExportImportExtensions
     {
-            /// <summary>
-            /// Start catalog data export process.
-            /// </summary>
-            /// <remarks>
-            /// Data export is an async process. An ExportNotification is returned for
-            /// progress reporting.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='exportInfo'>
-            /// The export configuration.
             /// </param>
             public static ExportNotification DoExport(this ICatalogModuleExportImport operations, CsvExportInfo exportInfo)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleExportImport)s).DoExportAsync(exportInfo), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Start catalog data export process.
-            /// </summary>
-            /// <remarks>
-            /// Data export is an async process. An ExportNotification is returned for
-            /// progress reporting.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='exportInfo'>
-            /// The export configuration.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3365,42 +3048,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Gets the CSV mapping configuration.
-            /// </summary>
-            /// <remarks>
-            /// Analyses the supplied file's structure and returns automatic column
-            /// mapping.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='fileUrl'>
-            /// The file URL.
             /// </param>
             /// <param name='delimiter'>
-            /// The CSV delimiter.
             /// </param>
             public static CsvProductMappingConfiguration GetMappingConfiguration(this ICatalogModuleExportImport operations, string fileUrl, string delimiter = default(string))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleExportImport)s).GetMappingConfigurationAsync(fileUrl, delimiter), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets the CSV mapping configuration.
-            /// </summary>
-            /// <remarks>
-            /// Analyses the supplied file's structure and returns automatic column
-            /// mapping.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='fileUrl'>
-            /// The file URL.
             /// </param>
             /// <param name='delimiter'>
-            /// The CSV delimiter.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3413,36 +3078,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Start catalog data import process.
-            /// </summary>
-            /// <remarks>
-            /// Data import is an async process. An ImportNotification is returned for
-            /// progress reporting.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='importInfo'>
-            /// The import data configuration.
             /// </param>
             public static ImportNotification DoImport(this ICatalogModuleExportImport operations, CsvImportInfo importInfo)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleExportImport)s).DoImportAsync(importInfo), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Start catalog data import process.
-            /// </summary>
-            /// <remarks>
-            /// Data import is an async process. An ImportNotification is returned for
-            /// progress reporting.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='importInfo'>
-            /// The import data configuration.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3470,15 +3119,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public partial interface ICatalogModuleExportImport
     {
-        /// <summary>
-        /// Start catalog data export process.
-        /// </summary>
-        /// <remarks>
-        /// Data export is an async process. An ExportNotification is returned
-        /// for progress reporting.
-        /// </remarks>
         /// <param name='exportInfo'>
-        /// The export configuration.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3496,18 +3137,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ExportNotification>> DoExportWithHttpMessagesAsync(CsvExportInfo exportInfo, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets the CSV mapping configuration.
-        /// </summary>
-        /// <remarks>
-        /// Analyses the supplied file's structure and returns automatic
-        /// column mapping.
-        /// </remarks>
         /// <param name='fileUrl'>
-        /// The file URL.
         /// </param>
         /// <param name='delimiter'>
-        /// The CSV delimiter.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3525,15 +3157,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CsvProductMappingConfiguration>> GetMappingConfigurationWithHttpMessagesAsync(string fileUrl, string delimiter = default(string), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Start catalog data import process.
-        /// </summary>
-        /// <remarks>
-        /// Data import is an async process. An ImportNotification is returned
-        /// for progress reporting.
-        /// </remarks>
         /// <param name='importInfo'>
-        /// The import data configuration.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3590,11 +3214,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// </summary>
         public CatalogModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Searches for the items by complex criteria.
-        /// </summary>
         /// <param name='criteria'>
-        /// The search criteria.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -3731,11 +3351,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Creates links for categories or items to parent categories and catalogs.
-        /// </summary>
         /// <param name='links'>
-        /// The links.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -3851,11 +3467,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Unlinks the linked categories or items from parent categories and catalogs.
-        /// </summary>
         /// <param name='links'>
-        /// The links.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -3971,11 +3583,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Move categories or products to another location.
-        /// </summary>
         /// <param name='moveInfo'>
-        /// Move operation details
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -4107,28 +3715,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public static partial class CatalogModuleListEntryExtensions
     {
-            /// <summary>
-            /// Searches for the items by complex criteria.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// The search criteria.
             /// </param>
             public static ListEntrySearchResult ListItemsSearch(this ICatalogModuleListEntry operations, SearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleListEntry)s).ListItemsSearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Searches for the items by complex criteria.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// The search criteria.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -4141,28 +3741,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Creates links for categories or items to parent categories and catalogs.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='links'>
-            /// The links.
             /// </param>
             public static void CreateLinks(this ICatalogModuleListEntry operations, System.Collections.Generic.IList<ListEntryLink> links)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleListEntry)s).CreateLinksAsync(links), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Creates links for categories or items to parent categories and catalogs.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='links'>
-            /// The links.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -4172,28 +3764,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.CreateLinksWithHttpMessagesAsync(links, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Unlinks the linked categories or items from parent categories and catalogs.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='links'>
-            /// The links.
             /// </param>
             public static void DeleteLinks(this ICatalogModuleListEntry operations, System.Collections.Generic.IList<ListEntryLink> links)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleListEntry)s).DeleteLinksAsync(links), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Unlinks the linked categories or items from parent categories and catalogs.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='links'>
-            /// The links.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -4203,28 +3787,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.DeleteLinksWithHttpMessagesAsync(links, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Move categories or products to another location.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='moveInfo'>
-            /// Move operation details
             /// </param>
             public static void Move(this ICatalogModuleListEntry operations, MoveInfo moveInfo)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleListEntry)s).MoveAsync(moveInfo), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Move categories or products to another location.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='moveInfo'>
-            /// Move operation details
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -4249,11 +3825,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public partial interface ICatalogModuleListEntry
     {
-        /// <summary>
-        /// Searches for the items by complex criteria.
-        /// </summary>
         /// <param name='criteria'>
-        /// The search criteria.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -4271,12 +3843,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ListEntrySearchResult>> ListItemsSearchWithHttpMessagesAsync(SearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Creates links for categories or items to parent categories and
-        /// catalogs.
-        /// </summary>
         /// <param name='links'>
-        /// The links.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -4291,12 +3858,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> CreateLinksWithHttpMessagesAsync(System.Collections.Generic.IList<ListEntryLink> links, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Unlinks the linked categories or items from parent categories and
-        /// catalogs.
-        /// </summary>
         /// <param name='links'>
-        /// The links.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -4311,11 +3873,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteLinksWithHttpMessagesAsync(System.Collections.Generic.IList<ListEntryLink> links, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Move categories or products to another location.
-        /// </summary>
         /// <param name='moveInfo'>
-        /// Move operation details
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -4369,14 +3927,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// </summary>
         public CatalogModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Gets product by id.
-        /// </summary>
         /// <param name='id'>
-        /// Item id.
         /// </param>
         /// <param name='respGroup'>
-        /// Response group. Possible values include: 'none', 'itemInfo', 'itemAssets',
+        /// Possible values include: 'none', 'itemInfo', 'itemAssets',
         /// 'itemProperties', 'itemAssociations', 'itemEditorialReviews',
         /// 'variations', 'seo', 'links', 'inventory', 'outlines', 'itemSmall',
         /// 'itemMedium', 'itemLarge'
@@ -4521,14 +4075,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets products by ids
-        /// </summary>
         /// <param name='ids'>
-        /// Item ids
         /// </param>
         /// <param name='respGroup'>
-        /// Response group. Possible values include: 'none', 'itemInfo', 'itemAssets',
+        /// Possible values include: 'none', 'itemInfo', 'itemAssets',
         /// 'itemProperties', 'itemAssociations', 'itemEditorialReviews',
         /// 'variations', 'seo', 'links', 'inventory', 'outlines', 'itemSmall',
         /// 'itemMedium', 'itemLarge'
@@ -4686,11 +4236,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Updates the specified product.
-        /// </summary>
         /// <param name='product'>
-        /// The product.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -4806,11 +4352,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Deletes the specified items by id.
-        /// </summary>
         /// <param name='ids'>
-        /// The items ids.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -4939,14 +4481,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets the template for a new product (outside of category).
-        /// </summary>
-        /// <remarks>
-        /// Use when need to create item belonging to catalog directly.
-        /// </remarks>
         /// <param name='catalogId'>
-        /// The catalog id.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -5078,17 +4613,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets the template for a new product (inside category).
-        /// </summary>
-        /// <remarks>
-        /// Use when need to create item belonging to catalog category.
-        /// </remarks>
         /// <param name='catalogId'>
-        /// The catalog id.
         /// </param>
         /// <param name='categoryId'>
-        /// The category id.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -5226,11 +4753,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets the template for a new variation.
-        /// </summary>
         /// <param name='productId'>
-        /// The parent product id.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -5510,17 +5033,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public static partial class CatalogModuleProductsExtensions
     {
-            /// <summary>
-            /// Gets product by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Item id.
             /// </param>
             /// <param name='respGroup'>
-            /// Response group. Possible values include: 'none', 'itemInfo', 'itemAssets',
+            /// Possible values include: 'none', 'itemInfo', 'itemAssets',
             /// 'itemProperties', 'itemAssociations', 'itemEditorialReviews',
             /// 'variations', 'seo', 'links', 'inventory', 'outlines', 'itemSmall',
             /// 'itemMedium', 'itemLarge'
@@ -5530,17 +5049,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).GetProductByIdAsync(id, respGroup), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets product by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Item id.
             /// </param>
             /// <param name='respGroup'>
-            /// Response group. Possible values include: 'none', 'itemInfo', 'itemAssets',
+            /// Possible values include: 'none', 'itemInfo', 'itemAssets',
             /// 'itemProperties', 'itemAssociations', 'itemEditorialReviews',
             /// 'variations', 'seo', 'links', 'inventory', 'outlines', 'itemSmall',
             /// 'itemMedium', 'itemLarge'
@@ -5556,17 +5071,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Gets products by ids
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// Item ids
             /// </param>
             /// <param name='respGroup'>
-            /// Response group. Possible values include: 'none', 'itemInfo', 'itemAssets',
+            /// Possible values include: 'none', 'itemInfo', 'itemAssets',
             /// 'itemProperties', 'itemAssociations', 'itemEditorialReviews',
             /// 'variations', 'seo', 'links', 'inventory', 'outlines', 'itemSmall',
             /// 'itemMedium', 'itemLarge'
@@ -5576,17 +5087,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).GetProductByIdsAsync(ids, respGroup), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets products by ids
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// Item ids
             /// </param>
             /// <param name='respGroup'>
-            /// Response group. Possible values include: 'none', 'itemInfo', 'itemAssets',
+            /// Possible values include: 'none', 'itemInfo', 'itemAssets',
             /// 'itemProperties', 'itemAssociations', 'itemEditorialReviews',
             /// 'variations', 'seo', 'links', 'inventory', 'outlines', 'itemSmall',
             /// 'itemMedium', 'itemLarge'
@@ -5602,28 +5109,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Updates the specified product.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='product'>
-            /// The product.
             /// </param>
             public static void Update(this ICatalogModuleProducts operations, Product product)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).UpdateAsync(product), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Updates the specified product.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='product'>
-            /// The product.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -5633,28 +5132,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.UpdateWithHttpMessagesAsync(product, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Deletes the specified items by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// The items ids.
             /// </param>
             public static void Delete(this ICatalogModuleProducts operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).DeleteAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Deletes the specified items by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// The items ids.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -5664,34 +5155,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.DeleteWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Gets the template for a new product (outside of category).
-            /// </summary>
-            /// <remarks>
-            /// Use when need to create item belonging to catalog directly.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalogId'>
-            /// The catalog id.
             /// </param>
             public static Product GetNewProductByCatalog(this ICatalogModuleProducts operations, string catalogId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).GetNewProductByCatalogAsync(catalogId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets the template for a new product (outside of category).
-            /// </summary>
-            /// <remarks>
-            /// Use when need to create item belonging to catalog directly.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalogId'>
-            /// The catalog id.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -5704,40 +5181,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Gets the template for a new product (inside category).
-            /// </summary>
-            /// <remarks>
-            /// Use when need to create item belonging to catalog category.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalogId'>
-            /// The catalog id.
             /// </param>
             /// <param name='categoryId'>
-            /// The category id.
             /// </param>
             public static Product GetNewProductByCatalogAndCategory(this ICatalogModuleProducts operations, string catalogId, string categoryId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).GetNewProductByCatalogAndCategoryAsync(catalogId, categoryId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets the template for a new product (inside category).
-            /// </summary>
-            /// <remarks>
-            /// Use when need to create item belonging to catalog category.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalogId'>
-            /// The catalog id.
             /// </param>
             /// <param name='categoryId'>
-            /// The category id.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -5750,28 +5211,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Gets the template for a new variation.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='productId'>
-            /// The parent product id.
             /// </param>
             public static Product GetNewVariation(this ICatalogModuleProducts operations, string productId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).GetNewVariationAsync(productId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets the template for a new variation.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='productId'>
-            /// The parent product id.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -5825,17 +5278,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public partial interface ICatalogModuleProducts
     {
-        /// <summary>
-        /// Gets product by id.
-        /// </summary>
         /// <param name='id'>
-        /// Item id.
         /// </param>
         /// <param name='respGroup'>
-        /// Response group. Possible values include: 'none', 'itemInfo',
-        /// 'itemAssets', 'itemProperties', 'itemAssociations',
-        /// 'itemEditorialReviews', 'variations', 'seo', 'links',
-        /// 'inventory', 'outlines', 'itemSmall', 'itemMedium', 'itemLarge'
+        /// Possible values include: 'none', 'itemInfo', 'itemAssets',
+        /// 'itemProperties', 'itemAssociations', 'itemEditorialReviews',
+        /// 'variations', 'seo', 'links', 'inventory', 'outlines',
+        /// 'itemSmall', 'itemMedium', 'itemLarge'
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5853,17 +5302,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Product>> GetProductByIdWithHttpMessagesAsync(string id, string respGroup = default(string), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets products by ids
-        /// </summary>
         /// <param name='ids'>
-        /// Item ids
         /// </param>
         /// <param name='respGroup'>
-        /// Response group. Possible values include: 'none', 'itemInfo',
-        /// 'itemAssets', 'itemProperties', 'itemAssociations',
-        /// 'itemEditorialReviews', 'variations', 'seo', 'links',
-        /// 'inventory', 'outlines', 'itemSmall', 'itemMedium', 'itemLarge'
+        /// Possible values include: 'none', 'itemInfo', 'itemAssets',
+        /// 'itemProperties', 'itemAssociations', 'itemEditorialReviews',
+        /// 'variations', 'seo', 'links', 'inventory', 'outlines',
+        /// 'itemSmall', 'itemMedium', 'itemLarge'
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5881,11 +5326,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<Product>>> GetProductByIdsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, string respGroup = default(string), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Updates the specified product.
-        /// </summary>
         /// <param name='product'>
-        /// The product.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5900,11 +5341,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateWithHttpMessagesAsync(Product product, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Deletes the specified items by id.
-        /// </summary>
         /// <param name='ids'>
-        /// The items ids.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5919,14 +5356,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets the template for a new product (outside of category).
-        /// </summary>
-        /// <remarks>
-        /// Use when need to create item belonging to catalog directly.
-        /// </remarks>
         /// <param name='catalogId'>
-        /// The catalog id.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5944,17 +5374,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Product>> GetNewProductByCatalogWithHttpMessagesAsync(string catalogId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets the template for a new product (inside category).
-        /// </summary>
-        /// <remarks>
-        /// Use when need to create item belonging to catalog category.
-        /// </remarks>
         /// <param name='catalogId'>
-        /// The catalog id.
         /// </param>
         /// <param name='categoryId'>
-        /// The category id.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5972,11 +5394,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Product>> GetNewProductByCatalogAndCategoryWithHttpMessagesAsync(string catalogId, string categoryId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets the template for a new variation.
-        /// </summary>
         /// <param name='productId'>
-        /// The parent product id.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -6051,14 +5469,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// </summary>
         public CatalogModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Gets all dictionary values that specified property can have.
-        /// </summary>
         /// <param name='propertyId'>
-        /// The property id.
         /// </param>
         /// <param name='keyword'>
-        /// The keyword. (Optional)
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -6200,11 +5613,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets property metainformation by id.
-        /// </summary>
         /// <param name='propertyId'>
-        /// The property id.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -6336,11 +5745,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets the template for a new catalog property.
-        /// </summary>
         /// <param name='catalogId'>
-        /// The catalog id.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -6472,11 +5877,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Gets the template for a new category property.
-        /// </summary>
         /// <param name='categoryId'>
-        /// The category id.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -6608,15 +6009,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Creates or updates the specified property.
-        /// </summary>
-        /// <remarks>
-        /// If property.IsNew == True, a new property is created. It's updated
-        /// otherwise
-        /// </remarks>
         /// <param name='property'>
-        /// The property.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -6732,11 +6125,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Deletes property by id.
-        /// </summary>
         /// <param name='id'>
-        /// The property id.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -6871,34 +6260,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public static partial class CatalogModulePropertiesExtensions
     {
-            /// <summary>
-            /// Gets all dictionary values that specified property can have.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='propertyId'>
-            /// The property id.
             /// </param>
             /// <param name='keyword'>
-            /// The keyword. (Optional)
             /// </param>
             public static System.Collections.Generic.IList<PropertyValue> GetPropertyValues(this ICatalogModuleProperties operations, string propertyId, string keyword = default(string))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProperties)s).GetPropertyValuesAsync(propertyId, keyword), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets all dictionary values that specified property can have.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='propertyId'>
-            /// The property id.
             /// </param>
             /// <param name='keyword'>
-            /// The keyword. (Optional)
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -6911,28 +6290,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Gets property metainformation by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='propertyId'>
-            /// The property id.
             /// </param>
             public static Property Get(this ICatalogModuleProperties operations, string propertyId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProperties)s).GetAsync(propertyId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets property metainformation by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='propertyId'>
-            /// The property id.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -6945,28 +6316,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Gets the template for a new catalog property.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalogId'>
-            /// The catalog id.
             /// </param>
             public static Property GetNewCatalogProperty(this ICatalogModuleProperties operations, string catalogId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProperties)s).GetNewCatalogPropertyAsync(catalogId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets the template for a new catalog property.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='catalogId'>
-            /// The catalog id.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -6979,28 +6342,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Gets the template for a new category property.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='categoryId'>
-            /// The category id.
             /// </param>
             public static Property GetNewCategoryProperty(this ICatalogModuleProperties operations, string categoryId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProperties)s).GetNewCategoryPropertyAsync(categoryId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Gets the template for a new category property.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='categoryId'>
-            /// The category id.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -7013,36 +6368,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
-            /// <summary>
-            /// Creates or updates the specified property.
-            /// </summary>
-            /// <remarks>
-            /// If property.IsNew == True, a new property is created. It's updated
-            /// otherwise
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='property'>
-            /// The property.
             /// </param>
             public static void CreateOrUpdateProperty(this ICatalogModuleProperties operations, Property property)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProperties)s).CreateOrUpdatePropertyAsync(property), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Creates or updates the specified property.
-            /// </summary>
-            /// <remarks>
-            /// If property.IsNew == True, a new property is created. It's updated
-            /// otherwise
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='property'>
-            /// The property.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -7052,28 +6391,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.CreateOrUpdatePropertyWithHttpMessagesAsync(property, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Deletes property by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// The property id.
             /// </param>
             public static void Delete(this ICatalogModuleProperties operations, string id)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProperties)s).DeleteAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Deletes property by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// The property id.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -7098,14 +6429,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public partial interface ICatalogModuleProperties
     {
-        /// <summary>
-        /// Gets all dictionary values that specified property can have.
-        /// </summary>
         /// <param name='propertyId'>
-        /// The property id.
         /// </param>
         /// <param name='keyword'>
-        /// The keyword. (Optional)
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -7123,11 +6449,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PropertyValue>>> GetPropertyValuesWithHttpMessagesAsync(string propertyId, string keyword = default(string), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets property metainformation by id.
-        /// </summary>
         /// <param name='propertyId'>
-        /// The property id.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -7145,11 +6467,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Property>> GetWithHttpMessagesAsync(string propertyId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets the template for a new catalog property.
-        /// </summary>
         /// <param name='catalogId'>
-        /// The catalog id.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -7167,11 +6485,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Property>> GetNewCatalogPropertyWithHttpMessagesAsync(string catalogId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Gets the template for a new category property.
-        /// </summary>
         /// <param name='categoryId'>
-        /// The category id.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -7189,15 +6503,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Property>> GetNewCategoryPropertyWithHttpMessagesAsync(string categoryId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Creates or updates the specified property.
-        /// </summary>
-        /// <remarks>
-        /// If property.IsNew == True, a new property is created. It's updated
-        /// otherwise
-        /// </remarks>
         /// <param name='property'>
-        /// The property.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -7212,11 +6518,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> CreateOrUpdatePropertyWithHttpMessagesAsync(Property property, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Deletes property by id.
-        /// </summary>
         /// <param name='id'>
-        /// The property id.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -7270,11 +6572,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// </summary>
         public CatalogModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Searches for the items by complex criteria
-        /// </summary>
         /// <param name='criteria'>
-        /// The search criteria.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -7427,28 +6725,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public static partial class CatalogModuleSearchExtensions
     {
-            /// <summary>
-            /// Searches for the items by complex criteria
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// The search criteria.
             /// </param>
             public static CatalogSearchResult Search(this ICatalogModuleSearch operations, SearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleSearch)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Searches for the items by complex criteria
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// The search criteria.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -7476,11 +6766,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
     /// </summary>
     public partial interface ICatalogModuleSearch
     {
-        /// <summary>
-        /// Searches for the items by complex criteria
-        /// </summary>
         /// <param name='criteria'>
-        /// The search criteria.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -8674,9 +7960,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Notification for catalog data export job.
-    /// </summary>
     public partial class ExportNotification
     {
         /// <summary>
@@ -8687,18 +7970,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ExportNotification class.
         /// </summary>
-        /// <param name="downloadUrl">Gets or sets the URL for downloading
-        /// exported data.</param>
-        /// <param name="finished">Gets or sets the job finish date and
-        /// time.</param>
-        /// <param name="totalCount">Gets or sets the total count of objects
-        /// to process.</param>
-        /// <param name="processedCount">Gets or sets the count of processed
-        /// objects.</param>
-        /// <param name="errorCount">Gets or sets the count of errors during
-        /// processing.</param>
-        /// <param name="errors">Gets or sets the errors that has occurred
-        /// during processing.</param>
         public ExportNotification(string downloadUrl = default(string), System.DateTime? finished = default(System.DateTime?), long? totalCount = default(long?), long? processedCount = default(long?), long? errorCount = default(long?), System.Collections.Generic.IList<string> errors = default(System.Collections.Generic.IList<string>), string id = default(string), string creator = default(string), System.DateTime? created = default(System.DateTime?), bool? isNew = default(bool?), string notifyType = default(string), string description = default(string), string title = default(string), int? repeatCount = default(int?))
         {
             DownloadUrl = downloadUrl;
@@ -8718,37 +7989,31 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the URL for downloading exported data.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "downloadUrl")]
         public string DownloadUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the job finish date and time.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "finished")]
         public System.DateTime? Finished { get; set; }
 
         /// <summary>
-        /// Gets or sets the total count of objects to process.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
         public long? TotalCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the count of processed objects.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "processedCount")]
         public long? ProcessedCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the count of errors during processing.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "errorCount")]
         public long? ErrorCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the errors that has occurred during processing.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "errors")]
         public System.Collections.Generic.IList<string> Errors { get; set; }
@@ -8845,9 +8110,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Notification for catalog data import job.
-    /// </summary>
     public partial class ImportNotification
     {
         /// <summary>
@@ -8858,16 +8120,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ImportNotification class.
         /// </summary>
-        /// <param name="finished">Gets or sets the job finish date and
-        /// time.</param>
-        /// <param name="totalCount">Gets or sets the total count of objects
-        /// to process.</param>
-        /// <param name="processedCount">Gets or sets the count of processed
-        /// objects.</param>
-        /// <param name="errorCount">Gets or sets the count of errors during
-        /// processing.</param>
-        /// <param name="errors">Gets or sets the errors that has occurred
-        /// during processing.</param>
         public ImportNotification(System.DateTime? finished = default(System.DateTime?), long? totalCount = default(long?), long? processedCount = default(long?), long? errorCount = default(long?), System.Collections.Generic.IList<string> errors = default(System.Collections.Generic.IList<string>), string id = default(string), string creator = default(string), System.DateTime? created = default(System.DateTime?), bool? isNew = default(bool?), string notifyType = default(string), string description = default(string), string title = default(string), int? repeatCount = default(int?))
         {
             Finished = finished;
@@ -8886,31 +8138,26 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the job finish date and time.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "finished")]
         public System.DateTime? Finished { get; set; }
 
         /// <summary>
-        /// Gets or sets the total count of objects to process.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
         public long? TotalCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the count of processed objects.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "processedCount")]
         public long? ProcessedCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the count of errors during processing.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "errorCount")]
         public long? ErrorCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the errors that has occurred during processing.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "errors")]
         public System.Collections.Generic.IList<string> Errors { get; set; }
@@ -9194,9 +8441,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Class representing the result of ListEntries search.
-    /// </summary>
     public partial class ListEntrySearchResult
     {
         /// <summary>
@@ -9207,9 +8451,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ListEntrySearchResult class.
         /// </summary>
-        /// <param name="totalCount">Gets or sets the total entries count
-        /// matching the search criteria.</param>
-        /// <param name="listEntries">Gets or sets the list entries.</param>
         public ListEntrySearchResult(int? totalCount = default(int?), System.Collections.Generic.IList<ListEntry> listEntries = default(System.Collections.Generic.IList<ListEntry>))
         {
             TotalCount = totalCount;
@@ -9217,13 +8458,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the total entries count matching the search criteria.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
         public int? TotalCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the list entries.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "listEntries")]
         public System.Collections.Generic.IList<ListEntry> ListEntries { get; set; }
@@ -9238,9 +8477,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Base class for all entries used in catalog categories browsing.
-    /// </summary>
     public partial class ListEntry
     {
         /// <summary>
@@ -9251,16 +8487,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ListEntry class.
         /// </summary>
-        /// <param name="type">Gets or sets the type. E.g. "product",
-        /// "category"</param>
-        /// <param name="isActive">Gets or sets a value indicating whether
-        /// this entry is active.</param>
-        /// <param name="imageUrl">Gets or sets the image URL.</param>
-        /// <param name="code">Gets or sets the entry code.</param>
-        /// <param name="name">Gets or sets the name.</param>
-        /// <param name="links">Gets or sets the links.</param>
-        /// <param name="outline">All entry parents ids</param>
-        /// <param name="path">All entry parents names</param>
         public ListEntry(string id = default(string), string type = default(string), bool? isActive = default(bool?), string imageUrl = default(string), string code = default(string), string name = default(string), System.Collections.Generic.IList<ListEntryLink> links = default(System.Collections.Generic.IList<ListEntryLink>), System.Collections.Generic.IList<string> outline = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> path = default(System.Collections.Generic.IList<string>))
         {
             Id = id;
@@ -9280,49 +8506,41 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         public string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the type. E.g. "product", "category"
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this entry is active.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
         public bool? IsActive { get; set; }
 
         /// <summary>
-        /// Gets or sets the image URL.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the entry code.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the name.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the links.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "links")]
         public System.Collections.Generic.IList<ListEntryLink> Links { get; set; }
 
         /// <summary>
-        /// Gets or sets all entry parents ids
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
         public System.Collections.Generic.IList<string> Outline { get; set; }
 
         /// <summary>
-        /// Gets or sets all entry parents names
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "path")]
         public System.Collections.Generic.IList<string> Path { get; set; }
@@ -9385,9 +8603,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent move operation detail
-    /// </summary>
     public partial class MoveInfo
     {
         /// <summary>

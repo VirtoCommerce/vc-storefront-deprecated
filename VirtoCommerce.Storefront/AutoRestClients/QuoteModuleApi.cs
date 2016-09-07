@@ -344,11 +344,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
         /// </summary>
         public QuoteModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Search RFQ by given criteria
-        /// </summary>
         /// <param name='criteria'>
-        /// criteria
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -485,14 +481,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get RFQ by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single RFQ
-        /// </remarks>
         /// <param name='id'>
-        /// RFQ id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -624,11 +613,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update a existing RFQ
-        /// </summary>
         /// <param name='quoteRequest'>
-        /// RFQ
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -744,11 +729,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Create new RFQ
-        /// </summary>
         /// <param name='quoteRequest'>
-        /// RFQ
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -885,11 +866,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Deletes the specified quotes by id.
-        /// </summary>
         /// <param name='ids'>
-        /// The quotes ids.
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1018,14 +995,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Calculate totals
-        /// </summary>
-        /// <remarks>
-        /// Return totals for selected tier prices
-        /// </remarks>
         /// <param name='quoteRequest'>
-        /// RFQ
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1162,11 +1132,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get available shipping methods with prices for quote requests
-        /// </summary>
         /// <param name='id'>
-        /// RFQ id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1314,28 +1280,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
     /// </summary>
     public static partial class QuoteModuleExtensions
     {
-            /// <summary>
-            /// Search RFQ by given criteria
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// criteria
             /// </param>
             public static QuoteRequestSearchResult Search(this IQuoteModule operations, QuoteRequestSearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IQuoteModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Search RFQ by given criteria
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// criteria
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1348,34 +1306,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get RFQ by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single RFQ
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// RFQ id
             /// </param>
             public static QuoteRequest GetById(this IQuoteModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IQuoteModule)s).GetByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get RFQ by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single RFQ
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// RFQ id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1388,28 +1332,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
                 }
             }
 
-            /// <summary>
-            /// Update a existing RFQ
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='quoteRequest'>
-            /// RFQ
             /// </param>
             public static void Update(this IQuoteModule operations, QuoteRequest quoteRequest)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IQuoteModule)s).UpdateAsync(quoteRequest), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update a existing RFQ
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='quoteRequest'>
-            /// RFQ
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1419,28 +1355,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
                 await operations.UpdateWithHttpMessagesAsync(quoteRequest, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Create new RFQ
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='quoteRequest'>
-            /// RFQ
             /// </param>
             public static QuoteRequest Create(this IQuoteModule operations, QuoteRequest quoteRequest)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IQuoteModule)s).CreateAsync(quoteRequest), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Create new RFQ
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='quoteRequest'>
-            /// RFQ
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1453,28 +1381,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
                 }
             }
 
-            /// <summary>
-            /// Deletes the specified quotes by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// The quotes ids.
             /// </param>
             public static void Delete(this IQuoteModule operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IQuoteModule)s).DeleteAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Deletes the specified quotes by id.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// The quotes ids.
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1484,34 +1404,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
                 await operations.DeleteWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Calculate totals
-            /// </summary>
-            /// <remarks>
-            /// Return totals for selected tier prices
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='quoteRequest'>
-            /// RFQ
             /// </param>
             public static QuoteRequest CalculateTotals(this IQuoteModule operations, QuoteRequest quoteRequest)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IQuoteModule)s).CalculateTotalsAsync(quoteRequest), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Calculate totals
-            /// </summary>
-            /// <remarks>
-            /// Return totals for selected tier prices
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='quoteRequest'>
-            /// RFQ
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1524,28 +1430,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get available shipping methods with prices for quote requests
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// RFQ id
             /// </param>
             public static System.Collections.Generic.IList<ShipmentMethod> GetShipmentMethods(this IQuoteModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IQuoteModule)s).GetShipmentMethodsAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get available shipping methods with prices for quote requests
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// RFQ id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1573,11 +1471,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
     /// </summary>
     public partial interface IQuoteModule
     {
-        /// <summary>
-        /// Search RFQ by given criteria
-        /// </summary>
         /// <param name='criteria'>
-        /// criteria
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1595,14 +1489,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<QuoteRequestSearchResult>> SearchWithHttpMessagesAsync(QuoteRequestSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get RFQ by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single RFQ
-        /// </remarks>
         /// <param name='id'>
-        /// RFQ id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1620,11 +1507,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<QuoteRequest>> GetByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update a existing RFQ
-        /// </summary>
         /// <param name='quoteRequest'>
-        /// RFQ
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1639,11 +1522,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateWithHttpMessagesAsync(QuoteRequest quoteRequest, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Create new RFQ
-        /// </summary>
         /// <param name='quoteRequest'>
-        /// RFQ
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1661,11 +1540,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<QuoteRequest>> CreateWithHttpMessagesAsync(QuoteRequest quoteRequest, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Deletes the specified quotes by id.
-        /// </summary>
         /// <param name='ids'>
-        /// The quotes ids.
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1680,14 +1555,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Calculate totals
-        /// </summary>
-        /// <remarks>
-        /// Return totals for selected tier prices
-        /// </remarks>
         /// <param name='quoteRequest'>
-        /// RFQ
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1705,11 +1573,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<QuoteRequest>> CalculateTotalsWithHttpMessagesAsync(QuoteRequest quoteRequest, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get available shipping methods with prices for quote requests
-        /// </summary>
         /// <param name='id'>
-        /// RFQ id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1857,11 +1721,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Request for quotation (RFQ) is a standard business process whose
-    /// purpose is to invite suppliers into a
-    /// bidding process to bid on specific products or services.
-    /// </summary>
     public partial class QuoteRequest
     {
         /// <summary>
@@ -1872,35 +1731,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the QuoteRequest class.
         /// </summary>
-        /// <param name="number">Unique user friendly document number
-        /// (generate automatically based on special algorithm
-        /// realization)</param>
-        /// <param name="employeeId">Id employee who responsible for
-        /// processing RFQ</param>
-        /// <param name="employeeName">Employee who responsible for processing
-        /// RFQ</param>
-        /// <param name="expirationDate">Date when RFQ will be expired</param>
-        /// <param name="reminderDate">Date used for notification</param>
-        /// <param name="enableNotification">Flag of managing the need to send
-        /// notifications</param>
-        /// <param name="isLocked">If is set it restrict any changes on
-        /// RFQ</param>
-        /// <param name="tag">Tag for auxiliary information</param>
-        /// <param name="comment">Public comment visible for customer</param>
-        /// <param name="innerComment">Private comment not visible to
-        /// customer</param>
-        /// <param name="totals">Resulting totals for selected
-        /// proposals</param>
-        /// <param name="manualShippingTotal">Manual shipping total for quote
-        /// request</param>
-        /// <param name="manualSubTotal">Manual sub total for quote
-        /// request</param>
-        /// <param name="manualRelDiscountAmount">Relative manual discount
-        /// amount for quote request in percent</param>
-        /// <param name="shipmentMethod">Predefined shipment method used for
-        /// delivery order created from current RFQ</param>
-        /// <param name="items">RFQ items</param>
-        /// <param name="objectType">System property</param>
         public QuoteRequest(string number = default(string), string storeId = default(string), string channelId = default(string), bool? isAnonymous = default(bool?), string customerId = default(string), string customerName = default(string), string organizationName = default(string), string organizationId = default(string), string employeeId = default(string), string employeeName = default(string), System.DateTime? expirationDate = default(System.DateTime?), System.DateTime? reminderDate = default(System.DateTime?), bool? enableNotification = default(bool?), bool? isLocked = default(bool?), string status = default(string), string tag = default(string), string comment = default(string), string innerComment = default(string), string currency = default(string), QuoteRequestTotals totals = default(QuoteRequestTotals), string coupon = default(string), double? manualShippingTotal = default(double?), double? manualSubTotal = default(double?), double? manualRelDiscountAmount = default(double?), ShipmentMethod shipmentMethod = default(ShipmentMethod), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<QuoteItem> items = default(System.Collections.Generic.IList<QuoteItem>), System.Collections.Generic.IList<QuoteAttachment> attachments = default(System.Collections.Generic.IList<QuoteAttachment>), string languageCode = default(string), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.Collections.Generic.IList<OperationLog> operationsLog = default(System.Collections.Generic.IList<OperationLog>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Number = number;
@@ -1947,8 +1777,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets unique user friendly document number (generate
-        /// automatically based on special algorithm realization)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "number")]
         public string Number { get; set; }
@@ -1989,37 +1817,31 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public string OrganizationId { get; set; }
 
         /// <summary>
-        /// Gets or sets id employee who responsible for processing RFQ
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "employeeId")]
         public string EmployeeId { get; set; }
 
         /// <summary>
-        /// Gets or sets employee who responsible for processing RFQ
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "employeeName")]
         public string EmployeeName { get; set; }
 
         /// <summary>
-        /// Gets or sets date when RFQ will be expired
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "expirationDate")]
         public System.DateTime? ExpirationDate { get; set; }
 
         /// <summary>
-        /// Gets or sets date used for notification
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "reminderDate")]
         public System.DateTime? ReminderDate { get; set; }
 
         /// <summary>
-        /// Gets or sets flag of managing the need to send notifications
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "enableNotification")]
         public bool? EnableNotification { get; set; }
 
         /// <summary>
-        /// Gets or sets if is set it restrict any changes on RFQ
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isLocked")]
         public bool? IsLocked { get; set; }
@@ -2030,19 +1852,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public string Status { get; set; }
 
         /// <summary>
-        /// Gets or sets tag for auxiliary information
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "tag")]
         public string Tag { get; set; }
 
         /// <summary>
-        /// Gets or sets public comment visible for customer
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "comment")]
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets private comment not visible to customer
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "innerComment")]
         public string InnerComment { get; set; }
@@ -2053,7 +1872,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets resulting totals for selected proposals
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "totals")]
         public QuoteRequestTotals Totals { get; set; }
@@ -2064,27 +1882,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public string Coupon { get; set; }
 
         /// <summary>
-        /// Gets or sets manual shipping total for quote request
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "manualShippingTotal")]
         public double? ManualShippingTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets manual sub total for quote request
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "manualSubTotal")]
         public double? ManualSubTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets relative manual discount amount for quote request in
-        /// percent
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "manualRelDiscountAmount")]
         public double? ManualRelDiscountAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets predefined shipment method used for delivery order
-        /// created from current RFQ
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethod")]
         public ShipmentMethod ShipmentMethod { get; set; }
@@ -2095,7 +1907,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public System.Collections.Generic.IList<Address> Addresses { get; set; }
 
         /// <summary>
-        /// Gets or sets RFQ items
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
         public System.Collections.Generic.IList<QuoteItem> Items { get; set; }
@@ -2131,7 +1942,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public string CancelReason { get; set; }
 
         /// <summary>
-        /// Gets or sets system property
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
@@ -2191,16 +2001,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the QuoteRequestTotals class.
         /// </summary>
-        /// <param name="originalSubTotalExlTax">Original subtotal tier
-        /// quantity * sale price</param>
-        /// <param name="subTotalExlTax">Items proposal tier quantity *
-        /// proposal price</param>
-        /// <param name="adjustmentQuoteExlTax">Adjustment
-        /// SubTotalOriginalExlTax -  SubTotalExlTax</param>
-        /// <param name="grandTotalExlTax">Grand total SubTotalExlTax +
-        /// shipping - discount</param>
-        /// <param name="grandTotalInclTax">Grand total subtotal + shipping -
-        /// discount + tax</param>
         public QuoteRequestTotals(double? originalSubTotalExlTax = default(double?), double? subTotalExlTax = default(double?), double? shippingTotal = default(double?), double? discountTotal = default(double?), double? taxTotal = default(double?), double? adjustmentQuoteExlTax = default(double?), double? grandTotalExlTax = default(double?), double? grandTotalInclTax = default(double?))
         {
             OriginalSubTotalExlTax = originalSubTotalExlTax;
@@ -2214,13 +2014,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets original subtotal tier quantity * sale price
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "originalSubTotalExlTax")]
         public double? OriginalSubTotalExlTax { get; set; }
 
         /// <summary>
-        /// Gets or sets items proposal tier quantity * proposal price
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "subTotalExlTax")]
         public double? SubTotalExlTax { get; set; }
@@ -2241,19 +2039,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public double? TaxTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets adjustment SubTotalOriginalExlTax -  SubTotalExlTax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "adjustmentQuoteExlTax")]
         public double? AdjustmentQuoteExlTax { get; set; }
 
         /// <summary>
-        /// Gets or sets grand total SubTotalExlTax + shipping - discount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "grandTotalExlTax")]
         public double? GrandTotalExlTax { get; set; }
 
         /// <summary>
-        /// Gets or sets grand total subtotal + shipping - discount + tax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "grandTotalInclTax")]
         public double? GrandTotalInclTax { get; set; }
@@ -2462,11 +2257,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the QuoteItem class.
         /// </summary>
-        /// <param name="listPrice">Base catalog price</param>
-        /// <param name="salePrice">Sale price for buyer</param>
-        /// <param name="selectedTierPrice">Selected proposal tier
-        /// price</param>
-        /// <param name="proposalPrices">Proposal tier prices</param>
         public QuoteItem(string currency = default(string), double? listPrice = default(double?), double? salePrice = default(double?), string productId = default(string), CatalogProduct product = default(CatalogProduct), string catalogId = default(string), string categoryId = default(string), string name = default(string), string comment = default(string), string imageUrl = default(string), string sku = default(string), string taxType = default(string), TierPrice selectedTierPrice = default(TierPrice), System.Collections.Generic.IList<TierPrice> proposalPrices = default(System.Collections.Generic.IList<TierPrice>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Currency = currency;
@@ -2496,13 +2286,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets base catalog price
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "listPrice")]
         public double? ListPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets sale price for buyer
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "salePrice")]
         public double? SalePrice { get; set; }
@@ -2553,13 +2341,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public string TaxType { get; set; }
 
         /// <summary>
-        /// Gets or sets selected proposal tier price
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "selectedTierPrice")]
         public TierPrice SelectedTierPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets proposal tier prices
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "proposalPrices")]
         public System.Collections.Generic.IList<TierPrice> ProposalPrices { get; set; }

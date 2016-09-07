@@ -366,15 +366,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// </summary>
         public MarketingModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Search marketing objects by given criteria
-        /// </summary>
-        /// <remarks>
-        /// Allow to find all marketing module objects (Promotions, Dynamic content
-        /// objects)
-        /// </remarks>
         /// <param name='criteria'>
-        /// criteria
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -527,36 +519,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     /// </summary>
     public static partial class MarketingModuleExtensions
     {
-            /// <summary>
-            /// Search marketing objects by given criteria
-            /// </summary>
-            /// <remarks>
-            /// Allow to find all marketing module objects (Promotions, Dynamic content
-            /// objects)
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// criteria
             /// </param>
             public static MarketingSearchResult Search(this IMarketingModule operations, MarketingSearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Search marketing objects by given criteria
-            /// </summary>
-            /// <remarks>
-            /// Allow to find all marketing module objects (Promotions, Dynamic content
-            /// objects)
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// criteria
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -584,15 +560,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     /// </summary>
     public partial interface IMarketingModule
     {
-        /// <summary>
-        /// Search marketing objects by given criteria
-        /// </summary>
-        /// <remarks>
-        /// Allow to find all marketing module objects (Promotions, Dynamic
-        /// content objects)
-        /// </remarks>
         /// <param name='criteria'>
-        /// criteria
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -649,9 +617,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// </summary>
         public MarketingModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Get dynamic content for given placeholders
-        /// </summary>
         /// <param name='evalContext'>
         /// </param>
         /// <param name='customHeaders'>
@@ -789,14 +754,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Find dynamic content item object by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single dynamic content item object
-        /// </remarks>
         /// <param name='id'>
-        /// content item id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -928,12 +886,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update a existing dynamic content item object
-        /// </summary>
         /// <param name='contentItem'>
-        /// dynamic content object that needs to be updated in the dynamic content
-        /// system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1049,11 +1002,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Add new dynamic content item object to marketing system
-        /// </summary>
         /// <param name='contentItem'>
-        /// dynamic content object that needs to be added to the dynamic content system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1190,11 +1139,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete a dynamic content item objects
-        /// </summary>
         /// <param name='ids'>
-        /// content item object ids for delete in the dynamic content system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1323,14 +1268,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Find dynamic content place object by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single dynamic content place object
-        /// </remarks>
         /// <param name='id'>
-        /// place id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1462,12 +1400,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update a existing dynamic content place object
-        /// </summary>
         /// <param name='contentPlace'>
-        /// dynamic content place object that needs to be updated in the dynamic
-        /// content system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1583,12 +1516,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Add new dynamic content place object to marketing system
-        /// </summary>
         /// <param name='contentPlace'>
-        /// dynamic content place object that needs to be added to the dynamic content
-        /// system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1725,11 +1653,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete a dynamic content place objects
-        /// </summary>
         /// <param name='ids'>
-        /// content place object ids for delete from dynamic content system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1858,9 +1782,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get new dynamic content publication object
-        /// </summary>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -1982,14 +1903,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Find dynamic content publication object by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single dynamic content publication object
-        /// </remarks>
         /// <param name='id'>
-        /// publication id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2121,12 +2035,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update a existing dynamic content publication object
-        /// </summary>
         /// <param name='publication'>
-        /// dynamic content publication object that needs to be updated in the dynamic
-        /// content system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2242,12 +2151,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Add new dynamic content publication object to marketing system
-        /// </summary>
         /// <param name='publication'>
-        /// dynamic content publication object that needs to be added to the dynamic
-        /// content system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2384,11 +2288,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete a dynamic content publication objects
-        /// </summary>
         /// <param name='ids'>
-        /// content publication object ids for delete from dynamic content system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2517,14 +2417,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Find dynamic content folder by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single dynamic content folder
-        /// </remarks>
         /// <param name='id'>
-        /// folder id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2656,11 +2549,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update a existing dynamic content folder
-        /// </summary>
         /// <param name='folder'>
-        /// dynamic content folder that needs to be updated
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2776,11 +2665,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Add new dynamic content folder
-        /// </summary>
         /// <param name='folder'>
-        /// dynamic content folder that needs to be added
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2917,11 +2802,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete a dynamic content folders
-        /// </summary>
         /// <param name='ids'>
-        /// folders ids for delete
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -3066,9 +2947,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     /// </summary>
     public static partial class MarketingModuleDynamicContentExtensions
     {
-            /// <summary>
-            /// Get dynamic content for given placeholders
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3079,9 +2957,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).EvaluateDynamicContentAsync(evalContext), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get dynamic content for given placeholders
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3098,34 +2973,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Find dynamic content item object by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single dynamic content item object
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// content item id
             /// </param>
             public static DynamicContentItem GetDynamicContentById(this IMarketingModuleDynamicContent operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).GetDynamicContentByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Find dynamic content item object by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single dynamic content item object
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// content item id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3138,30 +2999,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Update a existing dynamic content item object
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='contentItem'>
-            /// dynamic content object that needs to be updated in the dynamic content
-            /// system
             /// </param>
             public static void UpdateDynamicContent(this IMarketingModuleDynamicContent operations, DynamicContentItem contentItem)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).UpdateDynamicContentAsync(contentItem), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update a existing dynamic content item object
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='contentItem'>
-            /// dynamic content object that needs to be updated in the dynamic content
-            /// system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3171,28 +3022,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 await operations.UpdateDynamicContentWithHttpMessagesAsync(contentItem, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Add new dynamic content item object to marketing system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='contentItem'>
-            /// dynamic content object that needs to be added to the dynamic content system
             /// </param>
             public static DynamicContentItem CreateDynamicContent(this IMarketingModuleDynamicContent operations, DynamicContentItem contentItem)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).CreateDynamicContentAsync(contentItem), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Add new dynamic content item object to marketing system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='contentItem'>
-            /// dynamic content object that needs to be added to the dynamic content system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3205,28 +3048,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete a dynamic content item objects
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// content item object ids for delete in the dynamic content system
             /// </param>
             public static void DeleteDynamicContents(this IMarketingModuleDynamicContent operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).DeleteDynamicContentsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete a dynamic content item objects
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// content item object ids for delete in the dynamic content system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3236,34 +3071,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 await operations.DeleteDynamicContentsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Find dynamic content place object by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single dynamic content place object
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// place id
             /// </param>
             public static DynamicContentPlace GetDynamicContentPlaceById(this IMarketingModuleDynamicContent operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).GetDynamicContentPlaceByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Find dynamic content place object by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single dynamic content place object
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// place id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3276,30 +3097,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Update a existing dynamic content place object
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='contentPlace'>
-            /// dynamic content place object that needs to be updated in the dynamic
-            /// content system
             /// </param>
             public static void UpdateDynamicContentPlace(this IMarketingModuleDynamicContent operations, DynamicContentPlace contentPlace)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).UpdateDynamicContentPlaceAsync(contentPlace), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update a existing dynamic content place object
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='contentPlace'>
-            /// dynamic content place object that needs to be updated in the dynamic
-            /// content system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3309,30 +3120,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 await operations.UpdateDynamicContentPlaceWithHttpMessagesAsync(contentPlace, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Add new dynamic content place object to marketing system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='contentPlace'>
-            /// dynamic content place object that needs to be added to the dynamic content
-            /// system
             /// </param>
             public static DynamicContentPlace CreateDynamicContentPlace(this IMarketingModuleDynamicContent operations, DynamicContentPlace contentPlace)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).CreateDynamicContentPlaceAsync(contentPlace), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Add new dynamic content place object to marketing system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='contentPlace'>
-            /// dynamic content place object that needs to be added to the dynamic content
-            /// system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3345,28 +3146,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete a dynamic content place objects
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// content place object ids for delete from dynamic content system
             /// </param>
             public static void DeleteDynamicContentPlaces(this IMarketingModuleDynamicContent operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).DeleteDynamicContentPlacesAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete a dynamic content place objects
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// content place object ids for delete from dynamic content system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3376,9 +3169,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 await operations.DeleteDynamicContentPlacesWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Get new dynamic content publication object
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3387,9 +3177,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).GetNewDynamicPublicationAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get new dynamic content publication object
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3404,34 +3191,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Find dynamic content publication object by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single dynamic content publication object
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// publication id
             /// </param>
             public static DynamicContentPublication GetDynamicContentPublicationById(this IMarketingModuleDynamicContent operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).GetDynamicContentPublicationByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Find dynamic content publication object by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single dynamic content publication object
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// publication id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3444,30 +3217,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Update a existing dynamic content publication object
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='publication'>
-            /// dynamic content publication object that needs to be updated in the dynamic
-            /// content system
             /// </param>
             public static void UpdateDynamicContentPublication(this IMarketingModuleDynamicContent operations, DynamicContentPublication publication)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).UpdateDynamicContentPublicationAsync(publication), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update a existing dynamic content publication object
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='publication'>
-            /// dynamic content publication object that needs to be updated in the dynamic
-            /// content system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3477,30 +3240,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 await operations.UpdateDynamicContentPublicationWithHttpMessagesAsync(publication, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Add new dynamic content publication object to marketing system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='publication'>
-            /// dynamic content publication object that needs to be added to the dynamic
-            /// content system
             /// </param>
             public static DynamicContentPublication CreateDynamicContentPublication(this IMarketingModuleDynamicContent operations, DynamicContentPublication publication)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).CreateDynamicContentPublicationAsync(publication), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Add new dynamic content publication object to marketing system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='publication'>
-            /// dynamic content publication object that needs to be added to the dynamic
-            /// content system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3513,28 +3266,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete a dynamic content publication objects
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// content publication object ids for delete from dynamic content system
             /// </param>
             public static void DeleteDynamicContentPublications(this IMarketingModuleDynamicContent operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).DeleteDynamicContentPublicationsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete a dynamic content publication objects
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// content publication object ids for delete from dynamic content system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3544,34 +3289,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 await operations.DeleteDynamicContentPublicationsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Find dynamic content folder by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single dynamic content folder
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// folder id
             /// </param>
             public static DynamicContentFolder GetDynamicContentFolderById(this IMarketingModuleDynamicContent operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).GetDynamicContentFolderByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Find dynamic content folder by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single dynamic content folder
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// folder id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3584,28 +3315,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Update a existing dynamic content folder
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='folder'>
-            /// dynamic content folder that needs to be updated
             /// </param>
             public static void UpdateDynamicContentFolder(this IMarketingModuleDynamicContent operations, DynamicContentFolder folder)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).UpdateDynamicContentFolderAsync(folder), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update a existing dynamic content folder
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='folder'>
-            /// dynamic content folder that needs to be updated
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3615,28 +3338,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 await operations.UpdateDynamicContentFolderWithHttpMessagesAsync(folder, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Add new dynamic content folder
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='folder'>
-            /// dynamic content folder that needs to be added
             /// </param>
             public static DynamicContentFolder CreateDynamicContentFolder(this IMarketingModuleDynamicContent operations, DynamicContentFolder folder)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).CreateDynamicContentFolderAsync(folder), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Add new dynamic content folder
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='folder'>
-            /// dynamic content folder that needs to be added
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3649,28 +3364,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete a dynamic content folders
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// folders ids for delete
             /// </param>
             public static void DeleteDynamicContentFolders(this IMarketingModuleDynamicContent operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).DeleteDynamicContentFoldersAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete a dynamic content folders
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// folders ids for delete
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3695,9 +3402,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     /// </summary>
     public partial interface IMarketingModuleDynamicContent
     {
-        /// <summary>
-        /// Get dynamic content for given placeholders
-        /// </summary>
         /// <param name='evalContext'>
         /// </param>
         /// <param name='customHeaders'>
@@ -3716,14 +3420,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<DynamicContentItem>>> EvaluateDynamicContentWithHttpMessagesAsync(DynamicContentEvaluationContext evalContext, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Find dynamic content item object by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single dynamic content item object
-        /// </remarks>
         /// <param name='id'>
-        /// content item id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3741,12 +3438,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DynamicContentItem>> GetDynamicContentByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update a existing dynamic content item object
-        /// </summary>
         /// <param name='contentItem'>
-        /// dynamic content object that needs to be updated in the dynamic
-        /// content system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3761,12 +3453,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateDynamicContentWithHttpMessagesAsync(DynamicContentItem contentItem, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Add new dynamic content item object to marketing system
-        /// </summary>
         /// <param name='contentItem'>
-        /// dynamic content object that needs to be added to the dynamic
-        /// content system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3784,11 +3471,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DynamicContentItem>> CreateDynamicContentWithHttpMessagesAsync(DynamicContentItem contentItem, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete a dynamic content item objects
-        /// </summary>
         /// <param name='ids'>
-        /// content item object ids for delete in the dynamic content system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3803,14 +3486,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteDynamicContentsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Find dynamic content place object by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single dynamic content place object
-        /// </remarks>
         /// <param name='id'>
-        /// place id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3828,12 +3504,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DynamicContentPlace>> GetDynamicContentPlaceByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update a existing dynamic content place object
-        /// </summary>
         /// <param name='contentPlace'>
-        /// dynamic content place object that needs to be updated in the
-        /// dynamic content system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3848,12 +3519,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateDynamicContentPlaceWithHttpMessagesAsync(DynamicContentPlace contentPlace, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Add new dynamic content place object to marketing system
-        /// </summary>
         /// <param name='contentPlace'>
-        /// dynamic content place object that needs to be added to the dynamic
-        /// content system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3871,11 +3537,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DynamicContentPlace>> CreateDynamicContentPlaceWithHttpMessagesAsync(DynamicContentPlace contentPlace, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete a dynamic content place objects
-        /// </summary>
         /// <param name='ids'>
-        /// content place object ids for delete from dynamic content system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3890,9 +3552,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteDynamicContentPlacesWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get new dynamic content publication object
-        /// </summary>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -3906,14 +3565,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DynamicContentPublication>> GetNewDynamicPublicationWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Find dynamic content publication object by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single dynamic content publication object
-        /// </remarks>
         /// <param name='id'>
-        /// publication id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3931,12 +3583,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DynamicContentPublication>> GetDynamicContentPublicationByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update a existing dynamic content publication object
-        /// </summary>
         /// <param name='publication'>
-        /// dynamic content publication object that needs to be updated in the
-        /// dynamic content system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3951,12 +3598,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateDynamicContentPublicationWithHttpMessagesAsync(DynamicContentPublication publication, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Add new dynamic content publication object to marketing system
-        /// </summary>
         /// <param name='publication'>
-        /// dynamic content publication object that needs to be added to the
-        /// dynamic content system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3974,12 +3616,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DynamicContentPublication>> CreateDynamicContentPublicationWithHttpMessagesAsync(DynamicContentPublication publication, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete a dynamic content publication objects
-        /// </summary>
         /// <param name='ids'>
-        /// content publication object ids for delete from dynamic content
-        /// system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3994,14 +3631,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteDynamicContentPublicationsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Find dynamic content folder by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single dynamic content folder
-        /// </remarks>
         /// <param name='id'>
-        /// folder id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -4019,11 +3649,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DynamicContentFolder>> GetDynamicContentFolderByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update a existing dynamic content folder
-        /// </summary>
         /// <param name='folder'>
-        /// dynamic content folder that needs to be updated
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -4038,11 +3664,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateDynamicContentFolderWithHttpMessagesAsync(DynamicContentFolder folder, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Add new dynamic content folder
-        /// </summary>
         /// <param name='folder'>
-        /// dynamic content folder that needs to be added
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -4060,11 +3682,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DynamicContentFolder>> CreateDynamicContentFolderWithHttpMessagesAsync(DynamicContentFolder folder, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete a dynamic content folders
-        /// </summary>
         /// <param name='ids'>
-        /// folders ids for delete
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -4118,11 +3736,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// </summary>
         public MarketingModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Evaluate promotions
-        /// </summary>
         /// <param name='context'>
-        /// Promotion evaluation context
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -4259,14 +3873,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Find promotion object by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single promotion (dynamic or custom) object
-        /// </remarks>
         /// <param name='id'>
-        /// promotion id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -4398,13 +4005,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get new dynamic promotion object
-        /// </summary>
-        /// <remarks>
-        /// Return a new dynamic promotion object with populated dynamic expression
-        /// tree
-        /// </remarks>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -4526,12 +4126,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update a existing dynamic promotion object in marketing system
-        /// </summary>
         /// <param name='promotion'>
-        /// &amp;gt;dynamic promotion object that needs to be updated in the marketing
-        /// system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -4647,11 +4242,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Add new dynamic promotion object to marketing system
-        /// </summary>
         /// <param name='promotion'>
-        /// dynamic promotion object that needs to be added to the marketing system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -4788,11 +4379,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete promotions objects
-        /// </summary>
         /// <param name='ids'>
-        /// promotions object ids for delete in the marketing system
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -4937,28 +4524,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     /// </summary>
     public static partial class MarketingModulePromotionExtensions
     {
-            /// <summary>
-            /// Evaluate promotions
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='context'>
-            /// Promotion evaluation context
             /// </param>
             public static System.Collections.Generic.IList<PromotionReward> EvaluatePromotions(this IMarketingModulePromotion operations, PromotionEvaluationContext context)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModulePromotion)s).EvaluatePromotionsAsync(context), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Evaluate promotions
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='context'>
-            /// Promotion evaluation context
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -4971,34 +4550,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Find promotion object by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single promotion (dynamic or custom) object
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// promotion id
             /// </param>
             public static Promotion GetPromotionById(this IMarketingModulePromotion operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModulePromotion)s).GetPromotionByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Find promotion object by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single promotion (dynamic or custom) object
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// promotion id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -5011,13 +4576,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get new dynamic promotion object
-            /// </summary>
-            /// <remarks>
-            /// Return a new dynamic promotion object with populated dynamic expression
-            /// tree
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -5026,13 +4584,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModulePromotion)s).GetNewDynamicPromotionAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get new dynamic promotion object
-            /// </summary>
-            /// <remarks>
-            /// Return a new dynamic promotion object with populated dynamic expression
-            /// tree
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -5047,30 +4598,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Update a existing dynamic promotion object in marketing system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='promotion'>
-            /// &amp;gt;dynamic promotion object that needs to be updated in the marketing
-            /// system
             /// </param>
             public static void UpdatePromotions(this IMarketingModulePromotion operations, Promotion promotion)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModulePromotion)s).UpdatePromotionsAsync(promotion), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update a existing dynamic promotion object in marketing system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='promotion'>
-            /// &amp;gt;dynamic promotion object that needs to be updated in the marketing
-            /// system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -5080,28 +4621,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 await operations.UpdatePromotionsWithHttpMessagesAsync(promotion, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Add new dynamic promotion object to marketing system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='promotion'>
-            /// dynamic promotion object that needs to be added to the marketing system
             /// </param>
             public static Promotion CreatePromotion(this IMarketingModulePromotion operations, Promotion promotion)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModulePromotion)s).CreatePromotionAsync(promotion), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Add new dynamic promotion object to marketing system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='promotion'>
-            /// dynamic promotion object that needs to be added to the marketing system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -5114,28 +4647,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete promotions objects
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// promotions object ids for delete in the marketing system
             /// </param>
             public static void DeletePromotions(this IMarketingModulePromotion operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModulePromotion)s).DeletePromotionsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete promotions objects
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// promotions object ids for delete in the marketing system
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -5160,11 +4685,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     /// </summary>
     public partial interface IMarketingModulePromotion
     {
-        /// <summary>
-        /// Evaluate promotions
-        /// </summary>
         /// <param name='context'>
-        /// Promotion evaluation context
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5182,14 +4703,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PromotionReward>>> EvaluatePromotionsWithHttpMessagesAsync(PromotionEvaluationContext context, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Find promotion object by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single promotion (dynamic or custom) object
-        /// </remarks>
         /// <param name='id'>
-        /// promotion id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5207,13 +4721,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Promotion>> GetPromotionByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get new dynamic promotion object
-        /// </summary>
-        /// <remarks>
-        /// Return a new dynamic promotion object with populated dynamic
-        /// expression tree
-        /// </remarks>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -5227,12 +4734,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Promotion>> GetNewDynamicPromotionWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update a existing dynamic promotion object in marketing system
-        /// </summary>
         /// <param name='promotion'>
-        /// &amp;gt;dynamic promotion object that needs to be updated in the
-        /// marketing system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5247,12 +4749,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdatePromotionsWithHttpMessagesAsync(Promotion promotion, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Add new dynamic promotion object to marketing system
-        /// </summary>
         /// <param name='promotion'>
-        /// dynamic promotion object that needs to be added to the marketing
-        /// system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5270,11 +4767,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Promotion>> CreatePromotionWithHttpMessagesAsync(Promotion promotion, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete promotions objects
-        /// </summary>
         /// <param name='ids'>
-        /// promotions object ids for delete in the marketing system
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -5419,10 +4912,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent marketing promotion, define applicable rules and rewards
-    /// amount in marketing system
-    /// </summary>
     public partial class Promotion
     {
         /// <summary>
@@ -5433,22 +4922,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Promotion class.
         /// </summary>
-        /// <param name="type">It contains the name of realizing this type
-        /// promotion.
-        /// DynamicPromotion is build in implementation allow to
-        /// construct promotion with dynamic conditions and rewards.
-        /// For complex custom scenarios user may define personal
-        /// 'hard-coded' promotion types</param>
-        /// <param name="store">Store id that is covered by this
-        /// promotion</param>
-        /// <param name="catalog">Catalog id that is covered by this
-        /// promotion</param>
-        /// <param name="maxUsageCount">Maximum promotion usage count</param>
-        /// <param name="coupons">List of coupons codes which may be used for
-        /// activate that promotion</param>
-        /// <param name="priority">Used for choosing in combination</param>
-        /// <param name="dynamicExpression">Dynamic conditions tree determine
-        /// the applicability of this promotion and reward definition</param>
         public Promotion(string type = default(string), string name = default(string), string store = default(string), string catalog = default(string), string description = default(string), bool? isActive = default(bool?), int? maxUsageCount = default(int?), int? maxPersonalUsageCount = default(int?), System.Collections.Generic.IList<string> coupons = default(System.Collections.Generic.IList<string>), int? priority = default(int?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), PromoDynamicExpressionTree dynamicExpression = default(PromoDynamicExpressionTree), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Type = type;
@@ -5472,12 +4945,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets it contains the name of realizing this type
-        /// promotion.
-        /// DynamicPromotion is build in implementation allow to
-        /// construct promotion with dynamic conditions and rewards.
-        /// For complex custom scenarios user may define personal
-        /// 'hard-coded' promotion types
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
@@ -5488,13 +4955,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets store id that is covered by this promotion
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "store")]
         public string Store { get; set; }
 
         /// <summary>
-        /// Gets or sets catalog id that is covered by this promotion
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
         public string Catalog { get; set; }
@@ -5510,7 +4975,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public bool? IsActive { get; set; }
 
         /// <summary>
-        /// Gets or sets maximum promotion usage count
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "maxUsageCount")]
         public int? MaxUsageCount { get; set; }
@@ -5521,14 +4985,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public int? MaxPersonalUsageCount { get; set; }
 
         /// <summary>
-        /// Gets or sets list of coupons codes which may be used for activate
-        /// that promotion
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "coupons")]
         public System.Collections.Generic.IList<string> Coupons { get; set; }
 
         /// <summary>
-        /// Gets or sets used for choosing in combination
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
         public int? Priority { get; set; }
@@ -5544,8 +5005,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public System.DateTime? EndDate { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic conditions tree determine the applicability
-        /// of this promotion and reward definition
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicExpression")]
         public PromoDynamicExpressionTree DynamicExpression { get; set; }
@@ -5669,9 +5128,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent presentation placeholders for dynamic content publication
-    /// </summary>
     public partial class DynamicContentPlace
     {
         /// <summary>
@@ -5682,10 +5138,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the DynamicContentPlace class.
         /// </summary>
-        /// <param name="outline">all parent folders ids concatenated
-        /// (1;21;344)</param>
-        /// <param name="path">all parent folders names concatenated
-        /// (Root\Child\Child2)</param>
         public DynamicContentPlace(string name = default(string), string description = default(string), string folderId = default(string), string outline = default(string), string path = default(string), string imageUrl = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
@@ -5717,14 +5169,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public string FolderId { get; set; }
 
         /// <summary>
-        /// Gets or sets all parent folders ids concatenated (1;21;344)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
         public string Outline { get; set; }
 
         /// <summary>
-        /// Gets or sets all parent folders names concatenated
-        /// (Root\Child\Child2)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "path")]
         public string Path { get; set; }
@@ -5769,9 +5218,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent content entry for presentation (Images, Html, Banner etc)
-    /// </summary>
     public partial class DynamicContentItem
     {
         /// <summary>
@@ -5782,10 +5228,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the DynamicContentItem class.
         /// </summary>
-        /// <param name="outline">all parent folders ids concatenated
-        /// (1;21;344)</param>
-        /// <param name="path">all parent folders names concatenated
-        /// (Root\Child\Child2)</param>
         public DynamicContentItem(string name = default(string), string description = default(string), string contentType = default(string), string folderId = default(string), string outline = default(string), string path = default(string), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
@@ -5824,14 +5266,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public string FolderId { get; set; }
 
         /// <summary>
-        /// Gets or sets all parent folders ids concatenated (1;21;344)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
         public string Outline { get; set; }
 
         /// <summary>
-        /// Gets or sets all parent folders names concatenated
-        /// (Root\Child\Child2)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "path")]
         public string Path { get; set; }
@@ -6072,11 +5511,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent dynamic content publication and link content and places
-    /// together
-    /// may contain conditional expressions applicability
-    /// </summary>
     public partial class DynamicContentPublication
     {
         /// <summary>
@@ -6087,11 +5521,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the DynamicContentPublication class.
         /// </summary>
-        /// <param name="priority">Priority used for chose publication in
-        /// combination</param>
-        /// <param name="storeId">Store where the publication is active</param>
-        /// <param name="dynamicExpression">Dynamic conditions tree determine
-        /// the applicability of this publication</param>
         public DynamicContentPublication(string name = default(string), string description = default(string), int? priority = default(int?), bool? isActive = default(bool?), string storeId = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), System.Collections.Generic.IList<DynamicContentItem> contentItems = default(System.Collections.Generic.IList<DynamicContentItem>), System.Collections.Generic.IList<DynamicContentPlace> contentPlaces = default(System.Collections.Generic.IList<DynamicContentPlace>), ConditionExpressionTree dynamicExpression = default(ConditionExpressionTree), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
@@ -6122,7 +5551,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets priority used for chose publication in combination
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
         public int? Priority { get; set; }
@@ -6133,7 +5561,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public bool? IsActive { get; set; }
 
         /// <summary>
-        /// Gets or sets store where the publication is active
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
         public string StoreId { get; set; }
@@ -6159,8 +5586,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public System.Collections.Generic.IList<DynamicContentPlace> ContentPlaces { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic conditions tree determine the applicability
-        /// of this publication
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicExpression")]
         public ConditionExpressionTree DynamicExpression { get; set; }
@@ -6242,10 +5667,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent folder contains dynamic content system entries, used for
-    /// hierarchy storing and easy management
-    /// </summary>
     public partial class DynamicContentFolder
     {
         /// <summary>
@@ -6256,10 +5677,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the DynamicContentFolder class.
         /// </summary>
-        /// <param name="outline">Folder all parent ids concatenated
-        /// (1;21;344)</param>
-        /// <param name="path">Represent folder path with folder names in
-        /// hierarchy (Root\Child\Child2)</param>
         public DynamicContentFolder(string name = default(string), string description = default(string), string outline = default(string), string path = default(string), string parentFolderId = default(string), string imageUrl = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
@@ -6286,14 +5703,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets folder all parent ids concatenated (1;21;344)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
         public string Outline { get; set; }
 
         /// <summary>
-        /// Gets or sets represent folder path with folder names in hierarchy
-        /// (Root\Child\Child2)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "path")]
         public string Path { get; set; }
@@ -6823,40 +6237,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PromotionReward class.
         /// </summary>
-        /// <param name="isValid">Gets or sets the flag of promotion reward is
-        /// valid. Also used as a flag for applicability (applied or
-        /// potential)</param>
-        /// <param name="description">Gets or sets the value of promotion
-        /// reward description</param>
-        /// <param name="couponAmount">Gets or sets the value of coupon
-        /// amount</param>
-        /// <param name="coupon">Gets or sets the value of coupon code</param>
-        /// <param name="couponMinOrderAmount">Gets or sets the value of
-        /// minimum order total cost for applying coupon</param>
-        /// <param name="promotionId">Gets or sets the value of promotion
-        /// id</param>
-        /// <param name="promotion">Gets or sets the promotion</param>
-        /// <param name="rewardType">Gets or sets the value of promotion
-        /// reward type</param>
-        /// <param name="amountType">Gets or sets the value of promotion
-        /// reward amount type. Possible values include: 'absolute',
+        /// <param name="amountType">Possible values include: 'absolute',
         /// 'relative'</param>
-        /// <param name="amount">Gets or sets the value of promotion reward
-        /// amount</param>
-        /// <param name="quantity">Gets or sets the value of line item
-        /// quantity for applying promotion reward</param>
-        /// <param name="lineItemId">Gets or sets the value of line item
-        /// id</param>
-        /// <param name="productId">Gets or sets the value of product
-        /// id</param>
-        /// <param name="categoryId">Gets or sets the value of category
-        /// id</param>
-        /// <param name="measureUnit">Gets or sets the value of measurement
-        /// unit</param>
-        /// <param name="imageUrl">Gets or sets the value of promotion reward
-        /// logo absolute URL</param>
-        /// <param name="shippingMethod">Gets or sets the value of reward
-        /// shipping method code</param>
         public PromotionReward(bool? isValid = default(bool?), string description = default(string), double? couponAmount = default(double?), string coupon = default(string), double? couponMinOrderAmount = default(double?), string promotionId = default(string), Promotion promotion = default(Promotion), string rewardType = default(string), string amountType = default(string), double? amount = default(double?), int? quantity = default(int?), string lineItemId = default(string), string productId = default(string), string categoryId = default(string), string measureUnit = default(string), string imageUrl = default(string), string shippingMethod = default(string))
         {
             IsValid = isValid;
@@ -6879,107 +6261,87 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the flag of promotion reward is valid. Also used as a
-        /// flag for applicability (applied or potential)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isValid")]
         public bool? IsValid { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of promotion reward description
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of coupon amount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "couponAmount")]
         public double? CouponAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of coupon code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
         public string Coupon { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of minimum order total cost for applying
-        /// coupon
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "couponMinOrderAmount")]
         public double? CouponMinOrderAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of promotion id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "promotionId")]
         public string PromotionId { get; set; }
 
         /// <summary>
-        /// Gets or sets the promotion
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "promotion")]
         public Promotion Promotion { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of promotion reward type
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "rewardType")]
         public string RewardType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of promotion reward amount type. Possible
-        /// values include: 'absolute', 'relative'
+        /// Gets or sets possible values include: 'absolute', 'relative'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "amountType")]
         public string AmountType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of promotion reward amount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "amount")]
         public double? Amount { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item quantity for applying
-        /// promotion reward
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "quantity")]
         public int? Quantity { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "lineItemId")]
         public string LineItemId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of product id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "productId")]
         public string ProductId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of category id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
         public string CategoryId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of measurement unit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "measureUnit")]
         public string MeasureUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of promotion reward logo absolute URL
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of reward shipping method code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shippingMethod")]
         public string ShippingMethod { get; set; }

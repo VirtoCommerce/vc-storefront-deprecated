@@ -7,11 +7,17 @@ using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
 using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class CategoryConverter
     {
+        public static Category ToWebModel(this searchModel.Category product, Language currentLanguage, Store store)
+        {
+            return product.JsonConvert<catalogModel.Category>().ToWebModel(currentLanguage, store);
+        }
+
         public static Category ToWebModel(this catalogModel.Category category, Language currentLanguage, Store store, catalogModel.Product[] products = null)
         {
             var retVal = new Category();

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.Model;
@@ -32,6 +33,11 @@ namespace VirtoCommerce.Storefront.Controllers
         public async Task<ActionResult> VendorDetails(string vendorId)
         {
             var vendor = await _customerService.GetVendorByIdAsync(vendorId);
+            throw new NotImplementedException();
+            // TODO: implement
+
+            /* 
+            
             if (vendor != null)
             {               
                 vendor.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
@@ -55,6 +61,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
                 return View("vendor", WorkContext);
             }
+            */
 
             throw new HttpException(404, "Vendor not found. Vendor ID: '" + vendorId + "'");
         }

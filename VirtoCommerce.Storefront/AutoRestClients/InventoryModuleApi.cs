@@ -344,14 +344,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
         /// </summary>
         public InventoryModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Get inventories of products
-        /// </summary>
-        /// <remarks>
-        /// Get inventory of products for each fulfillment center.
-        /// </remarks>
         /// <param name='ids'>
-        /// Products ids
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -501,14 +494,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get inventories of product
-        /// </summary>
-        /// <remarks>
-        /// Get inventories of product for each fulfillment center.
-        /// </remarks>
         /// <param name='productId'>
-        /// Product id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -640,14 +626,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Upsert inventory
-        /// </summary>
-        /// <remarks>
-        /// Upsert (add or update) given inventory of product.
-        /// </remarks>
         /// <param name='inventory'>
-        /// Inventory to upsert
         /// </param>
         /// <param name='productId'>
         /// </param>
@@ -808,34 +787,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
     /// </summary>
     public static partial class InventoryModuleExtensions
     {
-            /// <summary>
-            /// Get inventories of products
-            /// </summary>
-            /// <remarks>
-            /// Get inventory of products for each fulfillment center.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// Products ids
             /// </param>
             public static System.Collections.Generic.IList<InventoryInfo> GetProductsInventories(this IInventoryModule operations, System.Collections.Generic.IList<string> ids)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IInventoryModule)s).GetProductsInventoriesAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get inventories of products
-            /// </summary>
-            /// <remarks>
-            /// Get inventory of products for each fulfillment center.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// Products ids
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -848,34 +813,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get inventories of product
-            /// </summary>
-            /// <remarks>
-            /// Get inventories of product for each fulfillment center.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='productId'>
-            /// Product id
             /// </param>
             public static System.Collections.Generic.IList<InventoryInfo> GetProductInventories(this IInventoryModule operations, string productId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IInventoryModule)s).GetProductInventoriesAsync(productId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get inventories of product
-            /// </summary>
-            /// <remarks>
-            /// Get inventories of product for each fulfillment center.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='productId'>
-            /// Product id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -888,17 +839,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
                 }
             }
 
-            /// <summary>
-            /// Upsert inventory
-            /// </summary>
-            /// <remarks>
-            /// Upsert (add or update) given inventory of product.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='inventory'>
-            /// Inventory to upsert
             /// </param>
             /// <param name='productId'>
             /// </param>
@@ -907,17 +851,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IInventoryModule)s).UpsertProductInventoryAsync(inventory, productId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Upsert inventory
-            /// </summary>
-            /// <remarks>
-            /// Upsert (add or update) given inventory of product.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='inventory'>
-            /// Inventory to upsert
             /// </param>
             /// <param name='productId'>
             /// </param>
@@ -947,14 +884,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
     /// </summary>
     public partial interface IInventoryModule
     {
-        /// <summary>
-        /// Get inventories of products
-        /// </summary>
-        /// <remarks>
-        /// Get inventory of products for each fulfillment center.
-        /// </remarks>
         /// <param name='ids'>
-        /// Products ids
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -972,14 +902,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<InventoryInfo>>> GetProductsInventoriesWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get inventories of product
-        /// </summary>
-        /// <remarks>
-        /// Get inventories of product for each fulfillment center.
-        /// </remarks>
         /// <param name='productId'>
-        /// Product id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -997,14 +920,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<InventoryInfo>>> GetProductInventoriesWithHttpMessagesAsync(string productId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Upsert inventory
-        /// </summary>
-        /// <remarks>
-        /// Upsert (add or update) given inventory of product.
-        /// </remarks>
         /// <param name='inventory'>
-        /// Inventory to upsert
         /// </param>
         /// <param name='productId'>
         /// </param>
@@ -1180,7 +1096,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the FulfillmentCenter class.
         /// </summary>
-        /// <param name="countryCode">ISO 3166-1 alpha-3</param>
         public FulfillmentCenter(string name = default(string), string description = default(string), int? maxReleasesPerPickBatch = default(int?), int? pickDelay = default(int?), string daytimePhoneNumber = default(string), string line1 = default(string), string line2 = default(string), string city = default(string), string stateProvince = default(string), string countryCode = default(string), string countryName = default(string), string postalCode = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
@@ -1248,7 +1163,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi.Models
         public string StateProvince { get; set; }
 
         /// <summary>
-        /// Gets or sets ISO 3166-1 alpha-3
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "countryCode")]
         public string CountryCode { get; set; }

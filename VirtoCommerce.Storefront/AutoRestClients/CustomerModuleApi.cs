@@ -344,12 +344,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// </summary>
         public CustomerModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Get organizations
-        /// </summary>
-        /// <remarks>
-        /// Get array of all organizations.
-        /// </remarks>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -471,15 +465,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get members
-        /// </summary>
-        /// <remarks>
-        /// Get array of members satisfied search criteria.
-        /// </remarks>
         /// <param name='criteria'>
-        /// concrete instance of SearchCriteria type type will be created by using
-        /// PolymorphicMemberSearchCriteriaJsonConverter
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -616,11 +602,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get member
-        /// </summary>
         /// <param name='id'>
-        /// member id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -752,12 +734,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update member
-        /// </summary>
         /// <param name='member'>
-        /// concrete instance of abstract member type will be created by using
-        /// PolymorphicMemberJsonConverter
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -873,12 +850,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Create new member (can be any object inherited from Member type)
-        /// </summary>
         /// <param name='member'>
-        /// concrete instance of abstract member type will be created by using
-        /// PolymorphicMemberJsonConverter
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1015,14 +987,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete members
-        /// </summary>
-        /// <remarks>
-        /// Delete members by given array of ids.
-        /// </remarks>
         /// <param name='ids'>
-        /// An array of members ids
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1151,9 +1116,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update contact
-        /// </summary>
         /// <param name='contact'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1270,9 +1232,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Create contact
-        /// </summary>
         /// <param name='contact'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1410,14 +1369,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete contacts
-        /// </summary>
-        /// <remarks>
-        /// Delete contacts by given array of ids.
-        /// </remarks>
         /// <param name='ids'>
-        /// An array of contacts ids
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1546,9 +1498,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update organization
-        /// </summary>
         /// <param name='organization'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1665,9 +1614,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Create organization
-        /// </summary>
         /// <param name='organization'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1805,14 +1751,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete organizations
-        /// </summary>
-        /// <remarks>
-        /// Delete organizations by given array of ids.
-        /// </remarks>
         /// <param name='ids'>
-        /// An array of organizations ids
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1941,11 +1880,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get organization
-        /// </summary>
         /// <param name='id'>
-        /// Organization id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2026,7 +1961,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -2077,11 +2012,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get contact
-        /// </summary>
         /// <param name='id'>
-        /// Contact ID
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2213,11 +2144,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get vendor
-        /// </summary>
         /// <param name='id'>
-        /// Vendor ID
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2298,7 +2225,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -2349,151 +2276,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Search vendors
-        /// </summary>
-        /// <remarks>
-        /// Get array of vendors satisfied search criteria.
-        /// </remarks>
-        /// <param name='criteria'>
-        /// concrete instance of SearchCriteria type type will be created by using
-        /// PolymorphicMemberSearchCriteriaJsonConverter
-        /// </param>
-        /// <param name='customHeaders'>
-        /// Headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        /// <return>
-        /// A response object containing the response body and response headers.
-        /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<VendorSearchResult>> SearchVendorsWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            if (criteria == null)
-            {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
-            }
-            // Tracing
-            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
-            string _invocationId = null;
-            if (_shouldTrace)
-            {
-                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
-                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("criteria", criteria);
-                tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "SearchVendors", tracingParameters);
-            }
-            // Construct URL
-            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/vendors/search").ToString();
-            // Create HTTP transport objects
-            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
-            System.Net.Http.HttpResponseMessage _httpResponse = null;
-            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
-            _httpRequest.RequestUri = new System.Uri(_url);
-            // Set Headers
-            if (customHeaders != null)
-            {
-                foreach(var _header in customHeaders)
-                {
-                    if (_httpRequest.Headers.Contains(_header.Key))
-                    {
-                        _httpRequest.Headers.Remove(_header.Key);
-                    }
-                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
-                }
-            }
-
-            // Serialize Request
-            string _requestContent = null;
-            if(criteria != null)
-            {
-                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(criteria, this.Client.SerializationSettings);
-                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
-                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
-            }
-            // Set Credentials
-            if (this.Client.Credentials != null)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
-            }
-            // Send Request
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
-            }
-            cancellationToken.ThrowIfCancellationRequested();
-            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
-            }
-            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
-            cancellationToken.ThrowIfCancellationRequested();
-            string _responseContent = null;
-            if ((int)_statusCode != 200)
-            {
-                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
-                if (_httpResponse.Content != null) {
-                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-                else {
-                    _responseContent = string.Empty;
-                }
-                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
-                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
-                if (_shouldTrace)
-                {
-                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
-                }
-                _httpRequest.Dispose();
-                if (_httpResponse != null)
-                {
-                    _httpResponse.Dispose();
-                }
-                throw ex;
-            }
-            // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<VendorSearchResult>();
-            _result.Request = _httpRequest;
-            _result.Response = _httpResponse;
-            // Deserialize Response
-            if ((int)_statusCode == 200)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<VendorSearchResult>(_responseContent, this.Client.DeserializationSettings);
-                }
-                catch (Newtonsoft.Json.JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
-            }
-            return _result;
-        }
-
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -2510,12 +2292,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
     /// </summary>
     public static partial class CustomerModuleExtensions
     {
-            /// <summary>
-            /// Get organizations
-            /// </summary>
-            /// <remarks>
-            /// Get array of all organizations.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2524,12 +2300,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).ListOrganizationsAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get organizations
-            /// </summary>
-            /// <remarks>
-            /// Get array of all organizations.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2544,36 +2314,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get members
-            /// </summary>
-            /// <remarks>
-            /// Get array of members satisfied search criteria.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// concrete instance of SearchCriteria type type will be created by using
-            /// PolymorphicMemberSearchCriteriaJsonConverter
             /// </param>
             public static MembersSearchResult Search(this ICustomerModule operations, MembersSearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get members
-            /// </summary>
-            /// <remarks>
-            /// Get array of members satisfied search criteria.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// concrete instance of SearchCriteria type type will be created by using
-            /// PolymorphicMemberSearchCriteriaJsonConverter
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2586,28 +2340,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get member
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// member id
             /// </param>
             public static Member GetMemberById(this ICustomerModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).GetMemberByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get member
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// member id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2620,30 +2366,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 }
             }
 
-            /// <summary>
-            /// Update member
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='member'>
-            /// concrete instance of abstract member type will be created by using
-            /// PolymorphicMemberJsonConverter
             /// </param>
             public static void UpdateMember(this ICustomerModule operations, Member member)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).UpdateMemberAsync(member), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update member
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='member'>
-            /// concrete instance of abstract member type will be created by using
-            /// PolymorphicMemberJsonConverter
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2653,30 +2389,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 await operations.UpdateMemberWithHttpMessagesAsync(member, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Create new member (can be any object inherited from Member type)
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='member'>
-            /// concrete instance of abstract member type will be created by using
-            /// PolymorphicMemberJsonConverter
             /// </param>
             public static Member CreateMember(this ICustomerModule operations, Member member)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).CreateMemberAsync(member), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Create new member (can be any object inherited from Member type)
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='member'>
-            /// concrete instance of abstract member type will be created by using
-            /// PolymorphicMemberJsonConverter
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2689,34 +2415,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete members
-            /// </summary>
-            /// <remarks>
-            /// Delete members by given array of ids.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// An array of members ids
             /// </param>
             public static void DeleteMembers(this ICustomerModule operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).DeleteMembersAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete members
-            /// </summary>
-            /// <remarks>
-            /// Delete members by given array of ids.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// An array of members ids
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2726,9 +2438,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 await operations.DeleteMembersWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Update contact
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2739,9 +2448,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).UpdateContactAsync(contact), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update contact
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2755,9 +2461,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 await operations.UpdateContactWithHttpMessagesAsync(contact, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Create contact
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2768,9 +2471,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).CreateContactAsync(contact), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Create contact
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2787,34 +2487,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete contacts
-            /// </summary>
-            /// <remarks>
-            /// Delete contacts by given array of ids.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// An array of contacts ids
             /// </param>
             public static void DeleteContacts(this ICustomerModule operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).DeleteContactsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete contacts
-            /// </summary>
-            /// <remarks>
-            /// Delete contacts by given array of ids.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// An array of contacts ids
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2824,9 +2510,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 await operations.DeleteContactsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Update organization
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2837,9 +2520,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).UpdateOrganizationAsync(organization), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update organization
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2853,9 +2533,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 await operations.UpdateOrganizationWithHttpMessagesAsync(organization, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Create organization
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2866,9 +2543,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).CreateOrganizationAsync(organization), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Create organization
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2885,34 +2559,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete organizations
-            /// </summary>
-            /// <remarks>
-            /// Delete organizations by given array of ids.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// An array of organizations ids
             /// </param>
             public static void DeleteOrganizations(this ICustomerModule operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).DeleteOrganizationsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete organizations
-            /// </summary>
-            /// <remarks>
-            /// Delete organizations by given array of ids.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// An array of organizations ids
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2922,28 +2582,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 await operations.DeleteOrganizationsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Get organization
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Organization id
             /// </param>
             public static Organization GetOrganizationById(this ICustomerModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).GetOrganizationByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get organization
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Organization id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2956,28 +2608,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get contact
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Contact ID
             /// </param>
             public static Contact GetContactById(this ICustomerModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).GetContactByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get contact
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Contact ID
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2990,28 +2634,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get vendor
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Vendor ID
             /// </param>
             public static Vendor GetVendorById(this ICustomerModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).GetVendorByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get vendor
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Vendor ID
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3019,48 +2655,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             public static async System.Threading.Tasks.Task<Vendor> GetVendorByIdAsync(this ICustomerModule operations, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
                 using (var _result = await operations.GetVendorByIdWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Search vendors
-            /// </summary>
-            /// <remarks>
-            /// Get array of vendors satisfied search criteria.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='criteria'>
-            /// concrete instance of SearchCriteria type type will be created by using
-            /// PolymorphicMemberSearchCriteriaJsonConverter
-            /// </param>
-            public static VendorSearchResult SearchVendors(this ICustomerModule operations, MembersSearchCriteria criteria)
-            {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).SearchVendorsAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Search vendors
-            /// </summary>
-            /// <remarks>
-            /// Get array of vendors satisfied search criteria.
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='criteria'>
-            /// concrete instance of SearchCriteria type type will be created by using
-            /// PolymorphicMemberSearchCriteriaJsonConverter
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async System.Threading.Tasks.Task<VendorSearchResult> SearchVendorsAsync(this ICustomerModule operations, MembersSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-            {
-                using (var _result = await operations.SearchVendorsWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -3081,12 +2675,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
     /// </summary>
     public partial interface ICustomerModule
     {
-        /// <summary>
-        /// Get organizations
-        /// </summary>
-        /// <remarks>
-        /// Get array of all organizations.
-        /// </remarks>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -3100,15 +2688,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<Organization>>> ListOrganizationsWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get members
-        /// </summary>
-        /// <remarks>
-        /// Get array of members satisfied search criteria.
-        /// </remarks>
         /// <param name='criteria'>
-        /// concrete instance of SearchCriteria type type will be created by
-        /// using PolymorphicMemberSearchCriteriaJsonConverter
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3126,11 +2706,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<MembersSearchResult>> SearchWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get member
-        /// </summary>
         /// <param name='id'>
-        /// member id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3148,12 +2724,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Member>> GetMemberByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update member
-        /// </summary>
         /// <param name='member'>
-        /// concrete instance of abstract member type will be created by using
-        /// PolymorphicMemberJsonConverter
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3168,12 +2739,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateMemberWithHttpMessagesAsync(Member member, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Create new member (can be any object inherited from Member type)
-        /// </summary>
         /// <param name='member'>
-        /// concrete instance of abstract member type will be created by using
-        /// PolymorphicMemberJsonConverter
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3191,14 +2757,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Member>> CreateMemberWithHttpMessagesAsync(Member member, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete members
-        /// </summary>
-        /// <remarks>
-        /// Delete members by given array of ids.
-        /// </remarks>
         /// <param name='ids'>
-        /// An array of members ids
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3213,9 +2772,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteMembersWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update contact
-        /// </summary>
         /// <param name='contact'>
         /// </param>
         /// <param name='customHeaders'>
@@ -3231,9 +2787,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateContactWithHttpMessagesAsync(Contact contact, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Create contact
-        /// </summary>
         /// <param name='contact'>
         /// </param>
         /// <param name='customHeaders'>
@@ -3252,14 +2805,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Contact>> CreateContactWithHttpMessagesAsync(Contact contact, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete contacts
-        /// </summary>
-        /// <remarks>
-        /// Delete contacts by given array of ids.
-        /// </remarks>
         /// <param name='ids'>
-        /// An array of contacts ids
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3274,9 +2820,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteContactsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update organization
-        /// </summary>
         /// <param name='organization'>
         /// </param>
         /// <param name='customHeaders'>
@@ -3292,9 +2835,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateOrganizationWithHttpMessagesAsync(Organization organization, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Create organization
-        /// </summary>
         /// <param name='organization'>
         /// </param>
         /// <param name='customHeaders'>
@@ -3313,14 +2853,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Organization>> CreateOrganizationWithHttpMessagesAsync(Organization organization, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete organizations
-        /// </summary>
-        /// <remarks>
-        /// Delete organizations by given array of ids.
-        /// </remarks>
         /// <param name='ids'>
-        /// An array of organizations ids
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3335,11 +2868,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteOrganizationsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get organization
-        /// </summary>
         /// <param name='id'>
-        /// Organization id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3357,11 +2886,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Organization>> GetOrganizationByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get contact
-        /// </summary>
         /// <param name='id'>
-        /// Contact ID
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3379,11 +2904,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Contact>> GetContactByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get vendor
-        /// </summary>
         /// <param name='id'>
-        /// Vendor ID
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3401,32 +2922,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Vendor>> GetVendorByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Search vendors
-        /// </summary>
-        /// <remarks>
-        /// Get array of vendors satisfied search criteria.
-        /// </remarks>
-        /// <param name='criteria'>
-        /// concrete instance of SearchCriteria type type will be created by
-        /// using PolymorphicMemberSearchCriteriaJsonConverter
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<VendorSearchResult>> SearchVendorsWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -5017,42 +4512,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class VendorSearchResult
-    {
-        /// <summary>
-        /// Initializes a new instance of the VendorSearchResult class.
-        /// </summary>
-        public VendorSearchResult() { }
-
-        /// <summary>
-        /// Initializes a new instance of the VendorSearchResult class.
-        /// </summary>
-        public VendorSearchResult(System.Collections.Generic.IList<Vendor> vendors = default(System.Collections.Generic.IList<Vendor>), int? totalCount = default(int?))
-        {
-            Vendors = vendors;
-            TotalCount = totalCount;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "vendors")]
-        public System.Collections.Generic.IList<Vendor> Vendors { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
-        public int? TotalCount { get; set; }
 
     }
 }

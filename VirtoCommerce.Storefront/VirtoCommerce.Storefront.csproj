@@ -453,6 +453,7 @@
     <Compile Include="AutoRestClients\PlatformModuleApi.cs" />
     <Compile Include="AutoRestClients\PricingModuleApi.cs" />
     <Compile Include="AutoRestClients\QuoteModuleApi.cs" />
+    <Compile Include="AutoRestClients\SearchApiModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
     <Compile Include="AutoRestClients\StoreModuleApi.cs" />
     <Compile Include="Common\HmacCredentials.cs" />

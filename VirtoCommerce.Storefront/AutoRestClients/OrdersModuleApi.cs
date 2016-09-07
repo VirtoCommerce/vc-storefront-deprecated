@@ -344,11 +344,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// </summary>
         public OrdersModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Search customer orders by given criteria
-        /// </summary>
         /// <param name='criteria'>
-        /// criteria
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -485,15 +481,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Find customer order by number
-        /// </summary>
-        /// <remarks>
-        /// Return a single customer order with all nested documents or null if order
-        /// was not found
-        /// </remarks>
         /// <param name='number'>
-        /// customer order number
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -625,15 +613,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Find customer order by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single customer order with all nested documents or null if order
-        /// was not found
-        /// </remarks>
         /// <param name='id'>
-        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -765,11 +745,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Create new customer order based on shopping cart.
-        /// </summary>
         /// <param name='id'>
-        /// shopping cart id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -901,20 +877,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Register customer order payment in external payment system
-        /// </summary>
-        /// <remarks>
-        /// Used in storefront checkout or manual order payment registration
-        /// </remarks>
         /// <param name='orderId'>
-        /// customer order id
         /// </param>
         /// <param name='paymentId'>
-        /// payment id
         /// </param>
         /// <param name='bankCardInfo'>
-        /// banking card information
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1059,11 +1026,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update a existing customer order
-        /// </summary>
         /// <param name='customerOrder'>
-        /// customer order
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1179,11 +1142,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Add new customer order to system
-        /// </summary>
         /// <param name='customerOrder'>
-        /// customer order
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1320,11 +1279,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete a whole customer orders
-        /// </summary>
         /// <param name='ids'>
-        /// customer order ids for delete
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1453,14 +1408,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get new shipment for specified customer order
-        /// </summary>
-        /// <remarks>
-        /// Return new shipment document with populates all required properties.
-        /// </remarks>
         /// <param name='id'>
-        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1592,14 +1540,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get new payment for specified customer order
-        /// </summary>
-        /// <remarks>
-        /// Return new payment  document with populates all required properties.
-        /// </remarks>
         /// <param name='id'>
-        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1731,14 +1672,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete a concrete customer order operation (document)
-        /// </summary>
         /// <param name='id'>
-        /// customer order id
         /// </param>
         /// <param name='operationId'>
-        /// operation id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1855,14 +1791,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get a some order statistic information for Commerce manager dashboard
-        /// </summary>
         /// <param name='start'>
-        /// start interval date
         /// </param>
         /// <param name='end'>
-        /// end interval date
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2000,12 +1931,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Payment callback operation used by external payment services to inform
-        /// post process payment in our system
-        /// </summary>
         /// <param name='callback'>
-        /// payment callback parameters
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2158,28 +2084,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
     /// </summary>
     public static partial class OrderModuleExtensions
     {
-            /// <summary>
-            /// Search customer orders by given criteria
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// criteria
             /// </param>
             public static SearchResult Search(this IOrderModule operations, SearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Search customer orders by given criteria
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// criteria
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2192,36 +2110,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
-            /// <summary>
-            /// Find customer order by number
-            /// </summary>
-            /// <remarks>
-            /// Return a single customer order with all nested documents or null if order
-            /// was not found
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='number'>
-            /// customer order number
             /// </param>
             public static CustomerOrder GetByNumber(this IOrderModule operations, string number)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetByNumberAsync(number), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Find customer order by number
-            /// </summary>
-            /// <remarks>
-            /// Return a single customer order with all nested documents or null if order
-            /// was not found
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='number'>
-            /// customer order number
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2234,36 +2136,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
-            /// <summary>
-            /// Find customer order by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single customer order with all nested documents or null if order
-            /// was not found
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// customer order id
             /// </param>
             public static CustomerOrder GetById(this IOrderModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Find customer order by id
-            /// </summary>
-            /// <remarks>
-            /// Return a single customer order with all nested documents or null if order
-            /// was not found
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// customer order id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2276,28 +2162,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
-            /// <summary>
-            /// Create new customer order based on shopping cart.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// shopping cart id
             /// </param>
             public static CustomerOrder CreateOrderFromCart(this IOrderModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).CreateOrderFromCartAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Create new customer order based on shopping cart.
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// shopping cart id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2310,46 +2188,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
-            /// <summary>
-            /// Register customer order payment in external payment system
-            /// </summary>
-            /// <remarks>
-            /// Used in storefront checkout or manual order payment registration
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='orderId'>
-            /// customer order id
             /// </param>
             /// <param name='paymentId'>
-            /// payment id
             /// </param>
             /// <param name='bankCardInfo'>
-            /// banking card information
             /// </param>
             public static ProcessPaymentResult ProcessOrderPayments(this IOrderModule operations, string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).ProcessOrderPaymentsAsync(orderId, paymentId, bankCardInfo), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Register customer order payment in external payment system
-            /// </summary>
-            /// <remarks>
-            /// Used in storefront checkout or manual order payment registration
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='orderId'>
-            /// customer order id
             /// </param>
             /// <param name='paymentId'>
-            /// payment id
             /// </param>
             /// <param name='bankCardInfo'>
-            /// banking card information
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2362,28 +2222,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
-            /// <summary>
-            /// Update a existing customer order
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='customerOrder'>
-            /// customer order
             /// </param>
             public static void Update(this IOrderModule operations, CustomerOrder customerOrder)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).UpdateAsync(customerOrder), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update a existing customer order
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='customerOrder'>
-            /// customer order
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2393,28 +2245,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 await operations.UpdateWithHttpMessagesAsync(customerOrder, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Add new customer order to system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='customerOrder'>
-            /// customer order
             /// </param>
             public static CustomerOrder CreateOrder(this IOrderModule operations, CustomerOrder customerOrder)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).CreateOrderAsync(customerOrder), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Add new customer order to system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='customerOrder'>
-            /// customer order
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2427,28 +2271,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete a whole customer orders
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// customer order ids for delete
             /// </param>
             public static void DeleteOrdersByIds(this IOrderModule operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).DeleteOrdersByIdsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete a whole customer orders
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// customer order ids for delete
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2458,34 +2294,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 await operations.DeleteOrdersByIdsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Get new shipment for specified customer order
-            /// </summary>
-            /// <remarks>
-            /// Return new shipment document with populates all required properties.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// customer order id
             /// </param>
             public static Shipment GetNewShipment(this IOrderModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetNewShipmentAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get new shipment for specified customer order
-            /// </summary>
-            /// <remarks>
-            /// Return new shipment document with populates all required properties.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// customer order id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2498,34 +2320,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get new payment for specified customer order
-            /// </summary>
-            /// <remarks>
-            /// Return new payment  document with populates all required properties.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// customer order id
             /// </param>
             public static PaymentIn GetNewPayment(this IOrderModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetNewPaymentAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get new payment for specified customer order
-            /// </summary>
-            /// <remarks>
-            /// Return new payment  document with populates all required properties.
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// customer order id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2538,34 +2346,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete a concrete customer order operation (document)
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// customer order id
             /// </param>
             /// <param name='operationId'>
-            /// operation id
             /// </param>
             public static void Delete(this IOrderModule operations, string id, string operationId)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).DeleteAsync(id, operationId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete a concrete customer order operation (document)
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// customer order id
             /// </param>
             /// <param name='operationId'>
-            /// operation id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2575,34 +2373,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 await operations.DeleteWithHttpMessagesAsync(id, operationId, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Get a some order statistic information for Commerce manager dashboard
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='start'>
-            /// start interval date
             /// </param>
             /// <param name='end'>
-            /// end interval date
             /// </param>
             public static DashboardStatisticsResult GetDashboardStatistics(this IOrderModule operations, System.DateTime? start = default(System.DateTime?), System.DateTime? end = default(System.DateTime?))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetDashboardStatisticsAsync(start, end), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get a some order statistic information for Commerce manager dashboard
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='start'>
-            /// start interval date
             /// </param>
             /// <param name='end'>
-            /// end interval date
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2615,30 +2403,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
-            /// <summary>
-            /// Payment callback operation used by external payment services to inform
-            /// post process payment in our system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='callback'>
-            /// payment callback parameters
             /// </param>
             public static PostProcessPaymentResult PostProcessPayment(this IOrderModule operations, PaymentCallbackParameters callback)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).PostProcessPaymentAsync(callback), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Payment callback operation used by external payment services to inform
-            /// post process payment in our system
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='callback'>
-            /// payment callback parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2666,11 +2444,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
     /// </summary>
     public partial interface IOrderModule
     {
-        /// <summary>
-        /// Search customer orders by given criteria
-        /// </summary>
         /// <param name='criteria'>
-        /// criteria
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2688,15 +2462,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SearchResult>> SearchWithHttpMessagesAsync(SearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Find customer order by number
-        /// </summary>
-        /// <remarks>
-        /// Return a single customer order with all nested documents or null
-        /// if order was not found
-        /// </remarks>
         /// <param name='number'>
-        /// customer order number
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2714,15 +2480,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> GetByNumberWithHttpMessagesAsync(string number, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Find customer order by id
-        /// </summary>
-        /// <remarks>
-        /// Return a single customer order with all nested documents or null
-        /// if order was not found
-        /// </remarks>
         /// <param name='id'>
-        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2740,11 +2498,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> GetByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Create new customer order based on shopping cart.
-        /// </summary>
         /// <param name='id'>
-        /// shopping cart id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2762,20 +2516,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CreateOrderFromCartWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Register customer order payment in external payment system
-        /// </summary>
-        /// <remarks>
-        /// Used in storefront checkout or manual order payment registration
-        /// </remarks>
         /// <param name='orderId'>
-        /// customer order id
         /// </param>
         /// <param name='paymentId'>
-        /// payment id
         /// </param>
         /// <param name='bankCardInfo'>
-        /// banking card information
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2793,11 +2538,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProcessPaymentResult>> ProcessOrderPaymentsWithHttpMessagesAsync(string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update a existing customer order
-        /// </summary>
         /// <param name='customerOrder'>
-        /// customer order
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2812,11 +2553,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateWithHttpMessagesAsync(CustomerOrder customerOrder, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Add new customer order to system
-        /// </summary>
         /// <param name='customerOrder'>
-        /// customer order
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2834,11 +2571,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CreateOrderWithHttpMessagesAsync(CustomerOrder customerOrder, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete a whole customer orders
-        /// </summary>
         /// <param name='ids'>
-        /// customer order ids for delete
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2853,15 +2586,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteOrdersByIdsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get new shipment for specified customer order
-        /// </summary>
-        /// <remarks>
-        /// Return new shipment document with populates all required
-        /// properties.
-        /// </remarks>
         /// <param name='id'>
-        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2879,15 +2604,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Shipment>> GetNewShipmentWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get new payment for specified customer order
-        /// </summary>
-        /// <remarks>
-        /// Return new payment  document with populates all required
-        /// properties.
-        /// </remarks>
         /// <param name='id'>
-        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2905,14 +2622,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PaymentIn>> GetNewPaymentWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete a concrete customer order operation (document)
-        /// </summary>
         /// <param name='id'>
-        /// customer order id
         /// </param>
         /// <param name='operationId'>
-        /// operation id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2927,15 +2639,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteWithHttpMessagesAsync(string id, string operationId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get a some order statistic information for Commerce manager
-        /// dashboard
-        /// </summary>
         /// <param name='start'>
-        /// start interval date
         /// </param>
         /// <param name='end'>
-        /// end interval date
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2950,12 +2656,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DashboardStatisticsResult>> GetDashboardStatisticsWithHttpMessagesAsync(System.DateTime? start = default(System.DateTime?), System.DateTime? end = default(System.DateTime?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Payment callback operation used by external payment services to
-        /// inform post process payment in our system
-        /// </summary>
         /// <param name='callback'>
-        /// payment callback parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3103,9 +2804,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent customer order
-    /// </summary>
     public partial class CustomerOrder
     {
         /// <summary>
@@ -3116,39 +2814,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the CustomerOrder class.
         /// </summary>
-        /// <param name="channelId">Chanel (Web site, mobile application
-        /// etc)</param>
-        /// <param name="employeeName">Employee who should handle that
-        /// order</param>
-        /// <param name="addresses">All shipping and billing order
-        /// addresses</param>
-        /// <param name="inPayments">Incoming payments operations</param>
-        /// <param name="items">All customer order line items</param>
-        /// <param name="shipments">All customer order shipments</param>
-        /// <param name="discount">All customer order discount</param>
-        /// <param name="taxDetails">Tax details</param>
-        /// <param name="scopes">Security permission scopes used for security
-        /// check on UI</param>
-        /// <param name="operationType">Operation type string representation
-        /// (CustomerOrder, Shipment etc)</param>
-        /// <param name="number">Unique user friendly document number
-        /// (generate automatically based on special algorithm
-        /// realization)</param>
-        /// <param name="isApproved">Flag can be used to refer to a specific
-        /// order status in a variety of user scenarios with combination of
-        /// Status
-        /// (Order completion, Shipment send etc)</param>
-        /// <param name="status">Current operation status may have any values
-        /// defined by concrete business process</param>
-        /// <param name="currency">Currency code</param>
-        /// <param name="sum">Money amount without tax</param>
-        /// <param name="tax">Tax total</param>
-        /// <param name="parentOperationId">Used for construct hierarchy of
-        /// operation and represent parent operation id</param>
-        /// <param name="objectType">Used for dynamic properties management,
-        /// contains object type string</param>
-        /// <param name="dynamicProperties">Dynamic properties
-        /// collections</param>
         public CustomerOrder(string customerName = default(string), string customerId = default(string), string channelId = default(string), string storeId = default(string), string storeName = default(string), string organizationName = default(string), string organizationId = default(string), string employeeName = default(string), string employeeId = default(string), double? discountAmount = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<PaymentIn> inPayments = default(System.Collections.Generic.IList<PaymentIn>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), Discount discount = default(Discount), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), System.Collections.Generic.IList<string> scopes = default(System.Collections.Generic.IList<string>), string operationType = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string parentOperationId = default(string), System.Collections.Generic.IList<Operation> childrenOperations = default(System.Collections.Generic.IList<Operation>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             CustomerName = customerName;
@@ -3202,7 +2867,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// Gets or sets chanel (Web site, mobile application etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "channelId")]
         public string ChannelId { get; set; }
@@ -3228,7 +2892,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string OrganizationId { get; set; }
 
         /// <summary>
-        /// Gets or sets employee who should handle that order
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "employeeName")]
         public string EmployeeName { get; set; }
@@ -3244,73 +2907,56 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public double? DiscountAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets all shipping and billing order addresses
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "addresses")]
         public System.Collections.Generic.IList<Address> Addresses { get; set; }
 
         /// <summary>
-        /// Gets or sets incoming payments operations
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "inPayments")]
         public System.Collections.Generic.IList<PaymentIn> InPayments { get; set; }
 
         /// <summary>
-        /// Gets or sets all customer order line items
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
         public System.Collections.Generic.IList<LineItem> Items { get; set; }
 
         /// <summary>
-        /// Gets or sets all customer order shipments
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shipments")]
         public System.Collections.Generic.IList<Shipment> Shipments { get; set; }
 
         /// <summary>
-        /// Gets or sets all customer order discount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discount")]
         public Discount Discount { get; set; }
 
         /// <summary>
-        /// Gets or sets tax details
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
         public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
 
         /// <summary>
-        /// Gets or sets security permission scopes used for security check on
-        /// UI
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "scopes")]
         public System.Collections.Generic.IList<string> Scopes { get; set; }
 
         /// <summary>
-        /// Gets or sets operation type string representation (CustomerOrder,
-        /// Shipment etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "operationType")]
         public string OperationType { get; set; }
 
         /// <summary>
-        /// Gets or sets unique user friendly document number (generate
-        /// automatically based on special algorithm realization)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "number")]
         public string Number { get; set; }
 
         /// <summary>
-        /// Gets or sets flag can be used to refer to a specific order status
-        /// in a variety of user scenarios with combination of Status
-        /// (Order completion, Shipment send etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isApproved")]
         public bool? IsApproved { get; set; }
 
         /// <summary>
-        /// Gets or sets current operation status may have any values defined
-        /// by concrete business process
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
         public string Status { get; set; }
@@ -3321,7 +2967,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets currency code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
@@ -3332,13 +2977,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public bool? TaxIncluded { get; set; }
 
         /// <summary>
-        /// Gets or sets money amount without tax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sum")]
         public double? Sum { get; set; }
 
         /// <summary>
-        /// Gets or sets tax total
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "tax")]
         public double? Tax { get; set; }
@@ -3359,8 +3002,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string CancelReason { get; set; }
 
         /// <summary>
-        /// Gets or sets used for construct hierarchy of operation and
-        /// represent parent operation id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
         public string ParentOperationId { get; set; }
@@ -3371,14 +3012,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public System.Collections.Generic.IList<Operation> ChildrenOperations { get; set; }
 
         /// <summary>
-        /// Gets or sets used for dynamic properties management, contains
-        /// object type string
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic properties collections
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
         public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
@@ -3542,9 +3180,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent incoming payment operation
-    /// </summary>
     public partial class PaymentIn
     {
         /// <summary>
@@ -3555,34 +3190,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PaymentIn class.
         /// </summary>
-        /// <param name="organizationName">Customer organization</param>
-        /// <param name="purpose">Payment purpose text</param>
-        /// <param name="paymentMethod">Payment method for current order
-        /// payment</param>
-        /// <param name="incomingDate">Expected date of receipt of
-        /// payment</param>
-        /// <param name="outerId">Outer id used for link with payment in
-        /// external systems</param>
-        /// <param name="operationType">Operation type string representation
-        /// (CustomerOrder, Shipment etc)</param>
-        /// <param name="number">Unique user friendly document number
-        /// (generate automatically based on special algorithm
-        /// realization)</param>
-        /// <param name="isApproved">Flag can be used to refer to a specific
-        /// order status in a variety of user scenarios with combination of
-        /// Status
-        /// (Order completion, Shipment send etc)</param>
-        /// <param name="status">Current operation status may have any values
-        /// defined by concrete business process</param>
-        /// <param name="currency">Currency code</param>
-        /// <param name="sum">Money amount without tax</param>
-        /// <param name="tax">Tax total</param>
-        /// <param name="parentOperationId">Used for construct hierarchy of
-        /// operation and represent parent operation id</param>
-        /// <param name="objectType">Used for dynamic properties management,
-        /// contains object type string</param>
-        /// <param name="dynamicProperties">Dynamic properties
-        /// collections</param>
         public PaymentIn(string organizationName = default(string), string organizationId = default(string), string customerName = default(string), string customerId = default(string), string purpose = default(string), PaymentMethod paymentMethod = default(PaymentMethod), System.DateTime? incomingDate = default(System.DateTime?), string outerId = default(string), string operationType = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string parentOperationId = default(string), System.Collections.Generic.IList<Operation> childrenOperations = default(System.Collections.Generic.IList<Operation>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             OrganizationName = organizationName;
@@ -3617,7 +3224,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets customer organization
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "organizationName")]
         public string OrganizationName { get; set; }
@@ -3638,55 +3244,41 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// Gets or sets payment purpose text
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "purpose")]
         public string Purpose { get; set; }
 
         /// <summary>
-        /// Gets or sets payment method for current order payment
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethod")]
         public PaymentMethod PaymentMethod { get; set; }
 
         /// <summary>
-        /// Gets or sets expected date of receipt of payment
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "incomingDate")]
         public System.DateTime? IncomingDate { get; set; }
 
         /// <summary>
-        /// Gets or sets outer id used for link with payment in external
-        /// systems
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "outerId")]
         public string OuterId { get; set; }
 
         /// <summary>
-        /// Gets or sets operation type string representation (CustomerOrder,
-        /// Shipment etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "operationType")]
         public string OperationType { get; set; }
 
         /// <summary>
-        /// Gets or sets unique user friendly document number (generate
-        /// automatically based on special algorithm realization)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "number")]
         public string Number { get; set; }
 
         /// <summary>
-        /// Gets or sets flag can be used to refer to a specific order status
-        /// in a variety of user scenarios with combination of Status
-        /// (Order completion, Shipment send etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isApproved")]
         public bool? IsApproved { get; set; }
 
         /// <summary>
-        /// Gets or sets current operation status may have any values defined
-        /// by concrete business process
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
         public string Status { get; set; }
@@ -3697,7 +3289,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets currency code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
@@ -3708,13 +3299,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public bool? TaxIncluded { get; set; }
 
         /// <summary>
-        /// Gets or sets money amount without tax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sum")]
         public double? Sum { get; set; }
 
         /// <summary>
-        /// Gets or sets tax total
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "tax")]
         public double? Tax { get; set; }
@@ -3735,8 +3324,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string CancelReason { get; set; }
 
         /// <summary>
-        /// Gets or sets used for construct hierarchy of operation and
-        /// represent parent operation id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
         public string ParentOperationId { get; set; }
@@ -3747,14 +3334,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public System.Collections.Generic.IList<Operation> ChildrenOperations { get; set; }
 
         /// <summary>
-        /// Gets or sets used for dynamic properties management, contains
-        /// object type string
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic properties collections
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
         public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
@@ -3804,24 +3388,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PaymentMethod class.
         /// </summary>
-        /// <param name="code">Gets or sets the value of payment gateway
-        /// code</param>
-        /// <param name="name">Gets or sets the value of payment method
-        /// name</param>
-        /// <param name="iconUrl">Gets or sets the value of payment method
-        /// logo absolute URL</param>
-        /// <param name="description">Gets or sets the value of payment method
-        /// description</param>
-        /// <param name="paymentMethodType">Gets or sets the value of payment
-        /// method type. Possible values include: 'unknown', 'standard',
-        /// 'redirection', 'preparedForm'</param>
-        /// <param name="paymentMethodGroupType">Gets or sets the value of
-        /// payment method group type. Possible values include: 'paypal',
-        /// 'bankCard', 'alternative', 'manual'</param>
-        /// <param name="priority">Gets or sets the value of payment method
-        /// priority</param>
-        /// <param name="isAvailableForPartial">Is payment method available
-        /// for partial payments</param>
+        /// <param name="paymentMethodType">Possible values include:
+        /// 'unknown', 'standard', 'redirection', 'preparedForm'</param>
+        /// <param name="paymentMethodGroupType">Possible values include:
+        /// 'paypal', 'bankCard', 'alternative', 'manual'</param>
         public PaymentMethod(string code = default(string), string name = default(string), string iconUrl = default(string), string description = default(string), string paymentMethodType = default(string), string paymentMethodGroupType = default(string), int? priority = default(int?), bool? isAvailableForPartial = default(bool?))
         {
             Code = code;
@@ -3835,51 +3405,45 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of payment gateway code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method logo absolute URL
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "iconUrl")]
         public string IconUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method description
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method type. Possible values
-        /// include: 'unknown', 'standard', 'redirection', 'preparedForm'
+        /// Gets or sets possible values include: 'unknown', 'standard',
+        /// 'redirection', 'preparedForm'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodType")]
         public string PaymentMethodType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method group type. Possible
-        /// values include: 'paypal', 'bankCard', 'alternative', 'manual'
+        /// Gets or sets possible values include: 'paypal', 'bankCard',
+        /// 'alternative', 'manual'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodGroupType")]
         public string PaymentMethodGroupType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method priority
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
         public int? Priority { get; set; }
 
         /// <summary>
-        /// Gets or sets is payment method available for partial payments
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isAvailableForPartial")]
         public bool? IsAvailableForPartial { get; set; }
@@ -3894,10 +3458,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent base class for all order module documents (operations)
-    /// contains shared set of properties
-    /// </summary>
     public partial class Operation
     {
         /// <summary>
@@ -3908,26 +3468,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Operation class.
         /// </summary>
-        /// <param name="operationType">Operation type string representation
-        /// (CustomerOrder, Shipment etc)</param>
-        /// <param name="number">Unique user friendly document number
-        /// (generate automatically based on special algorithm
-        /// realization)</param>
-        /// <param name="isApproved">Flag can be used to refer to a specific
-        /// order status in a variety of user scenarios with combination of
-        /// Status
-        /// (Order completion, Shipment send etc)</param>
-        /// <param name="status">Current operation status may have any values
-        /// defined by concrete business process</param>
-        /// <param name="currency">Currency code</param>
-        /// <param name="sum">Money amount without tax</param>
-        /// <param name="tax">Tax total</param>
-        /// <param name="parentOperationId">Used for construct hierarchy of
-        /// operation and represent parent operation id</param>
-        /// <param name="objectType">Used for dynamic properties management,
-        /// contains object type string</param>
-        /// <param name="dynamicProperties">Dynamic properties
-        /// collections</param>
         public Operation(string operationType = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string parentOperationId = default(string), System.Collections.Generic.IList<Operation> childrenOperations = default(System.Collections.Generic.IList<Operation>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             OperationType = operationType;
@@ -3954,30 +3494,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets operation type string representation (CustomerOrder,
-        /// Shipment etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "operationType")]
         public string OperationType { get; set; }
 
         /// <summary>
-        /// Gets or sets unique user friendly document number (generate
-        /// automatically based on special algorithm realization)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "number")]
         public string Number { get; set; }
 
         /// <summary>
-        /// Gets or sets flag can be used to refer to a specific order status
-        /// in a variety of user scenarios with combination of Status
-        /// (Order completion, Shipment send etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isApproved")]
         public bool? IsApproved { get; set; }
 
         /// <summary>
-        /// Gets or sets current operation status may have any values defined
-        /// by concrete business process
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
         public string Status { get; set; }
@@ -3988,7 +3519,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets currency code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
@@ -3999,13 +3529,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public bool? TaxIncluded { get; set; }
 
         /// <summary>
-        /// Gets or sets money amount without tax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sum")]
         public double? Sum { get; set; }
 
         /// <summary>
-        /// Gets or sets tax total
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "tax")]
         public double? Tax { get; set; }
@@ -4026,8 +3554,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string CancelReason { get; set; }
 
         /// <summary>
-        /// Gets or sets used for construct hierarchy of operation and
-        /// represent parent operation id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
         public string ParentOperationId { get; set; }
@@ -4038,14 +3564,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public System.Collections.Generic.IList<Operation> ChildrenOperations { get; set; }
 
         /// <summary>
-        /// Gets or sets used for dynamic properties management, contains
-        /// object type string
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic properties collections
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
         public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
@@ -4286,21 +3809,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the LineItem class.
         /// </summary>
-        /// <param name="priceId">Price id which that was used in the
-        /// formation of this line item</param>
-        /// <param name="basePrice">Price with tax and without dicount</param>
-        /// <param name="price">Price with tax and discount</param>
-        /// <param name="discountAmount">discount amount</param>
-        /// <param name="tax">Tax sum</param>
-        /// <param name="reserveQuantity">Reserve quantity</param>
-        /// <param name="isCancelled">Flag represent that line item was
-        /// canceled</param>
-        /// <param name="cancelReason">Text representation of cancel
-        /// reason</param>
-        /// <param name="objectType">Used for dynamic properties management,
-        /// contains object type string</param>
-        /// <param name="dynamicProperties">Dynamic properties
-        /// collections</param>
         public LineItem(string priceId = default(string), double? basePrice = default(double?), double? price = default(double?), double? discountAmount = default(double?), double? tax = default(double?), string currency = default(string), int? reserveQuantity = default(int?), int? quantity = default(int?), string productId = default(string), string catalogId = default(string), string categoryId = default(string), string sku = default(string), string productType = default(string), string name = default(string), string imageUrl = default(string), string displayName = default(string), bool? isGift = default(bool?), string shippingMethodCode = default(string), string fulfilmentLocationCode = default(string), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string taxType = default(string), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), Discount discount = default(Discount), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             PriceId = priceId;
@@ -4344,32 +3852,26 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets price id which that was used in the formation of this
-        /// line item
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priceId")]
         public string PriceId { get; set; }
 
         /// <summary>
-        /// Gets or sets price with tax and without dicount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "basePrice")]
         public double? BasePrice { get; set; }
 
         /// <summary>
-        /// Gets or sets price with tax and discount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "price")]
         public double? Price { get; set; }
 
         /// <summary>
-        /// Gets or sets discount amount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
         public double? DiscountAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets tax sum
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "tax")]
         public double? Tax { get; set; }
@@ -4380,7 +3882,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets reserve quantity
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "reserveQuantity")]
         public int? ReserveQuantity { get; set; }
@@ -4481,7 +3982,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string TaxType { get; set; }
 
         /// <summary>
-        /// Gets or sets flag represent that line item was canceled
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isCancelled")]
         public bool? IsCancelled { get; set; }
@@ -4492,7 +3992,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public System.DateTime? CancelledDate { get; set; }
 
         /// <summary>
-        /// Gets or sets text representation of cancel reason
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "cancelReason")]
         public string CancelReason { get; set; }
@@ -4508,14 +4007,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
 
         /// <summary>
-        /// Gets or sets used for dynamic properties management, contains
-        /// object type string
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic properties collections
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
         public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
@@ -4609,9 +4105,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent coupon entered by customer on checkout
-    /// </summary>
     public partial class Coupon
     {
         /// <summary>
@@ -4690,11 +4183,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent customer order shipment operation (document)
-    /// contains information as delivery address, items,
-    /// dimensions etc.
-    /// </summary>
     public partial class Shipment
     {
         /// <summary>
@@ -4705,37 +4193,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Shipment class.
         /// </summary>
-        /// <param name="organizationName">Customer organization</param>
-        /// <param name="fulfillmentCenterName">Fulfillment center where
-        /// shipment will be handled</param>
-        /// <param name="shippingMethod">Selected shipping method to deliver
-        /// current shipment</param>
-        /// <param name="employeeName">Employee who responsible for handling
-        /// current shipment</param>
-        /// <param name="items">Information about quantity and order items
-        /// belongs to current shipment</param>
-        /// <param name="packages">Information about packages belongs to
-        /// current shipment</param>
-        /// <param name="operationType">Operation type string representation
-        /// (CustomerOrder, Shipment etc)</param>
-        /// <param name="number">Unique user friendly document number
-        /// (generate automatically based on special algorithm
-        /// realization)</param>
-        /// <param name="isApproved">Flag can be used to refer to a specific
-        /// order status in a variety of user scenarios with combination of
-        /// Status
-        /// (Order completion, Shipment send etc)</param>
-        /// <param name="status">Current operation status may have any values
-        /// defined by concrete business process</param>
-        /// <param name="currency">Currency code</param>
-        /// <param name="sum">Money amount without tax</param>
-        /// <param name="tax">Tax total</param>
-        /// <param name="parentOperationId">Used for construct hierarchy of
-        /// operation and represent parent operation id</param>
-        /// <param name="objectType">Used for dynamic properties management,
-        /// contains object type string</param>
-        /// <param name="dynamicProperties">Dynamic properties
-        /// collections</param>
         public Shipment(string organizationName = default(string), string organizationId = default(string), string fulfillmentCenterName = default(string), string fulfillmentCenterId = default(string), ShippingMethod shippingMethod = default(ShippingMethod), string employeeName = default(string), string employeeId = default(string), double? discountAmount = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string taxType = default(string), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), System.Collections.Generic.IList<ShipmentPackage> packages = default(System.Collections.Generic.IList<ShipmentPackage>), System.Collections.Generic.IList<PaymentIn> inPayments = default(System.Collections.Generic.IList<PaymentIn>), Address deliveryAddress = default(Address), Discount discount = default(Discount), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string operationType = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string parentOperationId = default(string), System.Collections.Generic.IList<Operation> childrenOperations = default(System.Collections.Generic.IList<Operation>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             OrganizationName = organizationName;
@@ -4783,7 +4240,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets customer organization
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "organizationName")]
         public string OrganizationName { get; set; }
@@ -4794,7 +4250,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string OrganizationId { get; set; }
 
         /// <summary>
-        /// Gets or sets fulfillment center where shipment will be handled
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "fulfillmentCenterName")]
         public string FulfillmentCenterName { get; set; }
@@ -4805,13 +4260,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string FulfillmentCenterId { get; set; }
 
         /// <summary>
-        /// Gets or sets selected shipping method to deliver current shipment
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shippingMethod")]
         public ShippingMethod ShippingMethod { get; set; }
 
         /// <summary>
-        /// Gets or sets employee who responsible for handling current shipment
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "employeeName")]
         public string EmployeeName { get; set; }
@@ -4862,14 +4315,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string TaxType { get; set; }
 
         /// <summary>
-        /// Gets or sets information about quantity and order items belongs to
-        /// current shipment
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
         public System.Collections.Generic.IList<ShipmentItem> Items { get; set; }
 
         /// <summary>
-        /// Gets or sets information about packages belongs to current shipment
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "packages")]
         public System.Collections.Generic.IList<ShipmentPackage> Packages { get; set; }
@@ -4895,30 +4345,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
 
         /// <summary>
-        /// Gets or sets operation type string representation (CustomerOrder,
-        /// Shipment etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "operationType")]
         public string OperationType { get; set; }
 
         /// <summary>
-        /// Gets or sets unique user friendly document number (generate
-        /// automatically based on special algorithm realization)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "number")]
         public string Number { get; set; }
 
         /// <summary>
-        /// Gets or sets flag can be used to refer to a specific order status
-        /// in a variety of user scenarios with combination of Status
-        /// (Order completion, Shipment send etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isApproved")]
         public bool? IsApproved { get; set; }
 
         /// <summary>
-        /// Gets or sets current operation status may have any values defined
-        /// by concrete business process
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
         public string Status { get; set; }
@@ -4929,7 +4370,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets currency code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
@@ -4940,13 +4380,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public bool? TaxIncluded { get; set; }
 
         /// <summary>
-        /// Gets or sets money amount without tax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sum")]
         public double? Sum { get; set; }
 
         /// <summary>
-        /// Gets or sets tax total
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "tax")]
         public double? Tax { get; set; }
@@ -4967,8 +4405,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string CancelReason { get; set; }
 
         /// <summary>
-        /// Gets or sets used for construct hierarchy of operation and
-        /// represent parent operation id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
         public string ParentOperationId { get; set; }
@@ -4979,14 +4415,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public System.Collections.Generic.IList<Operation> ChildrenOperations { get; set; }
 
         /// <summary>
-        /// Gets or sets used for dynamic properties management, contains
-        /// object type string
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic properties collections
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
         public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
@@ -5036,17 +4469,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShippingMethod class.
         /// </summary>
-        /// <param name="code">Code used for link shipment with external
-        /// carrier service implementation (FedEx, USPS etc)</param>
-        /// <param name="name">Method name (system name)</param>
-        /// <param name="description">Gets or sets the value of shipping
-        /// method name</param>
-        /// <param name="optionName">Describe some shipment options (Vip, Air,
-        /// Moment etc)</param>
-        /// <param name="optionDescription">Gets or sets the value of shipping
-        /// method option description</param>
-        /// <param name="logoUrl">Gets or sets the value of shipping method
-        /// logo absolute URL</param>
         public ShippingMethod(string code = default(string), string name = default(string), string description = default(string), string optionName = default(string), string optionDescription = default(string), string logoUrl = default(string))
         {
             Code = code;
@@ -5058,38 +4480,31 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets code used for link shipment with external carrier
-        /// service implementation (FedEx, USPS etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets method name (system name)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets describe some shipment options (Vip, Air, Moment etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "optionName")]
         public string OptionName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method option description
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "optionDescription")]
         public string OptionDescription { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method logo absolute URL
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
         public string LogoUrl { get; set; }
@@ -5104,9 +4519,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent information about quantity and line item belongs to shipment
-    /// </summary>
     public partial class ShipmentItem
     {
         /// <summary>
@@ -5347,9 +4759,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent process payment request result
-    /// </summary>
     public partial class ProcessPaymentResult
     {
         /// <summary>
@@ -5365,10 +4774,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// 'voided', 'custom', 'cancelled'</param>
         /// <param name="paymentMethodType">Possible values include:
         /// 'unknown', 'standard', 'redirection', 'preparedForm'</param>
-        /// <param name="redirectUrl">Redirect url used for OutSite payment
-        /// processing</param>
-        /// <param name="htmlForm">Generated Html form used for InSite payment
-        /// processing</param>
         public ProcessPaymentResult(string newPaymentStatus = default(string), string paymentMethodType = default(string), string redirectUrl = default(string), bool? isSuccess = default(bool?), string error = default(string), string htmlForm = default(string), string outerId = default(string))
         {
             NewPaymentStatus = newPaymentStatus;
@@ -5396,7 +4801,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string PaymentMethodType { get; set; }
 
         /// <summary>
-        /// Gets or sets redirect url used for OutSite payment processing
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "redirectUrl")]
         public string RedirectUrl { get; set; }
@@ -5412,7 +4816,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         public string Error { get; set; }
 
         /// <summary>
-        /// Gets or sets generated Html form used for InSite payment processing
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "htmlForm")]
         public string HtmlForm { get; set; }

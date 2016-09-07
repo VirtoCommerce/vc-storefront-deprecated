@@ -361,7 +361,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             var themeEngine = (ShopifyLiquidThemeEngine)Template.FileSystem;
             var workContext = themeEngine.WorkContext;
 
-            var terms = workContext.CurrentCatalogSearchCriteria.Terms
+            var terms = workContext.CurrentProductSearchCriteria.Terms
                 .Select(t => new Term { Name = t.Name, Value = t.Value })
                 .ToList();
 

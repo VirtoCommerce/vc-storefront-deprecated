@@ -344,17 +344,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// </summary>
         public CartModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Get shopping cart by store id and customer id
-        /// </summary>
-        /// <remarks>
-        /// Returns shopping cart or null if it is not found
-        /// </remarks>
         /// <param name='storeId'>
-        /// Store id
         /// </param>
         /// <param name='customerId'>
-        /// Customer id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -492,11 +484,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get shopping cart by id
-        /// </summary>
         /// <param name='id'>
-        /// Shopping cart id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -577,7 +565,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -628,11 +616,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Search for shopping carts by criteria
-        /// </summary>
         /// <param name='criteria'>
-        /// Search criteria
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -769,11 +753,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Update shopping cart
-        /// </summary>
         /// <param name='cart'>
-        /// Shopping cart model
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -910,11 +890,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Create shopping cart
-        /// </summary>
         /// <param name='cart'>
-        /// Shopping cart model
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1051,11 +1027,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Delete shopping carts by ids
-        /// </summary>
         /// <param name='ids'>
-        /// Array of shopping cart ids
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1184,11 +1156,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get shipping methods for shopping cart
-        /// </summary>
         /// <param name='cartId'>
-        /// Shopping cart id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1320,11 +1288,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get payment methods for shopping cart
-        /// </summary>
         /// <param name='cartId'>
-        /// Shopping cart id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1456,11 +1420,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get payment methods for store
-        /// </summary>
         /// <param name='storeId'>
-        /// Store id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1608,40 +1568,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
     /// </summary>
     public static partial class CartModuleExtensions
     {
-            /// <summary>
-            /// Get shopping cart by store id and customer id
-            /// </summary>
-            /// <remarks>
-            /// Returns shopping cart or null if it is not found
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='storeId'>
-            /// Store id
             /// </param>
             /// <param name='customerId'>
-            /// Customer id
             /// </param>
             public static ShoppingCart GetCurrentCart(this ICartModule operations, string storeId, string customerId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetCurrentCartAsync(storeId, customerId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get shopping cart by store id and customer id
-            /// </summary>
-            /// <remarks>
-            /// Returns shopping cart or null if it is not found
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='storeId'>
-            /// Store id
             /// </param>
             /// <param name='customerId'>
-            /// Customer id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1654,28 +1598,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get shopping cart by id
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Shopping cart id
             /// </param>
             public static ShoppingCart GetCartById(this ICartModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetCartByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get shopping cart by id
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
-            /// Shopping cart id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1688,28 +1624,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 }
             }
 
-            /// <summary>
-            /// Search for shopping carts by criteria
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// Search criteria
             /// </param>
             public static SearchResult Search(this ICartModule operations, SearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Search for shopping carts by criteria
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
-            /// Search criteria
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1722,28 +1650,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 }
             }
 
-            /// <summary>
-            /// Update shopping cart
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='cart'>
-            /// Shopping cart model
             /// </param>
             public static ShoppingCart Update(this ICartModule operations, ShoppingCart cart)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).UpdateAsync(cart), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Update shopping cart
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='cart'>
-            /// Shopping cart model
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1756,28 +1676,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 }
             }
 
-            /// <summary>
-            /// Create shopping cart
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='cart'>
-            /// Shopping cart model
             /// </param>
             public static ShoppingCart Create(this ICartModule operations, ShoppingCart cart)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).CreateAsync(cart), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Create shopping cart
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='cart'>
-            /// Shopping cart model
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1790,28 +1702,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 }
             }
 
-            /// <summary>
-            /// Delete shopping carts by ids
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// Array of shopping cart ids
             /// </param>
             public static void DeleteCarts(this ICartModule operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).DeleteCartsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Delete shopping carts by ids
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
-            /// Array of shopping cart ids
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1821,28 +1725,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 await operations.DeleteCartsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Get shipping methods for shopping cart
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='cartId'>
-            /// Shopping cart id
             /// </param>
             public static System.Collections.Generic.IList<ShippingMethod> GetShipmentMethods(this ICartModule operations, string cartId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetShipmentMethodsAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get shipping methods for shopping cart
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='cartId'>
-            /// Shopping cart id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1855,28 +1751,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get payment methods for shopping cart
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='cartId'>
-            /// Shopping cart id
             /// </param>
             public static System.Collections.Generic.IList<PaymentMethod> GetPaymentMethods(this ICartModule operations, string cartId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetPaymentMethodsAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get payment methods for shopping cart
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='cartId'>
-            /// Shopping cart id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1889,28 +1777,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 }
             }
 
-            /// <summary>
-            /// Get payment methods for store
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='storeId'>
-            /// Store id
             /// </param>
             public static System.Collections.Generic.IList<PaymentMethod> GetPaymentMethodsForStore(this ICartModule operations, string storeId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetPaymentMethodsForStoreAsync(storeId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get payment methods for store
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='storeId'>
-            /// Store id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1938,17 +1818,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
     /// </summary>
     public partial interface ICartModule
     {
-        /// <summary>
-        /// Get shopping cart by store id and customer id
-        /// </summary>
-        /// <remarks>
-        /// Returns shopping cart or null if it is not found
-        /// </remarks>
         /// <param name='storeId'>
-        /// Store id
         /// </param>
         /// <param name='customerId'>
-        /// Customer id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1966,11 +1838,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> GetCurrentCartWithHttpMessagesAsync(string storeId, string customerId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get shopping cart by id
-        /// </summary>
         /// <param name='id'>
-        /// Shopping cart id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1988,11 +1856,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> GetCartByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Search for shopping carts by criteria
-        /// </summary>
         /// <param name='criteria'>
-        /// Search criteria
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2010,11 +1874,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SearchResult>> SearchWithHttpMessagesAsync(SearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Update shopping cart
-        /// </summary>
         /// <param name='cart'>
-        /// Shopping cart model
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2032,11 +1892,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> UpdateWithHttpMessagesAsync(ShoppingCart cart, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Create shopping cart
-        /// </summary>
         /// <param name='cart'>
-        /// Shopping cart model
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2054,11 +1910,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> CreateWithHttpMessagesAsync(ShoppingCart cart, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Delete shopping carts by ids
-        /// </summary>
         /// <param name='ids'>
-        /// Array of shopping cart ids
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2073,11 +1925,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteCartsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get shipping methods for shopping cart
-        /// </summary>
         /// <param name='cartId'>
-        /// Shopping cart id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2095,11 +1943,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<ShippingMethod>>> GetShipmentMethodsWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get payment methods for shopping cart
-        /// </summary>
         /// <param name='cartId'>
-        /// Shopping cart id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2117,11 +1961,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PaymentMethod>>> GetPaymentMethodsWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get payment methods for store
-        /// </summary>
         /// <param name='storeId'>
-        /// Store id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2159,73 +1999,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShoppingCart class.
         /// </summary>
-        /// <param name="name">Gets or sets the value of shopping cart
-        /// name</param>
-        /// <param name="storeId">Gets or sets the value of store id</param>
-        /// <param name="channelId">Gets or sets the value of channel
-        /// id</param>
-        /// <param name="isAnonymous">Gets or sets the flag of shopping cart
-        /// is anonymous</param>
-        /// <param name="customerId">Gets or sets the value of shopping cart
-        /// customer id</param>
-        /// <param name="customerName">Gets or sets the value of shopping cart
-        /// customer name</param>
-        /// <param name="organizationId">Gets or sets the value of shopping
-        /// cart organization id</param>
-        /// <param name="currency">Gets or sets the value of shopping cart
-        /// currency</param>
-        /// <param name="coupon">Gets or sets the shopping cart coupon</param>
-        /// <param name="languageCode">Gets or sets the value of shopping cart
-        /// language code</param>
-        /// <param name="taxIncluded">Gets or sets the flag of shopping cart
-        /// has tax</param>
-        /// <param name="isRecuring">Gets or sets the flag of shopping cart is
-        /// recurring</param>
-        /// <param name="comment">Gets or sets the value of shopping cart text
-        /// comment</param>
-        /// <param name="volumetricWeight">Gets or sets the value of
-        /// volumetric weight</param>
-        /// <param name="weightUnit">Gets or sets the value of weight
-        /// unit</param>
-        /// <param name="weight">Gets or sets the value of shopping cart
-        /// weight</param>
-        /// <param name="measureUnit">Gets or sets the value of measurement
-        /// unit</param>
-        /// <param name="height">Gets or sets the value of height</param>
-        /// <param name="length">Gets or sets the value of length</param>
-        /// <param name="width">Gets or sets the value of width</param>
-        /// <param name="validationType">Represent any line item validation
-        /// type (noPriceValidate, noQuantityValidate etc) this value can be
-        /// used in storefront
-        /// to select appropriate validation strategy</param>
-        /// <param name="total">Gets or sets the value of shopping cart total
-        /// cost</param>
-        /// <param name="subTotal">Gets or sets the value of shopping cart
-        /// subtotal</param>
-        /// <param name="shippingTotal">Gets or sets the value of shipping
-        /// total cost</param>
-        /// <param name="handlingTotal">Gets or sets the value of handling
-        /// total cost</param>
-        /// <param name="discountTotal">Gets or sets the value of total
-        /// discount amount</param>
-        /// <param name="taxTotal">Gets or sets the value of total tax
-        /// cost</param>
-        /// <param name="addresses">Gets or sets the collection of shopping
-        /// cart addresses</param>
-        /// <param name="items">Gets or sets the value of shopping cart line
-        /// items</param>
-        /// <param name="payments">Gets or sets the collection of shopping
-        /// cart payments</param>
-        /// <param name="shipments">Gets or sets the collection of shopping
-        /// cart shipments</param>
-        /// <param name="discounts">Gets or sets the collection of shopping
-        /// cart discounts</param>
-        /// <param name="taxDetails">Gets or sets the collection of line item
-        /// tax detalization lines</param>
-        /// <param name="objectType">Used for dynamic properties management,
-        /// contains object type string</param>
-        /// <param name="dynamicProperties">Dynamic properties
-        /// collections</param>
         public ShoppingCart(string name = default(string), string storeId = default(string), string channelId = default(string), bool? isAnonymous = default(bool?), string customerId = default(string), string customerName = default(string), string organizationId = default(string), string currency = default(string), string coupon = default(string), string languageCode = default(string), bool? taxIncluded = default(bool?), bool? isRecuring = default(bool?), string comment = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string validationType = default(string), double? total = default(double?), double? subTotal = default(double?), double? shippingTotal = default(double?), double? handlingTotal = default(double?), double? discountTotal = default(double?), double? taxTotal = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Payment> payments = default(System.Collections.Generic.IList<Payment>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
@@ -2271,215 +2044,176 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of store id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
         public string StoreId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of channel id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "channelId")]
         public string ChannelId { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of shopping cart is anonymous
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isAnonymous")]
         public bool? IsAnonymous { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart customer id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "customerId")]
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart customer name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "customerName")]
         public string CustomerName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart organization id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "organizationId")]
         public string OrganizationId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart currency
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets the shopping cart coupon
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
         public string Coupon { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart language code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
         public string LanguageCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of shopping cart has tax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxIncluded")]
         public bool? TaxIncluded { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of shopping cart is recurring
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isRecuring")]
         public bool? IsRecuring { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart text comment
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "comment")]
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of volumetric weight
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "volumetricWeight")]
         public double? VolumetricWeight { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of weight unit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "weightUnit")]
         public string WeightUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart weight
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "weight")]
         public double? Weight { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of measurement unit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "measureUnit")]
         public string MeasureUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of height
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "height")]
         public double? Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of length
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "length")]
         public double? Length { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of width
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "width")]
         public double? Width { get; set; }
 
         /// <summary>
-        /// Gets or sets represent any line item validation type
-        /// (noPriceValidate, noQuantityValidate etc) this value can be used
-        /// in storefront
-        /// to select appropriate validation strategy
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "validationType")]
         public string ValidationType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart total cost
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
         public double? Total { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart subtotal
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "subTotal")]
         public double? SubTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping total cost
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shippingTotal")]
         public double? ShippingTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of handling total cost
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "handlingTotal")]
         public double? HandlingTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of total discount amount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
         public double? DiscountTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of total tax cost
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
         public double? TaxTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of shopping cart addresses
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "addresses")]
         public System.Collections.Generic.IList<Address> Addresses { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart line items
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
         public System.Collections.Generic.IList<LineItem> Items { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of shopping cart payments
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "payments")]
         public System.Collections.Generic.IList<Payment> Payments { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of shopping cart shipments
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shipments")]
         public System.Collections.Generic.IList<Shipment> Shipments { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of shopping cart discounts
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
         public System.Collections.Generic.IList<Discount> Discounts { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of line item tax detalization lines
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
         public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
 
         /// <summary>
-        /// Gets or sets used for dynamic properties management, contains
-        /// object type string
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic properties collections
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
         public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
@@ -2529,35 +2263,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Address class.
         /// </summary>
-        /// <param name="type">Gets or sets the value of address type.
-        /// Possible values include: 'billing', 'shipping',
+        /// <param name="type">Possible values include: 'billing', 'shipping',
         /// 'billingAndShipping'</param>
-        /// <param name="organization">Gets or sets the value of organization
-        /// name</param>
-        /// <param name="countryCode">Gets or sets the value of country
-        /// code</param>
-        /// <param name="countryName">Gets or sets the value of country
-        /// name</param>
-        /// <param name="city">Gets or sets the value of city name</param>
-        /// <param name="postalCode">Gets or sets the value of postal
-        /// code</param>
-        /// <param name="zip">Gets or sets the value of zip code</param>
-        /// <param name="line1">Gets or sets the value of address line
-        /// 1</param>
-        /// <param name="line2">Gets or sets the value of address line
-        /// 2</param>
-        /// <param name="regionId">Gets or sets the value of region
-        /// code</param>
-        /// <param name="regionName">Gets or sets the value of region
-        /// name</param>
-        /// <param name="firstName">Gets or sets the value of first
-        /// name</param>
-        /// <param name="middleName">Gets or sets the value of middle
-        /// name</param>
-        /// <param name="lastName">Gets or sets the value of last name</param>
-        /// <param name="phone">Gets or sets the value of phone number</param>
-        /// <param name="email">Gets or sets the value of E-mail
-        /// address</param>
         public Address(string type = default(string), string organization = default(string), string countryCode = default(string), string countryName = default(string), string city = default(string), string postalCode = default(string), string zip = default(string), string line1 = default(string), string line2 = default(string), string regionId = default(string), string regionName = default(string), string firstName = default(string), string middleName = default(string), string lastName = default(string), string phone = default(string), string email = default(string))
         {
             Type = type;
@@ -2579,98 +2286,83 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of address type. Possible values include:
-        /// 'billing', 'shipping', 'billingAndShipping'
+        /// Gets or sets possible values include: 'billing', 'shipping',
+        /// 'billingAndShipping'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of organization name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "organization")]
         public string Organization { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of country code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "countryCode")]
         public string CountryCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of country name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "countryName")]
         public string CountryName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of city name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "city")]
         public string City { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of postal code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "postalCode")]
         public string PostalCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of zip code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "zip")]
         public string Zip { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of address line 1
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "line1")]
         public string Line1 { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of address line 2
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "line2")]
         public string Line2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of region code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "regionId")]
         public string RegionId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of region name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "regionName")]
         public string RegionName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of first name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "firstName")]
         public string FirstName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of middle name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "middleName")]
         public string MiddleName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of last name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "lastName")]
         public string LastName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of phone number
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "phone")]
         public string Phone { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of E-mail address
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
@@ -2695,83 +2387,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the LineItem class.
         /// </summary>
-        /// <param name="productId">Gets or sets the value of product
-        /// id</param>
-        /// <param name="catalogId">Gets or sets the value of catalog
-        /// id</param>
-        /// <param name="categoryId">Gets or sets the value of category
-        /// id</param>
-        /// <param name="sku">Gets or sets the value of product SKU</param>
-        /// <param name="productType">Gets or sets the value of product type
-        /// (Digital, physical etc)</param>
-        /// <param name="name">Gets or sets the value of line item name</param>
-        /// <param name="quantity">Gets or sets the value of line item
-        /// quantity</param>
-        /// <param name="currency">Gets or sets the value of line item
-        /// currency</param>
-        /// <param name="warehouseLocation">Gets or sets the value of line
-        /// item warehouse location</param>
-        /// <param name="shipmentMethodCode">Gets or sets the value of line
-        /// item shipping method code</param>
-        /// <param name="requiredShipping">Gets or sets the requirement for
-        /// line item shipping</param>
-        /// <param name="thumbnailImageUrl">Gets or sets the value of line
-        /// item thumbnail image absolute URL</param>
-        /// <param name="imageUrl">Gets or sets the value of line item image
-        /// absolute URL</param>
-        /// <param name="isGift">Gets or sets the flag of line item is a
-        /// gift</param>
-        /// <param name="discounts">Gets or sets the collection of line item
-        /// discounts</param>
-        /// <param name="languageCode">Gets or sets the value of language
-        /// code</param>
-        /// <param name="comment">Gets or sets the value of line item
-        /// comment</param>
-        /// <param name="isReccuring">Gets or sets the flag of line item is
-        /// recurring</param>
-        /// <param name="taxIncluded">Gets or sets flag of line item has
-        /// tax</param>
-        /// <param name="volumetricWeight">Gets or sets the value of line item
-        /// volumetric weight</param>
-        /// <param name="weightUnit">Gets or sets the value of line item
-        /// weight unit</param>
-        /// <param name="weight">Gets or sets the value of line item
-        /// weight</param>
-        /// <param name="measureUnit">Gets or sets the value of line item
-        /// measurement unit</param>
-        /// <param name="height">Gets or sets the value of line item
-        /// height</param>
-        /// <param name="length">Gets or sets the value of line item
-        /// length</param>
-        /// <param name="width">Gets or sets the value of line item
-        /// width</param>
-        /// <param name="validationType">Represent any line item validation
-        /// type (noPriceValidate, noQuantityValidate etc) this value can be
-        /// used in storefront
-        /// to select appropriate validation strategy</param>
-        /// <param name="priceId">Price id which that was used in the
-        /// formation of this line item</param>
-        /// <param name="listPrice">Gets or sets the value of line item
-        /// original price</param>
-        /// <param name="salePrice">Gets or sets the value of line item sale
-        /// price (include static discount)</param>
-        /// <param name="placedPrice">Gets or sets the value of line item
-        /// actual price (include all types of discounts)</param>
-        /// <param name="extendedPrice">Gets or sets the value of line item
-        /// subtotal price (actual price * line item quantity)</param>
-        /// <param name="discountTotal">Gets or sets the value of line item
-        /// total discount amount</param>
-        /// <param name="taxTotal">Gets or sets the value of line item total
-        /// tax amount</param>
-        /// <param name="taxType">Gets or sets the value of line item tax
-        /// type</param>
-        /// <param name="taxDetails">Gets or sets the collection of line item
-        /// tax detalization lines</param>
-        /// <param name="objectType">Used for dynamic properties management,
-        /// contains object type string</param>
-        /// <param name="dynamicProperties">Dynamic properties
-        /// collections</param>
-        public LineItem(string productId = default(string), string catalogId = default(string), string categoryId = default(string), string sku = default(string), string productType = default(string), string name = default(string), int? quantity = default(int?), string currency = default(string), string warehouseLocation = default(string), string shipmentMethodCode = default(string), bool? requiredShipping = default(bool?), string thumbnailImageUrl = default(string), string imageUrl = default(string), bool? isGift = default(bool?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), string languageCode = default(string), string comment = default(string), bool? isReccuring = default(bool?), bool? taxIncluded = default(bool?), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string validationType = default(string), string priceId = default(string), double? listPrice = default(double?), double? listPriceWithTax = default(double?), double? salePrice = default(double?), double? salePriceWithTax = default(double?), double? placedPrice = default(double?), double? placedPriceWithTax = default(double?), double? extendedPrice = default(double?), double? extendedPriceWithTax = default(double?), double? discountTotal = default(double?), double? taxTotal = default(double?), string taxType = default(string), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public LineItem(string productId = default(string), string catalogId = default(string), string categoryId = default(string), string sku = default(string), string productType = default(string), string name = default(string), int? quantity = default(int?), string currency = default(string), string warehouseLocation = default(string), string shipmentMethodCode = default(string), bool? requiredShipping = default(bool?), string thumbnailImageUrl = default(string), string imageUrl = default(string), bool? isGift = default(bool?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), string languageCode = default(string), string comment = default(string), bool? isReccuring = default(bool?), bool? taxIncluded = default(bool?), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string validationType = default(string), string priceId = default(string), double? listPrice = default(double?), double? salePrice = default(double?), double? placedPrice = default(double?), double? extendedPrice = default(double?), double? discountTotal = default(double?), double? taxTotal = default(double?), string taxType = default(string), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ProductId = productId;
             CatalogId = catalogId;
@@ -2802,13 +2418,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             ValidationType = validationType;
             PriceId = priceId;
             ListPrice = listPrice;
-            ListPriceWithTax = listPriceWithTax;
             SalePrice = salePrice;
-            SalePriceWithTax = salePriceWithTax;
             PlacedPrice = placedPrice;
-            PlacedPriceWithTax = placedPriceWithTax;
             ExtendedPrice = extendedPrice;
-            ExtendedPriceWithTax = extendedPriceWithTax;
             DiscountTotal = discountTotal;
             TaxTotal = taxTotal;
             TaxType = taxType;
@@ -2823,257 +2435,191 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of product id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "productId")]
         public string ProductId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of catalog id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
         public string CatalogId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of category id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
         public string CategoryId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of product SKU
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sku")]
         public string Sku { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of product type (Digital, physical etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "productType")]
         public string ProductType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item quantity
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "quantity")]
         public int? Quantity { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item currency
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item warehouse location
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "warehouseLocation")]
         public string WarehouseLocation { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item shipping method code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodCode")]
         public string ShipmentMethodCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the requirement for line item shipping
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "requiredShipping")]
         public bool? RequiredShipping { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item thumbnail image absolute URL
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "thumbnailImageUrl")]
         public string ThumbnailImageUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item image absolute URL
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of line item is a gift
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isGift")]
         public bool? IsGift { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of line item discounts
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
         public System.Collections.Generic.IList<Discount> Discounts { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of language code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
         public string LanguageCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item comment
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "comment")]
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of line item is recurring
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isReccuring")]
         public bool? IsReccuring { get; set; }
 
         /// <summary>
-        /// Gets or sets flag of line item has tax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxIncluded")]
         public bool? TaxIncluded { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item volumetric weight
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "volumetricWeight")]
         public double? VolumetricWeight { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item weight unit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "weightUnit")]
         public string WeightUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item weight
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "weight")]
         public double? Weight { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item measurement unit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "measureUnit")]
         public string MeasureUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item height
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "height")]
         public double? Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item length
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "length")]
         public double? Length { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item width
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "width")]
         public double? Width { get; set; }
 
         /// <summary>
-        /// Gets or sets represent any line item validation type
-        /// (noPriceValidate, noQuantityValidate etc) this value can be used
-        /// in storefront
-        /// to select appropriate validation strategy
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "validationType")]
         public string ValidationType { get; set; }
 
         /// <summary>
-        /// Gets or sets price id which that was used in the formation of this
-        /// line item
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priceId")]
         public string PriceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item original price
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "listPrice")]
         public double? ListPrice { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "listPriceWithTax")]
-        public double? ListPriceWithTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of line item sale price (include static
-        /// discount)
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "salePrice")]
         public double? SalePrice { get; set; }
 
         /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "salePriceWithTax")]
-        public double? SalePriceWithTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of line item actual price (include all
-        /// types of discounts)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "placedPrice")]
         public double? PlacedPrice { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "placedPriceWithTax")]
-        public double? PlacedPriceWithTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of line item subtotal price (actual price *
-        /// line item quantity)
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "extendedPrice")]
         public double? ExtendedPrice { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "extendedPriceWithTax")]
-        public double? ExtendedPriceWithTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of line item total discount amount
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
         public double? DiscountTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item total tax amount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
         public double? TaxTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item tax type
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
         public string TaxType { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of line item tax detalization lines
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
         public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
 
         /// <summary>
-        /// Gets or sets used for dynamic properties management, contains
-        /// object type string
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic properties collections
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
         public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
@@ -3123,53 +2669,30 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Discount class.
         /// </summary>
-        /// <param name="promotionId">Gets or sets the value of promotion
-        /// id</param>
-        /// <param name="currency">Gets or sets the value of currency</param>
-        /// <param name="discountAmount">Gets or sets the value of discount
-        /// amount</param>
-        /// <param name="description">Gets or sets the value of discount
-        /// description</param>
-        public Discount(string promotionId = default(string), string coupon = default(string), string currency = default(string), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), string description = default(string))
+        public Discount(string promotionId = default(string), string currency = default(string), double? discountAmount = default(double?), string description = default(string))
         {
             PromotionId = promotionId;
-            Coupon = coupon;
             Currency = currency;
             DiscountAmount = discountAmount;
-            DiscountAmountWithTax = discountAmountWithTax;
             Description = description;
         }
 
         /// <summary>
-        /// Gets or sets the value of promotion id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "promotionId")]
         public string PromotionId { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
-        public string Coupon { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of currency
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of discount amount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
         public double? DiscountAmount { get; set; }
 
         /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
-        public double? DiscountAmountWithTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of discount description
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
@@ -3427,16 +2950,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Payment class.
         /// </summary>
-        /// <param name="outerId">Gets or sets the value of payment outer
-        /// id</param>
-        /// <param name="paymentGatewayCode">Gets or sets the value of payment
-        /// gateway code</param>
-        /// <param name="currency">Gets or sets the value of payment
-        /// currency</param>
-        /// <param name="amount">Gets or sets the value of payment
-        /// amount</param>
-        /// <param name="billingAddress">Gets or sets the billing
-        /// address</param>
         public Payment(string outerId = default(string), string paymentGatewayCode = default(string), string currency = default(string), double? amount = default(double?), Address billingAddress = default(Address), string id = default(string))
         {
             OuterId = outerId;
@@ -3448,31 +2961,26 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of payment outer id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "outerId")]
         public string OuterId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment gateway code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "paymentGatewayCode")]
         public string PaymentGatewayCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment currency
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment amount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "amount")]
         public double? Amount { get; set; }
 
         /// <summary>
-        /// Gets or sets the billing address
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "billingAddress")]
         public Address BillingAddress { get; set; }
@@ -3502,49 +3010,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Shipment class.
         /// </summary>
-        /// <param name="shipmentMethodCode">Gets or sets the value of
-        /// shipping method code</param>
-        /// <param name="shipmentMethodOption">Gets or sets the value of
-        /// shipping method option</param>
-        /// <param name="fulfilmentCenterId">Gets or sets the value of
-        /// fulfillment center id</param>
-        /// <param name="deliveryAddress">Gets or sets the delivery
-        /// address</param>
-        /// <param name="currency">Gets or sets the value of shipping
-        /// currency</param>
-        /// <param name="volumetricWeight">Gets or sets the value of
-        /// volumetric weight</param>
-        /// <param name="weightUnit">Gets or sets the value of weight
-        /// unit</param>
-        /// <param name="weight">Gets or sets the value of weight</param>
-        /// <param name="measureUnit">Gets or sets the value of measurement
-        /// units</param>
-        /// <param name="height">Gets or sets the value of height</param>
-        /// <param name="length">Gets or sets the value of length</param>
-        /// <param name="width">Gets or sets the value of width</param>
-        /// <param name="taxIncluded">Gets or sets the flag of shipping has
-        /// tax</param>
-        /// <param name="shippingPrice">Gets or sets the value of shipping
-        /// price</param>
-        /// <param name="total">Gets or sets the value of total shipping
-        /// price</param>
-        /// <param name="discountTotal">Gets or sets the value of total
-        /// shipping discount amount</param>
-        /// <param name="taxTotal">Gets or sets the value of total shipping
-        /// tax amount</param>
-        /// <param name="itemSubtotal">Gets or sets the value of shipping
-        /// items subtotal</param>
-        /// <param name="subtotal">Gets or sets the value of shipping
-        /// subtotal</param>
-        /// <param name="discounts">Gets or sets the collection of shipping
-        /// discounts</param>
-        /// <param name="items">Gets or sets the collection of shipping
-        /// items</param>
-        /// <param name="taxType">Gets or sets the value of shipping tax
-        /// type</param>
-        /// <param name="taxDetails">Gets or sets the collection of line item
-        /// tax detalization lines</param>
-        public Shipment(string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), string fulfilmentCenterId = default(string), Address deliveryAddress = default(Address), string currency = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), bool? taxIncluded = default(bool?), double? shippingPrice = default(double?), double? shippingPriceWithTax = default(double?), double? total = default(double?), double? discountTotal = default(double?), double? taxTotal = default(double?), double? itemSubtotal = default(double?), double? subtotal = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), string taxType = default(string), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public Shipment(string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), string fulfilmentCenterId = default(string), Address deliveryAddress = default(Address), string currency = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), bool? taxIncluded = default(bool?), double? shippingPrice = default(double?), double? total = default(double?), double? discountTotal = default(double?), double? taxTotal = default(double?), double? itemSubtotal = default(double?), double? subtotal = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), string taxType = default(string), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ShipmentMethodCode = shipmentMethodCode;
             ShipmentMethodOption = shipmentMethodOption;
@@ -3560,7 +3026,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             Width = width;
             TaxIncluded = taxIncluded;
             ShippingPrice = shippingPrice;
-            ShippingPriceWithTax = shippingPriceWithTax;
             Total = total;
             DiscountTotal = discountTotal;
             TaxTotal = taxTotal;
@@ -3578,144 +3043,116 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of shipping method code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodCode")]
         public string ShipmentMethodCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method option
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodOption")]
         public string ShipmentMethodOption { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of fulfillment center id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "fulfilmentCenterId")]
         public string FulfilmentCenterId { get; set; }
 
         /// <summary>
-        /// Gets or sets the delivery address
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "deliveryAddress")]
         public Address DeliveryAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping currency
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of volumetric weight
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "volumetricWeight")]
         public double? VolumetricWeight { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of weight unit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "weightUnit")]
         public string WeightUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of weight
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "weight")]
         public double? Weight { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of measurement units
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "measureUnit")]
         public string MeasureUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of height
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "height")]
         public double? Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of length
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "length")]
         public double? Length { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of width
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "width")]
         public double? Width { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of shipping has tax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxIncluded")]
         public bool? TaxIncluded { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping price
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shippingPrice")]
         public double? ShippingPrice { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingPriceWithTax")]
-        public double? ShippingPriceWithTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of total shipping price
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
         public double? Total { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of total shipping discount amount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
         public double? DiscountTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of total shipping tax amount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
         public double? TaxTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping items subtotal
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "itemSubtotal")]
         public double? ItemSubtotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping subtotal
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "subtotal")]
         public double? Subtotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of shipping discounts
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
         public System.Collections.Generic.IList<Discount> Discounts { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of shipping items
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
         public System.Collections.Generic.IList<ShipmentItem> Items { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping tax type
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
         public string TaxType { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of line item tax detalization lines
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
         public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
@@ -3755,9 +3192,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent information about quantity and line item belongs to shipment
-    /// </summary>
     public partial class ShipmentItem
     {
         /// <summary>
@@ -3846,16 +3280,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SearchCriteria class.
         /// </summary>
-        /// <param name="keyword">Gets or sets the value of search criteria
-        /// keyword</param>
-        /// <param name="customerId">Gets or sets the value of search criteria
-        /// customer id</param>
-        /// <param name="storeId">Gets or sets the value of search criteria
-        /// store id</param>
-        /// <param name="start">Gets or sets the value of search criteria skip
-        /// records count</param>
-        /// <param name="count">Gets or sets the value of search criteria page
-        /// size</param>
         public SearchCriteria(string keyword = default(string), string customerId = default(string), string storeId = default(string), int? start = default(int?), int? count = default(int?))
         {
             Keyword = keyword;
@@ -3866,31 +3290,26 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of search criteria keyword
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "keyword")]
         public string Keyword { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of search criteria customer id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "customerId")]
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of search criteria store id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
         public string StoreId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of search criteria skip records count
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "start")]
         public int? Start { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of search criteria page size
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "count")]
         public int? Count { get; set; }
@@ -3915,10 +3334,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SearchResult class.
         /// </summary>
-        /// <param name="totalCount">Gets or sets the value of search result
-        /// total shopping cart count</param>
-        /// <param name="shopingCarts">Gets or sets the collection of search
-        /// result shopping carts</param>
         public SearchResult(int? totalCount = default(int?), System.Collections.Generic.IList<ShoppingCart> shopingCarts = default(System.Collections.Generic.IList<ShoppingCart>))
         {
             TotalCount = totalCount;
@@ -3926,13 +3341,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of search result total shopping cart count
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
         public int? TotalCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of search result shopping carts
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shopingCarts")]
         public System.Collections.Generic.IList<ShoppingCart> ShopingCarts { get; set; }
@@ -3957,102 +3370,61 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShippingMethod class.
         /// </summary>
-        /// <param name="shipmentMethodCode">Gets or sets the value of
-        /// shipping method code</param>
-        /// <param name="name">Gets or sets the value of shipping method
-        /// name</param>
-        /// <param name="description">Shipping method description</param>
-        /// <param name="optionName">Gets or sets the value of shipping method
-        /// option name</param>
-        /// <param name="optionDescription">Gets or sets the value of shipping
-        /// method option description</param>
-        /// <param name="logoUrl">Gets or sets the value of shipping method
-        /// logo absolute URL</param>
-        /// <param name="taxType">Gets or sets the value of shipping method
-        /// tax type</param>
-        /// <param name="currency">Gets or sets the value of shipping method
-        /// currency</param>
-        /// <param name="price">Gets or sets the value of shipping method
-        /// price</param>
-        /// <param name="discounts">Gets or sets the collection of shipping
-        /// method discounts</param>
-        public ShippingMethod(string shipmentMethodCode = default(string), string name = default(string), string description = default(string), string optionName = default(string), string optionDescription = default(string), string logoUrl = default(string), string taxType = default(string), string currency = default(string), double? price = default(double?), double? priceWithTax = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>))
+        public ShippingMethod(string shipmentMethodCode = default(string), string name = default(string), string optionName = default(string), string optionDescription = default(string), string logoUrl = default(string), string taxType = default(string), string currency = default(string), double? price = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>))
         {
             ShipmentMethodCode = shipmentMethodCode;
             Name = name;
-            Description = description;
             OptionName = optionName;
             OptionDescription = optionDescription;
             LogoUrl = logoUrl;
             TaxType = taxType;
             Currency = currency;
             Price = price;
-            PriceWithTax = priceWithTax;
             Discounts = discounts;
             Settings = settings;
         }
 
         /// <summary>
-        /// Gets or sets the value of shipping method code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodCode")]
         public string ShipmentMethodCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets shipping method description
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of shipping method option name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "optionName")]
         public string OptionName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method option description
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "optionDescription")]
         public string OptionDescription { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method logo absolute URL
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
         public string LogoUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method tax type
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
         public string TaxType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method currency
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method price
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "price")]
         public double? Price { get; set; }
 
         /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "priceWithTax")]
-        public double? PriceWithTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of shipping method discounts
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
         public System.Collections.Generic.IList<Discount> Discounts { get; set; }
@@ -4189,22 +3561,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PaymentMethod class.
         /// </summary>
-        /// <param name="gatewayCode">Gets or sets the value of payment
-        /// gateway code</param>
-        /// <param name="name">Gets or sets the value of payment method
-        /// name</param>
-        /// <param name="iconUrl">Gets or sets the value of payment method
-        /// logo absolute URL</param>
-        /// <param name="description">Gets or sets the value of payment method
-        /// description</param>
-        /// <param name="type">Gets or sets the value of payment method
-        /// type</param>
-        /// <param name="group">Gets or sets the value of payment method group
-        /// type</param>
-        /// <param name="priority">Gets or sets the value of payment method
-        /// priority</param>
-        /// <param name="isAvailableForPartial">Is payment method available
-        /// for partial payments</param>
         public PaymentMethod(string gatewayCode = default(string), string name = default(string), string iconUrl = default(string), string description = default(string), string type = default(string), string group = default(string), int? priority = default(int?), bool? isAvailableForPartial = default(bool?), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>))
         {
             GatewayCode = gatewayCode;
@@ -4219,49 +3575,41 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of payment gateway code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "gatewayCode")]
         public string GatewayCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method logo absolute URL
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "iconUrl")]
         public string IconUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method description
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method type
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method group type
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "group")]
         public string Group { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method priority
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
         public int? Priority { get; set; }
 
         /// <summary>
-        /// Gets or sets is payment method available for partial payments
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isAvailableForPartial")]
         public bool? IsAvailableForPartial { get; set; }

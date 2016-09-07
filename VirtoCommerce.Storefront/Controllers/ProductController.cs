@@ -44,6 +44,8 @@ namespace VirtoCommerce.Storefront.Controllers
 
                     if (category != null)
                     {
+                        // TODO: load related products by outline
+                        /*
                         category.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                         {
                             var criteria = WorkContext.CurrentCatalogSearchCriteria.Clone();
@@ -56,6 +58,7 @@ namespace VirtoCommerce.Storefront.Controllers
                             }
                             return _catalogSearchService.SearchProducts(criteria).Products;
                         });
+                        */
                     }
                 }
             }

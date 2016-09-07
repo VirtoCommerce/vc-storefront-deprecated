@@ -113,6 +113,8 @@ namespace VirtoCommerce.Storefront.Services
 
         public IPagedList<Vendor> SearchVendors(string keyword, int pageNumber, int pageSize, IEnumerable<SortInfo> sortInfos)
         {
+            throw new NotImplementedException();
+            /*
             var workContext = _workContextFactory();
             var criteria = new customerModel.MembersSearchCriteria
             {
@@ -128,6 +130,7 @@ namespace VirtoCommerce.Storefront.Services
             }
             var result = _customerApi.CustomerModule.SearchVendors(criteria);
             return new StaticPagedList<Vendor>(result.Vendors.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)), pageNumber, pageSize, result.TotalCount.Value);
+            */
 
         }
         #endregion

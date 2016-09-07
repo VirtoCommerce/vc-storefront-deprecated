@@ -40,7 +40,7 @@ namespace VirtoCommerce.Storefront.Controllers
         /// <returns></returns>
         public async Task<ActionResult> CategoryBrowsing(string categoryId, string view)
         {
-            WorkContext.CurrentCatalogSearchCriteria.CategoryId = categoryId;
+            //WorkContext.CurrentProductSearchCriteria.CategoryId = categoryId;
 
             var category = (await _searchService.GetCategoriesAsync(new[] { categoryId }, CategoryResponseGroup.Full)).FirstOrDefault();
             WorkContext.CurrentCategory = category;
