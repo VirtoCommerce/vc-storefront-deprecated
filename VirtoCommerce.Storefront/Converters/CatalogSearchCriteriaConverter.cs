@@ -40,9 +40,8 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = new searchModel.ProductSearch()
             {
-                //StoreId = workContext.CurrentStore.Id,
                 SearchPhrase = criteria.Keyword,
-                //Catalog = criteria.CatalogId,
+                Outline = criteria.Outline,
                 Currency = criteria.Currency == null ? workContext.CurrentCurrency.Code : criteria.Currency.Code,
                 Terms = criteria.Terms.ToStrings(),
                 PriceLists = workContext.CurrentPricelists.Where(p => p.Currency == workContext.CurrentCurrency.Code).Select(p => p.Id).ToList(),
@@ -58,10 +57,12 @@ namespace VirtoCommerce.Storefront.Converters
 
         public static searchModel.CategorySearch ToSearchApiModel(this CategorySearchCriteria criteria, WorkContext workContext)
         {
+            
             var result = new searchModel.CategorySearch()
             {
                 Skip = criteria.Start,
-                Take = criteria.PageSize
+                Take = criteria.PageSize,
+                Outline = criteria.Outline
             };
 
             if (criteria.SortBy != null)

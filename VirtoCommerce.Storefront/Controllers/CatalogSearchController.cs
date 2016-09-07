@@ -44,6 +44,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
             var category = (await _searchService.GetCategoriesAsync(new[] { categoryId }, CategoryResponseGroup.Full)).FirstOrDefault();
             WorkContext.CurrentCategory = category;
+            WorkContext.CurrentProductSearchCriteria.Outline = string.Format("{0}*", category.Outline); // should we simply take it from current category?
 
             if (category != null)
             {

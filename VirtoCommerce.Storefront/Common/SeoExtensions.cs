@@ -14,6 +14,40 @@ namespace VirtoCommerce.Storefront.Common
     public static class SeoExtensions
     {
         /// <summary>
+        /// Returns best matched outline path CategoryId/CategoryId2.
+        /// </summary>
+        /// <param name="outlines"></param>
+        /// <param name="store"></param>
+        /// <param name="language"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static string GetOutlinePath(this IEnumerable<catalogModel.Outline> outlines)
+        {
+            var result = string.Empty;
+            if (outlines != null)
+            {
+                var outline = outlines.FirstOrDefault();
+
+                if (outline != null)
+                {
+                    var pathSegments = new List<string>();
+
+                    pathSegments.AddRange(outline.Items
+                        .Where(i => i.SeoObjectType != "Catalog")
+                        .Select(i => i.Id));
+
+                    if (pathSegments.All(s => s != null))
+                    {
+                        result = string.Join("/", pathSegments);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
         /// Returns SEO path if all outline items of the first outline have SEO keywords, otherwise returns default value.
         /// Path: GrandParentCategory/ParentCategory/ProductCategory/Product
         /// </summary>

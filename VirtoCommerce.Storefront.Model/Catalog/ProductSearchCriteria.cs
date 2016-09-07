@@ -41,7 +41,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public ProductSearchCriteria Clone()
         {
             var retVal = new ProductSearchCriteria(Language, Currency);
-            //retVal.CatalogId = CatalogId;
+            retVal.Outline = Outline;
             retVal.Currency = Currency;
             retVal.Language = Language;
             retVal.Keyword = Keyword;

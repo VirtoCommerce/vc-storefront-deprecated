@@ -25,6 +25,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             retVal.SeoInfo = category.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage).ToWebModel();
             retVal.Url = "~/" + category.Outlines.GetSeoPath(store, currentLanguage, "category/" + category.Id);
+            retVal.Outline = category.Outlines.GetOutlinePath();
 
             if (category.Images != null)
             {
