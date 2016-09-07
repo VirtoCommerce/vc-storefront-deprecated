@@ -168,7 +168,7 @@ namespace VirtoCommerce.Storefront.Owin
                             {
                                 PageNumber = pageNumber2,
                                 PageSize = pageSize2,
-                                Outline = category.SeoInfo.Slug
+                                Outline = category.Outline
                             };
 
                             //criteria.CategoryId = category.Id;
