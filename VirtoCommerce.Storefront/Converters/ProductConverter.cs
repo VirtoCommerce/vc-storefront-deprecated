@@ -36,6 +36,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             retVal.Sku = product.Code;
             retVal.VendorId = product.Vendor;
+            retVal.Outline = product.Outlines.GetOutlinePath();
 
             if (product.Properties != null)
             {

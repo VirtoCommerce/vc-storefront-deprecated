@@ -38,10 +38,13 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
         public string SortBy { get; set; }
 
+        public string VendorId { get; set; }
+
         public ProductSearchCriteria Clone()
         {
             var retVal = new ProductSearchCriteria(Language, Currency);
             retVal.Outline = Outline;
+            retVal.VendorId = VendorId;
             retVal.Currency = Currency;
             retVal.Language = Language;
             retVal.Keyword = Keyword;
@@ -81,8 +84,11 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             {
                 int hash = base.GetHashCode();
 
-                //if (this.CatalogId != null)
-                //    hash = hash * 59 + this.CatalogId.GetHashCode();
+                if (this.Outline != null)
+                    hash = hash * 59 + this.Outline.GetHashCode();
+
+                if (this.VendorId != null)
+                    hash = hash * 59 + this.VendorId.GetHashCode();
 
                 if (this.Currency != null)
                     hash = hash * 59 + this.Currency.Code.GetHashCode();

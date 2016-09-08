@@ -308,23 +308,18 @@ namespace VirtoCommerce.Storefront.Owin
                         var vendors = customerService.SearchVendors(null, pageNumber, pageSize, sortInfos);
                         foreach (var vendor in vendors)
                         {
-                            /* TODO: load vendor products
                             vendor.Products = new MutablePagedList<Product>((pageNumber2, pageSize2, sortInfos2) =>
                             {
-                                var criteria = new CatalogSearchCriteria
+                                var criteria = new ProductSearchCriteria
                                 {
-                                    CatalogId = workContext.CurrentStore.Catalog,
                                     VendorId = vendor.Id,
-                                    SearchInChildren = true,
                                     PageNumber = pageNumber2,
                                     PageSize = pageSize2,
                                     SortBy = SortInfo.ToString(sortInfos2),
-                                    ResponseGroup = CatalogSearchResponseGroup.WithProducts
                                 };
                                 var searchResult = catalogSearchService.SearchProducts(criteria);
                                 return searchResult.Products;
                             });
-                            */
                         }
                         return vendors;
                     });

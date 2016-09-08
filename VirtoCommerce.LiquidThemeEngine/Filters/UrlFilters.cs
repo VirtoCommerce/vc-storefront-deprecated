@@ -245,6 +245,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
         /// <returns></returns>
         public static string AbsoluteUrl(string input, string storeId = null, string languageCode = null)
         {
+            if (input == null)
+                return string.Empty;
+
             var themeAdaptor = (ShopifyLiquidThemeEngine)Template.FileSystem;
             Store store = null;
             storefrontModel.Language language = null;

@@ -221,10 +221,10 @@ namespace VirtoCommerce.Storefront.Services
                     product.Vendor.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                     {
                         var workContext = _workContextFactory();
-                        // TODO: does this really filter products by vendor??
+
                         var criteria = new ProductSearchCriteria
                         {
-                            //CatalogId = workContext.CurrentStore.Catalog,
+                            VendorId = product.VendorId,
                             PageNumber = pageNumber,
                             PageSize = pageSize,
                             SortBy = SortInfo.ToString(sortInfos),
@@ -262,7 +262,6 @@ namespace VirtoCommerce.Storefront.Services
                 }
             }
 
-            /* TODO: implement
             if (allCategoriesAssociations.Any())
             {
                 var allAssociatedCategories = await GetCategoriesAsync(allCategoriesAssociations.Select(x => x.CategoryId).ToArray(), CategoryResponseGroup.Info | CategoryResponseGroup.WithSeo | CategoryResponseGroup.WithOutlines | CategoryResponseGroup.WithImages);
@@ -274,14 +273,11 @@ namespace VirtoCommerce.Storefront.Services
                     {
                         categoryAssociation.Category.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                        {
-                           var criteria = new CatalogSearchCriteria
+                           var criteria = new ProductSearchCriteria
                            {
                                PageNumber = pageNumber,
                                PageSize = pageSize,
-                               CatalogId = workContext.CurrentStore.Catalog,
-                               CategoryId = categoryAssociation.CategoryId,
-                               SearchInChildren = true,
-                               ResponseGroup = CatalogSearchResponseGroup.WithProducts,
+                               Outline = categoryAssociation.Category.Outline
                            };
                            if (!sortInfos.IsNullOrEmpty())
                            {
@@ -293,7 +289,6 @@ namespace VirtoCommerce.Storefront.Services
                     }
                 }
             }
-            */
         }
 
         private async Task LoadProductInventoriesAsync(List<Product> products)

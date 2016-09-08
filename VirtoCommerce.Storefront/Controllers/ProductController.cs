@@ -44,12 +44,10 @@ namespace VirtoCommerce.Storefront.Controllers
 
                     if (category != null)
                     {
-                        // TODO: load related products by outline
-                        /*
                         category.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                         {
-                            var criteria = WorkContext.CurrentCatalogSearchCriteria.Clone();
-                            criteria.CategoryId = product.CategoryId;
+                            var criteria = WorkContext.CurrentProductSearchCriteria.Clone();
+                            criteria.Outline = product.GetCategoryOutline();
                             criteria.PageNumber = pageNumber;
                             criteria.PageSize = pageSize;
                             if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
@@ -58,7 +56,6 @@ namespace VirtoCommerce.Storefront.Controllers
                             }
                             return _catalogSearchService.SearchProducts(criteria).Products;
                         });
-                        */
                     }
                 }
             }

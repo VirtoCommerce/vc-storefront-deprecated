@@ -3,6 +3,7 @@ using System.Linq;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
+using VirtoCommerce.Storefront.Model.Catalog;
 using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 
@@ -46,6 +47,30 @@ namespace VirtoCommerce.Storefront.Common
             return result;
         }
 
+        /// <summary>
+        /// Returns product category.
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        public static string GetCategoryOutline(this Product product)
+        {
+            var result = string.Empty;
+            if (product != null && !string.IsNullOrEmpty(product.Outline))
+            {
+                var outlineArray = product.Outline.Split(new[] { '/' });
+
+                if (outlineArray == null || outlineArray.Length == 0)
+                    return string.Empty;
+
+                var pathSegments = outlineArray.Reverse().Skip(1).Reverse();
+                if (pathSegments.All(s => s != null))
+                {
+                    result = string.Join("/", pathSegments);
+                }
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Returns SEO path if all outline items of the first outline have SEO keywords, otherwise returns default value.

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
@@ -48,6 +49,17 @@ namespace VirtoCommerce.Storefront.Converters
                 Skip = criteria.Start,
                 Take = criteria.PageSize                
             };
+
+            // Add vendor id to terms
+            if (!string.IsNullOrEmpty(criteria.VendorId))
+            {
+                if (result.Terms == null)
+                {
+                    result.Terms = new List<string>();
+                }
+
+                result.Terms.Add(string.Format("vendor:{0}", criteria.VendorId));
+            }
 
             if (criteria.SortBy != null)
                 result.Sort = new string[] { criteria.SortBy };
