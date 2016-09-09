@@ -37,6 +37,12 @@ namespace VirtoCommerce.Storefront.Controllers
                 WorkContext.CurrentPageSeo = product.SeoInfo.JsonClone();
                 WorkContext.CurrentPageSeo.Slug = product.Url;
 
+                // make sure title is set
+                if (string.IsNullOrEmpty(WorkContext.CurrentPageSeo.Title))
+                {
+                    WorkContext.CurrentPageSeo.Title = product.Name;
+                }
+
                 if (product.CategoryId != null)
                 {
                     var category = (await _catalogSearchService.GetCategoriesAsync(new[] { product.CategoryId }, CategoryResponseGroup.Full)).FirstOrDefault();
