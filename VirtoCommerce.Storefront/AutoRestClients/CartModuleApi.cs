@@ -344,17 +344,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// </summary>
         public CartModuleApiClient Client { get; private set; }
 
-        /// <summary>
-        /// Get shopping cart by store id and customer id
-        /// </summary>
-        /// <remarks>
-        /// Returns shopping cart or null if it is not found
-        /// </remarks>
         /// <param name='storeId'>
-        /// Store id
         /// </param>
         /// <param name='customerId'>
-        /// Customer id
+        /// </param>
+        /// <param name='cartName'>
+        /// </param>
+        /// <param name='currency'>
+        /// </param>
+        /// <param name='cultureName'>
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -374,7 +372,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> GetCurrentCartWithHttpMessagesAsync(string storeId, string customerId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> GetCartWithHttpMessagesAsync(string storeId, string customerId, string cartName, string currency, string cultureName, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (storeId == null)
             {
@@ -383,6 +381,18 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             if (customerId == null)
             {
                 throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "customerId");
+            }
+            if (cartName == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartName");
+            }
+            if (currency == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "currency");
+            }
+            if (cultureName == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cultureName");
             }
             // Tracing
             bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
@@ -393,14 +403,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
                 tracingParameters.Add("storeId", storeId);
                 tracingParameters.Add("customerId", customerId);
+                tracingParameters.Add("cartName", cartName);
+                tracingParameters.Add("currency", currency);
+                tracingParameters.Add("cultureName", cultureName);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetCurrentCart", tracingParameters);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetCart", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/cart/{storeId}/{customerId}/carts/current").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{storeId}/{customerId}/{cartName}/{currency}/{cultureName}/current").ToString();
             _url = _url.Replace("{storeId}", System.Uri.EscapeDataString(storeId));
             _url = _url.Replace("{customerId}", System.Uri.EscapeDataString(customerId));
+            _url = _url.Replace("{cartName}", System.Uri.EscapeDataString(cartName));
+            _url = _url.Replace("{currency}", System.Uri.EscapeDataString(currency));
+            _url = _url.Replace("{cultureName}", System.Uri.EscapeDataString(cultureName));
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -492,11 +508,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get shopping cart by id
-        /// </summary>
-        /// <param name='id'>
-        /// Shopping cart id
+        /// <param name='cartId'>
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -516,11 +528,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> GetCartByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<int?>> GetCartItemsCountWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (id == null)
+            if (cartId == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "id");
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
             }
             // Tracing
             bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
@@ -529,14 +541,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             {
                 _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("id", id);
+                tracingParameters.Add("cartId", cartId);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetCartById", tracingParameters);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetCartItemsCount", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/cart/carts/{id}").ToString();
-            _url = _url.Replace("{id}", System.Uri.EscapeDataString(id));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/itemscount").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -577,7 +589,649 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<int?>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<int?>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='lineItemId'>
+        /// </param>
+        /// <param name='quantity'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> ChangeCartItemWithHttpMessagesAsync(string cartId, string lineItemId, int quantity, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            if (lineItemId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "lineItemId");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("lineItemId", lineItemId);
+                tracingParameters.Add("quantity", quantity);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "ChangeCartItem", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/items").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            System.Collections.Generic.List<string> _queryParameters = new System.Collections.Generic.List<string>();
+            if (lineItemId != null)
+            {
+                _queryParameters.Add(string.Format("lineItemId={0}", System.Uri.EscapeDataString(lineItemId)));
+            }
+            _queryParameters.Add(string.Format("quantity={0}", System.Uri.EscapeDataString(Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(quantity, this.Client.SerializationSettings).Trim('"'))));
+            if (_queryParameters.Count > 0)
+            {
+                _url += "?" + string.Join("&", _queryParameters);
+            }
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("PUT");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 204)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='lineItem'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> AddItemToCartWithHttpMessagesAsync(string cartId, LineItem lineItem, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            if (lineItem == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "lineItem");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("lineItem", lineItem);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "AddItemToCart", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/items").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(lineItem != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(lineItem, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 204)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> ClearCartWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "ClearCart", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/items").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("DELETE");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 204)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='lineItemId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<int?>> RemoveCartItemWithHttpMessagesAsync(string cartId, string lineItemId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            if (lineItemId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "lineItemId");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("lineItemId", lineItemId);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "RemoveCartItem", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/items/{lineItemId}").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            _url = _url.Replace("{lineItemId}", System.Uri.EscapeDataString(lineItemId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("DELETE");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 200)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<int?>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<int?>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// Get shopping cart by id
+        /// </summary>
+        /// <param name='cartId'>
+        /// Shopping cart id
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> GetCartByIdWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetCartById", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("GET");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -628,11 +1282,131 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Search for shopping carts by criteria
-        /// </summary>
-        /// <param name='criteria'>
-        /// Search criteria
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='otherCart'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> MergeWithCartWithHttpMessagesAsync(string cartId, ShoppingCart otherCart, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            if (otherCart == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "otherCart");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("otherCart", otherCart);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "MergeWithCart", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("PATCH");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(otherCart != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(otherCart, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 204)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cartId'>
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -652,11 +1426,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SearchResult>> SearchWithHttpMessagesAsync(SearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<ShippingRate>>> GetAvailableShippingRatesWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (criteria == null)
+            if (cartId == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
             }
             // Tracing
             bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
@@ -665,13 +1439,286 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             {
                 _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("criteria", criteria);
+                tracingParameters.Add("cartId", cartId);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "Search", tracingParameters);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetAvailableShippingRates", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/cart/search").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/availshippingrates").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("GET");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 200)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<ShippingRate>>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<System.Collections.Generic.IList<ShippingRate>>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PaymentMethod>>> GetAvailablePaymentMethodsWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetAvailablePaymentMethods", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/availpaymentmethods").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("GET");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 200)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PaymentMethod>>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<System.Collections.Generic.IList<PaymentMethod>>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='couponCode'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Coupon>> AddCartCouponWithHttpMessagesAsync(string cartId, string couponCode, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            if (couponCode == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "couponCode");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("couponCode", couponCode);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "AddCartCoupon", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/coupons/{couponCode}").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            _url = _url.Replace("{couponCode}", System.Uri.EscapeDataString(couponCode));
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -692,9 +1739,507 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
 
             // Serialize Request
             string _requestContent = null;
-            if(criteria != null)
+            // Set Credentials
+            if (this.Client.Credentials != null)
             {
-                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(criteria, this.Client.SerializationSettings);
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 200)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<Coupon>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<Coupon>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='couponCode'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> RemoveCartCouponWithHttpMessagesAsync(string cartId, string couponCode, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            if (couponCode == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "couponCode");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("couponCode", couponCode);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "RemoveCartCoupon", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/coupons/{couponCode}").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            _url = _url.Replace("{couponCode}", System.Uri.EscapeDataString(couponCode));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("DELETE");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 204)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='shipment'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> AddOrUpdateCartShipmentWithHttpMessagesAsync(string cartId, Shipment shipment, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            if (shipment == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "shipment");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("shipment", shipment);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "AddOrUpdateCartShipment", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/shipments").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(shipment != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(shipment, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 204)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='payment'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> AddOrUpdateCartPaymentWithHttpMessagesAsync(string cartId, Payment payment, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            if (payment == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "payment");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("payment", payment);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "AddOrUpdateCartPayment", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/{cartId}/payments").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(payment != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(payment, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 204)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='cart'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<string>> PlaceOrderWithHttpMessagesAsync(ShoppingCart cart, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cart == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cart");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cart", cart);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "PlaceOrder", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts/placeorder").ToString();
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(cart != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(cart, this.Client.SerializationSettings);
                 _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
                 _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
             }
@@ -741,7 +2286,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<SearchResult>();
+            var _result = new Microsoft.Rest.HttpOperationResponse<string>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -750,7 +2295,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<SearchResult>(_responseContent, this.Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<string>(_responseContent, this.Client.DeserializationSettings);
                 }
                 catch (Newtonsoft.Json.JsonException ex)
                 {
@@ -812,7 +2357,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/cart/carts").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts").ToString();
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -953,7 +2498,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/cart/carts").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts").ToString();
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -1091,7 +2636,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/cart/carts").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/carts").ToString();
             System.Collections.Generic.List<string> _queryParameters = new System.Collections.Generic.List<string>();
             if (ids != null)
             {
@@ -1184,414 +2729,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             return _result;
         }
 
-        /// <summary>
-        /// Get shipping methods for shopping cart
-        /// </summary>
-        /// <param name='cartId'>
-        /// Shopping cart id
-        /// </param>
-        /// <param name='customHeaders'>
-        /// Headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        /// <return>
-        /// A response object containing the response body and response headers.
-        /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<ShippingMethod>>> GetShipmentMethodsWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            if (cartId == null)
-            {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
-            }
-            // Tracing
-            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
-            string _invocationId = null;
-            if (_shouldTrace)
-            {
-                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
-                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("cartId", cartId);
-                tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetShipmentMethods", tracingParameters);
-            }
-            // Construct URL
-            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/cart/carts/{cartId}/shipmentMethods").ToString();
-            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
-            // Create HTTP transport objects
-            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
-            System.Net.Http.HttpResponseMessage _httpResponse = null;
-            _httpRequest.Method = new System.Net.Http.HttpMethod("GET");
-            _httpRequest.RequestUri = new System.Uri(_url);
-            // Set Headers
-            if (customHeaders != null)
-            {
-                foreach(var _header in customHeaders)
-                {
-                    if (_httpRequest.Headers.Contains(_header.Key))
-                    {
-                        _httpRequest.Headers.Remove(_header.Key);
-                    }
-                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
-                }
-            }
-
-            // Serialize Request
-            string _requestContent = null;
-            // Set Credentials
-            if (this.Client.Credentials != null)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
-            }
-            // Send Request
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
-            }
-            cancellationToken.ThrowIfCancellationRequested();
-            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
-            }
-            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
-            cancellationToken.ThrowIfCancellationRequested();
-            string _responseContent = null;
-            if ((int)_statusCode != 200)
-            {
-                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
-                if (_httpResponse.Content != null) {
-                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-                else {
-                    _responseContent = string.Empty;
-                }
-                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
-                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
-                if (_shouldTrace)
-                {
-                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
-                }
-                _httpRequest.Dispose();
-                if (_httpResponse != null)
-                {
-                    _httpResponse.Dispose();
-                }
-                throw ex;
-            }
-            // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<ShippingMethod>>();
-            _result.Request = _httpRequest;
-            _result.Response = _httpResponse;
-            // Deserialize Response
-            if ((int)_statusCode == 200)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<System.Collections.Generic.IList<ShippingMethod>>(_responseContent, this.Client.DeserializationSettings);
-                }
-                catch (Newtonsoft.Json.JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
-            }
-            return _result;
-        }
-
-        /// <summary>
-        /// Get payment methods for shopping cart
-        /// </summary>
-        /// <param name='cartId'>
-        /// Shopping cart id
-        /// </param>
-        /// <param name='customHeaders'>
-        /// Headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        /// <return>
-        /// A response object containing the response body and response headers.
-        /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PaymentMethod>>> GetPaymentMethodsWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            if (cartId == null)
-            {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
-            }
-            // Tracing
-            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
-            string _invocationId = null;
-            if (_shouldTrace)
-            {
-                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
-                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("cartId", cartId);
-                tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetPaymentMethods", tracingParameters);
-            }
-            // Construct URL
-            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/cart/carts/{cartId}/paymentMethods").ToString();
-            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
-            // Create HTTP transport objects
-            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
-            System.Net.Http.HttpResponseMessage _httpResponse = null;
-            _httpRequest.Method = new System.Net.Http.HttpMethod("GET");
-            _httpRequest.RequestUri = new System.Uri(_url);
-            // Set Headers
-            if (customHeaders != null)
-            {
-                foreach(var _header in customHeaders)
-                {
-                    if (_httpRequest.Headers.Contains(_header.Key))
-                    {
-                        _httpRequest.Headers.Remove(_header.Key);
-                    }
-                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
-                }
-            }
-
-            // Serialize Request
-            string _requestContent = null;
-            // Set Credentials
-            if (this.Client.Credentials != null)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
-            }
-            // Send Request
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
-            }
-            cancellationToken.ThrowIfCancellationRequested();
-            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
-            }
-            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
-            cancellationToken.ThrowIfCancellationRequested();
-            string _responseContent = null;
-            if ((int)_statusCode != 200)
-            {
-                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
-                if (_httpResponse.Content != null) {
-                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-                else {
-                    _responseContent = string.Empty;
-                }
-                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
-                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
-                if (_shouldTrace)
-                {
-                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
-                }
-                _httpRequest.Dispose();
-                if (_httpResponse != null)
-                {
-                    _httpResponse.Dispose();
-                }
-                throw ex;
-            }
-            // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PaymentMethod>>();
-            _result.Request = _httpRequest;
-            _result.Response = _httpResponse;
-            // Deserialize Response
-            if ((int)_statusCode == 200)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<System.Collections.Generic.IList<PaymentMethod>>(_responseContent, this.Client.DeserializationSettings);
-                }
-                catch (Newtonsoft.Json.JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
-            }
-            return _result;
-        }
-
-        /// <summary>
-        /// Get payment methods for store
-        /// </summary>
-        /// <param name='storeId'>
-        /// Store id
-        /// </param>
-        /// <param name='customHeaders'>
-        /// Headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        /// <return>
-        /// A response object containing the response body and response headers.
-        /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PaymentMethod>>> GetPaymentMethodsForStoreWithHttpMessagesAsync(string storeId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            if (storeId == null)
-            {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "storeId");
-            }
-            // Tracing
-            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
-            string _invocationId = null;
-            if (_shouldTrace)
-            {
-                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
-                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("storeId", storeId);
-                tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetPaymentMethodsForStore", tracingParameters);
-            }
-            // Construct URL
-            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/cart/stores/{storeId}/paymentMethods").ToString();
-            _url = _url.Replace("{storeId}", System.Uri.EscapeDataString(storeId));
-            // Create HTTP transport objects
-            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
-            System.Net.Http.HttpResponseMessage _httpResponse = null;
-            _httpRequest.Method = new System.Net.Http.HttpMethod("GET");
-            _httpRequest.RequestUri = new System.Uri(_url);
-            // Set Headers
-            if (customHeaders != null)
-            {
-                foreach(var _header in customHeaders)
-                {
-                    if (_httpRequest.Headers.Contains(_header.Key))
-                    {
-                        _httpRequest.Headers.Remove(_header.Key);
-                    }
-                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
-                }
-            }
-
-            // Serialize Request
-            string _requestContent = null;
-            // Set Credentials
-            if (this.Client.Credentials != null)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
-            }
-            // Send Request
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
-            }
-            cancellationToken.ThrowIfCancellationRequested();
-            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
-            }
-            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
-            cancellationToken.ThrowIfCancellationRequested();
-            string _responseContent = null;
-            if ((int)_statusCode != 200)
-            {
-                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
-                if (_httpResponse.Content != null) {
-                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-                else {
-                    _responseContent = string.Empty;
-                }
-                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
-                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
-                if (_shouldTrace)
-                {
-                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
-                }
-                _httpRequest.Dispose();
-                if (_httpResponse != null)
-                {
-                    _httpResponse.Dispose();
-                }
-                throw ex;
-            }
-            // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PaymentMethod>>();
-            _result.Request = _httpRequest;
-            _result.Response = _httpResponse;
-            // Deserialize Response
-            if ((int)_statusCode == 200)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<System.Collections.Generic.IList<PaymentMethod>>(_responseContent, this.Client.DeserializationSettings);
-                }
-                catch (Newtonsoft.Json.JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
-            }
-            return _result;
-        }
-
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -1608,47 +2745,180 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
     /// </summary>
     public static partial class CartModuleExtensions
     {
-            /// <summary>
-            /// Get shopping cart by store id and customer id
-            /// </summary>
-            /// <remarks>
-            /// Returns shopping cart or null if it is not found
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='storeId'>
-            /// Store id
             /// </param>
             /// <param name='customerId'>
-            /// Customer id
             /// </param>
-            public static ShoppingCart GetCurrentCart(this ICartModule operations, string storeId, string customerId)
+            /// <param name='cartName'>
+            /// </param>
+            /// <param name='currency'>
+            /// </param>
+            /// <param name='cultureName'>
+            /// </param>
+            public static ShoppingCart GetCart(this ICartModule operations, string storeId, string customerId, string cartName, string currency, string cultureName)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetCurrentCartAsync(storeId, customerId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetCartAsync(storeId, customerId, cartName, currency, cultureName), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Get shopping cart by store id and customer id
-            /// </summary>
-            /// <remarks>
-            /// Returns shopping cart or null if it is not found
-            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='storeId'>
-            /// Store id
             /// </param>
             /// <param name='customerId'>
-            /// Customer id
+            /// </param>
+            /// <param name='cartName'>
+            /// </param>
+            /// <param name='currency'>
+            /// </param>
+            /// <param name='cultureName'>
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<ShoppingCart> GetCurrentCartAsync(this ICartModule operations, string storeId, string customerId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<ShoppingCart> GetCartAsync(this ICartModule operations, string storeId, string customerId, string cartName, string currency, string cultureName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.GetCurrentCartWithHttpMessagesAsync(storeId, customerId, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetCartWithHttpMessagesAsync(storeId, customerId, cartName, currency, cultureName, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            public static int? GetCartItemsCount(this ICartModule operations, string cartId)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetCartItemsCountAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<int?> GetCartItemsCountAsync(this ICartModule operations, string cartId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.GetCartItemsCountWithHttpMessagesAsync(cartId, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='lineItemId'>
+            /// </param>
+            /// <param name='quantity'>
+            /// </param>
+            public static void ChangeCartItem(this ICartModule operations, string cartId, string lineItemId, int quantity)
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).ChangeCartItemAsync(cartId, lineItemId, quantity), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='lineItemId'>
+            /// </param>
+            /// <param name='quantity'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task ChangeCartItemAsync(this ICartModule operations, string cartId, string lineItemId, int quantity, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                await operations.ChangeCartItemWithHttpMessagesAsync(cartId, lineItemId, quantity, null, cancellationToken).ConfigureAwait(false);
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='lineItem'>
+            /// </param>
+            public static void AddItemToCart(this ICartModule operations, string cartId, LineItem lineItem)
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).AddItemToCartAsync(cartId, lineItem), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='lineItem'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task AddItemToCartAsync(this ICartModule operations, string cartId, LineItem lineItem, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                await operations.AddItemToCartWithHttpMessagesAsync(cartId, lineItem, null, cancellationToken).ConfigureAwait(false);
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            public static void ClearCart(this ICartModule operations, string cartId)
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).ClearCartAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task ClearCartAsync(this ICartModule operations, string cartId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                await operations.ClearCartWithHttpMessagesAsync(cartId, null, cancellationToken).ConfigureAwait(false);
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='lineItemId'>
+            /// </param>
+            public static int? RemoveCartItem(this ICartModule operations, string cartId, string lineItemId)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).RemoveCartItemAsync(cartId, lineItemId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='lineItemId'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<int?> RemoveCartItemAsync(this ICartModule operations, string cartId, string lineItemId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.RemoveCartItemWithHttpMessagesAsync(cartId, lineItemId, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -1660,12 +2930,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='id'>
+            /// <param name='cartId'>
             /// Shopping cart id
             /// </param>
-            public static ShoppingCart GetCartById(this ICartModule operations, string id)
+            public static ShoppingCart GetCartById(this ICartModule operations, string cartId)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetCartByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetCartByIdAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -1674,49 +2944,231 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='id'>
+            /// <param name='cartId'>
             /// Shopping cart id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<ShoppingCart> GetCartByIdAsync(this ICartModule operations, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<ShoppingCart> GetCartByIdAsync(this ICartModule operations, string cartId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.GetCartByIdWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetCartByIdWithHttpMessagesAsync(cartId, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
             }
 
-            /// <summary>
-            /// Search for shopping carts by criteria
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='criteria'>
-            /// Search criteria
+            /// <param name='cartId'>
             /// </param>
-            public static SearchResult Search(this ICartModule operations, SearchCriteria criteria)
+            /// <param name='otherCart'>
+            /// </param>
+            public static void MergeWithCart(this ICartModule operations, string cartId, ShoppingCart otherCart)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).MergeWithCartAsync(cartId, otherCart), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
-            /// <summary>
-            /// Search for shopping carts by criteria
-            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='criteria'>
-            /// Search criteria
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='otherCart'>
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<SearchResult> SearchAsync(this ICartModule operations, SearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task MergeWithCartAsync(this ICartModule operations, string cartId, ShoppingCart otherCart, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.SearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
+                await operations.MergeWithCartWithHttpMessagesAsync(cartId, otherCart, null, cancellationToken).ConfigureAwait(false);
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            public static System.Collections.Generic.IList<ShippingRate> GetAvailableShippingRates(this ICartModule operations, string cartId)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetAvailableShippingRatesAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<ShippingRate>> GetAvailableShippingRatesAsync(this ICartModule operations, string cartId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.GetAvailableShippingRatesWithHttpMessagesAsync(cartId, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            public static System.Collections.Generic.IList<PaymentMethod> GetAvailablePaymentMethods(this ICartModule operations, string cartId)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetAvailablePaymentMethodsAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<PaymentMethod>> GetAvailablePaymentMethodsAsync(this ICartModule operations, string cartId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.GetAvailablePaymentMethodsWithHttpMessagesAsync(cartId, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='couponCode'>
+            /// </param>
+            public static Coupon AddCartCoupon(this ICartModule operations, string cartId, string couponCode)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).AddCartCouponAsync(cartId, couponCode), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='couponCode'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<Coupon> AddCartCouponAsync(this ICartModule operations, string cartId, string couponCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.AddCartCouponWithHttpMessagesAsync(cartId, couponCode, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='couponCode'>
+            /// </param>
+            public static void RemoveCartCoupon(this ICartModule operations, string cartId, string couponCode)
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).RemoveCartCouponAsync(cartId, couponCode), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='couponCode'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task RemoveCartCouponAsync(this ICartModule operations, string cartId, string couponCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                await operations.RemoveCartCouponWithHttpMessagesAsync(cartId, couponCode, null, cancellationToken).ConfigureAwait(false);
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='shipment'>
+            /// </param>
+            public static void AddOrUpdateCartShipment(this ICartModule operations, string cartId, Shipment shipment)
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).AddOrUpdateCartShipmentAsync(cartId, shipment), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='shipment'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task AddOrUpdateCartShipmentAsync(this ICartModule operations, string cartId, Shipment shipment, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                await operations.AddOrUpdateCartShipmentWithHttpMessagesAsync(cartId, shipment, null, cancellationToken).ConfigureAwait(false);
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='payment'>
+            /// </param>
+            public static void AddOrUpdateCartPayment(this ICartModule operations, string cartId, Payment payment)
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).AddOrUpdateCartPaymentAsync(cartId, payment), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// </param>
+            /// <param name='payment'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task AddOrUpdateCartPaymentAsync(this ICartModule operations, string cartId, Payment payment, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                await operations.AddOrUpdateCartPaymentWithHttpMessagesAsync(cartId, payment, null, cancellationToken).ConfigureAwait(false);
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cart'>
+            /// </param>
+            public static string PlaceOrder(this ICartModule operations, ShoppingCart cart)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).PlaceOrderAsync(cart), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cart'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<string> PlaceOrderAsync(this ICartModule operations, ShoppingCart cart, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.PlaceOrderWithHttpMessagesAsync(cart, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -1821,108 +3273,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 await operations.DeleteCartsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
-            /// <summary>
-            /// Get shipping methods for shopping cart
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='cartId'>
-            /// Shopping cart id
-            /// </param>
-            public static System.Collections.Generic.IList<ShippingMethod> GetShipmentMethods(this ICartModule operations, string cartId)
-            {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetShipmentMethodsAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Get shipping methods for shopping cart
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='cartId'>
-            /// Shopping cart id
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<ShippingMethod>> GetShipmentMethodsAsync(this ICartModule operations, string cartId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-            {
-                using (var _result = await operations.GetShipmentMethodsWithHttpMessagesAsync(cartId, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Get payment methods for shopping cart
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='cartId'>
-            /// Shopping cart id
-            /// </param>
-            public static System.Collections.Generic.IList<PaymentMethod> GetPaymentMethods(this ICartModule operations, string cartId)
-            {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetPaymentMethodsAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Get payment methods for shopping cart
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='cartId'>
-            /// Shopping cart id
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<PaymentMethod>> GetPaymentMethodsAsync(this ICartModule operations, string cartId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-            {
-                using (var _result = await operations.GetPaymentMethodsWithHttpMessagesAsync(cartId, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-            /// <summary>
-            /// Get payment methods for store
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='storeId'>
-            /// Store id
-            /// </param>
-            public static System.Collections.Generic.IList<PaymentMethod> GetPaymentMethodsForStore(this ICartModule operations, string storeId)
-            {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).GetPaymentMethodsForStoreAsync(storeId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Get payment methods for store
-            /// </summary>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='storeId'>
-            /// Store id
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<PaymentMethod>> GetPaymentMethodsForStoreAsync(this ICartModule operations, string storeId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-            {
-                using (var _result = await operations.GetPaymentMethodsForStoreWithHttpMessagesAsync(storeId, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -1938,17 +3288,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
     /// </summary>
     public partial interface ICartModule
     {
-        /// <summary>
-        /// Get shopping cart by store id and customer id
-        /// </summary>
-        /// <remarks>
-        /// Returns shopping cart or null if it is not found
-        /// </remarks>
         /// <param name='storeId'>
-        /// Store id
         /// </param>
         /// <param name='customerId'>
-        /// Customer id
+        /// </param>
+        /// <param name='cartName'>
+        /// </param>
+        /// <param name='currency'>
+        /// </param>
+        /// <param name='cultureName'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1965,11 +3313,100 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> GetCurrentCartWithHttpMessagesAsync(string storeId, string customerId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> GetCartWithHttpMessagesAsync(string storeId, string customerId, string cartName, string currency, string cultureName, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<int?>> GetCartItemsCountWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='lineItemId'>
+        /// </param>
+        /// <param name='quantity'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> ChangeCartItemWithHttpMessagesAsync(string cartId, string lineItemId, int quantity, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='lineItem'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> AddItemToCartWithHttpMessagesAsync(string cartId, LineItem lineItem, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> ClearCartWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='lineItemId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<int?>> RemoveCartItemWithHttpMessagesAsync(string cartId, string lineItemId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Get shopping cart by id
         /// </summary>
-        /// <param name='id'>
+        /// <param name='cartId'>
         /// Shopping cart id
         /// </param>
         /// <param name='customHeaders'>
@@ -1987,12 +3424,25 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> GetCartByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Search for shopping carts by criteria
-        /// </summary>
-        /// <param name='criteria'>
-        /// Search criteria
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ShoppingCart>> GetCartByIdWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='otherCart'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> MergeWithCartWithHttpMessagesAsync(string cartId, ShoppingCart otherCart, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2009,7 +3459,114 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SearchResult>> SearchWithHttpMessagesAsync(SearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<ShippingRate>>> GetAvailableShippingRatesWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PaymentMethod>>> GetAvailablePaymentMethodsWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='couponCode'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Coupon>> AddCartCouponWithHttpMessagesAsync(string cartId, string couponCode, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='couponCode'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> RemoveCartCouponWithHttpMessagesAsync(string cartId, string couponCode, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='shipment'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> AddOrUpdateCartShipmentWithHttpMessagesAsync(string cartId, Shipment shipment, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cartId'>
+        /// </param>
+        /// <param name='payment'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> AddOrUpdateCartPaymentWithHttpMessagesAsync(string cartId, Payment payment, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='cart'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<string>> PlaceOrderWithHttpMessagesAsync(ShoppingCart cart, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Update shopping cart
         /// </summary>
@@ -2073,72 +3630,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteCartsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get shipping methods for shopping cart
-        /// </summary>
-        /// <param name='cartId'>
-        /// Shopping cart id
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<ShippingMethod>>> GetShipmentMethodsWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get payment methods for shopping cart
-        /// </summary>
-        /// <param name='cartId'>
-        /// Shopping cart id
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PaymentMethod>>> GetPaymentMethodsWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <summary>
-        /// Get payment methods for store
-        /// </summary>
-        /// <param name='storeId'>
-        /// Store id
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PaymentMethod>>> GetPaymentMethodsForStoreWithHttpMessagesAsync(string storeId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -2159,74 +3650,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShoppingCart class.
         /// </summary>
-        /// <param name="name">Gets or sets the value of shopping cart
-        /// name</param>
-        /// <param name="storeId">Gets or sets the value of store id</param>
-        /// <param name="channelId">Gets or sets the value of channel
-        /// id</param>
-        /// <param name="isAnonymous">Gets or sets the flag of shopping cart
-        /// is anonymous</param>
-        /// <param name="customerId">Gets or sets the value of shopping cart
-        /// customer id</param>
-        /// <param name="customerName">Gets or sets the value of shopping cart
-        /// customer name</param>
-        /// <param name="organizationId">Gets or sets the value of shopping
-        /// cart organization id</param>
-        /// <param name="currency">Gets or sets the value of shopping cart
-        /// currency</param>
-        /// <param name="coupon">Gets or sets the shopping cart coupon</param>
-        /// <param name="languageCode">Gets or sets the value of shopping cart
-        /// language code</param>
-        /// <param name="taxIncluded">Gets or sets the flag of shopping cart
-        /// has tax</param>
-        /// <param name="isRecuring">Gets or sets the flag of shopping cart is
-        /// recurring</param>
-        /// <param name="comment">Gets or sets the value of shopping cart text
-        /// comment</param>
-        /// <param name="volumetricWeight">Gets or sets the value of
-        /// volumetric weight</param>
-        /// <param name="weightUnit">Gets or sets the value of weight
-        /// unit</param>
-        /// <param name="weight">Gets or sets the value of shopping cart
-        /// weight</param>
-        /// <param name="measureUnit">Gets or sets the value of measurement
-        /// unit</param>
-        /// <param name="height">Gets or sets the value of height</param>
-        /// <param name="length">Gets or sets the value of length</param>
-        /// <param name="width">Gets or sets the value of width</param>
-        /// <param name="validationType">Represent any line item validation
-        /// type (noPriceValidate, noQuantityValidate etc) this value can be
-        /// used in storefront
-        /// to select appropriate validation strategy</param>
-        /// <param name="total">Gets or sets the value of shopping cart total
-        /// cost</param>
-        /// <param name="subTotal">Gets or sets the value of shopping cart
-        /// subtotal</param>
-        /// <param name="shippingTotal">Gets or sets the value of shipping
-        /// total cost</param>
-        /// <param name="handlingTotal">Gets or sets the value of handling
-        /// total cost</param>
-        /// <param name="discountTotal">Gets or sets the value of total
-        /// discount amount</param>
-        /// <param name="taxTotal">Gets or sets the value of total tax
-        /// cost</param>
-        /// <param name="addresses">Gets or sets the collection of shopping
-        /// cart addresses</param>
-        /// <param name="items">Gets or sets the value of shopping cart line
-        /// items</param>
-        /// <param name="payments">Gets or sets the collection of shopping
-        /// cart payments</param>
-        /// <param name="shipments">Gets or sets the collection of shopping
-        /// cart shipments</param>
-        /// <param name="discounts">Gets or sets the collection of shopping
-        /// cart discounts</param>
-        /// <param name="taxDetails">Gets or sets the collection of line item
-        /// tax detalization lines</param>
-        /// <param name="objectType">Used for dynamic properties management,
-        /// contains object type string</param>
-        /// <param name="dynamicProperties">Dynamic properties
-        /// collections</param>
-        public ShoppingCart(string name = default(string), string storeId = default(string), string channelId = default(string), bool? isAnonymous = default(bool?), string customerId = default(string), string customerName = default(string), string organizationId = default(string), string currency = default(string), string coupon = default(string), string languageCode = default(string), bool? taxIncluded = default(bool?), bool? isRecuring = default(bool?), string comment = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string validationType = default(string), double? total = default(double?), double? subTotal = default(double?), double? shippingTotal = default(double?), double? handlingTotal = default(double?), double? discountTotal = default(double?), double? taxTotal = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Payment> payments = default(System.Collections.Generic.IList<Payment>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public ShoppingCart(string name = default(string), string storeId = default(string), string channelId = default(string), bool? isAnonymous = default(bool?), string customerId = default(string), string customerName = default(string), string organizationId = default(string), string currency = default(string), string languageCode = default(string), bool? taxIncluded = default(bool?), bool? isRecuring = default(bool?), string comment = default(string), string weightUnit = default(string), double? weight = default(double?), string validationType = default(string), double? volumetricWeight = default(double?), double? total = default(double?), double? subTotal = default(double?), double? subTotalWithTax = default(double?), double? shippingTotal = default(double?), double? shippingTotalWithTax = default(double?), double? handlingTotal = default(double?), double? handlingTotalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? taxTotal = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Payment> payments = default(System.Collections.Generic.IList<Payment>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), Coupon coupon = default(Coupon), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
             StoreId = storeId;
@@ -2236,30 +3660,32 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             CustomerName = customerName;
             OrganizationId = organizationId;
             Currency = currency;
-            Coupon = coupon;
             LanguageCode = languageCode;
             TaxIncluded = taxIncluded;
             IsRecuring = isRecuring;
             Comment = comment;
-            VolumetricWeight = volumetricWeight;
             WeightUnit = weightUnit;
             Weight = weight;
-            MeasureUnit = measureUnit;
-            Height = height;
-            Length = length;
-            Width = width;
             ValidationType = validationType;
+            VolumetricWeight = volumetricWeight;
             Total = total;
             SubTotal = subTotal;
+            SubTotalWithTax = subTotalWithTax;
             ShippingTotal = shippingTotal;
+            ShippingTotalWithTax = shippingTotalWithTax;
             HandlingTotal = handlingTotal;
+            HandlingTotalWithTax = handlingTotalWithTax;
+            DiscountAmount = discountAmount;
+            DiscountAmountWithTax = discountAmountWithTax;
             DiscountTotal = discountTotal;
+            DiscountTotalWithTax = discountTotalWithTax;
             TaxTotal = taxTotal;
             Addresses = addresses;
             Items = items;
             Payments = payments;
             Shipments = shipments;
             Discounts = discounts;
+            Coupon = coupon;
             TaxDetails = taxDetails;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
@@ -2271,215 +3697,186 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of store id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
         public string StoreId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of channel id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "channelId")]
         public string ChannelId { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of shopping cart is anonymous
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isAnonymous")]
         public bool? IsAnonymous { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart customer id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "customerId")]
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart customer name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "customerName")]
         public string CustomerName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart organization id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "organizationId")]
         public string OrganizationId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart currency
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets the shopping cart coupon
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
-        public string Coupon { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of shopping cart language code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
         public string LanguageCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of shopping cart has tax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxIncluded")]
         public bool? TaxIncluded { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of shopping cart is recurring
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isRecuring")]
         public bool? IsRecuring { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart text comment
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "comment")]
         public string Comment { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of volumetric weight
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "volumetricWeight")]
-        public double? VolumetricWeight { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of weight unit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "weightUnit")]
         public string WeightUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart weight
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "weight")]
         public double? Weight { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of measurement unit
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "measureUnit")]
-        public string MeasureUnit { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of height
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "height")]
-        public double? Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of length
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "length")]
-        public double? Length { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of width
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "width")]
-        public double? Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets represent any line item validation type
-        /// (noPriceValidate, noQuantityValidate etc) this value can be used
-        /// in storefront
-        /// to select appropriate validation strategy
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "validationType")]
         public string ValidationType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart total cost
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "volumetricWeight")]
+        public double? VolumetricWeight { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
-        public double? Total { get; set; }
+        public double? Total { get; private set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart subtotal
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "subTotal")]
-        public double? SubTotal { get; set; }
+        public double? SubTotal { get; private set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping total cost
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "subTotalWithTax")]
+        public double? SubTotalWithTax { get; private set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shippingTotal")]
-        public double? ShippingTotal { get; set; }
+        public double? ShippingTotal { get; private set; }
 
         /// <summary>
-        /// Gets or sets the value of handling total cost
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingTotalWithTax")]
+        public double? ShippingTotalWithTax { get; private set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "handlingTotal")]
         public double? HandlingTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of total discount amount
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "handlingTotalWithTax")]
+        public double? HandlingTotalWithTax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
+        public double? DiscountAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
+        public double? DiscountAmountWithTax { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
-        public double? DiscountTotal { get; set; }
+        public double? DiscountTotal { get; private set; }
 
         /// <summary>
-        /// Gets or sets the value of total tax cost
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotalWithTax")]
+        public double? DiscountTotalWithTax { get; private set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
-        public double? TaxTotal { get; set; }
+        public double? TaxTotal { get; private set; }
 
         /// <summary>
-        /// Gets or sets the collection of shopping cart addresses
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "addresses")]
         public System.Collections.Generic.IList<Address> Addresses { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shopping cart line items
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
         public System.Collections.Generic.IList<LineItem> Items { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of shopping cart payments
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "payments")]
         public System.Collections.Generic.IList<Payment> Payments { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of shopping cart shipments
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shipments")]
         public System.Collections.Generic.IList<Shipment> Shipments { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of shopping cart discounts
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
         public System.Collections.Generic.IList<Discount> Discounts { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of line item tax detalization lines
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
+        public Coupon Coupon { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
         public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
 
         /// <summary>
-        /// Gets or sets used for dynamic properties management, contains
-        /// object type string
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic properties collections
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
         public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
@@ -2529,38 +3926,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Address class.
         /// </summary>
-        /// <param name="type">Gets or sets the value of address type.
-        /// Possible values include: 'billing', 'shipping',
-        /// 'billingAndShipping'</param>
-        /// <param name="organization">Gets or sets the value of organization
-        /// name</param>
-        /// <param name="countryCode">Gets or sets the value of country
-        /// code</param>
-        /// <param name="countryName">Gets or sets the value of country
-        /// name</param>
-        /// <param name="city">Gets or sets the value of city name</param>
-        /// <param name="postalCode">Gets or sets the value of postal
-        /// code</param>
-        /// <param name="zip">Gets or sets the value of zip code</param>
-        /// <param name="line1">Gets or sets the value of address line
-        /// 1</param>
-        /// <param name="line2">Gets or sets the value of address line
-        /// 2</param>
-        /// <param name="regionId">Gets or sets the value of region
-        /// code</param>
-        /// <param name="regionName">Gets or sets the value of region
-        /// name</param>
-        /// <param name="firstName">Gets or sets the value of first
-        /// name</param>
-        /// <param name="middleName">Gets or sets the value of middle
-        /// name</param>
-        /// <param name="lastName">Gets or sets the value of last name</param>
-        /// <param name="phone">Gets or sets the value of phone number</param>
-        /// <param name="email">Gets or sets the value of E-mail
-        /// address</param>
-        public Address(string type = default(string), string organization = default(string), string countryCode = default(string), string countryName = default(string), string city = default(string), string postalCode = default(string), string zip = default(string), string line1 = default(string), string line2 = default(string), string regionId = default(string), string regionName = default(string), string firstName = default(string), string middleName = default(string), string lastName = default(string), string phone = default(string), string email = default(string))
+        /// <param name="addressType">Possible values include: 'billing',
+        /// 'shipping', 'billingAndShipping'</param>
+        public Address(string addressType = default(string), string name = default(string), string organization = default(string), string countryCode = default(string), string countryName = default(string), string city = default(string), string postalCode = default(string), string zip = default(string), string line1 = default(string), string line2 = default(string), string regionId = default(string), string regionName = default(string), string firstName = default(string), string middleName = default(string), string lastName = default(string), string phone = default(string), string email = default(string))
         {
-            Type = type;
+            AddressType = addressType;
+            Name = name;
             Organization = organization;
             CountryCode = countryCode;
             CountryName = countryName;
@@ -2579,98 +3950,88 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of address type. Possible values include:
-        /// 'billing', 'shipping', 'billingAndShipping'
+        /// Gets or sets possible values include: 'billing', 'shipping',
+        /// 'billingAndShipping'
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "addressType")]
+        public string AddressType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of organization name
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "organization")]
         public string Organization { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of country code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "countryCode")]
         public string CountryCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of country name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "countryName")]
         public string CountryName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of city name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "city")]
         public string City { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of postal code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "postalCode")]
         public string PostalCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of zip code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "zip")]
         public string Zip { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of address line 1
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "line1")]
         public string Line1 { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of address line 2
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "line2")]
         public string Line2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of region code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "regionId")]
         public string RegionId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of region name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "regionName")]
         public string RegionName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of first name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "firstName")]
         public string FirstName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of middle name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "middleName")]
         public string MiddleName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of last name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "lastName")]
         public string LastName { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of phone number
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "phone")]
         public string Phone { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of E-mail address
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
@@ -2695,102 +4056,27 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the LineItem class.
         /// </summary>
-        /// <param name="productId">Gets or sets the value of product
-        /// id</param>
-        /// <param name="catalogId">Gets or sets the value of catalog
-        /// id</param>
-        /// <param name="categoryId">Gets or sets the value of category
-        /// id</param>
-        /// <param name="sku">Gets or sets the value of product SKU</param>
-        /// <param name="productType">Gets or sets the value of product type
-        /// (Digital, physical etc)</param>
-        /// <param name="name">Gets or sets the value of line item name</param>
-        /// <param name="quantity">Gets or sets the value of line item
-        /// quantity</param>
-        /// <param name="currency">Gets or sets the value of line item
-        /// currency</param>
-        /// <param name="warehouseLocation">Gets or sets the value of line
-        /// item warehouse location</param>
-        /// <param name="shipmentMethodCode">Gets or sets the value of line
-        /// item shipping method code</param>
-        /// <param name="requiredShipping">Gets or sets the requirement for
-        /// line item shipping</param>
-        /// <param name="thumbnailImageUrl">Gets or sets the value of line
-        /// item thumbnail image absolute URL</param>
-        /// <param name="imageUrl">Gets or sets the value of line item image
-        /// absolute URL</param>
-        /// <param name="isGift">Gets or sets the flag of line item is a
-        /// gift</param>
-        /// <param name="discounts">Gets or sets the collection of line item
-        /// discounts</param>
-        /// <param name="languageCode">Gets or sets the value of language
-        /// code</param>
-        /// <param name="comment">Gets or sets the value of line item
-        /// comment</param>
-        /// <param name="isReccuring">Gets or sets the flag of line item is
-        /// recurring</param>
-        /// <param name="taxIncluded">Gets or sets flag of line item has
-        /// tax</param>
-        /// <param name="volumetricWeight">Gets or sets the value of line item
-        /// volumetric weight</param>
-        /// <param name="weightUnit">Gets or sets the value of line item
-        /// weight unit</param>
-        /// <param name="weight">Gets or sets the value of line item
-        /// weight</param>
-        /// <param name="measureUnit">Gets or sets the value of line item
-        /// measurement unit</param>
-        /// <param name="height">Gets or sets the value of line item
-        /// height</param>
-        /// <param name="length">Gets or sets the value of line item
-        /// length</param>
-        /// <param name="width">Gets or sets the value of line item
-        /// width</param>
-        /// <param name="validationType">Represent any line item validation
-        /// type (noPriceValidate, noQuantityValidate etc) this value can be
-        /// used in storefront
-        /// to select appropriate validation strategy</param>
-        /// <param name="priceId">Price id which that was used in the
-        /// formation of this line item</param>
-        /// <param name="listPrice">Gets or sets the value of line item
-        /// original price</param>
-        /// <param name="salePrice">Gets or sets the value of line item sale
-        /// price (include static discount)</param>
-        /// <param name="placedPrice">Gets or sets the value of line item
-        /// actual price (include all types of discounts)</param>
-        /// <param name="extendedPrice">Gets or sets the value of line item
-        /// subtotal price (actual price * line item quantity)</param>
-        /// <param name="discountTotal">Gets or sets the value of line item
-        /// total discount amount</param>
-        /// <param name="taxTotal">Gets or sets the value of line item total
-        /// tax amount</param>
-        /// <param name="taxType">Gets or sets the value of line item tax
-        /// type</param>
-        /// <param name="taxDetails">Gets or sets the collection of line item
-        /// tax detalization lines</param>
-        /// <param name="objectType">Used for dynamic properties management,
-        /// contains object type string</param>
-        /// <param name="dynamicProperties">Dynamic properties
-        /// collections</param>
-        public LineItem(string productId = default(string), string catalogId = default(string), string categoryId = default(string), string sku = default(string), string productType = default(string), string name = default(string), int? quantity = default(int?), string currency = default(string), string warehouseLocation = default(string), string shipmentMethodCode = default(string), bool? requiredShipping = default(bool?), string thumbnailImageUrl = default(string), string imageUrl = default(string), bool? isGift = default(bool?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), string languageCode = default(string), string comment = default(string), bool? isReccuring = default(bool?), bool? taxIncluded = default(bool?), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string validationType = default(string), string priceId = default(string), double? listPrice = default(double?), double? listPriceWithTax = default(double?), double? salePrice = default(double?), double? salePriceWithTax = default(double?), double? placedPrice = default(double?), double? placedPriceWithTax = default(double?), double? extendedPrice = default(double?), double? extendedPriceWithTax = default(double?), double? discountTotal = default(double?), double? taxTotal = default(double?), string taxType = default(string), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public LineItem(string productId = default(string), CatalogProduct product = default(CatalogProduct), string catalogId = default(string), string categoryId = default(string), string sku = default(string), string productType = default(string), string name = default(string), int? quantity = default(int?), string fulfillmentLocationCode = default(string), string shipmentMethodCode = default(string), bool? requiredShipping = default(bool?), string thumbnailImageUrl = default(string), string imageUrl = default(string), bool? isGift = default(bool?), string currency = default(string), string languageCode = default(string), string note = default(string), bool? isReccuring = default(bool?), string taxType = default(string), bool? taxIncluded = default(bool?), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string validationType = default(string), string priceId = default(string), Price price = default(Price), double? listPrice = default(double?), double? listPriceWithTax = default(double?), double? salePrice = default(double?), double? salePriceWithTax = default(double?), double? placedPrice = default(double?), double? placedPriceWithTax = default(double?), double? extendedPrice = default(double?), double? extendedPriceWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? taxTotal = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ProductId = productId;
+            Product = product;
             CatalogId = catalogId;
             CategoryId = categoryId;
             Sku = sku;
             ProductType = productType;
             Name = name;
             Quantity = quantity;
-            Currency = currency;
-            WarehouseLocation = warehouseLocation;
+            FulfillmentLocationCode = fulfillmentLocationCode;
             ShipmentMethodCode = shipmentMethodCode;
             RequiredShipping = requiredShipping;
             ThumbnailImageUrl = thumbnailImageUrl;
             ImageUrl = imageUrl;
             IsGift = isGift;
-            Discounts = discounts;
+            Currency = currency;
             LanguageCode = languageCode;
-            Comment = comment;
+            Note = note;
             IsReccuring = isReccuring;
+            TaxType = taxType;
             TaxIncluded = taxIncluded;
             VolumetricWeight = volumetricWeight;
             WeightUnit = weightUnit;
@@ -2801,6 +4087,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             Width = width;
             ValidationType = validationType;
             PriceId = priceId;
+            Price = price;
             ListPrice = listPrice;
             ListPriceWithTax = listPriceWithTax;
             SalePrice = salePrice;
@@ -2809,9 +4096,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             PlacedPriceWithTax = placedPriceWithTax;
             ExtendedPrice = extendedPrice;
             ExtendedPriceWithTax = extendedPriceWithTax;
+            DiscountAmount = discountAmount;
+            DiscountAmountWithTax = discountAmountWithTax;
             DiscountTotal = discountTotal;
+            DiscountTotalWithTax = discountTotalWithTax;
             TaxTotal = taxTotal;
-            TaxType = taxType;
+            Discounts = discounts;
             TaxDetails = taxDetails;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
@@ -2823,179 +4113,156 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of product id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "productId")]
         public string ProductId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of catalog id
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "product")]
+        public CatalogProduct Product { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
         public string CatalogId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of category id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
         public string CategoryId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of product SKU
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sku")]
         public string Sku { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of product type (Digital, physical etc)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "productType")]
         public string ProductType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item quantity
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "quantity")]
         public int? Quantity { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item currency
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
-        public string Currency { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "fulfillmentLocationCode")]
+        public string FulfillmentLocationCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item warehouse location
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "warehouseLocation")]
-        public string WarehouseLocation { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of line item shipping method code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodCode")]
         public string ShipmentMethodCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the requirement for line item shipping
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "requiredShipping")]
         public bool? RequiredShipping { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item thumbnail image absolute URL
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "thumbnailImageUrl")]
         public string ThumbnailImageUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item image absolute URL
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of line item is a gift
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isGift")]
         public bool? IsGift { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of line item discounts
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
-        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of language code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
         public string LanguageCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item comment
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "comment")]
-        public string Comment { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "note")]
+        public string Note { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag of line item is recurring
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isReccuring")]
         public bool? IsReccuring { get; set; }
 
         /// <summary>
-        /// Gets or sets flag of line item has tax
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxIncluded")]
         public bool? TaxIncluded { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item volumetric weight
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "volumetricWeight")]
         public double? VolumetricWeight { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item weight unit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "weightUnit")]
         public string WeightUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item weight
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "weight")]
         public double? Weight { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item measurement unit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "measureUnit")]
         public string MeasureUnit { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item height
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "height")]
         public double? Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item length
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "length")]
         public double? Length { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item width
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "width")]
         public double? Width { get; set; }
 
         /// <summary>
-        /// Gets or sets represent any line item validation type
-        /// (noPriceValidate, noQuantityValidate etc) this value can be used
-        /// in storefront
-        /// to select appropriate validation strategy
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "validationType")]
         public string ValidationType { get; set; }
 
         /// <summary>
-        /// Gets or sets price id which that was used in the formation of this
-        /// line item
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priceId")]
         public string PriceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item original price
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "price")]
+        public Price Price { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "listPrice")]
         public double? ListPrice { get; set; }
@@ -3006,8 +4273,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         public double? ListPriceWithTax { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item sale price (include static
-        /// discount)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "salePrice")]
         public double? SalePrice { get; set; }
@@ -3018,62 +4283,66 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         public double? SalePriceWithTax { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of line item actual price (include all
-        /// types of discounts)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "placedPrice")]
-        public double? PlacedPrice { get; set; }
+        public double? PlacedPrice { get; private set; }
 
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "placedPriceWithTax")]
-        public double? PlacedPriceWithTax { get; set; }
+        public double? PlacedPriceWithTax { get; private set; }
 
         /// <summary>
-        /// Gets or sets the value of line item subtotal price (actual price *
-        /// line item quantity)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "extendedPrice")]
-        public double? ExtendedPrice { get; set; }
+        public double? ExtendedPrice { get; private set; }
 
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "extendedPriceWithTax")]
-        public double? ExtendedPriceWithTax { get; set; }
+        public double? ExtendedPriceWithTax { get; private set; }
 
         /// <summary>
-        /// Gets or sets the value of line item total discount amount
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
+        public double? DiscountAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
+        public double? DiscountAmountWithTax { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
-        public double? DiscountTotal { get; set; }
+        public double? DiscountTotal { get; private set; }
 
         /// <summary>
-        /// Gets or sets the value of line item total tax amount
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotalWithTax")]
+        public double? DiscountTotalWithTax { get; private set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
-        public double? TaxTotal { get; set; }
+        public double? TaxTotal { get; private set; }
 
         /// <summary>
-        /// Gets or sets the value of line item tax type
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
-        public string TaxType { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
+        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of line item tax detalization lines
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
         public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
 
         /// <summary>
-        /// Gets or sets used for dynamic properties management, contains
-        /// object type string
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets dynamic properties collections
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
         public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
@@ -3113,6 +4382,2176 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 {
     using System.Linq;
 
+    public partial class CatalogProduct
+    {
+        /// <summary>
+        /// Initializes a new instance of the CatalogProduct class.
+        /// </summary>
+        public CatalogProduct() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CatalogProduct class.
+        /// </summary>
+        public CatalogProduct(string code = default(string), string manufacturerPartNumber = default(string), string gtin = default(string), string name = default(string), string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category), string mainProductId = default(string), CatalogProduct mainProduct = default(CatalogProduct), bool? isBuyable = default(bool?), bool? isActive = default(bool?), bool? trackInventory = default(bool?), System.DateTime? indexingDate = default(System.DateTime?), int? maxQuantity = default(int?), int? minQuantity = default(int?), string productType = default(string), string packageType = default(string), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), bool? enableReview = default(bool?), int? maxNumberOfDownload = default(int?), System.DateTime? downloadExpiration = default(System.DateTime?), string downloadType = default(string), bool? hasUserAgreement = default(bool?), string shippingType = default(string), string taxType = default(string), string vendor = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), int? priority = default(int?), System.Collections.Generic.IList<Property> properties = default(System.Collections.Generic.IList<Property>), System.Collections.Generic.IList<PropertyValue> propertyValues = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<Image> images = default(System.Collections.Generic.IList<Image>), System.Collections.Generic.IList<Asset> assets = default(System.Collections.Generic.IList<Asset>), System.Collections.Generic.IList<CategoryLink> links = default(System.Collections.Generic.IList<CategoryLink>), System.Collections.Generic.IList<CatalogProduct> variations = default(System.Collections.Generic.IList<CatalogProduct>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), System.Collections.Generic.IList<EditorialReview> reviews = default(System.Collections.Generic.IList<EditorialReview>), System.Collections.Generic.IList<ProductAssociation> associations = default(System.Collections.Generic.IList<ProductAssociation>), System.Collections.Generic.IList<Price> prices = default(System.Collections.Generic.IList<Price>), System.Collections.Generic.IList<InventoryInfo> inventories = default(System.Collections.Generic.IList<InventoryInfo>), System.Collections.Generic.IList<Outline> outlines = default(System.Collections.Generic.IList<Outline>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Code = code;
+            ManufacturerPartNumber = manufacturerPartNumber;
+            Gtin = gtin;
+            Name = name;
+            CatalogId = catalogId;
+            Catalog = catalog;
+            CategoryId = categoryId;
+            Category = category;
+            MainProductId = mainProductId;
+            MainProduct = mainProduct;
+            IsBuyable = isBuyable;
+            IsActive = isActive;
+            TrackInventory = trackInventory;
+            IndexingDate = indexingDate;
+            MaxQuantity = maxQuantity;
+            MinQuantity = minQuantity;
+            ProductType = productType;
+            PackageType = packageType;
+            WeightUnit = weightUnit;
+            Weight = weight;
+            MeasureUnit = measureUnit;
+            Height = height;
+            Length = length;
+            Width = width;
+            EnableReview = enableReview;
+            MaxNumberOfDownload = maxNumberOfDownload;
+            DownloadExpiration = downloadExpiration;
+            DownloadType = downloadType;
+            HasUserAgreement = hasUserAgreement;
+            ShippingType = shippingType;
+            TaxType = taxType;
+            Vendor = vendor;
+            StartDate = startDate;
+            EndDate = endDate;
+            Priority = priority;
+            Properties = properties;
+            PropertyValues = propertyValues;
+            Images = images;
+            Assets = assets;
+            Links = links;
+            Variations = variations;
+            SeoObjectType = seoObjectType;
+            SeoInfos = seoInfos;
+            Reviews = reviews;
+            Associations = associations;
+            Prices = prices;
+            Inventories = inventories;
+            Outlines = outlines;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "manufacturerPartNumber")]
+        public string ManufacturerPartNumber { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "gtin")]
+        public string Gtin { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
+        public string CategoryId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "category")]
+        public Category Category { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "mainProductId")]
+        public string MainProductId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "mainProduct")]
+        public CatalogProduct MainProduct { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isBuyable")]
+        public bool? IsBuyable { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "trackInventory")]
+        public bool? TrackInventory { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "indexingDate")]
+        public System.DateTime? IndexingDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "maxQuantity")]
+        public int? MaxQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "minQuantity")]
+        public int? MinQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "productType")]
+        public string ProductType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "packageType")]
+        public string PackageType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "weightUnit")]
+        public string WeightUnit { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "weight")]
+        public double? Weight { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "measureUnit")]
+        public string MeasureUnit { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "height")]
+        public double? Height { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "length")]
+        public double? Length { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "width")]
+        public double? Width { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "enableReview")]
+        public bool? EnableReview { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "maxNumberOfDownload")]
+        public int? MaxNumberOfDownload { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "downloadExpiration")]
+        public System.DateTime? DownloadExpiration { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "downloadType")]
+        public string DownloadType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "hasUserAgreement")]
+        public bool? HasUserAgreement { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingType")]
+        public string ShippingType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "vendor")]
+        public string Vendor { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "startDate")]
+        public System.DateTime? StartDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "endDate")]
+        public System.DateTime? EndDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "properties")]
+        public System.Collections.Generic.IList<Property> Properties { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyValues")]
+        public System.Collections.Generic.IList<PropertyValue> PropertyValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "images")]
+        public System.Collections.Generic.IList<Image> Images { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "assets")]
+        public System.Collections.Generic.IList<Asset> Assets { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "links")]
+        public System.Collections.Generic.IList<CategoryLink> Links { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "variations")]
+        public System.Collections.Generic.IList<CatalogProduct> Variations { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
+        public string SeoObjectType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
+        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "reviews")]
+        public System.Collections.Generic.IList<EditorialReview> Reviews { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "associations")]
+        public System.Collections.Generic.IList<ProductAssociation> Associations { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "prices")]
+        public System.Collections.Generic.IList<Price> Prices { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "inventories")]
+        public System.Collections.Generic.IList<InventoryInfo> Inventories { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outlines")]
+        public System.Collections.Generic.IList<Outline> Outlines { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Catalog
+    {
+        /// <summary>
+        /// Initializes a new instance of the Catalog class.
+        /// </summary>
+        public Catalog() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Catalog class.
+        /// </summary>
+        public Catalog(string name = default(string), bool? isVirtual = default(bool?), CatalogLanguage defaultLanguage = default(CatalogLanguage), System.Collections.Generic.IList<CatalogLanguage> languages = default(System.Collections.Generic.IList<CatalogLanguage>), System.Collections.Generic.IList<Property> properties = default(System.Collections.Generic.IList<Property>), System.Collections.Generic.IList<PropertyValue> propertyValues = default(System.Collections.Generic.IList<PropertyValue>), string id = default(string))
+        {
+            Name = name;
+            IsVirtual = isVirtual;
+            DefaultLanguage = defaultLanguage;
+            Languages = languages;
+            Properties = properties;
+            PropertyValues = propertyValues;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isVirtual")]
+        public bool? IsVirtual { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "defaultLanguage")]
+        public CatalogLanguage DefaultLanguage { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languages")]
+        public System.Collections.Generic.IList<CatalogLanguage> Languages { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "properties")]
+        public System.Collections.Generic.IList<Property> Properties { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyValues")]
+        public System.Collections.Generic.IList<PropertyValue> PropertyValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class CatalogLanguage
+    {
+        /// <summary>
+        /// Initializes a new instance of the CatalogLanguage class.
+        /// </summary>
+        public CatalogLanguage() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CatalogLanguage class.
+        /// </summary>
+        public CatalogLanguage(string catalogId = default(string), Catalog catalog = default(Catalog), bool? isDefault = default(bool?), string languageCode = default(string), string id = default(string))
+        {
+            CatalogId = catalogId;
+            Catalog = catalog;
+            IsDefault = isDefault;
+            LanguageCode = languageCode;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isDefault")]
+        public bool? IsDefault { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Property
+    {
+        /// <summary>
+        /// Initializes a new instance of the Property class.
+        /// </summary>
+        public Property() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Property class.
+        /// </summary>
+        /// <param name="valueType">Possible values include: 'shortText',
+        /// 'longText', 'number', 'dateTime', 'boolean'</param>
+        /// <param name="type">Possible values include: 'product',
+        /// 'variation', 'category', 'catalog'</param>
+        public Property(string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category), string name = default(string), bool? required = default(bool?), bool? dictionary = default(bool?), bool? multivalue = default(bool?), bool? multilanguage = default(bool?), string valueType = default(string), string type = default(string), System.Collections.Generic.IList<PropertyAttribute> attributes = default(System.Collections.Generic.IList<PropertyAttribute>), System.Collections.Generic.IList<PropertyDictionaryValue> dictionaryValues = default(System.Collections.Generic.IList<PropertyDictionaryValue>), System.Collections.Generic.IList<PropertyDisplayName> displayNames = default(System.Collections.Generic.IList<PropertyDisplayName>), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            CatalogId = catalogId;
+            Catalog = catalog;
+            CategoryId = categoryId;
+            Category = category;
+            Name = name;
+            Required = required;
+            Dictionary = dictionary;
+            Multivalue = multivalue;
+            Multilanguage = multilanguage;
+            ValueType = valueType;
+            Type = type;
+            Attributes = attributes;
+            DictionaryValues = dictionaryValues;
+            DisplayNames = displayNames;
+            IsInherited = isInherited;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
+        public string CategoryId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "category")]
+        public Category Category { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "required")]
+        public bool? Required { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "dictionary")]
+        public bool? Dictionary { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "multivalue")]
+        public bool? Multivalue { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "multilanguage")]
+        public bool? Multilanguage { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'shortText', 'longText',
+        /// 'number', 'dateTime', 'boolean'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
+        public string ValueType { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'product', 'variation',
+        /// 'category', 'catalog'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "attributes")]
+        public System.Collections.Generic.IList<PropertyAttribute> Attributes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "dictionaryValues")]
+        public System.Collections.Generic.IList<PropertyDictionaryValue> DictionaryValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "displayNames")]
+        public System.Collections.Generic.IList<PropertyDisplayName> DisplayNames { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
+        public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Category
+    {
+        /// <summary>
+        /// Initializes a new instance of the Category class.
+        /// </summary>
+        public Category() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Category class.
+        /// </summary>
+        public Category(string catalogId = default(string), Catalog catalog = default(Catalog), string parentId = default(string), string code = default(string), string taxType = default(string), string name = default(string), string path = default(string), bool? isVirtual = default(bool?), int? level = default(int?), System.Collections.Generic.IList<Category> parents = default(System.Collections.Generic.IList<Category>), string packageType = default(string), int? priority = default(int?), bool? isActive = default(bool?), System.Collections.Generic.IList<Category> children = default(System.Collections.Generic.IList<Category>), System.Collections.Generic.IList<Property> properties = default(System.Collections.Generic.IList<Property>), System.Collections.Generic.IList<PropertyValue> propertyValues = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<CategoryLink> links = default(System.Collections.Generic.IList<CategoryLink>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), System.Collections.Generic.IList<Image> images = default(System.Collections.Generic.IList<Image>), System.Collections.Generic.IList<Outline> outlines = default(System.Collections.Generic.IList<Outline>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            CatalogId = catalogId;
+            Catalog = catalog;
+            ParentId = parentId;
+            Code = code;
+            TaxType = taxType;
+            Name = name;
+            Path = path;
+            IsVirtual = isVirtual;
+            Level = level;
+            Parents = parents;
+            PackageType = packageType;
+            Priority = priority;
+            IsActive = isActive;
+            Children = children;
+            Properties = properties;
+            PropertyValues = propertyValues;
+            Links = links;
+            SeoObjectType = seoObjectType;
+            SeoInfos = seoInfos;
+            Images = images;
+            Outlines = outlines;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "parentId")]
+        public string ParentId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "path")]
+        public string Path { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isVirtual")]
+        public bool? IsVirtual { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "level")]
+        public int? Level { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "parents")]
+        public System.Collections.Generic.IList<Category> Parents { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "packageType")]
+        public string PackageType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "children")]
+        public System.Collections.Generic.IList<Category> Children { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "properties")]
+        public System.Collections.Generic.IList<Property> Properties { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyValues")]
+        public System.Collections.Generic.IList<PropertyValue> PropertyValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "links")]
+        public System.Collections.Generic.IList<CategoryLink> Links { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
+        public string SeoObjectType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
+        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "images")]
+        public System.Collections.Generic.IList<Image> Images { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outlines")]
+        public System.Collections.Generic.IList<Outline> Outlines { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PropertyValue
+    {
+        /// <summary>
+        /// Initializes a new instance of the PropertyValue class.
+        /// </summary>
+        public PropertyValue() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PropertyValue class.
+        /// </summary>
+        /// <param name="valueType">Possible values include: 'shortText',
+        /// 'longText', 'number', 'dateTime', 'boolean'</param>
+        public PropertyValue(string propertyId = default(string), string propertyName = default(string), Property property = default(Property), string alias = default(string), string valueId = default(string), object value = default(object), string valueType = default(string), string languageCode = default(string), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            PropertyId = propertyId;
+            PropertyName = propertyName;
+            Property = property;
+            Alias = alias;
+            ValueId = valueId;
+            Value = value;
+            ValueType = valueType;
+            LanguageCode = languageCode;
+            IsInherited = isInherited;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyId")]
+        public string PropertyId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyName")]
+        public string PropertyName { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "property")]
+        public Property Property { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "alias")]
+        public string Alias { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "valueId")]
+        public string ValueId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
+        public object Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'shortText', 'longText',
+        /// 'number', 'dateTime', 'boolean'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
+        public string ValueType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
+        public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class CategoryLink
+    {
+        /// <summary>
+        /// Initializes a new instance of the CategoryLink class.
+        /// </summary>
+        public CategoryLink() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CategoryLink class.
+        /// </summary>
+        public CategoryLink(int? priority = default(int?), string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category))
+        {
+            Priority = priority;
+            CatalogId = catalogId;
+            Catalog = catalog;
+            CategoryId = categoryId;
+            Category = category;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
+        public string CategoryId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "category")]
+        public Category Category { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class SeoInfo
+    {
+        /// <summary>
+        /// Initializes a new instance of the SeoInfo class.
+        /// </summary>
+        public SeoInfo() { }
+
+        /// <summary>
+        /// Initializes a new instance of the SeoInfo class.
+        /// </summary>
+        public SeoInfo(string name = default(string), string semanticUrl = default(string), string pageTitle = default(string), string metaDescription = default(string), string imageAltDescription = default(string), string metaKeywords = default(string), string storeId = default(string), string objectId = default(string), string objectType = default(string), bool? isActive = default(bool?), string languageCode = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Name = name;
+            SemanticUrl = semanticUrl;
+            PageTitle = pageTitle;
+            MetaDescription = metaDescription;
+            ImageAltDescription = imageAltDescription;
+            MetaKeywords = metaKeywords;
+            StoreId = storeId;
+            ObjectId = objectId;
+            ObjectType = objectType;
+            IsActive = isActive;
+            LanguageCode = languageCode;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "semanticUrl")]
+        public string SemanticUrl { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pageTitle")]
+        public string PageTitle { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "metaDescription")]
+        public string MetaDescription { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "imageAltDescription")]
+        public string ImageAltDescription { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "metaKeywords")]
+        public string MetaKeywords { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
+        public string StoreId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectId")]
+        public string ObjectId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Image
+    {
+        /// <summary>
+        /// Initializes a new instance of the Image class.
+        /// </summary>
+        public Image() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Image class.
+        /// </summary>
+        public Image(string name = default(string), string url = default(string), string group = default(string), int? sortOrder = default(int?), byte[] binaryData = default(byte[]), bool? isInherited = default(bool?), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), string languageCode = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Name = name;
+            Url = url;
+            Group = group;
+            SortOrder = sortOrder;
+            BinaryData = binaryData;
+            IsInherited = isInherited;
+            SeoObjectType = seoObjectType;
+            SeoInfos = seoInfos;
+            LanguageCode = languageCode;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "group")]
+        public string Group { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortOrder")]
+        public int? SortOrder { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "binaryData")]
+        public byte[] BinaryData { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
+        public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
+        public string SeoObjectType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
+        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Outline
+    {
+        /// <summary>
+        /// Initializes a new instance of the Outline class.
+        /// </summary>
+        public Outline() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Outline class.
+        /// </summary>
+        public Outline(System.Collections.Generic.IList<OutlineItem> items = default(System.Collections.Generic.IList<OutlineItem>))
+        {
+            Items = items;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
+        public System.Collections.Generic.IList<OutlineItem> Items { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class OutlineItem
+    {
+        /// <summary>
+        /// Initializes a new instance of the OutlineItem class.
+        /// </summary>
+        public OutlineItem() { }
+
+        /// <summary>
+        /// Initializes a new instance of the OutlineItem class.
+        /// </summary>
+        public OutlineItem(string id = default(string), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), bool? hasVirtualParent = default(bool?))
+        {
+            Id = id;
+            SeoObjectType = seoObjectType;
+            SeoInfos = seoInfos;
+            HasVirtualParent = hasVirtualParent;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
+        public string SeoObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
+        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "hasVirtualParent")]
+        public bool? HasVirtualParent { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PropertyAttribute
+    {
+        /// <summary>
+        /// Initializes a new instance of the PropertyAttribute class.
+        /// </summary>
+        public PropertyAttribute() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PropertyAttribute class.
+        /// </summary>
+        public PropertyAttribute(string propertyId = default(string), Property property = default(Property), string value = default(string), string name = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            PropertyId = propertyId;
+            Property = property;
+            Value = value;
+            Name = name;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyId")]
+        public string PropertyId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "property")]
+        public Property Property { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PropertyDictionaryValue
+    {
+        /// <summary>
+        /// Initializes a new instance of the PropertyDictionaryValue class.
+        /// </summary>
+        public PropertyDictionaryValue() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PropertyDictionaryValue class.
+        /// </summary>
+        public PropertyDictionaryValue(string propertyId = default(string), Property property = default(Property), string alias = default(string), string languageCode = default(string), string value = default(string), string id = default(string))
+        {
+            PropertyId = propertyId;
+            Property = property;
+            Alias = alias;
+            LanguageCode = languageCode;
+            Value = value;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyId")]
+        public string PropertyId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "property")]
+        public Property Property { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "alias")]
+        public string Alias { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PropertyDisplayName
+    {
+        /// <summary>
+        /// Initializes a new instance of the PropertyDisplayName class.
+        /// </summary>
+        public PropertyDisplayName() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PropertyDisplayName class.
+        /// </summary>
+        public PropertyDisplayName(string name = default(string), string languageCode = default(string))
+        {
+            Name = name;
+            LanguageCode = languageCode;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Asset
+    {
+        /// <summary>
+        /// Initializes a new instance of the Asset class.
+        /// </summary>
+        public Asset() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Asset class.
+        /// </summary>
+        public Asset(string name = default(string), string url = default(string), string group = default(string), string mimeType = default(string), long? size = default(long?), byte[] binaryData = default(byte[]), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), string languageCode = default(string), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Name = name;
+            Url = url;
+            Group = group;
+            MimeType = mimeType;
+            Size = size;
+            BinaryData = binaryData;
+            SeoObjectType = seoObjectType;
+            SeoInfos = seoInfos;
+            LanguageCode = languageCode;
+            IsInherited = isInherited;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "group")]
+        public string Group { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "mimeType")]
+        public string MimeType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "size")]
+        public long? Size { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "binaryData")]
+        public byte[] BinaryData { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
+        public string SeoObjectType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
+        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
+        public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class EditorialReview
+    {
+        /// <summary>
+        /// Initializes a new instance of the EditorialReview class.
+        /// </summary>
+        public EditorialReview() { }
+
+        /// <summary>
+        /// Initializes a new instance of the EditorialReview class.
+        /// </summary>
+        public EditorialReview(string content = default(string), string reviewType = default(string), string languageCode = default(string), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Content = content;
+            ReviewType = reviewType;
+            LanguageCode = languageCode;
+            IsInherited = isInherited;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "content")]
+        public string Content { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "reviewType")]
+        public string ReviewType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
+        public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class ProductAssociation
+    {
+        /// <summary>
+        /// Initializes a new instance of the ProductAssociation class.
+        /// </summary>
+        public ProductAssociation() { }
+
+        /// <summary>
+        /// Initializes a new instance of the ProductAssociation class.
+        /// </summary>
+        public ProductAssociation(string type = default(string), int? priority = default(int?), string associatedObjectId = default(string), string associatedObjectType = default(string), Entity associatedObject = default(Entity), System.Collections.Generic.IList<string> tags = default(System.Collections.Generic.IList<string>))
+        {
+            Type = type;
+            Priority = priority;
+            AssociatedObjectId = associatedObjectId;
+            AssociatedObjectType = associatedObjectType;
+            AssociatedObject = associatedObject;
+            Tags = tags;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "associatedObjectId")]
+        public string AssociatedObjectId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "associatedObjectType")]
+        public string AssociatedObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "associatedObject")]
+        public Entity AssociatedObject { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "tags")]
+        public System.Collections.Generic.IList<string> Tags { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Entity
+    {
+        /// <summary>
+        /// Initializes a new instance of the Entity class.
+        /// </summary>
+        public Entity() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Entity class.
+        /// </summary>
+        public Entity(string id = default(string))
+        {
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Price
+    {
+        /// <summary>
+        /// Initializes a new instance of the Price class.
+        /// </summary>
+        public Price() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Price class.
+        /// </summary>
+        public Price(string pricelistId = default(string), Pricelist pricelist = default(Pricelist), string currency = default(string), CatalogProduct product = default(CatalogProduct), string productId = default(string), double? sale = default(double?), double? list = default(double?), int? minQuantity = default(int?), double? effectiveValue = default(double?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            PricelistId = pricelistId;
+            Pricelist = pricelist;
+            Currency = currency;
+            Product = product;
+            ProductId = productId;
+            Sale = sale;
+            List = list;
+            MinQuantity = minQuantity;
+            EffectiveValue = effectiveValue;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pricelistId")]
+        public string PricelistId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pricelist")]
+        public Pricelist Pricelist { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "product")]
+        public CatalogProduct Product { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "productId")]
+        public string ProductId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sale")]
+        public double? Sale { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "list")]
+        public double? List { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "minQuantity")]
+        public int? MinQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "effectiveValue")]
+        public double? EffectiveValue { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Pricelist
+    {
+        /// <summary>
+        /// Initializes a new instance of the Pricelist class.
+        /// </summary>
+        public Pricelist() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Pricelist class.
+        /// </summary>
+        public Pricelist(string name = default(string), string description = default(string), string currency = default(string), System.Collections.Generic.IList<Price> prices = default(System.Collections.Generic.IList<Price>), System.Collections.Generic.IList<PricelistAssignment> assignments = default(System.Collections.Generic.IList<PricelistAssignment>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Name = name;
+            Description = description;
+            Currency = currency;
+            Prices = prices;
+            Assignments = assignments;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "prices")]
+        public System.Collections.Generic.IList<Price> Prices { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "assignments")]
+        public System.Collections.Generic.IList<PricelistAssignment> Assignments { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PricelistAssignment
+    {
+        /// <summary>
+        /// Initializes a new instance of the PricelistAssignment class.
+        /// </summary>
+        public PricelistAssignment() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PricelistAssignment class.
+        /// </summary>
+        public PricelistAssignment(string catalogId = default(string), Catalog catalog = default(Catalog), string pricelistId = default(string), Pricelist pricelist = default(Pricelist), string name = default(string), string description = default(string), int? priority = default(int?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string conditionExpression = default(string), string predicateVisualTreeSerialized = default(string), object condition = default(object), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            CatalogId = catalogId;
+            Catalog = catalog;
+            PricelistId = pricelistId;
+            Pricelist = pricelist;
+            Name = name;
+            Description = description;
+            Priority = priority;
+            StartDate = startDate;
+            EndDate = endDate;
+            ConditionExpression = conditionExpression;
+            PredicateVisualTreeSerialized = predicateVisualTreeSerialized;
+            Condition = condition;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pricelistId")]
+        public string PricelistId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pricelist")]
+        public Pricelist Pricelist { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "startDate")]
+        public System.DateTime? StartDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "endDate")]
+        public System.DateTime? EndDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "conditionExpression")]
+        public string ConditionExpression { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "predicateVisualTreeSerialized")]
+        public string PredicateVisualTreeSerialized { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "condition")]
+        public object Condition { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class InventoryInfo
+    {
+        /// <summary>
+        /// Initializes a new instance of the InventoryInfo class.
+        /// </summary>
+        public InventoryInfo() { }
+
+        /// <summary>
+        /// Initializes a new instance of the InventoryInfo class.
+        /// </summary>
+        /// <param name="status">Possible values include: 'disabled',
+        /// 'enabled', 'ignored'</param>
+        public InventoryInfo(System.DateTime? createdDate = default(System.DateTime?), string createdBy = default(string), System.DateTime? modifiedDate = default(System.DateTime?), string modifiedBy = default(string), string fulfillmentCenterId = default(string), string productId = default(string), long? inStockQuantity = default(long?), long? reservedQuantity = default(long?), long? reorderMinQuantity = default(long?), long? preorderQuantity = default(long?), long? backorderQuantity = default(long?), bool? allowBackorder = default(bool?), bool? allowPreorder = default(bool?), long? inTransit = default(long?), System.DateTime? preorderAvailabilityDate = default(System.DateTime?), System.DateTime? backorderAvailabilityDate = default(System.DateTime?), string status = default(string))
+        {
+            CreatedDate = createdDate;
+            CreatedBy = createdBy;
+            ModifiedDate = modifiedDate;
+            ModifiedBy = modifiedBy;
+            FulfillmentCenterId = fulfillmentCenterId;
+            ProductId = productId;
+            InStockQuantity = inStockQuantity;
+            ReservedQuantity = reservedQuantity;
+            ReorderMinQuantity = reorderMinQuantity;
+            PreorderQuantity = preorderQuantity;
+            BackorderQuantity = backorderQuantity;
+            AllowBackorder = allowBackorder;
+            AllowPreorder = allowPreorder;
+            InTransit = inTransit;
+            PreorderAvailabilityDate = preorderAvailabilityDate;
+            BackorderAvailabilityDate = backorderAvailabilityDate;
+            Status = status;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "fulfillmentCenterId")]
+        public string FulfillmentCenterId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "productId")]
+        public string ProductId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "inStockQuantity")]
+        public long? InStockQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "reservedQuantity")]
+        public long? ReservedQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "reorderMinQuantity")]
+        public long? ReorderMinQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "preorderQuantity")]
+        public long? PreorderQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "backorderQuantity")]
+        public long? BackorderQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "allowBackorder")]
+        public bool? AllowBackorder { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "allowPreorder")]
+        public bool? AllowPreorder { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "inTransit")]
+        public long? InTransit { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "preorderAvailabilityDate")]
+        public System.DateTime? PreorderAvailabilityDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "backorderAvailabilityDate")]
+        public System.DateTime? BackorderAvailabilityDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'disabled', 'enabled',
+        /// 'ignored'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
+        public string Status { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
     public partial class Discount
     {
         /// <summary>
@@ -3123,42 +6562,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Discount class.
         /// </summary>
-        /// <param name="promotionId">Gets or sets the value of promotion
-        /// id</param>
-        /// <param name="currency">Gets or sets the value of currency</param>
-        /// <param name="discountAmount">Gets or sets the value of discount
-        /// amount</param>
-        /// <param name="description">Gets or sets the value of discount
-        /// description</param>
-        public Discount(string promotionId = default(string), string coupon = default(string), string currency = default(string), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), string description = default(string))
+        public Discount(string promotionId = default(string), string currency = default(string), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), string coupon = default(string), string description = default(string), string id = default(string))
         {
             PromotionId = promotionId;
-            Coupon = coupon;
             Currency = currency;
             DiscountAmount = discountAmount;
             DiscountAmountWithTax = discountAmountWithTax;
+            Coupon = coupon;
             Description = description;
+            Id = id;
         }
 
         /// <summary>
-        /// Gets or sets the value of promotion id
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "promotionId")]
         public string PromotionId { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
-        public string Coupon { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of currency
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of discount amount
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
         public double? DiscountAmount { get; set; }
@@ -3169,10 +6594,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         public double? DiscountAmountWithTax { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of discount description
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
+        public string Coupon { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
     }
 }
@@ -3427,149 +6861,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Payment class.
         /// </summary>
-        /// <param name="outerId">Gets or sets the value of payment outer
-        /// id</param>
-        /// <param name="paymentGatewayCode">Gets or sets the value of payment
-        /// gateway code</param>
-        /// <param name="currency">Gets or sets the value of payment
-        /// currency</param>
-        /// <param name="amount">Gets or sets the value of payment
-        /// amount</param>
-        /// <param name="billingAddress">Gets or sets the billing
-        /// address</param>
-        public Payment(string outerId = default(string), string paymentGatewayCode = default(string), string currency = default(string), double? amount = default(double?), Address billingAddress = default(Address), string id = default(string))
+        public Payment(string outerId = default(string), string currency = default(string), string paymentGatewayCode = default(string), double? amount = default(double?), Address billingAddress = default(Address), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             OuterId = outerId;
-            PaymentGatewayCode = paymentGatewayCode;
             Currency = currency;
+            PaymentGatewayCode = paymentGatewayCode;
             Amount = amount;
             BillingAddress = billingAddress;
-            Id = id;
-        }
-
-        /// <summary>
-        /// Gets or sets the value of payment outer id
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "outerId")]
-        public string OuterId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of payment gateway code
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentGatewayCode")]
-        public string PaymentGatewayCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of payment currency
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
-        public string Currency { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of payment amount
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "amount")]
-        public double? Amount { get; set; }
-
-        /// <summary>
-        /// Gets or sets the billing address
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "billingAddress")]
-        public Address BillingAddress { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class Shipment
-    {
-        /// <summary>
-        /// Initializes a new instance of the Shipment class.
-        /// </summary>
-        public Shipment() { }
-
-        /// <summary>
-        /// Initializes a new instance of the Shipment class.
-        /// </summary>
-        /// <param name="shipmentMethodCode">Gets or sets the value of
-        /// shipping method code</param>
-        /// <param name="shipmentMethodOption">Gets or sets the value of
-        /// shipping method option</param>
-        /// <param name="fulfilmentCenterId">Gets or sets the value of
-        /// fulfillment center id</param>
-        /// <param name="deliveryAddress">Gets or sets the delivery
-        /// address</param>
-        /// <param name="currency">Gets or sets the value of shipping
-        /// currency</param>
-        /// <param name="volumetricWeight">Gets or sets the value of
-        /// volumetric weight</param>
-        /// <param name="weightUnit">Gets or sets the value of weight
-        /// unit</param>
-        /// <param name="weight">Gets or sets the value of weight</param>
-        /// <param name="measureUnit">Gets or sets the value of measurement
-        /// units</param>
-        /// <param name="height">Gets or sets the value of height</param>
-        /// <param name="length">Gets or sets the value of length</param>
-        /// <param name="width">Gets or sets the value of width</param>
-        /// <param name="taxIncluded">Gets or sets the flag of shipping has
-        /// tax</param>
-        /// <param name="shippingPrice">Gets or sets the value of shipping
-        /// price</param>
-        /// <param name="total">Gets or sets the value of total shipping
-        /// price</param>
-        /// <param name="discountTotal">Gets or sets the value of total
-        /// shipping discount amount</param>
-        /// <param name="taxTotal">Gets or sets the value of total shipping
-        /// tax amount</param>
-        /// <param name="itemSubtotal">Gets or sets the value of shipping
-        /// items subtotal</param>
-        /// <param name="subtotal">Gets or sets the value of shipping
-        /// subtotal</param>
-        /// <param name="discounts">Gets or sets the collection of shipping
-        /// discounts</param>
-        /// <param name="items">Gets or sets the collection of shipping
-        /// items</param>
-        /// <param name="taxType">Gets or sets the value of shipping tax
-        /// type</param>
-        /// <param name="taxDetails">Gets or sets the collection of line item
-        /// tax detalization lines</param>
-        public Shipment(string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), string fulfilmentCenterId = default(string), Address deliveryAddress = default(Address), string currency = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), bool? taxIncluded = default(bool?), double? shippingPrice = default(double?), double? shippingPriceWithTax = default(double?), double? total = default(double?), double? discountTotal = default(double?), double? taxTotal = default(double?), double? itemSubtotal = default(double?), double? subtotal = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), string taxType = default(string), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
-        {
-            ShipmentMethodCode = shipmentMethodCode;
-            ShipmentMethodOption = shipmentMethodOption;
-            FulfilmentCenterId = fulfilmentCenterId;
-            DeliveryAddress = deliveryAddress;
-            Currency = currency;
-            VolumetricWeight = volumetricWeight;
-            WeightUnit = weightUnit;
-            Weight = weight;
-            MeasureUnit = measureUnit;
-            Height = height;
-            Length = length;
-            Width = width;
-            TaxIncluded = taxIncluded;
-            ShippingPrice = shippingPrice;
-            ShippingPriceWithTax = shippingPriceWithTax;
-            Total = total;
-            DiscountTotal = discountTotal;
-            TaxTotal = taxTotal;
-            ItemSubtotal = itemSubtotal;
-            Subtotal = subtotal;
-            Discounts = discounts;
-            Items = items;
-            TaxType = taxType;
-            TaxDetails = taxDetails;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
@@ -3578,147 +6876,29 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets the value of shipping method code
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodCode")]
-        public string ShipmentMethodCode { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outerId")]
+        public string OuterId { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method option
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodOption")]
-        public string ShipmentMethodOption { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of fulfillment center id
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "fulfilmentCenterId")]
-        public string FulfilmentCenterId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the delivery address
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "deliveryAddress")]
-        public Address DeliveryAddress { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of shipping currency
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of volumetric weight
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "volumetricWeight")]
-        public double? VolumetricWeight { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of weight unit
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "weightUnit")]
-        public string WeightUnit { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of weight
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "weight")]
-        public double? Weight { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of measurement units
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "measureUnit")]
-        public string MeasureUnit { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of height
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "height")]
-        public double? Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of length
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "length")]
-        public double? Length { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of width
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "width")]
-        public double? Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets the flag of shipping has tax
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxIncluded")]
-        public bool? TaxIncluded { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of shipping price
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingPrice")]
-        public double? ShippingPrice { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentGatewayCode")]
+        public string PaymentGatewayCode { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingPriceWithTax")]
-        public double? ShippingPriceWithTax { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "amount")]
+        public double? Amount { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of total shipping price
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
-        public double? Total { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of total shipping discount amount
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
-        public double? DiscountTotal { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of total shipping tax amount
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
-        public double? TaxTotal { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of shipping items subtotal
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "itemSubtotal")]
-        public double? ItemSubtotal { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of shipping subtotal
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "subtotal")]
-        public double? Subtotal { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of shipping discounts
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
-        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of shipping items
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
-        public System.Collections.Generic.IList<ShipmentItem> Items { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of shipping tax type
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
-        public string TaxType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of line item tax detalization lines
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
-        public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "billingAddress")]
+        public Address BillingAddress { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3755,9 +6935,198 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent information about quantity and line item belongs to shipment
-    /// </summary>
+    public partial class Shipment
+    {
+        /// <summary>
+        /// Initializes a new instance of the Shipment class.
+        /// </summary>
+        public Shipment() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Shipment class.
+        /// </summary>
+        public Shipment(string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), string warehouseLocation = default(string), string currency = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string taxType = default(string), double? shippingPrice = default(double?), double? shippingPriceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? taxTotal = default(double?), double? itemSubtotal = default(double?), double? itemSubtotalWithTax = default(double?), double? subtotal = default(double?), double? subtotalWithTax = default(double?), Address deliveryAddress = default(Address), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string id = default(string))
+        {
+            ShipmentMethodCode = shipmentMethodCode;
+            ShipmentMethodOption = shipmentMethodOption;
+            WarehouseLocation = warehouseLocation;
+            Currency = currency;
+            VolumetricWeight = volumetricWeight;
+            WeightUnit = weightUnit;
+            Weight = weight;
+            MeasureUnit = measureUnit;
+            Height = height;
+            Length = length;
+            Width = width;
+            TaxType = taxType;
+            ShippingPrice = shippingPrice;
+            ShippingPriceWithTax = shippingPriceWithTax;
+            Total = total;
+            TotalWithTax = totalWithTax;
+            DiscountTotal = discountTotal;
+            DiscountTotalWithTax = discountTotalWithTax;
+            TaxTotal = taxTotal;
+            ItemSubtotal = itemSubtotal;
+            ItemSubtotalWithTax = itemSubtotalWithTax;
+            Subtotal = subtotal;
+            SubtotalWithTax = subtotalWithTax;
+            DeliveryAddress = deliveryAddress;
+            Discounts = discounts;
+            Items = items;
+            TaxDetails = taxDetails;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodCode")]
+        public string ShipmentMethodCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodOption")]
+        public string ShipmentMethodOption { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "warehouseLocation")]
+        public string WarehouseLocation { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "volumetricWeight")]
+        public double? VolumetricWeight { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "weightUnit")]
+        public string WeightUnit { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "weight")]
+        public double? Weight { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "measureUnit")]
+        public string MeasureUnit { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "height")]
+        public double? Height { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "length")]
+        public double? Length { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "width")]
+        public double? Width { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingPrice")]
+        public double? ShippingPrice { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingPriceWithTax")]
+        public double? ShippingPriceWithTax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
+        public double? Total { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalWithTax")]
+        public double? TotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
+        public double? DiscountTotal { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotalWithTax")]
+        public double? DiscountTotalWithTax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
+        public double? TaxTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "itemSubtotal")]
+        public double? ItemSubtotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "itemSubtotalWithTax")]
+        public double? ItemSubtotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "subtotal")]
+        public double? Subtotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "subtotalWithTax")]
+        public double? SubtotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "deliveryAddress")]
+        public Address DeliveryAddress { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
+        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
+        public System.Collections.Generic.IList<ShipmentItem> Items { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
+        public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
     public partial class ShipmentItem
     {
         /// <summary>
@@ -3836,64 +7205,37 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 {
     using System.Linq;
 
-    public partial class SearchCriteria
+    public partial class Coupon
     {
         /// <summary>
-        /// Initializes a new instance of the SearchCriteria class.
+        /// Initializes a new instance of the Coupon class.
         /// </summary>
-        public SearchCriteria() { }
+        public Coupon() { }
 
         /// <summary>
-        /// Initializes a new instance of the SearchCriteria class.
+        /// Initializes a new instance of the Coupon class.
         /// </summary>
-        /// <param name="keyword">Gets or sets the value of search criteria
-        /// keyword</param>
-        /// <param name="customerId">Gets or sets the value of search criteria
-        /// customer id</param>
-        /// <param name="storeId">Gets or sets the value of search criteria
-        /// store id</param>
-        /// <param name="start">Gets or sets the value of search criteria skip
-        /// records count</param>
-        /// <param name="count">Gets or sets the value of search criteria page
-        /// size</param>
-        public SearchCriteria(string keyword = default(string), string customerId = default(string), string storeId = default(string), int? start = default(int?), int? count = default(int?))
+        public Coupon(string code = default(string), bool? isValid = default(bool?), string invalidDescription = default(string))
         {
-            Keyword = keyword;
-            CustomerId = customerId;
-            StoreId = storeId;
-            Start = start;
-            Count = count;
+            Code = code;
+            IsValid = isValid;
+            InvalidDescription = invalidDescription;
         }
 
         /// <summary>
-        /// Gets or sets the value of search criteria keyword
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "keyword")]
-        public string Keyword { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of search criteria customer id
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "customerId")]
-        public string CustomerId { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isValid")]
+        public bool? IsValid { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of search criteria store id
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
-        public string StoreId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of search criteria skip records count
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "start")]
-        public int? Start { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of search criteria page size
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "count")]
-        public int? Count { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "invalidDescription")]
+        public string InvalidDescription { get; set; }
 
     }
 }
@@ -3905,37 +7247,67 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 {
     using System.Linq;
 
-    public partial class SearchResult
+    public partial class ShippingRate
     {
         /// <summary>
-        /// Initializes a new instance of the SearchResult class.
+        /// Initializes a new instance of the ShippingRate class.
         /// </summary>
-        public SearchResult() { }
+        public ShippingRate() { }
 
         /// <summary>
-        /// Initializes a new instance of the SearchResult class.
+        /// Initializes a new instance of the ShippingRate class.
         /// </summary>
-        /// <param name="totalCount">Gets or sets the value of search result
-        /// total shopping cart count</param>
-        /// <param name="shopingCarts">Gets or sets the collection of search
-        /// result shopping carts</param>
-        public SearchResult(int? totalCount = default(int?), System.Collections.Generic.IList<ShoppingCart> shopingCarts = default(System.Collections.Generic.IList<ShoppingCart>))
+        public ShippingRate(string optionName = default(string), string optionDescription = default(string), double? rate = default(double?), double? rateWithTax = default(double?), string currency = default(string), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), ShippingMethod shippingMethod = default(ShippingMethod))
         {
-            TotalCount = totalCount;
-            ShopingCarts = shopingCarts;
+            OptionName = optionName;
+            OptionDescription = optionDescription;
+            Rate = rate;
+            RateWithTax = rateWithTax;
+            Currency = currency;
+            DiscountAmount = discountAmount;
+            DiscountAmountWithTax = discountAmountWithTax;
+            ShippingMethod = shippingMethod;
         }
 
         /// <summary>
-        /// Gets or sets the value of search result total shopping cart count
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
-        public int? TotalCount { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "optionName")]
+        public string OptionName { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of search result shopping carts
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shopingCarts")]
-        public System.Collections.Generic.IList<ShoppingCart> ShopingCarts { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "optionDescription")]
+        public string OptionDescription { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "rate")]
+        public double? Rate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "rateWithTax")]
+        public double? RateWithTax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
+        public double? DiscountAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
+        public double? DiscountAmountWithTax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingMethod")]
+        public ShippingMethod ShippingMethod { get; set; }
 
     }
 }
@@ -3957,110 +7329,63 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShippingMethod class.
         /// </summary>
-        /// <param name="shipmentMethodCode">Gets or sets the value of
-        /// shipping method code</param>
-        /// <param name="name">Gets or sets the value of shipping method
-        /// name</param>
-        /// <param name="description">Shipping method description</param>
-        /// <param name="optionName">Gets or sets the value of shipping method
-        /// option name</param>
-        /// <param name="optionDescription">Gets or sets the value of shipping
-        /// method option description</param>
-        /// <param name="logoUrl">Gets or sets the value of shipping method
-        /// logo absolute URL</param>
-        /// <param name="taxType">Gets or sets the value of shipping method
-        /// tax type</param>
-        /// <param name="currency">Gets or sets the value of shipping method
-        /// currency</param>
-        /// <param name="price">Gets or sets the value of shipping method
-        /// price</param>
-        /// <param name="discounts">Gets or sets the collection of shipping
-        /// method discounts</param>
-        public ShippingMethod(string shipmentMethodCode = default(string), string name = default(string), string description = default(string), string optionName = default(string), string optionDescription = default(string), string logoUrl = default(string), string taxType = default(string), string currency = default(string), double? price = default(double?), double? priceWithTax = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>))
+        public ShippingMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), string taxType = default(string), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string id = default(string))
         {
-            ShipmentMethodCode = shipmentMethodCode;
+            Code = code;
             Name = name;
             Description = description;
-            OptionName = optionName;
-            OptionDescription = optionDescription;
             LogoUrl = logoUrl;
+            IsActive = isActive;
+            Priority = priority;
             TaxType = taxType;
-            Currency = currency;
-            Price = price;
-            PriceWithTax = priceWithTax;
-            Discounts = discounts;
             Settings = settings;
+            Id = id;
         }
 
         /// <summary>
-        /// Gets or sets the value of shipping method code
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodCode")]
-        public string ShipmentMethodCode { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets shipping method description
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method option name
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "optionName")]
-        public string OptionName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of shipping method option description
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "optionDescription")]
-        public string OptionDescription { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of shipping method logo absolute URL
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
         public string LogoUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method tax type
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
         public string TaxType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of shipping method currency
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
-        public string Currency { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of shipping method price
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "price")]
-        public double? Price { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "priceWithTax")]
-        public double? PriceWithTax { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of shipping method discounts
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
-        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
-
-        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
         public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
     }
 }
@@ -4189,79 +7514,56 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PaymentMethod class.
         /// </summary>
-        /// <param name="gatewayCode">Gets or sets the value of payment
-        /// gateway code</param>
-        /// <param name="name">Gets or sets the value of payment method
-        /// name</param>
-        /// <param name="iconUrl">Gets or sets the value of payment method
-        /// logo absolute URL</param>
-        /// <param name="description">Gets or sets the value of payment method
-        /// description</param>
-        /// <param name="type">Gets or sets the value of payment method
-        /// type</param>
-        /// <param name="group">Gets or sets the value of payment method group
-        /// type</param>
-        /// <param name="priority">Gets or sets the value of payment method
-        /// priority</param>
-        /// <param name="isAvailableForPartial">Is payment method available
-        /// for partial payments</param>
-        public PaymentMethod(string gatewayCode = default(string), string name = default(string), string iconUrl = default(string), string description = default(string), string type = default(string), string group = default(string), int? priority = default(int?), bool? isAvailableForPartial = default(bool?), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>))
+        /// <param name="paymentMethodType">Possible values include:
+        /// 'unknown', 'standard', 'redirection', 'preparedForm'</param>
+        /// <param name="paymentMethodGroupType">Possible values include:
+        /// 'paypal', 'bankCard', 'alternative', 'manual'</param>
+        public PaymentMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), bool? isAvailableForPartial = default(bool?), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string paymentMethodType = default(string), string paymentMethodGroupType = default(string), string id = default(string))
         {
-            GatewayCode = gatewayCode;
+            Code = code;
             Name = name;
-            IconUrl = iconUrl;
             Description = description;
-            Type = type;
-            Group = group;
+            LogoUrl = logoUrl;
+            IsActive = isActive;
             Priority = priority;
             IsAvailableForPartial = isAvailableForPartial;
             Settings = settings;
+            PaymentMethodType = paymentMethodType;
+            PaymentMethodGroupType = paymentMethodGroupType;
+            Id = id;
         }
 
         /// <summary>
-        /// Gets or sets the value of payment gateway code
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "gatewayCode")]
-        public string GatewayCode { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method logo absolute URL
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "iconUrl")]
-        public string IconUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of payment method description
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method type
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
+        public string LogoUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method group type
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "group")]
-        public string Group { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of payment method priority
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
         public int? Priority { get; set; }
 
         /// <summary>
-        /// Gets or sets is payment method available for partial payments
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isAvailableForPartial")]
         public bool? IsAvailableForPartial { get; set; }
@@ -4270,6 +7572,25 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
         public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
+
+        /// <summary>
+        /// Gets possible values include: 'unknown', 'standard',
+        /// 'redirection', 'preparedForm'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodType")]
+        public string PaymentMethodType { get; private set; }
+
+        /// <summary>
+        /// Gets possible values include: 'paypal', 'bankCard', 'alternative',
+        /// 'manual'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodGroupType")]
+        public string PaymentMethodGroupType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
     }
 }

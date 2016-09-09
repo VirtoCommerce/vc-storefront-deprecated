@@ -23,11 +23,7 @@ namespace VirtoCommerce.Storefront.Converters
                 webModel.Addresses = order.Addresses.Select(a => a.ToWebModel()).ToList();
             }
 
-            if (order.ChildrenOperations != null)
-            {
-                webModel.ChildrenOperations = order.ChildrenOperations.Select(co => co.ToWebModel(availCurrencies, language)).ToList();
-            }
-
+           
             webModel.Currency = currency;
 
             webModel.DiscountAmount = new Money(order.DiscountAmount ?? 0, currency);

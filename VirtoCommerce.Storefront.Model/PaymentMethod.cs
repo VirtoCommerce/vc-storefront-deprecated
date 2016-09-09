@@ -7,7 +7,7 @@ namespace VirtoCommerce.Storefront.Model
         /// <summary>
         /// Gets or sets the value of payment gateway code
         /// </summary>
-        public string GatewayCode { get; set; }
+        public string Code { get; set; }
 
         /// <summary>
         /// Gets or sets the value of payment method name
@@ -17,7 +17,7 @@ namespace VirtoCommerce.Storefront.Model
         /// <summary>
         /// Gets or sets the value of payment method logo absolute URL
         /// </summary>
-        public string IconUrl { get; set; }
+        public string LogoUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the value of payment method description
@@ -30,7 +30,7 @@ namespace VirtoCommerce.Storefront.Model
         /// <value>
         /// "Unknown", "Standard", "Redirection", "PreparedForm"
         /// </value>
-        public string Type { get; set; }
+        public string PaymentMethodType { get; set; }
 
         /// <summary>
         /// Gets or sets the value of payment method group type
@@ -38,7 +38,7 @@ namespace VirtoCommerce.Storefront.Model
         /// <value>
         /// "Paypal", "BankCard", "Alternative", "Manual"
         /// </value>
-        public string Group { get; set; }
+        public string PaymentMethodGroupType { get; set; }
 
         /// <summary>
         /// Gets or sets the value of payment method priority

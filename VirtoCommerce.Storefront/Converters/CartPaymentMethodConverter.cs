@@ -10,11 +10,11 @@ namespace VirtoCommerce.Storefront.Converters
     {
         public static PaymentMethod ToWebModel(this cartModel.PaymentMethod paymentMethod)
         {
-            var paymentMethodWebModel = new PaymentMethod();
-            paymentMethodWebModel.InjectFrom(paymentMethod);
-            paymentMethodWebModel.Priority = paymentMethod.Priority ?? 0;
+            var retVal = new PaymentMethod();
+            retVal.InjectFrom(paymentMethod);
+            retVal.Priority = paymentMethod.Priority ?? 0;
 
-            return paymentMethodWebModel;
+            return retVal;
         }
 
         public static Payment ToPaymentModel(this PaymentMethod paymentMethod, Money amount, Currency currency)
@@ -23,7 +23,7 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 Amount = amount,
                 Currency = currency,
-                PaymentGatewayCode = paymentMethod.GatewayCode
+                PaymentGatewayCode = paymentMethod.Code
             };
 
 

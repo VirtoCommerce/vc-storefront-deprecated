@@ -34,11 +34,9 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> Change(int line, int quantity)
         {
-            await _cartBuilder.GetOrCreateNewTransientCartAsync(WorkContext.CurrentStore, WorkContext.CurrentCustomer, WorkContext.CurrentLanguage, WorkContext.CurrentCurrency);
-
+            _cartBuilder.TakeCart(WorkContext.CurrentCart);
             await _cartBuilder.ChangeItemQuantityAsync(line - 1, quantity);
-            await _cartBuilder.SaveAsync();
-
+  
             return StoreFrontRedirect("~/cart");
         }
 
@@ -46,13 +44,12 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(string id, int quantity)
         {
-            await _cartBuilder.GetOrCreateNewTransientCartAsync(WorkContext.CurrentStore, WorkContext.CurrentCustomer, WorkContext.CurrentLanguage, WorkContext.CurrentCurrency);
+            _cartBuilder.TakeCart(WorkContext.CurrentCart);
 
             var product = (await _catalogService.GetProductsAsync(new string[] { id }, Model.Catalog.ItemResponseGroup.ItemLarge)).FirstOrDefault();
             if (product != null)
             {
                 await _cartBuilder.AddItemAsync(product, quantity);
-                await _cartBuilder.SaveAsync();
             }
 
             return StoreFrontRedirect("~/cart");
@@ -62,10 +59,9 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpPost]
         public async Task<ActionResult> Cart(int[] updates, string checkout)
         {
-            await _cartBuilder.GetOrCreateNewTransientCartAsync(WorkContext.CurrentStore, WorkContext.CurrentCustomer, WorkContext.CurrentLanguage, WorkContext.CurrentCurrency);
+            _cartBuilder.TakeCart(WorkContext.CurrentCart);
 
             await _cartBuilder.ChangeItemsQuantitiesAsync(updates);
-            await _cartBuilder.SaveAsync();
 
             string virtualRedirectUrl = "~/cart";
 
@@ -83,10 +79,9 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> Clear()
         {
-            await _cartBuilder.GetOrCreateNewTransientCartAsync(WorkContext.CurrentStore, WorkContext.CurrentCustomer, WorkContext.CurrentLanguage, WorkContext.CurrentCurrency);
+            _cartBuilder.TakeCart(WorkContext.CurrentCart);
 
             await _cartBuilder.ClearAsync();
-            await _cartBuilder.SaveAsync();
 
             return StoreFrontRedirect("~/cart");
         }
@@ -94,9 +89,9 @@ namespace VirtoCommerce.Storefront.Controllers
         // GET: /cart.js
         [HttpGet]
         [HandleJsonErrorAttribute]
-        public async Task<ActionResult> CartJs()
+        public ActionResult CartJs()
         {
-            await _cartBuilder.GetOrCreateNewTransientCartAsync(WorkContext.CurrentStore, WorkContext.CurrentCustomer, WorkContext.CurrentLanguage, WorkContext.CurrentCurrency);
+            _cartBuilder.TakeCart(WorkContext.CurrentCart);
 
             return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext));
         }
@@ -108,13 +103,12 @@ namespace VirtoCommerce.Storefront.Controllers
         {
             LineItem lineItem = null;
 
-            await _cartBuilder.GetOrCreateNewTransientCartAsync(WorkContext.CurrentStore, WorkContext.CurrentCustomer, WorkContext.CurrentLanguage, WorkContext.CurrentCurrency);
+            _cartBuilder.TakeCart(WorkContext.CurrentCart);
 
             var product = (await _catalogService.GetProductsAsync(new[] { id }, Model.Catalog.ItemResponseGroup.ItemLarge)).FirstOrDefault();
             if (product != null)
             {
                 await _cartBuilder.AddItemAsync(product, quantity);
-                await _cartBuilder.SaveAsync();
 
                 var addedItem = _cartBuilder.Cart.Items.FirstOrDefault(i => i.ProductId == id);
                 if (addedItem != null)
@@ -131,10 +125,9 @@ namespace VirtoCommerce.Storefront.Controllers
         [HandleJsonErrorAttribute]
         public async Task<ActionResult> ChangeJs(string id, int quantity)
         {
-            await _cartBuilder.GetOrCreateNewTransientCartAsync(WorkContext.CurrentStore, WorkContext.CurrentCustomer, WorkContext.CurrentLanguage, WorkContext.CurrentCurrency);
+            _cartBuilder.TakeCart(WorkContext.CurrentCart);
 
             await _cartBuilder.ChangeItemQuantityAsync(id, quantity);
-            await _cartBuilder.SaveAsync();
 
             return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext));
         }
@@ -144,10 +137,9 @@ namespace VirtoCommerce.Storefront.Controllers
         [HandleJsonErrorAttribute]
         public async Task<ActionResult> UpdateJs(int[] updates)
         {
-            await _cartBuilder.GetOrCreateNewTransientCartAsync(WorkContext.CurrentStore, WorkContext.CurrentCustomer, WorkContext.CurrentLanguage, WorkContext.CurrentCurrency);
+            _cartBuilder.TakeCart(WorkContext.CurrentCart);
 
             await _cartBuilder.ChangeItemsQuantitiesAsync(updates);
-            await _cartBuilder.SaveAsync();
 
             return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext));
         }
@@ -157,10 +149,9 @@ namespace VirtoCommerce.Storefront.Controllers
         [HandleJsonErrorAttribute]
         public async Task<ActionResult> ClearJs()
         {
-            await _cartBuilder.GetOrCreateNewTransientCartAsync(WorkContext.CurrentStore, WorkContext.CurrentCustomer, WorkContext.CurrentLanguage, WorkContext.CurrentCurrency);
+            _cartBuilder.TakeCart(WorkContext.CurrentCart);
 
             await _cartBuilder.ClearAsync();
-            await _cartBuilder.SaveAsync();
 
             return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext));
         }

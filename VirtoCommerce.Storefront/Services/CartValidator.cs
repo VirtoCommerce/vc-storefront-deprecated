@@ -89,15 +89,15 @@ namespace VirtoCommerce.Storefront.Services
             foreach (var shipment in cart.Shipments.ToArray())
             {
                 shipment.ValidationErrors.Clear();
-                var availableShippingMethods = await _cartApi.CartModule.GetShipmentMethodsAsync(cart.Id);
-                if (availableShippingMethods.Count == 0)
+                var availShippingRates = await _cartApi.CartModule.GetAvailableShippingRatesAsync(cart.Id);
+                if (availShippingRates.Count == 0)
                 {
                     shipment.ValidationWarnings.Add(new ShippingUnavailableError());
                     break;
                 }
                 if (!string.IsNullOrEmpty(shipment.ShipmentMethodCode))
                 {
-                    var existingShippingMethod = availableShippingMethods.Select(sm => sm.ToWebModel(cart.Currency, workContext.AllCurrencies)).FirstOrDefault(sm => shipment.HasSameMethod(sm));
+                    var existingShippingMethod = availShippingRates.Select(sm => sm.ToWebModel(cart.Currency, workContext.AllCurrencies)).FirstOrDefault(sm => shipment.HasSameMethod(sm));
                     if (existingShippingMethod == null)
                     {
                         shipment.ValidationWarnings.Add(new ShippingUnavailableError());

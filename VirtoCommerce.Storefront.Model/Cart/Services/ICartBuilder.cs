@@ -28,7 +28,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// <param name="language"></param>
         /// <param name="currency"></param>
         /// <returns></returns>
-        Task<ICartBuilder> GetOrCreateNewTransientCartAsync(Store store, CustomerInfo customer, Language language, Currency currency);
+        Task<ICartBuilder> LoadDefaultCart(Store store, CustomerInfo customer, Language language, Currency currency);
 
         /// <summary>
         /// Add new product to cart
@@ -87,7 +87,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// </summary>
         /// <param name="updateModel"></param>
         /// <returns></returns>
-        Task<ICartBuilder> AddOrUpdateShipmentAsync(ShipmentUpdateModel updateModel);
+        Task<ICartBuilder> AddOrUpdateShipmentAsync(Shipment shipment);
 
         /// <summary>
         /// Remove exist shipment from cart
@@ -101,7 +101,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// </summary>
         /// <param name="updateModel"></param>
         /// <returns></returns>
-        Task<ICartBuilder> AddOrUpdatePaymentAsync(PaymentUpdateModel updateModel);
+        Task<ICartBuilder> AddOrUpdatePaymentAsync(Payment payment);
 
         /// <summary>
         /// Merge other cart with captured
@@ -134,22 +134,9 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// </summary>
         /// <returns></returns>
         Task<ICollection<PaymentMethod>> GetAvailablePaymentMethodsAsync();
-
-        /// <summary>
-        /// Evaluate marketing discounts for captured cart
-        /// </summary>
-        /// <returns></returns>
-        Task<ICartBuilder> EvaluatePromotionsAsync();
-
-        /// <summary>
-        /// Evaluate taxes  for captured cart
-        /// </summary>
-        /// <returns></returns>
-        Task<ICartBuilder> EvaluateTaxAsync();
-
-        //Save cart changes
-        Task SaveAsync();
-
+        
         ShoppingCart Cart { get; }
+
+        Task<ICartBuilder> ReloadAsync();
     }
 }

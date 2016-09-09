@@ -455,6 +455,7 @@
     <Compile Include="AutoRestClients\QuoteModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
     <Compile Include="AutoRestClients\StoreModuleApi.cs" />
+    <Compile Include="Binders\CartTypesModelBinder.cs" />
     <Compile Include="Common\HmacCredentials.cs" />
     <Compile Include="Common\HmacUtility.cs" />
     <Compile Include="Common\VirtoCommerceApiRequestHandler.cs" />
@@ -491,6 +492,7 @@
     <Compile Include="Converters\ShippingMethodConverter.cs" />
     <Compile Include="Converters\TierPriceConverter.cs" />
     <Compile Include="Converters\VendorConverters.cs" />
+    <Compile Include="JsonConverters\CurrencyJsonConverter.cs" />
     <Compile Include="Owin\StorefrontUrlRewriterOwinMiddleware.cs" />
     <Compile Include="Services\CartValidator.cs" />
     <Compile Include="Services\ContentBlobProviders\AzureBlobContentProvider.cs" />
@@ -532,10 +534,9 @@
     <Compile Include="Converters\InPaymentConverter.cs" />
     <Compile Include="Converters\InventoryConverter.cs" />
     <Compile Include="Converters\MenuLinkConverter.cs" />
-    <Compile Include="Converters\OperationConverter.cs" />
     <Compile Include="Converters\OrderConverter.cs" />
     <Compile Include="Converters\OrderLineItemConverter.cs" />
-    <Compile Include="Converters\PaymentConverter.cs" />
+    <Compile Include="Converters\CartPaymentConverter.cs" />
     <Compile Include="Converters\PriceConverter.cs" />
     <Compile Include="Converters\ProductConverter.cs" />
     <Compile Include="Converters\PromotionConverter.cs" />
@@ -543,7 +544,7 @@
     <Compile Include="Converters\PromotionProductEntryConverter.cs" />
     <Compile Include="Converters\PromotionRewardConverter.cs" />
     <Compile Include="Converters\SeoInfoConverter.cs" />
-    <Compile Include="Converters\ShipmentConverter.cs" />
+    <Compile Include="Converters\CartShipmentConverter.cs" />
     <Compile Include="Converters\ShipmentItemConverter.cs" />
     <Compile Include="Converters\ShipmentPackageConverter.cs" />
     <Compile Include="Converters\StoreConverter.cs" />

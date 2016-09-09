@@ -176,7 +176,6 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
             _cartBuilder.TakeCart(WorkContext.CurrentCart);
             await _cartBuilder.FillFromQuoteRequest(_quoteRequestBuilder.QuoteRequest);
-            await _cartBuilder.SaveAsync();
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

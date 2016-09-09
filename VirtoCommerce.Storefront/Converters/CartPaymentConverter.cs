@@ -5,7 +5,7 @@ using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
-    public static class PaymentConverter
+    public static class CartPaymentConverter
     {
         public static Payment TowebModel(this cartModel.Payment payment, Currency currency)
         {
@@ -42,5 +42,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             return serviceModel;
         }
+
+   
     }
 }

@@ -499,7 +499,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<MembersSearchResult>> SearchWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultMember>> SearchWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (criteria == null)
             {
@@ -588,7 +588,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<MembersSearchResult>();
+            var _result = new Microsoft.Rest.HttpOperationResponse<GenericSearchResultMember>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -597,7 +597,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<MembersSearchResult>(_responseContent, this.Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<GenericSearchResultMember>(_responseContent, this.Client.DeserializationSettings);
                 }
                 catch (Newtonsoft.Json.JsonException ex)
                 {
@@ -2026,7 +2026,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -2298,7 +2298,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -2557,7 +2557,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             /// concrete instance of SearchCriteria type type will be created by using
             /// PolymorphicMemberSearchCriteriaJsonConverter
             /// </param>
-            public static MembersSearchResult Search(this ICustomerModule operations, MembersSearchCriteria criteria)
+            public static GenericSearchResultMember Search(this ICustomerModule operations, MembersSearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -2578,7 +2578,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<MembersSearchResult> SearchAsync(this ICustomerModule operations, MembersSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<GenericSearchResultMember> SearchAsync(this ICustomerModule operations, MembersSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
                 using (var _result = await operations.SearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -3125,7 +3125,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<MembersSearchResult>> SearchWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultMember>> SearchWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Get member
         /// </summary>
@@ -4067,20 +4067,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
 {
     using System.Linq;
 
-    public partial class MembersSearchResult
+    public partial class GenericSearchResultMember
     {
         /// <summary>
-        /// Initializes a new instance of the MembersSearchResult class.
+        /// Initializes a new instance of the GenericSearchResultMember class.
         /// </summary>
-        public MembersSearchResult() { }
+        public GenericSearchResultMember() { }
 
         /// <summary>
-        /// Initializes a new instance of the MembersSearchResult class.
+        /// Initializes a new instance of the GenericSearchResultMember class.
         /// </summary>
-        public MembersSearchResult(int? totalCount = default(int?), System.Collections.Generic.IList<Member> members = default(System.Collections.Generic.IList<Member>))
+        public GenericSearchResultMember(int? totalCount = default(int?), System.Collections.Generic.IList<Member> results = default(System.Collections.Generic.IList<Member>))
         {
             TotalCount = totalCount;
-            Members = members;
+            Results = results;
         }
 
         /// <summary>
@@ -4090,8 +4090,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "members")]
-        public System.Collections.Generic.IList<Member> Members { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "results")]
+        public System.Collections.Generic.IList<Member> Results { get; set; }
 
     }
 }

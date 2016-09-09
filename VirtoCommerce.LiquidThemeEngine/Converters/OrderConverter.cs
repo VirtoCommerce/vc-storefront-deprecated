@@ -147,8 +147,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             if (order.Items != null)
             {
                 result.LineItems = order.Items.Select(i => i.ToShopifyModel(urlBuilder)).ToArray();
-                result.SubtotalPrice = order.Items.Sum(i => i.BasePrice.Amount * i.Quantity ?? 0) * 100;
-                result.SubtotalPriceWithTax = order.Items.Sum(i => i.BasePriceWithTax.Amount * i.Quantity ?? 0) * 100;
+                result.SubtotalPrice = order.Items.Sum(i => i.Price.Amount * i.Quantity ?? 0) * 100;
+                result.SubtotalPriceWithTax = order.Items.Sum(i => i.PriceWithTax.Amount * i.Quantity ?? 0) * 100;
 
                 var itemsWithTax = order.Items
                     .Where(i => i.Tax.Amount > 0m)

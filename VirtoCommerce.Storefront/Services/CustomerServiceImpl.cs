@@ -198,7 +198,7 @@ namespace VirtoCommerce.Storefront.Services
         private IMutablePagedList<CustomerOrder> GetCustomerOrders(CustomerInfo customer)
         {
             var workContext = _workContextFactory();
-            var orderSearchcriteria = new orderModel.SearchCriteria
+            var orderSearchcriteria = new orderModel.CustomerOrderSearchCriteria
             {
                 CustomerId = customer.Id,
                 ResponseGroup = "full"
@@ -207,8 +207,8 @@ namespace VirtoCommerce.Storefront.Services
             Func<int, int, IEnumerable<SortInfo>, IPagedList<CustomerOrder>> ordersGetter = (pageNumber, pageSize, sortInfos) =>
             {
                 //TODO: add caching
-                orderSearchcriteria.Start = (pageNumber - 1) * pageSize;
-                orderSearchcriteria.Count = pageSize;
+                orderSearchcriteria.Skip = (pageNumber - 1) * pageSize;
+                orderSearchcriteria.Take = pageSize;
                 var cacheKey = "GetCustomerOrders-" + orderSearchcriteria.GetHashCode();
                 var ordersResponse = _cacheManager.Get(cacheKey, string.Format(_customerOrdersCacheRegionFormat, customer.Id), () => _orderApi.OrderModule.Search(orderSearchcriteria));
                 return new StaticPagedList<CustomerOrder>(ordersResponse.CustomerOrders.Select(x => x.ToWebModel(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,

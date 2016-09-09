@@ -17,7 +17,7 @@ storefrontApp.component('vcCheckoutPaymentMethods', {
 			ctrl.getAvailPaymentMethods().then(function (methods) {
 				ctrl.availPaymentMethods = _.sortBy(methods, function (x) { return x.priority; });
 				if (ctrl.paymentMethod) {
-					ctrl.paymentMethod = _.find(ctrl.availPaymentMethods, function (x) { return x.gatewayCode == ctrl.paymentMethod.gatewayCode; })
+					ctrl.paymentMethod = _.find(ctrl.availPaymentMethods, function (x) { return x.code == ctrl.paymentMethod.code; })
 				}
 				if (!ctrl.paymentMethod && ctrl.availPaymentMethods.length > 0) {
 					ctrl.selectMethod(ctrl.availPaymentMethods[0]);

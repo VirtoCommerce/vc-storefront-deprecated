@@ -18,6 +18,10 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.InjectFrom<NullableAndEnumValueInjecter>(category);
 
             retVal.SeoInfo = category.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage).ToWebModel();
+            if(retVal.SeoInfo == null)
+            {
+                retVal.SeoInfo = new SeoInfo { Slug = category.Id };
+            }
             retVal.Url = "~/" + category.Outlines.GetSeoPath(store, currentLanguage, "category/" + category.Id);
 
             if (category.Images != null)

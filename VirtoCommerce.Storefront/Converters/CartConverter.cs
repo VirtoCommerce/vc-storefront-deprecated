@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Omu.ValueInjecter;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
@@ -11,42 +12,51 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class CartConverter
     {
-        public static ShoppingCart ToWebModel(this cartModel.ShoppingCart serviceModel, Currency currency, Language language)
+        public static ShoppingCart ToWebModel(this cartModel.ShoppingCart serviceModel, Currency currency, Language language, Model.Customer.CustomerInfo customer)
         {
-            var webModel = new ShoppingCart(currency, language);
+            var retVal = new ShoppingCart(currency, language);
 
-            webModel.InjectFrom(serviceModel);
+            retVal.InjectFrom(serviceModel);
 
-            if (!string.IsNullOrEmpty(serviceModel.Coupon))
+            retVal.Customer = customer;
+            if (!customer.IsRegisteredUser)
             {
-                webModel.Coupon = new Coupon
+                retVal.CustomerName = StorefrontConstants.AnonymousUsername;
+            }
+            else
+            {
+                retVal.CustomerName = string.Format("{0} {1}", customer.FirstName, customer.LastName);
+            }
+
+            if (serviceModel.Coupon != null)
+            {
+                retVal.Coupon = new Coupon
                 {
-                    AppliedSuccessfully = true,
-                    Code = serviceModel.Coupon
+                    Code = serviceModel.Coupon.Code
                 };
             }
 
             if (serviceModel.Items != null)
             {
-                webModel.Items = serviceModel.Items.Select(i => i.ToWebModel(currency, language)).ToList();
-                webModel.HasPhysicalProducts = webModel.Items.Any(i =>
+                retVal.Items = serviceModel.Items.Select(i => i.ToWebModel(currency, language)).ToList();
+                retVal.HasPhysicalProducts = retVal.Items.Any(i =>
                     string.IsNullOrEmpty(i.ProductType) ||
                     !string.IsNullOrEmpty(i.ProductType) && i.ProductType.Equals("Physical", StringComparison.OrdinalIgnoreCase));
             }
 
             if (serviceModel.Addresses != null)
             {
-                webModel.Addresses = serviceModel.Addresses.Select(a => a.ToWebModel()).ToList();
+                retVal.Addresses = serviceModel.Addresses.Select(a => a.ToWebModel()).ToList();
 
-                var billingAddress = webModel.Addresses.FirstOrDefault(a => a.Type == AddressType.Billing);
+                var billingAddress = retVal.Addresses.FirstOrDefault(a => a.Type == AddressType.Billing);
                 if (billingAddress == null)
                 {
                     billingAddress = new Address { Type = AddressType.Billing };
                 }
 
-                if (webModel.HasPhysicalProducts)
+                if (retVal.HasPhysicalProducts)
                 {
-                    var shippingAddress = webModel.Addresses.FirstOrDefault(a => a.Type == AddressType.Shipping);
+                    var shippingAddress = retVal.Addresses.FirstOrDefault(a => a.Type == AddressType.Shipping);
                     if (shippingAddress == null)
                     {
                         shippingAddress = new Address { Type = AddressType.Shipping };
@@ -56,69 +66,63 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (serviceModel.Payments != null)
             {
-                webModel.Payments = serviceModel.Payments.Select(p => p.TowebModel(currency)).ToList();
+                retVal.Payments = serviceModel.Payments.Select(p => p.TowebModel(currency)).ToList();
             }
 
             if (serviceModel.Shipments != null)
             {
-                webModel.Shipments = serviceModel.Shipments.Select(s => s.ToWebModel(webModel)).ToList();
+                retVal.Shipments = serviceModel.Shipments.Select(s => s.ToWebModel(retVal)).ToList();
             }
 
             if (serviceModel.DynamicProperties != null)
             {
-                webModel.DynamicProperties = serviceModel.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
+                retVal.DynamicProperties = serviceModel.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
             }
 
             if (serviceModel.TaxDetails != null)
             {
-                webModel.TaxDetails = serviceModel.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
+                retVal.TaxDetails = serviceModel.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
             }
-
-            webModel.HandlingTotal = new Money(serviceModel.HandlingTotal ?? 0, currency);
-            webModel.Height = (decimal)(serviceModel.Height ?? 0);
-            webModel.IsAnonymous = serviceModel.IsAnonymous == true;
-            webModel.IsRecuring = serviceModel.IsRecuring == true;
-            webModel.Length = (decimal)(serviceModel.Length ?? 0);
+            retVal.DiscountAmount = new Money(serviceModel.DiscountAmount ?? 0, currency);
+            retVal.DiscountAmountWithTax = new Money(serviceModel.DiscountAmountWithTax ?? 0, currency);
+            retVal.HandlingTotal = new Money(serviceModel.HandlingTotal ?? 0, currency);
+            retVal.HandlingTotalWithTax = new Money(serviceModel.HandlingTotalWithTax ?? 0, currency);
+            retVal.IsAnonymous = serviceModel.IsAnonymous == true;
+            retVal.IsRecuring = serviceModel.IsRecuring == true;
             //webModel.TaxIncluded = serviceModel.TaxIncluded == true;
-            webModel.TaxTotal = new Money(serviceModel.TaxTotal ?? 0, currency);
-            webModel.VolumetricWeight = (decimal)(serviceModel.VolumetricWeight ?? 0);
-            webModel.Weight = (decimal)(serviceModel.Weight ?? 0);
-            webModel.Width = (decimal)(serviceModel.Width ?? 0);
-            webModel.ValidationType = EnumUtility.SafeParse(serviceModel.ValidationType, ValidationType.PriceAndQuantity);
+            retVal.TaxTotal = new Money(serviceModel.TaxTotal ?? 0, currency);
+            retVal.VolumetricWeight = (decimal)(serviceModel.VolumetricWeight ?? 0);
+            retVal.Weight = (decimal)(serviceModel.Weight ?? 0);
+            retVal.ValidationType = EnumUtility.SafeParse(serviceModel.ValidationType, ValidationType.PriceAndQuantity);
 
-            return webModel;
+            return retVal;
         }
 
 
         public static cartModel.ShoppingCart ToServiceModel(this ShoppingCart webModel)
         {
-            var serviceModel = new cartModel.ShoppingCart();
+            var retVal = new cartModel.ShoppingCart();
 
-            serviceModel.InjectFrom(webModel);
+            retVal.InjectFrom(webModel);
 
-            serviceModel.Addresses = webModel.Addresses.Select(a => a.ToCartServiceModel()).ToList();
-            serviceModel.Coupon = webModel.Coupon != null && webModel.Coupon.AppliedSuccessfully ? webModel.Coupon.Code : null;
-            serviceModel.Currency = webModel.Currency.Code;
-            serviceModel.Discounts = webModel.Discounts.Select(d => d.ToServiceModel()).ToList();
-            serviceModel.DiscountTotal = (double)webModel.DiscountTotal.Amount;
-            serviceModel.HandlingTotal = (double)webModel.HandlingTotal.Amount;
-            serviceModel.Height = (double)webModel.Height;
-            serviceModel.Items = webModel.Items.Select(i => i.ToServiceModel()).ToList();
-            serviceModel.Length = (double)webModel.Length;
-            serviceModel.Payments = webModel.Payments.Select(p => p.ToServiceModel()).ToList();
-            serviceModel.Shipments = webModel.Shipments.Select(s => s.ToServiceModel()).ToList();
-            serviceModel.ShippingTotal = (double)webModel.ShippingTotal.Amount;
-            serviceModel.SubTotal = (double)webModel.SubTotal.Amount;
-            serviceModel.TaxDetails = webModel.TaxDetails.Select(td => td.ToCartApiModel()).ToList();
-            serviceModel.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToCartApiModel()).ToList();
-            serviceModel.TaxTotal = (double)webModel.TaxTotal.Amount;
-            serviceModel.Total = (double)webModel.Total.Amount;
-            serviceModel.VolumetricWeight = (double)webModel.VolumetricWeight;
-            serviceModel.Weight = (double)webModel.Weight;
-            serviceModel.Width = (double)webModel.Width;
-            serviceModel.ValidationType = webModel.ValidationType.ToString();
+            retVal.Addresses = webModel.Addresses.Select(a => a.ToCartServiceModel()).ToList();
+            retVal.Coupon = webModel.Coupon != null ? new cartModel.Coupon { Code = webModel.Coupon.Code } : null;
+            retVal.Currency = webModel.Currency.Code;
+            retVal.Discounts = webModel.Discounts.Select(d => d.ToServiceModel()).ToList();
+            retVal.HandlingTotal = (double)webModel.HandlingTotal.Amount;
+            retVal.HandlingTotalWithTax = (double)webModel.HandlingTotal.Amount;
+            retVal.DiscountAmount = (double)webModel.DiscountAmount.Amount;
+            retVal.DiscountAmountWithTax = (double)webModel.DiscountAmountWithTax.Amount;
+            retVal.Items = webModel.Items.Select(i => i.ToServiceModel()).ToList();
+            retVal.Payments = webModel.Payments.Select(p => p.ToServiceModel()).ToList();
+            retVal.Shipments = webModel.Shipments.Select(s => s.ToServiceModel()).ToList();
+            retVal.TaxDetails = webModel.TaxDetails.Select(td => td.ToCartApiModel()).ToList();
+            retVal.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToCartApiModel()).ToList();
+            retVal.VolumetricWeight = (double)webModel.VolumetricWeight;
+            retVal.Weight = (double)webModel.Weight;
+            retVal.ValidationType = webModel.ValidationType.ToString();
 
-            return serviceModel;
+            return retVal;
         }
     }
 }

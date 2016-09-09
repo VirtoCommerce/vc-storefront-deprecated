@@ -213,7 +213,7 @@ namespace VirtoCommerce.Storefront.Services
             var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToList();
             var vendorTasks = vendorIds.Select(id => _customerService.GetVendorByIdAsync(id));
             var vendors = await Task.WhenAll(vendorTasks);
-
+            vendors = vendors.Where(x => x != null).ToArray();
             foreach (var product in products)
             {
                 product.Vendor = vendors.FirstOrDefault(v => v.Id == product.VendorId);
@@ -223,7 +223,7 @@ namespace VirtoCommerce.Storefront.Services
         private void LoadProductVendors(List<Product> products)
         {
             var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToList();
-            var vendors = vendorIds.Select(id => _customerService.GetVendorById(id)).ToList();
+            var vendors = vendorIds.Select(id => _customerService.GetVendorById(id)).Where(x => x != null).ToList();
 
             foreach (var product in products)
             {
