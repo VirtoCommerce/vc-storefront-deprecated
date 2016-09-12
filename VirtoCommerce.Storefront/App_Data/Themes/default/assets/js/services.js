@@ -92,7 +92,7 @@ storefrontApp.service('cartService', ['$http', function ($http) {
             return $http.post('storefrontapi/cart/shipments', shipment);
         },
         addOrUpdatePayment: function (payment) {
-            return $http.post('storefrontapi/cart/payments', { payment: payment });
+            return $http.post('storefrontapi/cart/payments', payment );
         },
         getAvailableShippingMethods: function (shipmentId) {
             return $http.get('storefrontapi/cart/shipments/' + shipmentId + '/shippingmethods?t=' + new Date().getTime());

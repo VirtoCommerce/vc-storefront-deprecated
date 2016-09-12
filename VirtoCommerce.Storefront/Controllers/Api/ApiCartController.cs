@@ -218,9 +218,8 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart.Id)).LockAsync())
             {
-                var orderId = await _cartApi.CartModule.PlaceOrderAsync(_cartBuilder.Cart.ToServiceModel());
+                var order = await  _orderApi.OrderModule.CreateOrderFromCartAsync(_cartBuilder.Cart.Id);
 
-                var order = await _orderApi.OrderModule.GetByIdAsync(orderId);
                 //Raise domain event
                 await _orderPlacedEventPublisher.PublishAsync(new OrderPlacedEvent(order.ToWebModel(WorkContext.AllCurrencies, WorkContext.CurrentLanguage), _cartBuilder.Cart));
                 
@@ -234,7 +233,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
                 await _cartBuilder.RemoveCartAsync();
 
-                return Json(new { order, orderProcessingResult = processingResult });
+                return Json(new { order, orderProcessingResult = processingResult, paymentMethod = incomingPayment != null ? incomingPayment.PaymentMethod : null });
             }
         }
 

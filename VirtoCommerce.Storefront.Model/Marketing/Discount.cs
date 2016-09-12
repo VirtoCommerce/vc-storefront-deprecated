@@ -5,6 +5,9 @@ namespace VirtoCommerce.Storefront.Model.Marketing
 {
     public class Discount : ValueObject<Discount>, IConvertible<Discount>
     {
+        public Discount()
+        {
+        }
         public Discount(Currency currency)
         {
             Amount = new Money(currency);

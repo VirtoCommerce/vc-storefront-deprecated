@@ -27,20 +27,20 @@ namespace VirtoCommerce.Storefront.Converters
 
         public static cartModel.Payment ToServiceModel(this Payment payment)
         {
-            var serviceModel = new cartModel.Payment();
+            var retVal = new cartModel.Payment();
 
-            serviceModel.InjectFrom(payment);
+            retVal.InjectFrom(payment);
 
-            serviceModel.Amount = (double)payment.Amount.Amount;
+            retVal.Amount = (double)payment.Amount.Amount;
 
             if (payment.BillingAddress != null)
             {
-                serviceModel.BillingAddress = payment.BillingAddress.ToCartServiceModel();
+                retVal.BillingAddress = payment.BillingAddress.ToCartServiceModel();
             }
 
-            serviceModel.Currency = payment.Currency.Code;
+            retVal.Currency = payment.Currency.Code;
 
-            return serviceModel;
+            return retVal;
         }
 
    

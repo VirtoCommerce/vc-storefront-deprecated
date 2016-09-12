@@ -44,10 +44,10 @@ namespace VirtoCommerce.Storefront.Binders
             {
                 retVal = new Shipment(currency);
             }
-            else if(type == typeof(Payment))
+            else if (type == typeof(Payment))
             {
                 retVal = new Payment(currency);
-            }
+            }          
             controllerContext.HttpContext.Request.InputStream.Seek(0, SeekOrigin.Begin);
             var reader = new StreamReader(controllerContext.HttpContext.Request.InputStream);
             var bodyText = reader.ReadToEnd();
