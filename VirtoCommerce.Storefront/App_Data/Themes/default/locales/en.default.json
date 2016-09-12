@@ -14,6 +14,7 @@
         "cart": "Cart",
         "remove": "Remove",
         "coupon_code": "Coupon code",
+        "coupon_applied_sucessfuly": "Coupon is valid",
         "invalid_coupon_code": "This code did not match any active coupon. Was it entered correctly?",
         "copyright_text": "All rights reserved",
         "optional_field_sign": "(optional)",

@@ -148,7 +148,10 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task<ICartBuilder> RemoveCouponAsync()
         {
-            await _cartApi.CartModule.RemoveCartCouponAsync(_cart.Id, string.Empty);
+            if (_cart.Coupon != null)
+            {
+                await _cartApi.CartModule.RemoveCartCouponAsync(_cart.Id, _cart.Coupon.Code);
+            }
             await ReloadAsync();
             return this;
         }

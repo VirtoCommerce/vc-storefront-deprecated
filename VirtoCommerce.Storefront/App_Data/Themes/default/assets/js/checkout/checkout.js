@@ -44,6 +44,9 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
     				$scope.checkout.cart = cart;
     				$scope.checkout.email = cart.email;
     				$scope.checkout.coupon = cart.coupon || $scope.checkout.coupon;
+    				if (!$scope.checkout.coupon.appliedSuccessfully) {
+    					$scope.checkout.coupon.errorCode = 'InvalidCouponCode';
+    				}
     				if (cart.payments.length) {
     					$scope.checkout.payment = cart.payments[0];
     					$scope.checkout.paymentMethod.code = $scope.checkout.payment.paymentGatewayCode;

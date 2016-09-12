@@ -32,8 +32,9 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.Coupon = new Coupon
                 {
-                    Code = serviceModel.Coupon.Code
-                };
+                    Code = serviceModel.Coupon.Code,
+                    AppliedSuccessfully = serviceModel.Coupon.IsValid ?? false
+                };            
             }
 
             if (serviceModel.Items != null)
