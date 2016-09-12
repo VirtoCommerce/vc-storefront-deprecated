@@ -1139,8 +1139,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         }
 
         /// <summary>
-        /// Send dynamic notification (contains custom list of properties) an store or
-        /// adminsitrator email
+        /// Send dynamic notification (contains custom list of properties) to store or
+        /// administrator email
         /// </summary>
         /// <param name='request'>
         /// </param>
@@ -1745,8 +1745,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
             }
 
             /// <summary>
-            /// Send dynamic notification (contains custom list of properties) an store or
-            /// adminsitrator email
+            /// Send dynamic notification (contains custom list of properties) to store or
+            /// administrator email
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -1759,8 +1759,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
             }
 
             /// <summary>
-            /// Send dynamic notification (contains custom list of properties) an store or
-            /// adminsitrator email
+            /// Send dynamic notification (contains custom list of properties) to store or
+            /// administrator email
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -1982,8 +1982,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Store>> GetStoreByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
-        /// Send dynamic notification (contains custom list of properties) an
-        /// store or adminsitrator email
+        /// Send dynamic notification (contains custom list of properties) to
+        /// store or administrator email
         /// </summary>
         /// <param name='request'>
         /// </param>

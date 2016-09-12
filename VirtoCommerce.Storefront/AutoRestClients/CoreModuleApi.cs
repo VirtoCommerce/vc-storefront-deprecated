@@ -783,16 +783,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<FulfillmentCenter>>> DeleteFulfillmentCentersWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteFulfillmentCentersWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (ids == null)
             {
@@ -871,7 +868,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200)
+            if ((int)_statusCode != 204)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -894,27 +891,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<FulfillmentCenter>>();
+            var _result = new Microsoft.Rest.HttpOperationResponse();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
-            // Deserialize Response
-            if ((int)_statusCode == 200)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<System.Collections.Generic.IList<FulfillmentCenter>>(_responseContent, this.Client.DeserializationSettings);
-                }
-                catch (Newtonsoft.Json.JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
             if (_shouldTrace)
             {
                 Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
@@ -2582,9 +2561,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             /// </param>
             /// <param name='ids'>
             /// </param>
-            public static System.Collections.Generic.IList<FulfillmentCenter> DeleteFulfillmentCenters(this ICommerce operations, System.Collections.Generic.IList<string> ids)
+            public static void DeleteFulfillmentCenters(this ICommerce operations, System.Collections.Generic.IList<string> ids)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).DeleteFulfillmentCentersAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).DeleteFulfillmentCentersAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -2598,12 +2577,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<FulfillmentCenter>> DeleteFulfillmentCentersAsync(this ICommerce operations, System.Collections.Generic.IList<string> ids, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task DeleteFulfillmentCentersAsync(this ICommerce operations, System.Collections.Generic.IList<string> ids, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.DeleteFulfillmentCentersWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
+                await operations.DeleteFulfillmentCentersWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
             /// <summary>
@@ -3066,13 +3042,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<FulfillmentCenter>>> DeleteFulfillmentCentersWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteFulfillmentCentersWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Find fulfillment center by id
         /// </summary>

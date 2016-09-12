@@ -711,7 +711,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -1478,7 +1478,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignment>> SearchPricelistAssignmentsWithHttpMessagesAsync(string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignmentSearchResult>> SearchPricelistAssignmentsWithHttpMessagesAsync(string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // Tracing
             bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
@@ -1601,7 +1601,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<PricelistAssignment>();
+            var _result = new Microsoft.Rest.HttpOperationResponse<PricelistAssignmentSearchResult>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -1610,7 +1610,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<PricelistAssignment>(_responseContent, this.Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<PricelistAssignmentSearchResult>(_responseContent, this.Client.DeserializationSettings);
                 }
                 catch (Newtonsoft.Json.JsonException ex)
                 {
@@ -2844,7 +2844,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -3358,7 +3358,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             /// </param>
             /// <param name='criteriatake'>
             /// </param>
-            public static PricelistAssignment SearchPricelistAssignments(this IPricingModule operations, string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?))
+            public static PricelistAssignmentSearchResult SearchPricelistAssignments(this IPricingModule operations, string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).SearchPricelistAssignmentsAsync(criteriapriceListId, criteriapriceListIds, criteriakeyword, criteriasort, criteriaskip, criteriatake), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -3387,7 +3387,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<PricelistAssignment> SearchPricelistAssignmentsAsync(this IPricingModule operations, string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<PricelistAssignmentSearchResult> SearchPricelistAssignmentsAsync(this IPricingModule operations, string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
                 using (var _result = await operations.SearchPricelistAssignmentsWithHttpMessagesAsync(criteriapriceListId, criteriapriceListIds, criteriakeyword, criteriasort, criteriaskip, criteriatake, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -3983,7 +3983,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// <exception cref="Microsoft.Rest.SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignment>> SearchPricelistAssignmentsWithHttpMessagesAsync(string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignmentSearchResult>> SearchPricelistAssignmentsWithHttpMessagesAsync(string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Update pricelist assignment
         /// </summary>
@@ -5993,6 +5993,44 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "take")]
         public int? Take { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PricelistAssignmentSearchResult
+    {
+        /// <summary>
+        /// Initializes a new instance of the PricelistAssignmentSearchResult
+        /// class.
+        /// </summary>
+        public PricelistAssignmentSearchResult() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PricelistAssignmentSearchResult
+        /// class.
+        /// </summary>
+        public PricelistAssignmentSearchResult(long? totalCount = default(long?), System.Collections.Generic.IList<PricelistAssignment> assignments = default(System.Collections.Generic.IList<PricelistAssignment>))
+        {
+            TotalCount = totalCount;
+            Assignments = assignments;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
+        public long? TotalCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "assignments")]
+        public System.Collections.Generic.IList<PricelistAssignment> Assignments { get; set; }
 
     }
 }

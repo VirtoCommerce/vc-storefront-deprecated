@@ -3335,7 +3335,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
         public PlatformModuleApiClient Client { get; private set; }
 
         /// <summary>
-        /// Return all aviable locales
+        /// Return all available locales
         /// </summary>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -3475,7 +3475,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
     public static partial class LocalizationExtensions
     {
             /// <summary>
-            /// Return all aviable locales
+            /// Return all available locales
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -3486,7 +3486,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
             }
 
             /// <summary>
-            /// Return all aviable locales
+            /// Return all available locales
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -3518,7 +3518,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
     public partial interface ILocalization
     {
         /// <summary>
-        /// Return all aviable locales
+        /// Return all available locales
         /// </summary>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -6374,7 +6374,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<string>> SendNotificationWithHttpMessagesAsync(TestNotificationRequest request, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SendNotificationResult>> SendNotificationWithHttpMessagesAsync(TestNotificationRequest request, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
             {
@@ -6463,7 +6463,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<string>();
+            var _result = new Microsoft.Rest.HttpOperationResponse<SendNotificationResult>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -6472,7 +6472,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<string>(_responseContent, this.Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<SendNotificationResult>(_responseContent, this.Client.DeserializationSettings);
                 }
                 catch (Newtonsoft.Json.JsonException ex)
                 {
@@ -7431,7 +7431,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
             /// <param name='request'>
             /// Test notification request
             /// </param>
-            public static string SendNotification(this INotifications operations, TestNotificationRequest request)
+            public static SendNotificationResult SendNotification(this INotifications operations, TestNotificationRequest request)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((INotifications)s).SendNotificationAsync(request), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -7456,7 +7456,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<string> SendNotificationAsync(this INotifications operations, TestNotificationRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<SendNotificationResult> SendNotificationAsync(this INotifications operations, TestNotificationRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
                 using (var _result = await operations.SendNotificationWithHttpMessagesAsync(request, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -7896,7 +7896,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<string>> SendNotificationWithHttpMessagesAsync(TestNotificationRequest request, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SendNotificationResult>> SendNotificationWithHttpMessagesAsync(TestNotificationRequest request, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Get notification journal for object
         /// </summary>
@@ -8571,7 +8571,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 401)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -10778,7 +10778,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -12506,7 +12506,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -14112,6 +14112,42 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "body")]
         public string Body { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class SendNotificationResult
+    {
+        /// <summary>
+        /// Initializes a new instance of the SendNotificationResult class.
+        /// </summary>
+        public SendNotificationResult() { }
+
+        /// <summary>
+        /// Initializes a new instance of the SendNotificationResult class.
+        /// </summary>
+        public SendNotificationResult(string errorMessage = default(string), bool? isSuccess = default(bool?))
+        {
+            ErrorMessage = errorMessage;
+            IsSuccess = isSuccess;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "errorMessage")]
+        public string ErrorMessage { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isSuccess")]
+        public bool? IsSuccess { get; set; }
 
     }
 }

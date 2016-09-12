@@ -1068,6 +1068,142 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         }
 
         /// <summary>
+        /// Create new customer order based on shopping cart.
+        /// </summary>
+        /// <param name='cartId'>
+        /// shopping cart id
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CreateOrderFromCartWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "CreateOrderFromCart", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/order/customerOrders/{cartId}").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 200)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<CustomerOrder>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<CustomerOrder>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <summary>
         /// Update a existing customer order
         /// </summary>
         /// <param name='customerOrder'>
@@ -2253,6 +2389,40 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             }
 
             /// <summary>
+            /// Create new customer order based on shopping cart.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// shopping cart id
+            /// </param>
+            public static CustomerOrder CreateOrderFromCart(this IOrderModule operations, string cartId)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).CreateOrderFromCartAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Create new customer order based on shopping cart.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// shopping cart id
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<CustomerOrder> CreateOrderFromCartAsync(this IOrderModule operations, string cartId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.CreateOrderFromCartWithHttpMessagesAsync(cartId, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
             /// Update a existing customer order
             /// </summary>
             /// <param name='operations'>
@@ -2649,6 +2819,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProcessPaymentResult>> ProcessOrderPaymentsWithHttpMessagesAsync(string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Create new customer order based on shopping cart.
+        /// </summary>
+        /// <param name='cartId'>
+        /// shopping cart id
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CreateOrderFromCartWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Update a existing customer order
         /// </summary>
@@ -3475,7 +3667,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <param name="paymentStatus">Possible values include: 'new',
         /// 'pending', 'authorized', 'paid', 'partiallyRefunded', 'refunded',
         /// 'voided', 'custom', 'cancelled'</param>
-        public PaymentIn(string purpose = default(string), string gatewayCode = default(string), PaymentMethod paymentMethod = default(PaymentMethod), string organizationId = default(string), string organizationName = default(string), string customerId = default(string), string customerName = default(string), System.DateTime? incomingDate = default(System.DateTime?), string outerId = default(string), Address billingAddress = default(Address), string paymentStatus = default(string), System.DateTime? authorizedDate = default(System.DateTime?), System.DateTime? capturedDate = default(System.DateTime?), System.DateTime? voidedDate = default(System.DateTime?), string operationType = default(string), string parentOperationId = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), System.Collections.Generic.IList<IOperation> childrenOperations = default(System.Collections.Generic.IList<IOperation>), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public PaymentIn(string purpose = default(string), string gatewayCode = default(string), PaymentMethod paymentMethod = default(PaymentMethod), string organizationId = default(string), string organizationName = default(string), string customerId = default(string), string customerName = default(string), System.DateTime? incomingDate = default(System.DateTime?), string outerId = default(string), Address billingAddress = default(Address), string paymentStatus = default(string), System.DateTime? authorizedDate = default(System.DateTime?), System.DateTime? capturedDate = default(System.DateTime?), System.DateTime? voidedDate = default(System.DateTime?), ProcessPaymentResult processPaymentResult = default(ProcessPaymentResult), string operationType = default(string), string parentOperationId = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), System.Collections.Generic.IList<IOperation> childrenOperations = default(System.Collections.Generic.IList<IOperation>), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Purpose = purpose;
             GatewayCode = gatewayCode;
@@ -3491,6 +3683,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
             AuthorizedDate = authorizedDate;
             CapturedDate = capturedDate;
             VoidedDate = voidedDate;
+            ProcessPaymentResult = processPaymentResult;
             OperationType = operationType;
             ParentOperationId = parentOperationId;
             Number = number;
@@ -3586,6 +3779,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "voidedDate")]
         public System.DateTime? VoidedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "processPaymentResult")]
+        public ProcessPaymentResult ProcessPaymentResult { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3896,6 +4094,72 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class ProcessPaymentResult
+    {
+        /// <summary>
+        /// Initializes a new instance of the ProcessPaymentResult class.
+        /// </summary>
+        public ProcessPaymentResult() { }
+
+        /// <summary>
+        /// Initializes a new instance of the ProcessPaymentResult class.
+        /// </summary>
+        /// <param name="newPaymentStatus">Possible values include: 'new',
+        /// 'pending', 'authorized', 'paid', 'partiallyRefunded', 'refunded',
+        /// 'voided', 'custom', 'cancelled'</param>
+        public ProcessPaymentResult(string newPaymentStatus = default(string), string redirectUrl = default(string), string htmlForm = default(string), bool? isSuccess = default(bool?), string error = default(string), string outerId = default(string))
+        {
+            NewPaymentStatus = newPaymentStatus;
+            RedirectUrl = redirectUrl;
+            HtmlForm = htmlForm;
+            IsSuccess = isSuccess;
+            Error = error;
+            OuterId = outerId;
+        }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'new', 'pending',
+        /// 'authorized', 'paid', 'partiallyRefunded', 'refunded', 'voided',
+        /// 'custom', 'cancelled'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "newPaymentStatus")]
+        public string NewPaymentStatus { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "redirectUrl")]
+        public string RedirectUrl { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "htmlForm")]
+        public string HtmlForm { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isSuccess")]
+        public bool? IsSuccess { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "error")]
+        public string Error { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outerId")]
+        public string OuterId { get; set; }
 
     }
 }
@@ -7463,91 +7727,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "bankCardCVV2")]
         public string BankCardCVV2 { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
-{
-    using System.Linq;
-
-    /// <summary>
-    /// Represent process payment request result
-    /// </summary>
-    public partial class ProcessPaymentResult
-    {
-        /// <summary>
-        /// Initializes a new instance of the ProcessPaymentResult class.
-        /// </summary>
-        public ProcessPaymentResult() { }
-
-        /// <summary>
-        /// Initializes a new instance of the ProcessPaymentResult class.
-        /// </summary>
-        /// <param name="newPaymentStatus">Possible values include: 'new',
-        /// 'pending', 'authorized', 'paid', 'partiallyRefunded', 'refunded',
-        /// 'voided', 'custom', 'cancelled'</param>
-        /// <param name="paymentMethodType">Possible values include:
-        /// 'unknown', 'standard', 'redirection', 'preparedForm'</param>
-        /// <param name="redirectUrl">Redirect url used for OutSite payment
-        /// processing</param>
-        /// <param name="htmlForm">Generated Html form used for InSite payment
-        /// processing</param>
-        public ProcessPaymentResult(string newPaymentStatus = default(string), string paymentMethodType = default(string), string redirectUrl = default(string), bool? isSuccess = default(bool?), string error = default(string), string htmlForm = default(string), string outerId = default(string))
-        {
-            NewPaymentStatus = newPaymentStatus;
-            PaymentMethodType = paymentMethodType;
-            RedirectUrl = redirectUrl;
-            IsSuccess = isSuccess;
-            Error = error;
-            HtmlForm = htmlForm;
-            OuterId = outerId;
-        }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'new', 'pending',
-        /// 'authorized', 'paid', 'partiallyRefunded', 'refunded', 'voided',
-        /// 'custom', 'cancelled'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "newPaymentStatus")]
-        public string NewPaymentStatus { get; set; }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'unknown', 'standard',
-        /// 'redirection', 'preparedForm'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodType")]
-        public string PaymentMethodType { get; set; }
-
-        /// <summary>
-        /// Gets or sets redirect url used for OutSite payment processing
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "redirectUrl")]
-        public string RedirectUrl { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isSuccess")]
-        public bool? IsSuccess { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "error")]
-        public string Error { get; set; }
-
-        /// <summary>
-        /// Gets or sets generated Html form used for InSite payment processing
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "htmlForm")]
-        public string HtmlForm { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "outerId")]
-        public string OuterId { get; set; }
 
     }
 }
