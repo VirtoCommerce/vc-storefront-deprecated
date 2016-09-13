@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Web;
 
-namespace VirtoCommerce.Storefront.Common
+namespace VirtoCommerce.Storefront.Model.Common
 {
     public static class NameValueCollectionExtensions
     {
         [CLSCompliant(false)]
         public static T GetValue<T>(this NameValueCollection nameValuePairs, string configKey, T defaultValue) where T : IConvertible
         {
-            T result = default(T);
+            T result;
 
             if (nameValuePairs.AllKeys.Contains(configKey))
             {
@@ -21,7 +19,7 @@ namespace VirtoCommerce.Storefront.Common
             }
             else
             {
-                return defaultValue;
+                result = defaultValue;
             }
 
             return result;

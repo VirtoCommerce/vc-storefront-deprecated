@@ -98,6 +98,7 @@
     <Compile Include="Common\MutablePagedListExtensions.cs" />
     <Compile Include="Common\LocalCacheManager.cs" />
     <Compile Include="Common\MutablePagedList.cs" />
+    <Compile Include="Common\NameValueCollectionExtensions.cs" />
     <Compile Include="Common\SortInfo.cs" />
     <Compile Include="EditorialReview.cs" />
     <Compile Include="Common\StreamExtensions.cs" />
