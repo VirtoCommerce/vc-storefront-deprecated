@@ -27,8 +27,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
             TaxDetails = new List<TaxDetail>();
             DynamicProperties = new List<DynamicProperty>();
             ValidationErrors = new List<ValidationError>();
-            ValidationWarnings = new List<ValidationError>();
             AvailablePaymentMethods = new List<PaymentMethod>();
+            IsValid = true;
         }
 
         /// <summary>
@@ -396,11 +396,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <value>Dynamic properties collections</value>
         public ICollection<DynamicProperty> DynamicProperties { get; set; }
 
-        /// <summary>
-        /// Gets or sets the cart validation type
-        /// </summary>
-        public ValidationType ValidationType { get; set; }
-
+      
         public bool HasValidationErrors
         {
             get
@@ -449,9 +445,10 @@ namespace VirtoCommerce.Storefront.Model.Cart
             }
         }
 
+        #region IValidatable Members
+        public bool IsValid { get; set; }
         public ICollection<ValidationError> ValidationErrors { get; set; }
-
-        public ICollection<ValidationError> ValidationWarnings { get; set; }
+        #endregion
 
         #region IDiscountable Members
         public ICollection<Discount> Discounts { get; private set; }

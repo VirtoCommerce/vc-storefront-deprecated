@@ -494,7 +494,6 @@
     <Compile Include="Converters\VendorConverters.cs" />
     <Compile Include="JsonConverters\CurrencyJsonConverter.cs" />
     <Compile Include="Owin\StorefrontUrlRewriterOwinMiddleware.cs" />
-    <Compile Include="Services\CartValidator.cs" />
     <Compile Include="Services\ContentBlobProviders\AzureBlobContentProvider.cs" />
     <Compile Include="Services\ContentBlobProviders\FileSystemContentBlobProvider.cs" />
     <Compile Include="Services\CustomerServiceImpl.cs" />

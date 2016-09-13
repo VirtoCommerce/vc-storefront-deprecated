@@ -27,6 +27,7 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.Cart.GetCartItemsCount", "storefrontapi/cart/itemscount", defaults: new { controller = "ApiCart", action = "GetCartItemsCount" });
             routes.AddStorefrontRoute("API.Cart.AddItemToCart", "storefrontapi/cart/items", defaults: new { controller = "ApiCart", action = "AddItemToCart" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Cart.ChangeCartItem", "storefrontapi/cart/items", defaults: new { controller = "ApiCart", action = "ChangeCartItem" }, constraints: new { httpMethod = new HttpMethodConstraint("PUT") });
+            routes.AddStorefrontRoute("API.Cart.ChangeCartItemPrice", "storefrontapi/cart/items/price", defaults: new { controller = "ApiCart", action = "ChangeCartItemPrice" }, constraints: new { httpMethod = new HttpMethodConstraint("PUT") });
             routes.AddStorefrontRoute("API.Cart.RemoveCartItem", "storefrontapi/cart/items", defaults: new { controller = "ApiCart", action = "RemoveCartItem" }, constraints: new { httpMethod = new HttpMethodConstraint("DELETE") });
             routes.AddStorefrontRoute("API.Cart.ClearCart", "storefrontapi/cart/clear", defaults: new { controller = "ApiCart", action = "ClearCart" });
             routes.AddStorefrontRoute("API.Cart.GetCartShipmentAvailShippingMethods", "storefrontapi/cart/shipments/{shipmentId}/shippingmethods", defaults: new { controller = "ApiCart", action = "GetCartShipmentAvailShippingMethods" });

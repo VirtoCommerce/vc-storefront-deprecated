@@ -55,7 +55,8 @@
         "shipping_method": {
             "title": "Shipping method",
             "continue_text": "Continue to payment method",
-            "return_text": "Return to customer information"
+            "return_text": "Return to customer information",
+            "no_avail_methods": "There is no shipping method for current shipping address and items available!"
         },
         "payment_method": {
             "title": "Payment method",

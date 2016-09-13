@@ -134,9 +134,13 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// </summary>
         /// <returns></returns>
         Task<ICollection<PaymentMethod>> GetAvailablePaymentMethodsAsync();
-        
+
+        Task<ICartBuilder> ValidateAsync();
+
         ShoppingCart Cart { get; }
 
         Task<ICartBuilder> ReloadAsync();
+
+        Task SaveAsync();
     }
 }

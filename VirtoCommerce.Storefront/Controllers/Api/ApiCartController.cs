@@ -12,6 +12,7 @@ using VirtoCommerce.Storefront.JsonConverters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Cart.Services;
+using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
@@ -27,18 +28,16 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         private readonly ICartModuleApiClient _cartApi;
         private readonly ICartBuilder _cartBuilder;
         private readonly IOrdersModuleApiClient _orderApi;
-        private readonly ICartValidator _cartValidator;
         private readonly ICatalogSearchService _catalogSearchService;
         private readonly IEventPublisher<OrderPlacedEvent> _orderPlacedEventPublisher;
 
         public ApiCartController(WorkContext workContext, ICatalogSearchService catalogSearchService, ICartBuilder cartBuilder,
-                                 IOrdersModuleApiClient orderApi, ICartValidator cartValidator, IStorefrontUrlBuilder urlBuilder,
+                                 IOrdersModuleApiClient orderApi, IStorefrontUrlBuilder urlBuilder,
                                  IEventPublisher<OrderPlacedEvent> orderPlacedEventPublisher, ICartModuleApiClient cartApi)
             : base(workContext, urlBuilder)
         {
             _cartBuilder = cartBuilder;
             _orderApi = orderApi;
-            _cartValidator = cartValidator;
             _catalogSearchService = catalogSearchService;
             _orderPlacedEventPublisher = orderPlacedEventPublisher;
             _cartApi = cartApi;
@@ -51,7 +50,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         {
             _cartBuilder.TakeCart(WorkContext.CurrentCart);
             await _cartBuilder.ReloadAsync();
-           // await _cartValidator.ValidateAsync(_cartBuilder.Cart);
+            await _cartBuilder.ValidateAsync();                        
             return Json(_cartBuilder.Cart, JsonRequestBehavior.AllowGet);
         }
 
@@ -71,7 +70,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             EnsureThatCartExist();
 
             //Need lock to prevent concurrent access to same cart
-            using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(id)).LockAsync())
+            using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(_cartBuilder.Cart.Id)).LockAsync())
             {
                 var products = await _catalogSearchService.GetProductsAsync(new[] { id }, Model.Catalog.ItemResponseGroup.ItemLarge);
                 if (products != null && products.Any())
@@ -80,6 +79,27 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 }
             }
             return Json(new { _cartBuilder.Cart.ItemsCount });
+        }
+
+        // PUT: storefrontapi/cart/items/price?lineItemId=...&newPrice=...&newPriceWithTax=...
+        [HttpPut]
+        public async Task<ActionResult> ChangeCartItemPrice(string lineItemId, decimal newPrice, decimal newPriceWithTax)
+        {
+            EnsureThatCartExist();
+
+            //Need lock to prevent concurrent access to same cart
+            using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(_cartBuilder.Cart.Id)).LockAsync())
+            {
+                var lineItem = _cartBuilder.Cart.Items.FirstOrDefault(x => x.Id == lineItemId);
+                if(lineItem != null)
+                {
+                    lineItem.SalePrice = new Money(newPrice, _cartBuilder.Cart.Currency);
+                    lineItem.SalePriceWithTax = new Money(newPriceWithTax, _cartBuilder.Cart.Currency);
+                }
+               await _cartBuilder.SaveAsync();
+          
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         // PUT: storefrontapi/cart/items?lineItemId=...&quantity=...

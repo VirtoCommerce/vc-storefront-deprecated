@@ -37,7 +37,10 @@ namespace VirtoCommerce.Storefront.JsonConverters
                     throw new NotSupportedException("Unknown currency code: " + currencyCode);
                 }
             }
-            serializer.Populate(obj.CreateReader(), retVal);
+            if (retVal != null)
+            {
+                serializer.Populate(obj.CreateReader(), retVal);
+            }
             return retVal;
         }
 

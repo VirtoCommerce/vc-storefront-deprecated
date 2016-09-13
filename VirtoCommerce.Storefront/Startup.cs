@@ -197,7 +197,6 @@ namespace VirtoCommerce.Storefront
 
             container.RegisterType<IMarketingService, MarketingServiceImpl>();
             container.RegisterType<IPromotionEvaluator, PromotionEvaluator>();
-            container.RegisterType<ICartValidator, CartValidator>();
             container.RegisterType<IPricingService, PricingServiceImpl>();
             container.RegisterType<ICustomerService, CustomerServiceImpl>();
             container.RegisterType<IMenuLinkListService, MenuLinkListServiceImpl>();

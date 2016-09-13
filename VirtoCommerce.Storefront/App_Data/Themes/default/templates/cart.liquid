@@ -17,7 +17,7 @@
                 <span>{{ 'cart.general.updating_cart_message' | t }}</span>
             </div>
             <h1 class="h2">{{ 'cart.general.title' | t }}</h1>
-            <div class="cart-row" ng-repeat="lineItem in cart.items">
+            <div class="cart-row" ng-repeat="lineItem in cart.items"> 
                 <div class="grid">
                     <div class="grid-item large--seven-twelfths">
                         <div class="grid">
@@ -31,17 +31,17 @@
                             </div>
                             <div class="grid-item two-thirds large--three-quarters">
                                 <span ng-bind="lineItem.name"></span>
-                                <div class="note form-error" ng-if="lineItem.validationErrors.length">
-                                    <span ng-if="lineItem.validationErrors[0].errorCode == 'ProductUnavailableError'" ng-bind="'Product is currently unavailable!'"></span>
-                                    <span ng-if="lineItem.validationErrors[0].errorCode == 'ProductQuantityError'" ng-bind="'Product quantity exceeded! Available quantity is: ' + lineItem.validationErrors[0].availableQuantity"></span>
-                                </div>
-                                <div class="note" ng-if="lineItem.validationWarnings.length">
-                                    {% if settings.show_prices_with_taxes %}
-                                        <span ng-if="lineItem.validationWarnings[0].errorCode == 'ProductPriceError'" ng-bind="'Product price has been changed. Old price was: ' + lineItem.validationWarnings[0].oldPriceWithTax.formatedAmount"></span>
-                                    {% else %}
-                                        <span ng-if="lineItem.validationWarnings[0].errorCode == 'ProductPriceError'" ng-bind="'Product price has been changed. Old price was: ' + lineItem.validationWarnings[0].oldPrice.formatedAmount"></span>
-                                    {% endif %}
-                                </div>
+								<div class="note" ng-class="{ 'form-error' : !lineItem.isValid }" ng-repeat-start="error in lineItem.validationErrors">
+									{% if settings.show_prices_with_taxes %}
+									<span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPriceWithTax.formatedAmount"></span>
+									{% else %}
+									<span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPrice.formatedAmount"></span>
+									{% endif %} 
+									<span ng-if="error.errorCode == 'PriceError'" style="color: #204a80; cursor: pointer; margin-left: 10px;" ng-click="changeLineItemPrice(lineItem.id, error.newPrice.amount, error.newPriceWithTax.amount)">Apply new price</span>
+									<span ng-if="error.errorCode == 'UnavailableError'" ng-bind="'Product is currently unavailable!'"></span>
+									<span ng-if="error.errorCode == 'QuantityError'" ng-bind="'Product quantity exceeded! Available quantity is: ' + error.availableQuantity"></span>
+								</div>
+								<div ng-repeat-end=""> </div>
                             </div>
                         </div>
                     </div>

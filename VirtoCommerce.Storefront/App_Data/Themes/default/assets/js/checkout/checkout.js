@@ -44,7 +44,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
     				$scope.checkout.cart = cart;
     				$scope.checkout.email = cart.email;
     				$scope.checkout.coupon = cart.coupon || $scope.checkout.coupon;
-    				if (!$scope.checkout.coupon.appliedSuccessfully) {
+    				if ($scope.checkout.coupon.code && !$scope.checkout.coupon.appliedSuccessfully) {
     					$scope.checkout.coupon.errorCode = 'InvalidCouponCode';
     				}
     				if (cart.payments.length) {
@@ -146,6 +146,8 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
     			$scope.checkout.shipment.deliveryAddress.email = $scope.checkout.email;
     			$scope.checkout.shipment.deliveryAddress.type = 'Shipping';
     		};
+			//Does not pass validation errors to API
+    		shipment.validationErrors = undefined;
     		return wrapLoading(function () {
     			return cartService.addOrUpdateShipment(shipment).then($scope.reloadCart);
     		});
@@ -184,18 +186,17 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
     			});
     			return;
     		}
-    		if (paymentMethod.paymentMethodType == 'PreparedForm' && orderProcessingResult.htmlForm) {
+
+    		if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'preparedform' && orderProcessingResult.htmlForm) {
     			$scope.outerRedirect($scope.baseUrl + 'cart/checkout/paymentform?orderNumber=' + order.number);
-    		}
-    		if (paymentMethod.paymentMethodType == 'Standard' || paymentMethod.paymentMethodType == 'Unknown') {
+    		} else if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'redirection' && orderProcessingResult.redirectUrl) {
+    			$window.location.href = orderProcessingResult.redirectUrl;
+    		} else {
     			if (!$scope.customer.HasAccount) {
     				$scope.outerRedirect($scope.baseUrl + 'cart/thanks/' + order.number);
     			} else {
     				$scope.outerRedirect($scope.baseUrl + 'account/order/' + order.number);
     			}
-    		}
-    		if (paymentMethod.paymentMethodType == 'Redirection' && orderProcessingResult.redirectUrl) {
-    			$window.location.href = orderProcessingResult.redirectUrl;
     		}
     	}
 

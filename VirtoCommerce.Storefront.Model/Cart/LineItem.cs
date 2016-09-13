@@ -25,7 +25,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             TaxDetails = new List<TaxDetail>();
             DynamicProperties = new List<DynamicProperty>();
             ValidationErrors = new List<ValidationError>();
-            ValidationWarnings = new List<ValidationError>();
+            IsValid = true;
         }
 
         /// <summary>
@@ -210,7 +210,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return ListPrice - DiscountAmount;
+                //special for case when ListPrice < SalePrice
+                return ((ListPrice < SalePrice) ? SalePrice : ListPrice) - DiscountAmount ;
             }
         }
 
@@ -218,7 +219,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return ListPriceWithTax - DiscountAmountWithTax;
+                //special for case when ListPriceWithTax < SalePriceWithTax
+                return ((ListPriceWithTax < SalePriceWithTax) ? SalePriceWithTax : ListPriceWithTax) - DiscountAmountWithTax;
             }
         }
 
@@ -281,14 +283,11 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <value>Dynamic properties collections</value>
         public ICollection<DynamicProperty> DynamicProperties { get; set; }
 
-        /// <summary>
-        /// Gets or sets the cart validation type
-        /// </summary>
-        public ValidationType ValidationType { get; set; }
-
+        #region IValidatable Members
+        public bool IsValid { get; set; }
         public ICollection<ValidationError> ValidationErrors { get; set; }
+        #endregion
 
-        public ICollection<ValidationError> ValidationWarnings { get; set; }
 
         #region ITaxable Members
         /// <summary>

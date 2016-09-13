@@ -4,19 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
-using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Cart.Services;
+using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Customer.Services;
-using VirtoCommerce.Storefront.Model.Marketing;
-using VirtoCommerce.Storefront.Model.Marketing.Services;
 using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Services;
@@ -209,7 +207,6 @@ namespace VirtoCommerce.Storefront.Builders
                     var lineItem = product.ToLineItem(_cart.Language, (int)quoteItem.SelectedTierPrice.Quantity);
                     lineItem.ListPrice = quoteItem.ListPrice;
                     lineItem.SalePrice = quoteItem.SelectedTierPrice.Price;
-                    lineItem.ValidationType = ValidationType.None;
 
                     AddLineItem(lineItem);
                 }
@@ -276,8 +273,12 @@ namespace VirtoCommerce.Storefront.Builders
             return payments.Select(x => x.ToWebModel()).ToList();
         }
 
-       
-   
+        public async Task<ICartBuilder> ValidateAsync()
+        {
+            await Task.WhenAll(ValidateCartItemsAsync(), ValidateCartShipmentsAsync());          
+            return this;
+        }
+    
         public ShoppingCart Cart
         {
             get
@@ -304,6 +305,15 @@ namespace VirtoCommerce.Storefront.Builders
             return this;
         }
 
+        public virtual async Task SaveAsync()
+        {
+            var cart = _cart.ToServiceModel();
+
+            //Invalidate cart in cache
+            InvalidateCache();
+            await _cartApi.CartModule.UpdateAsync(cart);
+            await ReloadAsync();
+        }
         #endregion
 
         #region IObserver<UserLoginEvent> Members
@@ -331,17 +341,71 @@ namespace VirtoCommerce.Storefront.Builders
         }
 
         #endregion
-        protected virtual async Task SaveAsync()
-        {
-            var cart = _cart.ToServiceModel();
 
-            //Invalidate cart in cache
-            InvalidateCache();
-            await _cartApi.CartModule.UpdateAsync(cart);
-            await ReloadAsync();
+
+        protected virtual async Task ValidateCartItemsAsync()
+        {
+            var workContext = _workContextFactory();
+            var productIds = _cart.Items.Select(i => i.ProductId).ToArray();
+            var cacheKey = "CartBuilder.ValidateCartItemsAsync-" + CartCacheKey + ":" + string.Join(":", productIds);
+            var products = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => await _catalogSearchService.GetProductsAsync(productIds, ItemResponseGroup.ItemWithPrices | ItemResponseGroup.ItemWithDiscounts | ItemResponseGroup.Inventory));
+
+            foreach (var lineItem in _cart.Items.ToList())
+            {
+                lineItem.ValidationErrors.Clear();
+
+                var product = products.FirstOrDefault(p => p.Id == lineItem.ProductId);
+                if (product == null || !product.IsActive || !product.IsBuyable)
+                {
+                    lineItem.ValidationErrors.Add(new UnavailableError());
+                    lineItem.IsValid = false;
+                }
+                else
+                {
+                    if (product.TrackInventory && product.Inventory != null)
+                    {
+                        var availableQuantity = product.Inventory.InStockQuantity;
+                        if (product.Inventory.ReservedQuantity.HasValue)
+                        {
+                            availableQuantity -= product.Inventory.ReservedQuantity.Value;
+                        }
+                        if (availableQuantity.HasValue && lineItem.Quantity > availableQuantity.Value)
+                        {
+                            lineItem.ValidationErrors.Add(new QuantityError(availableQuantity.Value));
+                            lineItem.IsValid = false;
+                        }
+                    }
+
+                    var tierPrice = product.Price.GetTierPrice(lineItem.Quantity);
+                    if (tierPrice.ActualPrice != lineItem.PlacedPrice)
+                    {
+                        lineItem.ValidationErrors.Add(new PriceError(lineItem.SalePrice, lineItem.SalePriceWithTax, tierPrice.Price, tierPrice.PriceWithTax));
+                    }
+                }
+            }
         }
 
-     
+        protected virtual async Task ValidateCartShipmentsAsync()
+        {
+            var workContext = _workContextFactory();
+            foreach (var shipment in _cart.Shipments.ToArray())
+            {
+                shipment.ValidationErrors.Clear();
+
+                var availShippingmethods = await GetAvailableShippingMethodsAsync();
+                var shipmentShippingMethod = availShippingmethods.FirstOrDefault(sm => shipment.HasSameMethod(sm));
+                if (shipmentShippingMethod == null)
+                {
+                    shipment.ValidationErrors.Add(new UnavailableError());
+                    shipment.IsValid = false;
+                }
+                else if (shipmentShippingMethod.Price != shipment.ShippingPrice)
+                {
+                    shipment.ValidationErrors.Add(new PriceError(shipment.ShippingPrice, shipment.ShippingPriceWithTax, shipmentShippingMethod.Price, shipmentShippingMethod.PriceWithTax));
+                }            
+            }
+        }
+
         protected virtual void InvalidateCache()
         {
             //Invalidate cart in cache
@@ -387,5 +451,6 @@ namespace VirtoCommerce.Storefront.Builders
         {
             return "CartBuilder:" + string.Join(":", storeId, name, customerId, currency).ToLowerInvariant();
         }
+
     }
 }

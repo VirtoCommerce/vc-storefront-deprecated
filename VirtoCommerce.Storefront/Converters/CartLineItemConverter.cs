@@ -65,7 +65,6 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.Width = (decimal?)serviceModel.Width;
             retVal.Height = (decimal?)serviceModel.Height;
             retVal.Length = (decimal?)serviceModel.Length;
-            retVal.ValidationType = EnumUtility.SafeParse(serviceModel.ValidationType, ValidationType.PriceAndQuantity);
 
             return retVal;
         }
@@ -92,7 +91,6 @@ namespace VirtoCommerce.Storefront.Converters
             serviceModel.Width = (double?)webModel.Width;
             serviceModel.Height = (double?)webModel.Height;
             serviceModel.Length = (double?)webModel.Length;
-            serviceModel.ValidationType = webModel.ValidationType.ToString();
 
             return serviceModel;
         }

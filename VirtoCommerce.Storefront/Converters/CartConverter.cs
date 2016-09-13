@@ -94,7 +94,6 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.TaxTotal = new Money(serviceModel.TaxTotal ?? 0, currency);
             retVal.VolumetricWeight = (decimal)(serviceModel.VolumetricWeight ?? 0);
             retVal.Weight = (decimal)(serviceModel.Weight ?? 0);
-            retVal.ValidationType = EnumUtility.SafeParse(serviceModel.ValidationType, ValidationType.PriceAndQuantity);
 
             return retVal;
         }
@@ -121,7 +120,6 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToCartApiModel()).ToList();
             retVal.VolumetricWeight = (double)webModel.VolumetricWeight;
             retVal.Weight = (double)webModel.Weight;
-            retVal.ValidationType = webModel.ValidationType.ToString();
 
             return retVal;
         }

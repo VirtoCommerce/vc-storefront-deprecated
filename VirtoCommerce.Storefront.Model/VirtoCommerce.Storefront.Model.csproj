@@ -65,14 +65,10 @@
     <Compile Include="BankCardInfo.cs" />
     <Compile Include="Cart\CartShipmentItem.cs" />
     <Compile Include="Cart\Services\ICartBuilder.cs" />
-    <Compile Include="Cart\Services\ICartValidator.cs" />
     <Compile Include="Cart\Services\IValidatable.cs" />
-    <Compile Include="Cart\ValidationErrors\CartSubtotalError.cs" />
-    <Compile Include="Cart\ValidationErrors\ProductPriceError.cs" />
-    <Compile Include="Cart\ValidationErrors\ProductQuantityError.cs" />
-    <Compile Include="Cart\ValidationErrors\ProductUnavailableError.cs" />
-    <Compile Include="Cart\ValidationErrors\ShippingPriceError.cs" />
-    <Compile Include="Cart\ValidationErrors\ShippingUnavailableError.cs" />
+    <Compile Include="Cart\ValidationErrors\PriceError.cs" />
+    <Compile Include="Cart\ValidationErrors\QuantityError.cs" />
+    <Compile Include="Cart\ValidationErrors\UnavailableError.cs" />
     <Compile Include="Cart\ValidationErrors\ValidationError.cs" />
     <Compile Include="Catalog\Aggregation.cs" />
     <Compile Include="Catalog\AggregationItem.cs" />
@@ -217,7 +213,6 @@
     <Compile Include="Cart\ShoppingCart.cs" />
     <Compile Include="Stores\Store.cs" />
     <Compile Include="Tax\TaxDetail.cs" />
-    <Compile Include="ValidationType.cs" />
     <Compile Include="Vendor.cs" />
     <Compile Include="WorkContext.cs" />
   </ItemGroup>
