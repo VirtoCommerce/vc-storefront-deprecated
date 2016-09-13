@@ -3,24 +3,24 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.StoreModule.Client.Api;
 
 namespace VirtoCommerce.Storefront.Controllers.Api
 {
     [HandleJsonError]
     public class ApiCommonController : StorefrontControllerBase
     {
-        private readonly IVirtoCommerceStoreApi _storeModuleApi;
+        private readonly IStoreModuleApiClient _storeApi;
         private readonly Country[] _countriesWithoutRegions;
 
-        public ApiCommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IVirtoCommerceStoreApi storeModuleApi)
+        public ApiCommonController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IStoreModuleApiClient storeApi)
             : base(workContext, urlBuilder)
         {
-            _storeModuleApi = storeModuleApi;
+            _storeApi = storeApi;
             _countriesWithoutRegions = workContext.AllCountries
              .Select(c => new Country { Name = c.Name, Code2 = c.Code2, Code3 = c.Code3, RegionType = c.RegionType })
              .ToArray();
@@ -49,7 +49,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpPost]
         public async Task<ActionResult> Feedback(ContactUsForm model)
         {
-            await _storeModuleApi.StoreModuleSendDynamicNotificationAnStoreEmailAsync(model.ToServiceModel(WorkContext));
+            await _storeApi.StoreModule.SendDynamicNotificationAnStoreEmailAsync(model.ToServiceModel(WorkContext));
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

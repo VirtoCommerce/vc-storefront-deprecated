@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.CartModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
@@ -16,11 +16,11 @@ namespace VirtoCommerce.Storefront.Services
     public class CartValidator : ICartValidator
     {
         private readonly Func<WorkContext> _workContextFactory;
-        private readonly IVirtoCommerceCartApi _cartApi;
+        private readonly ICartModuleApiClient _cartApi;
         private readonly ICatalogSearchService _catalogService;
         private readonly ILocalCacheManager _cacheManager;
 
-        public CartValidator(Func<WorkContext> workContextFaxtory, IVirtoCommerceCartApi cartApi, ICatalogSearchService catalogService, ILocalCacheManager cacheManager)
+        public CartValidator(Func<WorkContext> workContextFaxtory, ICartModuleApiClient cartApi, ICatalogSearchService catalogService, ILocalCacheManager cacheManager)
         {
             _workContextFactory = workContextFaxtory;
             _cartApi = cartApi;
@@ -89,34 +89,31 @@ namespace VirtoCommerce.Storefront.Services
             foreach (var shipment in cart.Shipments.ToArray())
             {
                 shipment.ValidationErrors.Clear();
-                var availableShippingMethods = await _cartApi.CartModuleGetShipmentMethodsAsync(cart.Id);
-                if (availableShippingMethods.Count == 0)
+                var availShippingRates = await _cartApi.CartModule.GetAvailableShippingRatesAsync(cart.Id);
+                if (availShippingRates.Count == 0)
                 {
                     shipment.ValidationWarnings.Add(new ShippingUnavailableError());
                     break;
                 }
                 if (!string.IsNullOrEmpty(shipment.ShipmentMethodCode))
                 {
-                    var existingShippingMethod = availableShippingMethods.Select(sm => sm.ToWebModel(cart.Currency)).FirstOrDefault(sm => shipment.HasSameMethod(sm));
+                    var existingShippingMethod = availShippingRates.Select(sm => sm.ToWebModel(cart.Currency, workContext.AllCurrencies)).FirstOrDefault(sm => shipment.HasSameMethod(sm));
                     if (existingShippingMethod == null)
                     {
                         shipment.ValidationWarnings.Add(new ShippingUnavailableError());
                         break;
                     }
-                    if (existingShippingMethod != null)
-                    {
-                        if (existingShippingMethod.Price != shipment.ShippingPrice &&
-                            (cart.ValidationType == ValidationType.PriceAndQuantity || cart.ValidationType == ValidationType.Price))
-                        {
-                            shipment.ValidationWarnings.Add(new ShippingPriceError(shipment.ShippingPrice));
 
-                            cart.Shipments.Clear();
-                            cart.Shipments.Add(existingShippingMethod.ToShipmentModel(cart.Currency));
-                        }
+                    if (existingShippingMethod.Price != shipment.ShippingPrice &&
+                        (cart.ValidationType == ValidationType.PriceAndQuantity || cart.ValidationType == ValidationType.Price))
+                    {
+                        shipment.ValidationWarnings.Add(new ShippingPriceError(shipment.ShippingPrice));
+
+                        cart.Shipments.Clear();
+                        cart.Shipments.Add(existingShippingMethod.ToShipmentModel(cart.Currency));
                     }
                 }
             }
         }
     }
 }
-

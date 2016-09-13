@@ -8,8 +8,8 @@ using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Stores;
-using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
-using searchModel = VirtoCommerce.SearchModule.Client.Model;
+using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -72,7 +72,7 @@ namespace VirtoCommerce.Storefront.Converters
             }
 
             var productSeoInfo = product.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage);
-            if(productSeoInfo != null)
+            if (productSeoInfo != null)
             {
                 retVal.SeoInfo = productSeoInfo.ToWebModel();
             }

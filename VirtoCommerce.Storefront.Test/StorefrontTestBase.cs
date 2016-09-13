@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
-using RestSharp;
-using VirtoCommerce.CartModule.Client.Api;
-using VirtoCommerce.CatalogModule.Client.Api;
-using VirtoCommerce.CoreModule.Client.Api;
-using VirtoCommerce.CustomerModule.Client.Api;
-using VirtoCommerce.InventoryModule.Client.Api;
-using VirtoCommerce.MarketingModule.Client.Api;
-using VirtoCommerce.OrderModule.Client.Api;
-using VirtoCommerce.Platform.Client.Security;
-using VirtoCommerce.PricingModule.Client.Api;
-using VirtoCommerce.QuoteModule.Client.Api;
-using VirtoCommerce.SearchModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Customer;
-using VirtoCommerce.StoreModule.Client.Api;
 
 namespace VirtoCommerce.Storefront.Test
 {
@@ -27,9 +26,9 @@ namespace VirtoCommerce.Storefront.Test
             var coreApi = GetCoreApiClient();
             var storeApi = GetStoreApiClient();
 
-            var allStores = storeApi.StoreModuleGetStores().Select(x => x.ToWebModel());
+            var allStores = storeApi.StoreModule.GetStores().Select(x => x.ToWebModel());
             var defaultStore = allStores.FirstOrDefault(x => string.Equals(x.Id, "Electronics", StringComparison.InvariantCultureIgnoreCase));
-            var currencies = coreApi.CommerceGetAllCurrencies().Select(x => x.ToWebModel(defaultStore.DefaultLanguage));
+            var currencies = coreApi.Commerce.GetAllCurrencies().Select(x => x.ToWebModel(defaultStore.DefaultLanguage));
             defaultStore.SyncCurrencies(currencies, defaultStore.DefaultLanguage);
 
             var retVal = new WorkContext
@@ -48,72 +47,72 @@ namespace VirtoCommerce.Storefront.Test
             return retVal;
         }
 
-        protected IVirtoCommerceCartApi GetCartApiClient()
+        protected ICartModuleApiClient GetCartApiClient()
         {
-            return new VirtoCommerceCartApi(new CartModule.Client.Client.ApiClient(GetApiBaseUrl(), new CartModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new CartModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceCatalogApi GetCatalogApiClient()
+        protected ICatalogModuleApiClient GetCatalogApiClient()
         {
-            return new VirtoCommerceCatalogApi(new CatalogModule.Client.Client.ApiClient(GetApiBaseUrl(), new CatalogModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new CatalogModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceCoreApi GetCoreApiClient()
+        protected ICoreModuleApiClient GetCoreApiClient()
         {
-            return new VirtoCommerceCoreApi(new CoreModule.Client.Client.ApiClient(GetApiBaseUrl(), new CoreModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new CoreModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceInventoryApi GetInventoryApiClient()
+        protected IInventoryModuleApiClient GetInventoryApiClient()
         {
-            return new VirtoCommerceInventoryApi(new InventoryModule.Client.Client.ApiClient(GetApiBaseUrl(), new InventoryModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new InventoryModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceMarketingApi GetMarketingApiClient()
+        protected IMarketingModuleApiClient GetMarketingApiClient()
         {
-            return new VirtoCommerceMarketingApi(new MarketingModule.Client.Client.ApiClient(GetApiBaseUrl(), new MarketingModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new MarketingModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommercePricingApi GetPricingApiClient()
+        protected IPricingModuleApiClient GetPricingApiClient()
         {
-            return new VirtoCommercePricingApi(new PricingModule.Client.Client.ApiClient(GetApiBaseUrl(), new PricingModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new PricingModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceQuoteApi GetQuoteApiClient()
+        protected IQuoteModuleApiClient GetQuoteApiClient()
         {
-            return new VirtoCommerceQuoteApi(new QuoteModule.Client.Client.ApiClient(GetApiBaseUrl(), new QuoteModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new QuoteModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceSearchApi GetSearchApiClient()
+        protected ISearchModuleApiClient GetSearchApiClient()
         {
-            return new VirtoCommerceSearchApi(new SearchModule.Client.Client.ApiClient(GetApiBaseUrl(), new SearchModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new SearchModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceStoreApi GetStoreApiClient()
+        protected IStoreModuleApiClient GetStoreApiClient()
         {
-            return new VirtoCommerceStoreApi(new StoreModule.Client.Client.ApiClient(GetApiBaseUrl(), new StoreModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new StoreModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceCustomerApi GetCustomerApiClient()
+        protected ICustomerModuleApiClient GetCustomerApiClient()
         {
-            return new VirtoCommerceCustomerApi(new CustomerModule.Client.Client.ApiClient(GetApiBaseUrl(), new CustomerModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new CustomerModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected IVirtoCommerceOrdersApi GetOrderApiClient()
+        protected IOrdersModuleApiClient GetOrderApiClient()
         {
-            return new VirtoCommerceOrdersApi(new OrderModule.Client.Client.ApiClient(GetApiBaseUrl(), new OrderModule.Client.Client.Configuration(), GetHmacRestRequestHandler()));
+            return new OrdersModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
 
-        protected string GetApiBaseUrl()
+        protected Uri GetApiBaseUri()
         {
-            return ConfigurationManager.ConnectionStrings["VirtoCommerceBaseUrl"].ConnectionString;
+            return new Uri(ConfigurationManager.ConnectionStrings["VirtoCommerceBaseUrl"].ConnectionString);
         }
 
-        protected Action<IRestRequest> GetHmacRestRequestHandler()
+        protected VirtoCommerceApiRequestHandler GetClientCredentials()
         {
             var apiAppId = ConfigurationManager.AppSettings["vc-public-ApiAppId"];
             var apiSecretKey = ConfigurationManager.AppSettings["vc-public-ApiSecretKey"];
-            return new HmacRestRequestHandler(apiAppId, apiSecretKey).PrepareRequest;
+            return new VirtoCommerceApiRequestHandler(new HmacCredentials(apiAppId, apiSecretKey), null);
         }
     }
 }

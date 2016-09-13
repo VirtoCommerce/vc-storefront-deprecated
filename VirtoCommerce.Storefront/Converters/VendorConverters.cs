@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
+using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class VendorConverters
     {
-        public static Vendor ToWebModel(this CustomerModule.Client.Model.Vendor vendor, Language currentLanguage, Store store)
+        public static Vendor ToWebModel(this customerModel.Vendor vendor, Language currentLanguage, Store store)
         {
             Vendor result = null;
 
@@ -24,7 +24,7 @@ namespace VirtoCommerce.Storefront.Converters
                     GroupName = vendor.GroupName,
                 };
                 var vendorSeoInfo = vendor.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage);
-                if(vendorSeoInfo != null)
+                if (vendorSeoInfo != null)
                 {
                     result.SeoInfo = vendorSeoInfo.ToWebModel();
                 }

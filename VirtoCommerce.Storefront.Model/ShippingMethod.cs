@@ -50,13 +50,7 @@ namespace VirtoCommerce.Storefront.Model
         /// <summary>
         ///  price with tax but without discount
         /// </summary>
-        public Money PriceWithTax
-        {
-            get
-            {
-                return Price + TaxTotal;
-            }
-        }
+        public Money PriceWithTax { get; set; }
         /// <summary>
         /// Resulting price with discount but without tax
         /// </summary>
@@ -81,27 +75,11 @@ namespace VirtoCommerce.Storefront.Model
         /// <summary>
         /// Total discount amount without tax
         /// </summary>
-        public Money DiscountTotal
-        {
-            get
-            {
-                var discountTotal = Discounts.Sum(d => d.Amount.Amount);
-
-                return new Money(discountTotal, Currency);
-            }
-        }
+        public Money DiscountTotal { get; set; }
         /// <summary>
         /// Total discount amount with tax
         /// </summary>
-        public Money DiscountTotalWithTax
-        {
-            get
-            {
-                var discountTotalWithTax = Discounts.Sum(d => d.AmountWithTax.Amount);
-
-                return new Money(discountTotalWithTax, Currency);
-            }
-        }
+        public Money DiscountTotalWithTax { get; set; }
 
 
         #region ITaxable Members

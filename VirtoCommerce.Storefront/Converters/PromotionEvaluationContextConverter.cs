@@ -6,30 +6,13 @@ using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
+using marketingModel = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class PromotionEvaluationContextConverter
     {
-        public static PromotionEvaluationContext ToPromotionEvaluationContext(this ShoppingCart cart)
-        {
-            var promotionItems = cart.Items.Select(i => i.ToPromotionItem()).ToList();
-
-            var retVal = new PromotionEvaluationContext
-            {
-                CartPromoEntries = promotionItems,
-                CartTotal = cart.Total,
-                Coupon = cart.Coupon != null ? cart.Coupon.Code : null,
-                Currency = cart.Currency,
-                CustomerId = cart.Customer.Id,
-                IsRegisteredUser = cart.Customer.IsRegisteredUser,
-                Language = cart.Language,
-                PromoEntries = promotionItems,
-                StoreId = cart.StoreId
-            };
-
-            return retVal;
-        }
+        
         public static PromotionEvaluationContext ToPromotionEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
         {
             var retVal = new PromotionEvaluationContext
@@ -57,9 +40,9 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static MarketingModule.Client.Model.PromotionEvaluationContext ToServiceModel(this PromotionEvaluationContext webModel)
+        public static marketingModel.PromotionEvaluationContext ToServiceModel(this PromotionEvaluationContext webModel)
         {
-            var serviceModel = new MarketingModule.Client.Model.PromotionEvaluationContext();
+            var serviceModel = new marketingModel.PromotionEvaluationContext();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 

@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
-using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
-using searchModel = VirtoCommerce.SearchModule.Client.Model;
+using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -28,10 +28,11 @@ namespace VirtoCommerce.Storefront.Converters
                 Sort = criteria.SortBy
             };
 
-            if(criteria.VendorIds != null)
+            if (criteria.VendorIds != null)
             {
                 result.VendorIds = criteria.VendorIds.ToList();
             }
+
             return result;
         }
 
@@ -54,10 +55,12 @@ namespace VirtoCommerce.Storefront.Converters
                 Take = criteria.PageSize,
                 Sort = criteria.SortBy
             };
+
             if (criteria.VendorIds != null)
             {
                 result.VendorIds = criteria.VendorIds.ToList();
             }
+
             return result;
         }
     }

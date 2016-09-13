@@ -4,37 +4,39 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class OrderLineItemConverter
     {
-        public static LineItem ToWebModel(this OrderModule.Client.Model.LineItem lineItem, IEnumerable<Currency> availCurrencies, Language language)
+        public static LineItem ToWebModel(this orderModel.LineItem lineItem, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var webModel = new LineItem();
+            var retVal = new LineItem();
 
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(lineItem.Currency)) ?? new Currency(language, lineItem.Currency);
 
-            webModel.InjectFrom(lineItem);
+            retVal.InjectFrom(lineItem);
 
-            webModel.Currency = currency;
-            webModel.DiscountAmount = new Money(lineItem.DiscountAmount ?? 0, currency);
+            retVal.Currency = currency;
+            retVal.DiscountAmount = new Money(lineItem.DiscountAmount ?? 0, currency);
 
             if (lineItem.DynamicProperties != null)
             {
-                webModel.DynamicProperties = lineItem.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
+                retVal.DynamicProperties = lineItem.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
             }
-
-            webModel.BasePrice = new Money(lineItem.BasePrice ?? 0, currency);
-            webModel.Price = new Money(lineItem.Price ?? 0, currency);
-            webModel.Tax = new Money(lineItem.Tax ?? 0, currency);
+            retVal.Price = new Money(lineItem.Price ?? 0, currency);
+            retVal.PriceWithTax = new Money(lineItem.PriceWithTax ?? 0, currency);
+            retVal.DiscountAmount = new Money(lineItem.DiscountAmount ?? 0, currency);
+            retVal.DiscountAmountWithTax = new Money(lineItem.DiscountAmountWithTax ?? 0, currency);
+            retVal.Tax = new Money(lineItem.Tax ?? 0, currency);
 
             if (lineItem.TaxDetails != null)
             {
-                webModel.TaxDetails = lineItem.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
+                retVal.TaxDetails = lineItem.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
             }
 
-            return webModel;
+            return retVal;
         }
     }
 }

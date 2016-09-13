@@ -16,37 +16,21 @@ namespace VirtoCommerce.Storefront.Model.Order
             DynamicProperties = new List<DynamicProperty>();
         }
 
-        /// <summary>
-        /// Price where tax and discount are not applied
-        /// </summary>
-        /// <value>Price with tax and without dicount</value>
-        public Money BasePrice { get; set; }
-        public Money BasePriceWithTax
-        {
-            get
-            {
-                return BasePrice + BasePrice * TaxRate;
-            }
-        }
-
+     
         /// <summary>
         /// Price where tax is not applied and discount is applied
         /// </summary>
         /// <value>Price with tax and discount</value>
         public Money Price { get; set; }
-        public Money PriceWithTax
-        {
-            get
-            {
-                return Price + Price * TaxRate;
-            }
-        }
+        public Money PriceWithTax { get; set; }
+    
 
         /// <summary>
         /// Discount amount
         /// </summary>
         /// <value>Discount amount</value>
         public Money DiscountAmount { get; set; }
+        public Money DiscountAmountWithTax { get; set; }
 
         /// <summary>
         /// Tax sum

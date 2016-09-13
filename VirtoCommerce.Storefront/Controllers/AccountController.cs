@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Owin.Security;
-using VirtoCommerce.CoreModule.Client.Api;
-using VirtoCommerce.OrderModule.Client.Api;
-using VirtoCommerce.Platform.Client.Api;
-using VirtoCommerce.Platform.Client.Model;
+using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -19,7 +19,7 @@ using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Customer.Services;
 using VirtoCommerce.Storefront.Model.Order.Events;
-using coreModel = VirtoCommerce.CoreModule.Client.Model;
+using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.Storefront.Controllers
@@ -27,16 +27,16 @@ namespace VirtoCommerce.Storefront.Controllers
     [Authorize]
     public class AccountController : StorefrontControllerBase
     {
-        private readonly IVirtoCommerceCoreApi _commerceCoreApi;
+        private readonly ICoreModuleApiClient _commerceCoreApi;
         private readonly IAuthenticationManager _authenticationManager;
-        private readonly IVirtoCommercePlatformApi _platformApi;
+        private readonly IPlatformModuleApiClient _platformApi;
         private readonly ICustomerService _customerService;
-        private readonly IVirtoCommerceOrdersApi _orderApi;
+        private readonly IOrdersModuleApiClient _orderApi;
         private readonly IEventPublisher<UserLoginEvent> _userLoginEventPublisher;
 
-        public AccountController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IVirtoCommerceCoreApi commerceCoreApi,
-            IAuthenticationManager authenticationManager, IVirtoCommercePlatformApi platformApi,
-            ICustomerService customerService, IVirtoCommerceOrdersApi orderApi, IEventPublisher<UserLoginEvent> userLoginEventPublisher)
+        public AccountController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, ICoreModuleApiClient commerceCoreApi,
+            IAuthenticationManager authenticationManager, IPlatformModuleApiClient platformApi,
+            ICustomerService customerService, IOrdersModuleApiClient orderApi, IEventPublisher<UserLoginEvent> userLoginEventPublisher)
             : base(workContext, urlBuilder)
         {
             _commerceCoreApi = commerceCoreApi;
@@ -83,7 +83,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> GetOrderDetails(string number)
         {
-            var order = await _orderApi.OrderModuleGetByNumberAsync(number);
+            var order = await _orderApi.OrderModule.GetByNumberAsync(number);
 
             if (order == null || order.CustomerId != WorkContext.CurrentCustomer.Id)
             {
@@ -166,12 +166,12 @@ namespace VirtoCommerce.Storefront.Controllers
                 StoreId = WorkContext.CurrentStore.Id,
             };
             //Register user in VC Platform (create security account)
-            var result = await _commerceCoreApi.StorefrontSecurityCreateAsync(user);
+            var result = await _commerceCoreApi.StorefrontSecurity.CreateAsync(user);
 
             if (result.Succeeded == true)
             {
                 //Load newly created account from API
-                var storefrontUser = await _commerceCoreApi.StorefrontSecurityGetUserByNameAsync(user.UserName);
+                var storefrontUser = await _commerceCoreApi.StorefrontSecurity.GetUserByNameAsync(user.UserName);
 
                 //Next need create corresponding Customer contact in VC Customers (CRM) module
                 //Contacts and account has the same Id.
@@ -183,7 +183,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 customer.AllowedStores = storefrontUser.AllowedStores;
                 await _customerService.CreateCustomerAsync(customer);
 
-                await _commerceCoreApi.StorefrontSecurityPasswordSignInAsync(storefrontUser.UserName, formModel.Password);
+                await _commerceCoreApi.StorefrontSecurity.PasswordSignInAsync(storefrontUser.UserName, formModel.Password);
 
                 var identity = CreateClaimsIdentity(customer);
                 _authenticationManager.SignIn(identity);
@@ -235,18 +235,18 @@ namespace VirtoCommerce.Storefront.Controllers
                 return View("customers/login", WorkContext);
             }
 
-            var loginResult = await _commerceCoreApi.StorefrontSecurityPasswordSignInAsync(formModel.Email, formModel.Password);
+            var loginResult = await _commerceCoreApi.StorefrontSecurity.PasswordSignInAsync(formModel.Email, formModel.Password);
 
             if (string.Equals(loginResult.Status, "success", StringComparison.InvariantCultureIgnoreCase))
             {
-                var user = await _commerceCoreApi.StorefrontSecurityGetUserByNameAsync(formModel.Email);
+                var user = await _commerceCoreApi.StorefrontSecurity.GetUserByNameAsync(formModel.Email);
                 var customer = await GetStorefrontCustomerByUserAsync(user);
 
                 //Check that it's login on behalf request           
                 var onBehalfUserId = GetUserIdForLoginOnBehalf(Request);
                 if (!string.IsNullOrEmpty(onBehalfUserId) && !string.Equals(onBehalfUserId, customer.UserId) && await _customerService.CanLoginOnBehalfAsync(WorkContext.CurrentStore.Id, customer.UserId))
                 {
-                    var userOnBehalf = await _commerceCoreApi.StorefrontSecurityGetUserByIdAsync(onBehalfUserId);
+                    var userOnBehalf = await _commerceCoreApi.StorefrontSecurity.GetUserByIdAsync(onBehalfUserId);
                     if (userOnBehalf != null)
                     {
                         var customerOnBehalf = await GetStorefrontCustomerByUserAsync(userOnBehalf);
@@ -318,7 +318,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
             CustomerInfo customer;
 
-            var user = await _commerceCoreApi.StorefrontSecurityGetUserByLoginAsync(loginInfo.Login.LoginProvider, loginInfo.Login.ProviderKey);
+            var user = await _commerceCoreApi.StorefrontSecurity.GetUserByLoginAsync(loginInfo.Login.LoginProvider, loginInfo.Login.ProviderKey);
             if (user != null)
             {
                 customer = await GetStorefrontCustomerByUserAsync(user);
@@ -340,11 +340,11 @@ namespace VirtoCommerce.Storefront.Controllers
                         }
                     }
                 };
-                var result = await _commerceCoreApi.StorefrontSecurityCreateAsync(newUser);
+                var result = await _commerceCoreApi.StorefrontSecurity.CreateAsync(newUser);
 
                 if (result.Succeeded == true)
                 {
-                    var storefrontUser = await _commerceCoreApi.StorefrontSecurityGetUserByNameAsync(newUser.UserName);
+                    var storefrontUser = await _commerceCoreApi.StorefrontSecurity.GetUserByNameAsync(newUser.UserName);
                     await _customerService.CreateCustomerAsync(new CustomerInfo
                     {
                         Id = storefrontUser.Id,
@@ -382,14 +382,14 @@ namespace VirtoCommerce.Storefront.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ForgotPassword(ForgotPassword formModel)
         {
-            var user = await _commerceCoreApi.StorefrontSecurityGetUserByNameAsync(formModel.Email);
+            var user = await _commerceCoreApi.StorefrontSecurity.GetUserByNameAsync(formModel.Email);
 
             if (user != null)
             {
                 string callbackUrl = Url.Action("ResetPassword", "Account",
                     new { UserId = user.Id, Code = "token" }, protocol: Request.Url.Scheme);
 
-                await _commerceCoreApi.StorefrontSecurityGenerateResetPasswordTokenAsync(user.Id, WorkContext.CurrentStore.Id, WorkContext.CurrentLanguage.CultureName, callbackUrl);
+                await _commerceCoreApi.StorefrontSecurity.GenerateResetPasswordTokenAsync(user.Id, WorkContext.CurrentStore.Id, WorkContext.CurrentLanguage.CultureName, callbackUrl);
             }
             else
             {
@@ -410,7 +410,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 return View("error", WorkContext);
             }
 
-            var user = await _commerceCoreApi.StorefrontSecurityGetUserByIdAsync(userId);
+            var user = await _commerceCoreApi.StorefrontSecurity.GetUserByIdAsync(userId);
             if (user == null)
             {
                 WorkContext.ErrorMessage = "User was not found.";
@@ -436,7 +436,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 return View("error", WorkContext);
             }
 
-            var result = await _commerceCoreApi.StorefrontSecurityResetPasswordAsync(userId, token, formModel.Password);
+            var result = await _commerceCoreApi.StorefrontSecurity.ResetPasswordAsync(userId, token, formModel.Password);
 
             if (result.Succeeded == true)
             {
@@ -464,7 +464,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 NewPassword = formModel.NewPassword,
             };
 
-            var result = await _platformApi.SecurityChangePasswordAsync(WorkContext.CurrentCustomer.UserName, changePassword);
+            var result = await _platformApi.Security.ChangePasswordAsync(WorkContext.CurrentCustomer.UserName, changePassword);
 
             if (result.Succeeded == true)
             {

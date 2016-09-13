@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.ContentModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.ContentModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
@@ -12,10 +12,10 @@ namespace VirtoCommerce.Storefront.Services
 {
     public class MenuLinkListServiceImpl : IMenuLinkListService
     {
-        private readonly IVirtoCommerceContentApi _cmsApi;
+        private readonly IContentModuleApiClient _cmsApi;
         private readonly ICatalogSearchService _catalogSearchService;
 
-        public MenuLinkListServiceImpl(IVirtoCommerceContentApi cmsApi, ICatalogSearchService catalogSearchService)
+        public MenuLinkListServiceImpl(IContentModuleApiClient cmsApi, ICatalogSearchService catalogSearchService)
         {
             _cmsApi = cmsApi;
             _catalogSearchService = catalogSearchService;
@@ -24,7 +24,7 @@ namespace VirtoCommerce.Storefront.Services
         public async Task<MenuLinkList[]> LoadAllStoreLinkListsAsync(string storeId)
         {
             var retVal = new List<MenuLinkList>();
-            var linkLists = await _cmsApi.MenuGetListsAsync(storeId);
+            var linkLists = await _cmsApi.Menu.GetListsAsync(storeId);
             if (linkLists != null)
             {
                 retVal.AddRange(linkLists.Select(x => x.ToWebModel()));

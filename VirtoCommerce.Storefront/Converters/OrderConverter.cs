@@ -4,12 +4,13 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class OrderConverter
     {
-        public static CustomerOrder ToWebModel(this OrderModule.Client.Model.CustomerOrder order, ICollection<Currency> availCurrencies, Language language)
+        public static CustomerOrder ToWebModel(this orderModel.CustomerOrder order, ICollection<Currency> availCurrencies, Language language)
         {
             var webModel = new CustomerOrder();
 
@@ -22,11 +23,7 @@ namespace VirtoCommerce.Storefront.Converters
                 webModel.Addresses = order.Addresses.Select(a => a.ToWebModel()).ToList();
             }
 
-            if (order.ChildrenOperations != null)
-            {
-                webModel.ChildrenOperations = order.ChildrenOperations.Select(co => co.ToWebModel(availCurrencies, language)).ToList();
-            }
-
+           
             webModel.Currency = currency;
 
             webModel.DiscountAmount = new Money(order.DiscountAmount ?? 0, currency);

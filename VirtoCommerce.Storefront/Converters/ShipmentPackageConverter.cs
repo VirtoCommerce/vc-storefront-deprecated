@@ -4,12 +4,13 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class ShipmentPackageConverter
     {
-        public static ShipmentPackage ToWebModel(this OrderModule.Client.Model.ShipmentPackage shipmentPackage, IEnumerable<Currency> currencies, Language language)
+        public static ShipmentPackage ToWebModel(this orderModel.ShipmentPackage shipmentPackage, IEnumerable<Currency> currencies, Language language)
         {
             var webModel = new ShipmentPackage();
 

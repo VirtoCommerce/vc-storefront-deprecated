@@ -3,8 +3,8 @@ using System.Linq;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
-using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
-using customerModel = VirtoCommerce.CustomerModule.Client.Model;
+using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Common
 {
@@ -83,7 +83,7 @@ namespace VirtoCommerce.Storefront.Common
             }
             return retVal;
         }
-     
+
         /// <summary>
         /// Find best SEO record using score base rules
         /// http://docs.virtocommerce.com/display/vc2devguide/SEO

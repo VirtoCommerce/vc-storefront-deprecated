@@ -6,7 +6,7 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
-using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
+using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -18,6 +18,10 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.InjectFrom<NullableAndEnumValueInjecter>(category);
 
             retVal.SeoInfo = category.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage).ToWebModel();
+            if(retVal.SeoInfo == null)
+            {
+                retVal.SeoInfo = new SeoInfo { Slug = category.Id };
+            }
             retVal.Url = "~/" + category.Outlines.GetSeoPath(store, currentLanguage, "category/" + category.Id);
 
             if (category.Images != null)

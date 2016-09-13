@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
+using pricingModel = VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class PriceEvaluationContextConverter
     {
-        public static PricingModule.Client.Model.PriceEvaluationContext ToServiceModel(this IEnumerable<Product> products, WorkContext workContext)
+        public static pricingModel.PriceEvaluationContext ToServiceModel(this IEnumerable<Product> products, WorkContext workContext)
         {
             if (products == null)
             {
@@ -16,7 +17,7 @@ namespace VirtoCommerce.Storefront.Converters
             }
 
             //Evaluate products prices
-            var retVal = new PricingModule.Client.Model.PriceEvaluationContext
+            var retVal = new pricingModel.PriceEvaluationContext
             {
                 ProductIds = products.Select(p => p.Id).ToList(),
                 PricelistIds = workContext.CurrentPricelists.Select(p => p.Id).ToList(),

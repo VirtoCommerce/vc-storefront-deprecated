@@ -1,11 +1,12 @@
 ﻿using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Quote;
+using quoteModel = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class QuoteRequestTotalsConverter
     {
-        public static QuoteRequestTotals ToWebModel(this QuoteModule.Client.Model.QuoteRequestTotals serviceModel, Currency currency)
+        public static QuoteRequestTotals ToWebModel(this quoteModel.QuoteRequestTotals serviceModel, Currency currency)
         {
             var webModel = new QuoteRequestTotals(currency)
             {
@@ -22,9 +23,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static QuoteModule.Client.Model.QuoteRequestTotals ToServiceModel(this QuoteRequestTotals webModel)
+        public static quoteModel.QuoteRequestTotals ToServiceModel(this QuoteRequestTotals webModel)
         {
-            var serviceModel = new QuoteModule.Client.Model.QuoteRequestTotals
+            var serviceModel = new quoteModel.QuoteRequestTotals
             {
                 AdjustmentQuoteExlTax = (double)webModel.AdjustmentQuoteExlTax.Amount,
                 DiscountTotal = (double)webModel.DiscountTotal.Amount,
