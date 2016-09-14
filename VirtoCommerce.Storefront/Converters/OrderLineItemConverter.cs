@@ -12,11 +12,11 @@ namespace VirtoCommerce.Storefront.Converters
     {
         public static LineItem ToWebModel(this orderModel.LineItem lineItem, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var retVal = new LineItem();
-
+        
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(lineItem.Currency)) ?? new Currency(language, lineItem.Currency);
 
-            retVal.InjectFrom(lineItem);
+            var retVal = new LineItem(currency);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(lineItem);
 
             retVal.Currency = currency;
             retVal.DiscountAmount = new Money(lineItem.DiscountAmount ?? 0, currency);
@@ -29,6 +29,12 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.PriceWithTax = new Money(lineItem.PriceWithTax ?? 0, currency);
             retVal.DiscountAmount = new Money(lineItem.DiscountAmount ?? 0, currency);
             retVal.DiscountAmountWithTax = new Money(lineItem.DiscountAmountWithTax ?? 0, currency);
+            retVal.PlacedPrice = new Money(lineItem.PlacedPrice ?? 0, currency);
+            retVal.PlacedPriceWithTax = new Money(lineItem.PlacedPriceWithTax ?? 0, currency);
+            retVal.ExtendedPrice = new Money(lineItem.ExtendedPrice ?? 0, currency);
+            retVal.ExtendedPriceWithTax = new Money(lineItem.ExtendedPriceWithTax ?? 0, currency);
+            retVal.DiscountTotal = new Money(lineItem.DiscountTotal ?? 0, currency);
+            retVal.DiscountTotalWithTax = new Money(lineItem.DiscountTotalWithTax ?? 0, currency);
             retVal.Tax = new Money(lineItem.Tax ?? 0, currency);
 
             if (lineItem.TaxDetails != null)

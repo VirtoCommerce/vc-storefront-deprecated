@@ -9,7 +9,6 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
     function ($rootScope, $scope, $window, cartService) {
     	$scope.checkout = {
     		wizard: {},
-			email: {},
     		paymentMethod: {},
     		shipment: {},
     		payment: {},
@@ -42,7 +41,6 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
     			}
     			else {
     				$scope.checkout.cart = cart;
-    				$scope.checkout.email = cart.email;
     				$scope.checkout.coupon = cart.coupon || $scope.checkout.coupon;
     				if ($scope.checkout.coupon.code && !$scope.checkout.coupon.appliedSuccessfully) {
     					$scope.checkout.coupon.errorCode = 'InvalidCouponCode';
@@ -85,7 +83,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
     		coupon.processing = true;
     		cartService.removeCoupon().then(function (response) {
     			coupon.processing = false;
-    			$scope.checkout.coupon = null;
+    			$scope.checkout.coupon = {};
     			$scope.reloadCart();
     		}, function (response) {
     			coupon.processing = false;
@@ -143,7 +141,6 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
 
     	$scope.updateShipment = function (shipment) {
     		if (shipment.deliveryAddress) {
-    			$scope.checkout.shipment.deliveryAddress.email = $scope.checkout.email;
     			$scope.checkout.shipment.deliveryAddress.type = 'Shipping';
     		};
 			//Does not pass validation errors to API
@@ -171,7 +168,6 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
     		}
 
     		if (payment.billingAddress) {
-    			payment.billingAddress.email = $scope.checkout.email;
     			payment.billingAddress.type = 'Billing';
     		}
     		return cartService.addOrUpdatePayment(payment)

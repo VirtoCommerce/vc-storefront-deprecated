@@ -316,7 +316,20 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-          //Nothing todo
+            //Because TaxLine.Id may contains composite string id & extra info
+            var lineItemTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == (Id ?? "")).ToList();
+
+            if (lineItemTaxRates.Any())
+            {
+                var listPriceRate = lineItemTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("list"));
+                var salePriceRate = lineItemTaxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("sale"));
+                if (salePriceRate == null)
+                {
+                    salePriceRate = listPriceRate;
+                }
+                ListPriceWithTax = ListPrice + listPriceRate.Rate;
+                SalePriceWithTax = SalePrice + salePriceRate.Rate;
+            }
         }
         #endregion
 
@@ -328,7 +341,31 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyRewards(IEnumerable<PromotionReward> rewards)
         {
-            //Nothing todo
+            var lineItemRewards = rewards.Where(x => x.RewardType == PromotionRewardType.CatalogItemAmountReward && (x.ProductId.IsNullOrEmpty() || x.ProductId.EqualsInvariant(ProductId)));
+            
+            Discounts.Clear();
+
+            DiscountAmount = new Money(Math.Max(0, (ListPrice - SalePrice).Amount), Currency);
+            DiscountAmountWithTax = new Money(Math.Max(0, (ListPriceWithTax - SalePriceWithTax).Amount), Currency);
+
+            foreach (var reward in lineItemRewards)
+            {
+                var discount = reward.ToDiscountModel(SalePrice, SalePriceWithTax);
+                if (reward.Quantity > 0)
+                {
+                    var money = discount.Amount * Math.Min(reward.Quantity, Quantity);
+                    var withTaxMoney = discount.AmountWithTax * Math.Min(reward.Quantity, Quantity);
+                    //TODO: need allocate more rightly between each quantities
+                    discount.Amount = money.Allocate(Quantity).FirstOrDefault();
+                    discount.AmountWithTax = withTaxMoney.Allocate(Quantity).FirstOrDefault();
+                }
+                if (reward.IsValid)
+                {
+                    Discounts.Add(discount);
+                    DiscountAmount += discount.Amount;
+                    DiscountAmountWithTax += discount.Amount;
+                }
+            }
         }
         #endregion
 

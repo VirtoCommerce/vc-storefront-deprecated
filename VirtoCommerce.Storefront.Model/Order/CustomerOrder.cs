@@ -11,7 +11,7 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// </summary>
     public class CustomerOrder
     {
-        public CustomerOrder()
+        public CustomerOrder(Currency currency)
         {
             Addresses = new List<Address>();
             InPayments = new List<PaymentIn>();
@@ -19,6 +19,16 @@ namespace VirtoCommerce.Storefront.Model.Order
             TaxDetails = new List<TaxDetail>();
             ChildrenOperations = new List<Operation>();
             DynamicProperties = new List<DynamicProperty>();
+            Currency = currency;
+            Total = new Money(currency);
+            SubTotal = new Money(currency);
+            SubTotalWithTax = new Money(currency);
+            DiscountTotal = new Money(currency);
+            DiscountTotalWithTax = new Money(currency);
+            ShippingTotal = new Money(currency);
+            ShippingTotalWithTax = new Money(currency);
+            TaxTotal = new Money(currency);
+
         }
 
         /// <summary>
@@ -67,12 +77,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets EmployeeId
         /// </summary>
         public string EmployeeId { get; set; }
-
-        /// <summary>
-        /// Gets or Sets DiscountAmount
-        /// </summary>
-        public Money DiscountAmount { get; set; }
-
 
         /// <summary>
         /// All shipping and billing order addresses
@@ -156,19 +160,7 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// </summary>
         public bool? TaxIncluded { get; set; }
 
-        /// <summary>
-        /// Money amount without tax
-        /// </summary>
-        /// <value>Money amount without tax</value>
-        public Money Sum { get; set; }
-
-        /// <summary>
-        /// Tax total
-        /// </summary>
-        /// <value>Tax total</value>
-        public Money Tax { get; set; }
-
-
+     
         /// <summary>
         /// Gets or Sets IsCancelled
         /// </summary>
@@ -232,17 +224,19 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// </summary>
         public string Id { get; set; }
 
-        /// <summary>
-        /// Gets the value of order subtotal
-        /// </summary>
-        public Money SubTotal
-        {
-            get
-            {
-                var subtotal = Items.Sum(i => i.Price.Amount * i.Quantity.Value);
-                return new Money(subtotal, Currency);
-            }
-        }    
 
+        public Money Total { get; set; }
+
+        public Money DiscountAmount { get; set; }
+        public Money DiscountAmountWithTax { get; set; }
+
+
+        public Money SubTotal { get; set; }
+        public Money SubTotalWithTax { get; set; }
+        public Money ShippingTotal { get; set; }
+        public Money ShippingTotalWithTax { get; set; }
+        public Money DiscountTotal { get; set; }
+        public Money DiscountTotalWithTax { get; set; }
+        public Money TaxTotal { get; set; }
     }
 }

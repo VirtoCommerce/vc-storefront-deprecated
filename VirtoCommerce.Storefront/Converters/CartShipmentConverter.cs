@@ -21,7 +21,6 @@ namespace VirtoCommerce.Storefront.Converters
             webModel.ShippingPriceWithTax = new Money(shipment.ShippingPriceWithTax ?? 0, cart.Currency);
             webModel.DiscountTotal = new Money(shipment.DiscountTotal ?? 0, cart.Currency);
             webModel.DiscountTotalWithTax = new Money(shipment.DiscountTotalWithTax ?? 0, cart.Currency);
-            webModel.TaxTotal = new Money(shipment.TaxTotal ?? 0, cart.Currency);
 
             if (shipment.DeliveryAddress != null)
             {
@@ -81,9 +80,9 @@ namespace VirtoCommerce.Storefront.Converters
 
         public static Model.Order.Shipment ToWebModel(this orderModel.Shipment shipment, ICollection<Currency> availCurrencies, Language language)
         {
-            var retVal = new Model.Order.Shipment();
-
+         
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(shipment.Currency)) ?? new Currency(language, shipment.Currency);
+            var retVal = new Model.Order.Shipment(currency);
 
             retVal.InjectFrom(shipment);
 
@@ -121,8 +120,15 @@ namespace VirtoCommerce.Storefront.Converters
                 retVal.Packages = shipment.Packages.Select(p => p.ToWebModel(availCurrencies, language)).ToList();
             }
 
-            retVal.Sum = new Money(shipment.Sum ?? 0, currency);
-            retVal.Tax = new Money(shipment.Tax ?? 0, currency);
+            retVal.Price = new Money(shipment.Price ?? 0, currency);
+            retVal.PriceWithTax = new Money(shipment.PriceWithTax ?? 0, currency);
+            retVal.DiscountAmount = new Money(shipment.DiscountAmount ?? 0, currency);
+            retVal.DiscountAmountWithTax = new Money(shipment.DiscountAmountWithTax ?? 0, currency);
+            retVal.Total = new Money(shipment.Total ?? 0, currency);
+            retVal.TotalWithTax = new Money(shipment.TotalWithTax ?? 0, currency);
+            retVal.TaxTotal = new Money(shipment.TaxTotal ?? 0, currency);
+            retVal.ItemsSubtotal = new Money(shipment.ItemsSubtotal ?? 0, currency);
+            retVal.ItemsSubtotalWithTax = new Money(shipment.ItemsSubtotalWithTax ?? 0, currency);
 
             if (shipment.TaxDetails != null)
             {

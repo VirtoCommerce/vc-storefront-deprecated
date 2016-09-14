@@ -55,7 +55,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             }
 
 
-            var discountTotal = order.DiscountAmount != null ? order.DiscountAmount.Amount : 0;
+            var discountTotal = order.DiscountTotal;
             var discounts = new List<Discount>();
 
             if (order.Discount != null)
@@ -106,23 +106,21 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                         result.FulfillmentStatusLabel = orderShipment.Status;
                     }
 
-                    if (orderShipment.TaxIncluded == true && orderShipment.Sum.Amount > 0)
+                    if (orderShipment.TaxTotal.Amount > 0)
                     {
-                        taxLines.Add(new Objects.TaxLine { Title = "Shipping tax", Price = orderShipment.Tax.Amount * 100, Rate = orderShipment.Tax.Amount / (orderShipment.Sum.Amount + orderShipment.DiscountAmount.Amount)});
+                        taxLines.Add(new Objects.TaxLine { Title = "Shipping tax", Price = orderShipment.TaxTotal.Amount * 100, Rate = orderShipment.TaxRate });
                     }
                 }
 
-                var shipmentsWithTax = order.Shipments
-                    .Where(s => s.Tax.Amount > 0 && s.Sum.Amount > 0)
-                    .ToList();
+                var shipmentsWithTax = order.Shipments.Where(s => s.TaxTotal.Amount > 0 && s.Total.Amount > 0).ToList();
 
                 if (shipmentsWithTax.Count > 0)
                 {
                     taxLines.Add(new Objects.TaxLine
                     {
                         Title = "Shipping",
-                        Price = shipmentsWithTax.Sum(s => s.Tax.Amount) * 100,
-                        Rate = shipmentsWithTax.Sum(s => s.Tax.Amount) / shipmentsWithTax.Sum(s => (s.Sum + s.DiscountAmount).Amount)
+                        Price = shipmentsWithTax.Sum(s => s.TaxTotal.Amount) * 100,
+                        Rate = shipmentsWithTax.Average(s => s.TaxRate)
                     });
                 }
 
@@ -192,7 +190,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             result.Discounts = discounts.ToArray();
 
-            result.TotalPrice = order.Sum.Amount * 100;
+            result.TotalPrice = order.Total.Amount * 100;
 
             return result;
         }

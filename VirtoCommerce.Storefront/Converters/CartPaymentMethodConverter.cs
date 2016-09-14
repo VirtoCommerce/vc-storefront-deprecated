@@ -11,7 +11,7 @@ namespace VirtoCommerce.Storefront.Converters
         public static PaymentMethod ToWebModel(this cartModel.PaymentMethod paymentMethod)
         {
             var retVal = new PaymentMethod();
-            retVal.InjectFrom(paymentMethod);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(paymentMethod);
             retVal.Priority = paymentMethod.Priority ?? 0;
 
             return retVal;

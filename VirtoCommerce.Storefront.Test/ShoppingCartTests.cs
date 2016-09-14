@@ -22,14 +22,16 @@ namespace VirtoCommerce.Storefront.Test
                 Id = Guid.NewGuid().ToString(),
                 IsRegisteredUser = false
             };
-            cartBuilder = cartBuilder.LoadDefaultCart(workContext.CurrentStore, anonymousCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency).Result;
+            var task = cartBuilder.LoadOrCreateCartAsync("default", workContext.CurrentStore, anonymousCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
+            task.Wait();
             Assert.True(cartBuilder.Cart.IsTransient());
 
             //cartBuilder.SaveAsync().Wait();
             var cart = cartBuilder.Cart;
             Assert.False(cart.IsTransient());
 
-            cartBuilder = cartBuilder.LoadDefaultCart(workContext.CurrentStore, anonymousCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency).Result;
+            task = cartBuilder.LoadOrCreateCartAsync("default", workContext.CurrentStore, anonymousCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
+            task.Wait();
             Assert.Equal(cart.Id, cartBuilder.Cart.Id);
         }
 
@@ -75,7 +77,7 @@ namespace VirtoCommerce.Storefront.Test
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
             var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogModuleApi, pricingService, inventoryApi, searchApi, promotionEvaluator, customerService);
 
-            var retVal = new CartBuilder(cartApi, catalogSearchService, commerceApi, cacheManager, workContextFactory, null);
+            var retVal = new CartBuilder(cartApi, catalogSearchService, commerceApi, cacheManager, workContextFactory, null, null, null);
             return retVal;
         }
     }

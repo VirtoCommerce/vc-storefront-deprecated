@@ -14,7 +14,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var webModel = new ShipmentPackage();
 
-            webModel.InjectFrom(shipmentPackage);
+            webModel.InjectFrom<NullableAndEnumValueInjecter>(shipmentPackage);
 
             if (shipmentPackage.Items != null)
             {

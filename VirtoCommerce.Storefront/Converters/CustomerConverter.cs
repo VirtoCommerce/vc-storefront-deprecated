@@ -31,7 +31,7 @@ namespace VirtoCommerce.Storefront.Converters
         public static CustomerInfo ToWebModel(this customerModel.Contact contact)
         {
             var retVal = new CustomerInfo();
-            retVal.InjectFrom(contact);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(contact);
 
             retVal.IsRegisteredUser = true;
             if (contact.Addresses != null)

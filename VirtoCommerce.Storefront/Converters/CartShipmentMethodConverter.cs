@@ -25,7 +25,7 @@ namespace VirtoCommerce.Storefront.Converters
                 rateDiscountWithTax = rateDiscountWithTax.ConvertTo(currency);
             }
             var retVal = new ShippingMethod(currency);
-            retVal.InjectFrom(shippingRate);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(shippingRate);
 
             retVal.Price = ratePrice;
             retVal.PriceWithTax = ratePriceWithTax;
@@ -34,7 +34,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if(shippingRate.ShippingMethod != null)
             {
-                retVal.InjectFrom(shippingRate.ShippingMethod);
+                retVal.InjectFrom<NullableAndEnumValueInjecter>(shippingRate.ShippingMethod);
                 retVal.ShipmentMethodCode = shippingRate.ShippingMethod.Code;
             }
             return retVal;

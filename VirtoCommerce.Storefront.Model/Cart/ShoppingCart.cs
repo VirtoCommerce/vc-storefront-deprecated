@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
@@ -16,7 +17,6 @@ namespace VirtoCommerce.Storefront.Model.Cart
             Language = language;
             HandlingTotal = new Money(currency);
             HandlingTotalWithTax = new Money(currency);
-            TaxTotal = new Money(currency);
             DiscountAmount = new Money(currency);
             DiscountAmountWithTax = new Money(currency);
             Addresses = new List<Address>();
@@ -269,84 +269,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <value>
         /// Collection of Address objects
         /// </value>
-        public ICollection<Address> Addresses { get; set; }
-
-        /// <summary>
-        /// Gets or sets the default shipping address
-        /// </summary>
-        public Address DefaultShippingAddress
-        {
-            get
-            {
-                Address shippingAddress = null;
-
-                if (HasPhysicalProducts)
-                {
-                    var shipment = Shipments.FirstOrDefault();
-                    if (shipment != null)
-                    {
-                        shippingAddress = shipment.DeliveryAddress;
-                    }
-
-                    if (shippingAddress == null && Customer != null)
-                    {
-                        shippingAddress = Customer.Addresses.FirstOrDefault();
-                    }
-
-                    if (shippingAddress == null)
-                    {
-                        shippingAddress = new Address
-                        {
-                            Type = AddressType.Shipping,
-                            Email = Customer.Email,
-                            FirstName = Customer.FirstName,
-                            LastName = Customer.LastName
-                        };
-                    }
-
-                    shippingAddress.Type = AddressType.Shipping;
-                }
-
-                return shippingAddress;
-            }
-        }
-
-        /// <summary>
-        /// Gets default the default billing address
-        /// </summary>
-        public Address DefaultBillingAddress
-        {
-            get
-            {
-                Address billingAddress = null;
-
-                var payment = Payments.FirstOrDefault();
-                if (payment != null)
-                {
-                    billingAddress = payment.BillingAddress;
-                }
-
-                if (billingAddress == null && Customer != null)
-                {
-                    billingAddress = Customer.Addresses.FirstOrDefault();
-                }
-
-                if (billingAddress == null)
-                {
-                    billingAddress = new Address
-                    {
-                        Type = AddressType.Billing,
-                        Email = Customer.Email,
-                        FirstName = Customer.FirstName,
-                        LastName = Customer.LastName
-                    };
-                }
-
-                billingAddress.Type = AddressType.Billing;
-
-                return billingAddress;
-            }
-        }
+        public ICollection<Address> Addresses { get; set; }      
 
         /// <summary>
         /// Gets or sets the value of shopping cart line items
@@ -413,37 +336,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             {
                 return Items.OrderByDescending(i => i.CreatedDate).FirstOrDefault();
             }
-        }
-
-        public string Email
-        {
-            get
-            {
-                string email = null;
-
-                var shipment = Shipments.FirstOrDefault();
-                if (shipment != null && shipment.DeliveryAddress != null)
-                {
-                    email = shipment.DeliveryAddress.Email;
-                }
-
-                if (string.IsNullOrEmpty(email))
-                {
-                    var payment = Payments.FirstOrDefault();
-                    if (payment != null && payment.BillingAddress != null)
-                    {
-                        email = payment.BillingAddress.Email;
-                    }
-                }
-
-                if (string.IsNullOrEmpty(email))
-                {
-                    email = Customer.Email;
-                }
-
-                return email;
-            }
-        }
+        }       
 
         #region IValidatable Members
         public bool IsValid { get; set; }
@@ -457,7 +350,39 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyRewards(IEnumerable<PromotionReward> rewards)
         {
-            //Nothing todo
+            Discounts.Clear();
+
+            var cartRewards = rewards.Where(x => x.RewardType == PromotionRewardType.CartSubtotalReward);
+            foreach (var reward in cartRewards)
+            {
+                var discount = reward.ToDiscountModel(ExtendedPriceTotal, ExtendedPriceTotalWithTax);
+
+                if (reward.IsValid)
+                {
+                    Discounts.Add(discount);
+                }
+                DiscountAmount = discount.Amount;
+                DiscountAmountWithTax = discount.AmountWithTax;
+            }
+
+            var lineItemRewards = rewards.Where(x => x.RewardType == PromotionRewardType.CatalogItemAmountReward);
+            foreach (var lineItem in Items)
+            {
+                lineItem.ApplyRewards(lineItemRewards);
+            }
+
+            var shipmentRewards = rewards.Where(x => x.RewardType == PromotionRewardType.ShipmentReward);
+            foreach (var shipment in Shipments)
+            {
+                shipment.ApplyRewards(shipmentRewards);
+            }
+
+            if (Coupon != null && !string.IsNullOrEmpty(Coupon.Code))
+            {
+                Coupon.AppliedSuccessfully = rewards.Any(x => x.IsValid && x.Promotion.Coupons != null
+                                                              && x.Promotion.Coupons.Contains(Coupon.Code, StringComparer.OrdinalIgnoreCase));                
+            }
+          
         }
         #endregion
 
@@ -466,7 +391,24 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <summary>
         /// Gets or sets the value of total shipping tax amount
         /// </summary>
-        public Money TaxTotal { get; set; }
+        public Money TaxTotal
+        {
+            get
+            {
+                var retVal = new Money(0m, Currency);
+
+                foreach (var lineItem in Items)
+                {
+                    retVal += lineItem.TaxTotal;
+
+                }
+                foreach (var shipment in Shipments)
+                {
+                    retVal += shipment.TaxTotal;
+                }             
+                return retVal;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the value of shipping tax type
@@ -482,8 +424,15 @@ namespace VirtoCommerce.Storefront.Model.Cart
         public ICollection<TaxDetail> TaxDetails { get; set; }
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
-        {
-            //Nothing todo
+        {         
+            foreach (var lineItem in Items)
+            {
+                lineItem.ApplyTaxRates(taxRates);
+            }
+            foreach (var shipment in Shipments)
+            {
+                shipment.ApplyTaxRates(taxRates);
+            }
         }
         #endregion
 

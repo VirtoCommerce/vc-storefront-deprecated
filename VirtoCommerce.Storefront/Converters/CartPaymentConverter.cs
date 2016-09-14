@@ -11,7 +11,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var webModel = new Payment(currency);
 
-            webModel.InjectFrom(payment);
+            webModel.InjectFrom<NullableAndEnumValueInjecter>(payment);
 
             webModel.Amount = new Money(payment.Amount ?? 0, currency);
 
@@ -29,7 +29,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var retVal = new cartModel.Payment();
 
-            retVal.InjectFrom(payment);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(payment);
 
             retVal.Amount = (double)payment.Amount.Amount;
 

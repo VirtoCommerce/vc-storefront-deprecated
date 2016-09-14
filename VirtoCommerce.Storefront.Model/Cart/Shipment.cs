@@ -29,7 +29,6 @@ namespace VirtoCommerce.Storefront.Model.Cart
             ShippingPriceWithTax = new Money(currency);
             DiscountTotal = new Money(currency);
             DiscountTotalWithTax = new Money(currency);
-            TaxTotal = new Money(currency);
         }
      
         /// <summary>
@@ -184,7 +183,13 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <summary>
         /// Gets or sets the value of total shipping tax amount
         /// </summary>
-        public Money TaxTotal { get; set; }
+        public Money TaxTotal
+        {
+            get
+            {
+                return TotalWithTax - Total;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the value of shipping tax type
@@ -201,7 +206,13 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-          //Nothing todo
+            //Because TaxLine.Id may contains composite string id & extra info
+            var shipmentTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == Id);
+            if (shipmentTaxRates.Any())
+            {
+                var priceTaxRate = shipmentTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("price"));
+                ShippingPriceWithTax = ShippingPrice + priceTaxRate.Rate;
+            }
         }
         #endregion
 
@@ -217,7 +228,21 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyRewards(IEnumerable<PromotionReward> rewards)
         {
-           //nothing todo
+            var shipmentRewards = rewards.Where(r => r.RewardType == PromotionRewardType.ShipmentReward && (r.ShippingMethodCode.IsNullOrEmpty() || r.ShippingMethodCode.EqualsInvariant(ShipmentMethodCode)));
+
+            Discounts.Clear();
+
+            foreach (var reward in shipmentRewards)
+            {
+                var discount = reward.ToDiscountModel(ShippingPrice, ShippingPriceWithTax);
+
+                if (reward.IsValid)
+                {
+                    Discounts.Add(discount);
+                    DiscountTotal = discount.Amount;
+                    DiscountTotalWithTax = discount.AmountWithTax;
+                }
+            }
         }
         #endregion
 

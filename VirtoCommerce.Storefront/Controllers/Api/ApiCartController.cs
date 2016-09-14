@@ -48,8 +48,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpGet]
         public async Task<ActionResult> GetCart()
         {
-            _cartBuilder.TakeCart(WorkContext.CurrentCart);
-            await _cartBuilder.ReloadAsync();
+            EnsureThatCartExist();
+            await _cartBuilder.EvaluatePromotionsAsync();
+            await _cartBuilder.EvaluateTaxesAsync();
             await _cartBuilder.ValidateAsync();                        
             return Json(_cartBuilder.Cart, JsonRequestBehavior.AllowGet);
         }
@@ -75,7 +76,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 var products = await _catalogSearchService.GetProductsAsync(new[] { id }, Model.Catalog.ItemResponseGroup.ItemLarge);
                 if (products != null && products.Any())
                 {
-                    await _cartBuilder.AddItemAsync(products.First(), quantity);
+                    await _cartBuilder.AddItem(products.First(), quantity).SaveAsync();
                 }
             }
             return Json(new { _cartBuilder.Cart.ItemsCount });
@@ -116,6 +117,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 if (lineItem != null)
                 {
                     await _cartBuilder.ChangeItemQuantityAsync(lineItemId, quantity);
+                    await _cartBuilder.SaveAsync();
                 }
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
@@ -130,7 +132,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart.Id)).LockAsync())
             {
-                await _cartBuilder.RemoveItemAsync(lineItemId);
+                await _cartBuilder.RemoveItem(lineItemId).SaveAsync();
             }
 
             return Json(new { _cartBuilder.Cart.ItemsCount });
@@ -145,7 +147,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart.Id)).LockAsync())
             {
-                await _cartBuilder.ClearAsync();
+                await _cartBuilder.Clear().SaveAsync();
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -179,7 +181,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart.Id)).LockAsync())
             {
-                await _cartBuilder.AddCouponAsync(couponCode);
+                await _cartBuilder.AddCoupon(couponCode).SaveAsync();
             }
             return Json(_cartBuilder.Cart.Coupon);
         }
@@ -194,7 +196,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart.Id)).LockAsync())
             {
-                await _cartBuilder.RemoveCouponAsync();
+                await _cartBuilder.RemoveCoupon().SaveAsync();
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
@@ -210,6 +212,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart.Id)).LockAsync())
             {
                 await _cartBuilder.AddOrUpdateShipmentAsync(shipment);
+                await _cartBuilder.SaveAsync();
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
@@ -225,6 +228,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart.Id)).LockAsync())
             {
                 await _cartBuilder.AddOrUpdatePaymentAsync(payment);
+                await _cartBuilder.SaveAsync();
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

@@ -12,7 +12,26 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class PromotionEvaluationContextConverter
     {
-        
+        public static PromotionEvaluationContext ToPromotionEvaluationContext(this ShoppingCart cart)
+        {
+            var promotionItems = cart.Items.Select(i => i.ToPromotionItem()).ToList();
+
+            var retVal = new PromotionEvaluationContext
+            {
+                CartPromoEntries = promotionItems,
+                CartTotal = cart.Total,
+                Coupon = cart.Coupon != null ? cart.Coupon.Code : null,
+                Currency = cart.Currency,
+                CustomerId = cart.Customer.Id,
+                IsRegisteredUser = cart.Customer.IsRegisteredUser,
+                Language = cart.Language,
+                PromoEntries = promotionItems,
+                StoreId = cart.StoreId
+            };
+
+            return retVal;
+        }
+
         public static PromotionEvaluationContext ToPromotionEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
         {
             var retVal = new PromotionEvaluationContext

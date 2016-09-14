@@ -187,7 +187,7 @@
     <Compile Include="Order\Shipment.cs" />
     <Compile Include="Order\ShipmentItem.cs" />
     <Compile Include="Order\ShipmentPackage.cs" />
-    <Compile Include="PaymentMethod.cs" />
+    <Compile Include="Cart\PaymentMethod.cs" />
     <Compile Include="Pricing\Services\IPricingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quote\QuoteItem.cs" />
@@ -206,7 +206,7 @@
     <Compile Include="StaticContent\ContentPage.cs" />
     <Compile Include="StaticContent\ContentPublicationStatus.cs" />
     <Compile Include="StaticContent\Services\IStaticContentService.cs" />
-    <Compile Include="ShippingMethod.cs" />
+    <Compile Include="Cart\ShippingMethod.cs" />
     <Compile Include="Marketing\Discount.cs" />
     <Compile Include="Cart\LineItem.cs" />
     <Compile Include="Cart\Payment.cs" />

@@ -15,7 +15,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(price.Currency)) ?? new Currency(language, price.Currency);
             var retVal = new ProductPrice(currency);
-            retVal.InjectFrom(price);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(price);
             retVal.Currency = currency;
             retVal.ListPrice = new Money(price.List ?? 0d, currency);
             retVal.SalePrice = price.Sale == null ? retVal.ListPrice : new Money(price.Sale ?? 0d, currency);

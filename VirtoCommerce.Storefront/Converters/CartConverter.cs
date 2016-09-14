@@ -16,17 +16,9 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var retVal = new ShoppingCart(currency, language);
 
-            retVal.InjectFrom(serviceModel);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
 
             retVal.Customer = customer;
-            if (!customer.IsRegisteredUser)
-            {
-                retVal.CustomerName = StorefrontConstants.AnonymousUsername;
-            }
-            else
-            {
-                retVal.CustomerName = string.Format("{0} {1}", customer.FirstName, customer.LastName);
-            }
 
             if (serviceModel.Coupon != null)
             {
@@ -90,8 +82,6 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.HandlingTotalWithTax = new Money(serviceModel.HandlingTotalWithTax ?? 0, currency);
             retVal.IsAnonymous = serviceModel.IsAnonymous == true;
             retVal.IsRecuring = serviceModel.IsRecuring == true;
-            //webModel.TaxIncluded = serviceModel.TaxIncluded == true;
-            retVal.TaxTotal = new Money(serviceModel.TaxTotal ?? 0, currency);
             retVal.VolumetricWeight = (decimal)(serviceModel.VolumetricWeight ?? 0);
             retVal.Weight = (decimal)(serviceModel.Weight ?? 0);
 
@@ -103,7 +93,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var retVal = new cartModel.ShoppingCart();
 
-            retVal.InjectFrom(webModel);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 
             retVal.Addresses = webModel.Addresses.Select(a => a.ToCartServiceModel()).ToList();
             retVal.Coupon = webModel.Coupon != null ? new cartModel.Coupon { Code = webModel.Coupon.Code } : null;

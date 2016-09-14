@@ -16,7 +16,9 @@ namespace VirtoCommerce.Storefront.Model
         {
             Currency = currency;
             Price = new Money(currency);
-            TaxTotal = new Money(currency);
+            PriceWithTax = new Money(currency);
+            DiscountTotal = new Money(currency);
+            DiscountTotalWithTax = new Money(currency);
         }
         /// <summary>
         /// Gets or sets the value of shipping method code
@@ -84,9 +86,15 @@ namespace VirtoCommerce.Storefront.Model
 
         #region ITaxable Members
         /// <summary>
-        /// Gets or sets the value of total shipping tax amount
+        /// Gets the value of total shipping method tax 
         /// </summary>
-        public Money TaxTotal { get; set; }
+        public Money TaxTotal
+        {
+            get
+            {
+                return TotalWithTax - Total;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the value of shipping tax type
@@ -104,12 +112,11 @@ namespace VirtoCommerce.Storefront.Model
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
             var shippingMethodTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == ShipmentMethodCode && x.Line.Id.SplitIntoTuple('&').Item2 == OptionName);
-            TaxTotal = new Money(Currency);
 
             var shippingMethodTaxRate = shippingMethodTaxRates.FirstOrDefault();
             if (shippingMethodTaxRate != null)
             {
-                TaxTotal += shippingMethodTaxRate.Rate;
+                PriceWithTax = Price + shippingMethodTaxRate.Rate;
             }
         }
 
@@ -133,6 +140,8 @@ namespace VirtoCommerce.Storefront.Model
                 if (reward.IsValid)
                 {
                     Discounts.Add(discount);
+                    DiscountTotal += discount.Amount;
+                    DiscountTotalWithTax += discount.AmountWithTax;
                 }
             }
         }
