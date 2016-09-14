@@ -4,7 +4,7 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
 using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
-
+using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class CustomerConverter
@@ -78,6 +78,23 @@ namespace VirtoCommerce.Storefront.Converters
             if (customer.Addresses != null)
             {
                 retVal.Addresses = customer.Addresses.Select(x => x.ToServiceModel()).ToList();
+            }
+            if (!string.IsNullOrEmpty(customer.Email))
+            {
+                retVal.Emails = new[] { customer.Email }.ToList();
+            }
+            retVal.FullName = customer.FullName;
+
+            return retVal;
+        }
+
+        public static coreModel.Contact ToCoreServiceModel(this CustomerInfo customer)
+        {
+            var retVal = new coreModel.Contact();
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(customer);
+            if (customer.Addresses != null)
+            {
+                retVal.Addresses = customer.Addresses.Select(x => x.ToCoreServiceModel()).ToList();
             }
             if (!string.IsNullOrEmpty(customer.Email))
             {

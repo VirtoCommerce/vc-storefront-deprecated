@@ -13,16 +13,19 @@ storefrontApp.component('vcCheckoutShippingMethods', {
 	controller: [function () {
 
 		var ctrl = this;
+		
 		ctrl.availShippingMethods = [];
 		ctrl.selectedMethod = {};
 		this.$onInit = function () {
 			ctrl.checkoutStep.addComponent(this);
+			ctrl.loading = true;
 			ctrl.getAvailShippingMethods(ctrl.shipment).then(function (availMethods) {
 				ctrl.availShippingMethods = availMethods;
 				_.each(ctrl.availShippingMethods, function (x) {
 					x.id = getMethodId(x);
 				});
 				ctrl.selectedMethod = _.find(ctrl.availShippingMethods, function (x) { return ctrl.shipment.shipmentMethodCode == x.shipmentMethodCode && ctrl.shipment.shipmentMethodOption == x.optionName });
+				ctrl.loading = false;
 			});
 		};		
 		

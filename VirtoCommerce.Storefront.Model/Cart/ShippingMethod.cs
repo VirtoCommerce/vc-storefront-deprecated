@@ -132,6 +132,8 @@ namespace VirtoCommerce.Storefront.Model
             var shipmentRewards = rewards.Where(r => r.RewardType == PromotionRewardType.ShipmentReward && (r.ShippingMethodCode.IsNullOrEmpty() || r.ShippingMethodCode.EqualsInvariant(ShipmentMethodCode)));
 
             Discounts.Clear();
+            DiscountTotal = new Money(0m, Currency);
+            DiscountTotalWithTax = new Money(0m, Currency);
 
             foreach (var reward in shipmentRewards)
             {

@@ -1,82 +1,114 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
-using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Tax;
+using serviceModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class TaxEvaluationContextConverter
     {
-        public static coreModel.TaxLine ToTaxLine(this ShippingMethod shipmentMethod)
+        public static serviceModel.TaxEvaluationContext ToServiceModel(this TaxEvaluationContext taxContext)
         {
-            var retVal = new coreModel.TaxLine
+            var retVal = new serviceModel.TaxEvaluationContext();
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(taxContext);
+            if (taxContext.Address != null)
+            {
+                retVal.Address = taxContext.Address.ToCoreServiceModel();
+            }
+            if (taxContext.Customer != null)
+            {
+                retVal.Customer = taxContext.Customer.ToCoreServiceModel();
+            }
+            if (taxContext.Currency != null)
+            {
+                retVal.Currency = taxContext.Currency.Code;
+            }
+
+            retVal.Lines = new List<serviceModel.TaxLine>();
+            if (!taxContext.Lines.IsNullOrEmpty())
+            {
+                foreach(var line in taxContext.Lines)
+                {
+                    var serviceModelLine = new serviceModel.TaxLine();
+                    serviceModelLine.InjectFrom<NullableAndEnumValueInjecter>(line);
+                    serviceModelLine.Amount = (double)line.Amount.Amount;
+                    serviceModelLine.Price = (double)line.Price.Amount;
+
+                    retVal.Lines.Add(serviceModelLine);
+                }
+            }
+            return retVal;
+        }
+
+        public static TaxLine ToTaxLine(this ShippingMethod shipmentMethod)
+        {
+            var retVal = new TaxLine(shipmentMethod.Currency)
             {
                 Id = string.Join("&", shipmentMethod.ShipmentMethodCode, shipmentMethod.OptionName),
                 Code = string.Join("&", shipmentMethod.ShipmentMethodCode, shipmentMethod.OptionName),
                 Name = string.Join("&", shipmentMethod.Name, shipmentMethod.OptionDescription),
                 TaxType = shipmentMethod.TaxType,
-                Amount = (double)shipmentMethod.Price.Amount
+                Amount = shipmentMethod.Price
             };
             return retVal;
         }
 
-        public static coreModel.TaxLine[] ToListAndSaleTaxLines(this Product product)
+        public static TaxLine[] ToListAndSaleTaxLines(this Product product)
         {
-            var retVal = new List<coreModel.TaxLine>
+            var retVal = new List<TaxLine>
             {
-                new coreModel.TaxLine
+                new TaxLine(product.Currency)
                 {
                     Id = product.Id + "&list",
                     Code = product.Sku,
                     Name = product.Name,
                     TaxType = product.TaxType,
-                    Amount = (double) product.Price.ListPrice.Amount
+                    Amount =  product.Price.ListPrice
                 }
             };
 
             //Need generate two tax line for List and Sale price to have tax amount for list price also
             if (product.Price.SalePrice != product.Price.ListPrice)
             {
-                retVal.Add(new coreModel.TaxLine
+                retVal.Add(new TaxLine(product.Currency)
                 {
                     Id = product.Id + "&sale",
                     Code = product.Sku,
                     Name = product.Name,
                     TaxType = product.TaxType,
-                    Amount = (double)product.Price.SalePrice.Amount
+                    Amount = product.Price.SalePrice
                 });
             }
 
             //Need generate tax line for each tier price
             foreach (var tierPrice in product.Price.TierPrices)
             {
-                retVal.Add(new coreModel.TaxLine
+                retVal.Add(new TaxLine(tierPrice.Price.Currency)
                 {
                     Id = product.Id + "&" + tierPrice.Quantity.ToString(),
                     Code = product.Sku,
                     Name = product.Name,
                     TaxType = product.TaxType,
-                    Amount = (double)tierPrice.Price.Amount
+                    Amount = tierPrice.Price
                 });
             }
             return retVal.ToArray();
         }
 
-        public static coreModel.TaxEvaluationContext ToTaxEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
+        public static TaxEvaluationContext ToTaxEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
         {
-            var retVal = new coreModel.TaxEvaluationContext
+            var retVal = new TaxEvaluationContext(workContext.CurrentStore.Id)
             {
                 Id = workContext.CurrentStore.Id,
-                Currency = workContext.CurrentCurrency.Code,
+                Currency = workContext.CurrentCurrency,
                 Type = "",
-                Address = workContext.CurrentCustomer.DefaultBillingAddress.ToCoreServiceModel(),
-                Customer = new coreModel.Contact
-                {
-                    Id = workContext.CurrentCustomer.Id,
-                    Name = workContext.CurrentCustomer.UserName
-                }
+                Address = workContext.CurrentCustomer.DefaultBillingAddress,
+                Customer = workContext.CurrentCustomer
             };
 
             if (products != null)
@@ -86,48 +118,46 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static coreModel.TaxEvaluationContext ToTaxEvalContext(this ShoppingCart cart)
+        public static TaxEvaluationContext ToTaxEvalContext(this ShoppingCart cart)
         {
-            var retVal = new coreModel.TaxEvaluationContext
+            var retVal = new TaxEvaluationContext(cart.StoreId)
             {
                 Id = cart.Id,
                 Code = cart.Name,
-                Currency = cart.Currency.Code,
+                Currency = cart.Currency,
                 Type = "Cart",
-                Lines = new List<coreModel.TaxLine>()
             };
-
             foreach (var lineItem in cart.Items)
             {
-                var extendedTaxLine = new coreModel.TaxLine
+                var extendedTaxLine = new TaxLine(lineItem.Currency)
                 {
                     Id = lineItem.Id + "&extended",
                     Code = lineItem.Sku,
                     Name = lineItem.Name,
                     TaxType = lineItem.TaxType,
-                    Amount = (double)lineItem.ExtendedPrice.Amount
+                    Amount = lineItem.ExtendedPrice
                 };
                 retVal.Lines.Add(extendedTaxLine);
 
-                var listTaxLine = new coreModel.TaxLine
+                var listTaxLine = new TaxLine(lineItem.Currency)
                 {
                     Id = lineItem.Id + "&list",
                     Code = lineItem.Sku,
                     Name = lineItem.Name,
                     TaxType = lineItem.TaxType,
-                    Amount = (double)lineItem.ListPrice.Amount
+                    Amount = lineItem.ListPrice
                 };
                 retVal.Lines.Add(listTaxLine);
 
                 if (lineItem.ListPrice != lineItem.SalePrice)
                 {
-                    var saleTaxLine = new coreModel.TaxLine
+                    var saleTaxLine = new TaxLine(lineItem.Currency)
                     {
                         Id = lineItem.Id + "&sale",
                         Code = lineItem.Sku,
                         Name = lineItem.Name,
                         TaxType = lineItem.TaxType,
-                        Amount = (double)lineItem.SalePrice.Amount
+                        Amount = lineItem.SalePrice
                     };
                     retVal.Lines.Add(saleTaxLine);
                 }
@@ -135,38 +165,30 @@ namespace VirtoCommerce.Storefront.Converters
             }
             foreach (var shipment in cart.Shipments)
             {
-                var totalTaxLine = new coreModel.TaxLine
+                var totalTaxLine = new TaxLine(shipment.Currency)
                 {
                     Id = shipment.Id + "&total",
                     Code = shipment.ShipmentMethodCode,
                     Name = shipment.ShipmentMethodCode,
                     TaxType = shipment.TaxType,
-                    Amount = (double)shipment.Total.Amount
+                    Amount = shipment.Total
                 };
                 retVal.Lines.Add(totalTaxLine);
-                var priceTaxLine = new coreModel.TaxLine
+                var priceTaxLine = new TaxLine(shipment.Currency)
                 {
                     Id = shipment.Id + "&price",
                     Code = shipment.ShipmentMethodCode,
                     Name = shipment.ShipmentMethodCode,
                     TaxType = shipment.TaxType,
-                    Amount = (double)shipment.ShippingPrice.Amount
+                    Amount = shipment.ShippingPrice
                 };
                 retVal.Lines.Add(priceTaxLine);
 
                 if (shipment.DeliveryAddress != null)
                 {
-                    //*** alex fix shipping address & customerId to the taxevalcontext
-                    retVal.Address = shipment.DeliveryAddress.ToCoreServiceModel();
-                    retVal.Address.AddressType = ((int)shipment.DeliveryAddress.Type).ToString();
+                    retVal.Address = shipment.DeliveryAddress;
                 }
-
-                retVal.Customer = new coreModel.Contact
-                {
-                    Id = cart.CustomerId,
-                    Name = cart.CustomerName
-                };
-                //*** end alex fix shipping address & customerId to the taxevalcontext
+                retVal.Customer = cart.Customer;
             }
 
             return retVal;

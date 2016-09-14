@@ -73,11 +73,11 @@ namespace VirtoCommerce.Storefront.Test
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
 
-            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, commerceApi);
+            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
             var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogModuleApi, pricingService, inventoryApi, searchApi, promotionEvaluator, customerService);
 
-            var retVal = new CartBuilder(cartApi, catalogSearchService, commerceApi, cacheManager, workContextFactory, null, null, null);
+            var retVal = new CartBuilder(cartApi, catalogSearchService,  cacheManager, workContextFactory, null, null, null);
             return retVal;
         }
     }

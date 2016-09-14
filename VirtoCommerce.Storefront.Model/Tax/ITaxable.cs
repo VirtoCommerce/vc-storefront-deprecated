@@ -12,6 +12,7 @@ namespace VirtoCommerce.Storefront.Model
     /// </summary>
     public interface ITaxable
     {
+        Currency Currency { get; }
         Money TaxTotal { get; }
         string TaxType { get; }
         ICollection<TaxDetail> TaxDetails { get; }

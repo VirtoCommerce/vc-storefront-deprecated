@@ -132,6 +132,8 @@
     <Compile Include="StorefrontNotification.cs" />
     <Compile Include="StorefrontNotificationType.cs" />
     <Compile Include="Stores\StoreStatus.cs" />
+    <Compile Include="Tax\Services\ITaxEvaluator.cs" />
+    <Compile Include="Tax\TaxEvaluationContext.cs" />
     <Compile Include="Tax\TaxLine.cs" />
     <Compile Include="Tax\TaxRate.cs" />
     <Compile Include="TierPrice.cs" />

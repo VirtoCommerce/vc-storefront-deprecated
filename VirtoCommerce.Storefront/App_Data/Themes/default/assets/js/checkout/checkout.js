@@ -69,10 +69,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
     		cartService.addCoupon(coupon.code).then(function (response) {
     			var coupon = response.data;
     			coupon.processing = false;
-    			$scope.checkout.coupon = coupon;
-    			if (!coupon.appliedSuccessfully) {
-    				coupon.errorCode = 'InvalidCouponCode';
-    			}
+    			$scope.checkout.coupon = coupon;    		
     			$scope.reloadCart();
     		}, function (response) {
     			coupon.processing = false;
@@ -153,7 +150,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
     	$scope.createOrder = function () {
     		$scope.checkout.loading = true;
 		    updatePayment($scope.checkout.payment).then(function () {
-    				return cartService.createOrder($scope.checkout.bankCardInfo);
+		    	return cartService.createOrder($scope.checkout.paymentMethod.card);
     			}).then(function (response) {
     				var order = response.data.order;
     				var orderProcessingResult = response.data.orderProcessingResult;

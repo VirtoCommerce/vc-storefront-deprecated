@@ -232,6 +232,9 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
             Discounts.Clear();
 
+            DiscountTotal = new Money(0m, Currency);
+            DiscountTotalWithTax = new Money(0m, Currency);
+
             foreach (var reward in shipmentRewards)
             {
                 var discount = reward.ToDiscountModel(ShippingPrice, ShippingPriceWithTax);
@@ -239,8 +242,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
                 if (reward.IsValid)
                 {
                     Discounts.Add(discount);
-                    DiscountTotal = discount.Amount;
-                    DiscountTotalWithTax = discount.AmountWithTax;
+                    DiscountTotal += discount.Amount;
+                    DiscountTotalWithTax += discount.AmountWithTax;
                 }
             }
         }

@@ -22,33 +22,32 @@ using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.Stores;
+using VirtoCommerce.Storefront.Model.Tax.Services;
 
 namespace VirtoCommerce.Storefront.Builders
 {
     public class CartBuilder : ICartBuilder, IAsyncObserver<UserLoginEvent>
     {
-        private readonly ICoreModuleApiClient _commerceApi;
         private readonly ICartModuleApiClient _cartApi;
         private readonly ICatalogSearchService _catalogSearchService;
         private readonly ILocalCacheManager _cacheManager;
         private readonly ICustomerService _customerService;
         private readonly Func<WorkContext> _workContextFactory;
         private readonly IPromotionEvaluator _promotionEvaluator;
-        private readonly ICoreModuleApiClient _coreModuleApiClient;
+        private readonly ITaxEvaluator _taxEvaluator;
         private ShoppingCart _cart;
         private const string _cartCacheRegion = "CartRegion";
 
         [CLSCompliant(false)]
-        public CartBuilder(ICartModuleApiClient cartApi, ICatalogSearchService catalogSearchService, ICoreModuleApiClient commerceApi, ILocalCacheManager cacheManager, Func<WorkContext> workContextFactory, ICustomerService customerService, IPromotionEvaluator promotionEvaluator, ICoreModuleApiClient coreModuleApiClient)
+        public CartBuilder(ICartModuleApiClient cartApi, ICatalogSearchService catalogSearchService, ILocalCacheManager cacheManager, Func<WorkContext> workContextFactory, ICustomerService customerService, IPromotionEvaluator promotionEvaluator, ITaxEvaluator taxEvaluator)
         {
             _cartApi = cartApi;
             _catalogSearchService = catalogSearchService;
             _cacheManager = cacheManager;
-            _commerceApi = commerceApi;
             _workContextFactory = workContextFactory;
             _customerService = customerService;
             _promotionEvaluator = promotionEvaluator;
-            _coreModuleApiClient = coreModuleApiClient;
+            _taxEvaluator = taxEvaluator;
         }
        
         #region ICartBuilder Members
@@ -336,26 +335,19 @@ namespace VirtoCommerce.Storefront.Builders
         {
             var workContext = _workContextFactory();
 
-            // TODO: Remake with shipmentId
+            //Request available shipping rates 
             var shippingRates = await _cartApi.CartModule.GetAvailableShippingRatesAsync(_cart.Id);
             var retVal = shippingRates.Select(x => x.ToWebModel(_cart.Currency, workContext.AllCurrencies)).ToList();
 
-            //Evaluate promotions for shipping methods
+            //Evaluate taxes for available shipping rates
+            var taxEvalContext = _cart.ToTaxEvalContext();
+            taxEvalContext.Lines.Clear();
+            taxEvalContext.Lines.AddRange(retVal.Select(x => x.ToTaxLine()));
+            await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
+          
+            //Evaluate promotions cart and apply rewards for available shipping methods
             var promoEvalContext = _cart.ToPromotionEvaluationContext();
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
-
-            //Evaluate tax for shipping methods
-            var taxEvalContext = _cart.ToTaxEvalContext();
-            taxEvalContext.Lines.AddRange(retVal.Select(x => x.ToTaxLine()));
-            var taxResult = await _commerceApi.Commerce.EvaluateTaxesAsync(_cart.StoreId, taxEvalContext);
-            if (taxResult != null)
-            {
-                var taxRates = taxResult.Select(x => x.ToWebModel(_cart.Currency)).ToList();
-                foreach (var shippingMethod in retVal)
-                {
-                    shippingMethod.ApplyTaxRates(taxRates);
-                }
-            }          
 
             return retVal;
         }
@@ -383,11 +375,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public async Task EvaluateTaxesAsync()
         {
-            var taxResult = await _commerceApi.Commerce.EvaluateTaxesAsync(_cart.StoreId, _cart.ToTaxEvalContext());
-            if (taxResult != null)
-            {
-                _cart.ApplyTaxRates(taxResult.Select(x => x.ToWebModel(_cart.Currency)));
-            }
+            await _taxEvaluator.EvaluateTaxesAsync(_cart.ToTaxEvalContext(), new[] { _cart });    
         }
 
         public ShoppingCart Cart

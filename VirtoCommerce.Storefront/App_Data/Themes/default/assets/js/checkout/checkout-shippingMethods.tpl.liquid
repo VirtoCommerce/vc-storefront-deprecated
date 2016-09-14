@@ -1,5 +1,5 @@
 ﻿<form accept-charset="UTF8" class="step" name="$ctrl.form" novalidate="novalidate">
-    <div ng-if="!$ctrl.availShippingMethods.length">
+    <div ng-if="!$ctrl.availShippingMethods.length && !$ctrl.loading">
         <div class="alert alert-error">
 			{{ 'checkout.shipping_method.no_avail_methods' | t }}
 		</div>
@@ -13,7 +13,7 @@
                 <label class="radio__label" for="{% raw %}{{ method.id }}{% endraw %}" ng-bind="method.name + '&nbsp' + method.optionName"></label>
                 {% if settings.show_prices_with_taxes %}
                 <span class="order-summary__emphasis" ng-bind="method.totalWithTax.formatedAmount"></span>
-                <span ng-if="option.discountTotalWithTax.amount > 0">
+                <span ng-if="method.discountTotalWithTax.amount > 0">
                     <span class="order-summary__small-text strikethrough" ng-bind="method.priceWithTax.formatedAmount"></span>
                 </span>
                 {% else %}

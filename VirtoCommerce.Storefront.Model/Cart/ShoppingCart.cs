@@ -9,7 +9,7 @@ using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model.Cart
 {
-    public class ShoppingCart : Entity, IDiscountable, IValidatable, IHasLanguage
+    public class ShoppingCart : Entity, IDiscountable, IValidatable, IHasLanguage, ITaxable
     {
         public ShoppingCart(Currency currency, Language language)
         {

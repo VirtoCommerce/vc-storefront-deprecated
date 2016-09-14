@@ -49,8 +49,8 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         public async Task<ActionResult> GetCart()
         {
             EnsureThatCartExist();
-            await _cartBuilder.EvaluatePromotionsAsync();
             await _cartBuilder.EvaluateTaxesAsync();
+            await _cartBuilder.EvaluatePromotionsAsync();
             await _cartBuilder.ValidateAsync();                        
             return Json(_cartBuilder.Cart, JsonRequestBehavior.AllowGet);
         }
