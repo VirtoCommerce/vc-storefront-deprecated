@@ -216,7 +216,7 @@ namespace VirtoCommerce.Storefront.Services
 
             foreach (var product in products)
             {
-                product.Vendor = vendors.FirstOrDefault(v => v.Id == product.VendorId);
+                product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
             }
         }
 
