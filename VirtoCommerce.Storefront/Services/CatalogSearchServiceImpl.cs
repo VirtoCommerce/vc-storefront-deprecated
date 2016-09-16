@@ -201,21 +201,21 @@ namespace VirtoCommerce.Storefront.Services
             var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToList();
             var vendorTasks = vendorIds.Select(id => _customerService.GetVendorByIdAsync(id));
             var vendors = await Task.WhenAll(vendorTasks);
-
+            vendors = vendors.Where(x => x != null).ToArray();
             foreach (var product in products)
             {
-                product.Vendor = vendors.FirstOrDefault(v => v.Id == product.VendorId);
+                product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
             }
         }
 
         private void LoadProductVendors(List<Product> products)
         {
             var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToList();
-            var vendors = vendorIds.Select(id => _customerService.GetVendorById(id)).ToList();
+            var vendors = vendorIds.Select(id => _customerService.GetVendorById(id)).Where(x => x != null).ToList();
 
             foreach (var product in products)
             {
-                product.Vendor = vendors.FirstOrDefault(v => v.Id == product.VendorId);
+                product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
                 if (product.Vendor != null)
                 {
                     product.Vendor.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>

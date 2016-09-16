@@ -344,7 +344,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// </summary>
         public OrdersModuleApiClient Client { get; private set; }
 
+        /// <summary>
+        /// Search customer orders by given criteria
+        /// </summary>
         /// <param name='criteria'>
+        /// criteria
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -364,7 +368,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SearchResult>> SearchWithHttpMessagesAsync(SearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrderSearchResult>> SearchWithHttpMessagesAsync(CustomerOrderSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (criteria == null)
             {
@@ -453,7 +457,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<SearchResult>();
+            var _result = new Microsoft.Rest.HttpOperationResponse<CustomerOrderSearchResult>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -462,7 +466,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<SearchResult>(_responseContent, this.Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<CustomerOrderSearchResult>(_responseContent, this.Client.DeserializationSettings);
                 }
                 catch (Newtonsoft.Json.JsonException ex)
                 {
@@ -481,7 +485,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Find customer order by number
+        /// </summary>
+        /// <remarks>
+        /// Return a single customer order with all nested documents or null if order
+        /// was not found
+        /// </remarks>
         /// <param name='number'>
+        /// customer order number
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -613,7 +625,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Find customer order by id
+        /// </summary>
+        /// <remarks>
+        /// Return a single customer order with all nested documents or null if order
+        /// was not found
+        /// </remarks>
         /// <param name='id'>
+        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -745,7 +765,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <param name='id'>
+        /// <summary>
+        /// Calculate order totals after changes
+        /// </summary>
+        /// <remarks>
+        /// Return order with recalculated totals
+        /// </remarks>
+        /// <param name='order'>
+        /// Customer order
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -765,11 +792,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CreateOrderFromCartWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CalculateTotalsWithHttpMessagesAsync(CustomerOrder order, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (id == null)
+            if (order == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "id");
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "order");
             }
             // Tracing
             bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
@@ -778,18 +805,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             {
                 _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("id", id);
+                tracingParameters.Add("order", order);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "CreateOrderFromCart", tracingParameters);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "CalculateTotals", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/order/customerOrders/{id}").ToString();
-            _url = _url.Replace("{id}", System.Uri.EscapeDataString(id));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/order/customerOrders/recalculate").ToString();
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
-            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.Method = new System.Net.Http.HttpMethod("PUT");
             _httpRequest.RequestUri = new System.Uri(_url);
             // Set Headers
             if (customHeaders != null)
@@ -806,6 +832,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
 
             // Serialize Request
             string _requestContent = null;
+            if(order != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(order, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
             // Set Credentials
             if (this.Client.Credentials != null)
             {
@@ -877,11 +909,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Register customer order payment in external payment system
+        /// </summary>
+        /// <remarks>
+        /// Used in storefront checkout or manual order payment registration
+        /// </remarks>
         /// <param name='orderId'>
+        /// customer order id
         /// </param>
         /// <param name='paymentId'>
+        /// payment id
         /// </param>
         /// <param name='bankCardInfo'>
+        /// banking card information
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1026,7 +1067,147 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Create new customer order based on shopping cart.
+        /// </summary>
+        /// <param name='cartId'>
+        /// shopping cart id
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CreateOrderFromCartWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (cartId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "cartId");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("cartId", cartId);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "CreateOrderFromCart", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/order/customerOrders/{cartId}").ToString();
+            _url = _url.Replace("{cartId}", System.Uri.EscapeDataString(cartId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 200)
+            {
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<CustomerOrder>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<CustomerOrder>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// Update a existing customer order
+        /// </summary>
         /// <param name='customerOrder'>
+        /// customer order
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1142,7 +1323,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Add new customer order to system
+        /// </summary>
         /// <param name='customerOrder'>
+        /// customer order
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1279,7 +1464,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Delete a whole customer orders
+        /// </summary>
         /// <param name='ids'>
+        /// customer order ids for delete
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1408,7 +1597,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get new shipment for specified customer order
+        /// </summary>
+        /// <remarks>
+        /// Return new shipment document with populates all required properties.
+        /// </remarks>
         /// <param name='id'>
+        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1540,7 +1736,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get new payment for specified customer order
+        /// </summary>
+        /// <remarks>
+        /// Return new payment  document with populates all required properties.
+        /// </remarks>
         /// <param name='id'>
+        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1672,128 +1875,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
-        /// <param name='id'>
-        /// </param>
-        /// <param name='operationId'>
-        /// </param>
-        /// <param name='customHeaders'>
-        /// Headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        /// <return>
-        /// A response object containing the response body and response headers.
-        /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteWithHttpMessagesAsync(string id, string operationId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            if (id == null)
-            {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "id");
-            }
-            if (operationId == null)
-            {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "operationId");
-            }
-            // Tracing
-            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
-            string _invocationId = null;
-            if (_shouldTrace)
-            {
-                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
-                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("id", id);
-                tracingParameters.Add("operationId", operationId);
-                tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "Delete", tracingParameters);
-            }
-            // Construct URL
-            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/order/customerOrders/{id}/operations/{operationId}").ToString();
-            _url = _url.Replace("{id}", System.Uri.EscapeDataString(id));
-            _url = _url.Replace("{operationId}", System.Uri.EscapeDataString(operationId));
-            // Create HTTP transport objects
-            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
-            System.Net.Http.HttpResponseMessage _httpResponse = null;
-            _httpRequest.Method = new System.Net.Http.HttpMethod("DELETE");
-            _httpRequest.RequestUri = new System.Uri(_url);
-            // Set Headers
-            if (customHeaders != null)
-            {
-                foreach(var _header in customHeaders)
-                {
-                    if (_httpRequest.Headers.Contains(_header.Key))
-                    {
-                        _httpRequest.Headers.Remove(_header.Key);
-                    }
-                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
-                }
-            }
-
-            // Serialize Request
-            string _requestContent = null;
-            // Set Credentials
-            if (this.Client.Credentials != null)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
-            }
-            // Send Request
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
-            }
-            cancellationToken.ThrowIfCancellationRequested();
-            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
-            }
-            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
-            cancellationToken.ThrowIfCancellationRequested();
-            string _responseContent = null;
-            if ((int)_statusCode != 204)
-            {
-                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
-                if (_httpResponse.Content != null) {
-                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-                else {
-                    _responseContent = string.Empty;
-                }
-                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
-                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
-                if (_shouldTrace)
-                {
-                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
-                }
-                _httpRequest.Dispose();
-                if (_httpResponse != null)
-                {
-                    _httpResponse.Dispose();
-                }
-                throw ex;
-            }
-            // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse();
-            _result.Request = _httpRequest;
-            _result.Response = _httpResponse;
-            if (_shouldTrace)
-            {
-                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
-            }
-            return _result;
-        }
-
+        /// <summary>
+        /// Get a some order statistic information for Commerce manager dashboard
+        /// </summary>
         /// <param name='start'>
+        /// start interval date
         /// </param>
         /// <param name='end'>
+        /// end interval date
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1931,7 +2020,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Payment callback operation used by external payment services to inform
+        /// post process payment in our system
+        /// </summary>
         /// <param name='callback'>
+        /// payment callback parameters
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2084,25 +2178,33 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
     /// </summary>
     public static partial class OrderModuleExtensions
     {
+            /// <summary>
+            /// Search customer orders by given criteria
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
+            /// criteria
             /// </param>
-            public static SearchResult Search(this IOrderModule operations, SearchCriteria criteria)
+            public static CustomerOrderSearchResult Search(this IOrderModule operations, CustomerOrderSearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Search customer orders by given criteria
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='criteria'>
+            /// criteria
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<SearchResult> SearchAsync(this IOrderModule operations, SearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<CustomerOrderSearchResult> SearchAsync(this IOrderModule operations, CustomerOrderSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
                 using (var _result = await operations.SearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -2110,20 +2212,36 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
+            /// <summary>
+            /// Find customer order by number
+            /// </summary>
+            /// <remarks>
+            /// Return a single customer order with all nested documents or null if order
+            /// was not found
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='number'>
+            /// customer order number
             /// </param>
             public static CustomerOrder GetByNumber(this IOrderModule operations, string number)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetByNumberAsync(number), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Find customer order by number
+            /// </summary>
+            /// <remarks>
+            /// Return a single customer order with all nested documents or null if order
+            /// was not found
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='number'>
+            /// customer order number
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2136,20 +2254,36 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
+            /// <summary>
+            /// Find customer order by id
+            /// </summary>
+            /// <remarks>
+            /// Return a single customer order with all nested documents or null if order
+            /// was not found
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// customer order id
             /// </param>
             public static CustomerOrder GetById(this IOrderModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Find customer order by id
+            /// </summary>
+            /// <remarks>
+            /// Return a single customer order with all nested documents or null if order
+            /// was not found
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// customer order id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2162,54 +2296,86 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
+            /// <summary>
+            /// Calculate order totals after changes
+            /// </summary>
+            /// <remarks>
+            /// Return order with recalculated totals
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='id'>
+            /// <param name='order'>
+            /// Customer order
             /// </param>
-            public static CustomerOrder CreateOrderFromCart(this IOrderModule operations, string id)
+            public static CustomerOrder CalculateTotals(this IOrderModule operations, CustomerOrder order)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).CreateOrderFromCartAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).CalculateTotalsAsync(order), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Calculate order totals after changes
+            /// </summary>
+            /// <remarks>
+            /// Return order with recalculated totals
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='id'>
+            /// <param name='order'>
+            /// Customer order
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<CustomerOrder> CreateOrderFromCartAsync(this IOrderModule operations, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<CustomerOrder> CalculateTotalsAsync(this IOrderModule operations, CustomerOrder order, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.CreateOrderFromCartWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.CalculateTotalsWithHttpMessagesAsync(order, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
             }
 
+            /// <summary>
+            /// Register customer order payment in external payment system
+            /// </summary>
+            /// <remarks>
+            /// Used in storefront checkout or manual order payment registration
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='orderId'>
+            /// customer order id
             /// </param>
             /// <param name='paymentId'>
+            /// payment id
             /// </param>
             /// <param name='bankCardInfo'>
+            /// banking card information
             /// </param>
             public static ProcessPaymentResult ProcessOrderPayments(this IOrderModule operations, string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).ProcessOrderPaymentsAsync(orderId, paymentId, bankCardInfo), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Register customer order payment in external payment system
+            /// </summary>
+            /// <remarks>
+            /// Used in storefront checkout or manual order payment registration
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='orderId'>
+            /// customer order id
             /// </param>
             /// <param name='paymentId'>
+            /// payment id
             /// </param>
             /// <param name='bankCardInfo'>
+            /// banking card information
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2222,20 +2388,62 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
+            /// <summary>
+            /// Create new customer order based on shopping cart.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// shopping cart id
+            /// </param>
+            public static CustomerOrder CreateOrderFromCart(this IOrderModule operations, string cartId)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).CreateOrderFromCartAsync(cartId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Create new customer order based on shopping cart.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cartId'>
+            /// shopping cart id
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<CustomerOrder> CreateOrderFromCartAsync(this IOrderModule operations, string cartId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.CreateOrderFromCartWithHttpMessagesAsync(cartId, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Update a existing customer order
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='customerOrder'>
+            /// customer order
             /// </param>
             public static void Update(this IOrderModule operations, CustomerOrder customerOrder)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).UpdateAsync(customerOrder), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Update a existing customer order
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='customerOrder'>
+            /// customer order
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2245,20 +2453,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 await operations.UpdateWithHttpMessagesAsync(customerOrder, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Add new customer order to system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='customerOrder'>
+            /// customer order
             /// </param>
             public static CustomerOrder CreateOrder(this IOrderModule operations, CustomerOrder customerOrder)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).CreateOrderAsync(customerOrder), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Add new customer order to system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='customerOrder'>
+            /// customer order
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2271,20 +2487,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
+            /// <summary>
+            /// Delete a whole customer orders
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// customer order ids for delete
             /// </param>
             public static void DeleteOrdersByIds(this IOrderModule operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).DeleteOrdersByIdsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Delete a whole customer orders
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// customer order ids for delete
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2294,20 +2518,34 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 await operations.DeleteOrdersByIdsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Get new shipment for specified customer order
+            /// </summary>
+            /// <remarks>
+            /// Return new shipment document with populates all required properties.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// customer order id
             /// </param>
             public static Shipment GetNewShipment(this IOrderModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetNewShipmentAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get new shipment for specified customer order
+            /// </summary>
+            /// <remarks>
+            /// Return new shipment document with populates all required properties.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// customer order id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2320,20 +2558,34 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
+            /// <summary>
+            /// Get new payment for specified customer order
+            /// </summary>
+            /// <remarks>
+            /// Return new payment  document with populates all required properties.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// customer order id
             /// </param>
             public static PaymentIn GetNewPayment(this IOrderModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetNewPaymentAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get new payment for specified customer order
+            /// </summary>
+            /// <remarks>
+            /// Return new payment  document with populates all required properties.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// customer order id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2346,51 +2598,34 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// </param>
-            /// <param name='operationId'>
-            /// </param>
-            public static void Delete(this IOrderModule operations, string id, string operationId)
-            {
-                System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).DeleteAsync(id, operationId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-            }
-
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='id'>
-            /// </param>
-            /// <param name='operationId'>
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async System.Threading.Tasks.Task DeleteAsync(this IOrderModule operations, string id, string operationId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-            {
-                await operations.DeleteWithHttpMessagesAsync(id, operationId, null, cancellationToken).ConfigureAwait(false);
-            }
-
+            /// <summary>
+            /// Get a some order statistic information for Commerce manager dashboard
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='start'>
+            /// start interval date
             /// </param>
             /// <param name='end'>
+            /// end interval date
             /// </param>
             public static DashboardStatisticsResult GetDashboardStatistics(this IOrderModule operations, System.DateTime? start = default(System.DateTime?), System.DateTime? end = default(System.DateTime?))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetDashboardStatisticsAsync(start, end), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get a some order statistic information for Commerce manager dashboard
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='start'>
+            /// start interval date
             /// </param>
             /// <param name='end'>
+            /// end interval date
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2403,20 +2638,30 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
+            /// <summary>
+            /// Payment callback operation used by external payment services to inform
+            /// post process payment in our system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='callback'>
+            /// payment callback parameters
             /// </param>
             public static PostProcessPaymentResult PostProcessPayment(this IOrderModule operations, PaymentCallbackParameters callback)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).PostProcessPaymentAsync(callback), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Payment callback operation used by external payment services to inform
+            /// post process payment in our system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='callback'>
+            /// payment callback parameters
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2444,7 +2689,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
     /// </summary>
     public partial interface IOrderModule
     {
+        /// <summary>
+        /// Search customer orders by given criteria
+        /// </summary>
         /// <param name='criteria'>
+        /// criteria
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2461,8 +2710,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SearchResult>> SearchWithHttpMessagesAsync(SearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrderSearchResult>> SearchWithHttpMessagesAsync(CustomerOrderSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Find customer order by number
+        /// </summary>
+        /// <remarks>
+        /// Return a single customer order with all nested documents or null
+        /// if order was not found
+        /// </remarks>
         /// <param name='number'>
+        /// customer order number
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2480,7 +2737,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> GetByNumberWithHttpMessagesAsync(string number, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Find customer order by id
+        /// </summary>
+        /// <remarks>
+        /// Return a single customer order with all nested documents or null
+        /// if order was not found
+        /// </remarks>
         /// <param name='id'>
+        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2498,7 +2763,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> GetByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <param name='id'>
+        /// <summary>
+        /// Calculate order totals after changes
+        /// </summary>
+        /// <remarks>
+        /// Return order with recalculated totals
+        /// </remarks>
+        /// <param name='order'>
+        /// Customer order
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2515,12 +2787,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CreateOrderFromCartWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CalculateTotalsWithHttpMessagesAsync(CustomerOrder order, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Register customer order payment in external payment system
+        /// </summary>
+        /// <remarks>
+        /// Used in storefront checkout or manual order payment registration
+        /// </remarks>
         /// <param name='orderId'>
+        /// customer order id
         /// </param>
         /// <param name='paymentId'>
+        /// payment id
         /// </param>
         /// <param name='bankCardInfo'>
+        /// banking card information
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2538,7 +2819,33 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProcessPaymentResult>> ProcessOrderPaymentsWithHttpMessagesAsync(string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Create new customer order based on shopping cart.
+        /// </summary>
+        /// <param name='cartId'>
+        /// shopping cart id
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CreateOrderFromCartWithHttpMessagesAsync(string cartId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Update a existing customer order
+        /// </summary>
         /// <param name='customerOrder'>
+        /// customer order
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2553,7 +2860,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateWithHttpMessagesAsync(CustomerOrder customerOrder, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Add new customer order to system
+        /// </summary>
         /// <param name='customerOrder'>
+        /// customer order
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2571,7 +2882,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CustomerOrder>> CreateOrderWithHttpMessagesAsync(CustomerOrder customerOrder, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Delete a whole customer orders
+        /// </summary>
         /// <param name='ids'>
+        /// customer order ids for delete
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2586,7 +2901,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteOrdersByIdsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get new shipment for specified customer order
+        /// </summary>
+        /// <remarks>
+        /// Return new shipment document with populates all required
+        /// properties.
+        /// </remarks>
         /// <param name='id'>
+        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2604,7 +2927,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Shipment>> GetNewShipmentWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get new payment for specified customer order
+        /// </summary>
+        /// <remarks>
+        /// Return new payment  document with populates all required
+        /// properties.
+        /// </remarks>
         /// <param name='id'>
+        /// customer order id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2622,26 +2953,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PaymentIn>> GetNewPaymentWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <param name='id'>
-        /// </param>
-        /// <param name='operationId'>
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteWithHttpMessagesAsync(string id, string operationId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get a some order statistic information for Commerce manager
+        /// dashboard
+        /// </summary>
         /// <param name='start'>
+        /// start interval date
         /// </param>
         /// <param name='end'>
+        /// end interval date
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2656,7 +2976,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<DashboardStatisticsResult>> GetDashboardStatisticsWithHttpMessagesAsync(System.DateTime? start = default(System.DateTime?), System.DateTime? end = default(System.DateTime?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Payment callback operation used by external payment services to
+        /// inform post process payment in our system
+        /// </summary>
         /// <param name='callback'>
+        /// payment callback parameters
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2684,44 +3009,69 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
-    public partial class SearchCriteria
+    public partial class CustomerOrderSearchCriteria
     {
         /// <summary>
-        /// Initializes a new instance of the SearchCriteria class.
+        /// Initializes a new instance of the CustomerOrderSearchCriteria
+        /// class.
         /// </summary>
-        public SearchCriteria() { }
+        public CustomerOrderSearchCriteria() { }
 
         /// <summary>
-        /// Initializes a new instance of the SearchCriteria class.
+        /// Initializes a new instance of the CustomerOrderSearchCriteria
+        /// class.
         /// </summary>
-        /// <param name="responseGroup">Possible values include: 'default',
-        /// 'withItems', 'withInPayments', 'withShipments', 'withAddresses',
-        /// 'withDiscounts', 'full'</param>
-        public SearchCriteria(string responseGroup = default(string), string keyword = default(string), string customerId = default(string), string employeeId = default(string), System.Collections.Generic.IList<string> storeIds = default(System.Collections.Generic.IList<string>), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), int? start = default(int?), int? count = default(int?))
+        public CustomerOrderSearchCriteria(string keyword = default(string), string number = default(string), System.Collections.Generic.IList<string> numbers = default(System.Collections.Generic.IList<string>), string status = default(string), System.Collections.Generic.IList<string> statuses = default(System.Collections.Generic.IList<string>), string operationId = default(string), string customerId = default(string), string employeeId = default(string), System.Collections.Generic.IList<string> storeIds = default(System.Collections.Generic.IList<string>), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
-            ResponseGroup = responseGroup;
             Keyword = keyword;
+            Number = number;
+            Numbers = numbers;
+            Status = status;
+            Statuses = statuses;
+            OperationId = operationId;
             CustomerId = customerId;
             EmployeeId = employeeId;
             StoreIds = storeIds;
             StartDate = startDate;
             EndDate = endDate;
-            Start = start;
-            Count = count;
+            ResponseGroup = responseGroup;
+            ObjectType = objectType;
+            ObjectTypes = objectTypes;
+            Sort = sort;
+            SortInfos = sortInfos;
+            Skip = skip;
+            Take = take;
         }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'default', 'withItems',
-        /// 'withInPayments', 'withShipments', 'withAddresses',
-        /// 'withDiscounts', 'full'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
-        public string ResponseGroup { get; set; }
 
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "keyword")]
         public string Keyword { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "number")]
+        public string Number { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "numbers")]
+        public System.Collections.Generic.IList<string> Numbers { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
+        public string Status { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "statuses")]
+        public System.Collections.Generic.IList<string> Statuses { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "operationId")]
+        public string OperationId { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2750,13 +3100,38 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "start")]
-        public int? Start { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "count")]
-        public int? Count { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
+        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sort")]
+        public string Sort { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortInfos")]
+        public System.Collections.Generic.IList<SortInfo> SortInfos { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "skip")]
+        public int? Skip { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "take")]
+        public int? Take { get; set; }
 
     }
 }
@@ -2768,17 +3143,56 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
-    public partial class SearchResult
+    public partial class SortInfo
     {
         /// <summary>
-        /// Initializes a new instance of the SearchResult class.
+        /// Initializes a new instance of the SortInfo class.
         /// </summary>
-        public SearchResult() { }
+        public SortInfo() { }
 
         /// <summary>
-        /// Initializes a new instance of the SearchResult class.
+        /// Initializes a new instance of the SortInfo class.
         /// </summary>
-        public SearchResult(int? totalCount = default(int?), System.Collections.Generic.IList<CustomerOrder> customerOrders = default(System.Collections.Generic.IList<CustomerOrder>))
+        /// <param name="sortDirection">Possible values include: 'ascending',
+        /// 'descending'</param>
+        public SortInfo(string sortColumn = default(string), string sortDirection = default(string))
+        {
+            SortColumn = sortColumn;
+            SortDirection = sortDirection;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortColumn")]
+        public string SortColumn { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'ascending', 'descending'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortDirection")]
+        public string SortDirection { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class CustomerOrderSearchResult
+    {
+        /// <summary>
+        /// Initializes a new instance of the CustomerOrderSearchResult class.
+        /// </summary>
+        public CustomerOrderSearchResult() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CustomerOrderSearchResult class.
+        /// </summary>
+        public CustomerOrderSearchResult(int? totalCount = default(int?), System.Collections.Generic.IList<CustomerOrder> customerOrders = default(System.Collections.Generic.IList<CustomerOrder>))
         {
             TotalCount = totalCount;
             CustomerOrders = customerOrders;
@@ -2814,26 +3228,36 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the CustomerOrder class.
         /// </summary>
-        public CustomerOrder(string customerName = default(string), string customerId = default(string), string channelId = default(string), string storeId = default(string), string storeName = default(string), string organizationName = default(string), string organizationId = default(string), string employeeName = default(string), string employeeId = default(string), double? discountAmount = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<PaymentIn> inPayments = default(System.Collections.Generic.IList<PaymentIn>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), Discount discount = default(Discount), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), System.Collections.Generic.IList<string> scopes = default(System.Collections.Generic.IList<string>), string operationType = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string parentOperationId = default(string), System.Collections.Generic.IList<Operation> childrenOperations = default(System.Collections.Generic.IList<Operation>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public CustomerOrder(string customerId = default(string), string customerName = default(string), string channelId = default(string), string storeId = default(string), string storeName = default(string), string organizationId = default(string), string organizationName = default(string), string employeeId = default(string), string employeeName = default(string), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<PaymentIn> inPayments = default(System.Collections.Generic.IList<PaymentIn>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), Discount discount = default(Discount), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), System.Collections.Generic.IList<string> scopes = default(System.Collections.Generic.IList<string>), double? total = default(double?), double? subTotal = default(double?), double? subTotalWithTax = default(double?), double? shippingTotal = default(double?), double? shippingTotalWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? taxTotal = default(double?), string operationType = default(string), string parentOperationId = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), System.Collections.Generic.IList<IOperation> childrenOperations = default(System.Collections.Generic.IList<IOperation>), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
-            CustomerName = customerName;
             CustomerId = customerId;
+            CustomerName = customerName;
             ChannelId = channelId;
             StoreId = storeId;
             StoreName = storeName;
-            OrganizationName = organizationName;
             OrganizationId = organizationId;
-            EmployeeName = employeeName;
+            OrganizationName = organizationName;
             EmployeeId = employeeId;
-            DiscountAmount = discountAmount;
+            EmployeeName = employeeName;
             Addresses = addresses;
             InPayments = inPayments;
             Items = items;
             Shipments = shipments;
             Discount = discount;
+            DiscountAmount = discountAmount;
+            DiscountAmountWithTax = discountAmountWithTax;
             TaxDetails = taxDetails;
             Scopes = scopes;
+            Total = total;
+            SubTotal = subTotal;
+            SubTotalWithTax = subTotalWithTax;
+            ShippingTotal = shippingTotal;
+            ShippingTotalWithTax = shippingTotalWithTax;
+            DiscountTotal = discountTotal;
+            DiscountTotalWithTax = discountTotalWithTax;
+            TaxTotal = taxTotal;
             OperationType = operationType;
+            ParentOperationId = parentOperationId;
             Number = number;
             IsApproved = isApproved;
             Status = status;
@@ -2842,11 +3266,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
             TaxIncluded = taxIncluded;
             Sum = sum;
             Tax = tax;
+            ChildrenOperations = childrenOperations;
             IsCancelled = isCancelled;
             CancelledDate = cancelledDate;
             CancelReason = cancelReason;
-            ParentOperationId = parentOperationId;
-            ChildrenOperations = childrenOperations;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
             CreatedDate = createdDate;
@@ -2858,13 +3281,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "customerName")]
-        public string CustomerName { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "customerId")]
+        public string CustomerId { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "customerId")]
-        public string CustomerId { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "customerName")]
+        public string CustomerName { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2883,18 +3306,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "organizationName")]
-        public string OrganizationName { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "organizationId")]
         public string OrganizationId { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "employeeName")]
-        public string EmployeeName { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "organizationName")]
+        public string OrganizationName { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2903,8 +3321,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
-        public double? DiscountAmount { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "employeeName")]
+        public string EmployeeName { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2933,6 +3351,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
+        public double? DiscountAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
+        public double? DiscountAmountWithTax { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
         public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
 
@@ -2943,8 +3371,53 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
+        public double? Total { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "subTotal")]
+        public double? SubTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "subTotalWithTax")]
+        public double? SubTotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingTotal")]
+        public double? ShippingTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingTotalWithTax")]
+        public double? ShippingTotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
+        public double? DiscountTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotalWithTax")]
+        public double? DiscountTotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
+        public double? TaxTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "operationType")]
         public string OperationType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
+        public string ParentOperationId { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2988,6 +3461,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "childrenOperations")]
+        public System.Collections.Generic.IList<IOperation> ChildrenOperations { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isCancelled")]
         public bool? IsCancelled { get; set; }
 
@@ -3000,16 +3478,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "cancelReason")]
         public string CancelReason { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
-        public string ParentOperationId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "childrenOperations")]
-        public System.Collections.Generic.IList<Operation> ChildrenOperations { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3068,9 +3536,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         /// <param name="addressType">Possible values include: 'billing',
         /// 'shipping', 'billingAndShipping'</param>
-        public Address(string addressType = default(string), string organization = default(string), string countryCode = default(string), string countryName = default(string), string city = default(string), string postalCode = default(string), string zip = default(string), string line1 = default(string), string line2 = default(string), string regionId = default(string), string regionName = default(string), string firstName = default(string), string middleName = default(string), string lastName = default(string), string phone = default(string), string email = default(string))
+        public Address(string addressType = default(string), string name = default(string), string organization = default(string), string countryCode = default(string), string countryName = default(string), string city = default(string), string postalCode = default(string), string zip = default(string), string line1 = default(string), string line2 = default(string), string regionId = default(string), string regionName = default(string), string firstName = default(string), string middleName = default(string), string lastName = default(string), string phone = default(string), string email = default(string))
         {
             AddressType = addressType;
+            Name = name;
             Organization = organization;
             CountryCode = countryCode;
             CountryName = countryName;
@@ -3094,6 +3563,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "addressType")]
         public string AddressType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3190,17 +3664,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PaymentIn class.
         /// </summary>
-        public PaymentIn(string organizationName = default(string), string organizationId = default(string), string customerName = default(string), string customerId = default(string), string purpose = default(string), PaymentMethod paymentMethod = default(PaymentMethod), System.DateTime? incomingDate = default(System.DateTime?), string outerId = default(string), string operationType = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string parentOperationId = default(string), System.Collections.Generic.IList<Operation> childrenOperations = default(System.Collections.Generic.IList<Operation>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        /// <param name="paymentStatus">Possible values include: 'new',
+        /// 'pending', 'authorized', 'paid', 'partiallyRefunded', 'refunded',
+        /// 'voided', 'custom', 'cancelled'</param>
+        public PaymentIn(string purpose = default(string), string gatewayCode = default(string), PaymentMethod paymentMethod = default(PaymentMethod), string organizationId = default(string), string organizationName = default(string), string customerId = default(string), string customerName = default(string), System.DateTime? incomingDate = default(System.DateTime?), string outerId = default(string), Address billingAddress = default(Address), string paymentStatus = default(string), System.DateTime? authorizedDate = default(System.DateTime?), System.DateTime? capturedDate = default(System.DateTime?), System.DateTime? voidedDate = default(System.DateTime?), ProcessPaymentResult processPaymentResult = default(ProcessPaymentResult), string operationType = default(string), string parentOperationId = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), System.Collections.Generic.IList<IOperation> childrenOperations = default(System.Collections.Generic.IList<IOperation>), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
-            OrganizationName = organizationName;
-            OrganizationId = organizationId;
-            CustomerName = customerName;
-            CustomerId = customerId;
             Purpose = purpose;
+            GatewayCode = gatewayCode;
             PaymentMethod = paymentMethod;
+            OrganizationId = organizationId;
+            OrganizationName = organizationName;
+            CustomerId = customerId;
+            CustomerName = customerName;
             IncomingDate = incomingDate;
             OuterId = outerId;
+            BillingAddress = billingAddress;
+            PaymentStatus = paymentStatus;
+            AuthorizedDate = authorizedDate;
+            CapturedDate = capturedDate;
+            VoidedDate = voidedDate;
+            ProcessPaymentResult = processPaymentResult;
             OperationType = operationType;
+            ParentOperationId = parentOperationId;
             Number = number;
             IsApproved = isApproved;
             Status = status;
@@ -3209,11 +3694,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
             TaxIncluded = taxIncluded;
             Sum = sum;
             Tax = tax;
+            ChildrenOperations = childrenOperations;
             IsCancelled = isCancelled;
             CancelledDate = cancelledDate;
             CancelReason = cancelReason;
-            ParentOperationId = parentOperationId;
-            ChildrenOperations = childrenOperations;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
             CreatedDate = createdDate;
@@ -3225,8 +3709,18 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "organizationName")]
-        public string OrganizationName { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "purpose")]
+        public string Purpose { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "gatewayCode")]
+        public string GatewayCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethod")]
+        public PaymentMethod PaymentMethod { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3235,8 +3729,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "customerName")]
-        public string CustomerName { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "organizationName")]
+        public string OrganizationName { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3245,13 +3739,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "purpose")]
-        public string Purpose { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethod")]
-        public PaymentMethod PaymentMethod { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "customerName")]
+        public string CustomerName { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3265,8 +3754,46 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "billingAddress")]
+        public Address BillingAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'new', 'pending',
+        /// 'authorized', 'paid', 'partiallyRefunded', 'refunded', 'voided',
+        /// 'custom', 'cancelled'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentStatus")]
+        public string PaymentStatus { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "authorizedDate")]
+        public System.DateTime? AuthorizedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "capturedDate")]
+        public System.DateTime? CapturedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "voidedDate")]
+        public System.DateTime? VoidedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "processPaymentResult")]
+        public ProcessPaymentResult ProcessPaymentResult { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "operationType")]
         public string OperationType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
+        public string ParentOperationId { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3310,6 +3837,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "childrenOperations")]
+        public System.Collections.Generic.IList<IOperation> ChildrenOperations { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isCancelled")]
         public bool? IsCancelled { get; set; }
 
@@ -3322,16 +3854,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "cancelReason")]
         public string CancelReason { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
-        public string ParentOperationId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "childrenOperations")]
-        public System.Collections.Generic.IList<Operation> ChildrenOperations { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3392,16 +3914,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// 'unknown', 'standard', 'redirection', 'preparedForm'</param>
         /// <param name="paymentMethodGroupType">Possible values include:
         /// 'paypal', 'bankCard', 'alternative', 'manual'</param>
-        public PaymentMethod(string code = default(string), string name = default(string), string iconUrl = default(string), string description = default(string), string paymentMethodType = default(string), string paymentMethodGroupType = default(string), int? priority = default(int?), bool? isAvailableForPartial = default(bool?))
+        public PaymentMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), bool? isAvailableForPartial = default(bool?), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string paymentMethodType = default(string), string paymentMethodGroupType = default(string), string id = default(string))
         {
             Code = code;
             Name = name;
-            IconUrl = iconUrl;
             Description = description;
-            PaymentMethodType = paymentMethodType;
-            PaymentMethodGroupType = paymentMethodGroupType;
+            LogoUrl = logoUrl;
+            IsActive = isActive;
             Priority = priority;
             IsAvailableForPartial = isAvailableForPartial;
+            Settings = settings;
+            PaymentMethodType = paymentMethodType;
+            PaymentMethodGroupType = paymentMethodGroupType;
+            Id = id;
         }
 
         /// <summary>
@@ -3416,27 +3941,18 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "iconUrl")]
-        public string IconUrl { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'unknown', 'standard',
-        /// 'redirection', 'preparedForm'
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodType")]
-        public string PaymentMethodType { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
+        public string LogoUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'paypal', 'bankCard',
-        /// 'alternative', 'manual'
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodGroupType")]
-        public string PaymentMethodGroupType { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3448,6 +3964,30 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         [Newtonsoft.Json.JsonProperty(PropertyName = "isAvailableForPartial")]
         public bool? IsAvailableForPartial { get; set; }
 
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
+        public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
+
+        /// <summary>
+        /// Gets possible values include: 'unknown', 'standard',
+        /// 'redirection', 'preparedForm'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodType")]
+        public string PaymentMethodType { get; private set; }
+
+        /// <summary>
+        /// Gets possible values include: 'paypal', 'bankCard', 'alternative',
+        /// 'manual'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodGroupType")]
+        public string PaymentMethodGroupType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -3458,17 +3998,190 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
-    public partial class Operation
+    public partial class SettingEntry
     {
         /// <summary>
-        /// Initializes a new instance of the Operation class.
+        /// Initializes a new instance of the SettingEntry class.
         /// </summary>
-        public Operation() { }
+        public SettingEntry() { }
 
         /// <summary>
-        /// Initializes a new instance of the Operation class.
+        /// Initializes a new instance of the SettingEntry class.
         /// </summary>
-        public Operation(string operationType = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string parentOperationId = default(string), System.Collections.Generic.IList<Operation> childrenOperations = default(System.Collections.Generic.IList<Operation>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        /// <param name="valueType">Possible values include: 'shortText',
+        /// 'longText', 'integer', 'decimal', 'dateTime', 'boolean',
+        /// 'secureString'</param>
+        public SettingEntry(string moduleId = default(string), string objectId = default(string), string objectType = default(string), string groupName = default(string), string name = default(string), string value = default(string), string valueType = default(string), System.Collections.Generic.IList<string> allowedValues = default(System.Collections.Generic.IList<string>), string defaultValue = default(string), bool? isArray = default(bool?), System.Collections.Generic.IList<string> arrayValues = default(System.Collections.Generic.IList<string>), string title = default(string), string description = default(string))
+        {
+            ModuleId = moduleId;
+            ObjectId = objectId;
+            ObjectType = objectType;
+            GroupName = groupName;
+            Name = name;
+            Value = value;
+            ValueType = valueType;
+            AllowedValues = allowedValues;
+            DefaultValue = defaultValue;
+            IsArray = isArray;
+            ArrayValues = arrayValues;
+            Title = title;
+            Description = description;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "moduleId")]
+        public string ModuleId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectId")]
+        public string ObjectId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "groupName")]
+        public string GroupName { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'shortText', 'longText',
+        /// 'integer', 'decimal', 'dateTime', 'boolean', 'secureString'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
+        public string ValueType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "allowedValues")]
+        public System.Collections.Generic.IList<string> AllowedValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "defaultValue")]
+        public string DefaultValue { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isArray")]
+        public bool? IsArray { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "arrayValues")]
+        public System.Collections.Generic.IList<string> ArrayValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class ProcessPaymentResult
+    {
+        /// <summary>
+        /// Initializes a new instance of the ProcessPaymentResult class.
+        /// </summary>
+        public ProcessPaymentResult() { }
+
+        /// <summary>
+        /// Initializes a new instance of the ProcessPaymentResult class.
+        /// </summary>
+        /// <param name="newPaymentStatus">Possible values include: 'new',
+        /// 'pending', 'authorized', 'paid', 'partiallyRefunded', 'refunded',
+        /// 'voided', 'custom', 'cancelled'</param>
+        public ProcessPaymentResult(string newPaymentStatus = default(string), string redirectUrl = default(string), string htmlForm = default(string), bool? isSuccess = default(bool?), string error = default(string), string outerId = default(string))
+        {
+            NewPaymentStatus = newPaymentStatus;
+            RedirectUrl = redirectUrl;
+            HtmlForm = htmlForm;
+            IsSuccess = isSuccess;
+            Error = error;
+            OuterId = outerId;
+        }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'new', 'pending',
+        /// 'authorized', 'paid', 'partiallyRefunded', 'refunded', 'voided',
+        /// 'custom', 'cancelled'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "newPaymentStatus")]
+        public string NewPaymentStatus { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "redirectUrl")]
+        public string RedirectUrl { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "htmlForm")]
+        public string HtmlForm { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isSuccess")]
+        public bool? IsSuccess { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "error")]
+        public string Error { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outerId")]
+        public string OuterId { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class IOperation
+    {
+        /// <summary>
+        /// Initializes a new instance of the IOperation class.
+        /// </summary>
+        public IOperation() { }
+
+        /// <summary>
+        /// Initializes a new instance of the IOperation class.
+        /// </summary>
+        public IOperation(string operationType = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), string parentOperationId = default(string), System.Collections.Generic.IList<IOperation> childrenOperations = default(System.Collections.Generic.IList<IOperation>), string id = default(string))
         {
             OperationType = operationType;
             Number = number;
@@ -3479,17 +4192,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
             TaxIncluded = taxIncluded;
             Sum = sum;
             Tax = tax;
-            IsCancelled = isCancelled;
-            CancelledDate = cancelledDate;
-            CancelReason = cancelReason;
             ParentOperationId = parentOperationId;
             ChildrenOperations = childrenOperations;
-            ObjectType = objectType;
-            DynamicProperties = dynamicProperties;
-            CreatedDate = createdDate;
-            ModifiedDate = modifiedDate;
-            CreatedBy = createdBy;
-            ModifiedBy = modifiedBy;
             Id = id;
         }
 
@@ -3540,58 +4244,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isCancelled")]
-        public bool? IsCancelled { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "cancelledDate")]
-        public System.DateTime? CancelledDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "cancelReason")]
-        public string CancelReason { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
         public string ParentOperationId { get; set; }
 
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "childrenOperations")]
-        public System.Collections.Generic.IList<Operation> ChildrenOperations { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
-        public string ObjectType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
-        public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
-        public System.DateTime? CreatedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
-        public System.DateTime? ModifiedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
-        public string CreatedBy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
-        public string ModifiedBy { get; set; }
+        public System.Collections.Generic.IList<IOperation> ChildrenOperations { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3809,41 +4468,49 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the LineItem class.
         /// </summary>
-        public LineItem(string priceId = default(string), double? basePrice = default(double?), double? price = default(double?), double? discountAmount = default(double?), double? tax = default(double?), string currency = default(string), int? reserveQuantity = default(int?), int? quantity = default(int?), string productId = default(string), string catalogId = default(string), string categoryId = default(string), string sku = default(string), string productType = default(string), string name = default(string), string imageUrl = default(string), string displayName = default(string), bool? isGift = default(bool?), string shippingMethodCode = default(string), string fulfilmentLocationCode = default(string), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string taxType = default(string), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), Discount discount = default(Discount), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public LineItem(string priceId = default(string), string currency = default(string), double? price = default(double?), double? priceWithTax = default(double?), double? placedPrice = default(double?), double? placedPriceWithTax = default(double?), double? extendedPrice = default(double?), double? extendedPriceWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? tax = default(double?), string taxType = default(string), int? reserveQuantity = default(int?), int? quantity = default(int?), string productId = default(string), CatalogProduct product = default(CatalogProduct), string sku = default(string), string productType = default(string), string catalogId = default(string), string categoryId = default(string), string name = default(string), string comment = default(string), string imageUrl = default(string), bool? isGift = default(bool?), string shippingMethodCode = default(string), string fulfillmentLocationCode = default(string), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), Discount discount = default(Discount), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             PriceId = priceId;
-            BasePrice = basePrice;
-            Price = price;
-            DiscountAmount = discountAmount;
-            Tax = tax;
             Currency = currency;
+            Price = price;
+            PriceWithTax = priceWithTax;
+            PlacedPrice = placedPrice;
+            PlacedPriceWithTax = placedPriceWithTax;
+            ExtendedPrice = extendedPrice;
+            ExtendedPriceWithTax = extendedPriceWithTax;
+            DiscountAmount = discountAmount;
+            DiscountAmountWithTax = discountAmountWithTax;
+            DiscountTotal = discountTotal;
+            DiscountTotalWithTax = discountTotalWithTax;
+            Tax = tax;
+            TaxType = taxType;
             ReserveQuantity = reserveQuantity;
             Quantity = quantity;
             ProductId = productId;
-            CatalogId = catalogId;
-            CategoryId = categoryId;
+            Product = product;
             Sku = sku;
             ProductType = productType;
+            CatalogId = catalogId;
+            CategoryId = categoryId;
             Name = name;
+            Comment = comment;
             ImageUrl = imageUrl;
-            DisplayName = displayName;
             IsGift = isGift;
             ShippingMethodCode = shippingMethodCode;
-            FulfilmentLocationCode = fulfilmentLocationCode;
+            FulfillmentLocationCode = fulfillmentLocationCode;
             WeightUnit = weightUnit;
             Weight = weight;
             MeasureUnit = measureUnit;
             Height = height;
             Length = length;
             Width = width;
-            TaxType = taxType;
             IsCancelled = isCancelled;
             CancelledDate = cancelledDate;
             CancelReason = cancelReason;
-            Discount = discount;
-            TaxDetails = taxDetails;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
+            Discount = discount;
+            TaxDetails = taxDetails;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
@@ -3858,8 +4525,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "basePrice")]
-        public double? BasePrice { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3868,18 +4535,58 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priceWithTax")]
+        public double? PriceWithTax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "placedPrice")]
+        public double? PlacedPrice { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "placedPriceWithTax")]
+        public double? PlacedPriceWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "extendedPrice")]
+        public double? ExtendedPrice { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "extendedPriceWithTax")]
+        public double? ExtendedPriceWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
         public double? DiscountAmount { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "tax")]
-        public double? Tax { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
+        public double? DiscountAmountWithTax { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
-        public string Currency { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
+        public double? DiscountTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotalWithTax")]
+        public double? DiscountTotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "tax")]
+        public double? Tax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3898,13 +4605,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
-        public string CatalogId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
-        public string CategoryId { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "product")]
+        public CatalogProduct Product { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3918,18 +4620,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
+        public string CategoryId { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
-        public string ImageUrl { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "comment")]
+        public string Comment { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "displayName")]
-        public string DisplayName { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
+        public string ImageUrl { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3943,8 +4655,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "fulfilmentLocationCode")]
-        public string FulfilmentLocationCode { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "fulfillmentLocationCode")]
+        public string FulfillmentLocationCode { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3978,11 +4690,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
-        public string TaxType { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isCancelled")]
         public bool? IsCancelled { get; set; }
 
@@ -3998,16 +4705,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discount")]
-        public Discount Discount { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
-        public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
@@ -4015,6 +4712,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
         public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discount")]
+        public Discount Discount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
+        public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
 
         /// <summary>
         /// </summary>
@@ -4051,6 +4758,2176 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 {
     using System.Linq;
 
+    public partial class CatalogProduct
+    {
+        /// <summary>
+        /// Initializes a new instance of the CatalogProduct class.
+        /// </summary>
+        public CatalogProduct() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CatalogProduct class.
+        /// </summary>
+        public CatalogProduct(string code = default(string), string manufacturerPartNumber = default(string), string gtin = default(string), string name = default(string), string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category), string mainProductId = default(string), CatalogProduct mainProduct = default(CatalogProduct), bool? isBuyable = default(bool?), bool? isActive = default(bool?), bool? trackInventory = default(bool?), System.DateTime? indexingDate = default(System.DateTime?), int? maxQuantity = default(int?), int? minQuantity = default(int?), string productType = default(string), string packageType = default(string), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), bool? enableReview = default(bool?), int? maxNumberOfDownload = default(int?), System.DateTime? downloadExpiration = default(System.DateTime?), string downloadType = default(string), bool? hasUserAgreement = default(bool?), string shippingType = default(string), string taxType = default(string), string vendor = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), int? priority = default(int?), System.Collections.Generic.IList<Property> properties = default(System.Collections.Generic.IList<Property>), System.Collections.Generic.IList<PropertyValue> propertyValues = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<Image> images = default(System.Collections.Generic.IList<Image>), System.Collections.Generic.IList<Asset> assets = default(System.Collections.Generic.IList<Asset>), System.Collections.Generic.IList<CategoryLink> links = default(System.Collections.Generic.IList<CategoryLink>), System.Collections.Generic.IList<CatalogProduct> variations = default(System.Collections.Generic.IList<CatalogProduct>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), System.Collections.Generic.IList<EditorialReview> reviews = default(System.Collections.Generic.IList<EditorialReview>), System.Collections.Generic.IList<ProductAssociation> associations = default(System.Collections.Generic.IList<ProductAssociation>), System.Collections.Generic.IList<Price> prices = default(System.Collections.Generic.IList<Price>), System.Collections.Generic.IList<InventoryInfo> inventories = default(System.Collections.Generic.IList<InventoryInfo>), System.Collections.Generic.IList<Outline> outlines = default(System.Collections.Generic.IList<Outline>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Code = code;
+            ManufacturerPartNumber = manufacturerPartNumber;
+            Gtin = gtin;
+            Name = name;
+            CatalogId = catalogId;
+            Catalog = catalog;
+            CategoryId = categoryId;
+            Category = category;
+            MainProductId = mainProductId;
+            MainProduct = mainProduct;
+            IsBuyable = isBuyable;
+            IsActive = isActive;
+            TrackInventory = trackInventory;
+            IndexingDate = indexingDate;
+            MaxQuantity = maxQuantity;
+            MinQuantity = minQuantity;
+            ProductType = productType;
+            PackageType = packageType;
+            WeightUnit = weightUnit;
+            Weight = weight;
+            MeasureUnit = measureUnit;
+            Height = height;
+            Length = length;
+            Width = width;
+            EnableReview = enableReview;
+            MaxNumberOfDownload = maxNumberOfDownload;
+            DownloadExpiration = downloadExpiration;
+            DownloadType = downloadType;
+            HasUserAgreement = hasUserAgreement;
+            ShippingType = shippingType;
+            TaxType = taxType;
+            Vendor = vendor;
+            StartDate = startDate;
+            EndDate = endDate;
+            Priority = priority;
+            Properties = properties;
+            PropertyValues = propertyValues;
+            Images = images;
+            Assets = assets;
+            Links = links;
+            Variations = variations;
+            SeoObjectType = seoObjectType;
+            SeoInfos = seoInfos;
+            Reviews = reviews;
+            Associations = associations;
+            Prices = prices;
+            Inventories = inventories;
+            Outlines = outlines;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "manufacturerPartNumber")]
+        public string ManufacturerPartNumber { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "gtin")]
+        public string Gtin { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
+        public string CategoryId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "category")]
+        public Category Category { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "mainProductId")]
+        public string MainProductId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "mainProduct")]
+        public CatalogProduct MainProduct { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isBuyable")]
+        public bool? IsBuyable { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "trackInventory")]
+        public bool? TrackInventory { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "indexingDate")]
+        public System.DateTime? IndexingDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "maxQuantity")]
+        public int? MaxQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "minQuantity")]
+        public int? MinQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "productType")]
+        public string ProductType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "packageType")]
+        public string PackageType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "weightUnit")]
+        public string WeightUnit { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "weight")]
+        public double? Weight { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "measureUnit")]
+        public string MeasureUnit { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "height")]
+        public double? Height { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "length")]
+        public double? Length { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "width")]
+        public double? Width { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "enableReview")]
+        public bool? EnableReview { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "maxNumberOfDownload")]
+        public int? MaxNumberOfDownload { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "downloadExpiration")]
+        public System.DateTime? DownloadExpiration { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "downloadType")]
+        public string DownloadType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "hasUserAgreement")]
+        public bool? HasUserAgreement { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingType")]
+        public string ShippingType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "vendor")]
+        public string Vendor { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "startDate")]
+        public System.DateTime? StartDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "endDate")]
+        public System.DateTime? EndDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "properties")]
+        public System.Collections.Generic.IList<Property> Properties { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyValues")]
+        public System.Collections.Generic.IList<PropertyValue> PropertyValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "images")]
+        public System.Collections.Generic.IList<Image> Images { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "assets")]
+        public System.Collections.Generic.IList<Asset> Assets { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "links")]
+        public System.Collections.Generic.IList<CategoryLink> Links { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "variations")]
+        public System.Collections.Generic.IList<CatalogProduct> Variations { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
+        public string SeoObjectType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
+        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "reviews")]
+        public System.Collections.Generic.IList<EditorialReview> Reviews { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "associations")]
+        public System.Collections.Generic.IList<ProductAssociation> Associations { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "prices")]
+        public System.Collections.Generic.IList<Price> Prices { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "inventories")]
+        public System.Collections.Generic.IList<InventoryInfo> Inventories { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outlines")]
+        public System.Collections.Generic.IList<Outline> Outlines { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Catalog
+    {
+        /// <summary>
+        /// Initializes a new instance of the Catalog class.
+        /// </summary>
+        public Catalog() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Catalog class.
+        /// </summary>
+        public Catalog(string name = default(string), bool? isVirtual = default(bool?), CatalogLanguage defaultLanguage = default(CatalogLanguage), System.Collections.Generic.IList<CatalogLanguage> languages = default(System.Collections.Generic.IList<CatalogLanguage>), System.Collections.Generic.IList<Property> properties = default(System.Collections.Generic.IList<Property>), System.Collections.Generic.IList<PropertyValue> propertyValues = default(System.Collections.Generic.IList<PropertyValue>), string id = default(string))
+        {
+            Name = name;
+            IsVirtual = isVirtual;
+            DefaultLanguage = defaultLanguage;
+            Languages = languages;
+            Properties = properties;
+            PropertyValues = propertyValues;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isVirtual")]
+        public bool? IsVirtual { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "defaultLanguage")]
+        public CatalogLanguage DefaultLanguage { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languages")]
+        public System.Collections.Generic.IList<CatalogLanguage> Languages { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "properties")]
+        public System.Collections.Generic.IList<Property> Properties { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyValues")]
+        public System.Collections.Generic.IList<PropertyValue> PropertyValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class CatalogLanguage
+    {
+        /// <summary>
+        /// Initializes a new instance of the CatalogLanguage class.
+        /// </summary>
+        public CatalogLanguage() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CatalogLanguage class.
+        /// </summary>
+        public CatalogLanguage(string catalogId = default(string), Catalog catalog = default(Catalog), bool? isDefault = default(bool?), string languageCode = default(string), string id = default(string))
+        {
+            CatalogId = catalogId;
+            Catalog = catalog;
+            IsDefault = isDefault;
+            LanguageCode = languageCode;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isDefault")]
+        public bool? IsDefault { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Property
+    {
+        /// <summary>
+        /// Initializes a new instance of the Property class.
+        /// </summary>
+        public Property() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Property class.
+        /// </summary>
+        /// <param name="valueType">Possible values include: 'shortText',
+        /// 'longText', 'number', 'dateTime', 'boolean'</param>
+        /// <param name="type">Possible values include: 'product',
+        /// 'variation', 'category', 'catalog'</param>
+        public Property(string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category), string name = default(string), bool? required = default(bool?), bool? dictionary = default(bool?), bool? multivalue = default(bool?), bool? multilanguage = default(bool?), string valueType = default(string), string type = default(string), System.Collections.Generic.IList<PropertyAttribute> attributes = default(System.Collections.Generic.IList<PropertyAttribute>), System.Collections.Generic.IList<PropertyDictionaryValue> dictionaryValues = default(System.Collections.Generic.IList<PropertyDictionaryValue>), System.Collections.Generic.IList<PropertyDisplayName> displayNames = default(System.Collections.Generic.IList<PropertyDisplayName>), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            CatalogId = catalogId;
+            Catalog = catalog;
+            CategoryId = categoryId;
+            Category = category;
+            Name = name;
+            Required = required;
+            Dictionary = dictionary;
+            Multivalue = multivalue;
+            Multilanguage = multilanguage;
+            ValueType = valueType;
+            Type = type;
+            Attributes = attributes;
+            DictionaryValues = dictionaryValues;
+            DisplayNames = displayNames;
+            IsInherited = isInherited;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
+        public string CategoryId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "category")]
+        public Category Category { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "required")]
+        public bool? Required { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "dictionary")]
+        public bool? Dictionary { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "multivalue")]
+        public bool? Multivalue { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "multilanguage")]
+        public bool? Multilanguage { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'shortText', 'longText',
+        /// 'number', 'dateTime', 'boolean'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
+        public string ValueType { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'product', 'variation',
+        /// 'category', 'catalog'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "attributes")]
+        public System.Collections.Generic.IList<PropertyAttribute> Attributes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "dictionaryValues")]
+        public System.Collections.Generic.IList<PropertyDictionaryValue> DictionaryValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "displayNames")]
+        public System.Collections.Generic.IList<PropertyDisplayName> DisplayNames { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
+        public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Category
+    {
+        /// <summary>
+        /// Initializes a new instance of the Category class.
+        /// </summary>
+        public Category() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Category class.
+        /// </summary>
+        public Category(string catalogId = default(string), Catalog catalog = default(Catalog), string parentId = default(string), string code = default(string), string taxType = default(string), string name = default(string), string path = default(string), bool? isVirtual = default(bool?), int? level = default(int?), System.Collections.Generic.IList<Category> parents = default(System.Collections.Generic.IList<Category>), string packageType = default(string), int? priority = default(int?), bool? isActive = default(bool?), System.Collections.Generic.IList<Category> children = default(System.Collections.Generic.IList<Category>), System.Collections.Generic.IList<Property> properties = default(System.Collections.Generic.IList<Property>), System.Collections.Generic.IList<PropertyValue> propertyValues = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<CategoryLink> links = default(System.Collections.Generic.IList<CategoryLink>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), System.Collections.Generic.IList<Image> images = default(System.Collections.Generic.IList<Image>), System.Collections.Generic.IList<Outline> outlines = default(System.Collections.Generic.IList<Outline>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            CatalogId = catalogId;
+            Catalog = catalog;
+            ParentId = parentId;
+            Code = code;
+            TaxType = taxType;
+            Name = name;
+            Path = path;
+            IsVirtual = isVirtual;
+            Level = level;
+            Parents = parents;
+            PackageType = packageType;
+            Priority = priority;
+            IsActive = isActive;
+            Children = children;
+            Properties = properties;
+            PropertyValues = propertyValues;
+            Links = links;
+            SeoObjectType = seoObjectType;
+            SeoInfos = seoInfos;
+            Images = images;
+            Outlines = outlines;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "parentId")]
+        public string ParentId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "path")]
+        public string Path { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isVirtual")]
+        public bool? IsVirtual { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "level")]
+        public int? Level { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "parents")]
+        public System.Collections.Generic.IList<Category> Parents { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "packageType")]
+        public string PackageType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "children")]
+        public System.Collections.Generic.IList<Category> Children { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "properties")]
+        public System.Collections.Generic.IList<Property> Properties { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyValues")]
+        public System.Collections.Generic.IList<PropertyValue> PropertyValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "links")]
+        public System.Collections.Generic.IList<CategoryLink> Links { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
+        public string SeoObjectType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
+        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "images")]
+        public System.Collections.Generic.IList<Image> Images { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outlines")]
+        public System.Collections.Generic.IList<Outline> Outlines { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PropertyValue
+    {
+        /// <summary>
+        /// Initializes a new instance of the PropertyValue class.
+        /// </summary>
+        public PropertyValue() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PropertyValue class.
+        /// </summary>
+        /// <param name="valueType">Possible values include: 'shortText',
+        /// 'longText', 'number', 'dateTime', 'boolean'</param>
+        public PropertyValue(string propertyId = default(string), string propertyName = default(string), Property property = default(Property), string alias = default(string), string valueId = default(string), object value = default(object), string valueType = default(string), string languageCode = default(string), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            PropertyId = propertyId;
+            PropertyName = propertyName;
+            Property = property;
+            Alias = alias;
+            ValueId = valueId;
+            Value = value;
+            ValueType = valueType;
+            LanguageCode = languageCode;
+            IsInherited = isInherited;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyId")]
+        public string PropertyId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyName")]
+        public string PropertyName { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "property")]
+        public Property Property { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "alias")]
+        public string Alias { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "valueId")]
+        public string ValueId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
+        public object Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'shortText', 'longText',
+        /// 'number', 'dateTime', 'boolean'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
+        public string ValueType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
+        public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class CategoryLink
+    {
+        /// <summary>
+        /// Initializes a new instance of the CategoryLink class.
+        /// </summary>
+        public CategoryLink() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CategoryLink class.
+        /// </summary>
+        public CategoryLink(int? priority = default(int?), string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category))
+        {
+            Priority = priority;
+            CatalogId = catalogId;
+            Catalog = catalog;
+            CategoryId = categoryId;
+            Category = category;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "categoryId")]
+        public string CategoryId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "category")]
+        public Category Category { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class SeoInfo
+    {
+        /// <summary>
+        /// Initializes a new instance of the SeoInfo class.
+        /// </summary>
+        public SeoInfo() { }
+
+        /// <summary>
+        /// Initializes a new instance of the SeoInfo class.
+        /// </summary>
+        public SeoInfo(string name = default(string), string semanticUrl = default(string), string pageTitle = default(string), string metaDescription = default(string), string imageAltDescription = default(string), string metaKeywords = default(string), string storeId = default(string), string objectId = default(string), string objectType = default(string), bool? isActive = default(bool?), string languageCode = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Name = name;
+            SemanticUrl = semanticUrl;
+            PageTitle = pageTitle;
+            MetaDescription = metaDescription;
+            ImageAltDescription = imageAltDescription;
+            MetaKeywords = metaKeywords;
+            StoreId = storeId;
+            ObjectId = objectId;
+            ObjectType = objectType;
+            IsActive = isActive;
+            LanguageCode = languageCode;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "semanticUrl")]
+        public string SemanticUrl { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pageTitle")]
+        public string PageTitle { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "metaDescription")]
+        public string MetaDescription { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "imageAltDescription")]
+        public string ImageAltDescription { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "metaKeywords")]
+        public string MetaKeywords { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
+        public string StoreId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectId")]
+        public string ObjectId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Image
+    {
+        /// <summary>
+        /// Initializes a new instance of the Image class.
+        /// </summary>
+        public Image() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Image class.
+        /// </summary>
+        public Image(string name = default(string), string url = default(string), string group = default(string), int? sortOrder = default(int?), byte[] binaryData = default(byte[]), bool? isInherited = default(bool?), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), string languageCode = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Name = name;
+            Url = url;
+            Group = group;
+            SortOrder = sortOrder;
+            BinaryData = binaryData;
+            IsInherited = isInherited;
+            SeoObjectType = seoObjectType;
+            SeoInfos = seoInfos;
+            LanguageCode = languageCode;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "group")]
+        public string Group { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortOrder")]
+        public int? SortOrder { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "binaryData")]
+        public byte[] BinaryData { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
+        public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
+        public string SeoObjectType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
+        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Outline
+    {
+        /// <summary>
+        /// Initializes a new instance of the Outline class.
+        /// </summary>
+        public Outline() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Outline class.
+        /// </summary>
+        public Outline(System.Collections.Generic.IList<OutlineItem> items = default(System.Collections.Generic.IList<OutlineItem>))
+        {
+            Items = items;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
+        public System.Collections.Generic.IList<OutlineItem> Items { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class OutlineItem
+    {
+        /// <summary>
+        /// Initializes a new instance of the OutlineItem class.
+        /// </summary>
+        public OutlineItem() { }
+
+        /// <summary>
+        /// Initializes a new instance of the OutlineItem class.
+        /// </summary>
+        public OutlineItem(string id = default(string), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), bool? hasVirtualParent = default(bool?))
+        {
+            Id = id;
+            SeoObjectType = seoObjectType;
+            SeoInfos = seoInfos;
+            HasVirtualParent = hasVirtualParent;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
+        public string SeoObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
+        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "hasVirtualParent")]
+        public bool? HasVirtualParent { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PropertyAttribute
+    {
+        /// <summary>
+        /// Initializes a new instance of the PropertyAttribute class.
+        /// </summary>
+        public PropertyAttribute() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PropertyAttribute class.
+        /// </summary>
+        public PropertyAttribute(string propertyId = default(string), Property property = default(Property), string value = default(string), string name = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            PropertyId = propertyId;
+            Property = property;
+            Value = value;
+            Name = name;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyId")]
+        public string PropertyId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "property")]
+        public Property Property { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PropertyDictionaryValue
+    {
+        /// <summary>
+        /// Initializes a new instance of the PropertyDictionaryValue class.
+        /// </summary>
+        public PropertyDictionaryValue() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PropertyDictionaryValue class.
+        /// </summary>
+        public PropertyDictionaryValue(string propertyId = default(string), Property property = default(Property), string alias = default(string), string languageCode = default(string), string value = default(string), string id = default(string))
+        {
+            PropertyId = propertyId;
+            Property = property;
+            Alias = alias;
+            LanguageCode = languageCode;
+            Value = value;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyId")]
+        public string PropertyId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "property")]
+        public Property Property { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "alias")]
+        public string Alias { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PropertyDisplayName
+    {
+        /// <summary>
+        /// Initializes a new instance of the PropertyDisplayName class.
+        /// </summary>
+        public PropertyDisplayName() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PropertyDisplayName class.
+        /// </summary>
+        public PropertyDisplayName(string name = default(string), string languageCode = default(string))
+        {
+            Name = name;
+            LanguageCode = languageCode;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Asset
+    {
+        /// <summary>
+        /// Initializes a new instance of the Asset class.
+        /// </summary>
+        public Asset() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Asset class.
+        /// </summary>
+        public Asset(string name = default(string), string url = default(string), string group = default(string), string mimeType = default(string), long? size = default(long?), byte[] binaryData = default(byte[]), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), string languageCode = default(string), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Name = name;
+            Url = url;
+            Group = group;
+            MimeType = mimeType;
+            Size = size;
+            BinaryData = binaryData;
+            SeoObjectType = seoObjectType;
+            SeoInfos = seoInfos;
+            LanguageCode = languageCode;
+            IsInherited = isInherited;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "group")]
+        public string Group { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "mimeType")]
+        public string MimeType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "size")]
+        public long? Size { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "binaryData")]
+        public byte[] BinaryData { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
+        public string SeoObjectType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
+        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
+        public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class EditorialReview
+    {
+        /// <summary>
+        /// Initializes a new instance of the EditorialReview class.
+        /// </summary>
+        public EditorialReview() { }
+
+        /// <summary>
+        /// Initializes a new instance of the EditorialReview class.
+        /// </summary>
+        public EditorialReview(string content = default(string), string reviewType = default(string), string languageCode = default(string), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Content = content;
+            ReviewType = reviewType;
+            LanguageCode = languageCode;
+            IsInherited = isInherited;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "content")]
+        public string Content { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "reviewType")]
+        public string ReviewType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
+        public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class ProductAssociation
+    {
+        /// <summary>
+        /// Initializes a new instance of the ProductAssociation class.
+        /// </summary>
+        public ProductAssociation() { }
+
+        /// <summary>
+        /// Initializes a new instance of the ProductAssociation class.
+        /// </summary>
+        public ProductAssociation(string type = default(string), int? priority = default(int?), string associatedObjectId = default(string), string associatedObjectType = default(string), Entity associatedObject = default(Entity), System.Collections.Generic.IList<string> tags = default(System.Collections.Generic.IList<string>))
+        {
+            Type = type;
+            Priority = priority;
+            AssociatedObjectId = associatedObjectId;
+            AssociatedObjectType = associatedObjectType;
+            AssociatedObject = associatedObject;
+            Tags = tags;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "associatedObjectId")]
+        public string AssociatedObjectId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "associatedObjectType")]
+        public string AssociatedObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "associatedObject")]
+        public Entity AssociatedObject { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "tags")]
+        public System.Collections.Generic.IList<string> Tags { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Entity
+    {
+        /// <summary>
+        /// Initializes a new instance of the Entity class.
+        /// </summary>
+        public Entity() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Entity class.
+        /// </summary>
+        public Entity(string id = default(string))
+        {
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Price
+    {
+        /// <summary>
+        /// Initializes a new instance of the Price class.
+        /// </summary>
+        public Price() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Price class.
+        /// </summary>
+        public Price(string pricelistId = default(string), Pricelist pricelist = default(Pricelist), string currency = default(string), CatalogProduct product = default(CatalogProduct), string productId = default(string), double? sale = default(double?), double? list = default(double?), int? minQuantity = default(int?), double? effectiveValue = default(double?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            PricelistId = pricelistId;
+            Pricelist = pricelist;
+            Currency = currency;
+            Product = product;
+            ProductId = productId;
+            Sale = sale;
+            List = list;
+            MinQuantity = minQuantity;
+            EffectiveValue = effectiveValue;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pricelistId")]
+        public string PricelistId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pricelist")]
+        public Pricelist Pricelist { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "product")]
+        public CatalogProduct Product { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "productId")]
+        public string ProductId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sale")]
+        public double? Sale { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "list")]
+        public double? List { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "minQuantity")]
+        public int? MinQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "effectiveValue")]
+        public double? EffectiveValue { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class Pricelist
+    {
+        /// <summary>
+        /// Initializes a new instance of the Pricelist class.
+        /// </summary>
+        public Pricelist() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Pricelist class.
+        /// </summary>
+        public Pricelist(string name = default(string), string description = default(string), string currency = default(string), System.Collections.Generic.IList<Price> prices = default(System.Collections.Generic.IList<Price>), System.Collections.Generic.IList<PricelistAssignment> assignments = default(System.Collections.Generic.IList<PricelistAssignment>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Name = name;
+            Description = description;
+            Currency = currency;
+            Prices = prices;
+            Assignments = assignments;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "prices")]
+        public System.Collections.Generic.IList<Price> Prices { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "assignments")]
+        public System.Collections.Generic.IList<PricelistAssignment> Assignments { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PricelistAssignment
+    {
+        /// <summary>
+        /// Initializes a new instance of the PricelistAssignment class.
+        /// </summary>
+        public PricelistAssignment() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PricelistAssignment class.
+        /// </summary>
+        public PricelistAssignment(string catalogId = default(string), Catalog catalog = default(Catalog), string pricelistId = default(string), Pricelist pricelist = default(Pricelist), string name = default(string), string description = default(string), int? priority = default(int?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string conditionExpression = default(string), string predicateVisualTreeSerialized = default(string), object condition = default(object), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            CatalogId = catalogId;
+            Catalog = catalog;
+            PricelistId = pricelistId;
+            Pricelist = pricelist;
+            Name = name;
+            Description = description;
+            Priority = priority;
+            StartDate = startDate;
+            EndDate = endDate;
+            ConditionExpression = conditionExpression;
+            PredicateVisualTreeSerialized = predicateVisualTreeSerialized;
+            Condition = condition;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public Catalog Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pricelistId")]
+        public string PricelistId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pricelist")]
+        public Pricelist Pricelist { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "startDate")]
+        public System.DateTime? StartDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "endDate")]
+        public System.DateTime? EndDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "conditionExpression")]
+        public string ConditionExpression { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "predicateVisualTreeSerialized")]
+        public string PredicateVisualTreeSerialized { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "condition")]
+        public object Condition { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class InventoryInfo
+    {
+        /// <summary>
+        /// Initializes a new instance of the InventoryInfo class.
+        /// </summary>
+        public InventoryInfo() { }
+
+        /// <summary>
+        /// Initializes a new instance of the InventoryInfo class.
+        /// </summary>
+        /// <param name="status">Possible values include: 'disabled',
+        /// 'enabled', 'ignored'</param>
+        public InventoryInfo(System.DateTime? createdDate = default(System.DateTime?), string createdBy = default(string), System.DateTime? modifiedDate = default(System.DateTime?), string modifiedBy = default(string), string fulfillmentCenterId = default(string), string productId = default(string), long? inStockQuantity = default(long?), long? reservedQuantity = default(long?), long? reorderMinQuantity = default(long?), long? preorderQuantity = default(long?), long? backorderQuantity = default(long?), bool? allowBackorder = default(bool?), bool? allowPreorder = default(bool?), long? inTransit = default(long?), System.DateTime? preorderAvailabilityDate = default(System.DateTime?), System.DateTime? backorderAvailabilityDate = default(System.DateTime?), string status = default(string))
+        {
+            CreatedDate = createdDate;
+            CreatedBy = createdBy;
+            ModifiedDate = modifiedDate;
+            ModifiedBy = modifiedBy;
+            FulfillmentCenterId = fulfillmentCenterId;
+            ProductId = productId;
+            InStockQuantity = inStockQuantity;
+            ReservedQuantity = reservedQuantity;
+            ReorderMinQuantity = reorderMinQuantity;
+            PreorderQuantity = preorderQuantity;
+            BackorderQuantity = backorderQuantity;
+            AllowBackorder = allowBackorder;
+            AllowPreorder = allowPreorder;
+            InTransit = inTransit;
+            PreorderAvailabilityDate = preorderAvailabilityDate;
+            BackorderAvailabilityDate = backorderAvailabilityDate;
+            Status = status;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "fulfillmentCenterId")]
+        public string FulfillmentCenterId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "productId")]
+        public string ProductId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "inStockQuantity")]
+        public long? InStockQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "reservedQuantity")]
+        public long? ReservedQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "reorderMinQuantity")]
+        public long? ReorderMinQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "preorderQuantity")]
+        public long? PreorderQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "backorderQuantity")]
+        public long? BackorderQuantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "allowBackorder")]
+        public bool? AllowBackorder { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "allowPreorder")]
+        public bool? AllowPreorder { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "inTransit")]
+        public long? InTransit { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "preorderAvailabilityDate")]
+        public System.DateTime? PreorderAvailabilityDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "backorderAvailabilityDate")]
+        public System.DateTime? BackorderAvailabilityDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'disabled', 'enabled',
+        /// 'ignored'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
+        public string Status { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
+{
+    using System.Linq;
+
     public partial class Discount
     {
         /// <summary>
@@ -4061,11 +6938,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Discount class.
         /// </summary>
-        public Discount(string promotionId = default(string), string currency = default(string), double? discountAmount = default(double?), Coupon coupon = default(Coupon), string description = default(string))
+        public Discount(string promotionId = default(string), string currency = default(string), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), Coupon coupon = default(Coupon), string description = default(string))
         {
             PromotionId = promotionId;
             Currency = currency;
             DiscountAmount = discountAmount;
+            DiscountAmountWithTax = discountAmountWithTax;
             Coupon = coupon;
             Description = description;
         }
@@ -4084,6 +6962,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
         public double? DiscountAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
+        public double? DiscountAmountWithTax { get; set; }
 
         /// <summary>
         /// </summary>
@@ -4115,9 +6998,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Coupon class.
         /// </summary>
-        public Coupon(string code = default(string), string invalidDescription = default(string))
+        public Coupon(string code = default(string), bool? isValid = default(bool?), string invalidDescription = default(string))
         {
             Code = code;
+            IsValid = isValid;
             InvalidDescription = invalidDescription;
         }
 
@@ -4125,6 +7009,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isValid")]
+        public bool? IsValid { get; set; }
 
         /// <summary>
         /// </summary>
@@ -4193,16 +7082,23 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Shipment class.
         /// </summary>
-        public Shipment(string organizationName = default(string), string organizationId = default(string), string fulfillmentCenterName = default(string), string fulfillmentCenterId = default(string), ShippingMethod shippingMethod = default(ShippingMethod), string employeeName = default(string), string employeeId = default(string), double? discountAmount = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string taxType = default(string), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), System.Collections.Generic.IList<ShipmentPackage> packages = default(System.Collections.Generic.IList<ShipmentPackage>), System.Collections.Generic.IList<PaymentIn> inPayments = default(System.Collections.Generic.IList<PaymentIn>), Address deliveryAddress = default(Address), Discount discount = default(Discount), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string operationType = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string parentOperationId = default(string), System.Collections.Generic.IList<Operation> childrenOperations = default(System.Collections.Generic.IList<Operation>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public Shipment(string organizationId = default(string), string organizationName = default(string), string fulfillmentCenterId = default(string), string fulfillmentCenterName = default(string), string employeeId = default(string), string employeeName = default(string), string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), Discount discount = default(Discount), ShippingMethod shippingMethod = default(ShippingMethod), string customerOrderId = default(string), CustomerOrder customerOrder = default(CustomerOrder), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), System.Collections.Generic.IList<ShipmentPackage> packages = default(System.Collections.Generic.IList<ShipmentPackage>), System.Collections.Generic.IList<PaymentIn> inPayments = default(System.Collections.Generic.IList<PaymentIn>), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string taxType = default(string), Address deliveryAddress = default(Address), double? price = default(double?), double? priceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? itemsSubtotal = default(double?), double? itemsSubtotalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? taxTotal = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string operationType = default(string), string parentOperationId = default(string), string number = default(string), bool? isApproved = default(bool?), string status = default(string), string comment = default(string), string currency = default(string), bool? taxIncluded = default(bool?), double? sum = default(double?), double? tax = default(double?), System.Collections.Generic.IList<IOperation> childrenOperations = default(System.Collections.Generic.IList<IOperation>), bool? isCancelled = default(bool?), System.DateTime? cancelledDate = default(System.DateTime?), string cancelReason = default(string), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
-            OrganizationName = organizationName;
             OrganizationId = organizationId;
-            FulfillmentCenterName = fulfillmentCenterName;
+            OrganizationName = organizationName;
             FulfillmentCenterId = fulfillmentCenterId;
-            ShippingMethod = shippingMethod;
-            EmployeeName = employeeName;
+            FulfillmentCenterName = fulfillmentCenterName;
             EmployeeId = employeeId;
-            DiscountAmount = discountAmount;
+            EmployeeName = employeeName;
+            ShipmentMethodCode = shipmentMethodCode;
+            ShipmentMethodOption = shipmentMethodOption;
+            Discount = discount;
+            ShippingMethod = shippingMethod;
+            CustomerOrderId = customerOrderId;
+            CustomerOrder = customerOrder;
+            Items = items;
+            Packages = packages;
+            InPayments = inPayments;
             WeightUnit = weightUnit;
             Weight = weight;
             MeasureUnit = measureUnit;
@@ -4210,13 +7106,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
             Length = length;
             Width = width;
             TaxType = taxType;
-            Items = items;
-            Packages = packages;
-            InPayments = inPayments;
             DeliveryAddress = deliveryAddress;
-            Discount = discount;
+            Price = price;
+            PriceWithTax = priceWithTax;
+            Total = total;
+            TotalWithTax = totalWithTax;
+            ItemsSubtotal = itemsSubtotal;
+            ItemsSubtotalWithTax = itemsSubtotalWithTax;
+            DiscountAmount = discountAmount;
+            DiscountAmountWithTax = discountAmountWithTax;
+            TaxTotal = taxTotal;
             TaxDetails = taxDetails;
             OperationType = operationType;
+            ParentOperationId = parentOperationId;
             Number = number;
             IsApproved = isApproved;
             Status = status;
@@ -4225,11 +7127,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
             TaxIncluded = taxIncluded;
             Sum = sum;
             Tax = tax;
+            ChildrenOperations = childrenOperations;
             IsCancelled = isCancelled;
             CancelledDate = cancelledDate;
             CancelReason = cancelReason;
-            ParentOperationId = parentOperationId;
-            ChildrenOperations = childrenOperations;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
             CreatedDate = createdDate;
@@ -4241,18 +7142,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "organizationName")]
-        public string OrganizationName { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "organizationId")]
         public string OrganizationId { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "fulfillmentCenterName")]
-        public string FulfillmentCenterName { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "organizationName")]
+        public string OrganizationName { get; set; }
 
         /// <summary>
         /// </summary>
@@ -4261,13 +7157,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingMethod")]
-        public ShippingMethod ShippingMethod { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "employeeName")]
-        public string EmployeeName { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "fulfillmentCenterName")]
+        public string FulfillmentCenterName { get; set; }
 
         /// <summary>
         /// </summary>
@@ -4276,8 +7167,53 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
-        public double? DiscountAmount { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "employeeName")]
+        public string EmployeeName { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodCode")]
+        public string ShipmentMethodCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodOption")]
+        public string ShipmentMethodOption { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discount")]
+        public Discount Discount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingMethod")]
+        public ShippingMethod ShippingMethod { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "customerOrderId")]
+        public string CustomerOrderId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "customerOrder")]
+        public CustomerOrder CustomerOrder { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
+        public System.Collections.Generic.IList<ShipmentItem> Items { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "packages")]
+        public System.Collections.Generic.IList<ShipmentPackage> Packages { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "inPayments")]
+        public System.Collections.Generic.IList<PaymentIn> InPayments { get; set; }
 
         /// <summary>
         /// </summary>
@@ -4316,28 +7252,53 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
-        public System.Collections.Generic.IList<ShipmentItem> Items { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "packages")]
-        public System.Collections.Generic.IList<ShipmentPackage> Packages { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "inPayments")]
-        public System.Collections.Generic.IList<PaymentIn> InPayments { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "deliveryAddress")]
         public Address DeliveryAddress { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discount")]
-        public Discount Discount { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "price")]
+        public double? Price { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priceWithTax")]
+        public double? PriceWithTax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
+        public double? Total { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalWithTax")]
+        public double? TotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "itemsSubtotal")]
+        public double? ItemsSubtotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "itemsSubtotalWithTax")]
+        public double? ItemsSubtotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
+        public double? DiscountAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
+        public double? DiscountAmountWithTax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
+        public double? TaxTotal { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -4348,6 +7309,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "operationType")]
         public string OperationType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
+        public string ParentOperationId { get; set; }
 
         /// <summary>
         /// </summary>
@@ -4391,6 +7357,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "childrenOperations")]
+        public System.Collections.Generic.IList<IOperation> ChildrenOperations { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isCancelled")]
         public bool? IsCancelled { get; set; }
 
@@ -4403,16 +7374,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "cancelReason")]
         public string CancelReason { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "parentOperationId")]
-        public string ParentOperationId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "childrenOperations")]
-        public System.Collections.Generic.IList<Operation> ChildrenOperations { get; set; }
 
         /// <summary>
         /// </summary>
@@ -4469,14 +7430,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShippingMethod class.
         /// </summary>
-        public ShippingMethod(string code = default(string), string name = default(string), string description = default(string), string optionName = default(string), string optionDescription = default(string), string logoUrl = default(string))
+        public ShippingMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), string taxType = default(string), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string id = default(string))
         {
             Code = code;
             Name = name;
             Description = description;
-            OptionName = optionName;
-            OptionDescription = optionDescription;
             LogoUrl = logoUrl;
+            IsActive = isActive;
+            Priority = priority;
+            TaxType = taxType;
+            Settings = settings;
+            Id = id;
         }
 
         /// <summary>
@@ -4496,18 +7460,33 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "optionName")]
-        public string OptionName { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "optionDescription")]
-        public string OptionDescription { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
         public string LogoUrl { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
+        public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
     }
 }
@@ -4748,82 +7727,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "bankCardCVV2")]
         public string BankCardCVV2 { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class ProcessPaymentResult
-    {
-        /// <summary>
-        /// Initializes a new instance of the ProcessPaymentResult class.
-        /// </summary>
-        public ProcessPaymentResult() { }
-
-        /// <summary>
-        /// Initializes a new instance of the ProcessPaymentResult class.
-        /// </summary>
-        /// <param name="newPaymentStatus">Possible values include: 'new',
-        /// 'pending', 'authorized', 'paid', 'partiallyRefunded', 'refunded',
-        /// 'voided', 'custom', 'cancelled'</param>
-        /// <param name="paymentMethodType">Possible values include:
-        /// 'unknown', 'standard', 'redirection', 'preparedForm'</param>
-        public ProcessPaymentResult(string newPaymentStatus = default(string), string paymentMethodType = default(string), string redirectUrl = default(string), bool? isSuccess = default(bool?), string error = default(string), string htmlForm = default(string), string outerId = default(string))
-        {
-            NewPaymentStatus = newPaymentStatus;
-            PaymentMethodType = paymentMethodType;
-            RedirectUrl = redirectUrl;
-            IsSuccess = isSuccess;
-            Error = error;
-            HtmlForm = htmlForm;
-            OuterId = outerId;
-        }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'new', 'pending',
-        /// 'authorized', 'paid', 'partiallyRefunded', 'refunded', 'voided',
-        /// 'custom', 'cancelled'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "newPaymentStatus")]
-        public string NewPaymentStatus { get; set; }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'unknown', 'standard',
-        /// 'redirection', 'preparedForm'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodType")]
-        public string PaymentMethodType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "redirectUrl")]
-        public string RedirectUrl { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isSuccess")]
-        public bool? IsSuccess { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "error")]
-        public string Error { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "htmlForm")]
-        public string HtmlForm { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "outerId")]
-        public string OuterId { get; set; }
 
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace VirtoCommerce.Storefront.Model.Cart.ValidationErrors
 {
-    public class ProductQuantityError : ValidationError
+    public class QuantityError : ValidationError
     {
-        public ProductQuantityError(long availableQuantity) 
+        public QuantityError(long availableQuantity) 
         {
             AvailableQuantity = availableQuantity;
         }

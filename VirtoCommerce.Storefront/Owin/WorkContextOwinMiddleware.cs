@@ -246,7 +246,7 @@ namespace VirtoCommerce.Storefront.Owin
                 {
                     //Shopping cart
                     var cartBuilder = _container.Resolve<ICartBuilder>();
-                    await cartBuilder.GetOrCreateNewTransientCartAsync(workContext.CurrentStore, workContext.CurrentCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
+                    await cartBuilder.LoadOrCreateCartAsync("default", workContext.CurrentStore, workContext.CurrentCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
                     workContext.CurrentCart = cartBuilder.Cart;
 
                     if (workContext.CurrentStore.QuotesEnabled)

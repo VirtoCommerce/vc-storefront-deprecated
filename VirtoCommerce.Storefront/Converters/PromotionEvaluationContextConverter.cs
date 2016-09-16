@@ -31,6 +31,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             return retVal;
         }
+
         public static PromotionEvaluationContext ToPromotionEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
         {
             var retVal = new PromotionEvaluationContext

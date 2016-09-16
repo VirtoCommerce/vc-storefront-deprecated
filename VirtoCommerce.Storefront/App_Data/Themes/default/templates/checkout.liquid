@@ -47,7 +47,7 @@
 									<h2 class="section__title">{{ 'checkout.customer_information.title' | t }}</h2>
 								</div>
 								<div class="section__content">
-									<vc-checkout-email email="checkout.email"></vc-checkout-email>
+									<vc-checkout-email email="checkout.shipment.deliveryAddress.email"></vc-checkout-email>
 									<p class="section__content__text" ng-if="!customer.isRegisteredUser">
 										{{ 'checkout.customer_information.has_account_text' | t }}
 										<a href="{{ 'account/login' | absolute_url }}">{{ 'checkout.customer_information.log_in' | t }}</a>

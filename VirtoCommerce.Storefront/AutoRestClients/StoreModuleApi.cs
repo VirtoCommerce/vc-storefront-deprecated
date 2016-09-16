@@ -344,6 +344,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         /// </summary>
         public StoreModuleApiClient Client { get; private set; }
 
+        /// <summary>
+        /// Search stores
+        /// </summary>
         /// <param name='criteria'>
         /// </param>
         /// <param name='customHeaders'>
@@ -481,6 +484,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get all stores
+        /// </summary>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -602,7 +608,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Update store
+        /// </summary>
         /// <param name='store'>
+        /// Store
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -718,7 +728,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Create store
+        /// </summary>
         /// <param name='store'>
+        /// Store
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -855,7 +869,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Delete stores
+        /// </summary>
         /// <param name='ids'>
+        /// Ids of store that needed to delete
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -984,7 +1002,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get store by id
+        /// </summary>
         /// <param name='id'>
+        /// Store id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1116,6 +1138,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Send dynamic notification (contains custom list of properties) to store or
+        /// administrator email
+        /// </summary>
         /// <param name='request'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1232,9 +1258,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Check if given contact has login on behalf permission
+        /// </summary>
         /// <param name='storeId'>
+        /// Store ID
         /// </param>
         /// <param name='id'>
+        /// Contact ID
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1372,6 +1403,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Returns list of stores which user can sign in
+        /// </summary>
         /// <param name='userId'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1520,6 +1554,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
     /// </summary>
     public static partial class StoreModuleExtensions
     {
+            /// <summary>
+            /// Search stores
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1530,6 +1567,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStoreModule)s).SearchStoresAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Search stores
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1546,6 +1586,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Get all stores
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1554,6 +1597,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStoreModule)s).GetStoresAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get all stores
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1568,20 +1614,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Update store
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='store'>
+            /// Store
             /// </param>
             public static void Update(this IStoreModule operations, Store store)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IStoreModule)s).UpdateAsync(store), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Update store
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='store'>
+            /// Store
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1591,20 +1645,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 await operations.UpdateWithHttpMessagesAsync(store, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Create store
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='store'>
+            /// Store
             /// </param>
             public static Store Create(this IStoreModule operations, Store store)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStoreModule)s).CreateAsync(store), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Create store
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='store'>
+            /// Store
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1617,20 +1679,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Delete stores
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// Ids of store that needed to delete
             /// </param>
             public static void Delete(this IStoreModule operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IStoreModule)s).DeleteAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Delete stores
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// Ids of store that needed to delete
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1640,20 +1710,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 await operations.DeleteWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Get store by id
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// Store id
             /// </param>
             public static Store GetStoreById(this IStoreModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStoreModule)s).GetStoreByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get store by id
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// Store id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1666,6 +1744,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Send dynamic notification (contains custom list of properties) to store or
+            /// administrator email
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1676,6 +1758,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IStoreModule)s).SendDynamicNotificationAnStoreEmailAsync(request), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Send dynamic notification (contains custom list of properties) to store or
+            /// administrator email
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1689,24 +1775,34 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 await operations.SendDynamicNotificationAnStoreEmailWithHttpMessagesAsync(request, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Check if given contact has login on behalf permission
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='storeId'>
+            /// Store ID
             /// </param>
             /// <param name='id'>
+            /// Contact ID
             /// </param>
             public static LoginOnBehalfInfo GetLoginOnBehalfInfo(this IStoreModule operations, string storeId, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStoreModule)s).GetLoginOnBehalfInfoAsync(storeId, id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Check if given contact has login on behalf permission
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='storeId'>
+            /// Store ID
             /// </param>
             /// <param name='id'>
+            /// Contact ID
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -1719,6 +1815,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Returns list of stores which user can sign in
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1729,6 +1828,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStoreModule)s).GetUserAllowedStoresAsync(userId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Returns list of stores which user can sign in
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -1760,6 +1862,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
     /// </summary>
     public partial interface IStoreModule
     {
+        /// <summary>
+        /// Search stores
+        /// </summary>
         /// <param name='criteria'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1778,6 +1883,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SearchResult>> SearchStoresWithHttpMessagesAsync(SearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get all stores
+        /// </summary>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -1791,7 +1899,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<Store>>> GetStoresWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Update store
+        /// </summary>
         /// <param name='store'>
+        /// Store
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1806,7 +1918,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateWithHttpMessagesAsync(Store store, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Create store
+        /// </summary>
         /// <param name='store'>
+        /// Store
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1824,7 +1940,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Store>> CreateWithHttpMessagesAsync(Store store, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Delete stores
+        /// </summary>
         /// <param name='ids'>
+        /// Ids of store that needed to delete
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1839,7 +1959,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get store by id
+        /// </summary>
         /// <param name='id'>
+        /// Store id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1857,6 +1981,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Store>> GetStoreByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Send dynamic notification (contains custom list of properties) to
+        /// store or administrator email
+        /// </summary>
         /// <param name='request'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1872,9 +2000,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> SendDynamicNotificationAnStoreEmailWithHttpMessagesAsync(SendDynamicNotificationRequest request, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Check if given contact has login on behalf permission
+        /// </summary>
         /// <param name='storeId'>
+        /// Store ID
         /// </param>
         /// <param name='id'>
+        /// Contact ID
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1892,6 +2025,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<LoginOnBehalfInfo>> GetLoginOnBehalfInfoWithHttpMessagesAsync(string storeId, string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Returns list of stores which user can sign in
+        /// </summary>
         /// <param name='userId'>
         /// </param>
         /// <param name='customHeaders'>
@@ -2065,8 +2201,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Store class.
         /// </summary>
-        /// <param name="storeState">Possible values include: 'open',
-        /// 'closed', 'restrictedAccess'</param>
+        /// <param name="url">Url of store storefront, required</param>
+        /// <param name="storeState">State of store. Possible values include:
+        /// 'open', 'closed', 'restrictedAccess'</param>
+        /// <param name="defaultLanguage">Default locale of store</param>
+        /// <param name="defaultCurrency">Default currency of store. Use ISO
+        /// 4217 currency codes</param>
+        /// <param name="catalog">Product catalog id of store</param>
+        /// <param name="secureUrl">Secure url of store, must use https
+        /// protocol, required</param>
+        /// <param name="email">Contact email of store</param>
+        /// <param name="adminEmail">Administrator contact email of
+        /// store</param>
+        /// <param name="displayOutOfStock">If true - store shows product with
+        /// status out of stock</param>
+        /// <param name="languages">All store supported languages</param>
+        /// <param name="currencies">All store supported currencies</param>
+        /// <param name="trustedGroups">All linked stores (their accounts can
+        /// be reused here)</param>
         public Store(string name = default(string), string description = default(string), string url = default(string), string storeState = default(string), string timeZone = default(string), string country = default(string), string region = default(string), string defaultLanguage = default(string), string defaultCurrency = default(string), string catalog = default(string), bool? creditCardSavePolicy = default(bool?), string secureUrl = default(string), string email = default(string), string adminEmail = default(string), bool? displayOutOfStock = default(bool?), FulfillmentCenter fulfillmentCenter = default(FulfillmentCenter), FulfillmentCenter returnsFulfillmentCenter = default(FulfillmentCenter), System.Collections.Generic.IList<string> languages = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> currencies = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> trustedGroups = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<PaymentMethod> paymentMethods = default(System.Collections.Generic.IList<PaymentMethod>), System.Collections.Generic.IList<ShippingMethod> shippingMethods = default(System.Collections.Generic.IList<ShippingMethod>), System.Collections.Generic.IList<TaxProvider> taxProviders = default(System.Collections.Generic.IList<TaxProvider>), System.Collections.Generic.IList<string> securityScopes = default(System.Collections.Generic.IList<string>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.Collections.Generic.IList<Setting> settings = default(System.Collections.Generic.IList<Setting>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
@@ -2116,13 +2268,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets url of store storefront, required
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "url")]
         public string Url { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'open', 'closed',
-        /// 'restrictedAccess'
+        /// Gets or sets state of store. Possible values include: 'open',
+        /// 'closed', 'restrictedAccess'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "storeState")]
         public string StoreState { get; set; }
@@ -2143,16 +2296,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string Region { get; set; }
 
         /// <summary>
+        /// Gets or sets default locale of store
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "defaultLanguage")]
         public string DefaultLanguage { get; set; }
 
         /// <summary>
+        /// Gets or sets default currency of store. Use ISO 4217 currency codes
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "defaultCurrency")]
         public string DefaultCurrency { get; set; }
 
         /// <summary>
+        /// Gets or sets product catalog id of store
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
         public string Catalog { get; set; }
@@ -2163,21 +2319,25 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public bool? CreditCardSavePolicy { get; set; }
 
         /// <summary>
+        /// Gets or sets secure url of store, must use https protocol, required
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "secureUrl")]
         public string SecureUrl { get; set; }
 
         /// <summary>
+        /// Gets or sets contact email of store
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
 
         /// <summary>
+        /// Gets or sets administrator contact email of store
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "adminEmail")]
         public string AdminEmail { get; set; }
 
         /// <summary>
+        /// Gets or sets if true - store shows product with status out of stock
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "displayOutOfStock")]
         public bool? DisplayOutOfStock { get; set; }
@@ -2193,16 +2353,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public FulfillmentCenter ReturnsFulfillmentCenter { get; set; }
 
         /// <summary>
+        /// Gets or sets all store supported languages
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "languages")]
         public System.Collections.Generic.IList<string> Languages { get; set; }
 
         /// <summary>
+        /// Gets or sets all store supported currencies
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currencies")]
         public System.Collections.Generic.IList<string> Currencies { get; set; }
 
         /// <summary>
+        /// Gets or sets all linked stores (their accounts can be reused here)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "trustedGroups")]
         public System.Collections.Generic.IList<string> TrustedGroups { get; set; }
@@ -2297,6 +2460,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the FulfillmentCenter class.
         /// </summary>
+        /// <param name="line1">Part of fulfillment center address,
+        /// line1</param>
+        /// <param name="line2">Part of fulfillment center address,
+        /// line2</param>
+        /// <param name="city">Part of fulfillment center address, city</param>
+        /// <param name="stateProvince">Part of fulfillment center address,
+        /// state province</param>
+        /// <param name="countryCode">Part of fulfillment center address,
+        /// country code</param>
+        /// <param name="countryName">Part of fulfillment center address,
+        /// country name</param>
+        /// <param name="postalCode">Part of fulfillment center address,
+        /// postal code</param>
         public FulfillmentCenter(string name = default(string), string description = default(string), int? maxReleasesPerPickBatch = default(int?), int? pickDelay = default(int?), string daytimePhoneNumber = default(string), string line1 = default(string), string line2 = default(string), string city = default(string), string stateProvince = default(string), string countryCode = default(string), string countryName = default(string), string postalCode = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
@@ -2344,36 +2520,43 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string DaytimePhoneNumber { get; set; }
 
         /// <summary>
+        /// Gets or sets part of fulfillment center address, line1
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "line1")]
         public string Line1 { get; set; }
 
         /// <summary>
+        /// Gets or sets part of fulfillment center address, line2
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "line2")]
         public string Line2 { get; set; }
 
         /// <summary>
+        /// Gets or sets part of fulfillment center address, city
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "city")]
         public string City { get; set; }
 
         /// <summary>
+        /// Gets or sets part of fulfillment center address, state province
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "stateProvince")]
         public string StateProvince { get; set; }
 
         /// <summary>
+        /// Gets or sets part of fulfillment center address, country code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "countryCode")]
         public string CountryCode { get; set; }
 
         /// <summary>
+        /// Gets or sets part of fulfillment center address, country name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "countryName")]
         public string CountryName { get; set; }
 
         /// <summary>
+        /// Gets or sets part of fulfillment center address, postal code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "postalCode")]
         public string PostalCode { get; set; }
@@ -2423,6 +2606,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PaymentMethod class.
         /// </summary>
+        /// <param name="code">Inner unique method code</param>
+        /// <param name="name">Display name of payment method</param>
+        /// <param name="logoUrl">Absolute logo url of shipping method, can be
+        /// used in UI</param>
+        /// <param name="isActive">If true - method can be available on
+        /// storefront</param>
         public PaymentMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), bool? isAvailableForPartial = default(bool?), System.Collections.Generic.IList<Setting> settings = default(System.Collections.Generic.IList<Setting>), string id = default(string))
         {
             Code = code;
@@ -2437,11 +2626,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         }
 
         /// <summary>
+        /// Gets or sets inner unique method code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
 
         /// <summary>
+        /// Gets or sets display name of payment method
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
@@ -2452,11 +2643,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets absolute logo url of shipping method, can be used in
+        /// UI
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
         public string LogoUrl { get; set; }
 
         /// <summary>
+        /// Gets or sets if true - method can be available on storefront
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
         public bool? IsActive { get; set; }
@@ -2501,9 +2695,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Setting class.
         /// </summary>
+        /// <param name="name">System name (ID) of the setting</param>
+        /// <param name="value">Current value for non-array setting</param>
         /// <param name="valueType">Possible values include: 'shortText',
         /// 'longText', 'integer', 'decimal', 'dateTime', 'boolean',
         /// 'secureString'</param>
+        /// <param name="allowedValues">Predefined set of allowed values for
+        /// this setting</param>
+        /// <param name="isArray">Defines whether the setting can have
+        /// multiple values</param>
+        /// <param name="arrayValues">Current values for array setting</param>
+        /// <param name="title">User-friendly name of the setting</param>
         public Setting(string groupName = default(string), string name = default(string), string value = default(string), string valueType = default(string), System.Collections.Generic.IList<string> allowedValues = default(System.Collections.Generic.IList<string>), string defaultValue = default(string), bool? isArray = default(bool?), System.Collections.Generic.IList<string> arrayValues = default(System.Collections.Generic.IList<string>), string title = default(string), string description = default(string))
         {
             GroupName = groupName;
@@ -2524,11 +2726,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string GroupName { get; set; }
 
         /// <summary>
+        /// Gets or sets system name (ID) of the setting
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets current value for non-array setting
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
@@ -2541,6 +2745,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string ValueType { get; set; }
 
         /// <summary>
+        /// Gets or sets predefined set of allowed values for this setting
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "allowedValues")]
         public System.Collections.Generic.IList<string> AllowedValues { get; set; }
@@ -2551,16 +2756,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string DefaultValue { get; set; }
 
         /// <summary>
+        /// Gets or sets defines whether the setting can have multiple values
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isArray")]
         public bool? IsArray { get; set; }
 
         /// <summary>
+        /// Gets or sets current values for array setting
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "arrayValues")]
         public System.Collections.Generic.IList<string> ArrayValues { get; set; }
 
         /// <summary>
+        /// Gets or sets user-friendly name of the setting
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
@@ -2590,6 +2798,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShippingMethod class.
         /// </summary>
+        /// <param name="code">Inner unique method code</param>
+        /// <param name="name">Display name of shipping method</param>
+        /// <param name="logoUrl">Absolute logo url of shipping method, can be
+        /// used in UI</param>
+        /// <param name="isActive">If true - method can be available on
+        /// storefront</param>
+        /// <param name="taxType">Type of tax</param>
         public ShippingMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), string taxType = default(string), System.Collections.Generic.IList<Setting> settings = default(System.Collections.Generic.IList<Setting>), string id = default(string))
         {
             Code = code;
@@ -2604,11 +2819,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         }
 
         /// <summary>
+        /// Gets or sets inner unique method code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
 
         /// <summary>
+        /// Gets or sets display name of shipping method
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
@@ -2619,11 +2836,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets absolute logo url of shipping method, can be used in
+        /// UI
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
         public string LogoUrl { get; set; }
 
         /// <summary>
+        /// Gets or sets if true - method can be available on storefront
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
         public bool? IsActive { get; set; }
@@ -2634,6 +2854,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public int? Priority { get; set; }
 
         /// <summary>
+        /// Gets or sets type of tax
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
         public string TaxType { get; set; }
@@ -2668,6 +2889,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the TaxProvider class.
         /// </summary>
+        /// <param name="code">Inner unique method code</param>
+        /// <param name="name">Display name of shipping method</param>
+        /// <param name="logoUrl">Absolute logo url of shipping method, can be
+        /// used in UI</param>
+        /// <param name="isActive">If true - method can be available on
+        /// storefront</param>
         public TaxProvider(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), System.Collections.Generic.IList<Setting> settings = default(System.Collections.Generic.IList<Setting>))
         {
             Code = code;
@@ -2680,11 +2907,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         }
 
         /// <summary>
+        /// Gets or sets inner unique method code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
 
         /// <summary>
+        /// Gets or sets display name of shipping method
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
@@ -2695,11 +2924,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets absolute logo url of shipping method, can be used in
+        /// UI
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
         public string LogoUrl { get; set; }
 
         /// <summary>
+        /// Gets or sets if true - method can be available on storefront
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
         public bool? IsActive { get; set; }
@@ -3085,6 +3317,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
 {
     using System.Linq;
 
+    /// <summary>
+    /// Represent result for checking of possibility login on behalf request
+    /// </summary>
     public partial class LoginOnBehalfInfo
     {
         /// <summary>

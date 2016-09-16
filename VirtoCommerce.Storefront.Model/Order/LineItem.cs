@@ -10,50 +10,25 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// </summary>
     public class LineItem
     {
-        public LineItem()
+        public LineItem(Currency currency)
         {
+            Currency = currency;
             TaxDetails = new List<TaxDetail>();
             DynamicProperties = new List<DynamicProperty>();
+
+            Price = new Money(currency);
+            PriceWithTax = new Money(currency);
+            PlacedPrice = new Money(currency);
+            PlacedPriceWithTax = new Money(currency);
+            ExtendedPrice = new Money(currency);
+            ExtendedPriceWithTax = new Money(currency);
+            DiscountAmount = new Money(currency);
+            DiscountAmountWithTax = new Money(currency);
+            DiscountTotal = new Money(currency);
+            DiscountTotalWithTax = new Money(currency);
+            Tax = new Money(currency);
         }
-
-        /// <summary>
-        /// Price where tax and discount are not applied
-        /// </summary>
-        /// <value>Price with tax and without dicount</value>
-        public Money BasePrice { get; set; }
-        public Money BasePriceWithTax
-        {
-            get
-            {
-                return BasePrice + BasePrice * TaxRate;
-            }
-        }
-
-        /// <summary>
-        /// Price where tax is not applied and discount is applied
-        /// </summary>
-        /// <value>Price with tax and discount</value>
-        public Money Price { get; set; }
-        public Money PriceWithTax
-        {
-            get
-            {
-                return Price + Price * TaxRate;
-            }
-        }
-
-        /// <summary>
-        /// Discount amount
-        /// </summary>
-        /// <value>Discount amount</value>
-        public Money DiscountAmount { get; set; }
-
-        /// <summary>
-        /// Tax sum
-        /// </summary>
-        /// <value>Tax sum</value>
-        public Money Tax { get; set; }
-
+            
         /// <summary>
         /// Evaluated from Tax total Tax rate
         /// </summary>
@@ -62,9 +37,9 @@ namespace VirtoCommerce.Storefront.Model.Order
             get
             {
                 var retVal = 0m;
-                if (Tax != null)
+                if (Tax != null && ExtendedPrice != null && ExtendedPrice.Amount > 0)
                 {
-                    retVal = Tax.Amount / (Price.Amount * (Quantity ?? 1));
+                    retVal = Tax.Amount / ExtendedPrice.Amount;
                 }
                 return retVal;
             }
@@ -229,5 +204,28 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets Id
         /// </summary>
         public string Id { get; set; }
+
+
+        public Money Price { get; set; }
+        public Money PriceWithTax { get; set; }
+
+        public Money PlacedPrice { get; set; }
+        public Money PlacedPriceWithTax { get; set; }
+
+        public Money ExtendedPrice { get; set; }
+        public Money ExtendedPriceWithTax { get; set; }
+
+        public Money DiscountAmount { get; set; }
+        public Money DiscountAmountWithTax { get; set; }
+
+        public Money DiscountTotal { get; set; }
+        public Money DiscountTotalWithTax { get; set; }
+
+        /// <summary>
+        /// Tax sum
+        /// </summary>
+        /// <value>Tax sum</value>
+        public Money Tax { get; set; }
+
     }
 }

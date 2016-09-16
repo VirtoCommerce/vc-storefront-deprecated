@@ -344,7 +344,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// </summary>
         public PricingModuleApiClient Client { get; private set; }
 
+        /// <summary>
+        /// Evaluate prices by given context
+        /// </summary>
         /// <param name='evalContext'>
+        /// Pricing evaluation context
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -481,7 +485,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Evaluate pricelists by given context
+        /// </summary>
         /// <param name='evalContext'>
+        /// Pricing evaluation context
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -618,7 +626,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get pricelist assignment
+        /// </summary>
         /// <param name='id'>
+        /// Pricelist assignment id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -750,6 +762,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get a new pricelist assignment
+        /// </summary>
+        /// <remarks>
+        /// Get a new pricelist assignment object. Create new pricelist assignment,
+        /// but does not save one.
+        /// </remarks>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -871,6 +890,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get pricelists
+        /// </summary>
+        /// <remarks>
+        /// Get all pricelists for all catalogs.
+        /// </remarks>
         /// <param name='criteriakeyword'>
         /// </param>
         /// <param name='criteriasort'>
@@ -1025,6 +1050,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Update pricelist
+        /// </summary>
         /// <param name='priceList'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1141,6 +1169,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Create pricelist
+        /// </summary>
         /// <param name='priceList'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1278,7 +1309,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Delete pricelists
+        /// </summary>
+        /// <remarks>
+        /// Delete pricelists by given array of pricelist ids.
+        /// </remarks>
         /// <param name='ids'>
+        /// An array of pricelist ids
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1407,6 +1445,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Search pricelist assignments
+        /// </summary>
+        /// <remarks>
+        /// Search price list assignments by given criteria
+        /// </remarks>
         /// <param name='criteriapriceListId'>
         /// </param>
         /// <param name='criteriapriceListIds'>
@@ -1434,7 +1478,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignment>> SearchPricelistAssignmentsWithHttpMessagesAsync(string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignmentSearchResult>> SearchPricelistAssignmentsWithHttpMessagesAsync(string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // Tracing
             bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
@@ -1557,7 +1601,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<PricelistAssignment>();
+            var _result = new Microsoft.Rest.HttpOperationResponse<PricelistAssignmentSearchResult>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -1566,7 +1610,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<PricelistAssignment>(_responseContent, this.Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<PricelistAssignmentSearchResult>(_responseContent, this.Client.DeserializationSettings);
                 }
                 catch (Newtonsoft.Json.JsonException ex)
                 {
@@ -1585,7 +1629,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Update pricelist assignment
+        /// </summary>
         /// <param name='assignment'>
+        /// PricelistAssignment
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1701,7 +1749,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Create pricelist assignment
+        /// </summary>
         /// <param name='assignment'>
+        /// PricelistAssignment
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1838,7 +1890,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Delete pricelist assignments
+        /// </summary>
+        /// <remarks>
+        /// Delete pricelist assignment by given array of ids.
+        /// </remarks>
         /// <param name='ids'>
+        /// An array of pricelist assignment ids
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1967,6 +2026,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Search product prices
+        /// </summary>
+        /// <remarks>
+        /// Search product prices
+        /// </remarks>
         /// <param name='criteriagroupByProducts'>
         /// </param>
         /// <param name='criteriapriceListId'>
@@ -2176,7 +2241,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Evaluate  product prices
+        /// </summary>
+        /// <remarks>
+        /// Get an array of valid product prices for each currency.
+        /// </remarks>
         /// <param name='productId'>
+        /// Product id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2548,7 +2620,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get all price lists for product
+        /// </summary>
+        /// <remarks>
+        /// Get all price lists for given product.
+        /// </remarks>
         /// <param name='productId'>
+        /// Product id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2680,7 +2759,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get pricelist
+        /// </summary>
         /// <param name='id'>
+        /// Pricelist id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2812,6 +2895,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Delete all prices for specified product in specified price list
+        /// </summary>
         /// <param name='pricelistId'>
         /// </param>
         /// <param name='productIds'>
@@ -2965,20 +3051,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
     /// </summary>
     public static partial class PricingModuleExtensions
     {
+            /// <summary>
+            /// Evaluate prices by given context
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='evalContext'>
+            /// Pricing evaluation context
             /// </param>
             public static System.Collections.Generic.IList<Price> EvaluatePrices(this IPricingModule operations, PriceEvaluationContext evalContext)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).EvaluatePricesAsync(evalContext), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Evaluate prices by given context
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='evalContext'>
+            /// Pricing evaluation context
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2991,20 +3085,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Evaluate pricelists by given context
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='evalContext'>
+            /// Pricing evaluation context
             /// </param>
             public static System.Collections.Generic.IList<Pricelist> EvaluatePriceLists(this IPricingModule operations, PriceEvaluationContext evalContext)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).EvaluatePriceListsAsync(evalContext), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Evaluate pricelists by given context
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='evalContext'>
+            /// Pricing evaluation context
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3017,20 +3119,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Get pricelist assignment
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// Pricelist assignment id
             /// </param>
             public static PricelistAssignment GetPricelistAssignmentById(this IPricingModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).GetPricelistAssignmentByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get pricelist assignment
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// Pricelist assignment id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3043,6 +3153,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Get a new pricelist assignment
+            /// </summary>
+            /// <remarks>
+            /// Get a new pricelist assignment object. Create new pricelist assignment,
+            /// but does not save one.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3051,6 +3168,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).GetNewPricelistAssignmentsAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get a new pricelist assignment
+            /// </summary>
+            /// <remarks>
+            /// Get a new pricelist assignment object. Create new pricelist assignment,
+            /// but does not save one.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3065,6 +3189,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Get pricelists
+            /// </summary>
+            /// <remarks>
+            /// Get all pricelists for all catalogs.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3081,6 +3211,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).SearchPricelistsAsync(criteriakeyword, criteriasort, criteriaskip, criteriatake), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get pricelists
+            /// </summary>
+            /// <remarks>
+            /// Get all pricelists for all catalogs.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3103,6 +3239,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Update pricelist
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3113,6 +3252,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).UpdatePriceListAsync(priceList), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Update pricelist
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3126,6 +3268,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 await operations.UpdatePriceListWithHttpMessagesAsync(priceList, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Create pricelist
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3136,6 +3281,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).CreatePriceListAsync(priceList), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Create pricelist
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3152,20 +3300,34 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Delete pricelists
+            /// </summary>
+            /// <remarks>
+            /// Delete pricelists by given array of pricelist ids.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// An array of pricelist ids
             /// </param>
             public static void DeletePricelists(this IPricingModule operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).DeletePricelistsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Delete pricelists
+            /// </summary>
+            /// <remarks>
+            /// Delete pricelists by given array of pricelist ids.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// An array of pricelist ids
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3175,6 +3337,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 await operations.DeletePricelistsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Search pricelist assignments
+            /// </summary>
+            /// <remarks>
+            /// Search price list assignments by given criteria
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3190,11 +3358,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             /// </param>
             /// <param name='criteriatake'>
             /// </param>
-            public static PricelistAssignment SearchPricelistAssignments(this IPricingModule operations, string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?))
+            public static PricelistAssignmentSearchResult SearchPricelistAssignments(this IPricingModule operations, string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).SearchPricelistAssignmentsAsync(criteriapriceListId, criteriapriceListIds, criteriakeyword, criteriasort, criteriaskip, criteriatake), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Search pricelist assignments
+            /// </summary>
+            /// <remarks>
+            /// Search price list assignments by given criteria
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3213,7 +3387,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<PricelistAssignment> SearchPricelistAssignmentsAsync(this IPricingModule operations, string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<PricelistAssignmentSearchResult> SearchPricelistAssignmentsAsync(this IPricingModule operations, string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
                 using (var _result = await operations.SearchPricelistAssignmentsWithHttpMessagesAsync(criteriapriceListId, criteriapriceListIds, criteriakeyword, criteriasort, criteriaskip, criteriatake, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -3221,20 +3395,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Update pricelist assignment
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='assignment'>
+            /// PricelistAssignment
             /// </param>
             public static void UpdatePriceListAssignment(this IPricingModule operations, PricelistAssignment assignment)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).UpdatePriceListAssignmentAsync(assignment), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Update pricelist assignment
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='assignment'>
+            /// PricelistAssignment
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3244,20 +3426,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 await operations.UpdatePriceListAssignmentWithHttpMessagesAsync(assignment, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Create pricelist assignment
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='assignment'>
+            /// PricelistAssignment
             /// </param>
             public static PricelistAssignment CreatePricelistAssignment(this IPricingModule operations, PricelistAssignment assignment)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).CreatePricelistAssignmentAsync(assignment), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Create pricelist assignment
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='assignment'>
+            /// PricelistAssignment
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3270,20 +3460,34 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Delete pricelist assignments
+            /// </summary>
+            /// <remarks>
+            /// Delete pricelist assignment by given array of ids.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// An array of pricelist assignment ids
             /// </param>
             public static void DeleteAssignments(this IPricingModule operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).DeleteAssignmentsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Delete pricelist assignments
+            /// </summary>
+            /// <remarks>
+            /// Delete pricelist assignment by given array of ids.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// An array of pricelist assignment ids
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3293,6 +3497,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 await operations.DeleteAssignmentsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Search product prices
+            /// </summary>
+            /// <remarks>
+            /// Search product prices
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3319,6 +3529,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).SearchProductPricesAsync(criteriagroupByProducts, criteriapriceListId, criteriapriceListIds, criteriaproductId, criteriaproductIds, criteriakeyword, criteriasort, criteriaskip, criteriatake), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Search product prices
+            /// </summary>
+            /// <remarks>
+            /// Search product prices
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3351,20 +3567,34 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Evaluate  product prices
+            /// </summary>
+            /// <remarks>
+            /// Get an array of valid product prices for each currency.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='productId'>
+            /// Product id
             /// </param>
             public static System.Collections.Generic.IList<Price> EvaluateProductPrices(this IPricingModule operations, string productId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).EvaluateProductPricesAsync(productId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Evaluate  product prices
+            /// </summary>
+            /// <remarks>
+            /// Get an array of valid product prices for each currency.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='productId'>
+            /// Product id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3427,20 +3657,34 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 await operations.UpdateProductsPricesWithHttpMessagesAsync(productPrices, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Get all price lists for product
+            /// </summary>
+            /// <remarks>
+            /// Get all price lists for given product.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='productId'>
+            /// Product id
             /// </param>
             public static System.Collections.Generic.IList<Pricelist> GetProductPriceLists(this IPricingModule operations, string productId)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).GetProductPriceListsAsync(productId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get all price lists for product
+            /// </summary>
+            /// <remarks>
+            /// Get all price lists for given product.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='productId'>
+            /// Product id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3453,20 +3697,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Get pricelist
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// Pricelist id
             /// </param>
             public static Pricelist GetPriceListById(this IPricingModule operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).GetPriceListByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get pricelist
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// Pricelist id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3479,6 +3731,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 }
             }
 
+            /// <summary>
+            /// Delete all prices for specified product in specified price list
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3491,6 +3746,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IPricingModule)s).DeleteProductPricesAsync(pricelistId, productIds), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Delete all prices for specified product in specified price list
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -3521,7 +3779,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
     /// </summary>
     public partial interface IPricingModule
     {
+        /// <summary>
+        /// Evaluate prices by given context
+        /// </summary>
         /// <param name='evalContext'>
+        /// Pricing evaluation context
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3539,7 +3801,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<Price>>> EvaluatePricesWithHttpMessagesAsync(PriceEvaluationContext evalContext, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Evaluate pricelists by given context
+        /// </summary>
         /// <param name='evalContext'>
+        /// Pricing evaluation context
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3557,7 +3823,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<Pricelist>>> EvaluatePriceListsWithHttpMessagesAsync(PriceEvaluationContext evalContext, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get pricelist assignment
+        /// </summary>
         /// <param name='id'>
+        /// Pricelist assignment id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3575,6 +3845,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignment>> GetPricelistAssignmentByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get a new pricelist assignment
+        /// </summary>
+        /// <remarks>
+        /// Get a new pricelist assignment object. Create new pricelist
+        /// assignment, but does not save one.
+        /// </remarks>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -3588,6 +3865,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignment>> GetNewPricelistAssignmentsWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get pricelists
+        /// </summary>
+        /// <remarks>
+        /// Get all pricelists for all catalogs.
+        /// </remarks>
         /// <param name='criteriakeyword'>
         /// </param>
         /// <param name='criteriasort'>
@@ -3609,6 +3892,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistSearchResult>> SearchPricelistsWithHttpMessagesAsync(string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Update pricelist
+        /// </summary>
         /// <param name='priceList'>
         /// </param>
         /// <param name='customHeaders'>
@@ -3624,6 +3910,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdatePriceListWithHttpMessagesAsync(Pricelist priceList, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Create pricelist
+        /// </summary>
         /// <param name='priceList'>
         /// </param>
         /// <param name='customHeaders'>
@@ -3642,7 +3931,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Pricelist>> CreatePriceListWithHttpMessagesAsync(Pricelist priceList, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Delete pricelists
+        /// </summary>
+        /// <remarks>
+        /// Delete pricelists by given array of pricelist ids.
+        /// </remarks>
         /// <param name='ids'>
+        /// An array of pricelist ids
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3657,6 +3953,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeletePricelistsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Search pricelist assignments
+        /// </summary>
+        /// <remarks>
+        /// Search price list assignments by given criteria
+        /// </remarks>
         /// <param name='criteriapriceListId'>
         /// </param>
         /// <param name='criteriapriceListIds'>
@@ -3681,8 +3983,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// <exception cref="Microsoft.Rest.SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignment>> SearchPricelistAssignmentsWithHttpMessagesAsync(string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignmentSearchResult>> SearchPricelistAssignmentsWithHttpMessagesAsync(string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Update pricelist assignment
+        /// </summary>
         /// <param name='assignment'>
+        /// PricelistAssignment
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3697,7 +4003,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdatePriceListAssignmentWithHttpMessagesAsync(PricelistAssignment assignment, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Create pricelist assignment
+        /// </summary>
         /// <param name='assignment'>
+        /// PricelistAssignment
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3715,7 +4025,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PricelistAssignment>> CreatePricelistAssignmentWithHttpMessagesAsync(PricelistAssignment assignment, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Delete pricelist assignments
+        /// </summary>
+        /// <remarks>
+        /// Delete pricelist assignment by given array of ids.
+        /// </remarks>
         /// <param name='ids'>
+        /// An array of pricelist assignment ids
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3730,6 +4047,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteAssignmentsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Search product prices
+        /// </summary>
+        /// <remarks>
+        /// Search product prices
+        /// </remarks>
         /// <param name='criteriagroupByProducts'>
         /// </param>
         /// <param name='criteriapriceListId'>
@@ -3761,7 +4084,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProductPricesSearchResult>> SearchProductPricesWithHttpMessagesAsync(bool? criteriagroupByProducts = default(bool?), string criteriapriceListId = default(string), System.Collections.Generic.IList<string> criteriapriceListIds = default(System.Collections.Generic.IList<string>), string criteriaproductId = default(string), System.Collections.Generic.IList<string> criteriaproductIds = default(System.Collections.Generic.IList<string>), string criteriakeyword = default(string), string criteriasort = default(string), int? criteriaskip = default(int?), int? criteriatake = default(int?), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Evaluate  product prices
+        /// </summary>
+        /// <remarks>
+        /// Get an array of valid product prices for each currency.
+        /// </remarks>
         /// <param name='productId'>
+        /// Product id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3811,7 +4141,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateProductsPricesWithHttpMessagesAsync(System.Collections.Generic.IList<ProductPrice> productPrices, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get all price lists for product
+        /// </summary>
+        /// <remarks>
+        /// Get all price lists for given product.
+        /// </remarks>
         /// <param name='productId'>
+        /// Product id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3829,7 +4166,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<Pricelist>>> GetProductPriceListsWithHttpMessagesAsync(string productId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get pricelist
+        /// </summary>
         /// <param name='id'>
+        /// Pricelist id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3847,6 +4188,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Pricelist>> GetPriceListByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Delete all prices for specified product in specified price list
+        /// </summary>
         /// <param name='pricelistId'>
         /// </param>
         /// <param name='productIds'>
@@ -4066,6 +4410,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
 {
     using System.Linq;
 
+    /// <summary>
+    /// Represents a price of a Product in depends on batch quantity.
+    /// </summary>
     public partial class Price
     {
         /// <summary>
@@ -4076,6 +4423,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Price class.
         /// </summary>
+        /// <param name="sale">Sale price of a product. It can be null, then
+        /// Sale price will be equal List price</param>
+        /// <param name="list">Price of a product. It can be catalog price or
+        /// purchase price</param>
+        /// <param name="minQuantity">It defines the minimum quantity of
+        /// Products. Use it for creating tier prices.</param>
         public Price(string pricelistId = default(string), string priceListName = default(string), string currency = default(string), string productId = default(string), double? sale = default(double?), double? list = default(double?), int? minQuantity = default(int?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             PricelistId = pricelistId;
@@ -4113,16 +4466,22 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         public string ProductId { get; set; }
 
         /// <summary>
+        /// Gets or sets sale price of a product. It can be null, then Sale
+        /// price will be equal List price
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sale")]
         public double? Sale { get; set; }
 
         /// <summary>
+        /// Gets or sets price of a product. It can be catalog price or
+        /// purchase price
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "list")]
         public double? List { get; set; }
 
         /// <summary>
+        /// Gets or sets it defines the minimum quantity of Products. Use it
+        /// for creating tier prices.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "minQuantity")]
         public int? MinQuantity { get; set; }
@@ -4172,6 +4531,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Pricelist class.
         /// </summary>
+        /// <param name="currency">Currency defined for all prices in the
+        /// price list</param>
+        /// <param name="assignments">Assignments define condition and rules
+        /// to use the price list</param>
+        /// <param name="prices">List of prices belongs to price list.</param>
         public Pricelist(string name = default(string), string description = default(string), string currency = default(string), System.Collections.Generic.IList<PricelistAssignment> assignments = default(System.Collections.Generic.IList<PricelistAssignment>), System.Collections.Generic.IList<Price> prices = default(System.Collections.Generic.IList<Price>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
@@ -4197,16 +4561,20 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets currency defined for all prices in the price list
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
+        /// Gets or sets assignments define condition and rules to use the
+        /// price list
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "assignments")]
         public System.Collections.Generic.IList<PricelistAssignment> Assignments { get; set; }
 
         /// <summary>
+        /// Gets or sets list of prices belongs to price list.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "prices")]
         public System.Collections.Generic.IList<Price> Prices { get; set; }
@@ -4256,6 +4624,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PricelistAssignment class.
         /// </summary>
+        /// <param name="priority">If two PricelistAssignments satisfies the
+        /// conditions and rules, will use one with the greater
+        /// priority</param>
+        /// <param name="startDate">Start of period when Prices Assignment is
+        /// valid. Null value means no limit</param>
+        /// <param name="endDate">End of period when Prices Assignment is
+        /// valid. Null value means no limit</param>
+        /// <param name="dynamicExpression">List of conditions and rules to
+        /// define Prices Assignment is valid</param>
         public PricelistAssignment(string catalogId = default(string), Catalog catalog = default(Catalog), string pricelistId = default(string), Pricelist pricelist = default(Pricelist), string name = default(string), string description = default(string), int? priority = default(int?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), ConditionExpressionTree dynamicExpression = default(ConditionExpressionTree), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             CatalogId = catalogId;
@@ -4306,21 +4683,29 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets if two PricelistAssignments satisfies the conditions
+        /// and rules, will use one with the greater priority
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
         public int? Priority { get; set; }
 
         /// <summary>
+        /// Gets or sets start of period when Prices Assignment is valid. Null
+        /// value means no limit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "startDate")]
         public System.DateTime? StartDate { get; set; }
 
         /// <summary>
+        /// Gets or sets end of period when Prices Assignment is valid. Null
+        /// value means no limit
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "endDate")]
         public System.DateTime? EndDate { get; set; }
 
         /// <summary>
+        /// Gets or sets list of conditions and rules to define Prices
+        /// Assignment is valid
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicExpression")]
         public ConditionExpressionTree DynamicExpression { get; set; }
@@ -5619,6 +6004,44 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
 {
     using System.Linq;
 
+    public partial class PricelistAssignmentSearchResult
+    {
+        /// <summary>
+        /// Initializes a new instance of the PricelistAssignmentSearchResult
+        /// class.
+        /// </summary>
+        public PricelistAssignmentSearchResult() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PricelistAssignmentSearchResult
+        /// class.
+        /// </summary>
+        public PricelistAssignmentSearchResult(long? totalCount = default(long?), System.Collections.Generic.IList<PricelistAssignment> assignments = default(System.Collections.Generic.IList<PricelistAssignment>))
+        {
+            TotalCount = totalCount;
+            Assignments = assignments;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
+        public long? TotalCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "assignments")]
+        public System.Collections.Generic.IList<PricelistAssignment> Assignments { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
+{
+    using System.Linq;
+
     public partial class PricesSearchCriteria
     {
         /// <summary>
@@ -5749,6 +6172,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductPrice class.
         /// </summary>
+        /// <param name="prices">List prices for the products. It includes
+        /// tiered prices also. (Depending on the quantity, for
+        /// example)</param>
         public ProductPrice(string productId = default(string), Product product = default(Product), System.Collections.Generic.IList<Price> prices = default(System.Collections.Generic.IList<Price>))
         {
             ProductId = productId;
@@ -5767,6 +6193,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         public Product Product { get; set; }
 
         /// <summary>
+        /// Gets or sets list prices for the products. It includes tiered
+        /// prices also. (Depending on the quantity, for example)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "prices")]
         public System.Collections.Generic.IList<Price> Prices { get; set; }

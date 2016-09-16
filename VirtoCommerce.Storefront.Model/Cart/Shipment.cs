@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
 using VirtoCommerce.Storefront.Model.Common;
@@ -16,7 +17,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             Items = new List<CartShipmentItem>();
             TaxDetails = new List<TaxDetail>();
             ValidationErrors = new List<ValidationError>();
-            ValidationWarnings = new List<ValidationError>();
+            IsValid = true;
         }
 
         public Shipment(Currency currency)
@@ -26,7 +27,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
         
             ShippingPrice = new Money(currency);
             ShippingPriceWithTax = new Money(currency);
-            TaxTotal = new Money(currency);
+            DiscountTotal = new Money(currency);
+            DiscountTotalWithTax = new Money(currency);
         }
      
         /// <summary>
@@ -135,26 +137,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <summary>
         /// Gets the value of total shipping discount amount
         /// </summary>
-        public Money DiscountTotal
-        {
-            get
-            {
-                var discountTotal = Discounts.Sum(d => d.Amount.Amount);
-
-                return new Money(discountTotal, Currency);
-            }
-        }
-
-        public Money DiscountTotalWithTax
-        {
-            get
-            {
-                var discountTotalWithTax = Discounts.Sum(d => d.AmountWithTax.Amount);
-
-                return new Money(discountTotalWithTax, Currency);
-            }
-        }
-
+        public Money DiscountTotal { get; set; }
+        public Money DiscountTotalWithTax { get; set; }
         /// <summary>
         /// Gets the value of shipping items subtotal
         /// </summary>
@@ -199,7 +183,13 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <summary>
         /// Gets or sets the value of total shipping tax amount
         /// </summary>
-        public Money TaxTotal { get; set; }
+        public Money TaxTotal
+        {
+            get
+            {
+                return TotalWithTax - Total;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the value of shipping tax type
@@ -216,23 +206,20 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-            ShippingPriceWithTax = ShippingPrice;
             //Because TaxLine.Id may contains composite string id & extra info
             var shipmentTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == Id);
-            TaxTotal = new Money(Currency);
-            if(shipmentTaxRates.Any())
+            if (shipmentTaxRates.Any())
             {
-                var totalTaxRate = shipmentTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("total"));
                 var priceTaxRate = shipmentTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("price"));
-                TaxTotal += totalTaxRate.Rate;
                 ShippingPriceWithTax = ShippingPrice + priceTaxRate.Rate;
-            }        
+            }
         }
         #endregion
 
+        #region IValidatable Members
+        public bool IsValid { get; set; }
         public ICollection<ValidationError> ValidationErrors { get; set; }
-
-        public ICollection<ValidationError> ValidationWarnings { get; set; }
+        #endregion
 
         #region IDiscountable Members
         public ICollection<Discount> Discounts { get; private set; }
@@ -245,6 +232,9 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
             Discounts.Clear();
 
+            DiscountTotal = new Money(0m, Currency);
+            DiscountTotalWithTax = new Money(0m, Currency);
+
             foreach (var reward in shipmentRewards)
             {
                 var discount = reward.ToDiscountModel(ShippingPrice, ShippingPriceWithTax);
@@ -252,6 +242,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
                 if (reward.IsValid)
                 {
                     Discounts.Add(discount);
+                    DiscountTotal += discount.Amount;
+                    DiscountTotalWithTax += discount.AmountWithTax;
                 }
             }
         }

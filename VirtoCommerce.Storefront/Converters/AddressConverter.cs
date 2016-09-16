@@ -76,22 +76,22 @@ namespace VirtoCommerce.Storefront.Converters
 
         public static cartModel.Address ToCartServiceModel(this Address address)
         {
-            var addressServiceModel = new cartModel.Address();
+            var retVal = new cartModel.Address();
 
-            addressServiceModel.InjectFrom(address);
-            addressServiceModel.Type = address.Type.ToString();
+            retVal.InjectFrom(address);
+            retVal.AddressType = address.Type.ToString();
 
-            return addressServiceModel;
+            return retVal;
         }
 
         public static Address ToWebModel(this cartModel.Address address)
         {
-            var addressWebModel = new Address();
+            var retVal = new Address();
 
-            addressWebModel.InjectFrom(address);
-            addressWebModel.Type = (AddressType)Enum.Parse(typeof(AddressType), address.Type, true);
+            retVal.InjectFrom(address);
+            retVal.Type = (AddressType)Enum.Parse(typeof(AddressType), address.AddressType, true);
 
-            return addressWebModel;
+            return retVal;
         }
 
         public static Address ToWebModel(this orderModel.Address address)

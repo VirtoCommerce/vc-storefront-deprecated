@@ -2,6 +2,7 @@
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Rest;
 using VirtoCommerce.Storefront.Model;
 
 namespace VirtoCommerce.Storefront.Common
@@ -30,16 +31,21 @@ namespace VirtoCommerce.Storefront.Common
 
             var exception = filterContext.Exception;
 
+            var message = exception.Message;
             var httpStatusCode = HttpStatusCode.InternalServerError;
             if (exception is HttpException)
             {
                 httpStatusCode = (HttpStatusCode)((HttpException)exception).GetHttpCode();
             }
-
+            var httpException = exception as HttpOperationException;
+            if(httpException != null)
+            {
+                message = httpException.Response.Content;
+            }           
             // Grab all the error messages.
             var errorData = new
             {
-                message = filterContext.Exception.Message,
+                message = message,
                 stackTrace = filterContext.Exception.ToString()
             };
 

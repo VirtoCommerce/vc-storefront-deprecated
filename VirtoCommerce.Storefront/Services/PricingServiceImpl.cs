@@ -8,6 +8,7 @@ using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Pricing.Services;
+using VirtoCommerce.Storefront.Model.Tax.Services;
 using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using pricingModel = VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models;
 
@@ -16,13 +17,13 @@ namespace VirtoCommerce.Storefront.Services
     public class PricingServiceImpl : IPricingService
     {
         private readonly IPricingModuleApiClient _pricingApi;
-        private readonly ICoreModuleApiClient _commerceApi;
+        private readonly ITaxEvaluator _taxEvaluator;
         private readonly Func<WorkContext> _workContextFactory;
 
-        public PricingServiceImpl(Func<WorkContext> workContextFactory, IPricingModuleApiClient pricingApi, ICoreModuleApiClient commerceApi)
+        public PricingServiceImpl(Func<WorkContext> workContextFactory, IPricingModuleApiClient pricingApi, ITaxEvaluator taxEvaluator)
         {
             _pricingApi = pricingApi;
-            _commerceApi = commerceApi;
+            _taxEvaluator = taxEvaluator;
             _workContextFactory = workContextFactory;
         }
 
@@ -38,8 +39,7 @@ namespace VirtoCommerce.Storefront.Services
             ApplyProductPricesInternal(products, pricesResponse);
             //Evaluate product taxes
             var taxEvalContext = workContext.ToTaxEvaluationContext(products);
-            var taxRates = await _commerceApi.Commerce.EvaluateTaxesAsync(workContext.CurrentStore.Id, taxEvalContext);
-            ApplyProductTaxInternal(products, taxRates);
+            await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, products);
         }
 
         public void EvaluateProductPrices(ICollection<Product> products)
@@ -53,22 +53,10 @@ namespace VirtoCommerce.Storefront.Services
 
             //Evaluate product taxes
             var taxEvalContext = workContext.ToTaxEvaluationContext(products);
-            var taxRates = _commerceApi.Commerce.EvaluateTaxes(workContext.CurrentStore.Id, taxEvalContext);
-            ApplyProductTaxInternal(products, taxRates);
+            _taxEvaluator.EvaluateTaxes(taxEvalContext, products);
         }
 
         #endregion
-
-        private void ApplyProductTaxInternal(IEnumerable<Product> products, IEnumerable<coreModel.TaxRate> taxes)
-        {
-            var workContext = _workContextFactory();
-            var taxRates = taxes.Select(x => x.ToWebModel(workContext.CurrentCurrency)).ToList();
-
-            foreach (var product in products)
-            {
-                product.ApplyTaxRates(taxRates);
-            }
-        }
 
         private void ApplyProductPricesInternal(IEnumerable<Product> products, IList<pricingModel.Price> prices)
         {

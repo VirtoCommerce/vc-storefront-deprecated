@@ -12,30 +12,37 @@ namespace VirtoCommerce.Storefront.Converters
     {
         public static LineItem ToWebModel(this orderModel.LineItem lineItem, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var webModel = new LineItem();
-
+        
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(lineItem.Currency)) ?? new Currency(language, lineItem.Currency);
 
-            webModel.InjectFrom(lineItem);
+            var retVal = new LineItem(currency);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(lineItem);
 
-            webModel.Currency = currency;
-            webModel.DiscountAmount = new Money(lineItem.DiscountAmount ?? 0, currency);
+            retVal.Currency = currency;
+            retVal.DiscountAmount = new Money(lineItem.DiscountAmount ?? 0, currency);
 
             if (lineItem.DynamicProperties != null)
             {
-                webModel.DynamicProperties = lineItem.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
+                retVal.DynamicProperties = lineItem.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
             }
-
-            webModel.BasePrice = new Money(lineItem.BasePrice ?? 0, currency);
-            webModel.Price = new Money(lineItem.Price ?? 0, currency);
-            webModel.Tax = new Money(lineItem.Tax ?? 0, currency);
+            retVal.Price = new Money(lineItem.Price ?? 0, currency);
+            retVal.PriceWithTax = new Money(lineItem.PriceWithTax ?? 0, currency);
+            retVal.DiscountAmount = new Money(lineItem.DiscountAmount ?? 0, currency);
+            retVal.DiscountAmountWithTax = new Money(lineItem.DiscountAmountWithTax ?? 0, currency);
+            retVal.PlacedPrice = new Money(lineItem.PlacedPrice ?? 0, currency);
+            retVal.PlacedPriceWithTax = new Money(lineItem.PlacedPriceWithTax ?? 0, currency);
+            retVal.ExtendedPrice = new Money(lineItem.ExtendedPrice ?? 0, currency);
+            retVal.ExtendedPriceWithTax = new Money(lineItem.ExtendedPriceWithTax ?? 0, currency);
+            retVal.DiscountTotal = new Money(lineItem.DiscountTotal ?? 0, currency);
+            retVal.DiscountTotalWithTax = new Money(lineItem.DiscountTotalWithTax ?? 0, currency);
+            retVal.Tax = new Money(lineItem.Tax ?? 0, currency);
 
             if (lineItem.TaxDetails != null)
             {
-                webModel.TaxDetails = lineItem.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
+                retVal.TaxDetails = lineItem.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
             }
 
-            return webModel;
+            return retVal;
         }
     }
 }

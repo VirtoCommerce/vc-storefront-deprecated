@@ -5,13 +5,13 @@ using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
-    public static class PaymentConverter
+    public static class CartPaymentConverter
     {
         public static Payment TowebModel(this cartModel.Payment payment, Currency currency)
         {
             var webModel = new Payment(currency);
 
-            webModel.InjectFrom(payment);
+            webModel.InjectFrom<NullableAndEnumValueInjecter>(payment);
 
             webModel.Amount = new Money(payment.Amount ?? 0, currency);
 
@@ -27,20 +27,22 @@ namespace VirtoCommerce.Storefront.Converters
 
         public static cartModel.Payment ToServiceModel(this Payment payment)
         {
-            var serviceModel = new cartModel.Payment();
+            var retVal = new cartModel.Payment();
 
-            serviceModel.InjectFrom(payment);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(payment);
 
-            serviceModel.Amount = (double)payment.Amount.Amount;
+            retVal.Amount = (double)payment.Amount.Amount;
 
             if (payment.BillingAddress != null)
             {
-                serviceModel.BillingAddress = payment.BillingAddress.ToCartServiceModel();
+                retVal.BillingAddress = payment.BillingAddress.ToCartServiceModel();
             }
 
-            serviceModel.Currency = payment.Currency.Code;
+            retVal.Currency = payment.Currency.Code;
 
-            return serviceModel;
+            return retVal;
         }
+
+   
     }
 }

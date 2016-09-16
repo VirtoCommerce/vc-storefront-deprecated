@@ -14,6 +14,7 @@
         "cart": "Cart",
         "remove": "Remove",
         "coupon_code": "Coupon code",
+        "coupon_applied_sucessfuly": "Coupon is valid",
         "invalid_coupon_code": "This code did not match any active coupon. Was it entered correctly?",
         "copyright_text": "All rights reserved",
         "optional_field_sign": "(optional)",
@@ -54,7 +55,8 @@
         "shipping_method": {
             "title": "Shipping method",
             "continue_text": "Continue to payment method",
-            "return_text": "Return to customer information"
+            "return_text": "Return to customer information",
+            "no_avail_methods": "There is no shipping method for current shipping address and items available!"
         },
         "payment_method": {
             "title": "Payment method",

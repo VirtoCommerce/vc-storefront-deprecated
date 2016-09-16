@@ -16,7 +16,7 @@ namespace VirtoCommerce.Storefront.Converters
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(serviceModel.Currency)) ?? new Currency(language, serviceModel.Currency);
             var webModel = new Discount(currency);
 
-            webModel.InjectFrom(serviceModel);
+            webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
             webModel.Amount = new Money(serviceModel.DiscountAmount ?? 0, currency);
 
             return webModel;
@@ -26,7 +26,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var serviceModel = new cartModel.Discount();
 
-            serviceModel.InjectFrom(webModel);
+            serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 
             serviceModel.Currency = webModel.Amount.Currency.Code;
             serviceModel.DiscountAmount = (double)webModel.Amount.Amount;
@@ -39,7 +39,7 @@ namespace VirtoCommerce.Storefront.Converters
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(serviceModel.Currency)) ?? new Currency(language, serviceModel.Currency);
             var webModel = new Discount(currency);
 
-            webModel.InjectFrom(serviceModel);
+            webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
 
             webModel.Amount = new Money(serviceModel.DiscountAmount ?? 0, currency);
 

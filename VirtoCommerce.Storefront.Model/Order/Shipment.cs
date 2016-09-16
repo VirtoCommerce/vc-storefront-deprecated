@@ -10,7 +10,7 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// </summary>
     public class Shipment
     {
-        public Shipment()
+        public Shipment(Currency currency)
         {
             Items = new List<ShipmentItem>();
             Packages = new List<ShipmentPackage>();
@@ -18,6 +18,18 @@ namespace VirtoCommerce.Storefront.Model.Order
             TaxDetails = new List<TaxDetail>();
             ChildrenOperations = new List<Operation>();
             DynamicProperties = new List<DynamicProperty>();
+            Currency = currency;
+
+            Price = new Money(currency);
+            PriceWithTax = new Money(currency);
+            DiscountAmount = new Money(currency);
+            DiscountAmountWithTax = new Money(currency);
+            ItemsSubtotal = new Money(currency);
+            ItemsSubtotalWithTax = new Money(currency);
+            TaxTotal = new Money(currency);
+            Total = new Money(currency);
+            TotalWithTax = new Money(currency);
+
         }
 
         /// <summary>
@@ -64,11 +76,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets EmployeeId
         /// </summary>
         public string EmployeeId { get; set; }
-
-        /// <summary>
-        /// Gets or Sets DiscountAmount
-        /// </summary>
-        public Money DiscountAmount { get; set; }
 
         /// <summary>
         /// Gets or Sets WeightUnit
@@ -177,26 +184,8 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// </summary>
         public bool? TaxIncluded { get; set; }
 
-        /// <summary>
-        /// Money amount without tax
-        /// </summary>
-        /// <value>Money amount without tax</value>
-        public Money Sum { get; set; }
-
-        public Money SumWithTax
-        {
-            get
-            {
-                return Sum + Tax;
-            }
-        }
-
-        /// <summary>
-        /// Tax total
-        /// </summary>
-        /// <value>Tax total</value>
-        public Money Tax { get; set; }
-      
+     
+       
         /// <summary>
         /// Gets or Sets IsCancelled
         /// </summary>
@@ -259,5 +248,32 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets Id
         /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Evaluated from Tax total Tax rate
+        /// </summary>
+        public decimal TaxRate
+        {
+            get
+            {
+                var retVal = 0m;
+                if (TaxTotal != null && Price != null && Price.Amount > 0)
+                {
+                    retVal = TaxTotal.Amount / Price.Amount;
+                }
+                return retVal;
+            }
+        }
+
+        public Money Price { get; set; }
+        public Money PriceWithTax { get; set; }
+        public Money Total { get; set; }
+        public Money TotalWithTax { get; set; }
+        public Money ItemsSubtotal { get; set; }
+        public Money ItemsSubtotalWithTax { get; set; }
+        public Money DiscountAmount { get; set; }
+        public Money DiscountAmountWithTax { get; set; }
+        public Money TaxTotal { get; set; }
+
     }
 }

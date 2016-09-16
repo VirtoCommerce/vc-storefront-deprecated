@@ -355,6 +355,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// </summary>
         public CoreModuleApiClient Client { get; private set; }
 
+        /// <summary>
+        /// Evaluate and return all tax rates for specified store and evaluation
+        /// context
+        /// </summary>
         /// <param name='storeId'>
         /// </param>
         /// <param name='evalContext'>
@@ -500,6 +504,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Return all fulfillment centers registered in the system
+        /// </summary>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -621,7 +628,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Update a existing fulfillment center
+        /// </summary>
         /// <param name='center'>
+        /// fulfillment center
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -758,6 +769,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Delete  fulfillment centers registered in the system
+        /// </summary>
         /// <param name='ids'>
         /// </param>
         /// <param name='customHeaders'>
@@ -769,16 +783,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<FulfillmentCenter>>> DeleteFulfillmentCentersWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteFulfillmentCentersWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (ids == null)
             {
@@ -857,7 +868,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200)
+            if ((int)_statusCode != 204)
             {
                 var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
@@ -880,27 +891,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<FulfillmentCenter>>();
+            var _result = new Microsoft.Rest.HttpOperationResponse();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
-            // Deserialize Response
-            if ((int)_statusCode == 200)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<System.Collections.Generic.IList<FulfillmentCenter>>(_responseContent, this.Client.DeserializationSettings);
-                }
-                catch (Newtonsoft.Json.JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
             if (_shouldTrace)
             {
                 Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
@@ -908,7 +901,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Find fulfillment center by id
+        /// </summary>
         /// <param name='id'>
+        /// fulfillment center id
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1040,6 +1037,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Batch create or update seo infos
+        /// </summary>
         /// <param name='seoInfos'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1307,7 +1307,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Find all SEO records for object by slug
+        /// </summary>
         /// <param name='slug'>
+        /// slug
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1439,6 +1443,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Return all currencies registered in the system
+        /// </summary>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -1560,7 +1567,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Update a existing currency
+        /// </summary>
         /// <param name='currency'>
+        /// currency
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1676,7 +1687,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Create new currency
+        /// </summary>
         /// <param name='currency'>
+        /// currency
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1792,7 +1807,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Delete currencies
+        /// </summary>
         /// <param name='codes'>
+        /// currency codes
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -1921,6 +1940,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Return all package types registered in the system
+        /// </summary>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -2042,7 +2064,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Update a existing package type
+        /// </summary>
         /// <param name='packageType'>
+        /// package type
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2158,7 +2184,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Create new package type
+        /// </summary>
         /// <param name='packageType'>
+        /// package type
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2274,7 +2304,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Delete package types
+        /// </summary>
         /// <param name='ids'>
+        /// package type ids
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2419,6 +2453,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
     /// </summary>
     public static partial class CommerceExtensions
     {
+            /// <summary>
+            /// Evaluate and return all tax rates for specified store and evaluation
+            /// context
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2431,6 +2469,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).EvaluateTaxesAsync(storeId, evalContext), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Evaluate and return all tax rates for specified store and evaluation
+            /// context
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2449,6 +2491,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Return all fulfillment centers registered in the system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2457,6 +2502,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).GetFulfillmentCentersAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Return all fulfillment centers registered in the system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2471,20 +2519,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Update a existing fulfillment center
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='center'>
+            /// fulfillment center
             /// </param>
             public static FulfillmentCenter UpdateFulfillmentCenter(this ICommerce operations, FulfillmentCenter center)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).UpdateFulfillmentCenterAsync(center), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Update a existing fulfillment center
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='center'>
+            /// fulfillment center
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2497,16 +2553,22 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Delete  fulfillment centers registered in the system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
             /// </param>
-            public static System.Collections.Generic.IList<FulfillmentCenter> DeleteFulfillmentCenters(this ICommerce operations, System.Collections.Generic.IList<string> ids)
+            public static void DeleteFulfillmentCenters(this ICommerce operations, System.Collections.Generic.IList<string> ids)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).DeleteFulfillmentCentersAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).DeleteFulfillmentCentersAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Delete  fulfillment centers registered in the system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2515,28 +2577,33 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<FulfillmentCenter>> DeleteFulfillmentCentersAsync(this ICommerce operations, System.Collections.Generic.IList<string> ids, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task DeleteFulfillmentCentersAsync(this ICommerce operations, System.Collections.Generic.IList<string> ids, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.DeleteFulfillmentCentersWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
+                await operations.DeleteFulfillmentCentersWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Find fulfillment center by id
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// fulfillment center id
             /// </param>
             public static FulfillmentCenter GetFulfillmentCenter(this ICommerce operations, string id)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).GetFulfillmentCenterAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Find fulfillment center by id
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
+            /// fulfillment center id
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2549,6 +2616,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Batch create or update seo infos
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2559,6 +2629,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).BatchUpdateSeoInfosAsync(seoInfos), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Batch create or update seo infos
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2602,20 +2675,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Find all SEO records for object by slug
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='slug'>
+            /// slug
             /// </param>
             public static System.Collections.Generic.IList<SeoInfo> GetSeoInfoBySlug(this ICommerce operations, string slug)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).GetSeoInfoBySlugAsync(slug), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Find all SEO records for object by slug
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='slug'>
+            /// slug
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2628,6 +2709,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Return all currencies registered in the system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2636,6 +2720,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).GetAllCurrenciesAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Return all currencies registered in the system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2650,20 +2737,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Update a existing currency
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='currency'>
+            /// currency
             /// </param>
             public static void UpdateCurrency(this ICommerce operations, Currency currency)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).UpdateCurrencyAsync(currency), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Update a existing currency
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='currency'>
+            /// currency
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2673,20 +2768,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 await operations.UpdateCurrencyWithHttpMessagesAsync(currency, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Create new currency
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='currency'>
+            /// currency
             /// </param>
             public static void CreateCurrency(this ICommerce operations, Currency currency)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).CreateCurrencyAsync(currency), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Create new currency
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='currency'>
+            /// currency
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2696,20 +2799,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 await operations.CreateCurrencyWithHttpMessagesAsync(currency, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Delete currencies
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='codes'>
+            /// currency codes
             /// </param>
             public static void DeleteCurrencies(this ICommerce operations, System.Collections.Generic.IList<string> codes)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).DeleteCurrenciesAsync(codes), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Delete currencies
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='codes'>
+            /// currency codes
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2719,6 +2830,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 await operations.DeleteCurrenciesWithHttpMessagesAsync(codes, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Return all package types registered in the system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2727,6 +2841,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).GetAllPackageTypesAsync(), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Return all package types registered in the system
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -2741,20 +2858,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Update a existing package type
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='packageType'>
+            /// package type
             /// </param>
             public static void UpdatePackageType(this ICommerce operations, PackageType packageType)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).UpdatePackageTypeAsync(packageType), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Update a existing package type
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='packageType'>
+            /// package type
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2764,20 +2889,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 await operations.UpdatePackageTypeWithHttpMessagesAsync(packageType, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Create new package type
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='packageType'>
+            /// package type
             /// </param>
             public static void CreatePackageType(this ICommerce operations, PackageType packageType)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).CreatePackageTypeAsync(packageType), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Create new package type
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='packageType'>
+            /// package type
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2787,20 +2920,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 await operations.CreatePackageTypeWithHttpMessagesAsync(packageType, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Delete package types
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// package type ids
             /// </param>
             public static void DeletePackageTypes(this ICommerce operations, System.Collections.Generic.IList<string> ids)
             {
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((ICommerce)s).DeletePackageTypesAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Delete package types
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// package type ids
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -2825,6 +2966,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
     /// </summary>
     public partial interface ICommerce
     {
+        /// <summary>
+        /// Evaluate and return all tax rates for specified store and
+        /// evaluation context
+        /// </summary>
         /// <param name='storeId'>
         /// </param>
         /// <param name='evalContext'>
@@ -2845,6 +2990,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<TaxRate>>> EvaluateTaxesWithHttpMessagesAsync(string storeId, TaxEvaluationContext evalContext, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Return all fulfillment centers registered in the system
+        /// </summary>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -2858,7 +3006,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<FulfillmentCenter>>> GetFulfillmentCentersWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Update a existing fulfillment center
+        /// </summary>
         /// <param name='center'>
+        /// fulfillment center
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2876,6 +3028,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<FulfillmentCenter>> UpdateFulfillmentCenterWithHttpMessagesAsync(FulfillmentCenter center, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Delete  fulfillment centers registered in the system
+        /// </summary>
         /// <param name='ids'>
         /// </param>
         /// <param name='customHeaders'>
@@ -2887,14 +3042,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<FulfillmentCenter>>> DeleteFulfillmentCentersWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteFulfillmentCentersWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Find fulfillment center by id
+        /// </summary>
         /// <param name='id'>
+        /// fulfillment center id
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2912,6 +3068,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<FulfillmentCenter>> GetFulfillmentCenterWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Batch create or update seo infos
+        /// </summary>
         /// <param name='seoInfos'>
         /// </param>
         /// <param name='customHeaders'>
@@ -2947,7 +3106,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<SeoInfo>>> GetSeoDuplicatesWithHttpMessagesAsync(string objectId, string objectType, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Find all SEO records for object by slug
+        /// </summary>
         /// <param name='slug'>
+        /// slug
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2965,6 +3128,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<SeoInfo>>> GetSeoInfoBySlugWithHttpMessagesAsync(string slug, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Return all currencies registered in the system
+        /// </summary>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -2978,7 +3144,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<Currency>>> GetAllCurrenciesWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Update a existing currency
+        /// </summary>
         /// <param name='currency'>
+        /// currency
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -2993,7 +3163,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateCurrencyWithHttpMessagesAsync(Currency currency, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Create new currency
+        /// </summary>
         /// <param name='currency'>
+        /// currency
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3008,7 +3182,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> CreateCurrencyWithHttpMessagesAsync(Currency currency, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Delete currencies
+        /// </summary>
         /// <param name='codes'>
+        /// currency codes
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3023,6 +3201,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteCurrenciesWithHttpMessagesAsync(System.Collections.Generic.IList<string> codes, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Return all package types registered in the system
+        /// </summary>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -3036,7 +3217,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when unable to deserialize the response
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<PackageType>>> GetAllPackageTypesWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Update a existing package type
+        /// </summary>
         /// <param name='packageType'>
+        /// package type
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3051,7 +3236,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdatePackageTypeWithHttpMessagesAsync(PackageType packageType, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Create new package type
+        /// </summary>
         /// <param name='packageType'>
+        /// package type
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3066,7 +3255,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> CreatePackageTypeWithHttpMessagesAsync(PackageType packageType, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Delete package types
+        /// </summary>
         /// <param name='ids'>
+        /// package type ids
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -3120,6 +3313,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// </summary>
         public CoreModuleApiClient Client { get; private set; }
 
+        /// <summary>
+        /// Get user details by user ID
+        /// </summary>
         /// <param name='userId'>
         /// </param>
         /// <param name='customHeaders'>
@@ -3252,6 +3448,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get user details by user name
+        /// </summary>
         /// <param name='userName'>
         /// </param>
         /// <param name='customHeaders'>
@@ -3384,6 +3583,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get user details by external login provider
+        /// </summary>
         /// <param name='loginProvider'>
         /// </param>
         /// <param name='providerKey'>
@@ -3535,6 +3737,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Sign in with user name and password
+        /// </summary>
         /// <param name='userName'>
         /// </param>
         /// <param name='password'>
@@ -3686,6 +3891,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Create a new user
+        /// </summary>
         /// <param name='user'>
         /// </param>
         /// <param name='customHeaders'>
@@ -3823,6 +4031,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Generate a password reset token
+        /// </summary>
+        /// <remarks>
+        /// Generates a password reset token and sends a password reset link to the
+        /// user via email.
+        /// </remarks>
         /// <param name='userId'>
         /// </param>
         /// <param name='storeName'>
@@ -3975,6 +4190,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Reset a password for the user
+        /// </summary>
         /// <param name='userId'>
         /// </param>
         /// <param name='token'>
@@ -4153,6 +4371,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
     /// </summary>
     public static partial class StorefrontSecurityExtensions
     {
+            /// <summary>
+            /// Get user details by user ID
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4163,6 +4384,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStorefrontSecurity)s).GetUserByIdAsync(userId), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get user details by user ID
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4179,6 +4403,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Get user details by user name
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4189,6 +4416,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStorefrontSecurity)s).GetUserByNameAsync(userName), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get user details by user name
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4205,6 +4435,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Get user details by external login provider
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4217,6 +4450,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStorefrontSecurity)s).GetUserByLoginAsync(loginProvider, providerKey), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get user details by external login provider
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4235,6 +4471,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Sign in with user name and password
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4247,6 +4486,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStorefrontSecurity)s).PasswordSignInAsync(userName, password), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Sign in with user name and password
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4265,6 +4507,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Create a new user
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4275,6 +4520,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStorefrontSecurity)s).CreateAsync(user), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Create a new user
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4291,6 +4539,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 }
             }
 
+            /// <summary>
+            /// Generate a password reset token
+            /// </summary>
+            /// <remarks>
+            /// Generates a password reset token and sends a password reset link to the
+            /// user via email.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4307,6 +4562,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 System.Threading.Tasks.Task.Factory.StartNew(s => ((IStorefrontSecurity)s).GenerateResetPasswordTokenAsync(userId, storeName, language, callbackUrl), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Generate a password reset token
+            /// </summary>
+            /// <remarks>
+            /// Generates a password reset token and sends a password reset link to the
+            /// user via email.
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4326,6 +4588,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 await operations.GenerateResetPasswordTokenWithHttpMessagesAsync(userId, storeName, language, callbackUrl, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Reset a password for the user
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4340,6 +4605,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((IStorefrontSecurity)s).ResetPasswordAsync(userId, token, newPassword), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Reset a password for the user
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -4375,6 +4643,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
     /// </summary>
     public partial interface IStorefrontSecurity
     {
+        /// <summary>
+        /// Get user details by user ID
+        /// </summary>
         /// <param name='userId'>
         /// </param>
         /// <param name='customHeaders'>
@@ -4393,6 +4664,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<StorefrontUser>> GetUserByIdWithHttpMessagesAsync(string userId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get user details by user name
+        /// </summary>
         /// <param name='userName'>
         /// </param>
         /// <param name='customHeaders'>
@@ -4411,6 +4685,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<StorefrontUser>> GetUserByNameWithHttpMessagesAsync(string userName, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get user details by external login provider
+        /// </summary>
         /// <param name='loginProvider'>
         /// </param>
         /// <param name='providerKey'>
@@ -4431,6 +4708,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<StorefrontUser>> GetUserByLoginWithHttpMessagesAsync(string loginProvider, string providerKey, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Sign in with user name and password
+        /// </summary>
         /// <param name='userName'>
         /// </param>
         /// <param name='password'>
@@ -4451,6 +4731,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SignInResult>> PasswordSignInWithHttpMessagesAsync(string userName, string password, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Create a new user
+        /// </summary>
         /// <param name='user'>
         /// </param>
         /// <param name='customHeaders'>
@@ -4469,6 +4752,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SecurityResult>> CreateWithHttpMessagesAsync(ApplicationUserExtended user, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Generate a password reset token
+        /// </summary>
+        /// <remarks>
+        /// Generates a password reset token and sends a password reset link
+        /// to the user via email.
+        /// </remarks>
         /// <param name='userId'>
         /// </param>
         /// <param name='storeName'>
@@ -4490,6 +4780,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> GenerateResetPasswordTokenWithHttpMessagesAsync(string userId, string storeName, string language, string callbackUrl, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Reset a password for the user
+        /// </summary>
         /// <param name='userId'>
         /// </param>
         /// <param name='token'>
@@ -6725,6 +7018,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the StorefrontUser class.
         /// </summary>
+        /// <param name="allowedStores">List of stores which  user can sing
+        /// in</param>
         /// <param name="userState">Possible values include:
         /// 'pendingApproval', 'approved', 'rejected'</param>
         public StorefrontUser(System.Collections.Generic.IList<string> allowedStores = default(System.Collections.Generic.IList<string>), string id = default(string), string userName = default(string), string email = default(string), string phoneNumber = default(string), string storeId = default(string), string memberId = default(string), string icon = default(string), bool? isAdministrator = default(bool?), string userType = default(string), string userState = default(string), string password = default(string), string passwordHash = default(string), string securityStamp = default(string), System.Collections.Generic.IList<ApplicationUserLogin> logins = default(System.Collections.Generic.IList<ApplicationUserLogin>), System.Collections.Generic.IList<Role> roles = default(System.Collections.Generic.IList<Role>), System.Collections.Generic.IList<string> permissions = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<ApiAccount> apiAccounts = default(System.Collections.Generic.IList<ApiAccount>))
@@ -6750,6 +7045,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         }
 
         /// <summary>
+        /// Gets or sets list of stores which  user can sing in
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "allowedStores")]
         public System.Collections.Generic.IList<string> AllowedStores { get; set; }

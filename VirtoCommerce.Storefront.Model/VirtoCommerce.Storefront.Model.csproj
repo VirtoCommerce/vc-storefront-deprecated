@@ -64,18 +64,11 @@
     <Compile Include="Attachment.cs" />
     <Compile Include="BankCardInfo.cs" />
     <Compile Include="Cart\CartShipmentItem.cs" />
-    <Compile Include="Cart\PaymentUpdateModel.cs" />
     <Compile Include="Cart\Services\ICartBuilder.cs" />
-    <Compile Include="Cart\Services\ICartValidator.cs" />
     <Compile Include="Cart\Services\IValidatable.cs" />
-    <Compile Include="Cart\ShipmentItemUpdateModel.cs" />
-    <Compile Include="Cart\ShipmentUpdateModel.cs" />
-    <Compile Include="Cart\ValidationErrors\CartSubtotalError.cs" />
-    <Compile Include="Cart\ValidationErrors\ProductPriceError.cs" />
-    <Compile Include="Cart\ValidationErrors\ProductQuantityError.cs" />
-    <Compile Include="Cart\ValidationErrors\ProductUnavailableError.cs" />
-    <Compile Include="Cart\ValidationErrors\ShippingPriceError.cs" />
-    <Compile Include="Cart\ValidationErrors\ShippingUnavailableError.cs" />
+    <Compile Include="Cart\ValidationErrors\PriceError.cs" />
+    <Compile Include="Cart\ValidationErrors\QuantityError.cs" />
+    <Compile Include="Cart\ValidationErrors\UnavailableError.cs" />
     <Compile Include="Cart\ValidationErrors\ValidationError.cs" />
     <Compile Include="Catalog\Aggregation.cs" />
     <Compile Include="Catalog\AggregationItem.cs" />
@@ -107,6 +100,7 @@
     <Compile Include="Common\MutablePagedListExtensions.cs" />
     <Compile Include="Common\LocalCacheManager.cs" />
     <Compile Include="Common\MutablePagedList.cs" />
+    <Compile Include="Common\NameValueCollectionExtensions.cs" />
     <Compile Include="Common\SortInfo.cs" />
     <Compile Include="EditorialReview.cs" />
     <Compile Include="Common\StreamExtensions.cs" />
@@ -140,6 +134,8 @@
     <Compile Include="StorefrontNotification.cs" />
     <Compile Include="StorefrontNotificationType.cs" />
     <Compile Include="Stores\StoreStatus.cs" />
+    <Compile Include="Tax\Services\ITaxEvaluator.cs" />
+    <Compile Include="Tax\TaxEvaluationContext.cs" />
     <Compile Include="Tax\TaxLine.cs" />
     <Compile Include="Tax\TaxRate.cs" />
     <Compile Include="TierPrice.cs" />
@@ -195,7 +191,7 @@
     <Compile Include="Order\Shipment.cs" />
     <Compile Include="Order\ShipmentItem.cs" />
     <Compile Include="Order\ShipmentPackage.cs" />
-    <Compile Include="PaymentMethod.cs" />
+    <Compile Include="Cart\PaymentMethod.cs" />
     <Compile Include="Pricing\Services\IPricingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quote\QuoteItem.cs" />
@@ -214,7 +210,7 @@
     <Compile Include="StaticContent\ContentPage.cs" />
     <Compile Include="StaticContent\ContentPublicationStatus.cs" />
     <Compile Include="StaticContent\Services\IStaticContentService.cs" />
-    <Compile Include="ShippingMethod.cs" />
+    <Compile Include="Cart\ShippingMethod.cs" />
     <Compile Include="Marketing\Discount.cs" />
     <Compile Include="Cart\LineItem.cs" />
     <Compile Include="Cart\Payment.cs" />
@@ -222,7 +218,6 @@
     <Compile Include="Cart\ShoppingCart.cs" />
     <Compile Include="Stores\Store.cs" />
     <Compile Include="Tax\TaxDetail.cs" />
-    <Compile Include="ValidationType.cs" />
     <Compile Include="Vendor.cs" />
     <Compile Include="WorkContext.cs" />
   </ItemGroup>
