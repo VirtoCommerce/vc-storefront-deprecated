@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
+using System.Web.Optimization;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
@@ -65,8 +66,8 @@ namespace VirtoCommerce.Storefront.Owin
             }
             else
             {
-                if (IsStorefrontRequest(context.Request))
-                {
+				if (IsStorefrontRequest(context.Request) && !IsBundleRequest(context.Request))
+				{
                     await HandleStorefrontRequest(context);
                 }
 
@@ -102,7 +103,13 @@ namespace VirtoCommerce.Storefront.Owin
             return retVal;
         }
 
-        private async Task HandleStorefrontRequest(IOwinContext context)
+		private static bool IsBundleRequest(IOwinRequest request)
+		{
+			var path = "~" + request.Path;
+			return BundleTable.Bundles.Any(b => b.Path.Equals(path, StringComparison.OrdinalIgnoreCase));
+		}
+
+		private async Task HandleStorefrontRequest(IOwinContext context)
         {
             var workContext = _container.Resolve<WorkContext>();
 

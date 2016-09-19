@@ -69,8 +69,9 @@ namespace VirtoCommerce.LiquidThemeEngine
             Template.RegisterFilter(typeof(HtmlFilters));
             Template.RegisterFilter(typeof(StringFilters));
             Template.RegisterFilter(typeof(ArrayFilters));
+			Template.RegisterFilter(typeof(BundleFilters));
 
-            Condition.Operators["contains"] = CommonOperators.ContainsMethod;
+			Condition.Operators["contains"] = CommonOperators.ContainsMethod;
 
             Template.RegisterTag<LayoutTag>("layout");
             Template.RegisterTag<FormTag>("form");
