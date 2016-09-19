@@ -16,9 +16,7 @@ namespace VirtoCommerce.Storefront.Model
         {
             Currency = currency;
             Price = new Money(currency);
-            PriceWithTax = new Money(currency);
-            DiscountTotal = new Money(currency);
-            DiscountTotalWithTax = new Money(currency);
+            DiscountAmount = new Money(currency);           
         }
         /// <summary>
         /// Gets or sets the value of shipping method code
@@ -49,10 +47,18 @@ namespace VirtoCommerce.Storefront.Model
         /// price without discount and taxes
         /// </summary>
         public Money Price { get; set; }
+
         /// <summary>
         ///  price with tax but without discount
         /// </summary>
-        public Money PriceWithTax { get; set; }
+        public Money PriceWithTax
+        {
+            get
+            {
+                return Price + Price * TaxPercentRate;
+            }
+        }
+
         /// <summary>
         /// Resulting price with discount but without tax
         /// </summary>
@@ -60,7 +66,7 @@ namespace VirtoCommerce.Storefront.Model
         {
             get
             {
-                return Price - DiscountTotal;
+                return Price - DiscountAmount;
             }
         }
         /// <summary>
@@ -70,19 +76,21 @@ namespace VirtoCommerce.Storefront.Model
         {
             get
             {
-                return PriceWithTax - DiscountTotalWithTax;
+                return PriceWithTax - DiscountAmountWithTax;
             }
         }
 
         /// <summary>
         /// Total discount amount without tax
         /// </summary>
-        public Money DiscountTotal { get; set; }
-        /// <summary>
-        /// Total discount amount with tax
-        /// </summary>
-        public Money DiscountTotalWithTax { get; set; }
-
+        public Money DiscountAmount { get; set; }
+        public Money DiscountAmountWithTax
+        {
+            get
+            {
+                return DiscountAmount + DiscountAmount * TaxPercentRate;
+            }
+        }
 
         #region ITaxable Members
         /// <summary>
@@ -101,6 +109,8 @@ namespace VirtoCommerce.Storefront.Model
         /// </summary>
         public string TaxType { get; set; }
 
+        public decimal TaxPercentRate { get; private set; }
+
         /// <summary>
         /// Gets or sets the collection of line item tax details lines
         /// </summary>
@@ -110,13 +120,11 @@ namespace VirtoCommerce.Storefront.Model
         public ICollection<TaxDetail> TaxDetails { get; set; }
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
-        {
-            var shippingMethodTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == ShipmentMethodCode && x.Line.Id.SplitIntoTuple('&').Item2 == OptionName);
-
-            var shippingMethodTaxRate = shippingMethodTaxRates.FirstOrDefault();
-            if (shippingMethodTaxRate != null)
+        {          
+            var taxRate = taxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item1 == ShipmentMethodCode && x.Line.Id.SplitIntoTuple('&').Item2 == OptionName);
+            if (taxRate != null && Total.Amount > 0 && taxRate.Rate.Amount > 0)
             {
-                PriceWithTax = Price + shippingMethodTaxRate.Rate;
+                TaxPercentRate = taxRate.Rate.Amount / Total.Amount;            
             }
         }
 
@@ -132,18 +140,16 @@ namespace VirtoCommerce.Storefront.Model
             var shipmentRewards = rewards.Where(r => r.RewardType == PromotionRewardType.ShipmentReward && (r.ShippingMethodCode.IsNullOrEmpty() || r.ShippingMethodCode.EqualsInvariant(ShipmentMethodCode)));
 
             Discounts.Clear();
-            DiscountTotal = new Money(0m, Currency);
-            DiscountTotalWithTax = new Money(0m, Currency);
+            DiscountAmount = new Money(0m, Currency);
 
             foreach (var reward in shipmentRewards)
             {
-                var discount = reward.ToDiscountModel(Price, PriceWithTax);
+                var discount = reward.ToDiscountModel(Price);
 
                 if (reward.IsValid)
                 {
                     Discounts.Add(discount);
-                    DiscountTotal += discount.Amount;
-                    DiscountTotalWithTax += discount.AmountWithTax;
+                    DiscountAmount += discount.Amount;
                 }
             }
         }

@@ -104,40 +104,25 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     {
                         result.FulfillmentStatus = orderShipment.Status;
                         result.FulfillmentStatusLabel = orderShipment.Status;
-                    }
+                    }                 
+                }              
 
-                    if (orderShipment.TaxTotal.Amount > 0)
-                    {
-                        taxLines.Add(new Objects.TaxLine { Title = "Shipping tax", Price = orderShipment.TaxTotal.Amount * 100, Rate = orderShipment.TaxRate });
-                    }
-                }
-
-                var shipmentsWithTax = order.Shipments.Where(s => s.TaxTotal.Amount > 0 && s.Total.Amount > 0).ToList();
-
-                if (shipmentsWithTax.Count > 0)
+                if (order.ShippingTaxTotal.Amount > 0)
                 {
                     taxLines.Add(new Objects.TaxLine
                     {
                         Title = "Shipping",
-                        Price = shipmentsWithTax.Sum(s => s.TaxTotal.Amount) * 100,
-                        Rate = shipmentsWithTax.Average(s => s.TaxRate)
+                        Price = order.ShippingTaxTotal.Amount * 100,
+                        Rate = order.Shipments.Average(s => s.TaxPercentRate)
                     });
-                }
-
-                var shipmentsWithDiscount = order.Shipments
-                    .Where(s => s.DiscountAmount.Amount > 0)
-                    .ToList();
-
-                if (shipmentsWithDiscount.Any())
+                }               
+                if (order.ShippingDiscountTotal.Amount > 0)
                 {
-                    var shipmentDiscount = shipmentsWithDiscount.Sum(s => s.DiscountAmount.Amount);
-                    discountTotal += shipmentDiscount;
-
-                    discounts.Add(new Discount
+                     discounts.Add(new Discount
                     {
                         Type = "ShippingDiscount",
                         Code = "Shipping",
-                        Amount = shipmentDiscount * 100,
+                        Amount = order.ShippingDiscountTotal.Amount * 100,
                     });
                 }
             }
@@ -145,42 +130,32 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             if (order.Items != null)
             {
                 result.LineItems = order.Items.Select(i => i.ToShopifyModel(urlBuilder)).ToArray();
-                result.SubtotalPrice = order.Items.Sum(i => i.Price.Amount * i.Quantity ?? 0) * 100;
-                result.SubtotalPriceWithTax = order.Items.Sum(i => i.PriceWithTax.Amount * i.Quantity ?? 0) * 100;
+                result.SubtotalPrice = order.SubTotal.Amount * 100;
+                result.SubtotalPriceWithTax = order.SubTotalWithTax.Amount * 100;
 
-                var itemsWithTax = order.Items
-                    .Where(i => i.Tax.Amount > 0m)
-                    .ToList();
-
-                if (itemsWithTax.Any() && order.SubTotal.Amount > 0)
+                if (order.SubTotalTaxTotal.Amount > 0)
                 {
                     taxLines.Add(new Objects.TaxLine
                     {
                         Title = "Line items",
-                        Price = itemsWithTax.Sum(i => i.Tax.Amount * 100),
-                        Rate = itemsWithTax.Sum(i => i.Tax.Amount) / order.SubTotal.Amount
+                        Price = order.SubTotalTaxTotal.Amount * 100,
+                        Rate = order.Items.Average(i => i.TaxPercentRate)
                     });
-                }
-
-                var itemsWithDiscount = order.Items
-                    .Where(i => i.DiscountAmount.Amount > 0m)
-                    .ToList();
-
-                if (itemsWithDiscount.Any())
-                {
-                    var itemsDiscount = itemsWithDiscount.Sum(i => i.DiscountAmount.Amount);
-                    discountTotal += itemsDiscount;
-
-                    discounts.Add(new Discount
-                    {
-                        Type = "FixedAmountDiscount",
-                        Code = "Items",
-                        Amount = itemsDiscount * 100,
-                    });
-                }
+                }          
             }
 
-            if(!order.InPayments.IsNullOrEmpty())
+
+            if (order.DiscountAmount.Amount > 0)
+            {
+                discounts.Add(new Discount
+                {
+                    Type = "Order subtotal",
+                    Code = "Order",
+                    Amount = order.DiscountAmount.Amount * 100
+                });
+            }
+
+            if (!order.InPayments.IsNullOrEmpty())
             {
                 result.Transactions = order.InPayments.Select(x => x.ToShopifyModel()).ToArray();
             }

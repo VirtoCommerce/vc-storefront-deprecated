@@ -27,8 +27,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             : this()
         {
             Currency = currency;
-            TaxTotal = new Money(currency);
-
+            Price = new ProductPrice(currency);
         }
 
         /// <summary>
@@ -298,7 +297,21 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         /// <summary>
         /// Gets or sets the value of total shipping tax amount
         /// </summary>
-        public Money TaxTotal { get; set; }
+        public Money TaxTotal
+        {
+            get
+            {
+                return Price != null ? Price.TaxTotal : null;
+            }
+        }
+
+        public decimal TaxPercentRate
+        {
+            get
+            {
+                return Price != null ? Price.TaxPercentRate : 0m;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the value of shipping tax type
@@ -315,35 +328,8 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-            Price.ListPriceWithTax = Price.ListPrice;
-            Price.SalePriceWithTax = Price.SalePrice;
-
-            TaxTotal = new Money(Currency);
-
-            // TaxLine.Id can be a composite string: id&extra_info
-            var productTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == Id).ToList();
-            if (productTaxRates.Any())
-            {
-                var listPriceRate = productTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("list"));
-                var salePriceRate = productTaxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("sale"));
-                if (salePriceRate == null)
-                {
-                    salePriceRate = listPriceRate;
-                }
-                TaxTotal += salePriceRate.Rate;
-                Price.ListPriceWithTax = Price.ListPrice + listPriceRate.Rate;
-                Price.SalePriceWithTax = Price.SalePrice + salePriceRate.Rate;
-
-                //Apply tax for tier prices
-                foreach (var tierPrice in Price.TierPrices)
-                {
-                    if (tierPrice != null)
-                    {
-                        var tierPriceTaxRate = productTaxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant(tierPrice.Quantity.ToString()));
-                        tierPrice.Tax = tierPriceTaxRate.Rate;
-                    }
-                }
-            }
+            var productTaxRates = taxRates.Where(x => x.Line.Id != null && x.Line.Id.EqualsInvariant(Id ?? ""));
+            Price.ApplyTaxRates(productTaxRates);
         }
 
         #endregion
@@ -362,21 +348,27 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             }
 
             Discounts.Clear();
+            Price.DiscountAmount = new Money(Math.Max(0, (Price.ListPrice - Price.SalePrice).Amount), Currency);
 
             foreach (var reward in productRewards)
             {
-                //Apply discount to main price
-                var discount = reward.ToDiscountModel(Price.SalePrice, Price.SalePriceWithTax);
+                //Initialize tier price discount amount by default values
+                var discount = reward.ToDiscountModel(Price.SalePrice);
+                foreach(var tierPrice in Price.TierPrices)
+                {
+                    tierPrice.DiscountAmount = new Money(Math.Max(0, (Price.ListPrice - tierPrice.Price).Amount), Currency);
+                }
 
                 if (reward.IsValid)
                 {
                     Discounts.Add(discount);
-                    Price.ActiveDiscount = discount;
+                    Price.DiscountAmount += discount.Amount;
+
                     //apply discount to tier prices
                     foreach (var tierPrice in Price.TierPrices)
                     {
-                        discount = reward.ToDiscountModel(tierPrice.Price, tierPrice.PriceWithTax);
-                        tierPrice.ActiveDiscount = discount;
+                        discount = reward.ToDiscountModel(tierPrice.Price);
+                        tierPrice.DiscountAmount += discount.Amount;
                     }
                 }
             }

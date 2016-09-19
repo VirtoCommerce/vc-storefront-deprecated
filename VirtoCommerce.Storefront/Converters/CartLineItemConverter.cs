@@ -14,14 +14,12 @@ namespace VirtoCommerce.Storefront.Converters
         public static LineItem ToLineItem(this Product product, Language language, int quantity)
         {
             var retVal = new LineItem(product.Price.Currency, language);
-
+            
             retVal.InjectFrom<NullableAndEnumValueInjecter>(product);
-
+            retVal.Id = null;
             retVal.ImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
             retVal.ListPrice = product.Price.ListPrice;
-            retVal.ListPriceWithTax = product.Price.ListPriceWithTax;
             retVal.SalePrice = product.Price.GetTierPrice(quantity).Price;
-            retVal.SalePriceWithTax = product.Price.GetTierPrice(quantity).PriceWithTax;
             retVal.ProductId = product.Id;
             retVal.Quantity = quantity;
 
@@ -54,12 +52,9 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.IsGift = serviceModel.IsGift == true;
             retVal.IsReccuring = serviceModel.IsReccuring == true;
             retVal.ListPrice = new Money(serviceModel.ListPrice ?? 0, currency);
-            retVal.ListPriceWithTax = new Money(serviceModel.ListPriceWithTax ?? 0, currency);
             retVal.RequiredShipping = serviceModel.RequiredShipping == true;
             retVal.SalePrice = new Money(serviceModel.SalePrice ?? 0, currency);
-            retVal.SalePriceWithTax = new Money(serviceModel.SalePriceWithTax ?? 0, currency);
             retVal.DiscountAmount = new Money(serviceModel.DiscountAmount ?? 0, currency);
-            retVal.DiscountAmountWithTax = new Money(serviceModel.DiscountAmountWithTax ?? 0, currency);
             retVal.TaxIncluded = serviceModel.TaxIncluded == true;
             retVal.Weight = (decimal?)serviceModel.Weight;
             retVal.Width = (decimal?)serviceModel.Width;
@@ -71,28 +66,26 @@ namespace VirtoCommerce.Storefront.Converters
 
         public static cartModel.LineItem ToServiceModel(this LineItem webModel)
         {
-            var serviceModel = new cartModel.LineItem();
+            var retVal = new cartModel.LineItem();
 
-            serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 
-            serviceModel.Currency = webModel.Currency.Code;
-            serviceModel.Discounts = webModel.Discounts.Select(d => d.ToServiceModel()).ToList();
+            retVal.Currency = webModel.Currency.Code;
+            retVal.Discounts = webModel.Discounts.Select(d => d.ToServiceModel()).ToList();
          
-            serviceModel.ListPrice = (double)webModel.ListPrice.Amount;
-            serviceModel.ListPriceWithTax = (double)webModel.ListPriceWithTax.Amount;
-            serviceModel.SalePrice = (double)webModel.SalePrice.Amount;
-            serviceModel.SalePriceWithTax = (double)webModel.SalePriceWithTax.Amount;
-            serviceModel.DiscountAmount = (double)webModel.DiscountAmount.Amount;
-            serviceModel.DiscountAmountWithTax = (double)webModel.DiscountAmountWithTax.Amount;
-            serviceModel.TaxDetails = webModel.TaxDetails.Select(td => td.ToCartApiModel()).ToList();
-            serviceModel.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToCartApiModel()).ToList();
-            serviceModel.VolumetricWeight = (double)(webModel.VolumetricWeight ?? 0);
-            serviceModel.Weight = (double?)webModel.Weight;
-            serviceModel.Width = (double?)webModel.Width;
-            serviceModel.Height = (double?)webModel.Height;
-            serviceModel.Length = (double?)webModel.Length;
+            retVal.ListPrice = (double)webModel.ListPrice.Amount;
+            retVal.SalePrice = (double)webModel.SalePrice.Amount;
+            retVal.TaxPercentRate = (double)webModel.TaxPercentRate;
+            retVal.DiscountAmount = (double)webModel.DiscountAmount.Amount;
+            retVal.TaxDetails = webModel.TaxDetails.Select(td => td.ToCartApiModel()).ToList();
+            retVal.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToCartApiModel()).ToList();
+            retVal.VolumetricWeight = (double)(webModel.VolumetricWeight ?? 0);
+            retVal.Weight = (double?)webModel.Weight;
+            retVal.Width = (double?)webModel.Width;
+            retVal.Height = (double?)webModel.Height;
+            retVal.Length = (double?)webModel.Length;
 
-            return serviceModel;
+            return retVal;
         }
 
         public static CartShipmentItem ToShipmentItem(this LineItem lineItem)

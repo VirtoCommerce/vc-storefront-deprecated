@@ -48,20 +48,27 @@ namespace VirtoCommerce.Storefront.Converters
                 retVal.Shipments = order.Shipments.Select(s => s.ToWebModel(availCurrencies, language)).ToList();
             }
 
-
+            if (!order.Discounts.IsNullOrEmpty())
+            {
+                retVal.Discounts.AddRange(order.Discounts.Select(x => x.ToWebModel(new[] { currency }, language)));
+            }
             if (order.TaxDetails != null)
             {
                 retVal.TaxDetails = order.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
             }
 
             retVal.DiscountAmount = new Money(order.DiscountAmount ?? 0, currency);
-            retVal.DiscountAmountWithTax = new Money(order.DiscountAmountWithTax ?? 0, currency);
             retVal.Total = new Money(order.Total ?? 0, currency);
             retVal.SubTotal = new Money(order.SubTotal ?? 0, currency);
             retVal.SubTotalWithTax = new Money(order.SubTotalWithTax ?? 0, currency);
             retVal.TaxTotal = new Money(order.TaxTotal ?? 0, currency);
             retVal.ShippingTotal = new Money(order.ShippingTotal ?? 0, currency);
             retVal.ShippingTotalWithTax = new Money(order.ShippingTotalWithTax ?? 0, currency);
+            retVal.ShippingTaxTotal = new Money(order.ShippingTaxTotal ?? 0, currency);
+            retVal.SubTotalTaxTotal = new Money(order.SubTotalTaxTotal ?? 0, currency);
+            retVal.SubTotalDiscount = new Money(order.SubTotalDiscount ?? 0, currency);
+            retVal.SubTotalDiscountWithTax = new Money(order.SubTotalDiscountWithTax ?? 0, currency);
+
 
             return retVal;
         }

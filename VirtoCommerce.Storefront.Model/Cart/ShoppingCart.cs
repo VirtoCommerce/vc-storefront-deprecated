@@ -18,7 +18,6 @@ namespace VirtoCommerce.Storefront.Model.Cart
             HandlingTotal = new Money(currency);
             HandlingTotalWithTax = new Money(currency);
             DiscountAmount = new Money(currency);
-            DiscountAmountWithTax = new Money(currency);
             Addresses = new List<Address>();
             Discounts = new List<Discount>();
             Items = new List<LineItem>();
@@ -189,7 +188,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                var shippingPrice = Shipments.Sum(s => s.ShippingPrice.Amount);
+                var shippingPrice = Shipments.Sum(s => s.Price.Amount);
                 return new Money(shippingPrice, Currency);
             }
         }
@@ -198,7 +197,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                var shippingPriceWithTax = Shipments.Sum(s => s.ShippingPriceWithTax.Amount);
+                var shippingPriceWithTax = Shipments.Sum(s => s.PriceWithTax.Amount);
                 return new Money(shippingPriceWithTax, Currency);
             }
         }
@@ -231,9 +230,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         public Money HandlingTotal { get; set; }
         public Money HandlingTotalWithTax { get; set; }
 
-        public Money DiscountAmount { get; set; }
-        public Money DiscountAmountWithTax { get; set; }
-
+        public Money DiscountAmount { get; set; } 
 
         /// <summary>
         /// Gets the value of total discount amount
@@ -242,11 +239,10 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                var discountTotal = Discounts.Sum(d => d.Amount.Amount);
                 var itemDiscountTotal = Items.Sum(i => i.DiscountTotal.Amount);
-                var shipmentDiscountTotal = Shipments.Sum(s => s.DiscountTotal.Amount);
+                var shipmentDiscountTotal = Shipments.Sum(s => s.DiscountAmount.Amount);
   
-                return new Money(DiscountAmount.Amount + discountTotal + itemDiscountTotal + shipmentDiscountTotal, Currency);
+                return new Money(DiscountAmount.Amount + itemDiscountTotal + shipmentDiscountTotal, Currency);
             }
         }
 
@@ -255,11 +251,10 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                var discountTotalWithTax = Discounts.Sum(d => d.AmountWithTax.Amount);
                 var itemDiscountTotalWithTax = Items.Sum(i => i.DiscountTotalWithTax.Amount);
-                var shipmentDiscountTotalWithTax = Shipments.Sum(s => s.DiscountTotalWithTax.Amount);
+                var shipmentDiscountTotalWithTax = Shipments.Sum(s => s.DiscountAmountWithTax.Amount);
 
-                return new Money(DiscountAmountWithTax.Amount + discountTotalWithTax + itemDiscountTotalWithTax + shipmentDiscountTotalWithTax, Currency);
+                return new Money(DiscountAmount.Amount + itemDiscountTotalWithTax + shipmentDiscountTotalWithTax, Currency);
             }
         }
 
@@ -317,16 +312,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// Dynamic properties collections
         /// </summary>
         /// <value>Dynamic properties collections</value>
-        public ICollection<DynamicProperty> DynamicProperties { get; set; }
-
-      
-        public bool HasValidationErrors
-        {
-            get
-            {
-                return ValidationErrors.Any() || Items.Where(i => i.ValidationErrors.Any()).Any() || Shipments.Where(s => s.ValidationErrors.Any()).Any();
-            }
-        }
+        public ICollection<DynamicProperty> DynamicProperties { get; set; }      
+   
 
         public ICollection<PaymentMethod> AvailablePaymentMethods { get; set; }
 
@@ -351,18 +338,22 @@ namespace VirtoCommerce.Storefront.Model.Cart
         public void ApplyRewards(IEnumerable<PromotionReward> rewards)
         {
             Discounts.Clear();
+            DiscountAmount = new Money(Currency);
 
             var cartRewards = rewards.Where(x => x.RewardType == PromotionRewardType.CartSubtotalReward);
             foreach (var reward in cartRewards)
             {
-                var discount = reward.ToDiscountModel(ExtendedPriceTotal, ExtendedPriceTotalWithTax);
+                //When a discount is applied to the cart subtotal, the tax calculation has already been applied, and is reflected in the tax subtotal.
+                //Therefore, a discount applying to the cart subtotal will occur after tax.
+                //For instance, if the cart subtotal is $100, and $15 is the tax subtotal, a cart - wide discount of 10 % will yield a total of $105($100 subtotal – $10 discount + $15 tax on the original $100).
+                              
+                var discount = reward.ToDiscountModel(ExtendedPriceTotal);
 
                 if (reward.IsValid)
                 {
                     Discounts.Add(discount);
                 }
-                DiscountAmount = discount.Amount;
-                DiscountAmountWithTax = discount.AmountWithTax;
+                DiscountAmount = discount.Amount;   
             }
 
             var lineItemRewards = rewards.Where(x => x.RewardType == PromotionRewardType.CatalogItemAmountReward);
@@ -409,6 +400,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
                 return retVal;
             }
         }
+
+        public decimal TaxPercentRate { get; private set; }
 
         /// <summary>
         /// Gets or sets the value of shipping tax type

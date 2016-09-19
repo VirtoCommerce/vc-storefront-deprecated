@@ -23,18 +23,16 @@ namespace VirtoCommerce.Storefront.Services
         private readonly IPricingService _pricingService;
         private readonly IInventoryModuleApiClient _inventoryModuleApi;
         private readonly ISearchModuleApiClient _searchApi;
-        private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ICustomerService _customerService;
         private readonly Func<WorkContext> _workContextFactory;
 
-        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, ICatalogModuleApiClient catalogModuleApi, IPricingService pricingService, IInventoryModuleApiClient inventoryModuleApi, ISearchModuleApiClient searchApi, IPromotionEvaluator promotionEvaluator, ICustomerService customerService)
+        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, ICatalogModuleApiClient catalogModuleApi, IPricingService pricingService, IInventoryModuleApiClient inventoryModuleApi, ISearchModuleApiClient searchApi, ICustomerService customerService)
         {
             _workContextFactory = workContextFactory;
             _catalogModuleApi = catalogModuleApi;
             _pricingService = pricingService;
             _inventoryModuleApi = inventoryModuleApi;
             _searchApi = searchApi;
-            _promotionEvaluator = promotionEvaluator;
             _customerService = customerService;
         }
 
@@ -67,11 +65,7 @@ namespace VirtoCommerce.Storefront.Services
 
                 if (responseGroup.HasFlag(ItemResponseGroup.ItemWithPrices))
                 {
-                    await _pricingService.EvaluateProductPricesAsync(allProducts);
-                    if ((responseGroup | ItemResponseGroup.ItemWithDiscounts) == responseGroup)
-                    {
-                        await LoadProductDiscountsAsync(allProducts);
-                    }
+                    await _pricingService.EvaluateProductPricesAsync(allProducts);                  
                 }
 
                 if (responseGroup.HasFlag(ItemResponseGroup.ItemWithVendor))
@@ -247,14 +241,6 @@ namespace VirtoCommerce.Storefront.Services
                     });
                 }
             }
-        }
-
-        private async Task LoadProductDiscountsAsync(List<Product> products)
-        {
-            var workContext = _workContextFactory();
-            var promotionContext = workContext.ToPromotionEvaluationContext(products);
-            promotionContext.PromoEntries = products.Select(x => x.ToPromotionItem()).ToList();
-            await _promotionEvaluator.EvaluateDiscountsAsync(promotionContext, products);
         }
 
         private async Task LoadProductAssociationsAsync(IEnumerable<Product> products)
