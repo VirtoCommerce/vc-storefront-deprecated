@@ -180,11 +180,11 @@ namespace VirtoCommerce.Storefront.Test
 
             var cacheManager = new Mock<ILocalCacheManager>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
-            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null);
+            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, null);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
 
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
-            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, pricingService, inventoryApi, searchApi, promotionEvaluator, customerService);
+            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, pricingService, inventoryApi, searchApi, customerService);
             return result;
         }
     }

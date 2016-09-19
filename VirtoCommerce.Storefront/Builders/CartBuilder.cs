@@ -71,6 +71,7 @@ namespace VirtoCommerce.Storefront.Builders
                     Name = cartName,
                     Currency = currency.Code
                 };
+                
                 var result = await _cartApi.CartModule.SearchAsync(cartSearchCriteria);
                 var cart = result.Results.Select(x => x.ToWebModel(currency, language, customer)).FirstOrDefault();
                 if (cart == null)
@@ -89,13 +90,12 @@ namespace VirtoCommerce.Storefront.Builders
             });           
         }            
 
-        public virtual ICartBuilder AddItem(Product product, int quantity)
+        public virtual async Task AddItemAsync(Product product, int quantity)
         {
             EnsureThatCartExist();
 
             var lineItem = product.ToLineItem(_cart.Language, quantity);
-            _cart.Items.Add(lineItem);
-            return this;
+            await AddLineItemAsync(lineItem);
         }
 
         public virtual async Task ChangeItemQuantityAsync(string id, int quantity)
@@ -193,10 +193,8 @@ namespace VirtoCommerce.Storefront.Builders
                 {
                     throw new Exception(string.Format("Unknown shipment method: {0} with option: {1}", shipment.ShipmentMethodCode, shipment.ShipmentMethodOption));
                 }
-                shipment.ShippingPrice = shippingMethod.Price;
-                shipment.ShippingPriceWithTax = shippingMethod.PriceWithTax;
-                shipment.DiscountTotal = shippingMethod.DiscountTotal;
-                shipment.DiscountTotalWithTax = shippingMethod.DiscountTotalWithTax;
+                shipment.Price = shippingMethod.Price;
+                shipment.DiscountAmount = shippingMethod.DiscountAmount;
                 shipment.TaxType = shippingMethod.TaxType;
             }
         }
@@ -240,13 +238,13 @@ namespace VirtoCommerce.Storefront.Builders
             }
         }
 
-        public virtual ICartBuilder MergeWithCart(ShoppingCart cart)
+        public virtual async Task MergeWithCartAsync(ShoppingCart cart)
         {
             EnsureThatCartExist();
 
             foreach (var lineItem in cart.Items)
             {
-                AddLineItem(lineItem);
+               await AddLineItemAsync(lineItem);
             }
             _cart.Coupon = cart.Coupon;
 
@@ -255,8 +253,6 @@ namespace VirtoCommerce.Storefront.Builders
 
             _cart.Payments.Clear();
             _cart.Payments = cart.Payments;
-
-            return this;
         }
 
         public virtual async Task RemoveCartAsync()
@@ -283,7 +279,7 @@ namespace VirtoCommerce.Storefront.Builders
                     lineItem.ListPrice = quoteItem.ListPrice;
                     lineItem.SalePrice = quoteItem.SelectedTierPrice.Price;
 
-                    AddLineItem(lineItem);
+                   await AddLineItemAsync(lineItem);
                 }
             }
 
@@ -339,15 +335,16 @@ namespace VirtoCommerce.Storefront.Builders
             var shippingRates = await _cartApi.CartModule.GetAvailableShippingRatesAsync(_cart.Id);
             var retVal = shippingRates.Select(x => x.ToWebModel(_cart.Currency, workContext.AllCurrencies)).ToList();
 
-            //Evaluate taxes for available shipping rates
-            var taxEvalContext = _cart.ToTaxEvalContext();
-            taxEvalContext.Lines.Clear();
-            taxEvalContext.Lines.AddRange(retVal.Select(x => x.ToTaxLine()));
-            await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
-          
             //Evaluate promotions cart and apply rewards for available shipping methods
             var promoEvalContext = _cart.ToPromotionEvaluationContext();
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
+
+            //Evaluate taxes for available shipping rates
+            var taxEvalContext = _cart.ToTaxEvalContext();
+            taxEvalContext.Lines.Clear();
+            taxEvalContext.Lines.AddRange(retVal.SelectMany(x => x.ToTaxLines()));
+            await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
+
 
             return retVal;
         }
@@ -362,7 +359,8 @@ namespace VirtoCommerce.Storefront.Builders
         public async Task ValidateAsync()
         {
             EnsureThatCartExist();
-            await Task.WhenAll(ValidateCartItemsAsync(), ValidateCartShipmentsAsync());          
+            await Task.WhenAll(ValidateCartItemsAsync(), ValidateCartShipmentsAsync());
+            _cart.IsValid = _cart.Items.All(x => x.IsValid) && _cart.Shipments.All(x => x.IsValid); 
         }
 
         public virtual async Task EvaluatePromotionsAsync()
@@ -429,7 +427,8 @@ namespace VirtoCommerce.Storefront.Builders
             {
                 //we load or create cart for new user
                 await LoadOrCreateCartAsync(prevUserCart.Name, workContext.CurrentStore, newUser, workContext.CurrentLanguage, workContext.CurrentCurrency);
-                await MergeWithCart(prevUserCart).SaveAsync();
+                await MergeWithCartAsync(prevUserCart);
+                await SaveAsync();
                 await _cartApi.CartModule.DeleteCartsAsync(new[] { prevUserCart.Id }.ToList());            
             }
         }
@@ -506,11 +505,10 @@ namespace VirtoCommerce.Storefront.Builders
                 if (shipmentShippingMethod == null)
                 {
                     shipment.ValidationErrors.Add(new UnavailableError());
-                    shipment.IsValid = false;
                 }
-                else if (shipmentShippingMethod.Price != shipment.ShippingPrice)
+                else if (shipmentShippingMethod.Price != shipment.Price)
                 {
-                    shipment.ValidationErrors.Add(new PriceError(shipment.ShippingPrice, shipment.ShippingPriceWithTax, shipmentShippingMethod.Price, shipmentShippingMethod.PriceWithTax));
+                    shipment.ValidationErrors.Add(new PriceError(shipment.Price, shipment.PriceWithTax, shipmentShippingMethod.Price, shipmentShippingMethod.PriceWithTax));
                 }            
             }
         }
@@ -523,6 +521,11 @@ namespace VirtoCommerce.Storefront.Builders
                 if (product != null)
                 {
                     lineItem.SalePrice = product.Price.GetTierPrice(quantity).Price;
+                    //List price should be always greater ot equals sale price because it may cause incorrect totals calculation
+                    if(lineItem.ListPrice < lineItem.SalePrice)
+                    {
+                        lineItem.ListPrice = lineItem.SalePrice;
+                    }                    
                 }
                 if (quantity > 0)
                 {
@@ -535,12 +538,12 @@ namespace VirtoCommerce.Storefront.Builders
             }
         }
 
-        private void AddLineItem(LineItem lineItem)
+        private async Task AddLineItemAsync(LineItem lineItem)
         {
             var existingLineItem = _cart.Items.FirstOrDefault(li => li.ProductId == lineItem.ProductId);
             if (existingLineItem != null)
             {
-                existingLineItem.Quantity += lineItem.Quantity;
+                await InnerChangeItemQuantityAsync(existingLineItem, existingLineItem.Quantity + 1);
             }
             else
             {

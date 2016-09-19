@@ -77,7 +77,6 @@ namespace VirtoCommerce.Storefront.Converters
                 retVal.TaxDetails = serviceModel.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
             }
             retVal.DiscountAmount = new Money(serviceModel.DiscountAmount ?? 0, currency);
-            retVal.DiscountAmountWithTax = new Money(serviceModel.DiscountAmountWithTax ?? 0, currency);
             retVal.HandlingTotal = new Money(serviceModel.HandlingTotal ?? 0, currency);
             retVal.HandlingTotalWithTax = new Money(serviceModel.HandlingTotalWithTax ?? 0, currency);
             retVal.IsAnonymous = serviceModel.IsAnonymous == true;
@@ -102,7 +101,6 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.HandlingTotal = (double)webModel.HandlingTotal.Amount;
             retVal.HandlingTotalWithTax = (double)webModel.HandlingTotal.Amount;
             retVal.DiscountAmount = (double)webModel.DiscountAmount.Amount;
-            retVal.DiscountAmountWithTax = (double)webModel.DiscountAmountWithTax.Amount;
             retVal.Items = webModel.Items.Select(i => i.ToServiceModel()).ToList();
             retVal.Payments = webModel.Payments.Select(p => p.ToServiceModel()).ToList();
             retVal.Shipments = webModel.Shipments.Select(s => s.ToServiceModel()).ToList();

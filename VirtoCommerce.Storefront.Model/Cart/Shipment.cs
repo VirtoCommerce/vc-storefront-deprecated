@@ -25,10 +25,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             Currency = currency;
         
-            ShippingPrice = new Money(currency);
-            ShippingPriceWithTax = new Money(currency);
-            DiscountTotal = new Money(currency);
-            DiscountTotalWithTax = new Money(currency);
+            Price = new Money(currency);
+            DiscountAmount = new Money(currency);
         }
      
         /// <summary>
@@ -92,23 +90,17 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <summary>
         /// Gets or sets the value of shipping price
         /// </summary>
-        public Money ShippingPrice { get; set; }
+        public Money Price { get; set; }
 
      
-        private Money _shippingPriceWithTax;
-
-        /// <summary>
+            /// <summary>
         /// Gets or sets the value of shipping price including tax
         /// </summary>
-        public Money ShippingPriceWithTax
+        public Money PriceWithTax
         {
             get
             {
-                return _shippingPriceWithTax ?? ShippingPrice;
-            }
-            set
-            {
-                _shippingPriceWithTax = value;
+                return Price + Price * TaxPercentRate;
             }
         }
 
@@ -119,7 +111,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return ShippingPrice - DiscountTotal;
+                return Price - DiscountAmount;
             }
         }
 
@@ -130,44 +122,19 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return ShippingPriceWithTax - DiscountTotalWithTax;
+                return PriceWithTax - DiscountAmountWithTax;
             }
         }
 
         /// <summary>
         /// Gets the value of total shipping discount amount
         /// </summary>
-        public Money DiscountTotal { get; set; }
-        public Money DiscountTotalWithTax { get; set; }
-        /// <summary>
-        /// Gets the value of shipping items subtotal
-        /// </summary>
-        public Money ItemSubtotal
+        public Money DiscountAmount { get; set; }
+        public Money DiscountAmountWithTax
         {
             get
             {
-                var itemSubtotal = Items.Sum(i => i.LineItem.ExtendedPrice.Amount);
-
-                return new Money(itemSubtotal, Currency);
-            }
-        }
-
-        /// <summary>
-        /// Gets the value of shipping subtotal
-        /// </summary>
-        public Money Subtotal
-        {
-            get
-            {
-                return ShippingPrice - DiscountTotal;
-            }
-        }
-
-        public Money SubtotalWithTax
-        {
-            get
-            {
-                return ShippingPriceWithTax - DiscountTotalWithTax;
+                return DiscountAmount + DiscountAmount * TaxPercentRate;
             }
         }
 
@@ -191,13 +158,15 @@ namespace VirtoCommerce.Storefront.Model.Cart
             }
         }
 
+        public decimal TaxPercentRate { get; private set; }
+
         /// <summary>
         /// Gets or sets the value of shipping tax type
         /// </summary>
         public string TaxType { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of line item tax detalization lines
+        /// Gets or sets the collection of line item tax details lines
         /// </summary>
         /// <value>
         /// Collection of TaxDetail objects
@@ -206,12 +175,11 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-            //Because TaxLine.Id may contains composite string id & extra info
-            var shipmentTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == Id);
-            if (shipmentTaxRates.Any())
+        
+            var shipmentTaxRate = taxRates.FirstOrDefault(x => x.Line.Id != null && x.Line.Id.EqualsInvariant(Id ?? ""));
+            if (shipmentTaxRate != null && Total.Amount > 0 && shipmentTaxRate.Rate.Amount > 0)
             {
-                var priceTaxRate = shipmentTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("price"));
-                ShippingPriceWithTax = ShippingPrice + priceTaxRate.Rate;
+                TaxPercentRate = shipmentTaxRate.Rate.Amount / Total.Amount;              
             }
         }
         #endregion
@@ -232,18 +200,16 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
             Discounts.Clear();
 
-            DiscountTotal = new Money(0m, Currency);
-            DiscountTotalWithTax = new Money(0m, Currency);
+            DiscountAmount = new Money(0m, Currency);
 
             foreach (var reward in shipmentRewards)
             {
-                var discount = reward.ToDiscountModel(ShippingPrice, ShippingPriceWithTax);
+                var discount = reward.ToDiscountModel(Price);
 
                 if (reward.IsValid)
                 {
                     Discounts.Add(discount);
-                    DiscountTotal += discount.Amount;
-                    DiscountTotalWithTax += discount.AmountWithTax;
+                    DiscountAmount += discount.Amount;
                 }
             }
         }

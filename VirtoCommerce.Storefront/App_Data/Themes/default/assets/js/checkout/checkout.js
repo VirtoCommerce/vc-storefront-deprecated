@@ -172,6 +172,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
 
     	function handlePostPaymentResult(order, orderProcessingResult, paymentMethod) {
     		if (!orderProcessingResult.isSuccess) {
+    			$scope.checkout.loading = false;
     			$rootScope.$broadcast('storefrontError', {
     				type: 'error',
     				title: ['Error in new order processing: ', orderProcessingResult.error, 'New Payment status: ' + orderProcessingResult.newPaymentStatus].join(' '),

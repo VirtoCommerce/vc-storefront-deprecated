@@ -3666,7 +3666,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShoppingCart class.
         /// </summary>
-        public ShoppingCart(string name = default(string), string storeId = default(string), string channelId = default(string), bool? isAnonymous = default(bool?), string customerId = default(string), string customerName = default(string), string organizationId = default(string), string currency = default(string), string languageCode = default(string), bool? taxIncluded = default(bool?), bool? isRecuring = default(bool?), string comment = default(string), string weightUnit = default(string), double? weight = default(double?), string validationType = default(string), double? volumetricWeight = default(double?), double? total = default(double?), double? subTotal = default(double?), double? subTotalWithTax = default(double?), double? shippingTotal = default(double?), double? shippingTotalWithTax = default(double?), double? handlingTotal = default(double?), double? handlingTotalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? taxTotal = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Payment> payments = default(System.Collections.Generic.IList<Payment>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), Coupon coupon = default(Coupon), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public ShoppingCart(string name = default(string), string storeId = default(string), string channelId = default(string), bool? isAnonymous = default(bool?), string customerId = default(string), string customerName = default(string), string organizationId = default(string), string currency = default(string), string languageCode = default(string), bool? taxIncluded = default(bool?), bool? isRecuring = default(bool?), string comment = default(string), string weightUnit = default(string), double? weight = default(double?), string validationType = default(string), double? volumetricWeight = default(double?), double? total = default(double?), double? subTotal = default(double?), double? subTotalWithTax = default(double?), double? subTotalDiscount = default(double?), double? subTotalDiscountWithTax = default(double?), double? shippingTotal = default(double?), double? shippingTotalWithPrice = default(double?), double? shippingSubTotal = default(double?), double? shippingSubTotalWithTax = default(double?), double? shippingDiscountTotal = default(double?), double? shippingDiscountTotalWithTax = default(double?), double? handlingTotal = default(double?), double? handlingTotalWithTax = default(double?), double? discountAmount = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Payment> payments = default(System.Collections.Generic.IList<Payment>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), Coupon coupon = default(Coupon), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
             StoreId = storeId;
@@ -3687,21 +3687,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             Total = total;
             SubTotal = subTotal;
             SubTotalWithTax = subTotalWithTax;
+            SubTotalDiscount = subTotalDiscount;
+            SubTotalDiscountWithTax = subTotalDiscountWithTax;
             ShippingTotal = shippingTotal;
-            ShippingTotalWithTax = shippingTotalWithTax;
+            ShippingTotalWithPrice = shippingTotalWithPrice;
+            ShippingSubTotal = shippingSubTotal;
+            ShippingSubTotalWithTax = shippingSubTotalWithTax;
+            ShippingDiscountTotal = shippingDiscountTotal;
+            ShippingDiscountTotalWithTax = shippingDiscountTotalWithTax;
             HandlingTotal = handlingTotal;
             HandlingTotalWithTax = handlingTotalWithTax;
             DiscountAmount = discountAmount;
-            DiscountAmountWithTax = discountAmountWithTax;
             DiscountTotal = discountTotal;
             DiscountTotalWithTax = discountTotalWithTax;
-            TaxTotal = taxTotal;
             Addresses = addresses;
             Items = items;
             Payments = payments;
             Shipments = shipments;
             Discounts = discounts;
             Coupon = coupon;
+            TaxType = taxType;
+            TaxTotal = taxTotal;
+            TaxPercentRate = taxPercentRate;
             TaxDetails = taxDetails;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
@@ -3809,13 +3816,43 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "subTotalDiscount")]
+        public double? SubTotalDiscount { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "subTotalDiscountWithTax")]
+        public double? SubTotalDiscountWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shippingTotal")]
         public double? ShippingTotal { get; private set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingTotalWithTax")]
-        public double? ShippingTotalWithTax { get; private set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingTotalWithPrice")]
+        public double? ShippingTotalWithPrice { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingSubTotal")]
+        public double? ShippingSubTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingSubTotalWithTax")]
+        public double? ShippingSubTotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingDiscountTotal")]
+        public double? ShippingDiscountTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingDiscountTotalWithTax")]
+        public double? ShippingDiscountTotalWithTax { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -3834,11 +3871,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
-        public double? DiscountAmountWithTax { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
         public double? DiscountTotal { get; private set; }
 
@@ -3846,11 +3878,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotalWithTax")]
         public double? DiscountTotalWithTax { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
-        public double? TaxTotal { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -3881,6 +3908,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
         public Coupon Coupon { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
+        public double? TaxTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxPercentRate")]
+        public double? TaxPercentRate { get; set; }
 
         /// <summary>
         /// </summary>
@@ -4072,7 +4114,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the LineItem class.
         /// </summary>
-        public LineItem(string productId = default(string), CatalogProduct product = default(CatalogProduct), string catalogId = default(string), string categoryId = default(string), string sku = default(string), string productType = default(string), string name = default(string), int? quantity = default(int?), string fulfillmentLocationCode = default(string), string shipmentMethodCode = default(string), bool? requiredShipping = default(bool?), string thumbnailImageUrl = default(string), string imageUrl = default(string), bool? isGift = default(bool?), string currency = default(string), string languageCode = default(string), string note = default(string), bool? isReccuring = default(bool?), string taxType = default(string), bool? taxIncluded = default(bool?), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string validationType = default(string), string priceId = default(string), Price price = default(Price), double? listPrice = default(double?), double? listPriceWithTax = default(double?), double? salePrice = default(double?), double? salePriceWithTax = default(double?), double? placedPrice = default(double?), double? placedPriceWithTax = default(double?), double? extendedPrice = default(double?), double? extendedPriceWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? taxTotal = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public LineItem(string productId = default(string), CatalogProduct product = default(CatalogProduct), string catalogId = default(string), string categoryId = default(string), string sku = default(string), string productType = default(string), string name = default(string), int? quantity = default(int?), string fulfillmentLocationCode = default(string), string shipmentMethodCode = default(string), bool? requiredShipping = default(bool?), string thumbnailImageUrl = default(string), string imageUrl = default(string), bool? isGift = default(bool?), string currency = default(string), string languageCode = default(string), string note = default(string), bool? isReccuring = default(bool?), bool? taxIncluded = default(bool?), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string validationType = default(string), string priceId = default(string), Price price = default(Price), double? listPrice = default(double?), double? listPriceWithTax = default(double?), double? salePrice = default(double?), double? salePriceWithTax = default(double?), double? placedPrice = default(double?), double? placedPriceWithTax = default(double?), double? extendedPrice = default(double?), double? extendedPriceWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ProductId = productId;
             Product = product;
@@ -4092,7 +4134,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             LanguageCode = languageCode;
             Note = note;
             IsReccuring = isReccuring;
-            TaxType = taxType;
             TaxIncluded = taxIncluded;
             VolumetricWeight = volumetricWeight;
             WeightUnit = weightUnit;
@@ -4116,8 +4157,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             DiscountAmountWithTax = discountAmountWithTax;
             DiscountTotal = discountTotal;
             DiscountTotalWithTax = discountTotalWithTax;
-            TaxTotal = taxTotal;
             Discounts = discounts;
+            TaxType = taxType;
+            TaxTotal = taxTotal;
+            TaxPercentRate = taxPercentRate;
             TaxDetails = taxDetails;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
@@ -4220,11 +4263,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
-        public string TaxType { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxIncluded")]
         public bool? TaxIncluded { get; set; }
 
@@ -4286,7 +4324,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "listPriceWithTax")]
-        public double? ListPriceWithTax { get; set; }
+        public double? ListPriceWithTax { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -4296,7 +4334,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "salePriceWithTax")]
-        public double? SalePriceWithTax { get; set; }
+        public double? SalePriceWithTax { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -4326,7 +4364,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
-        public double? DiscountAmountWithTax { get; set; }
+        public double? DiscountAmountWithTax { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -4340,13 +4378,23 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
+        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
         public double? TaxTotal { get; private set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
-        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxPercentRate")]
+        public double? TaxPercentRate { get; set; }
 
         /// <summary>
         /// </summary>
@@ -6961,7 +7009,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Shipment class.
         /// </summary>
-        public Shipment(string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), string warehouseLocation = default(string), string currency = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string taxType = default(string), double? shippingPrice = default(double?), double? shippingPriceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? taxTotal = default(double?), double? itemSubtotal = default(double?), double? itemSubtotalWithTax = default(double?), double? subtotal = default(double?), double? subtotalWithTax = default(double?), Address deliveryAddress = default(Address), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string id = default(string))
+        public Shipment(string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), string warehouseLocation = default(string), string currency = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), double? price = default(double?), double? priceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), Address deliveryAddress = default(Address), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string id = default(string))
         {
             ShipmentMethodCode = shipmentMethodCode;
             ShipmentMethodOption = shipmentMethodOption;
@@ -6974,18 +7022,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             Height = height;
             Length = length;
             Width = width;
-            TaxType = taxType;
-            ShippingPrice = shippingPrice;
-            ShippingPriceWithTax = shippingPriceWithTax;
+            Price = price;
+            PriceWithTax = priceWithTax;
             Total = total;
             TotalWithTax = totalWithTax;
-            DiscountTotal = discountTotal;
-            DiscountTotalWithTax = discountTotalWithTax;
+            DiscountAmount = discountAmount;
+            DiscountAmountWithTax = discountAmountWithTax;
+            TaxType = taxType;
             TaxTotal = taxTotal;
-            ItemSubtotal = itemSubtotal;
-            ItemSubtotalWithTax = itemSubtotalWithTax;
-            Subtotal = subtotal;
-            SubtotalWithTax = subtotalWithTax;
+            TaxPercentRate = taxPercentRate;
             DeliveryAddress = deliveryAddress;
             Discounts = discounts;
             Items = items;
@@ -7050,18 +7095,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
-        public string TaxType { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "price")]
+        public double? Price { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingPrice")]
-        public double? ShippingPrice { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingPriceWithTax")]
-        public double? ShippingPriceWithTax { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priceWithTax")]
+        public double? PriceWithTax { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -7075,13 +7115,18 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotal")]
-        public double? DiscountTotal { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
+        public double? DiscountAmount { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotalWithTax")]
-        public double? DiscountTotalWithTax { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
+        public double? DiscountAmountWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
 
         /// <summary>
         /// </summary>
@@ -7090,23 +7135,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "itemSubtotal")]
-        public double? ItemSubtotal { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "itemSubtotalWithTax")]
-        public double? ItemSubtotalWithTax { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "subtotal")]
-        public double? Subtotal { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "subtotalWithTax")]
-        public double? SubtotalWithTax { get; private set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxPercentRate")]
+        public double? TaxPercentRate { get; set; }
 
         /// <summary>
         /// </summary>

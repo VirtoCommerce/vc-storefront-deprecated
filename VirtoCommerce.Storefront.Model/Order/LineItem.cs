@@ -26,24 +26,10 @@ namespace VirtoCommerce.Storefront.Model.Order
             DiscountAmountWithTax = new Money(currency);
             DiscountTotal = new Money(currency);
             DiscountTotalWithTax = new Money(currency);
-            Tax = new Money(currency);
-        }
-            
-        /// <summary>
-        /// Evaluated from Tax total Tax rate
-        /// </summary>
-        public decimal TaxRate
-        {
-            get
-            {
-                var retVal = 0m;
-                if (Tax != null && ExtendedPrice != null && ExtendedPrice.Amount > 0)
-                {
-                    retVal = Tax.Amount / ExtendedPrice.Amount;
-                }
-                return retVal;
-            }
-        }
+            TaxTotal = new Money(currency);
+            Discounts = new List<Discount>();
+        }          
+      
 
         /// <summary>
         /// Gets or Sets Currency
@@ -136,11 +122,7 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// </summary>
         public double? Width { get; set; }
 
-        /// <summary>
-        /// Gets or Sets TaxType
-        /// </summary>
-        public string TaxType { get; set; }
-
+      
         /// <summary>
         /// Flag represent that line item was canceled
         /// </summary>
@@ -157,12 +139,7 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// </summary>
         /// <value>Text representation of cancel reason</value>
         public string CancelReason { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Discount
-        /// </summary>
-        public Discount Discount { get; set; }
-
+              
         /// <summary>
         /// Gets or Sets TaxDetails
         /// </summary>
@@ -221,11 +198,13 @@ namespace VirtoCommerce.Storefront.Model.Order
         public Money DiscountTotal { get; set; }
         public Money DiscountTotalWithTax { get; set; }
 
-        /// <summary>
-        /// Tax sum
-        /// </summary>
-        /// <value>Tax sum</value>
-        public Money Tax { get; set; }
+        public string TaxType { get; set; }
+        public Money TaxTotal { get; set; }
+        public decimal TaxPercentRate { get; set; }
+
+
+        public ICollection<Discount> Discounts { get; set; }
+
 
     }
 }

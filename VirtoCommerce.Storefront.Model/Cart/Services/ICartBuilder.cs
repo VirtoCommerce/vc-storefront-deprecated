@@ -36,7 +36,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// <param name="product"></param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        ICartBuilder AddItem(Product product, int quantity);
+        Task AddItemAsync(Product product, int quantity);
 
         /// <summary>
         /// Change cart item qty by product index
@@ -108,7 +108,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// </summary>
         /// <param name="cart"></param>
         /// <returns></returns>
-        ICartBuilder MergeWithCart(ShoppingCart cart);
+        Task MergeWithCartAsync(ShoppingCart cart);
 
         /// <summary>
         /// Remove cart from service

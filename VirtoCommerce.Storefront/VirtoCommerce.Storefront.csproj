@@ -477,6 +477,7 @@
     <Compile Include="Controllers\QuoteRequestController.cs" />
     <Compile Include="Converters\AssociationConverter.cs" />
     <Compile Include="Converters\AttachmentConverter.cs" />
+    <Compile Include="Converters\OrderShipmentConverter.cs" />
     <Compile Include="Converters\SettingConverter.cs" />
     <Compile Include="Converters\CatalogPropertyConverter.cs" />
     <Compile Include="Converters\CatalogSearchCriteriaConverter.cs" />

@@ -45,57 +45,47 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static TaxLine ToTaxLine(this ShippingMethod shipmentMethod)
+        public static TaxLine[] ToTaxLines(this ShippingMethod shipmentMethod)
         {
-            var retVal = new TaxLine(shipmentMethod.Currency)
+            var retVal = new List<TaxLine>
             {
-                Id = string.Join("&", shipmentMethod.ShipmentMethodCode, shipmentMethod.OptionName),
-                Code = string.Join("&", shipmentMethod.ShipmentMethodCode, shipmentMethod.OptionName),
-                Name = string.Join("&", shipmentMethod.Name, shipmentMethod.OptionDescription),
-                TaxType = shipmentMethod.TaxType,
-                Amount = shipmentMethod.Price
+                new TaxLine(shipmentMethod.Currency)
+                {
+                    Id = string.Join("&", shipmentMethod.ShipmentMethodCode, shipmentMethod.OptionName),
+                    Code = shipmentMethod.ShipmentMethodCode,
+                    TaxType = shipmentMethod.TaxType,
+                    Amount = shipmentMethod.Total
+                }
             };
-            return retVal;
+            return retVal.ToArray();
         }
 
-        public static TaxLine[] ToListAndSaleTaxLines(this Product product)
+        public static TaxLine[] ToTaxLines(this Product product)
         {
             var retVal = new List<TaxLine>
             {
                 new TaxLine(product.Currency)
                 {
-                    Id = product.Id + "&list",
+                    Id = product.Id,
                     Code = product.Sku,
                     Name = product.Name,
-                    TaxType = product.TaxType,
-                    Amount =  product.Price.ListPrice
+                    TaxType = product.TaxType,    
+                    Amount =  product.Price.ActualPrice
                 }
             };
-
-            //Need generate two tax line for List and Sale price to have tax amount for list price also
-            if (product.Price.SalePrice != product.Price.ListPrice)
-            {
-                retVal.Add(new TaxLine(product.Currency)
-                {
-                    Id = product.Id + "&sale",
-                    Code = product.Sku,
-                    Name = product.Name,
-                    TaxType = product.TaxType,
-                    Amount = product.Price.SalePrice
-                });
-            }
 
             //Need generate tax line for each tier price
             foreach (var tierPrice in product.Price.TierPrices)
             {
                 retVal.Add(new TaxLine(tierPrice.Price.Currency)
                 {
-                    Id = product.Id + "&" + tierPrice.Quantity.ToString(),
+                    Id = product.Id,
                     Code = product.Sku,
                     Name = product.Name,
                     TaxType = product.TaxType,
+                    Quantity = tierPrice.Quantity,
                     Amount = tierPrice.Price
-                });
+                });              
             }
             return retVal.ToArray();
         }
@@ -113,7 +103,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (products != null)
             {
-                retVal.Lines = products.SelectMany(x => x.ToListAndSaleTaxLines()).ToList();
+                retVal.Lines = products.SelectMany(x => x.ToTaxLines()).ToList();
             }
             return retVal;
         }
@@ -129,60 +119,27 @@ namespace VirtoCommerce.Storefront.Converters
             };
             foreach (var lineItem in cart.Items)
             {
-                var extendedTaxLine = new TaxLine(lineItem.Currency)
+                retVal.Lines.Add(new TaxLine(lineItem.Currency)
                 {
-                    Id = lineItem.Id + "&extended",
+                    Id = lineItem.Id,
                     Code = lineItem.Sku,
                     Name = lineItem.Name,
                     TaxType = lineItem.TaxType,
                     Amount = lineItem.ExtendedPrice
-                };
-                retVal.Lines.Add(extendedTaxLine);
-
-                var listTaxLine = new TaxLine(lineItem.Currency)
-                {
-                    Id = lineItem.Id + "&list",
-                    Code = lineItem.Sku,
-                    Name = lineItem.Name,
-                    TaxType = lineItem.TaxType,
-                    Amount = lineItem.ListPrice
-                };
-                retVal.Lines.Add(listTaxLine);
-
-                if (lineItem.ListPrice != lineItem.SalePrice)
-                {
-                    var saleTaxLine = new TaxLine(lineItem.Currency)
-                    {
-                        Id = lineItem.Id + "&sale",
-                        Code = lineItem.Sku,
-                        Name = lineItem.Name,
-                        TaxType = lineItem.TaxType,
-                        Amount = lineItem.SalePrice
-                    };
-                    retVal.Lines.Add(saleTaxLine);
-                }
-
+                });              
             }
+
             foreach (var shipment in cart.Shipments)
             {
                 var totalTaxLine = new TaxLine(shipment.Currency)
                 {
-                    Id = shipment.Id + "&total",
+                    Id = shipment.Id,
                     Code = shipment.ShipmentMethodCode,
                     Name = shipment.ShipmentMethodCode,
                     TaxType = shipment.TaxType,
                     Amount = shipment.Total
                 };
-                retVal.Lines.Add(totalTaxLine);
-                var priceTaxLine = new TaxLine(shipment.Currency)
-                {
-                    Id = shipment.Id + "&price",
-                    Code = shipment.ShipmentMethodCode,
-                    Name = shipment.ShipmentMethodCode,
-                    TaxType = shipment.TaxType,
-                    Amount = shipment.ShippingPrice
-                };
-                retVal.Lines.Add(priceTaxLine);
+                retVal.Lines.Add(totalTaxLine);               
 
                 if (shipment.DeliveryAddress != null)
                 {

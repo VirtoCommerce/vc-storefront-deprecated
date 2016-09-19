@@ -28,6 +28,13 @@ namespace VirtoCommerce.Storefront.Model.Order
             ShippingTotal = new Money(currency);
             ShippingTotalWithTax = new Money(currency);
             TaxTotal = new Money(currency);
+            Discounts = new List<Discount>();
+            ShippingTaxTotal = new Money(currency);
+            ShippingDiscountTotal = new Money(currency);
+            ShippingDiscountTotalWithTax = new Money(currency);
+            SubTotalTaxTotal = new Money(currency);
+            SubTotalDiscount = new Money(currency);
+            SubTotalDiscountWithTax = new Money(currency);
 
         }
 
@@ -224,19 +231,26 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// </summary>
         public string Id { get; set; }
 
+        public ICollection<Discount> Discounts { get; set; }
 
         public Money Total { get; set; }
 
         public Money DiscountAmount { get; set; }
         public Money DiscountAmountWithTax { get; set; }
 
-
         public Money SubTotal { get; set; }
         public Money SubTotalWithTax { get; set; }
         public Money ShippingTotal { get; set; }
         public Money ShippingTotalWithTax { get; set; }
+        public Money ShippingTaxTotal { get; set; }
         public Money DiscountTotal { get; set; }
         public Money DiscountTotalWithTax { get; set; }
         public Money TaxTotal { get; set; }
+        public Money ShippingDiscountTotalWithTax { get; set; }
+        public Money ShippingDiscountTotal { get; set; }
+        public Money SubTotalTaxTotal { get; set; }
+        public Money SubTotalDiscount { get; set; }
+        public Money SubTotalDiscountWithTax { get; set; }
+
     }
 }

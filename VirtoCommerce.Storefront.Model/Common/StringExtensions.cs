@@ -57,7 +57,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             return null;
         }
 
-        public static Tuple<string, string> SplitIntoTuple(this string input, char separator)
+        public static Tuple<string, string, string> SplitIntoTuple(this string input, char separator)
         {
             if(input == null)
             {
@@ -65,7 +65,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             }
 
             var pieces = input.Split(separator);
-            return Tuple.Create(pieces.FirstOrDefault(), pieces.Skip(1).FirstOrDefault());
+            return Tuple.Create(pieces.FirstOrDefault(), pieces.Skip(1).FirstOrDefault(), pieces.Skip(2).FirstOrDefault());
         }
     }
 }

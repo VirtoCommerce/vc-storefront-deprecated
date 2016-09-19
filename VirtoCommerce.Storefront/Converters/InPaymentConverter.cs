@@ -26,7 +26,7 @@ namespace VirtoCommerce.Storefront.Converters
             }
 
             retVal.Sum = new Money(paymentIn.Sum ?? 0, currency);
-            retVal.Tax = new Money(paymentIn.Tax ?? 0, currency);
+
             if (paymentIn.PaymentMethod != null)
             {
                 retVal.GatewayCode = paymentIn.PaymentMethod.Code;

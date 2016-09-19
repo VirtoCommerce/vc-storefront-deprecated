@@ -29,6 +29,7 @@ namespace VirtoCommerce.Storefront.Model.Order
             TaxTotal = new Money(currency);
             Total = new Money(currency);
             TotalWithTax = new Money(currency);
+            Discounts = new List<Discount>();
 
         }
 
@@ -108,11 +109,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         public double? Width { get; set; }
 
         /// <summary>
-        /// Gets or Sets TaxType
-        /// </summary>
-        public string TaxType { get; set; }
-
-        /// <summary>
         /// Information about quantity and order items belongs to current shipment
         /// </summary>
         /// <value>Information about quantity and order items belongs to current shipment</value>
@@ -133,11 +129,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets DeliveryAddress
         /// </summary>
         public Address DeliveryAddress { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Discount
-        /// </summary>
-        public Discount Discount { get; set; }
 
         /// <summary>
         /// Gets or Sets TaxDetails
@@ -182,9 +173,7 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// <summary>
         /// Gets or Sets TaxIncluded
         /// </summary>
-        public bool? TaxIncluded { get; set; }
-
-     
+        public bool? TaxIncluded { get; set; }     
        
         /// <summary>
         /// Gets or Sets IsCancelled
@@ -249,21 +238,11 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// </summary>
         public string Id { get; set; }
 
-        /// <summary>
-        /// Evaluated from Tax total Tax rate
-        /// </summary>
-        public decimal TaxRate
-        {
-            get
-            {
-                var retVal = 0m;
-                if (TaxTotal != null && Price != null && Price.Amount > 0)
-                {
-                    retVal = TaxTotal.Amount / Price.Amount;
-                }
-                return retVal;
-            }
-        }
+        public string TaxType { get; set; }
+        public Money TaxTotal { get; set; }
+        public decimal TaxPercentRate { get; set; }
+
+        public ICollection<Discount> Discounts { get; set; }
 
         public Money Price { get; set; }
         public Money PriceWithTax { get; set; }
@@ -273,7 +252,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         public Money ItemsSubtotalWithTax { get; set; }
         public Money DiscountAmount { get; set; }
         public Money DiscountAmountWithTax { get; set; }
-        public Money TaxTotal { get; set; }
 
     }
 }

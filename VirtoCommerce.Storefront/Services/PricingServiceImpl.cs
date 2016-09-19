@@ -7,6 +7,7 @@ using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Storefront.Model.Marketing.Services;
 using VirtoCommerce.Storefront.Model.Pricing.Services;
 using VirtoCommerce.Storefront.Model.Tax.Services;
 using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
@@ -18,13 +19,15 @@ namespace VirtoCommerce.Storefront.Services
     {
         private readonly IPricingModuleApiClient _pricingApi;
         private readonly ITaxEvaluator _taxEvaluator;
+        private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly Func<WorkContext> _workContextFactory;
 
-        public PricingServiceImpl(Func<WorkContext> workContextFactory, IPricingModuleApiClient pricingApi, ITaxEvaluator taxEvaluator)
+        public PricingServiceImpl(Func<WorkContext> workContextFactory, IPricingModuleApiClient pricingApi, ITaxEvaluator taxEvaluator, IPromotionEvaluator promotionEvaluator)
         {
             _pricingApi = pricingApi;
             _taxEvaluator = taxEvaluator;
             _workContextFactory = workContextFactory;
+            _promotionEvaluator = promotionEvaluator;
         }
 
         #region IPricingService Members
@@ -37,6 +40,9 @@ namespace VirtoCommerce.Storefront.Services
 
             var pricesResponse = await _pricingApi.PricingModule.EvaluatePricesAsync(evalContext);
             ApplyProductPricesInternal(products, pricesResponse);
+            //Evaluate product discounts
+            var promoEvalContext = workContext.ToPromotionEvaluationContext(products);
+            await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, products);
             //Evaluate product taxes
             var taxEvalContext = workContext.ToTaxEvaluationContext(products);
             await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, products);

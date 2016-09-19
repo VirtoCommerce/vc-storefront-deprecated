@@ -35,8 +35,12 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.ExtendedPriceWithTax = new Money(lineItem.ExtendedPriceWithTax ?? 0, currency);
             retVal.DiscountTotal = new Money(lineItem.DiscountTotal ?? 0, currency);
             retVal.DiscountTotalWithTax = new Money(lineItem.DiscountTotalWithTax ?? 0, currency);
-            retVal.Tax = new Money(lineItem.Tax ?? 0, currency);
-
+            retVal.TaxTotal = new Money(lineItem.TaxTotal ?? 0, currency);
+            retVal.TaxPercentRate = (decimal?)lineItem.TaxPercentRate ?? 0m;
+            if (!lineItem.Discounts.IsNullOrEmpty())
+            {
+                retVal.Discounts.AddRange(lineItem.Discounts.Select(x => x.ToWebModel(new[] { currency }, language)));
+            }
             if (lineItem.TaxDetails != null)
             {
                 retVal.TaxDetails = lineItem.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();

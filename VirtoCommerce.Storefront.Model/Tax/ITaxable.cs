@@ -14,6 +14,7 @@ namespace VirtoCommerce.Storefront.Model
     {
         Currency Currency { get; }
         Money TaxTotal { get; }
+        decimal TaxPercentRate { get; }
         string TaxType { get; }
         ICollection<TaxDetail> TaxDetails { get; }
 
