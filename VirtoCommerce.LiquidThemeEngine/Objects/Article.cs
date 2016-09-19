@@ -40,5 +40,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public ArticleUser User { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public bool IsSticked { get; set; }
     }
 }

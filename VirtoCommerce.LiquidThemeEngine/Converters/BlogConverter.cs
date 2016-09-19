@@ -29,6 +29,20 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             retVal.Handle = blog.Name.Replace(" ", "-").ToLower();
 
+            retVal.Categories = blog.Categories;
+            if (blog.StickedArticle != null)
+            {
+                retVal.StickedArticle = blog.StickedArticle.ToShopifyModel();
+            }
+            if (blog.TrendingArticles != null)
+            {
+                retVal.TrendingArticles = new MutablePagedList<Article>((pageNumber, pageSize, sortInfos) =>
+                {
+                    var articlesForLanguage = blog.TrendingArticles.Where(x => x.Language == language || x.Language.IsInvariant).GroupBy(x => x.Name).Select(x => x.FirstOrDefault());
+                    return new PagedList<Article>(articlesForLanguage.Select(x => x.ToShopifyModel()).OrderByDescending(x => x.CreatedAt), pageNumber, pageSize);
+                });
+            }
+
             return retVal;
         }
     }
