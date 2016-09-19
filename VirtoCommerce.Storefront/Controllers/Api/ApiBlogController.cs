@@ -24,29 +24,23 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         public ActionResult Articles(string blogName, string filterType, string criteria, int page, int pageSize)
         {
             var articles = new List<BlogArticle>();
-
-            var allContentItems = _staticContentService.LoadStoreStaticContent(WorkContext.CurrentStore).ToList();
-            var blogs = allContentItems.OfType<Blog>().ToArray();
-            var blogArticlesGroup = allContentItems.OfType<BlogArticle>().GroupBy(x => x.BlogName, x => x).ToList();
-            var blogArticles = blogArticlesGroup.FirstOrDefault(x => string.Equals(x.Key, blogName, StringComparison.OrdinalIgnoreCase));
-            if (blogArticles != null)
+            var blog = base.WorkContext.Blogs.FirstOrDefault(x => x.Name.EqualsInvariant(blogName));
+            if (blog != null)
             {
-                var foundedArticles = blogArticles.AsQueryable();
+                var query = blog.Articles.AsQueryable();
                 if (!string.IsNullOrEmpty(filterType) && !string.IsNullOrEmpty(criteria))
                 {
-                    if (filterType.Equals("category", StringComparison.OrdinalIgnoreCase))
+                    if (filterType.EqualsInvariant("category"))
                     {
-                        foundedArticles = foundedArticles.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Equals(criteria, StringComparison.OrdinalIgnoreCase));
+                        query = query.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Equals(criteria, StringComparison.OrdinalIgnoreCase));
                     }
-                    if (filterType.Equals("tag", StringComparison.OrdinalIgnoreCase))
+                    if (filterType.EqualsInvariant("tag"))
                     {
-                        foundedArticles = foundedArticles.Where(a => a.Tags != null && a.Tags.Contains(criteria, StringComparer.OrdinalIgnoreCase));
+                        query = query.Where(a => a.Tags != null && a.Tags.Contains(criteria, StringComparer.OrdinalIgnoreCase));
                     }
                 }
-
-                articles = foundedArticles.OrderByDescending(a => a.CreatedDate).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                articles = query.OrderByDescending(a => a.CreatedDate).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             }
-
             return Json(articles, JsonRequestBehavior.AllowGet);
         }
     }

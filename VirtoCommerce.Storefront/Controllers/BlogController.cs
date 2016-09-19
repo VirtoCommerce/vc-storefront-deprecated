@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent;
@@ -41,6 +42,9 @@ namespace VirtoCommerce.Storefront.Controllers
             var blog = WorkContext.Blogs.FirstOrDefault(b => b.Name.Equals(blogName, StringComparison.OrdinalIgnoreCase));
             if (blog != null)
             {
+                var blogClone = new Blog();
+                //Need to clone exist blog because it may be memory cached
+                blogClone.InjectFrom<NullableAndEnumValueInjecter>(blog);
                 var seoInfo = new SeoInfo
                 {
                     Language = blog.Language,
@@ -49,13 +53,13 @@ namespace VirtoCommerce.Storefront.Controllers
                     Title = blog.Title
                 };
 
-                var articles = blog.Articles.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Equals(category, StringComparison.OrdinalIgnoreCase));
+                var articles = blog.Articles.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.EqualsInvariant(category));
                 if (articles != null)
                 {
-                    blog.Articles = new MutablePagedList<BlogArticle>(articles);
+                    blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
                 }
 
-                WorkContext.CurrentBlog = blog;
+                WorkContext.CurrentBlog = blogClone;
                 WorkContext.CurrentPageSeo = seoInfo;
             }
 
@@ -68,6 +72,9 @@ namespace VirtoCommerce.Storefront.Controllers
             var blog = WorkContext.Blogs.FirstOrDefault(b => b.Name.Equals(blogName, StringComparison.OrdinalIgnoreCase));
             if (blog != null)
             {
+                var blogClone = new Blog();
+                //Need to clone exist blog because it may be memory cached
+                blogClone.InjectFrom<NullableAndEnumValueInjecter>(blog);
                 var seoInfo = new SeoInfo
                 {
                     Language = blog.Language,
@@ -79,12 +86,11 @@ namespace VirtoCommerce.Storefront.Controllers
                 var articles = blog.Articles.Where(a => a.Tags != null && a.Tags.Contains(tag, StringComparer.OrdinalIgnoreCase));
                 if (articles != null)
                 {
-                    blog.Articles = new MutablePagedList<BlogArticle>(articles);
+                    blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
                 }
 
-                WorkContext.CurrentBlog = blog;
-                WorkContext.CurrentPageSeo = seoInfo;
-            }
+                WorkContext.CurrentBlog = blogClone;
+                WorkContext.CurrentPageSeo = seoInfo;            }
 
             return View("blog", blog.Layout, WorkContext);
         }

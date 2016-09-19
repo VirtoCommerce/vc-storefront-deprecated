@@ -17,10 +17,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             retVal.Handle = article.Url;
             retVal.CreatedAt = article.CreatedDate;
             retVal.PublishedAt = article.PublishedDate ?? article.CreatedDate;
-            retVal.ImageUrl = article.ImageUrl;
             retVal.Tags = article.Tags != null ? article.Tags.OrderBy(t => t).ToArray() : null;
             retVal.Comments = new MutablePagedList<Comment>(new List<Comment>());
-            retVal.IsSticked = article.IsSticked;
             return retVal;
         }
     }

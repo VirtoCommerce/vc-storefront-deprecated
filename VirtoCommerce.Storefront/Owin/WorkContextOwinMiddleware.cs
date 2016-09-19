@@ -268,25 +268,9 @@ namespace VirtoCommerce.Storefront.Owin
                             var blogArticles = blogArticlesGroup.FirstOrDefault(x => string.Equals(x.Key, blog.Name, StringComparison.OrdinalIgnoreCase));
                             if (blogArticles != null)
                             {
-                                var articles = blogArticles.Where(a => !a.IsSticked).OrderByDescending(a => a.CreatedDate).ToList();
-                                var stickedArticle = articles.FirstOrDefault(a => a.IsSticked) ?? articles.FirstOrDefault();
-                                if (stickedArticle != null)
-                                {
-                                    stickedArticle.IsSticked = true;
-                                    blog.StickedArticle = stickedArticle;
-                                    articles.Remove(stickedArticle);
-                                }
-
-                                blog.Articles = new MutablePagedList<BlogArticle>(articles);
-
-                                var trendingArticles = blogArticles.Where(a => a.IsTrending);
-                                if (trendingArticles != null)
-                                {
-                                    blog.TrendingArticles = new MutablePagedList<BlogArticle>(trendingArticles);
-                                }
+                                blog.Articles = new MutablePagedList<BlogArticle>(blogArticles);
                             }
                         }
-
                         return new { Pages = allContentItems, Blogs = blogs };
                     });
                     workContext.Pages = new MutablePagedList<ContentItem>(staticContents.Pages.Where(x => x.Language.IsInvariant || x.Language == workContext.CurrentLanguage));

@@ -60,9 +60,5 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// Gets or sets the list of categories of the blog
         /// </summary>
         public ICollection<string> Categories { get; set; }
-
-        public Article StickedArticle { get; set; }
-
-        public IMutablePagedList<Article> TrendingArticles { get; set; }
     }
 }

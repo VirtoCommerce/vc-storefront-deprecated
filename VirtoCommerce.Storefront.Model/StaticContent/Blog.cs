@@ -1,4 +1,5 @@
-﻿using VirtoCommerce.Storefront.Model.Common;
+﻿using System;
+using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.StaticContent
 {
@@ -10,9 +11,5 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
         }
 
         public IMutablePagedList<BlogArticle> Articles { get; set; }
-
-        public BlogArticle StickedArticle { get; set; }
-
-        public IMutablePagedList<BlogArticle> TrendingArticles { get; set; }
     }
 }
