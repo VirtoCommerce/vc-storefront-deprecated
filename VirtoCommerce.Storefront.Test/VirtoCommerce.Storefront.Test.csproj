@@ -152,6 +152,20 @@
   <ItemGroup>
     <Folder Include="Pages\TestStore\folder2\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="e2e\cart\cart.pageObject.js" />
+    <Content Include="e2e\checkout\checkoutPaymentMethod.pageObject.js" />
+    <Content Include="e2e\checkout\checkoutShippingMethod.pageObject.js" />
+    <Content Include="e2e\checkout\checkoutAddress.pageObject.js" />
+    <Content Include="e2e\checkout\checkout.pageObject.js" />
+    <Content Include="e2e\collections\collections.pageObject.js" />
+    <Content Include="e2e\conf.js" />
+    <Content Include="e2e\helpers\options.helpers.js" />
+    <Content Include="e2e\home\home.pageObject.js" />
+    <Content Include="e2e\home\home.spec.js" />
+    <Content Include="e2e\product\product.pageObject.js" />
+    <Content Include="e2e\thanks\thanks.pageObject.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
