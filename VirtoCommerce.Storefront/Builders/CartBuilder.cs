@@ -61,9 +61,10 @@ namespace VirtoCommerce.Storefront.Builders
         public virtual async Task LoadOrCreateCartAsync(string cartName, Store store, CustomerInfo customer, Language language, Currency currency)
         {
             var cacheKey = GetCartCacheKey(store.Id, cartName, customer.Id, currency.Code);
-
+            bool needReevaluate = false;
             _cart = await _cacheManager.GetAsync(cacheKey, _cartCacheRegion, async () =>
             {
+                needReevaluate = true;
                 var cartSearchCriteria = new AutoRestClients.CartModuleApi.Models.ShoppingCartSearchCriteria
                 {
                     StoreId = store.Id,
@@ -87,7 +88,13 @@ namespace VirtoCommerce.Storefront.Builders
                 }
                 cart.Customer = customer;
                 return cart;
-            });           
+            });   
+            
+            if(needReevaluate)
+            {
+                await EvaluatePromotionsAsync();
+                await EvaluateTaxesAsync();
+            }       
         }            
 
         public virtual async Task AddItemAsync(Product product, int quantity)
@@ -344,7 +351,6 @@ namespace VirtoCommerce.Storefront.Builders
             taxEvalContext.Lines.Clear();
             taxEvalContext.Lines.AddRange(retVal.SelectMany(x => x.ToTaxLines()));
             await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
-
 
             return retVal;
         }

@@ -49,17 +49,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 Grams = lineItem.Weight ?? 0m,
                 Id = lineItem.Id,
                 Quantity = lineItem.Quantity ?? 0,
-                Price = lineItem.Price.Amount * 100,
-                PriceWithTax = lineItem.PriceWithTax.Amount * 100,
+                Price = lineItem.PlacedPrice.Amount * 100,
+                PriceWithTax = lineItem.PlacedPriceWithTax.Amount * 100,
+                LinePrice = lineItem.ExtendedPrice.Amount * 100,
+                LinePriceWithTax = lineItem.ExtendedPriceWithTax.Amount * 100,
                 ProductId = lineItem.ProductId,
                 Sku = lineItem.Name,
                 Title = lineItem.Name,
                 Url = urlBuilder.ToAppAbsolute("/product/" + lineItem.ProductId),
             };
-
-            result.LinePrice = result.Price * result.Quantity;
-            result.LinePriceWithTax = result.PriceWithTax * result.Quantity;
-
             result.Product = new Product
             {
                 Id = result.ProductId,

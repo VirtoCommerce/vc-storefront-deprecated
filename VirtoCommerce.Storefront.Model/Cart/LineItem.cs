@@ -286,7 +286,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             }
         }
 
-        public decimal TaxPercentRate { get; private set; }
+        public decimal TaxPercentRate { get; set; }
 
         /// <summary>
         /// Gets or sets the value of shipping tax type
@@ -304,7 +304,10 @@ namespace VirtoCommerce.Storefront.Model.Cart
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
              var lineItemTaxRate = taxRates.FirstOrDefault(x => x.Line.Id != null && x.Line.Id.EqualsInvariant(Id ?? ""));
-           
+            if(lineItemTaxRate == null)
+            {
+                lineItemTaxRate = taxRates.FirstOrDefault(x => x.Line.Code != null && x.Line.Code.EqualsInvariant(Sku ?? ""));
+            }           
             if (lineItemTaxRate != null && ExtendedPrice.Amount > 0 && lineItemTaxRate.Rate.Amount > 0)
             {
                 TaxPercentRate = lineItemTaxRate.Rate.Amount / ExtendedPrice.Amount;

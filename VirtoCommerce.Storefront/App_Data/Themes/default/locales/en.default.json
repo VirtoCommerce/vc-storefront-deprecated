@@ -181,7 +181,7 @@
             "checkout": "Checkout",
             "empty": "Your cart is currently empty.",
             "adding": "Adding product to cart...",
-            "continue_browsing_html": "Continue browsing <a href=\"collections/all\">here</a>.",
+            "continue_browsing_html": "Continue browsing <a href=\"collections\">here</a>.",
             "or": "or",
             "view_cart": "View Cart",
             "close_cart": "Close Cart"
