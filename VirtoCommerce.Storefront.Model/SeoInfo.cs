@@ -15,6 +15,8 @@ namespace VirtoCommerce.Storefront.Model
 
         public string Title { get; set; }
 
+        public string ImageUrl { get; set; }
+
         #region IHasLanguage Members
         public Language Language { get; set; }
         #endregion

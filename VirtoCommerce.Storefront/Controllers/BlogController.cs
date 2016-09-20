@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.StaticContent;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
@@ -31,7 +33,66 @@ namespace VirtoCommerce.Storefront.Controllers
                     Slug = string.Format("/blogs/{0}", blog)
                 };
             }
-            return View("blog", WorkContext);
+            return View("blog", WorkContext.CurrentBlog.Layout, WorkContext);
+        }
+
+        // GET: /blogs/{blogname}/category/{category}
+        public ActionResult GetArticlesByCategory(string blogName, string category)
+        {
+            var blog = WorkContext.Blogs.FirstOrDefault(b => b.Name.Equals(blogName, StringComparison.OrdinalIgnoreCase));
+            if (blog != null)
+            {
+                var blogClone = new Blog();
+                //Need to clone exist blog because it may be memory cached
+                blogClone.InjectFrom<NullableAndEnumValueInjecter>(blog);
+                var seoInfo = new SeoInfo
+                {
+                    Language = blog.Language,
+                    MetaDescription = blog.Title,
+                    Slug = string.Format("/blogs/{0}/category/{1}", blog, category),
+                    Title = blog.Title
+                };
+
+                var articles = blog.Articles.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.EqualsInvariant(category) && a.PublicationStatus != ContentPublicationStatus.Private);
+                if (articles != null)
+                {
+                    blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
+                }
+
+                WorkContext.CurrentBlog = blogClone;
+                WorkContext.CurrentPageSeo = seoInfo;
+            }
+
+            return View("blog", blog.Layout, WorkContext);
+        }
+
+        // GET: /blogs/{blogname}/tag/{tag}
+        public ActionResult GetArticlesByTag(string blogName, string tag)
+        {
+            var blog = WorkContext.Blogs.FirstOrDefault(b => b.Name.Equals(blogName, StringComparison.OrdinalIgnoreCase));
+            if (blog != null)
+            {
+                var blogClone = new Blog();
+                //Need to clone exist blog because it may be memory cached
+                blogClone.InjectFrom<NullableAndEnumValueInjecter>(blog);
+                var seoInfo = new SeoInfo
+                {
+                    Language = blog.Language,
+                    MetaDescription = blog.Title,
+                    Slug = string.Format("/blogs/{0}/tag/{1}", blog, tag),
+                    Title = blog.Title
+                };
+
+                var articles = blog.Articles.Where(a => a.Tags != null && a.Tags.Contains(tag, StringComparer.OrdinalIgnoreCase) && a.PublicationStatus != ContentPublicationStatus.Private);
+                if (articles != null)
+                {
+                    blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
+                }
+
+                WorkContext.CurrentBlog = blogClone;
+                WorkContext.CurrentPageSeo = seoInfo;            }
+
+            return View("blog", blog.Layout, WorkContext);
         }
 
         // GET: /blogs/{blog}/{article}
@@ -63,10 +124,11 @@ namespace VirtoCommerce.Storefront.Controllers
                         Language = blogArticle.Language,
                         MetaDescription = blogArticle.Excerpt,
                         Title = blogArticle.Title,
-                        Slug = blogArticle.Url
+                        Slug = blogArticle.Url,
+                        ImageUrl = blogArticle.ImageUrl
                     };
 
-                    return View("article", WorkContext);
+                    return View("article", blogArticle.Layout, WorkContext);
                 }
                 else
                 {

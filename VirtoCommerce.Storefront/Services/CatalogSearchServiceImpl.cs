@@ -216,7 +216,7 @@ namespace VirtoCommerce.Storefront.Services
 
             foreach (var product in products)
             {
-                product.Vendor = vendors.FirstOrDefault(v => v.Id == product.VendorId);
+                product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
             }
         }
 
@@ -227,7 +227,7 @@ namespace VirtoCommerce.Storefront.Services
 
             foreach (var product in products)
             {
-                product.Vendor = vendors.FirstOrDefault(v => v.Id == product.VendorId);
+                product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
                 if (product.Vendor != null)
                 {
                     product.Vendor.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>

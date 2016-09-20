@@ -22,6 +22,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// </summary>
         public string PageTitle { get; set; }
 
+        public string PageImageUrl { get; set; }
+
         /// <summary>
         /// The liquid object shop returns information about your shop
         /// </summary>
