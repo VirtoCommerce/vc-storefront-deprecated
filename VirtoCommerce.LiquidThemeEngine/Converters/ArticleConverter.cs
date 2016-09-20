@@ -19,6 +19,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             retVal.PublishedAt = article.PublishedDate ?? article.CreatedDate;
             retVal.Tags = article.Tags != null ? article.Tags.OrderBy(t => t).ToArray() : null;
             retVal.Comments = new MutablePagedList<Comment>(new List<Comment>());
+            retVal.Category = article.Category;
             return retVal;
         }
     }
