@@ -99,7 +99,7 @@
                                 </span>
                             {% endif %}
                         </div>
-                        <button type="button" ng-class="{ 'btn': !cartIsUpdating, 'btn-secondary': cartIsUpdating || errorOccured || cart.isValid }" ng-disabled="cartIsUpdating || cart.hasValidationErrors" ng-click="submitCart()">
+                        <button type="button" ng-class="{ 'btn': !cartIsUpdating, 'btn-secondary': cartIsUpdating || errorOccured || !cart.isValid }" ng-disabled="cartIsUpdating || cart.hasValidationErrors" ng-click="submitCart()">
                             <span class="icon icon-cart"></span>
                             {{ 'cart.general.checkout' | t }}
                         </button>
