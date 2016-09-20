@@ -49,21 +49,6 @@ namespace VirtoCommerce.Storefront.Model.Common
             return retVal;
         }
 
-        public static IEnumerable<T> FilterByLanguage<T>(this IEnumerable<T> items, Language language) where T : IHasLanguage
-        {
-            var retVal = new List<T>();
-            foreach (var item in items)
-            {
-                var itemWithMatchedLang = items.FindWithLanguage(language);
-                if(itemWithMatchedLang != null)
-                {
-                    retVal.Add(itemWithMatchedLang);
-                }
-            }
-            return retVal;
-        }
-
-
         /// <summary>
         /// Return all localized strings for specified language also always returns strings with invariant language
         /// </summary>
