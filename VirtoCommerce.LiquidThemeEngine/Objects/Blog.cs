@@ -13,6 +13,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         {
             AllTags = new List<Tag>();
             Tags = new List<Tag>();
+            Categories = new List<string>();
         }
         /// <summary>
         /// Returns all tags of all articles of a blog. This includes tags of articles that are not in the current pagination view.
@@ -54,5 +55,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// Returns the relative URL of the blog.
         /// </summary>
         public string Url { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of categories of the blog
+        /// </summary>
+        public ICollection<string> Categories { get; set; }
     }
 }

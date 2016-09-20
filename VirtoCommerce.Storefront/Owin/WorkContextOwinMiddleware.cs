@@ -268,7 +268,6 @@ namespace VirtoCommerce.Storefront.Owin
                                 blog.Articles = new MutablePagedList<BlogArticle>(blogArticles);
                             }
                         }
-
                         return new { Pages = allContentItems, Blogs = blogs };
                     });
                     workContext.Pages = new MutablePagedList<ContentItem>(staticContents.Pages.Where(x => x.Language.IsInvariant || x.Language == workContext.CurrentLanguage));

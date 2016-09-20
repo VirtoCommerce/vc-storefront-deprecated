@@ -70,6 +70,9 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.QuoteRequest.CalculateTotals", "storefrontapi/quoterequests/{number}/totals", defaults: new { controller = "ApiQuoteRequest", action = "CalculateTotals" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.QuoteRequest.Confirm", "storefrontapi/quoterequests/{number}/confirm", defaults: new { controller = "ApiQuoteRequest", action = "Confirm" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
 
+            // Blog API
+            routes.AddStorefrontRoute("API.Blog.Articles", "storefrontapi/blog/{blogname}/articles", defaults: new { controller = "ApiBlog", action = "Articles" });
+
             #endregion
 
             // Account
@@ -144,6 +147,10 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("Pages.GetPage", "pages/{*page}", defaults: new { controller = "Page", action = "GetContentPageByName" });
             routes.AddStorefrontRoute("Blogs.GetBlog", "blogs/{blog}", defaults: new { controller = "Blog", action = "GetBlog" });
             routes.AddStorefrontRoute("Blogs.GetBlogArticle", "blogs/{blog}/{article}", defaults: new { controller = "Blog", action = "GetBlogArticle" });
+            routes.AddStorefrontRoute("Blogs.GetArticlesByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "Blog", action = "GetArticlesByCategory" });
+            routes.AddStorefrontRoute("Blogs.GetArticlesByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "Blog", action = "GetArticlesByTag" });
+            
+            
 
             Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), workContextFactory, commerceCoreApiFactory, cacheManager, storefrontUrlBuilderFactory);
             routes.AddStorefrontRoute(name: "SeoRoute", url: "{*path}", defaults: new { controller = "StorefrontHome", action = "Index" }, constraints: null, routeFactory: seoRouteFactory);
