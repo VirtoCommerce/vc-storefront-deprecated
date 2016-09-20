@@ -14,18 +14,15 @@ namespace VirtoCommerce.Storefront
 			#region JS
 
 			bundles.Add(
-				new ScriptBundle("~/default/jquery")
+				new ScriptBundle("~/default-theme/scripts")
 					.Include("~/App_Data/Themes/default/assets/modernizr.min.js")
 					.Include("~/App_Data/Themes/default/assets/ideal-image-slider.min.js")
 					.Include("~/App_Data/Themes/default/assets/ideal-image-slider-bullet-nav.js")
-					.Include("~/App_Data/Themes/default/assets/ideal-image-slider-captions.js"));
-
-			bundles.Add(
-				new ScriptBundle("~/default/angular")
+					.Include("~/App_Data/Themes/default/assets/ideal-image-slider-captions.js")
 					.IncludeDirectory("~/App_Data/Themes/default/assets/js/", "*.js"));
 
 			bundles.Add(
-				new ScriptBundle("~/default/checkout-angular")
+				new ScriptBundle("~/default-theme/checkout/scripts")
 					.Include("~/App_Data/Themes/default/assets/js/app.js")
 					.Include("~/App_Data/Themes/default/assets/js/services.js")
 					.Include("~/App_Data/Themes/default/assets/js/directives.js")
@@ -37,7 +34,7 @@ namespace VirtoCommerce.Storefront
 			#region CSS
 
 			bundles.Add(
-				new StyleBundle("~/default/css")
+				new StyleBundle("~/default-theme/css")
 				.Include("~/App_Data/Themes/default/assets/storefront.css", new CustomCssRewriteUrlTransform())
 				.Include("~/App_Data/Themes/default/assets/ideal-image-slider.css", new CustomCssRewriteUrlTransform())
 				.Include("~/App_Data/Themes/default/assets/ideal-image-slider-default-theme.css", new CustomCssRewriteUrlTransform()));
