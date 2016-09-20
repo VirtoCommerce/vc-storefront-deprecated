@@ -158,7 +158,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             }
         }
 
-        public decimal TaxPercentRate { get; private set; }
+        public decimal TaxPercentRate { get; set; }
 
         /// <summary>
         /// Gets or sets the value of shipping tax type
@@ -177,6 +177,10 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
         
             var shipmentTaxRate = taxRates.FirstOrDefault(x => x.Line.Id != null && x.Line.Id.EqualsInvariant(Id ?? ""));
+            if(shipmentTaxRate == null)
+            {
+                shipmentTaxRate = taxRates.FirstOrDefault(x => x.Line.Code.EqualsInvariant(ShipmentMethodCode) && x.Line.Name.EqualsInvariant(ShipmentMethodOption));
+            }
             if (shipmentTaxRate != null && Total.Amount > 0 && shipmentTaxRate.Rate.Amount > 0)
             {
                 TaxPercentRate = shipmentTaxRate.Rate.Amount / Total.Amount;              

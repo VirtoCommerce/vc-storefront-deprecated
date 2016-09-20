@@ -457,6 +457,7 @@
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
     <Compile Include="AutoRestClients\StoreModuleApi.cs" />
     <Compile Include="Binders\CartTypesModelBinder.cs" />
+    <Compile Include="Common\AppBuilderExtension.cs" />
     <Compile Include="Common\HmacCredentials.cs" />
     <Compile Include="Common\HmacUtility.cs" />
     <Compile Include="Common\VirtoCommerceApiRequestHandler.cs" />

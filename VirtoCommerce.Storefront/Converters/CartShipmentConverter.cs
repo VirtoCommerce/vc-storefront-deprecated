@@ -19,6 +19,7 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.Currency = cart.Currency;
             retVal.Price = new Money(shipment.Price ?? 0, cart.Currency);
             retVal.DiscountAmount = new Money(shipment.DiscountAmount ?? 0, cart.Currency);
+            retVal.TaxPercentRate = (decimal?)shipment.TaxPercentRate ?? 0m;
 
             if (shipment.DeliveryAddress != null)
             {

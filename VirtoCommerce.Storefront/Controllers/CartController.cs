@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.Converters;
@@ -101,7 +102,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
             if (order == null || order.CustomerId != WorkContext.CurrentCustomer.Id)
             {
-                return HttpNotFound();
+                throw new HttpException(404, "Order with number " + orderNumber + " not found.");
             }
 
             WorkContext.CurrentOrder = order.ToWebModel(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);

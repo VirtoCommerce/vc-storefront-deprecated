@@ -22,7 +22,6 @@ namespace VirtoCommerce.Storefront.Controllers
         {
             var context = WorkContext;
             context.CurrentBlog = WorkContext.Blogs.SingleOrDefault(x => x.Name.Equals(blog, StringComparison.OrdinalIgnoreCase));
-
             if (context.CurrentBlog != null)
             {
                 context.CurrentPageSeo = new SeoInfo
@@ -32,8 +31,9 @@ namespace VirtoCommerce.Storefront.Controllers
                     Title = context.CurrentBlog.Name,
                     Slug = string.Format("/blogs/{0}", blog)
                 };
+                return View("blog", WorkContext.CurrentBlog.Layout, WorkContext);
             }
-            return View("blog", WorkContext.CurrentBlog.Layout, WorkContext);
+            return View("blog", WorkContext);
         }
 
         // GET: /blogs/{blogname}/category/{category}

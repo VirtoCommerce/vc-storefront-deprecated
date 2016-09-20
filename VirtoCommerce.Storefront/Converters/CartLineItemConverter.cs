@@ -49,11 +49,13 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.Discounts.AddRange(serviceModel.Discounts.Select(x => x.ToWebModel(new[] { currency }, language)));
             }
+            retVal.Comment = serviceModel.Note;
             retVal.IsGift = serviceModel.IsGift == true;
             retVal.IsReccuring = serviceModel.IsReccuring == true;
             retVal.ListPrice = new Money(serviceModel.ListPrice ?? 0, currency);
             retVal.RequiredShipping = serviceModel.RequiredShipping == true;
             retVal.SalePrice = new Money(serviceModel.SalePrice ?? 0, currency);
+            retVal.TaxPercentRate = (decimal?)serviceModel.TaxPercentRate ?? 0m;
             retVal.DiscountAmount = new Money(serviceModel.DiscountAmount ?? 0, currency);
             retVal.TaxIncluded = serviceModel.TaxIncluded == true;
             retVal.Weight = (decimal?)serviceModel.Weight;

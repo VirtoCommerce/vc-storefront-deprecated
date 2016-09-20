@@ -95,7 +95,7 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 
             retVal.Addresses = webModel.Addresses.Select(a => a.ToCartServiceModel()).ToList();
-            retVal.Coupon = webModel.Coupon != null ? new cartModel.Coupon { Code = webModel.Coupon.Code } : null;
+            retVal.Coupon = webModel.Coupon != null ? new cartModel.Coupon { Code = webModel.Coupon.Code, IsValid = webModel.Coupon.AppliedSuccessfully } : null;
             retVal.Currency = webModel.Currency.Code;
             retVal.Discounts = webModel.Discounts.Select(d => d.ToServiceModel()).ToList();
             retVal.HandlingTotal = (double)webModel.HandlingTotal.Amount;

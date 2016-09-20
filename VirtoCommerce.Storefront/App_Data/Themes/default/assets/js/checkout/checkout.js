@@ -64,10 +64,8 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
 
         $scope.applyCoupon = function (coupon) {
             coupon.processing = true;
-            cartService.addCoupon(coupon.code).then(function (response) {
-                var coupon = response.data;
+            cartService.addCoupon(coupon.code).then(function () {
                 coupon.processing = false;
-                $scope.checkout.coupon = coupon;
                 $scope.reloadCart();
             }, function (response) {
                 coupon.processing = false;

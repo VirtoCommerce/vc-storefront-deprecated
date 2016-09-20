@@ -43,5 +43,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
 
         public bool IsSticked { get; set; }
         public bool IsTrending { get; set; }
+
+        public string Category { get; set; }
     }
 }

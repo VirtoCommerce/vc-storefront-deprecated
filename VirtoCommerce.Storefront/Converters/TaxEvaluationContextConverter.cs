@@ -135,7 +135,7 @@ namespace VirtoCommerce.Storefront.Converters
                 {
                     Id = shipment.Id,
                     Code = shipment.ShipmentMethodCode,
-                    Name = shipment.ShipmentMethodCode,
+                    Name = shipment.ShipmentMethodOption,
                     TaxType = shipment.TaxType,
                     Amount = shipment.Total
                 };
