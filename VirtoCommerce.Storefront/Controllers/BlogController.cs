@@ -127,8 +127,8 @@ namespace VirtoCommerce.Storefront.Controllers
                         Slug = blogArticle.Url,
                         ImageUrl = blogArticle.ImageUrl
                     };
-
-                    return View("article", blogArticle.Layout, WorkContext);
+                    var layout = string.IsNullOrEmpty(blogArticle.Layout) ? context.CurrentBlog.Layout : blogArticle.Layout;
+                    return View("article", layout, WorkContext);
                 }
                 else
                 {
