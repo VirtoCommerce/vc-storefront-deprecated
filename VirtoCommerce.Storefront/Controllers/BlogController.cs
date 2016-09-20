@@ -32,8 +32,9 @@ namespace VirtoCommerce.Storefront.Controllers
                     Title = context.CurrentBlog.Name,
                     Slug = string.Format("/blogs/{0}", blog)
                 };
+                return View("blog", WorkContext.CurrentBlog.Layout, WorkContext);
             }
-            return View("blog", WorkContext.CurrentBlog.Layout, WorkContext);
+            return View("blog", WorkContext);
         }
 
         // GET: /blogs/{blogname}/category/{category}
