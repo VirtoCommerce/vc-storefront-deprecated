@@ -102,7 +102,9 @@ namespace VirtoCommerce.Storefront
 
 			UnityWebActivator.Start();
 			var container = UnityConfig.GetConfiguredContainer();
-
+            //Cure for System.Runtime.Caching.MemoryCache freezing 
+            //https://www.zpqrtbnk.net/posts/appdomains-threads-cultureinfos-and-paracetamol
+            app.SanitizeThreadCulture();
 			// Caching configuration
 			// Be cautious with SystemWebCacheHandle because it does not work in native threads (Hangfire jobs).
 			var localCache = CacheFactory.FromConfiguration<object>("storefrontCache");
