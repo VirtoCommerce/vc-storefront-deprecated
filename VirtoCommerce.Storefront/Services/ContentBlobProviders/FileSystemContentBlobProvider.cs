@@ -10,11 +10,11 @@ namespace VirtoCommerce.Storefront.Services
     public class FileSystemContentBlobProvider : IContentBlobProvider, IStaticContentBlobProvider
     {
         private readonly string _basePath;
-        private readonly FileSystemWatcher _fileSystemWatcher;
+        
         public FileSystemContentBlobProvider(string basePath)
         {
             _basePath = basePath;
-            _fileSystemWatcher = MonitorThemeFileSystemChanges(basePath);
+            MonitorThemeFileSystemChanges(basePath);
         }
 
         #region IContentBlobProvider Members
@@ -41,7 +41,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             path = NormalizePath(path);
             var retVal = Directory.Exists(path);
-            if(!retVal)
+            if (!retVal)
             {
                 retVal = File.Exists(path);
             }
@@ -86,40 +86,65 @@ namespace VirtoCommerce.Storefront.Services
             return Path.Combine(_basePath, path.TrimStart('\\'));
         }
 
-        private FileSystemWatcher MonitorThemeFileSystemChanges(string path)
+        private void MonitorThemeFileSystemChanges(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                SetFileSystemWatcher(path);
+
+                var symbolicLinks = GetSymbolicLinks(path);
+                foreach (var symbolicLink in symbolicLinks)
+                {
+                    SetFileSystemWatcher(symbolicLink);
+                }
+            }
+        }
+
+        private void SetFileSystemWatcher(string path)
         {
             var fileSystemWatcher = new FileSystemWatcher();
 
-            if (Directory.Exists(path))
+            fileSystemWatcher.Path = path;
+            fileSystemWatcher.IncludeSubdirectories = true;
+
+            FileSystemEventHandler handler = (sender, args) =>
             {
-                fileSystemWatcher.Path = path;
-                fileSystemWatcher.IncludeSubdirectories = true;
+                RaiseChangedEvent(args);
+            };
+            RenamedEventHandler renamedHandler = (sender, args) =>
+            {
+                RaiseRenamedEvent(args);
+            };
+            var throttledHandler = handler.Throttle(TimeSpan.FromSeconds(5));
+            // Add event handlers.
+            fileSystemWatcher.Changed += throttledHandler;
+            fileSystemWatcher.Created += throttledHandler;
+            fileSystemWatcher.Deleted += throttledHandler;
+            fileSystemWatcher.Renamed += renamedHandler;
 
-                FileSystemEventHandler handler = (sender, args) =>
-                {
-                    RaiseChangedEvent(args);
-                };
-                RenamedEventHandler renamedHandler = (sender, args) =>
-                {
-                    RaiseRenamedEvent(args);
-                };
-                var throttledHandler = handler.Throttle(TimeSpan.FromSeconds(5));
-                // Add event handlers.
-                fileSystemWatcher.Changed += throttledHandler;
-                fileSystemWatcher.Created += throttledHandler;
-                fileSystemWatcher.Deleted += throttledHandler;
-                fileSystemWatcher.Renamed += renamedHandler;
+            // Begin watching.
+            fileSystemWatcher.EnableRaisingEvents = true;
+        }
 
-                // Begin watching.
-                fileSystemWatcher.EnableRaisingEvents = true;
+        private IEnumerable<string> GetSymbolicLinks(string path)
+        {
+            var result = new List<string>();
+            var directories = Directory.GetDirectories(path, "*", System.IO.SearchOption.AllDirectories);
+            foreach (var directory in directories)
+            {
+                var directoryInfo = new DirectoryInfo(directory);
+                if ((directoryInfo.Attributes & FileAttributes.ReparsePoint) != 0)
+                {
+                    result.Add(directory);
+                }
             }
-            return fileSystemWatcher;
+            return result;
         }
 
         protected virtual void RaiseChangedEvent(FileSystemEventArgs args)
         {
             var changedEvent = Changed;
-            if(changedEvent != null)
+            if (changedEvent != null)
             {
                 changedEvent(this, args);
             }

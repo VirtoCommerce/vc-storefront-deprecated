@@ -66,8 +66,8 @@ namespace VirtoCommerce.Storefront.Owin
             }
             else
             {
-				if (IsStorefrontRequest(context.Request) && !IsBundleRequest(context.Request))
-				{
+                if (IsStorefrontRequest(context.Request) && !IsBundleRequest(context.Request))
+                {
                     await HandleStorefrontRequest(context);
                 }
 
@@ -93,6 +93,12 @@ namespace VirtoCommerce.Storefront.Owin
             return !_owinIgnorePathsStrings.Any(p => request.Path.StartsWithSegments(p));
         }
 
+        private static bool IsBundleRequest(IOwinRequest request)
+        {
+            var path = "~" + request.Path;
+            return BundleTable.Bundles.Any(b => b.Path.Equals(path, StringComparison.OrdinalIgnoreCase));
+        }
+
         private static bool IsAssetRequest(IOwinRequest request)
         {
             var retVal = string.Equals(request.Method, "GET", StringComparison.OrdinalIgnoreCase);
@@ -103,13 +109,7 @@ namespace VirtoCommerce.Storefront.Owin
             return retVal;
         }
 
-		private static bool IsBundleRequest(IOwinRequest request)
-		{
-			var path = "~" + request.Path;
-			return BundleTable.Bundles.Any(b => b.Path.Equals(path, StringComparison.OrdinalIgnoreCase));
-		}
-
-		private async Task HandleStorefrontRequest(IOwinContext context)
+        private async Task HandleStorefrontRequest(IOwinContext context)
         {
             var workContext = _container.Resolve<WorkContext>();
 
@@ -275,6 +275,7 @@ namespace VirtoCommerce.Storefront.Owin
                                 blog.Articles = new MutablePagedList<BlogArticle>(blogArticles);
                             }
                         }
+
                         return new { Pages = allContentItems, Blogs = blogs };
                     });
                     workContext.Pages = new MutablePagedList<ContentItem>(staticContents.Pages.Where(x => x.Language.IsInvariant || x.Language == workContext.CurrentLanguage));
@@ -440,20 +441,18 @@ namespace VirtoCommerce.Storefront.Owin
             {
                 if (string.IsNullOrEmpty(anonymousCustomerId))
                 {
-
                     // Add anonymous customer cookie for non registered customer
                     anonymousCustomerId = Guid.NewGuid().ToString();
                     workContext.CurrentCustomer.Id = anonymousCustomerId;
 
-                    ///Workaround of the next problem:
-                    //You set a cookie in your OWIN middleware, but the cookie is not returned in the response received by a browser.
-                    //http://appetere.com/post/owinresponse-cookies-not-set-when-remove-an-httpresponse-cookie
-                    //Need to maintain cookies through  owinContext.Response.OnSendingHeaders
+                    // Workaround for the next problem:
+                    // You set a cookie in your OWIN middleware, but the cookie is not returned in the response received by a browser.
+                    // http://appetere.com/post/owinresponse-cookies-not-set-when-remove-an-httpresponse-cookie
+                    // Need to maintain cookies through owinContext.Response.OnSendingHeaders
                     context.Response.OnSendingHeaders(state =>
                     {
                         context.Response.Cookies.Append(StorefrontConstants.AnonymousCustomerIdCookie, anonymousCustomerId, new CookieOptions { Expires = DateTime.UtcNow.AddDays(30) });
-                    },  null);
-                 
+                    }, null);
                 }
             }
         }
