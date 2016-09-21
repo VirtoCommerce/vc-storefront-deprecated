@@ -63,10 +63,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 return input;
             }
 
-            // TODO: combine into one regex
-            var replacedString = WordReplaceSyntax.Replace(input.ToLower(), ""); // remove special characters
-            replacedString = WordReplaceSyntax2.Replace(replacedString, "-"); // add "-" instead of spaces
-            return replacedString;
+           return input.Handelize();
         }
 
         /// <summary>

@@ -72,7 +72,7 @@ namespace VirtoCommerce.Storefront.Controllers
                     Title = blog.Title
                 };
 
-                var articles = blog.Articles.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Replace(" ", "-").EqualsInvariant(category) && a.PublicationStatus != ContentPublicationStatus.Private);
+                var articles = blog.Articles.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Handelize().EqualsInvariant(category) && a.PublicationStatus != ContentPublicationStatus.Private);
                 if (articles != null)
                 {
                     blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
@@ -102,7 +102,7 @@ namespace VirtoCommerce.Storefront.Controllers
                     Title = blog.Title
                 };
 
-                var articles = blog.Articles.Where(a => a.Tags != null && a.Tags.Select(t => t.Replace(" ", "-")).Contains(tag, StringComparer.OrdinalIgnoreCase) && a.PublicationStatus != ContentPublicationStatus.Private);
+                var articles = blog.Articles.Where(a => a.Tags != null && a.Tags.Select(t => t.Handelize()).Contains(tag, StringComparer.OrdinalIgnoreCase) && a.PublicationStatus != ContentPublicationStatus.Private);
                 if (articles != null)
                 {
                     blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
