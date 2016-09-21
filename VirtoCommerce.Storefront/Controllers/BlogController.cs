@@ -29,7 +29,7 @@ namespace VirtoCommerce.Storefront.Controllers
                     Language = blog.Language,
                     MetaDescription = blog.Name,
                     Title = blog.Name,
-                    Slug = string.Format("/blog", blog.Name)
+                    Slug = string.Format("/blog")
                 };
             }
             return View("blog", WorkContext.CurrentBlog.Layout, WorkContext);
