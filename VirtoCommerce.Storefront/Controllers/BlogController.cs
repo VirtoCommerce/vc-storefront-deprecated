@@ -17,6 +17,24 @@ namespace VirtoCommerce.Storefront.Controllers
         {
         }
 
+        // GET: /blog
+        public ActionResult DefaultBlog()
+        {
+            var blog = WorkContext.Blogs.FirstOrDefault();
+            if (blog != null)
+            {
+                WorkContext.CurrentBlog = blog;
+                WorkContext.CurrentPageSeo = new SeoInfo
+                {
+                    Language = blog.Language,
+                    MetaDescription = blog.Name,
+                    Title = blog.Name,
+                    Slug = string.Format("/blog", blog.Name)
+                };
+            }
+            return View("blog", WorkContext.CurrentBlog.Layout, WorkContext);
+        }
+
         // GET: /blogs/{blog}
         public ActionResult GetBlog(string blog)
         {

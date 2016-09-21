@@ -144,6 +144,7 @@ namespace VirtoCommerce.Storefront
 
             // Static content (no cms)
             routes.AddStorefrontRoute("Pages.GetPage", "pages/{*page}", defaults: new { controller = "Page", action = "GetContentPageByName" });
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlog", "blog", defaults: new { controller = "Blog", action = "DefaultBlog" });
             routes.AddStorefrontRoute("Blogs.GetBlog", "blogs/{blog}", defaults: new { controller = "Blog", action = "GetBlog" });
             routes.AddStorefrontRoute("Blogs.GetBlogArticle", "blogs/{blog}/{article}", defaults: new { controller = "Blog", action = "GetBlogArticle" });
             routes.AddStorefrontRoute("Blogs.GetArticlesByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "Blog", action = "GetArticlesByCategory" });
