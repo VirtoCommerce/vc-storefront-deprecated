@@ -69,7 +69,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// Gets line item custom information
         /// </summary>
         [DataMember]
-        public IDictionary<string, string> Properties { get; set; }
+        public MetafieldsCollection Properties { get; set; }
 
         /// <summary>
         /// Gets line item quantity
