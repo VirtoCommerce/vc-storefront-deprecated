@@ -27,7 +27,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             var blog = base.WorkContext.Blogs.FirstOrDefault(x => x.Name.EqualsInvariant(blogName));
             if (blog != null)
             {
-                var query = blog.Articles.AsQueryable();
+                var query = blog.Articles.AsQueryable().Where(x => x.PublicationStatus != ContentPublicationStatus.Private);
                 if (!string.IsNullOrEmpty(filterType) && !string.IsNullOrEmpty(criteria))
                 {
                     if (filterType.EqualsInvariant("category"))
