@@ -31,16 +31,16 @@ namespace VirtoCommerce.Storefront.Controllers
                     Title = blog.Name,
                     Slug = string.Format("/blog")
                 };
+                return View("blog", blog.Layout, WorkContext);
             }
-            return View("blog", WorkContext.CurrentBlog.Layout, WorkContext);
+            throw new HttpException(404, "Default blog not found");
         }
 
         // GET: /blogs/{blog}
         public ActionResult GetBlog(string blog)
         {
             var context = WorkContext;
-            context.CurrentBlog = WorkContext.Blogs.SingleOrDefault(x => x.Name.Equals(blog, StringComparison.OrdinalIgnoreCase));
-
+            context.CurrentBlog = WorkContext.Blogs.FirstOrDefault(x => x.Name.EqualsInvariant(blog));
             if (context.CurrentBlog != null)
             {
                 context.CurrentPageSeo = new SeoInfo
@@ -50,14 +50,15 @@ namespace VirtoCommerce.Storefront.Controllers
                     Title = context.CurrentBlog.Name,
                     Slug = string.Format("/blogs/{0}", blog)
                 };
+                return View("blog", context.CurrentBlog.Layout, WorkContext);
             }
-            return View("blog", WorkContext.CurrentBlog.Layout, WorkContext);
+            throw new HttpException(404, blog);
         }
 
         // GET: /blogs/{blogname}/category/{category}
         public ActionResult GetArticlesByCategory(string blogName, string category)
         {
-            var blog = WorkContext.Blogs.FirstOrDefault(b => b.Name.Equals(blogName, StringComparison.OrdinalIgnoreCase));
+            var blog = WorkContext.Blogs.FirstOrDefault(b => b.Name.EqualsInvariant(blogName));
             if (blog != null)
             {
                 var blogClone = new Blog();
@@ -79,9 +80,9 @@ namespace VirtoCommerce.Storefront.Controllers
 
                 WorkContext.CurrentBlog = blogClone;
                 WorkContext.CurrentPageSeo = seoInfo;
+                return View("blog", blog.Layout, WorkContext);
             }
-
-            return View("blog", blog.Layout, WorkContext);
+            throw new HttpException(404, blogName);
         }
 
         // GET: /blogs/{blogname}/tag/{tag}
@@ -106,12 +107,11 @@ namespace VirtoCommerce.Storefront.Controllers
                 {
                     blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
                 }
-
                 WorkContext.CurrentBlog = blogClone;
                 WorkContext.CurrentPageSeo = seoInfo;
+                return View("blog", blog.Layout, WorkContext);
             }
-
-            return View("blog", blog.Layout, WorkContext);
+            throw new HttpException(404, blogName);
         }
 
         // GET: /blogs/{blog}/{article}
@@ -120,7 +120,7 @@ namespace VirtoCommerce.Storefront.Controllers
             var context = WorkContext;
             var articleUrl = string.Join("/", "blogs", blog, article);
 
-            context.CurrentBlog = context.Blogs.SingleOrDefault(x => x.Name.Equals(blog, StringComparison.OrdinalIgnoreCase));
+            context.CurrentBlog = context.Blogs.SingleOrDefault(x => x.Name.EqualsInvariant(blog));
             if (context.CurrentBlog != null)
             {
                 var blogArticles = context.CurrentBlog.Articles.Where(x => x.Url.Equals(articleUrl)).ToList();
