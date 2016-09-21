@@ -58,7 +58,7 @@ namespace VirtoCommerce.Storefront.Builders
             return this;
         }
 
-        public virtual async Task LoadOrCreateCartAsync(string cartName, Store store, CustomerInfo customer, Language language, Currency currency)
+        public virtual async Task LoadOrCreateNewTransientCartAsync(string cartName, Store store, CustomerInfo customer, Language language, Currency currency)
         {
             var cacheKey = GetCartCacheKey(store.Id, cartName, customer.Id, currency.Code);
             bool needReevaluate = false;
@@ -285,8 +285,13 @@ namespace VirtoCommerce.Storefront.Builders
                     var lineItem = product.ToLineItem(_cart.Language, (int)quoteItem.SelectedTierPrice.Quantity);
                     lineItem.ListPrice = quoteItem.ListPrice;
                     lineItem.SalePrice = quoteItem.SelectedTierPrice.Price;
-
-                   await AddLineItemAsync(lineItem);
+                    if(lineItem.ListPrice < lineItem.SalePrice)
+                    {
+                        lineItem.ListPrice = lineItem.SalePrice;
+                    }
+                    lineItem.IsReadOnly = true;
+                    lineItem.Id = null;
+                    _cart.Items.Add(lineItem);
                 }
             }
 
@@ -294,12 +299,7 @@ namespace VirtoCommerce.Storefront.Builders
             {
                 _cart.Shipments.Clear();
                 var shipment = new Shipment(_cart.Currency);
-
-                foreach (var item in _cart.Items)
-                {
-                    shipment.Items.Add(item.ToShipmentItem());
-                }
-
+            
                 if (quoteRequest.ShippingAddress != null)
                 {
                     shipment.DeliveryAddress = quoteRequest.ShippingAddress;
@@ -317,7 +317,6 @@ namespace VirtoCommerce.Storefront.Builders
                         }
                     }
                 }
-
                 _cart.Shipments.Add(shipment);
             }
 
@@ -432,7 +431,7 @@ namespace VirtoCommerce.Storefront.Builders
             if (!prevUser.IsRegisteredUser && prevUserCart != null && prevUserCart.Items.Any())
             {
                 //we load or create cart for new user
-                await LoadOrCreateCartAsync(prevUserCart.Name, workContext.CurrentStore, newUser, workContext.CurrentLanguage, workContext.CurrentCurrency);
+                await LoadOrCreateNewTransientCartAsync(prevUserCart.Name, workContext.CurrentStore, newUser, workContext.CurrentLanguage, workContext.CurrentCurrency);
                 await MergeWithCartAsync(prevUserCart);
                 await SaveAsync();
                 await _cartApi.CartModule.DeleteCartsAsync(new[] { prevUserCart.Id }.ToList());            
@@ -521,7 +520,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         private async Task InnerChangeItemQuantityAsync(LineItem lineItem, int quantity)
         {
-            if (lineItem != null)
+            if (lineItem != null && !lineItem.IsReadOnly)
             {
                 var product = (await _catalogSearchService.GetProductsAsync(new[] { lineItem.ProductId }, ItemResponseGroup.ItemWithPrices)).FirstOrDefault();
                 if (product != null)

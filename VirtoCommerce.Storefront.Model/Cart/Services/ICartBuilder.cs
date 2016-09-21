@@ -28,7 +28,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// <param name="language"></param>
         /// <param name="currency"></param>
         /// <returns></returns>
-        Task LoadOrCreateCartAsync(string cartName, Store store, CustomerInfo customer, Language language, Currency currency);
+        Task LoadOrCreateNewTransientCartAsync(string cartName, Store store, CustomerInfo customer, Language language, Currency currency);
 
         /// <summary>
         /// Add new product to cart

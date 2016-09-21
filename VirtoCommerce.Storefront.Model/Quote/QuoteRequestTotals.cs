@@ -34,6 +34,6 @@ namespace VirtoCommerce.Storefront.Model.Quote
 
         public Money GrandTotalExlTax { get; set; }
 
-        public Money GrandTotalInclTax { get; set; }
+        public Money GrandTotalInclTax { get; set; }      
     }
 }

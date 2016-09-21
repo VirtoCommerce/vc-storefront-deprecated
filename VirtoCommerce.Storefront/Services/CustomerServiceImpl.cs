@@ -181,9 +181,9 @@ namespace VirtoCommerce.Storefront.Services
             {
                 var quoteSearchCriteria = new quoteModel.QuoteRequestSearchCriteria
                 {
-                    Count = pageSize,
+                    Take = pageSize,
                     CustomerId = customer.Id,
-                    Start = (pageNumber - 1) * pageSize,
+                    Skip = (pageNumber - 1) * pageSize,
                     StoreId = workContext.CurrentStore.Id
                 };
                 var cacheKey = "GetCustomerQuotes-" + quoteSearchCriteria.GetHashCode();

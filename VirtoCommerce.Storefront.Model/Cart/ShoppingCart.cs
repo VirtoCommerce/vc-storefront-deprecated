@@ -417,7 +417,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         public ICollection<TaxDetail> TaxDetails { get; set; }
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
-        {         
+        {
             foreach (var lineItem in Items)
             {
                 lineItem.ApplyTaxRates(taxRates);

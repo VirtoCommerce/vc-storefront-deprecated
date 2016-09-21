@@ -158,6 +158,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// </summary>
         public decimal? Width { get; set; }
 
+        public bool IsReadOnly { get; set; }
+
         /// <summary>
         /// Gets or sets the value of line item original price
         /// </summary>

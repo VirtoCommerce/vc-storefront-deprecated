@@ -20,9 +20,10 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.ImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
             retVal.ListPrice = product.Price.ListPrice;
             retVal.SalePrice = product.Price.GetTierPrice(quantity).Price;
+            retVal.TaxPercentRate = product.Price.TaxPercentRate;
+            retVal.DiscountAmount = product.Price.DiscountAmount;
             retVal.ProductId = product.Id;
             retVal.Quantity = quantity;
-
             retVal.ThumbnailImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
 
             return retVal;

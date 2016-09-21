@@ -22,7 +22,7 @@ namespace VirtoCommerce.Storefront.Test
                 Id = Guid.NewGuid().ToString(),
                 IsRegisteredUser = false
             };
-            var task = cartBuilder.LoadOrCreateCartAsync("default", workContext.CurrentStore, anonymousCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
+            var task = cartBuilder.LoadOrCreateNewTransientCartAsync("default", workContext.CurrentStore, anonymousCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
             task.Wait();
             Assert.True(cartBuilder.Cart.IsTransient());
 
@@ -30,7 +30,7 @@ namespace VirtoCommerce.Storefront.Test
             var cart = cartBuilder.Cart;
             Assert.False(cart.IsTransient());
 
-            task = cartBuilder.LoadOrCreateCartAsync("default", workContext.CurrentStore, anonymousCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
+            task = cartBuilder.LoadOrCreateNewTransientCartAsync("default", workContext.CurrentStore, anonymousCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
             task.Wait();
             Assert.Equal(cart.Id, cartBuilder.Cart.Id);
         }
