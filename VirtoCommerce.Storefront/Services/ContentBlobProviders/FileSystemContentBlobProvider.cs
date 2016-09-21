@@ -10,11 +10,14 @@ namespace VirtoCommerce.Storefront.Services
     public class FileSystemContentBlobProvider : IContentBlobProvider, IStaticContentBlobProvider
     {
         private readonly string _basePath;
-        
+
+        // Keep links to file watchers to prevent GC to collect it
+        private readonly FileSystemWatcher[] _fileSystemWatchers;
+
         public FileSystemContentBlobProvider(string basePath)
         {
             _basePath = basePath;
-            MonitorThemeFileSystemChanges(basePath);
+            _fileSystemWatchers = MonitorThemeFileSystemChanges(basePath);
         }
 
         #region IContentBlobProvider Members
@@ -86,21 +89,23 @@ namespace VirtoCommerce.Storefront.Services
             return Path.Combine(_basePath, path.TrimStart('\\'));
         }
 
-        private void MonitorThemeFileSystemChanges(string path)
+        private FileSystemWatcher[] MonitorThemeFileSystemChanges(string path)
         {
+            var result = new List<FileSystemWatcher>();
             if (Directory.Exists(path))
             {
-                SetFileSystemWatcher(path);
+                result.Add(SetFileSystemWatcher(path));
 
                 var symbolicLinks = GetSymbolicLinks(path);
                 foreach (var symbolicLink in symbolicLinks)
                 {
-                    SetFileSystemWatcher(symbolicLink);
+                    result.Add(SetFileSystemWatcher(symbolicLink));
                 }
             }
+            return result.ToArray();
         }
 
-        private void SetFileSystemWatcher(string path)
+        private FileSystemWatcher SetFileSystemWatcher(string path)
         {
             var fileSystemWatcher = new FileSystemWatcher();
 
@@ -124,6 +129,8 @@ namespace VirtoCommerce.Storefront.Services
 
             // Begin watching.
             fileSystemWatcher.EnableRaisingEvents = true;
+
+            return fileSystemWatcher;
         }
 
         private IEnumerable<string> GetSymbolicLinks(string path)
