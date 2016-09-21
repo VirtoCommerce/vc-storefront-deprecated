@@ -32,11 +32,11 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 {
                     if (filterType.EqualsInvariant("category"))
                     {
-                        query = query.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Equals(criteria, StringComparison.OrdinalIgnoreCase));
+                        query = query.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Replace(" ", "-").Equals(criteria, StringComparison.OrdinalIgnoreCase));
                     }
                     if (filterType.EqualsInvariant("tag"))
                     {
-                        query = query.Where(a => a.Tags != null && a.Tags.Contains(criteria, StringComparer.OrdinalIgnoreCase));
+                        query = query.Where(a => a.Tags != null && a.Tags.Select(t => t.Replace(" ", "-")).Contains(criteria, StringComparer.OrdinalIgnoreCase));
                     }
                 }
                 articles = query.OrderByDescending(a => a.CreatedDate).Skip((page - 1) * pageSize).Take(pageSize).ToList();

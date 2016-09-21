@@ -71,7 +71,7 @@ namespace VirtoCommerce.Storefront.Controllers
                     Title = blog.Title
                 };
 
-                var articles = blog.Articles.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.EqualsInvariant(category) && a.PublicationStatus != ContentPublicationStatus.Private);
+                var articles = blog.Articles.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Replace(" ", "-").EqualsInvariant(category) && a.PublicationStatus != ContentPublicationStatus.Private);
                 if (articles != null)
                 {
                     blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
@@ -101,14 +101,15 @@ namespace VirtoCommerce.Storefront.Controllers
                     Title = blog.Title
                 };
 
-                var articles = blog.Articles.Where(a => a.Tags != null && a.Tags.Contains(tag, StringComparer.OrdinalIgnoreCase) && a.PublicationStatus != ContentPublicationStatus.Private);
+                var articles = blog.Articles.Where(a => a.Tags != null && a.Tags.Select(t => t.Replace(" ", "-")).Contains(tag, StringComparer.OrdinalIgnoreCase) && a.PublicationStatus != ContentPublicationStatus.Private);
                 if (articles != null)
                 {
                     blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
                 }
 
                 WorkContext.CurrentBlog = blogClone;
-                WorkContext.CurrentPageSeo = seoInfo;            }
+                WorkContext.CurrentPageSeo = seoInfo;
+            }
 
             return View("blog", blog.Layout, WorkContext);
         }
@@ -131,7 +132,6 @@ namespace VirtoCommerce.Storefront.Controllers
                 {
                     blogArticle = blogArticles.FirstOrDefault(x => x.Language.IsInvariant);
                 }
-
 
                 if (blogArticle != null)
                 {
