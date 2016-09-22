@@ -17,30 +17,17 @@ namespace VirtoCommerce.Storefront.Controllers
         {
         }
 
-        // GET: /blog
-        public ActionResult DefaultBlog()
-        {
-            var blog = WorkContext.Blogs.FirstOrDefault();
-            if (blog != null)
-            {
-                WorkContext.CurrentBlog = blog;
-                WorkContext.CurrentPageSeo = new SeoInfo
-                {
-                    Language = blog.Language,
-                    MetaDescription = blog.Name,
-                    Title = blog.Name,
-                    Slug = string.Format("/blog")
-                };
-                return View("blog", blog.Layout, WorkContext);
-            }
-            throw new HttpException(404, "Default blog not found");
-        }
-
-        // GET: /blogs/{blog}
-        public ActionResult GetBlog(string blog)
+        // GET: /blogs/{blog}, /blog, /blog/category/category, /blogs/{blog}/category/{category}, /blogs/{blog}/tag/{tag}, /blog/tag/{tag}
+        public ActionResult GetBlog(string blog = null, string category = null, string tag = null)
         {
             var context = WorkContext;
-            context.CurrentBlog = WorkContext.Blogs.FirstOrDefault(x => x.Name.EqualsInvariant(blog));
+            context.CurrentBlog = WorkContext.Blogs.FirstOrDefault();
+            if (!string.IsNullOrEmpty(blog))
+            {
+                context.CurrentBlog = WorkContext.Blogs.FirstOrDefault(x => x.Name.EqualsInvariant(blog));
+            }
+            WorkContext.CurrentBlogSearchCritera.Category = category;
+            WorkContext.CurrentBlogSearchCritera.Tag = tag;
             if (context.CurrentBlog != null)
             {
                 context.CurrentPageSeo = new SeoInfo
@@ -48,118 +35,11 @@ namespace VirtoCommerce.Storefront.Controllers
                     Language = context.CurrentBlog.Language,
                     MetaDescription = context.CurrentBlog.Name,
                     Title = context.CurrentBlog.Name,
-                    Slug = string.Format("/blogs/{0}", blog)
+                    Slug = context.RequestUrl.AbsolutePath
                 };
                 return View("blog", context.CurrentBlog.Layout, WorkContext);
             }
             throw new HttpException(404, blog);
-        }
-
-        // GET: /blogs/{blogname}/category/{category}
-        public ActionResult GetArticlesByCategory(string blogName, string category)
-        {
-            var blog = WorkContext.Blogs.FirstOrDefault(b => b.Name.EqualsInvariant(blogName));
-            if (blog != null)
-            {
-                var blogClone = new Blog();
-                //Need to clone exist blog because it may be memory cached
-                blogClone.InjectFrom<NullableAndEnumValueInjecter>(blog);
-                var seoInfo = new SeoInfo
-                {
-                    Language = blog.Language,
-                    MetaDescription = blog.Title,
-                    Slug = string.Format("/blogs/{0}/category/{1}", blog, category),
-                    Title = blog.Title
-                };
-
-                var articles = blog.Articles.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Handelize().EqualsInvariant(category) && a.PublicationStatus != ContentPublicationStatus.Private);
-                if (articles != null)
-                {
-                    blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
-                }
-
-                WorkContext.CurrentBlog = blogClone;
-                WorkContext.CurrentPageSeo = seoInfo;
-                return View("blog", blog.Layout, WorkContext);
-            }
-            throw new HttpException(404, blogName);
-        }
-
-        // GET: /blogs/{blogname}/tag/{tag}
-        public ActionResult GetArticlesByTag(string blogName, string tag)
-        {
-            var blog = WorkContext.Blogs.FirstOrDefault(b => b.Name.Equals(blogName, StringComparison.OrdinalIgnoreCase));
-            if (blog != null)
-            {
-                var blogClone = new Blog();
-                //Need to clone exist blog because it may be memory cached
-                blogClone.InjectFrom<NullableAndEnumValueInjecter>(blog);
-                var seoInfo = new SeoInfo
-                {
-                    Language = blog.Language,
-                    MetaDescription = blog.Title,
-                    Slug = string.Format("/blogs/{0}/tag/{1}", blog, tag),
-                    Title = blog.Title
-                };
-
-                var articles = blog.Articles.Where(a => a.Tags != null && a.Tags.Select(t => t.Handelize()).Contains(tag, StringComparer.OrdinalIgnoreCase) && a.PublicationStatus != ContentPublicationStatus.Private);
-                if (articles != null)
-                {
-                    blogClone.Articles = new MutablePagedList<BlogArticle>(articles);
-                }
-                WorkContext.CurrentBlog = blogClone;
-                WorkContext.CurrentPageSeo = seoInfo;
-                return View("blog", blog.Layout, WorkContext);
-            }
-            throw new HttpException(404, blogName);
-        }
-
-        // GET: /blogs/{blog}/{article}
-        public ActionResult GetBlogArticle(string blog, string article)
-        {
-            var context = WorkContext;
-            var articleUrl = string.Join("/", "blogs", blog, article);
-
-            context.CurrentBlog = context.Blogs.SingleOrDefault(x => x.Name.EqualsInvariant(blog));
-            if (context.CurrentBlog != null)
-            {
-                var blogArticles = context.CurrentBlog.Articles.Where(x => x.Url.Equals(articleUrl)).ToList();
-
-                // Return article with current or invariant language
-                var blogArticle = blogArticles.FirstOrDefault(x => x.Language == context.CurrentLanguage);
-
-                if (blogArticle == null)
-                {
-                    blogArticle = blogArticles.FirstOrDefault(x => x.Language.IsInvariant);
-                }
-
-                if (blogArticle != null)
-                {
-                    context.CurrentBlogArticle = blogArticle;
-
-                    context.CurrentPageSeo = new SeoInfo
-                    {
-                        Language = blogArticle.Language,
-                        MetaDescription = blogArticle.Excerpt,
-                        Title = blogArticle.Title,
-                        Slug = blogArticle.Url,
-                        ImageUrl = blogArticle.ImageUrl
-                    };
-                    var layout = string.IsNullOrEmpty(blogArticle.Layout) ? context.CurrentBlog.Layout : blogArticle.Layout;
-                    return View("article", layout, WorkContext);
-                }
-                else
-                {
-                    blogArticle = context.CurrentBlog.Articles.FirstOrDefault(x => x.AliasesUrls.Contains(articleUrl, StringComparer.OrdinalIgnoreCase));
-                    if(blogArticle != null)
-                    {
-                        var articleRedirectUrl = UrlBuilder.ToAppAbsolute(blogArticle.Url, WorkContext.CurrentStore, WorkContext.CurrentLanguage);
-                        return RedirectPermanent(articleRedirectUrl);
-                    }
-                }
-            }
-
-            throw new HttpException(404, articleUrl);
-        }
+        }         
     }
 }
