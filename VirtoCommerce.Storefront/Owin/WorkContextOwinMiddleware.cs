@@ -138,11 +138,13 @@ namespace VirtoCommerce.Storefront.Owin
                 workContext.CurrentCurrency = GetCurrency(context, workContext.CurrentStore);
 
                 var qs = HttpUtility.ParseQueryString(workContext.RequestUrl.Query);
+                
                 //Initialize catalog search criteria
-                workContext.CurrentCatalogSearchCriteria = new CatalogSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency, qs)
+                workContext.CurrentProductSearchCriteria = new ProductSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency, qs)
                 {
-                    CatalogId = workContext.CurrentStore.Catalog
+                    //CatalogId = workContext.CurrentStore.Catalog
                 };
+
                 //Initialize product response group
                 workContext.CurrentProductResponseGroup = EnumUtility.SafeParse(qs.Get("resp_group"), ItemResponseGroup.ItemLarge);
 
@@ -154,13 +156,10 @@ namespace VirtoCommerce.Storefront.Owin
                 //This line make delay categories loading initialization (categories can be evaluated on view rendering time)
                 workContext.Categories = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos) =>
                 {
-                    var criteria = new CatalogSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency)
+                    var criteria = new CategorySearchCriteria(workContext.CurrentLanguage)
                     {
-                        CatalogId = workContext.CurrentStore.Catalog,
-                        SearchInChildren = true,
                         PageNumber = pageNumber,
-                        PageSize = pageSize,
-                        ResponseGroup = CatalogSearchResponseGroup.WithCategories | CatalogSearchResponseGroup.WithOutlines
+                        PageSize = pageSize
                     };
 
                     if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
@@ -172,26 +171,34 @@ namespace VirtoCommerce.Storefront.Owin
                     {
                         category.Products = new MutablePagedList<Product>((pageNumber2, pageSize2, sortInfos2) =>
                         {
-                            criteria.CategoryId = category.Id;
-                            criteria.PageNumber = pageNumber2;
-                            criteria.PageSize = pageSize2;
+                            var categoryProductCriteria = new ProductSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency)
+                            {
+                                PageNumber = pageNumber2,
+                                PageSize = pageSize2,
+                                Outline = category.Outline
+                            };
+
+                            //criteria.CategoryId = category.Id;
                             if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos2.IsNullOrEmpty())
                             {
-                                criteria.SortBy = SortInfo.ToString(sortInfos2);
+                                categoryProductCriteria.SortBy = SortInfo.ToString(sortInfos2);
                             }
-                            var searchResult = catalogSearchService.SearchProducts(criteria);
+                            var searchResult = catalogSearchService.SearchProducts(categoryProductCriteria);
+                            
                             //Because catalog search products returns also aggregations we can use it to populate workContext using C# closure
                             //now workContext.Aggregation will be contains preloaded aggregations for current category
+                            
                             workContext.Aggregations = new MutablePagedList<Aggregation>(searchResult.Aggregations);
                             return searchResult.Products;
                         });
                     }
                     return result;
                 });
+
                 //This line make delay products loading initialization (products can be evaluated on view rendering time)
                 workContext.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                 {
-                    var criteria = workContext.CurrentCatalogSearchCriteria.Clone();
+                    var criteria = workContext.CurrentProductSearchCriteria.Clone();
                     criteria.PageNumber = pageNumber;
                     criteria.PageSize = pageSize;
                     if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
@@ -208,7 +215,7 @@ namespace VirtoCommerce.Storefront.Owin
                 //This line make delay aggregation loading initialization (aggregation can be evaluated on view rendering time)
                 workContext.Aggregations = new MutablePagedList<Aggregation>((pageNumber, pageSize, sortInfos) =>
                 {
-                    var criteria = workContext.CurrentCatalogSearchCriteria.Clone();
+                    var criteria = workContext.CurrentProductSearchCriteria.Clone();
                     criteria.PageNumber = pageNumber;
                     criteria.PageSize = pageSize;
                     if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
@@ -310,15 +317,12 @@ namespace VirtoCommerce.Storefront.Owin
                         {
                             vendor.Products = new MutablePagedList<Product>((pageNumber2, pageSize2, sortInfos2) =>
                             {
-                                var criteria = new CatalogSearchCriteria
+                                var criteria = new ProductSearchCriteria
                                 {
-                                    CatalogId = workContext.CurrentStore.Catalog,
                                     VendorId = vendor.Id,
-                                    SearchInChildren = true,
                                     PageNumber = pageNumber2,
                                     PageSize = pageSize2,
                                     SortBy = SortInfo.ToString(sortInfos2),
-                                    ResponseGroup = CatalogSearchResponseGroup.WithProducts
                                 };
                                 var searchResult = catalogSearchService.SearchProducts(criteria);
                                 return searchResult.Products;

@@ -47,9 +47,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 }, workContext.Aggregations.PageNumber, workContext.Aggregations.PageSize));
             }
 
-            if (workContext.CurrentCatalogSearchCriteria.SortBy != null)
+            if (workContext.CurrentProductSearchCriteria.SortBy != null)
             {
-                result.SortBy = workContext.CurrentCatalogSearchCriteria.SortBy;
+                result.SortBy = workContext.CurrentProductSearchCriteria.SortBy;
             }
 
             if (!category.Properties.IsNullOrEmpty())

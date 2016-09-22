@@ -3,6 +3,7 @@ using System.Linq;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
+using VirtoCommerce.Storefront.Model.Catalog;
 using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 
@@ -13,6 +14,64 @@ namespace VirtoCommerce.Storefront.Common
     /// </summary>
     public static class SeoExtensions
     {
+        /// <summary>
+        /// Returns best matched outline path CategoryId/CategoryId2.
+        /// </summary>
+        /// <param name="outlines"></param>
+        /// <param name="store"></param>
+        /// <param name="language"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static string GetOutlinePath(this IEnumerable<catalogModel.Outline> outlines)
+        {
+            var result = string.Empty;
+            if (outlines != null)
+            {
+                var outline = outlines.FirstOrDefault();
+
+                if (outline != null)
+                {
+                    var pathSegments = new List<string>();
+
+                    pathSegments.AddRange(outline.Items
+                        .Where(i => i.SeoObjectType != "Catalog")
+                        .Select(i => i.Id));
+
+                    if (pathSegments.All(s => s != null))
+                    {
+                        result = string.Join("/", pathSegments);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns product category.
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        public static string GetCategoryOutline(this Product product)
+        {
+            var result = string.Empty;
+            if (product != null && !string.IsNullOrEmpty(product.Outline))
+            {
+                var outlineArray = product.Outline.Split(new[] { '/' });
+
+                if (outlineArray == null || outlineArray.Length == 0)
+                    return string.Empty;
+
+                var pathSegments = outlineArray.Reverse().Skip(1).Reverse();
+                if (pathSegments.All(s => s != null))
+                {
+                    result = string.Join("/", pathSegments);
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Returns SEO path if all outline items of the first outline have SEO keywords, otherwise returns default value.
         /// Path: GrandParentCategory/ParentCategory/ProductCategory/Product

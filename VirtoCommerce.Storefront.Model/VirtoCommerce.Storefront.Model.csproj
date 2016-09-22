@@ -84,6 +84,8 @@
     <Compile Include="Catalog\ItemResponseGroup.cs" />
     <Compile Include="Catalog\CatalogSearchCriteria.cs" />
     <Compile Include="Catalog\ProductAssociation.cs" />
+    <Compile Include="Catalog\CategorySearchCriteria.cs" />
+    <Compile Include="Catalog\ProductSearchCriteria.cs" />
     <Compile Include="Catalog\Term.cs" />
     <Compile Include="Catalog\TermExtensions.cs" />
     <Compile Include="Common\AnonymousComparer.cs" />

@@ -20,7 +20,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
         // storefrontapi/catalog/search
         [HttpPost]
-        public async Task<ActionResult> SearchProducts(CatalogSearchCriteria searchCriteria)
+        public async Task<ActionResult> SearchProducts(ProductSearchCriteria searchCriteria)
         {
             var retVal = await _catalogSearchService.SearchProductsAsync(searchCriteria);
             return Json(new
@@ -41,7 +41,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
         // storefrontapi/categories/search
         [HttpPost]
-        public async Task<ActionResult> SearchCategories(CatalogSearchCriteria searchCriteria)
+        public async Task<ActionResult> SearchCategories(CategorySearchCriteria searchCriteria)
         {
             var retVal = await _catalogSearchService.SearchCategoriesAsync(searchCriteria);
             return Json(new

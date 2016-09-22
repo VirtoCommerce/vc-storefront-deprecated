@@ -10,6 +10,7 @@ using VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
@@ -82,9 +83,9 @@ namespace VirtoCommerce.Storefront.Test
             return new QuoteModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
-        protected ISearchModuleApiClient GetSearchApiClient()
+        protected ISearchApiModuleApiClient GetSearchApiClient()
         {
-            return new SearchModuleApiClient(GetApiBaseUri(), GetClientCredentials());
+            return new SearchApiModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
         protected IStoreModuleApiClient GetStoreApiClient()
