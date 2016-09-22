@@ -122,8 +122,8 @@ namespace VirtoCommerce.Storefront.Routing
                 url = url.TrimStart('/');
                 var pages = workContext.Pages
                     .Where(x =>
-                            string.Equals(x.Permalink, url, StringComparison.CurrentCultureIgnoreCase) ||
-                            string.Equals(x.Url, url, StringComparison.InvariantCultureIgnoreCase))
+                            string.Equals(x.Permalink, url, StringComparison.OrdinalIgnoreCase) ||
+                            string.Equals(x.Url, url, StringComparison.OrdinalIgnoreCase))
                     .ToList();
 
                 // Return page with current language or invariant language
