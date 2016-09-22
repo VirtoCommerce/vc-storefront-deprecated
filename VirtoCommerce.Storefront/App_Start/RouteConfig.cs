@@ -145,13 +145,14 @@ namespace VirtoCommerce.Storefront
 
             // Static content (no cms)
             routes.AddStorefrontRoute("Pages.GetPage", "pages/{*page}", defaults: new { controller = "Page", action = "GetContentPageByName" });
-            routes.AddStorefrontRoute("Blogs.GetDefaultBlog", "blog", defaults: new { controller = "Blog", action = "DefaultBlog" });
-            routes.AddStorefrontRoute("Blogs.GetBlog", "blogs/{blog}", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetBlogArticle", "blogs/{blog}/{article}", defaults: new { controller = "Blog", action = "GetBlogArticle" });
-            routes.AddStorefrontRoute("Blogs.GetArticlesByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "Blog", action = "GetArticlesByCategory" });
-            routes.AddStorefrontRoute("Blogs.GetArticlesByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "Blog", action = "GetArticlesByTag" });
-            
-            
+            //Blog
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlog", "blog", defaults: new { controller = "Blog", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByCategory", "blog/category/{category}", defaults: new { controller = "Blog", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByTag", "blog/tag/{tag}", defaults: new { controller = "Blog", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogByName", "blogs/{blog}", defaults: new { controller = "Blog", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "Blog", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "Blog", action = "GetBlog" });
+          
 
             Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), workContextFactory, commerceCoreApiFactory, cacheManager, storefrontUrlBuilderFactory);
             routes.AddStorefrontRoute(name: "SeoRoute", url: "{*path}", defaults: new { controller = "StorefrontHome", action = "Index" }, constraints: null, routeFactory: seoRouteFactory);

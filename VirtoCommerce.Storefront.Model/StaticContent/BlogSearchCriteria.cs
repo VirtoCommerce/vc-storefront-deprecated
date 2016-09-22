@@ -14,5 +14,18 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
             : base(queryString)
         {
         }
+
+        public string Category { get; set; }
+        public string Tag { get; set; }
+        public string Author { get; set; }
+
+        protected virtual void Parse(NameValueCollection queryString)
+        {
+            Category = queryString.Get("category");
+            Tag = queryString.Get("tag");
+            Author = queryString.Get("author");        
+        }
+
+
     }
 }

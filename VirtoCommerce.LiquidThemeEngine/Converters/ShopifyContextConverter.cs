@@ -119,6 +119,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             {
                 result.Blog = workContext.CurrentBlog.ToShopifyModel(workContext.CurrentLanguage);
             }
+            if (workContext.CurrentBlogSearchCritera != null)
+            {
+                result.BlogSearchCriteria = workContext.CurrentBlogSearchCritera.ToShopifyModel();
+            }
 
             if (workContext.CurrentBlogArticle != null)
             {
