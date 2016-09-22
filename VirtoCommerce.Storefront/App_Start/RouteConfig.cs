@@ -70,7 +70,7 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.QuoteRequest.Confirm", "storefrontapi/quoterequests/{number}/confirm", defaults: new { controller = "ApiQuoteRequest", action = "Confirm" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
 
             // Blog API
-            routes.AddStorefrontRoute("API.Blog.Articles", "storefrontapi/blog/{blogname}/articles", defaults: new { controller = "ApiBlog", action = "Articles" });
+            routes.AddStorefrontRoute("API.Blog.Search", "storefrontapi/blog/{blogName}/search", defaults: new { controller = "ApiBlog", action = "Search" });
 
             #endregion
 

@@ -64,6 +64,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public Page Page { get; set; }
 
         public Blog Blog { get; set; }
+
+        public string CurrentBlogCategory { get; set; }
+
+        public string CurrentBlogTag { get; set; }
+
         /// <summary>
         /// Current blog article
         /// </summary>

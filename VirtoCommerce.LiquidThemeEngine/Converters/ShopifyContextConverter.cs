@@ -50,6 +50,12 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                         workContext.CurrentCatalogSearchCriteria.Terms.Select(t => t.ToShopifyModel()).ToList());
             }
 
+            if (workContext.CurrentBlogSearchCritera != null)
+            {
+                result.CurrentBlogCategory = workContext.CurrentBlogSearchCritera.Category;
+                result.CurrentBlogTag = workContext.CurrentBlogSearchCritera.Tag;
+            }
+
             if (workContext.CurrentCategory != null)
             {
                 result.Collection = workContext.CurrentCategory.ToShopifyModel(workContext);

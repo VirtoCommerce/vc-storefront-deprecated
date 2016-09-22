@@ -10,6 +10,11 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
 {
     public class BlogSearchCriteria : PagedSearchCriteria
     {
+        public BlogSearchCriteria()
+            : base(new NameValueCollection())
+        {
+        }
+
         public BlogSearchCriteria(NameValueCollection queryString)
             : base(queryString)
         {

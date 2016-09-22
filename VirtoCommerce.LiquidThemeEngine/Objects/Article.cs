@@ -45,5 +45,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public bool IsTrending { get; set; }
 
         public string Category { get; set; }
+
+        public string CategoryHandle { get; set; }
     }
 }
