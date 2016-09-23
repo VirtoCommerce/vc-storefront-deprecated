@@ -37,7 +37,7 @@
 									{% else %}
 									<span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPrice.formatedAmount"></span>
 									{% endif %} 
-									<span ng-if="error.errorCode == 'PriceError'" style="color: #204a80; cursor: pointer; margin-left: 10px;" ng-click="changeLineItemPrice(lineItem.id, error.newPrice.amount, error.newPriceWithTax.amount)">Apply new price</span>
+									<span ng-if="error.errorCode == 'PriceError'" style="color: #204a80; cursor: pointer; margin-left: 10px;" ng-click="changeLineItemPrice(lineItem.id, error.newPrice.amount)">Apply new price</span>
 									<span ng-if="error.errorCode == 'UnavailableError'" ng-bind="'Product is currently unavailable!'"></span>
 									<span ng-if="error.errorCode == 'QuantityError'" ng-bind="'Product quantity exceeded! Available quantity is: ' + error.availableQuantity"></span>
 								</div>

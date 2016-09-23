@@ -73,8 +73,8 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         removeLineItem: function (lineItemId) {
             return $http.delete('storefrontapi/cart/items?lineItemId=' + lineItemId);
         },
-        changeLineItemPrice: function (lineItemId, newPrice, newPriceWithTax) {
-        	return $http.put('storefrontapi/cart/items/price', { lineItemId: lineItemId, newPrice: newPrice, newPriceWithTax: newPriceWithTax });
+        changeLineItemPrice: function (lineItemId, newPrice) {
+        	return $http.put('storefrontapi/cart/items/price', { lineItemId: lineItemId, newPrice: newPrice});
         },
         clearCart: function () {
             return $http.post('storefrontapi/cart/clear');

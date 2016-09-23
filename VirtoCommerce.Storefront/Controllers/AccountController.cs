@@ -87,7 +87,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
             if (order == null || order.CustomerId != WorkContext.CurrentCustomer.Id)
             {
-                return HttpNotFound();
+                throw new HttpException(404, "Order with number " + number + " not found. Or not belong to current user.");
             }
 
             WorkContext.CurrentOrder = order.ToWebModel(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);

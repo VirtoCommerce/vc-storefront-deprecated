@@ -19,16 +19,16 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
         };
 
         $scope.validateCheckout = function (checkout) {
-            checkout.isValid = checkout.payment && angular.isDefined(checkout.payment.paymentGatewayCode);
+        	checkout.isValid = angular.isDefined(checkout.payment) && angular.isDefined(checkout.payment.paymentGatewayCode);
             if (checkout.isValid && !checkout.billingAddressEqualsShipping) {
-                checkout.isValid = checkout.payment.billingAddress && angular.isDefined(checkout.payment.billingAddress);
+            	checkout.isValid = angular.isDefined(checkout.payment.billingAddress) && angular.isDefined(checkout.payment.billingAddress);
             }
             if ($scope.checkout.cart && $scope.checkout.cart.hasPhysicalProducts) {
                 if (checkout.isValid) {
-                    checkout.isValid = checkout.shipment && angular.isDefined(checkout.shipment.shipmentMethodCode);
+                	checkout.isValid = angular.isDefined(checkout.shipment) && angular.isDefined(checkout.shipment.shipmentMethodCode);
                 }
                 if (checkout.isValid && checkout.cart.hasPhysicalProducts) {
-                    checkout.isValid = checkout.shipment.deliveryAddress && angular.isDefined(checkout.shipment.deliveryAddress);
+                	checkout.isValid = angular.isDefined(checkout.shipment.deliveryAddress) && angular.isDefined(checkout.shipment.deliveryAddress);
                 }
             }
         };

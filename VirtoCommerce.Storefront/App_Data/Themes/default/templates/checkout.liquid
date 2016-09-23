@@ -107,7 +107,7 @@
 									<div class="content-box">
 										<div class="checkbox-wrapper content-box__row" ng-if="checkout.cart.hasPhysicalProducts">
 											<div class="checkbox__input">
-												<input class="input-checkbox" id="BillingAddressEqualsShipping" name="BillingAddressEqualsShipping" ng-model="checkout.billingAddressEqualsShipping" type="checkbox" ng-checked="checkout.billingAddressEqualsShipping"  />
+												<input class="input-checkbox" id="BillingAddressEqualsShipping" name="BillingAddressEqualsShipping" ng-model="checkout.billingAddressEqualsShipping" type="checkbox" ng-checked="checkout.billingAddressEqualsShipping" ng-change="validateCheckout(checkout)"  />
 											</div>
 											<label class="checkbox__label" for="BillingAddressEqualsShipping">{{ 'checkout.payment_method.billing_address_equals_shipping' | t }}</label>
 										</div>

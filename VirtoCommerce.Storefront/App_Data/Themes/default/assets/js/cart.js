@@ -29,13 +29,13 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
         }, 300);
     }
 
-    $scope.changeLineItemPrice = function (lineItemId, newPrice, newPriceWithTax) {
+    $scope.changeLineItemPrice = function (lineItemId, newPrice) {
     	var lineItem = _.find($scope.cart.items, function (i) { return i.id == lineItemId });
     	if (!lineItem || $scope.cartIsUpdating) {
     		return;
     	}
     	$scope.cartIsUpdating = true;
-    	cartService.changeLineItemPrice(lineItemId, newPrice, newPriceWithTax).then(function (response) {
+    	cartService.changeLineItemPrice(lineItemId, newPrice).then(function (response) {
     		getCart();
     		$rootScope.$broadcast('cartItemsChanged');
     	}, function (response) {

@@ -81,9 +81,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             return Json(new { _cartBuilder.Cart.ItemsCount });
         }
 
-        // PUT: storefrontapi/cart/items/price?lineItemId=...&newPrice=...&newPriceWithTax=...
+        // PUT: storefrontapi/cart/items/price?lineItemId=...&newPrice=...
         [HttpPut]
-        public async Task<ActionResult> ChangeCartItemPrice(string lineItemId, decimal newPrice, decimal newPriceWithTax)
+        public async Task<ActionResult> ChangeCartItemPrice(string lineItemId, decimal newPrice)
         {
             EnsureThatCartExist();
 
@@ -93,7 +93,12 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 var lineItem = _cartBuilder.Cart.Items.FirstOrDefault(x => x.Id == lineItemId);
                 if(lineItem != null)
                 {
-                    lineItem.SalePrice = new Money(newPrice, _cartBuilder.Cart.Currency);
+                    var newPriceMoney = new Money(newPrice, _cartBuilder.Cart.Currency); 
+                    if (lineItem.ListPrice < newPriceMoney)
+                    {
+                        lineItem.ListPrice = newPriceMoney;
+                    }
+                    lineItem.SalePrice = newPriceMoney;
                 }
                await _cartBuilder.SaveAsync();
           
