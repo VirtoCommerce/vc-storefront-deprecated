@@ -76,14 +76,17 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public static string Handelize(this string phrase)
         {
-            string str = phrase.RemoveAccent().ToLower();
+            var retVal = phrase;
+            if (phrase != null)
+            {
+                retVal = phrase.RemoveAccent().ToLower();
 
-            str = Regex.Replace(str, @"[^a-z0-9\s-]", ""); // invalid chars           
-            str = Regex.Replace(str, @"\s+", " ").Trim(); // convert multiple spaces into one space   
-            str = str.Substring(0, str.Length <= 240 ? str.Length : 240).Trim(); // cut and trim it   
-            str = Regex.Replace(str, @"\s", "-"); // hyphens   
-
-            return str;
+                retVal = Regex.Replace(retVal, @"[^a-z0-9\s-]", ""); // invalid chars           
+                retVal = Regex.Replace(retVal, @"\s+", " ").Trim(); // convert multiple spaces into one space   
+                retVal = retVal.Substring(0, retVal.Length <= 240 ? retVal.Length : 240).Trim(); // cut and trim it   
+                retVal = Regex.Replace(retVal, @"\s", "-"); // hyphens   
+            }
+            return retVal;
         }
     }
 }

@@ -7,11 +7,11 @@ using StorefrontModel = VirtoCommerce.Storefront.Model.StaticContent;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
-    public static class BlogSearchCriteriaConverter
+    public static class BlogSearchConverter
     {
-        public static BlogSearchCriteria ToShopifyModel(this StorefrontModel.BlogSearchCriteria blogSearchCriteria)
+        public static BlogSearch ToShopifyModel(this StorefrontModel.BlogSearchCriteria blogSearchCriteria)
         {
-            var retVal = new BlogSearchCriteria();
+            var retVal = new BlogSearch();
 
             retVal.InjectFrom<NullableAndEnumValueInjecter>(blogSearchCriteria);
        
