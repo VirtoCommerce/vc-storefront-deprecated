@@ -29,19 +29,27 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
 
                 ParameterExpression paramX = Expression.Parameter(elementType, "x");
                 var left = Expression.Property(paramX, elementType.GetProperty(propName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance));
-                var right = Expression.Constant(ParseString(value));
+                var objValue = ParseString(value);
+                var right = Expression.Constant(objValue);
                 BinaryExpression binaryOp;
 
-                if (String.Equals(op, "==", StringComparison.InvariantCultureIgnoreCase))
+                if (op.EqualsInvariant("=="))
                     binaryOp = Expression.Equal(left, right);
-                else if (String.Equals(op, "!=", StringComparison.InvariantCultureIgnoreCase))
+                else if (op.EqualsInvariant("!="))
                     binaryOp = Expression.NotEqual(left, right);
-                else if (String.Equals(op, ">", StringComparison.InvariantCultureIgnoreCase))
+                else if (op.EqualsInvariant(">"))
                     binaryOp = Expression.GreaterThan(left, right);
-                else if (String.Equals(op, ">=", StringComparison.InvariantCultureIgnoreCase))
+                else if (op.EqualsInvariant(">="))
                     binaryOp = Expression.GreaterThanOrEqual(left, right);
-                else if (String.Equals(op, "=<", StringComparison.InvariantCultureIgnoreCase))
+                else if (op.EqualsInvariant("=<"))
                     binaryOp = Expression.LessThan(left, right);
+                else if (op.EqualsInvariant("contains"))
+                {
+                    var containsMethod = typeof(Enumerable).GetMethods().Where(x => x.Name == "Contains" && x.GetParameters().Count() == 2).First().MakeGenericMethod(new Type[] { objValue.GetType() });
+                    var expr = Expression.Call(containsMethod, left, right);
+                    //where(x=> x.Tags.Contains(y))
+                    binaryOp = Expression.Equal(expr, Expression.Constant(true));
+                }
                 else
                     binaryOp = Expression.LessThanOrEqual(left, right);
 
@@ -87,7 +95,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             var retVal = input;
             IEnumerable enumerable = retVal as IEnumerable;
             IMutablePagedList muttablePagedList = input as IMutablePagedList;
-            var sortInfos = SortInfo.Parse(sort).ToList();            
+            var sortInfos = SortInfo.Parse(sort).ToList();
             if (muttablePagedList != null)
             {
                 muttablePagedList.Slice(muttablePagedList.PageNumber, muttablePagedList.PageSize, sortInfos);
@@ -100,7 +108,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 MethodInfo castMethodInfo = typeof(Queryable).GetMethods().Where(x => x.Name == "Cast" && x.IsGenericMethod).First();
                 castMethodInfo = castMethodInfo.MakeGenericMethod(new Type[] { elementType });
 
-                 var genericQueryable = castMethodInfo.Invoke(null, new object[] { queryable });
+                var genericQueryable = castMethodInfo.Invoke(null, new object[] { queryable });
 
                 var orderBySortInfosMethodInfo = typeof(IQueryableExtensions).GetMethod("OrderBySortInfos");
                 orderBySortInfosMethodInfo = orderBySortInfosMethodInfo.MakeGenericMethod(new Type[] { elementType });

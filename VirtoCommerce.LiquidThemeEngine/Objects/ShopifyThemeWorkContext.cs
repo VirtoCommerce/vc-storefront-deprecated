@@ -50,7 +50,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// Contains a collection of all pages
         /// </summary>
         public Pages Pages { get; set; }
-
+        /// <summary>
+        /// Contains blog search options
+        /// </summary>
+        public BlogSearch BlogSearch { get; set; }
         /// <summary>
         /// Contains collection of all blogs
         /// </summary>
@@ -63,6 +66,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public Page Page { get; set; }
 
         public Blog Blog { get; set; }
+        
         /// <summary>
         /// Current blog article
         /// </summary>

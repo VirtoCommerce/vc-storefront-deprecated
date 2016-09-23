@@ -70,7 +70,7 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.QuoteRequest.Confirm", "storefrontapi/quoterequests/{number}/confirm", defaults: new { controller = "ApiQuoteRequest", action = "Confirm" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
 
             // Blog API
-            routes.AddStorefrontRoute("API.Blog.Articles", "storefrontapi/blog/{blogname}/articles", defaults: new { controller = "ApiBlog", action = "Articles" });
+            routes.AddStorefrontRoute("API.Blog.Search", "storefrontapi/blog/{blogName}/search", defaults: new { controller = "ApiBlog", action = "Search" });
 
             #endregion
 
@@ -138,18 +138,21 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("Vendor.GetVendor", "vendor/{vendorId}", defaults: new { controller = "Vendor", action = "VendorDetails" });
 
             // Assets
+            routes.AddStorefrontRoute("ThemeLocalization", "themes/localization.json", defaults: new { controller = "Asset", action = "GetThemeLocalizationJson" });
             routes.AddStorefrontRoute("ThemeAssets", "themes/assets/{*path}", defaults: new { controller = "Asset", action = "GetThemeAssets" });
             routes.AddStorefrontRoute("GlobalThemeAssets", "themes/global/assets/{*path}", defaults: new { controller = "Asset", action = "GetGlobalThemeAssets" });
             routes.AddStorefrontRoute("StaticContentAssets", "assets/{*path}", defaults: new { controller = "Asset", action = "GetStaticContentAssets" });
 
             // Static content (no cms)
             routes.AddStorefrontRoute("Pages.GetPage", "pages/{*page}", defaults: new { controller = "Page", action = "GetContentPageByName" });
-            routes.AddStorefrontRoute("Blogs.GetBlog", "blogs/{blog}", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetBlogArticle", "blogs/{blog}/{article}", defaults: new { controller = "Blog", action = "GetBlogArticle" });
-            routes.AddStorefrontRoute("Blogs.GetArticlesByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "Blog", action = "GetArticlesByCategory" });
-            routes.AddStorefrontRoute("Blogs.GetArticlesByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "Blog", action = "GetArticlesByTag" });
-            
-            
+            //Blog
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlog", "blog", defaults: new { controller = "Blog", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByCategory", "blog/category/{category}", defaults: new { controller = "Blog", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByTag", "blog/tag/{tag}", defaults: new { controller = "Blog", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogByName", "blogs/{blog}", defaults: new { controller = "Blog", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "Blog", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "Blog", action = "GetBlog" });
+          
 
             Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), workContextFactory, commerceCoreApi, cacheManager, storefrontUrlBuilderFactory);
             routes.AddStorefrontRoute(name: "SeoRoute", url: "{*path}", defaults: new { controller = "StorefrontHome", action = "Index" }, constraints: null, routeFactory: seoRouteFactory);

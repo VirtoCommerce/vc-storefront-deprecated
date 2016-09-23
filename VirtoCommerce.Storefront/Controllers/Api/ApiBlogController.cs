@@ -5,42 +5,38 @@ using System.Web.Mvc;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent;
-using VirtoCommerce.Storefront.Model.StaticContent.Services;
 
 namespace VirtoCommerce.Storefront.Controllers.Api
 {
     public class ApiBlogController : StorefrontControllerBase
     {
-        private readonly IStaticContentService _staticContentService;
-
-        public ApiBlogController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, IStaticContentService staticContentService)
+        public ApiBlogController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
             : base(workContext, urlBuilder)
         {
-            _staticContentService = staticContentService;
         }
 
-        // GET: storefrontapi/blog/articles
-        [HttpGet]
-        public ActionResult Articles(string blogName, string filterType, string criteria, int page, int pageSize)
+        // POST: storefrontapi/blog/{blogName}/search
+        [HttpPost]
+        public ActionResult Search(string blogName, BlogSearchCriteria criteria)
         {
             var articles = new List<BlogArticle>();
-            var blog = base.WorkContext.Blogs.FirstOrDefault(x => x.Name.EqualsInvariant(blogName));
+
+            var blog = WorkContext.Blogs.FirstOrDefault(b => b.Name.Equals(blogName, StringComparison.OrdinalIgnoreCase));
             if (blog != null)
             {
-                var query = blog.Articles.AsQueryable().Where(x => x.PublicationStatus != ContentPublicationStatus.Private);
-                if (!string.IsNullOrEmpty(filterType) && !string.IsNullOrEmpty(criteria))
+                var query = blog.Articles.AsQueryable();
+                if (!string.IsNullOrEmpty(criteria.Category))
                 {
-                    if (filterType.EqualsInvariant("category"))
-                    {
-                        query = query.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Equals(criteria, StringComparison.OrdinalIgnoreCase));
-                    }
-                    if (filterType.EqualsInvariant("tag"))
-                    {
-                        query = query.Where(a => a.Tags != null && a.Tags.Contains(criteria, StringComparer.OrdinalIgnoreCase));
-                    }
+                    query = query.Where(a => !string.IsNullOrEmpty(a.Category) && a.Category.Handelize().EqualsInvariant(criteria.Category));
                 }
-                articles = query.OrderByDescending(a => a.CreatedDate).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                if (!string.IsNullOrEmpty(criteria.Tag))
+                {
+                    query = query.Where(a => a.Tags != null && a.Tags.Select(t => t.Handelize()).Contains(criteria.Tag, StringComparer.OrdinalIgnoreCase));
+                }
+
+                articles = query.OrderByDescending(a => a.CreatedDate).Skip((criteria.PageNumber - 1) * criteria.PageSize).Take(criteria.PageSize).ToList();
             }
+
             return Json(articles, JsonRequestBehavior.AllowGet);
         }
     }

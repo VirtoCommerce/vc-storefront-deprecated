@@ -20,12 +20,24 @@ namespace VirtoCommerce.Storefront.Controllers
         //Called from SEO route by page permalink
         public ActionResult GetContentPage(ContentItem page)
         {
+            WorkContext.CurrentPageSeo = new SeoInfo
+            {
+                Language = page.Language,
+                MetaDescription = page.Title,
+                Title = page.Title,
+                Slug = page.Url              
+            };
+
             var blogArticle = page as BlogArticle;
             if (blogArticle != null)
             {
+                WorkContext.CurrentPageSeo.ImageUrl = blogArticle.ImageUrl;
+                WorkContext.CurrentPageSeo.MetaDescription = blogArticle.Excerpt ?? blogArticle.Title;
+
                 WorkContext.CurrentBlogArticle = blogArticle;
-                WorkContext.CurrentBlog = WorkContext.Blogs.SingleOrDefault(x => x.Name.Equals(blogArticle.BlogName, StringComparison.OrdinalIgnoreCase));
-                return View("article", page.Layout, WorkContext);
+                WorkContext.CurrentBlog = WorkContext.Blogs.SingleOrDefault(x => x.Name.EqualsInvariant(blogArticle.BlogName));
+                var layout = string.IsNullOrEmpty(blogArticle.Layout) ? WorkContext.CurrentBlog.Layout : blogArticle.Layout;
+                return View("article", layout, WorkContext);
             }
 
             var contentPage = page as ContentPage;

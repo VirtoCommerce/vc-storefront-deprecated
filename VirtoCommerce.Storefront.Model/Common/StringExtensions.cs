@@ -67,5 +67,26 @@ namespace VirtoCommerce.Storefront.Model.Common
             var pieces = input.Split(separator);
             return Tuple.Create(pieces.FirstOrDefault(), pieces.Skip(1).FirstOrDefault());
         }
+
+        public static string RemoveAccent(this string txt)
+        {
+            byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(txt);
+            return System.Text.Encoding.ASCII.GetString(bytes);
+        }
+
+        public static string Handelize(this string phrase)
+        {
+            var retVal = phrase;
+            if (phrase != null)
+            {
+                retVal = phrase.RemoveAccent().ToLower();
+
+                retVal = Regex.Replace(retVal, @"[^a-z0-9\s-]", ""); // invalid chars           
+                retVal = Regex.Replace(retVal, @"\s+", " ").Trim(); // convert multiple spaces into one space   
+                retVal = retVal.Substring(0, retVal.Length <= 240 ? retVal.Length : 240).Trim(); // cut and trim it   
+                retVal = Regex.Replace(retVal, @"\s", "-"); // hyphens   
+            }
+            return retVal;
+        }
     }
 }
