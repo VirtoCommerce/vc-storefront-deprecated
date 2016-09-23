@@ -9,7 +9,7 @@ using DotLiquid;
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
     [DataContract]
-    public class BlogSearchCriteria : Drop
+    public class BlogSearch : Drop
     {
         [DataMember]
         public string Category { get; set; }

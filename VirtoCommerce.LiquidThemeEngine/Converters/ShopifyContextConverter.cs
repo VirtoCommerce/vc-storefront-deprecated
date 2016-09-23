@@ -49,13 +49,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     new TagCollection(
                         workContext.CurrentCatalogSearchCriteria.Terms.Select(t => t.ToShopifyModel()).ToList());
             }
-
-            if (workContext.CurrentBlogSearchCritera != null)
-            {
-                result.CurrentBlogCategory = workContext.CurrentBlogSearchCritera.Category;
-                result.CurrentBlogTag = workContext.CurrentBlogSearchCritera.Tag;
-            }
-
+         
             if (workContext.CurrentCategory != null)
             {
                 result.Collection = workContext.CurrentCategory.ToShopifyModel(workContext);
@@ -127,7 +121,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             }
             if (workContext.CurrentBlogSearchCritera != null)
             {
-                result.BlogSearchCriteria = workContext.CurrentBlogSearchCritera.ToShopifyModel();
+                result.BlogSearch = workContext.CurrentBlogSearchCritera.ToShopifyModel();
             }
 
             if (workContext.CurrentBlogArticle != null)

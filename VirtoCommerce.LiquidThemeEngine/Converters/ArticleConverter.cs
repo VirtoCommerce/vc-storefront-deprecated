@@ -18,10 +18,12 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             retVal.Handle = article.Url;
             retVal.CreatedAt = article.CreatedDate;
             retVal.PublishedAt = article.PublishedDate ?? article.CreatedDate;
-            retVal.Tags = article.Tags != null ? article.Tags.OrderBy(t => t).Select(t => StringFilters.Handleize(t)).ToArray() : null;
+            retVal.Tags = article.Tags != null ? article.Tags.OrderBy(t => t).Select(t => t.Handelize()).ToArray() : null;
             retVal.Comments = new MutablePagedList<Comment>(new List<Comment>());
-            retVal.Category = article.Category;
-            retVal.CategoryHandle = StringFilters.Handleize(article.Category);
+            if (article.Category != null)
+            {
+                retVal.Category = article.Category.Handelize();
+            }
             return retVal;
         }
     }
