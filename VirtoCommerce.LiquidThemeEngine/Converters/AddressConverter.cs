@@ -23,6 +23,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 result.ProvinceCode = address.RegionId;
                 result.Zip = address.PostalCode;
                 result.Country = address.CountryName;
+                result.Id = address.GetHashCode().ToString();
             }
 
             return result;

@@ -104,43 +104,30 @@ namespace VirtoCommerce.Storefront.Controllers
         public async Task<ActionResult> UpdateAddress(string id, shopifyModel.Address formModel)
         {
             var contact = WorkContext.CurrentCustomer;
-            var updateContact = false;
-
+            var delete = string.Equals(formModel.Method, "delete");
+            if(id == null)
+            {
+                id = formModel.Id;
+            }
             if (contact != null)
             {
-                if (string.IsNullOrEmpty(id))
+                var origAddress = contact.Addresses.FirstOrDefault(x => x.GetHashCode().ToString().EqualsInvariant(id));
+                if (origAddress != null && delete)
+                {
+                    contact.Addresses.Remove(origAddress);
+                }
+                else if (origAddress == null)
                 {
                     // Add new address
                     contact.Addresses.Add(formModel.ToWebModel(WorkContext.AllCountries));
-                    updateContact = true;
                 }
                 else
                 {
-                    int addressIndex;
-                    if (int.TryParse(id, NumberStyles.Integer, CultureInfo.InvariantCulture, out addressIndex))
-                    {
-                        if (addressIndex > 0 && addressIndex <= contact.Addresses.Count)
-                        {
-                            if (string.Equals(formModel.Method, "delete", StringComparison.OrdinalIgnoreCase))
-                            {
-                                // Delete address
-                                ((List<Address>)contact.Addresses).RemoveAt(addressIndex - 1);
-                                updateContact = true;
-                            }
-                            else
-                            {
-                                // Update address
-                                ((List<Address>)contact.Addresses)[addressIndex].CopyFrom(formModel, WorkContext.AllCountries);
-                                updateContact = true;
-                            }
-                        }
-                    }
+                    origAddress.CopyFrom(formModel, WorkContext.AllCountries);
                 }
 
-                if (updateContact)
-                {
-                    await _customerService.UpdateCustomerAsync(contact);
-                }
+                await _customerService.UpdateCustomerAsync(contact);
+
             }
 
             return StoreFrontRedirect("~/account/addresses");

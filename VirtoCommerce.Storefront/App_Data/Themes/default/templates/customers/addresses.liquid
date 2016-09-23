@@ -118,6 +118,7 @@
             <h4>Edit address</h4>
 
             <div class="grid">
+              <input type="hidden" id="address_id_{{ address.id }}" name="address[id]" value="{{ address.id }}">
 
               <div class="grid-item one-half small--one-whole">
                 <label for="address_first_name_{{ address.id }}">{{ 'customer.addresses.first_name' | t }}</label>

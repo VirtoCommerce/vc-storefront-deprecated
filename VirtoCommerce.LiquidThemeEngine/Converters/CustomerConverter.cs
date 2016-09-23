@@ -28,14 +28,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             if (customer.Addresses != null)
             {
                 var addresses = customer.Addresses.Select(a => a.ToShopifyModel()).ToList();
-
-                // Add virtual ID to each address
-                var id = 1;
-                foreach (var address in addresses)
-                {
-                    address.Id = id.ToString(CultureInfo.InvariantCulture);
-                    id++;
-                }
                 result.Addresses = new MutablePagedList<Address>(addresses);
             }
 

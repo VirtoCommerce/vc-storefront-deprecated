@@ -80,7 +80,6 @@ namespace VirtoCommerce.Storefront.Converters
 
             retVal.InjectFrom(address);
             retVal.AddressType = address.Type.ToString();
-
             return retVal;
         }
 
@@ -90,7 +89,6 @@ namespace VirtoCommerce.Storefront.Converters
 
             retVal.InjectFrom(address);
             retVal.Type = (AddressType)Enum.Parse(typeof(AddressType), address.AddressType, true);
-
             return retVal;
         }
 
@@ -100,7 +98,6 @@ namespace VirtoCommerce.Storefront.Converters
 
             result.InjectFrom(address);
             result.Type = EnumUtility.SafeParse(address.AddressType, AddressType.BillingAndShipping);
-
             return result;
         }
 
@@ -110,7 +107,6 @@ namespace VirtoCommerce.Storefront.Converters
 
             result.InjectFrom<NullableAndEnumValueInjecter>(address);
             result.Type = EnumUtility.SafeParse(address.AddressType, AddressType.BillingAndShipping);
-
             return result;
         }
 
@@ -120,19 +116,17 @@ namespace VirtoCommerce.Storefront.Converters
 
             result.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
             result.Type = EnumUtility.SafeParse(serviceModel.AddressType, AddressType.BillingAndShipping);
-
             return result;
         }
 
         public static quoteModel.Address ToQuoteServiceModel(this Address webModel)
         {
-            var serviceModel = new quoteModel.Address();
+            var retVal = new quoteModel.Address();
 
-            serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 
-            serviceModel.AddressType = webModel.Type.ToString();
-
-            return serviceModel;
+            retVal.AddressType = webModel.Type.ToString();
+            return retVal;
         }
 
         public static coreModel.Address ToCoreServiceModel(this Address webModel)

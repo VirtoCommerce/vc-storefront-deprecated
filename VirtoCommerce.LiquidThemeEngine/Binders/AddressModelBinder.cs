@@ -7,6 +7,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Binders
     {
         protected override void ComplementModel(Address model, HttpRequestBase request)
         {
+            model.Id = request["address[id]"];
             model.FirstName = request["address[first_name]"];
             model.LastName = request["address[last_name]"];
             model.Company = request["address[company]"];

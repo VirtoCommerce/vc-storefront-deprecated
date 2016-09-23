@@ -5,7 +5,6 @@ namespace VirtoCommerce.Storefront.Model
 {
     public class Address : ValueObject<Address>
     {
-        public string Id { get; set; }
         public AddressType Type { get; set; }
         public string Name { get; set; }
         public string Organization { get; set; }

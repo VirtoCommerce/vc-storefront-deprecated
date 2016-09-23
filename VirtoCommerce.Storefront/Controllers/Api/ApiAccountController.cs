@@ -19,12 +19,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [AllowAnonymous]
         public ActionResult GetCurrentCustomer()
         {
-            foreach (var address in WorkContext.CurrentCustomer.Addresses)
-            {
-                address.Id = Guid.NewGuid().ToString();
-            }
-
-            return Json(WorkContext.CurrentCustomer);
+           return Json(WorkContext.CurrentCustomer);
         }
     }
 }
