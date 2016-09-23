@@ -28,7 +28,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             }
 
             retVal.Handle = blog.Name.Replace(" ", "-").ToLower();
-            retVal.Categories = blog.Categories;        
+            retVal.Categories = blog.Categories;
 
             return retVal;
         }
