@@ -23,6 +23,18 @@ namespace VirtoCommerce.Storefront.Controllers
         }
 
         /// <summary>
+        /// GET: /themes/localization.json
+        /// Return localization resources for current theme
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetThemeLocalizationJson()
+        {
+            var retVal = _themeEngine.ReadLocalization();
+            return Json(retVal, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
         /// GET: /themes/assets/{*asset}
         /// Handle theme assets requests
         /// </summary>
