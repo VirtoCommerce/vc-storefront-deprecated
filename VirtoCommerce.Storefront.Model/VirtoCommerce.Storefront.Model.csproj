@@ -208,7 +208,6 @@
     <Compile Include="StaticContent\BlogSearchCriteria.cs" />
     <Compile Include="StaticContent\ContentItem.cs" />
     <Compile Include="StaticContent\ContentPage.cs" />
-    <Compile Include="StaticContent\ContentPublicationStatus.cs" />
     <Compile Include="StaticContent\Services\IStaticContentService.cs" />
     <Compile Include="Cart\ShippingMethod.cs" />
     <Compile Include="Marketing\Discount.cs" />
