@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
@@ -28,6 +29,8 @@ namespace VirtoCommerce.Storefront.Model
         /// Current request url example: http:/host/app/store/en-us/search?page=2
         /// </summary>
         public Uri RequestUrl { get; set; }
+
+        public NameValueCollection QueryString { get; set; }
 
         public Login Login { get; set; }
         /// <summary>
@@ -134,7 +137,7 @@ namespace VirtoCommerce.Storefront.Model
         /// Represent products filtered by current search criteria CurrentCatalogSearchCriteria (loaded on first access by lazy loading)
         /// </summary>
         public IMutablePagedList<Product> Products { get; set; }
-        
+
         /// <summary>
         /// Represent bucket, aggregated data based on a search query resulted by current search criteria CurrentCatalogSearchCriteria (example  color 33, gr
         /// </summary>
