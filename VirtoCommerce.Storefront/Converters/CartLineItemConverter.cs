@@ -5,6 +5,7 @@ using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
+using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -12,85 +13,92 @@ namespace VirtoCommerce.Storefront.Converters
     {
         public static LineItem ToLineItem(this Product product, Language language, int quantity)
         {
-            var lineItemWebModel = new LineItem(product.Price.Currency, language);
+            var retVal = new LineItem(product.Price.Currency, language);
+            
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(product);
+            retVal.Id = null;
+            retVal.ImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
+            retVal.ListPrice = product.Price.ListPrice;
+            retVal.SalePrice = product.Price.GetTierPrice(quantity).Price;
+            retVal.TaxPercentRate = product.Price.TaxPercentRate;
+            retVal.DiscountAmount = product.Price.DiscountAmount;
+            retVal.ProductId = product.Id;
+            retVal.Quantity = quantity;
+            retVal.ThumbnailImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
 
-            lineItemWebModel.InjectFrom<NullableAndEnumValueInjecter>(product);
-
-            lineItemWebModel.ImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
-            lineItemWebModel.ListPrice = product.Price.ListPrice;
-            lineItemWebModel.ListPriceWithTax = product.Price.ListPriceWithTax;
-            lineItemWebModel.SalePrice = product.Price.GetTierPrice(quantity).Price;
-            lineItemWebModel.SalePriceWithTax = product.Price.GetTierPrice(quantity).PriceWithTax;
-            lineItemWebModel.ProductId = product.Id;
-            lineItemWebModel.Quantity = quantity;
-
-            lineItemWebModel.ThumbnailImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
-
-            return lineItemWebModel;
+            return retVal;
         }
 
-        public static LineItem ToWebModel(this CartModule.Client.Model.LineItem serviceModel, Currency currency, Language language)
+        public static LineItem ToWebModel(this cartModel.LineItem serviceModel, Currency currency, Language language)
         {
 
-            var webModel = new LineItem(currency, language);
+            var retVal = new LineItem(currency, language);
 
-            webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
 
             if (serviceModel.TaxDetails != null)
             {
-                webModel.TaxDetails = serviceModel.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
+                retVal.TaxDetails = serviceModel.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
             }
 
             if (serviceModel.DynamicProperties != null)
             {
-                webModel.DynamicProperties = serviceModel.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
+                retVal.DynamicProperties = serviceModel.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
             }
 
             if (!serviceModel.Discounts.IsNullOrEmpty())
             {
-                webModel.Discounts.AddRange(serviceModel.Discounts.Select(x => x.ToWebModel(new[] { currency }, language)));
+                retVal.Discounts.AddRange(serviceModel.Discounts.Select(x => x.ToWebModel(new[] { currency }, language)));
             }
-            webModel.IsGift = serviceModel.IsGift == true;
-            webModel.IsReccuring = serviceModel.IsReccuring == true;
-            webModel.ListPrice = new Money(serviceModel.ListPrice ?? 0, currency);
-            webModel.RequiredShipping = serviceModel.RequiredShipping == true;
-            webModel.SalePrice = new Money(serviceModel.SalePrice ?? 0, currency);
-            webModel.TaxIncluded = serviceModel.TaxIncluded == true;
-            webModel.TaxTotal = new Money(serviceModel.TaxTotal ?? 0, currency);
-            webModel.Weight = (decimal?)serviceModel.Weight;
-            webModel.Width = (decimal?)serviceModel.Width;
-            webModel.Height = (decimal?)serviceModel.Height;
-            webModel.Length = (decimal?)serviceModel.Length;
-            webModel.ValidationType = EnumUtility.SafeParse(serviceModel.ValidationType, ValidationType.PriceAndQuantity);
+            retVal.Comment = serviceModel.Note;
+            retVal.IsGift = serviceModel.IsGift == true;
+            retVal.IsReccuring = serviceModel.IsReccuring == true;
+            retVal.ListPrice = new Money(serviceModel.ListPrice ?? 0, currency);
+            retVal.RequiredShipping = serviceModel.RequiredShipping == true;
+            retVal.SalePrice = new Money(serviceModel.SalePrice ?? 0, currency);
+            retVal.TaxPercentRate = (decimal?)serviceModel.TaxPercentRate ?? 0m;
+            retVal.DiscountAmount = new Money(serviceModel.DiscountAmount ?? 0, currency);
+            retVal.TaxIncluded = serviceModel.TaxIncluded == true;
+            retVal.Weight = (decimal?)serviceModel.Weight;
+            retVal.Width = (decimal?)serviceModel.Width;
+            retVal.Height = (decimal?)serviceModel.Height;
+            retVal.Length = (decimal?)serviceModel.Length;
 
-            return webModel;
+            return retVal;
         }
 
-        public static CartModule.Client.Model.LineItem ToServiceModel(this LineItem webModel)
+        public static cartModel.LineItem ToServiceModel(this LineItem webModel)
         {
-            var serviceModel = new CartModule.Client.Model.LineItem();
+            var retVal = new cartModel.LineItem();
 
-            serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 
-            serviceModel.Currency = webModel.Currency.Code;
-            serviceModel.Discounts = webModel.Discounts.Select(d => d.ToServiceModel()).ToList();
-            serviceModel.DiscountTotal = (double)webModel.DiscountTotal.Amount;
-            serviceModel.ExtendedPrice = (double)webModel.ExtendedPrice.Amount;
+            retVal.Currency = webModel.Currency.Code;
+            retVal.Discounts = webModel.Discounts.Select(d => d.ToServiceModel()).ToList();
+         
+            retVal.ListPrice = (double)webModel.ListPrice.Amount;
+            retVal.SalePrice = (double)webModel.SalePrice.Amount;
+            retVal.TaxPercentRate = (double)webModel.TaxPercentRate;
+            retVal.DiscountAmount = (double)webModel.DiscountAmount.Amount;
+            retVal.TaxDetails = webModel.TaxDetails.Select(td => td.ToCartApiModel()).ToList();
+            retVal.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToCartApiModel()).ToList();
+            retVal.VolumetricWeight = (double)(webModel.VolumetricWeight ?? 0);
+            retVal.Weight = (double?)webModel.Weight;
+            retVal.Width = (double?)webModel.Width;
+            retVal.Height = (double?)webModel.Height;
+            retVal.Length = (double?)webModel.Length;
 
-            serviceModel.ListPrice = (double)webModel.ListPrice.Amount;
-            serviceModel.PlacedPrice = (double)webModel.PlacedPrice.Amount;
-            serviceModel.SalePrice = (double)webModel.SalePrice.Amount;
-            serviceModel.TaxDetails = webModel.TaxDetails.Select(td => td.ToCartApiModel()).ToList();
-            serviceModel.DynamicProperties = webModel.DynamicProperties.Select(dp => dp.ToCartApiModel()).ToList();
-            serviceModel.TaxTotal = (double)webModel.TaxTotal.Amount;
-            serviceModel.VolumetricWeight = (double)(webModel.VolumetricWeight ?? 0);
-            serviceModel.Weight = (double?)webModel.Weight;
-            serviceModel.Width = (double?)webModel.Width;
-            serviceModel.Height = (double?)webModel.Height;
-            serviceModel.Length = (double?)webModel.Length;
-            serviceModel.ValidationType = webModel.ValidationType.ToString();
+            return retVal;
+        }
 
-            return serviceModel;
+        public static CartShipmentItem ToShipmentItem(this LineItem lineItem)
+        {
+            var shipmentItem = new CartShipmentItem
+            {
+                LineItem = lineItem,
+                Quantity = lineItem.Quantity
+            };
+            return shipmentItem;
         }
 
         public static PromotionProductEntry ToPromotionItem(this LineItem lineItem)
@@ -107,14 +115,5 @@ namespace VirtoCommerce.Storefront.Converters
             return promoItem;
         }
 
-        public static CartShipmentItem ToShipmentItem(this LineItem lineItem)
-        {
-            var shipmentItem = new CartShipmentItem
-            {
-                LineItem = lineItem,
-                Quantity = lineItem.Quantity
-            };
-            return shipmentItem;
-        }
     }
 }

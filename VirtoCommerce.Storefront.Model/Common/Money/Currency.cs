@@ -55,7 +55,9 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public string CultureName
         {
-            get { return _language.CultureName; }
+            get {
+                return _language != null ? _language.CultureName : null;
+            }
             set
             {
                 _language = new Language(value);

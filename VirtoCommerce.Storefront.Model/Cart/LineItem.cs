@@ -17,15 +17,12 @@ namespace VirtoCommerce.Storefront.Model.Cart
             LanguageCode = language.CultureName;
             ListPrice = new Money(currency);
             SalePrice = new Money(currency);
-            ListPriceWithTax = new Money(currency);
-            SalePriceWithTax = new Money(currency);
-            TaxTotal = new Money(currency);
-
+            DiscountAmount = new Money(currency);
             Discounts = new List<Discount>();
             TaxDetails = new List<TaxDetail>();
             DynamicProperties = new List<DynamicProperty>();
             ValidationErrors = new List<ValidationError>();
-            ValidationWarnings = new List<ValidationError>();
+            IsValid = true;
         }
 
         /// <summary>
@@ -161,12 +158,13 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// </summary>
         public decimal? Width { get; set; }
 
+        public bool IsReadOnly { get; set; }
+
         /// <summary>
         /// Gets or sets the value of line item original price
         /// </summary>
         public Money ListPrice { get; set; }
-
-        private Money _listPrice;
+       
         /// <summary>
         /// Gets or sets the value of line item original price including tax 
         /// </summary>
@@ -174,32 +172,23 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return _listPrice ?? ListPrice;
-            }
-            set
-            {
-                _listPrice = value;
+                return ListPrice + ListPrice * TaxPercentRate;
             }
         }
 
         /// <summary>
-        /// Gets or sets the value of line item sale price (include static discount)
+        /// Gets or sets the value of line item sale price
         /// </summary>
         public Money SalePrice { get; set; }
 
-        private Money _salePriceWithTax;
         /// <summary>
-        /// Gets or sets the value of line item sale price (include static discount) including tax
+        /// Gets or sets the value of line item sale price with tax
         /// </summary>
         public Money SalePriceWithTax
         {
             get
             {
-                return _salePriceWithTax ?? SalePrice;
-            }
-            set
-            {
-                _salePriceWithTax = value;
+                return SalePrice + SalePrice * TaxPercentRate;
             }
         }
 
@@ -210,7 +199,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return ListPrice - ItemDiscount;
+                return ListPrice - DiscountAmount;
             }
         }
 
@@ -218,12 +207,12 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return ListPriceWithTax - ItemDiscountWithTax;
+                return ListPriceWithTax - DiscountAmountWithTax;
             }
         }
 
         /// <summary>
-        /// Gets the value of line item subtotal price (actual price * line item quantity)
+        /// Gets the value of line item extended price (placed price * line item quantity)
         /// </summary>
         public Money ExtendedPrice
         {
@@ -241,35 +230,12 @@ namespace VirtoCommerce.Storefront.Model.Cart
             }
         }
 
-      
-    
-        /// <summary>
-        /// Gets the value of the single qty line item discount amount
-        /// </summary>
-        public Money ItemDiscount
+        public Money DiscountAmount { get; set; }
+        public Money DiscountAmountWithTax
         {
             get
             {
-                var retVal = ListPrice - SalePrice;
-                if (!Discounts.IsNullOrEmpty())
-                {
-                    retVal += Discounts.Where(d => d != null).Sum(d => d.Amount.Amount);
-                }
-
-                return retVal;
-            }
-        }
-
-        public Money ItemDiscountWithTax
-        {
-            get
-            {
-                var retVal = ListPriceWithTax - SalePriceWithTax;
-                if (!Discounts.IsNullOrEmpty())
-                {
-                    retVal += Discounts.Where(d => d != null).Sum(d => d.AmountWithTax.Amount);
-                }
-                return retVal;
+                return DiscountAmount + DiscountAmount * TaxPercentRate;
             }
         }
 
@@ -280,7 +246,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return ItemDiscount * Quantity;
+                return DiscountAmount * Math.Max(1, Quantity);
             }
         }
 
@@ -288,7 +254,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return ItemDiscountWithTax * Quantity;
+                return DiscountAmountWithTax * Math.Max(1, Quantity);
             }
         }
 
@@ -304,20 +270,25 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <value>Dynamic properties collections</value>
         public ICollection<DynamicProperty> DynamicProperties { get; set; }
 
-        /// <summary>
-        /// Gets or sets the cart validation type
-        /// </summary>
-        public ValidationType ValidationType { get; set; }
-
+        #region IValidatable Members
+        public bool IsValid { get; set; }
         public ICollection<ValidationError> ValidationErrors { get; set; }
+        #endregion
 
-        public ICollection<ValidationError> ValidationWarnings { get; set; }
 
         #region ITaxable Members
         /// <summary>
         /// Gets or sets the value of total shipping tax amount
         /// </summary>
-        public Money TaxTotal { get; set; }
+        public virtual Money TaxTotal
+        {
+            get
+            {
+                return ExtendedPriceWithTax - ExtendedPrice;
+            }
+        }
+
+        public decimal TaxPercentRate { get; set; }
 
         /// <summary>
         /// Gets or sets the value of shipping tax type
@@ -334,25 +305,15 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-            ListPriceWithTax = ListPrice;
-            SalePriceWithTax = SalePrice;
-
-            //Because TaxLine.Id may contains composite string id & extra info
-            var lineItemTaxRates = taxRates.Where(x => x.Line.Id.SplitIntoTuple('&').Item1 == Id);
-            TaxTotal = new Money(Currency);
-            if (lineItemTaxRates.Any())
+             var lineItemTaxRate = taxRates.FirstOrDefault(x => x.Line.Id != null && x.Line.Id.EqualsInvariant(Id ?? ""));
+            if(lineItemTaxRate == null)
             {
-                var extendedPriceRate = lineItemTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("extended"));
-                var listPriceRate = lineItemTaxRates.First(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("list"));
-                var salePriceRate = lineItemTaxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item2.EqualsInvariant("sale"));
-                if (salePriceRate == null)
-                {
-                    salePriceRate = listPriceRate;
-                }
-                TaxTotal += extendedPriceRate.Rate;
-                ListPriceWithTax = ListPrice + listPriceRate.Rate;
-                SalePriceWithTax = SalePrice + salePriceRate.Rate;
-            }          
+                lineItemTaxRate = taxRates.FirstOrDefault(x => x.Line.Code != null && x.Line.Code.EqualsInvariant(Sku ?? ""));
+            }           
+            if (lineItemTaxRate != null && ExtendedPrice.Amount > 0 && lineItemTaxRate.Rate.Amount > 0)
+            {
+                TaxPercentRate = lineItemTaxRate.Rate.Amount / ExtendedPrice.Amount;
+            }
         }
         #endregion
 
@@ -364,28 +325,25 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyRewards(IEnumerable<PromotionReward> rewards)
         {
-            var lineItemRewards = rewards.Where(r => r.RewardType == PromotionRewardType.CatalogItemAmountReward && (r.ProductId.IsNullOrEmpty() || r.ProductId.EqualsInvariant(ProductId)));
-            if (lineItemRewards == null)
-            {
-                return;
-            }
-
+            var lineItemRewards = rewards.Where(x => x.RewardType == PromotionRewardType.CatalogItemAmountReward && (x.ProductId.IsNullOrEmpty() || x.ProductId.EqualsInvariant(ProductId)));
+            
             Discounts.Clear();
+
+            DiscountAmount = new Money(Math.Max(0, (ListPrice - SalePrice).Amount), Currency);
 
             foreach (var reward in lineItemRewards)
             {
-                var discount = reward.ToDiscountModel(SalePrice, SalePriceWithTax);
-                if(reward.Quantity > 0)
+                var discount = reward.ToDiscountModel(SalePrice);
+                if (reward.Quantity > 0)
                 {
                     var money = discount.Amount * Math.Min(reward.Quantity, Quantity);
-                    var withTaxMoney = discount.AmountWithTax * Math.Min(reward.Quantity, Quantity);
                     //TODO: need allocate more rightly between each quantities
                     discount.Amount = money.Allocate(Quantity).FirstOrDefault();
-                    discount.AmountWithTax = withTaxMoney.Allocate(Quantity).FirstOrDefault();
                 }
                 if (reward.IsValid)
                 {
                     Discounts.Add(discount);
+                    DiscountAmount += discount.Amount;
                 }
             }
         }

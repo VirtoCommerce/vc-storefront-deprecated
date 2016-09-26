@@ -14,21 +14,21 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
     public interface ICartBuilder
     {
         /// <summary>
-        ///  Capture passed cart and all next changes will be implemented on it
+        ///  Capture cart and all next changes will be implemented on it
         /// </summary>
         /// <param name="cart"></param>
         /// <returns></returns>
         ICartBuilder TakeCart(ShoppingCart cart);
 
         /// <summary>
-        /// Load or created new cart for current user and capture it
+        /// Load or created new cart for specified parameters and capture it.  All next changes will be implemented on it
         /// </summary>
         /// <param name="store"></param>
         /// <param name="customer"></param>
         /// <param name="language"></param>
         /// <param name="currency"></param>
         /// <returns></returns>
-        Task<ICartBuilder> GetOrCreateNewTransientCartAsync(Store store, CustomerInfo customer, Language language, Currency currency);
+        Task LoadOrCreateNewTransientCartAsync(string cartName, Store store, CustomerInfo customer, Language language, Currency currency);
 
         /// <summary>
         /// Add new product to cart
@@ -36,7 +36,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// <param name="product"></param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        Task<ICartBuilder> AddItemAsync(Product product, int quantity);
+        Task AddItemAsync(Product product, int quantity);
 
         /// <summary>
         /// Change cart item qty by product index
@@ -44,7 +44,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// <param name="lineItemId"></param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        Task<ICartBuilder> ChangeItemQuantityAsync(string lineItemId, int quantity);
+        Task ChangeItemQuantityAsync(string lineItemId, int quantity);
 
         /// <summary>
         /// Change cart item qty by item id
@@ -52,76 +52,76 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// <param name="lineItemIndex"></param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        Task<ICartBuilder> ChangeItemQuantityAsync(int lineItemIndex, int quantity);
+        Task ChangeItemQuantityAsync(int lineItemIndex, int quantity);
 
-        Task<ICartBuilder> ChangeItemsQuantitiesAsync(int[] quantities);
+        Task ChangeItemsQuantitiesAsync(int[] quantities);
 
         /// <summary>
         /// Remove item from cart by id
         /// </summary>
         /// <param name="lineItemId"></param>
         /// <returns></returns>
-        Task<ICartBuilder> RemoveItemAsync(string lineItemId);
+        ICartBuilder RemoveItem(string lineItemId);
 
         /// <summary>
         /// Apply marketing coupon to captured cart
         /// </summary>
         /// <param name="couponCode"></param>
         /// <returns></returns>
-        Task<ICartBuilder> AddCouponAsync(string couponCode);
+        ICartBuilder AddCoupon(string couponCode);
 
         /// <summary>
         /// remove exist coupon from cart
         /// </summary>
         /// <returns></returns>
-        Task<ICartBuilder> RemoveCouponAsync();
+        ICartBuilder RemoveCoupon();
 
         /// <summary>
         /// Clear cart remove all items and shipments and payments
         /// </summary>
         /// <returns></returns>
-        Task<ICartBuilder> ClearAsync();
+        ICartBuilder Clear();
 
         /// <summary>
         /// Add or update shipment to cart
         /// </summary>
         /// <param name="updateModel"></param>
         /// <returns></returns>
-        Task<ICartBuilder> AddOrUpdateShipmentAsync(ShipmentUpdateModel updateModel);
+        Task AddOrUpdateShipmentAsync(Shipment shipment);
 
         /// <summary>
         /// Remove exist shipment from cart
         /// </summary>
         /// <param name="shipmentId"></param>
         /// <returns></returns>
-        Task<ICartBuilder> RemoveShipmentAsync(string shipmentId);
+        ICartBuilder RemoveShipment(string shipmentId);
 
         /// <summary>
         /// Add or update payment in cart
         /// </summary>
         /// <param name="updateModel"></param>
         /// <returns></returns>
-        Task<ICartBuilder> AddOrUpdatePaymentAsync(PaymentUpdateModel updateModel);
+        Task AddOrUpdatePaymentAsync(Payment payment);
 
         /// <summary>
         /// Merge other cart with captured
         /// </summary>
         /// <param name="cart"></param>
         /// <returns></returns>
-        Task<ICartBuilder> MergeWithCartAsync(ShoppingCart cart);
+        Task MergeWithCartAsync(ShoppingCart cart);
 
         /// <summary>
         /// Remove cart from service
         /// </summary>
         /// <returns></returns>
-        Task<ICartBuilder> RemoveCartAsync();
+        Task RemoveCartAsync();
 
         /// <summary>
         /// Fill current captured cart from RFQ
         /// </summary>
         /// <param name="quoteRequest"></param>
         /// <returns></returns>
-        Task<ICartBuilder> FillFromQuoteRequest(QuoteRequest quoteRequest);
+        Task FillFromQuoteRequestAsync(QuoteRequest quoteRequest);
 
         /// <summary>
         /// Returns all available shipment methods for current cart
@@ -139,17 +139,20 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// Evaluate marketing discounts for captured cart
         /// </summary>
         /// <returns></returns>
-        Task<ICartBuilder> EvaluatePromotionsAsync();
+        Task EvaluatePromotionsAsync();
 
         /// <summary>
         /// Evaluate taxes  for captured cart
         /// </summary>
         /// <returns></returns>
-        Task<ICartBuilder> EvaluateTaxAsync();
+        Task EvaluateTaxesAsync();
 
-        //Save cart changes
-        Task SaveAsync();
+
+        Task ValidateAsync();
 
         ShoppingCart Cart { get; }
+
+
+        Task SaveAsync();
     }
 }

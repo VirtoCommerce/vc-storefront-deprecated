@@ -4,62 +4,73 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class OrderConverter
     {
-        public static CustomerOrder ToWebModel(this OrderModule.Client.Model.CustomerOrder order, ICollection<Currency> availCurrencies, Language language)
+        public static CustomerOrder ToWebModel(this orderModel.CustomerOrder order, ICollection<Currency> availCurrencies, Language language)
         {
-            var webModel = new CustomerOrder();
-
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(order.Currency)) ?? new Currency(language, order.Currency);
 
-            webModel.InjectFrom(order);
+            var retVal = new CustomerOrder(currency);
+
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(order);
 
             if (order.Addresses != null)
             {
-                webModel.Addresses = order.Addresses.Select(a => a.ToWebModel()).ToList();
+                retVal.Addresses = order.Addresses.Select(a => a.ToWebModel()).ToList();
             }
 
-            if (order.ChildrenOperations != null)
-            {
-                webModel.ChildrenOperations = order.ChildrenOperations.Select(co => co.ToWebModel(availCurrencies, language)).ToList();
-            }
+           
+            retVal.Currency = currency;
 
-            webModel.Currency = currency;
-
-            webModel.DiscountAmount = new Money(order.DiscountAmount ?? 0, currency);
+          
 
             if (order.DynamicProperties != null)
             {
-                webModel.DynamicProperties = order.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
+                retVal.DynamicProperties = order.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
             }
 
             if (order.InPayments != null)
             {
-                webModel.InPayments = order.InPayments.Select(p => p.ToWebModel(availCurrencies, language)).ToList();
+                retVal.InPayments = order.InPayments.Select(p => p.ToWebModel(availCurrencies, language)).ToList();
             }
 
             if (order.Items != null)
             {
-                webModel.Items = order.Items.Select(i => i.ToWebModel(availCurrencies, language)).ToList();
+                retVal.Items = order.Items.Select(i => i.ToWebModel(availCurrencies, language)).ToList();
             }
 
             if (order.Shipments != null)
             {
-                webModel.Shipments = order.Shipments.Select(s => s.ToWebModel(availCurrencies, language)).ToList();
+                retVal.Shipments = order.Shipments.Select(s => s.ToWebModel(availCurrencies, language)).ToList();
             }
 
-            webModel.Sum = new Money(order.Sum ?? 0, currency);
-            webModel.Tax = new Money(order.Tax ?? 0, currency);
-
+            if (!order.Discounts.IsNullOrEmpty())
+            {
+                retVal.Discounts.AddRange(order.Discounts.Select(x => x.ToWebModel(new[] { currency }, language)));
+            }
             if (order.TaxDetails != null)
             {
-                webModel.TaxDetails = order.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
+                retVal.TaxDetails = order.TaxDetails.Select(td => td.ToWebModel(currency)).ToList();
             }
 
-            return webModel;
+            retVal.DiscountAmount = new Money(order.DiscountAmount ?? 0, currency);
+            retVal.Total = new Money(order.Total ?? 0, currency);
+            retVal.SubTotal = new Money(order.SubTotal ?? 0, currency);
+            retVal.SubTotalWithTax = new Money(order.SubTotalWithTax ?? 0, currency);
+            retVal.TaxTotal = new Money(order.TaxTotal ?? 0, currency);
+            retVal.ShippingTotal = new Money(order.ShippingTotal ?? 0, currency);
+            retVal.ShippingTotalWithTax = new Money(order.ShippingTotalWithTax ?? 0, currency);
+            retVal.ShippingTaxTotal = new Money(order.ShippingTaxTotal ?? 0, currency);
+            retVal.SubTotalTaxTotal = new Money(order.SubTotalTaxTotal ?? 0, currency);
+            retVal.SubTotalDiscount = new Money(order.SubTotalDiscount ?? 0, currency);
+            retVal.SubTotalDiscountWithTax = new Money(order.SubTotalDiscountWithTax ?? 0, currency);
+
+
+            return retVal;
         }
     }
 }

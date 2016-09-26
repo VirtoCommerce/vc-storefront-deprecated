@@ -1,16 +1,18 @@
 ﻿using System.Linq;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
+using VirtoCommerce.Storefront.Model.Common;
+using contentModel = VirtoCommerce.Storefront.AutoRestClients.ContentModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class MenuLinkConverter
     {
-        public static MenuLinkList ToWebModel(this ContentModule.Client.Model.MenuLinkList serviceModel)
+        public static MenuLinkList ToWebModel(this contentModel.MenuLinkList serviceModel)
         {
             var webModel = new MenuLinkList();
 
-            webModel.InjectFrom(serviceModel);
+            webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
 
             webModel.Language = string.IsNullOrEmpty(serviceModel.Language) ? Language.InvariantLanguage : new Language(serviceModel.Language);
 
@@ -22,7 +24,7 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static MenuLink ToWebModel(this ContentModule.Client.Model.MenuLink serviceModel)
+        public static MenuLink ToWebModel(this contentModel.MenuLink serviceModel)
         {
             var webModel = new MenuLink();
 
@@ -38,7 +40,7 @@ namespace VirtoCommerce.Storefront.Converters
                 }
             }
 
-            webModel.InjectFrom(serviceModel);
+            webModel.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
 
             return webModel;
         }

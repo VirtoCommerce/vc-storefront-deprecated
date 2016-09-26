@@ -1,0 +1,191 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Marketing;
+
+namespace VirtoCommerce.Storefront.Model
+{
+    public class ShippingMethod :  ITaxable, IDiscountable
+    {
+        public ShippingMethod()
+        {
+            Discounts = new List<Discount>();
+        }
+        public ShippingMethod(Currency currency)
+            : this()
+        {
+            Currency = currency;
+            Price = new Money(currency);
+            DiscountAmount = new Money(currency);           
+        }
+        /// <summary>
+        /// Gets or sets the value of shipping method code
+        /// </summary>
+        public string ShipmentMethodCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of shipping method name
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of shipping method option name
+        /// </summary>
+        public string OptionName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of shipping method option description
+        /// </summary>
+        public string OptionDescription { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of shipping method logo absolute URL
+        /// </summary>
+        public string LogoUrl { get; set; }
+
+        /// <summary>
+        /// price without discount and taxes
+        /// </summary>
+        public Money Price { get; set; }
+
+        /// <summary>
+        ///  price with tax but without discount
+        /// </summary>
+        public Money PriceWithTax
+        {
+            get
+            {
+                return Price + Price * TaxPercentRate;
+            }
+        }
+
+        /// <summary>
+        /// Resulting price with discount but without tax
+        /// </summary>
+        public Money Total
+        {
+            get
+            {
+                return Price - DiscountAmount;
+            }
+        }
+        /// <summary>
+        /// Resulting price with discount and tax
+        /// </summary>
+        public Money TotalWithTax
+        {
+            get
+            {
+                return PriceWithTax - DiscountAmountWithTax;
+            }
+        }
+
+        /// <summary>
+        /// Total discount amount without tax
+        /// </summary>
+        public Money DiscountAmount { get; set; }
+        public Money DiscountAmountWithTax
+        {
+            get
+            {
+                return DiscountAmount + DiscountAmount * TaxPercentRate;
+            }
+        }
+
+        #region ITaxable Members
+        /// <summary>
+        /// Gets the value of total shipping method tax 
+        /// </summary>
+        public Money TaxTotal
+        {
+            get
+            {
+                return TotalWithTax - Total;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value of shipping tax type
+        /// </summary>
+        public string TaxType { get; set; }
+
+        public decimal TaxPercentRate { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the collection of line item tax details lines
+        /// </summary>
+        /// <value>
+        /// Collection of TaxDetail objects
+        /// </value>
+        public ICollection<TaxDetail> TaxDetails { get; set; }
+
+        public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
+        {          
+            var taxRate = taxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item1 == ShipmentMethodCode && x.Line.Id.SplitIntoTuple('&').Item2 == OptionName);
+            if (taxRate != null && Total.Amount > 0 && taxRate.Rate.Amount > 0)
+            {
+                TaxPercentRate = taxRate.Rate.Amount / Total.Amount;            
+            }
+        }
+
+        #endregion
+
+        #region IDiscountable Members
+        public ICollection<Discount> Discounts { get; private set; }
+
+        public Currency Currency { get; set; }
+
+        public void ApplyRewards(IEnumerable<PromotionReward> rewards)
+        {
+            var shipmentRewards = rewards.Where(r => r.RewardType == PromotionRewardType.ShipmentReward && (r.ShippingMethodCode.IsNullOrEmpty() || r.ShippingMethodCode.EqualsInvariant(ShipmentMethodCode)));
+
+            Discounts.Clear();
+            DiscountAmount = new Money(0m, Currency);
+
+            foreach (var reward in shipmentRewards)
+            {
+                var discount = reward.ToDiscountModel(Price);
+
+                if (reward.IsValid)
+                {
+                    Discounts.Add(discount);
+                    DiscountAmount += discount.Amount;
+                }
+            }
+        }
+        #endregion
+
+        public override string ToString()
+        {
+            return string.Join(":", ShipmentMethodCode, OptionName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            // If parameter is null return false.
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            // If parameter cannot be cast to ModuleIdentity return false.
+            ShippingMethod other = obj as ShippingMethod;
+            if (other == null)
+            {
+                return false;
+            }
+            // Return true if the fields match:
+            return (ShipmentMethodCode.EqualsInvariant(other.ShipmentMethodCode)) && (OptionName.EqualsInvariant(other.OptionName));
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+    }
+}

@@ -8,8 +8,8 @@ using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Stores;
-using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
-using searchModel = VirtoCommerce.SearchModule.Client.Model;
+using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -36,6 +36,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             retVal.Sku = product.Code;
             retVal.VendorId = product.Vendor;
+            retVal.Outline = product.Outlines.GetOutlinePath();
 
             if (product.Properties != null)
             {
@@ -72,7 +73,7 @@ namespace VirtoCommerce.Storefront.Converters
             }
 
             var productSeoInfo = product.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage);
-            if(productSeoInfo != null)
+            if (productSeoInfo != null)
             {
                 retVal.SeoInfo = productSeoInfo.ToWebModel();
             }
@@ -117,7 +118,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (product.Price != null)
             {
-                promoItem.Discount = new Money(product.Price.ActiveDiscount != null ? product.Price.ActiveDiscount.Amount.Amount : 0m, product.Price.Currency);
+                promoItem.Discount = product.Price.DiscountAmount;
                 promoItem.Price = product.Price.SalePrice;
             }
 

@@ -40,10 +40,9 @@ namespace VirtoCommerce.Storefront.Controllers
         /// <returns></returns>
         public async Task<ActionResult> CategoryBrowsing(string categoryId, string view)
         {
-            WorkContext.CurrentCatalogSearchCriteria.CategoryId = categoryId;
-
             var category = (await _searchService.GetCategoriesAsync(new[] { categoryId }, CategoryResponseGroup.Full)).FirstOrDefault();
             WorkContext.CurrentCategory = category;
+            WorkContext.CurrentProductSearchCriteria.Outline = string.Format("{0}*", category.Outline); // should we simply take it from current category?
 
             if (category != null)
             {
@@ -51,6 +50,12 @@ namespace VirtoCommerce.Storefront.Controllers
 
                 WorkContext.CurrentPageSeo = category.SeoInfo.JsonClone();
                 WorkContext.CurrentPageSeo.Slug = category.Url;
+
+                // make sure title is set
+                if(string.IsNullOrEmpty(WorkContext.CurrentPageSeo.Title))
+                {
+                    WorkContext.CurrentPageSeo.Title = category.Name;
+                }
             }
 
             if (string.IsNullOrEmpty(view))

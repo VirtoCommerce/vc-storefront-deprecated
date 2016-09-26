@@ -29,6 +29,20 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
         }, 300);
     }
 
+    $scope.changeLineItemPrice = function (lineItemId, newPrice) {
+    	var lineItem = _.find($scope.cart.items, function (i) { return i.id == lineItemId });
+    	if (!lineItem || $scope.cartIsUpdating) {
+    		return;
+    	}
+    	$scope.cartIsUpdating = true;
+    	cartService.changeLineItemPrice(lineItemId, newPrice).then(function (response) {
+    		getCart();
+    		$rootScope.$broadcast('cartItemsChanged');
+    	}, function (response) {
+    		$scope.cart.items = initialItems;
+    		$scope.cartIsUpdating = false;
+    	});
+    };
     $scope.removeLineItem = function (lineItemId) {
         var lineItem = _.find($scope.cart.items, function (i) { return i.id == lineItemId });
         if (!lineItem || $scope.cartIsUpdating) {
@@ -45,7 +59,7 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
             $scope.cart.items = initialItems;
             $scope.cartIsUpdating = false;
         });
-    }
+    }   
 
     $scope.submitCart = function () {
         $scope.formCart.$setSubmitted();

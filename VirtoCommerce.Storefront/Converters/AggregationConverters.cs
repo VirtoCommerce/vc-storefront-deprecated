@@ -3,7 +3,7 @@ using System.Linq;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
-using searchModel = VirtoCommerce.SearchModule.Client.Model;
+using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {

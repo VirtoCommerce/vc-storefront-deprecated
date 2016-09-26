@@ -9,16 +9,16 @@ using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class ProductPrice : ValueObject<ProductPrice>, IConvertible<ProductPrice>
+    public class ProductPrice : ValueObject<ProductPrice>, IConvertible<ProductPrice>, ITaxable
     {
         public ProductPrice(Currency currency)
         {
             Currency = currency;
-            ListPrice = new Money(currency);
-            ListPriceWithTax = new Money(currency);
-            SalePriceWithTax = new Money(currency);
-            SalePrice = new Money(currency);
+            ListPrice = new Money(currency);        
+            SalePrice = new Money(currency);       
+            DiscountAmount = new Money(currency);
             TierPrices = new List<TierPrice>();
+            Discounts = new List<Discount>();
         }
         /// <summary>
         /// Price list id
@@ -34,48 +34,27 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         /// Product id
         public string ProductId { get; set; }
 
-        /// <summary>
-        /// Absilute price benefit. You save 40.00 USD
-        /// </summary>
-        public Money AbsoluteBenefit
+      
+        public Money DiscountAmount { get; set; }
+      
+        public Money DiscountAmountWithTax
         {
             get
             {
-                var retVal = ListPrice - SalePrice;
-                if(ActiveDiscount != null)
-                {
-                    retVal += ActiveDiscount.Amount;
-                }
-                return retVal;
-            }
-        }
-
-        /// <summary>
-        /// Absilute price benefit including tax. You save 40.00 USD
-        /// </summary>
-        public Money AbsoluteBenefitWithTax
-        {
-            get
-            {
-                var retVal = ListPriceWithTax - SalePriceWithTax;
-                if (ActiveDiscount != null)
-                {
-                    retVal += ActiveDiscount.AmountWithTax;
-                }
-                return retVal;
+                return DiscountAmount + DiscountAmount * TaxPercentRate;
             }
         }
 
         /// <summary>
         /// Relative benefit. 30% 
         /// </summary>
-        public decimal RelativeBenefit
+        public decimal DiscountPercent
         {
             get
             {
                 if (ListPrice.Amount > 0)
                 {
-                    return Math.Round(AbsoluteBenefit.Amount / ListPrice.Amount, 2);
+                    return Math.Round(DiscountAmount.Amount / ListPrice.Amount, 2);
                 }
                 return 0;
             }
@@ -85,7 +64,6 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         /// Original product price (old price)
         /// </summary>
         public Money ListPrice { get; set; }
-        private Money _listPriceWithTax;
         /// <summary>
         /// Original product price (old price) including tax 
         /// </summary>
@@ -93,20 +71,15 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         {
             get
             {
-                return _listPriceWithTax ?? ListPrice;
-            }
-            set
-            {
-                _listPriceWithTax = value;
+                return ListPrice + ListPrice * TaxPercentRate;
             }
         }
- 
+
         /// <summary>
         /// Sale product price (new price)
         /// </summary>
         public Money SalePrice { get; set; }
 
-        private Money _salePriceWithTax;
         /// <summary>
         /// Sale product price (new price) including tax 
         /// </summary>
@@ -114,14 +87,9 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         {
             get
             {
-                return _salePriceWithTax ?? SalePrice;
-            }
-            set
-            {
-                _salePriceWithTax = value;
+                return SalePrice + SalePrice * TaxPercentRate;
             }
         }
-
 
         /// <summary>
         /// Actual price includes all kind of discounts
@@ -130,7 +98,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         {
             get
             {
-                return ListPrice - AbsoluteBenefit;
+                return ListPrice - DiscountAmount;
             }
         }
 
@@ -141,19 +109,11 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         {
             get
             {
-                return ListPriceWithTax - AbsoluteBenefitWithTax;
+                return ListPriceWithTax - DiscountAmountWithTax;
             }
         }
 
-        /// <summary>
-        /// Current active discount
-        /// </summary>
-        public Discount ActiveDiscount { get; set; }
-
-        /// <summary>
-        /// Not active but potential better that active discount 
-        /// </summary>
-        public Discount PotentialDiscount { get; set; }
+        public ICollection<Discount> Discounts { get; set; }
 
         /// <summary>
         /// It defines the minimum quantity of products
@@ -164,8 +124,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         /// Tier prices 
         /// </summary>
         public ICollection<TierPrice> TierPrices { get; set; }
-
-        
+                
         /// <summary>
         /// Return tire price for passed quantity
         /// </summary>
@@ -181,6 +140,46 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             return retVal;
         }
 
+        #region ITaxable Members
+        /// <summary>
+        /// Gets or sets the value of total shipping tax amount
+        /// </summary>
+        public Money TaxTotal
+        {
+            get
+            {
+                return ActualPriceWithTax - ActualPrice;
+            }
+        }
+
+        public decimal TaxPercentRate { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the value of shipping tax type
+        /// </summary>
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of line item tax details lines
+        /// </summary>
+        /// <value>
+        /// Collection of TaxDetail objects
+        /// </value>
+        public ICollection<TaxDetail> TaxDetails { get; set; }
+
+        public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
+        {
+            var taxRate = taxRates.FirstOrDefault(x => x.Line.Quantity == 0);
+            if (taxRate != null && ActualPrice.Amount > 0 && taxRate.Rate.Amount > 0)
+            {
+                TaxPercentRate = taxRate.Rate.Amount / ActualPrice.Amount;
+            }
+            foreach(var tierPrice in TierPrices)
+            {
+                tierPrice.ApplyTaxRates(taxRates);
+            }
+        }
+        #endregion
 
         #region IConvertible<ProductPrice> Members
         /// <summary>
@@ -193,17 +192,9 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             var retVal = new ProductPrice(currency);
             retVal.ListPrice = ListPrice.ConvertTo(currency);
             retVal.SalePrice = SalePrice.ConvertTo(currency);
-            retVal.SalePriceWithTax = SalePriceWithTax.ConvertTo(currency);
-            retVal.ListPriceWithTax = ListPriceWithTax.ConvertTo(currency);
+            retVal.DiscountAmount = DiscountAmount.ConvertTo(currency);
             retVal.ProductId = ProductId;
-            if (ActiveDiscount != null)
-            {
-                retVal.ActiveDiscount = ActiveDiscount.ConvertTo(currency);
-            }
-            if(PotentialDiscount != null)
-            {
-                retVal.PotentialDiscount = PotentialDiscount.ConvertTo(currency);
-            }
+           
             return retVal;
         } 
         #endregion

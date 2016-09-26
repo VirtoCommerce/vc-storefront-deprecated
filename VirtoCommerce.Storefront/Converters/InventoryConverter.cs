@@ -1,12 +1,13 @@
 ﻿using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
+using inventoryModel = VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class InventoryConverter
     {
-        public static Inventory ToWebModel(this InventoryModule.Client.Model.InventoryInfo inventoryInfo)
+        public static Inventory ToWebModel(this inventoryModel.InventoryInfo inventoryInfo)
         {
             var result = new Inventory();
 

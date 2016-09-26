@@ -43,11 +43,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 CurrentLanguage = workContext.CurrentLanguage != null ? workContext.CurrentLanguage.ToShopifyModel() : null
             };
 
-            if (workContext.CurrentCatalogSearchCriteria != null && workContext.CurrentCatalogSearchCriteria.Terms.Any())
+            if (workContext.CurrentProductSearchCriteria != null && workContext.CurrentProductSearchCriteria.Terms.Any())
             {
                 result.CurrentTags =
                     new TagCollection(
-                        workContext.CurrentCatalogSearchCriteria.Terms.Select(t => t.ToShopifyModel()).ToList());
+                        workContext.CurrentProductSearchCriteria.Terms.Select(t => t.ToShopifyModel()).ToList());
             }
          
             if (workContext.CurrentCategory != null)
@@ -82,9 +82,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 }, workContext.Vendors.PageNumber, workContext.Vendors.PageSize);
             }
 
-            if (!string.IsNullOrEmpty(workContext.CurrentCatalogSearchCriteria.Keyword) && workContext.Products != null)
+            if (!string.IsNullOrEmpty(workContext.CurrentProductSearchCriteria.Keyword) && workContext.Products != null)
             {
-                result.Search = workContext.Products.ToShopifyModel(workContext.CurrentCatalogSearchCriteria.Keyword);
+                result.Search = workContext.Products.ToShopifyModel(workContext.CurrentProductSearchCriteria.Keyword);
             }
 
             if (workContext.CurrentLinkLists != null)

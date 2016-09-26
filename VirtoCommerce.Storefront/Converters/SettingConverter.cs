@@ -1,7 +1,7 @@
 ﻿using Omu.ValueInjecter;
+using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.StoreModule.Client.Model;
 
 namespace VirtoCommerce.Storefront.Converters
 {

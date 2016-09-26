@@ -3,12 +3,13 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
+using storeModel = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class StoreConverter
     {
-        public static Store ToWebModel(this StoreModule.Client.Model.Store storeDto)
+        public static Store ToWebModel(this storeModel.Store storeDto)
         {
             var retVal = new Store();
             retVal.InjectFrom<NullableAndEnumValueInjecter>(storeDto);

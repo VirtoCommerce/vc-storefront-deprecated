@@ -31,6 +31,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
             Categories = new List<string>();
             Aliases = new List<string>();
             AliasesUrls = new List<string>();
+            IsPublished = true;
         }
 
         public virtual string Type { get { return "page"; } }
@@ -62,7 +63,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
 
         public string Category { get; set; }
 
-        public ContentPublicationStatus PublicationStatus { get; set; }
+        public bool IsPublished { get; set; }
 
         /// <summary>
         /// Content file name without extension
@@ -111,7 +112,9 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                             break;
 
                         case "published":
-                            PublicationStatus = EnumUtility.SafeParse(settingValue, ContentPublicationStatus.Draft);
+                            var isPublished = true;
+                            bool.TryParse(settingValue, out isPublished);
+                            IsPublished = isPublished;
                             break;
                         case "date":
                             var createdDate = new DateTime();

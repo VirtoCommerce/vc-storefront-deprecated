@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.Model;
@@ -32,20 +33,19 @@ namespace VirtoCommerce.Storefront.Controllers
         public async Task<ActionResult> VendorDetails(string vendorId)
         {
             var vendor = await _customerService.GetVendorByIdAsync(vendorId);
+           
             if (vendor != null)
             {               
                 vendor.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                 {
-                    var criteria = new CatalogSearchCriteria
+                    var criteria = new ProductSearchCriteria
                     {
-                        CatalogId = base.WorkContext.CurrentStore.Catalog,
                         VendorId = vendorId,
-                        SearchInChildren = true,
                         PageNumber = pageNumber,
                         PageSize = pageSize,
                         SortBy = SortInfo.ToString(sortInfos),
-                        ResponseGroup = CatalogSearchResponseGroup.WithProducts
                     };
+
                     var searchResult = _catalogSearchService.SearchProducts(criteria);
                     return searchResult.Products;
                 });

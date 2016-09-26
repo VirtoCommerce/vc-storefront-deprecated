@@ -5,13 +5,14 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Quote;
+using quoteModel = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class QuoteRequestConverter
     {
 
-        public static QuoteRequest ToWebModel(this QuoteModule.Client.Model.QuoteRequest serviceModel, IEnumerable<Currency> availCurrencies, Language language)
+        public static QuoteRequest ToWebModel(this quoteModel.QuoteRequest serviceModel, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(serviceModel.Currency)) ?? new Currency(language, serviceModel.Currency);
             var webModel = new QuoteRequest(currency, language);
@@ -68,9 +69,9 @@ namespace VirtoCommerce.Storefront.Converters
             return webModel;
         }
 
-        public static QuoteModule.Client.Model.QuoteRequest ToServiceModel(this QuoteRequest webModel)
+        public static quoteModel.QuoteRequest ToServiceModel(this QuoteRequest webModel)
         {
-            var serviceModel = new QuoteModule.Client.Model.QuoteRequest();
+            var serviceModel = new quoteModel.QuoteRequest();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 

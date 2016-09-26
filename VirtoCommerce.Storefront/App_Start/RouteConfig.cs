@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using VirtoCommerce.CoreModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent.Services;
@@ -11,7 +11,7 @@ namespace VirtoCommerce.Storefront
 {
     public class RouteConfig
     {
-        public static void RegisterRoutes(RouteCollection routes, Func<WorkContext> workContextFactory, IVirtoCommerceCoreApi commerceCoreApi, IStaticContentService staticContentService, ILocalCacheManager cacheManager, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
+        public static void RegisterRoutes(RouteCollection routes, Func<WorkContext> workContextFactory, Func<ICoreModuleApiClient> commerceCoreApiFactory, IStaticContentService staticContentService, ILocalCacheManager cacheManager, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
         {
             routes.IgnoreRoute("favicon.ico");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -27,6 +27,7 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.Cart.GetCartItemsCount", "storefrontapi/cart/itemscount", defaults: new { controller = "ApiCart", action = "GetCartItemsCount" });
             routes.AddStorefrontRoute("API.Cart.AddItemToCart", "storefrontapi/cart/items", defaults: new { controller = "ApiCart", action = "AddItemToCart" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Cart.ChangeCartItem", "storefrontapi/cart/items", defaults: new { controller = "ApiCart", action = "ChangeCartItem" }, constraints: new { httpMethod = new HttpMethodConstraint("PUT") });
+            routes.AddStorefrontRoute("API.Cart.ChangeCartItemPrice", "storefrontapi/cart/items/price", defaults: new { controller = "ApiCart", action = "ChangeCartItemPrice" }, constraints: new { httpMethod = new HttpMethodConstraint("PUT") });
             routes.AddStorefrontRoute("API.Cart.RemoveCartItem", "storefrontapi/cart/items", defaults: new { controller = "ApiCart", action = "RemoveCartItem" }, constraints: new { httpMethod = new HttpMethodConstraint("DELETE") });
             routes.AddStorefrontRoute("API.Cart.ClearCart", "storefrontapi/cart/clear", defaults: new { controller = "ApiCart", action = "ClearCart" });
             routes.AddStorefrontRoute("API.Cart.GetCartShipmentAvailShippingMethods", "storefrontapi/cart/shipments/{shipmentId}/shippingmethods", defaults: new { controller = "ApiCart", action = "GetCartShipmentAvailShippingMethods" });
@@ -130,7 +131,7 @@ namespace VirtoCommerce.Storefront
 
             // Category routes
             routes.AddStorefrontRoute("Category.BrowseCategory", "category/{categoryId}", defaults: new { controller = "CatalogSearch", action = "CategoryBrowsing" });
-           
+
             // Product routes
             routes.AddStorefrontRoute("Product.GetProduct", "product/{productId}", defaults: new { controller = "Product", action = "ProductDetails" });
 
@@ -154,7 +155,7 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "Blog", action = "GetBlog" });
           
 
-            Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), workContextFactory, commerceCoreApi, cacheManager, storefrontUrlBuilderFactory);
+            Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), workContextFactory, commerceCoreApiFactory, cacheManager, storefrontUrlBuilderFactory);
             routes.AddStorefrontRoute(name: "SeoRoute", url: "{*path}", defaults: new { controller = "StorefrontHome", action = "Index" }, constraints: null, routeFactory: seoRouteFactory);
         }
     }

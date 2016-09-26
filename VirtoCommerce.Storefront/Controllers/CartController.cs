@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
-using VirtoCommerce.OrderModule.Client.Api;
+using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
-using orderApiModel = VirtoCommerce.OrderModule.Client.Model;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
     public class CartController : StorefrontControllerBase
     {
-        private readonly IVirtoCommerceOrdersApi _orderApi;
+        private readonly IOrdersModuleApiClient _orderApi;
 
-        public CartController(WorkContext workContext, IVirtoCommerceOrdersApi orderApi, IStorefrontUrlBuilder urlBuilder)
+        public CartController(WorkContext workContext, IOrdersModuleApiClient orderApi, IStorefrontUrlBuilder urlBuilder)
             : base(workContext, urlBuilder)
         {
             _orderApi = orderApi;
@@ -41,14 +42,14 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> PaymentForm(string orderNumber)
         {
-            var order = await _orderApi.OrderModuleGetByNumberAsync(orderNumber);
+            var order = await _orderApi.OrderModule.GetByNumberAsync(orderNumber);
 
             var incomingPayment = order.InPayments != null ? order.InPayments.FirstOrDefault(x => string.Equals(x.PaymentMethod.PaymentMethodType, "PreparedForm", System.StringComparison.InvariantCultureIgnoreCase)) : null;
             if (incomingPayment == null)
             {
                 throw new StorefrontException("Order doesn't have any payment of type: PreparedForm");
             }
-            var processingResult = await _orderApi.OrderModuleProcessOrderPaymentsAsync(order.Id, incomingPayment.Id);
+            var processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(order.Id, incomingPayment.Id);
 
             WorkContext.PaymentFormHtml = processingResult.HtmlForm;
 
@@ -59,14 +60,14 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> ExternalPaymentCallback()
         {
-            var callback = new orderApiModel.PaymentCallbackParameters
+            var callback = new orderModel.PaymentCallbackParameters
             {
-                Parameters = new List<orderApiModel.KeyValuePair>()
+                Parameters = new List<orderModel.KeyValuePair>()
             };
 
             foreach (var key in HttpContext.Request.QueryString.AllKeys)
             {
-                callback.Parameters.Add(new orderApiModel.KeyValuePair
+                callback.Parameters.Add(new orderModel.KeyValuePair
                 {
                     Key = key,
                     Value = HttpContext.Request.QueryString[key]
@@ -75,14 +76,14 @@ namespace VirtoCommerce.Storefront.Controllers
 
             foreach (var key in HttpContext.Request.Form.AllKeys)
             {
-                callback.Parameters.Add(new orderApiModel.KeyValuePair
+                callback.Parameters.Add(new orderModel.KeyValuePair
                 {
                     Key = key,
                     Value = HttpContext.Request.Form[key]
                 });
             }
 
-            var postProcessingResult = await _orderApi.OrderModulePostProcessPaymentAsync(callback);
+            var postProcessingResult = await _orderApi.OrderModule.PostProcessPaymentAsync(callback);
             if (postProcessingResult.IsSuccess.HasValue && postProcessingResult.IsSuccess.Value)
             {
                 return StoreFrontRedirect("~/cart/thanks/" + postProcessingResult.OrderId);
@@ -97,11 +98,11 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> Thanks(string orderNumber)
         {
-            var order = await _orderApi.OrderModuleGetByNumberAsync(orderNumber);
+            var order = await _orderApi.OrderModule.GetByNumberAsync(orderNumber);
 
             if (order == null || order.CustomerId != WorkContext.CurrentCustomer.Id)
             {
-                return HttpNotFound();
+                throw new HttpException(404, "Order with number " + orderNumber + " not found.");
             }
 
             WorkContext.CurrentOrder = order.ToWebModel(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);

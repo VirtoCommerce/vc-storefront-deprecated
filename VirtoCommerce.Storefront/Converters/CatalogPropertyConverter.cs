@@ -5,7 +5,7 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
-using catalogModel = VirtoCommerce.CatalogModule.Client.Model;
+using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -14,7 +14,7 @@ namespace VirtoCommerce.Storefront.Converters
         public static CatalogProperty ToWebModel(this catalogModel.Property property, Language currentLanguage)
         {
             var retVal = new CatalogProperty();
-            retVal.InjectFrom(property);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(property);
             //Set display names and set current display name for requested language
             if (property.DisplayNames != null)
             {

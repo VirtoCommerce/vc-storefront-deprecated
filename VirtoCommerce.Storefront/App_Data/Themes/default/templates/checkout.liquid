@@ -47,7 +47,7 @@
 									<h2 class="section__title">{{ 'checkout.customer_information.title' | t }}</h2>
 								</div>
 								<div class="section__content">
-									<vc-checkout-email email="checkout.email"></vc-checkout-email>
+									<vc-checkout-email email="checkout.shipment.deliveryAddress.email"></vc-checkout-email>
 									<p class="section__content__text" ng-if="!customer.isRegisteredUser">
 										{{ 'checkout.customer_information.has_account_text' | t }}
 										<a href="{{ 'account/login' | absolute_url }}">{{ 'checkout.customer_information.log_in' | t }}</a>
@@ -107,7 +107,7 @@
 									<div class="content-box">
 										<div class="checkbox-wrapper content-box__row" ng-if="checkout.cart.hasPhysicalProducts">
 											<div class="checkbox__input">
-												<input class="input-checkbox" id="BillingAddressEqualsShipping" name="BillingAddressEqualsShipping" ng-model="checkout.billingAddressEqualsShipping" type="checkbox" ng-checked="checkout.billingAddressEqualsShipping"  />
+												<input class="input-checkbox" id="BillingAddressEqualsShipping" name="BillingAddressEqualsShipping" ng-model="checkout.billingAddressEqualsShipping" type="checkbox" ng-checked="checkout.billingAddressEqualsShipping" ng-change="validateCheckout(checkout)"  />
 											</div>
 											<label class="checkbox__label" for="BillingAddressEqualsShipping">{{ 'checkout.payment_method.billing_address_equals_shipping' | t }}</label>
 										</div>

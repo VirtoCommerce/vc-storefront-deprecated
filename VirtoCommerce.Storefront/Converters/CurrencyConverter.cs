@@ -1,6 +1,6 @@
 ﻿using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using coreModel = VirtoCommerce.CoreModule.Client.Model;
+using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {

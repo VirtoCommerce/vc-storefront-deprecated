@@ -69,8 +69,9 @@ namespace VirtoCommerce.LiquidThemeEngine
             Template.RegisterFilter(typeof(HtmlFilters));
             Template.RegisterFilter(typeof(StringFilters));
             Template.RegisterFilter(typeof(ArrayFilters));
+			Template.RegisterFilter(typeof(BundleFilters));
 
-            Condition.Operators["contains"] = CommonOperators.ContainsMethod;
+			Condition.Operators["contains"] = CommonOperators.ContainsMethod;
 
             Template.RegisterTag<LayoutTag>("layout");
             Template.RegisterTag<FormTag>("form");
@@ -153,6 +154,10 @@ namespace VirtoCommerce.LiquidThemeEngine
         public string ReadTemplateFile(Context context, string templateName)
         {
             var templatePath = ResolveTemplatePath(templateName);
+            if (string.IsNullOrEmpty(templatePath))
+            {
+                throw new FileSystemException(string.Format("Template not found: '{0}'. Searched paths: {1}", templateName, string.Join("<br>", DiscoveryPaths)));
+            }
             return ReadTemplateByPath(templatePath);
         }
         #endregion
@@ -272,6 +277,10 @@ namespace VirtoCommerce.LiquidThemeEngine
                 throw new ArgumentNullException("templateName");
             }
             var templatePath = ResolveTemplatePath(templateName);
+            if(string.IsNullOrEmpty(templatePath))
+            {
+                throw new FileSystemException(string.Format("Template not found: '{0}'. Searched paths: {1}", templateName, string.Join("<br>", DiscoveryPaths)));
+            }
             var templateContent = ReadTemplateByPath(templatePath);
             var retVal = RenderTemplate(templateContent, parameters);
             return retVal;

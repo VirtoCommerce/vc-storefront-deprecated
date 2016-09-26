@@ -23,6 +23,8 @@ namespace VirtoCommerce.Storefront.Model
         /// Tax line total amount
         /// </summary>
         public Money Amount { get; set; }
+
+        public decimal Quantity { get; set; }
         /// <summary>
         /// Tax line one item price
         /// </summary>

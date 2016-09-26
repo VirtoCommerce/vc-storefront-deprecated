@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.MarketingModule.Client.Api;
-using VirtoCommerce.MarketingModule.Client.Model;
+using VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Services;
 
@@ -10,10 +10,10 @@ namespace VirtoCommerce.Storefront.Services
 {
     public class MarketingServiceImpl : IMarketingService
     {
-        private readonly IVirtoCommerceMarketingApi _marketingApi;
+        private readonly IMarketingModuleApiClient _marketingApi;
         private readonly ILocalCacheManager _cacheManager;
 
-        public MarketingServiceImpl(IVirtoCommerceMarketingApi marketingApi, ILocalCacheManager cacheManager)
+        public MarketingServiceImpl(IMarketingModuleApiClient marketingApi, ILocalCacheManager cacheManager)
         {
             _marketingApi = marketingApi;
             _cacheManager = cacheManager;
@@ -31,7 +31,7 @@ namespace VirtoCommerce.Storefront.Services
             };
 
             var cacheKey = "MarketingServiceImpl.GetDynamicContentHtmlAsync-" + storeId + "-" + placeholderName;
-            var dynamicContent = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => await _marketingApi.MarketingModuleDynamicContentEvaluateDynamicContentAsync(evaluationContext));
+            var dynamicContent = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => await _marketingApi.MarketingModuleDynamicContent.EvaluateDynamicContentAsync(evaluationContext));
             if (dynamicContent != null)
             {
                 var htmlDynamicContent = dynamicContent.FirstOrDefault(dc => !string.IsNullOrEmpty(dc.ContentType) && dc.ContentType.Equals("Html", StringComparison.OrdinalIgnoreCase));

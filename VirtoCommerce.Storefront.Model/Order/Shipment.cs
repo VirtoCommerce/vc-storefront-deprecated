@@ -10,7 +10,7 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// </summary>
     public class Shipment
     {
-        public Shipment()
+        public Shipment(Currency currency)
         {
             Items = new List<ShipmentItem>();
             Packages = new List<ShipmentPackage>();
@@ -18,6 +18,19 @@ namespace VirtoCommerce.Storefront.Model.Order
             TaxDetails = new List<TaxDetail>();
             ChildrenOperations = new List<Operation>();
             DynamicProperties = new List<DynamicProperty>();
+            Currency = currency;
+
+            Price = new Money(currency);
+            PriceWithTax = new Money(currency);
+            DiscountAmount = new Money(currency);
+            DiscountAmountWithTax = new Money(currency);
+            ItemsSubtotal = new Money(currency);
+            ItemsSubtotalWithTax = new Money(currency);
+            TaxTotal = new Money(currency);
+            Total = new Money(currency);
+            TotalWithTax = new Money(currency);
+            Discounts = new List<Discount>();
+
         }
 
         /// <summary>
@@ -66,11 +79,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         public string EmployeeId { get; set; }
 
         /// <summary>
-        /// Gets or Sets DiscountAmount
-        /// </summary>
-        public Money DiscountAmount { get; set; }
-
-        /// <summary>
         /// Gets or Sets WeightUnit
         /// </summary>
         public string WeightUnit { get; set; }
@@ -101,11 +109,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         public double? Width { get; set; }
 
         /// <summary>
-        /// Gets or Sets TaxType
-        /// </summary>
-        public string TaxType { get; set; }
-
-        /// <summary>
         /// Information about quantity and order items belongs to current shipment
         /// </summary>
         /// <value>Information about quantity and order items belongs to current shipment</value>
@@ -126,11 +129,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets DeliveryAddress
         /// </summary>
         public Address DeliveryAddress { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Discount
-        /// </summary>
-        public Discount Discount { get; set; }
 
         /// <summary>
         /// Gets or Sets TaxDetails
@@ -175,28 +173,8 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// <summary>
         /// Gets or Sets TaxIncluded
         /// </summary>
-        public bool? TaxIncluded { get; set; }
-
-        /// <summary>
-        /// Money amount without tax
-        /// </summary>
-        /// <value>Money amount without tax</value>
-        public Money Sum { get; set; }
-
-        public Money SumWithTax
-        {
-            get
-            {
-                return Sum + Tax;
-            }
-        }
-
-        /// <summary>
-        /// Tax total
-        /// </summary>
-        /// <value>Tax total</value>
-        public Money Tax { get; set; }
-      
+        public bool? TaxIncluded { get; set; }     
+       
         /// <summary>
         /// Gets or Sets IsCancelled
         /// </summary>
@@ -259,5 +237,21 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets Id
         /// </summary>
         public string Id { get; set; }
+
+        public string TaxType { get; set; }
+        public Money TaxTotal { get; set; }
+        public decimal TaxPercentRate { get; set; }
+
+        public ICollection<Discount> Discounts { get; set; }
+
+        public Money Price { get; set; }
+        public Money PriceWithTax { get; set; }
+        public Money Total { get; set; }
+        public Money TotalWithTax { get; set; }
+        public Money ItemsSubtotal { get; set; }
+        public Money ItemsSubtotalWithTax { get; set; }
+        public Money DiscountAmount { get; set; }
+        public Money DiscountAmountWithTax { get; set; }
+
     }
 }

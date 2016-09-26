@@ -245,6 +245,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
         /// <returns></returns>
         public static string AbsoluteUrl(string input, string storeId = null, string languageCode = null)
         {
+            if (input == null)
+                return string.Empty;
+
             var themeAdaptor = (ShopifyLiquidThemeEngine)Template.FileSystem;
             Store store = null;
             storefrontModel.Language language = null;
@@ -361,7 +364,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             var themeEngine = (ShopifyLiquidThemeEngine)Template.FileSystem;
             var workContext = themeEngine.WorkContext;
 
-            var terms = workContext.CurrentCatalogSearchCriteria.Terms
+            var terms = workContext.CurrentProductSearchCriteria.Terms
                 .Select(t => new Term { Name = t.Name, Value = t.Value })
                 .ToList();
 

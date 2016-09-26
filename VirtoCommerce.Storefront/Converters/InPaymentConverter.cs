@@ -4,35 +4,34 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class InPaymentConverter
     {
-        public static PaymentIn ToWebModel(this OrderModule.Client.Model.PaymentIn paymentIn, IEnumerable<Currency> availCurrencies, Language language)
+        public static PaymentIn ToWebModel(this orderModel.PaymentIn paymentIn, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var webModel = new PaymentIn();
+            var retVal = new PaymentIn();
 
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(paymentIn.Currency)) ?? new Currency(language, paymentIn.Currency);
 
-            webModel.InjectFrom(paymentIn);
-
-            if (paymentIn.ChildrenOperations != null)
-            {
-                webModel.ChildrenOperations = paymentIn.ChildrenOperations.Select(co => co.ToWebModel(availCurrencies, language)).ToList();
-            }
-
-            webModel.Currency = currency;
+            retVal.InjectFrom(paymentIn);
+        
+            retVal.Currency = currency;
 
             if (paymentIn.DynamicProperties != null)
             {
-                webModel.DynamicProperties = paymentIn.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
+                retVal.DynamicProperties = paymentIn.DynamicProperties.Select(dp => dp.ToWebModel()).ToList();
             }
 
-            webModel.Sum = new Money(paymentIn.Sum ?? 0, currency);
-            webModel.Tax = new Money(paymentIn.Tax ?? 0, currency);
+            retVal.Sum = new Money(paymentIn.Sum ?? 0, currency);
 
-            return webModel;
+            if (paymentIn.PaymentMethod != null)
+            {
+                retVal.GatewayCode = paymentIn.PaymentMethod.Code;
+            }
+            return retVal;
         }
     }
 }

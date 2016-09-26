@@ -37,6 +37,12 @@ namespace VirtoCommerce.Storefront.Controllers
                 WorkContext.CurrentPageSeo = product.SeoInfo.JsonClone();
                 WorkContext.CurrentPageSeo.Slug = product.Url;
 
+                // make sure title is set
+                if (string.IsNullOrEmpty(WorkContext.CurrentPageSeo.Title))
+                {
+                    WorkContext.CurrentPageSeo.Title = product.Name;
+                }
+
                 if (product.CategoryId != null)
                 {
                     var category = (await _catalogSearchService.GetCategoriesAsync(new[] { product.CategoryId }, CategoryResponseGroup.Full)).FirstOrDefault();
@@ -46,8 +52,8 @@ namespace VirtoCommerce.Storefront.Controllers
                     {
                         category.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                         {
-                            var criteria = WorkContext.CurrentCatalogSearchCriteria.Clone();
-                            criteria.CategoryId = product.CategoryId;
+                            var criteria = WorkContext.CurrentProductSearchCriteria.Clone();
+                            criteria.Outline = product.GetCategoryOutline();
                             criteria.PageNumber = pageNumber;
                             criteria.PageSize = pageSize;
                             if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
