@@ -56,8 +56,8 @@ namespace VirtoCommerce.Storefront.Controllers
             return View("payment-form", WorkContext);
         }
 
-        // GET: /cart/externalpaymentcallback
-        [HttpGet]
+        // GET/POST: /cart/externalpaymentcallback
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public async Task<ActionResult> ExternalPaymentCallback()
         {
             var callback = new orderModel.PaymentCallbackParameters
