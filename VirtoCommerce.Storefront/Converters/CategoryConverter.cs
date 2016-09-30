@@ -11,19 +11,26 @@ using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.
 
 namespace VirtoCommerce.Storefront.Converters
 {
-    public static class CategoryConverter
+    public class CategoryConverter
     {
-        public static Category ToWebModel(this searchModel.Category product, Language currentLanguage, Store store)
+        protected Func<Category> CategoryFactory { get; set; }
+
+        public CategoryConverter(Func<Category> categoryFactory)
         {
-            return product.JsonConvert<catalogModel.Category>().ToWebModel(currentLanguage, store);
+            CategoryFactory = categoryFactory;
         }
 
-        public static Category ToWebModel(this catalogModel.Category category, Language currentLanguage, Store store)
+        public virtual Category ToWebModel(searchModel.Category category, Language currentLanguage, Store store)
         {
-            return ToWebModel(category, new Category(), currentLanguage, store);
+            return ToWebModel(category.JsonConvert<catalogModel.Category>(), currentLanguage, store);
         }
 
-        public static T ToWebModel<T>(this catalogModel.Category category, T result, Language currentLanguage, Store store)
+        public virtual Category ToWebModel(catalogModel.Category category, Language currentLanguage, Store store)
+        {
+            return ToWebModel(category, CategoryFactory(), currentLanguage, store);
+        }
+
+        public virtual T ToWebModel<T>(catalogModel.Category category, T result, Language currentLanguage, Store store)
             where T : Category
         {
             result.InjectFrom<NullableAndEnumValueInjecter>(category);

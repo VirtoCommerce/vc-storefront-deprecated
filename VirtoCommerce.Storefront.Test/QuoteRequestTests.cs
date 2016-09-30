@@ -16,7 +16,7 @@ using Xunit;
 namespace VirtoCommerce.Storefront.Test
 {
     public class QuoteRequestTests : StorefrontTestBase
-    {   
+    {
         [Fact]
         public void CreateAnonymousQuoteRequest()
         {
@@ -182,9 +182,10 @@ namespace VirtoCommerce.Storefront.Test
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
             var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, null);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
+            var categoryConverter = GetCategoryConverter();
 
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
-            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, pricingService, inventoryApi, searchApi, customerService);
+            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, pricingService, inventoryApi, searchApi, customerService, categoryConverter);
             return result;
         }
     }
