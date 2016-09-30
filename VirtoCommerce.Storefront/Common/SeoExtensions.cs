@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Storefront.Model;
+using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
-using VirtoCommerce.Storefront.Model.Catalog;
 using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 
@@ -14,39 +14,6 @@ namespace VirtoCommerce.Storefront.Common
     /// </summary>
     public static class SeoExtensions
     {
-        /// <summary>
-        /// Returns best matched outline path CategoryId/CategoryId2.
-        /// </summary>
-        /// <param name="outlines"></param>
-        /// <param name="store"></param>
-        /// <param name="language"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
-        public static string GetOutlinePath(this IEnumerable<catalogModel.Outline> outlines)
-        {
-            var result = string.Empty;
-            if (outlines != null)
-            {
-                var outline = outlines.FirstOrDefault();
-
-                if (outline != null)
-                {
-                    var pathSegments = new List<string>();
-
-                    pathSegments.AddRange(outline.Items
-                        .Where(i => i.SeoObjectType != "Catalog")
-                        .Select(i => i.Id));
-
-                    if (pathSegments.All(s => s != null))
-                    {
-                        result = string.Join("/", pathSegments);
-                    }
-                }
-            }
-
-            return result;
-        }
-
         /// <summary>
         /// Returns product category.
         /// </summary>
@@ -87,7 +54,8 @@ namespace VirtoCommerce.Storefront.Common
 
             if (outlines != null && store.SeoLinksType != SeoLinksType.None)
             {
-                var outline = outlines.FirstOrDefault();
+                // Find any outline for store catalog
+                var outline = outlines.GetOutlineForCatalog(store.Catalog);
 
                 if (outline != null)
                 {
@@ -114,7 +82,6 @@ namespace VirtoCommerce.Storefront.Common
                         }
                     }
 
-
                     if (pathSegments.All(s => s != null))
                     {
                         result = string.Join("/", pathSegments);
@@ -131,6 +98,7 @@ namespace VirtoCommerce.Storefront.Common
         public static customerModel.SeoInfo GetBestMatchedSeoInfo(this IEnumerable<customerModel.SeoInfo> seoRecords, Store store, Language language, string slug = null)
         {
             customerModel.SeoInfo retVal = null;
+
             if (!seoRecords.IsNullOrEmpty())
             {
                 var catalogSeoInfos = seoRecords.Select(x => x.JsonConvert<catalogModel.SeoInfo>());

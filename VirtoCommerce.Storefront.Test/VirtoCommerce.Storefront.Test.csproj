@@ -110,6 +110,7 @@
     <Compile Include="ConcurrentAsyncLockTests.cs" />
     <Compile Include="MutablePagedListTests.cs" />
     <None Include="Pages\TestStore\blogs\news\default.md" />
+    <Compile Include="OutlineTests.cs" />
     <Compile Include="QuoteRequestTests.cs" />
     <Compile Include="PermalinkUrlTests.cs" />
     <Compile Include="SeoTests.cs" />
