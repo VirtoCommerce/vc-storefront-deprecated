@@ -217,7 +217,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 ModelState.AddModelError("password", "must not be empty");
             }
 
-            if (ModelState.Count > 0)
+            if (!ModelState.IsValid)
             {
                 return View("customers/login", WorkContext);
             }
