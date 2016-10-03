@@ -51,7 +51,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// </summary>
         public Pages Pages { get; set; }
 
-        public Articles Articles { get; set; }
         /// <summary>
         /// Contains blog search options
         /// </summary>

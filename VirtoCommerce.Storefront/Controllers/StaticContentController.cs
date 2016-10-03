@@ -1,23 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent;
-using VirtoCommerce.Storefront.Model.StaticContent.Services;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
     [OutputCache(CacheProfile = "StaticContentCachingProfile")]
     public class StaticContentController : StorefrontControllerBase
     {
-        private readonly IStaticContentService _staticContentService;
-
-        public StaticContentController(WorkContext context, IStorefrontUrlBuilder urlBuilder, IStaticContentService staticContentService)
+        public StaticContentController(WorkContext context, IStorefrontUrlBuilder urlBuilder)
             : base(context, urlBuilder)
         {
-            _staticContentService = staticContentService;
         }
 
         public ActionResult GetContentPage(ContentItem page)
@@ -92,15 +89,23 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpPost]
         public ActionResult Search(StaticContentSearchCriteria request)
         {
+            if (request == null)
+            {
+                throw new HttpException(400, "request is null");
+            }
+
             WorkContext.CurrentStaticSearchCriteria = request;
 
-            var allContentItems = _staticContentService.LoadStoreStaticContent(WorkContext.CurrentStore).ToList();
-            var scopedContentItems = allContentItems.Where(i => !string.IsNullOrEmpty(i.Url) && i.Url.StartsWith(request.ContentScope, StringComparison.OrdinalIgnoreCase));
-            var matchedContentItems = scopedContentItems.Where(i =>
+            var contentItems = WorkContext.Pages.Where(i =>
                 !string.IsNullOrEmpty(i.Content) && i.Content.IndexOf(request.Keyword, StringComparison.OrdinalIgnoreCase) >= 0 ||
                 !string.IsNullOrEmpty(i.Title) && i.Title.IndexOf(request.Keyword, StringComparison.OrdinalIgnoreCase) >= 0);
 
-            WorkContext.Pages = new MutablePagedList<ContentItem>(matchedContentItems.Where(x => x.Language.IsInvariant || x.Language == WorkContext.CurrentLanguage));
+            if (!string.IsNullOrEmpty(request.SearchIn))
+            {
+                contentItems = contentItems.Where(i => !string.IsNullOrEmpty(i.Url) && i.Url.StartsWith(request.SearchIn, StringComparison.OrdinalIgnoreCase));
+            }
+
+            WorkContext.Pages = new MutablePagedList<ContentItem>(contentItems.Where(x => x.Language.IsInvariant || x.Language == WorkContext.CurrentLanguage));
 
             return View("search", request.Layout, WorkContext);
         }
