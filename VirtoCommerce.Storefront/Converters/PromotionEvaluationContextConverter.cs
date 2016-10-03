@@ -10,9 +10,16 @@ using marketingModel = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleA
 
 namespace VirtoCommerce.Storefront.Converters
 {
-    public static class PromotionEvaluationContextConverter
+    public class PromotionEvaluationContextConverter
     {
-        public static PromotionEvaluationContext ToPromotionEvaluationContext(this ShoppingCart cart)
+        protected ProductConverter ProductConverter;
+
+        public PromotionEvaluationContextConverter(ProductConverter productConverter)
+        {
+            ProductConverter = productConverter;
+        }
+
+        public virtual PromotionEvaluationContext ToPromotionEvaluationContext(ShoppingCart cart)
         {
             var promotionItems = cart.Items.Select(i => i.ToPromotionItem()).ToList();
 
@@ -32,7 +39,7 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static PromotionEvaluationContext ToPromotionEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
+        public virtual PromotionEvaluationContext ToPromotionEvaluationContext(WorkContext workContext, IEnumerable<Product> products = null)
         {
             var retVal = new PromotionEvaluationContext
             {
@@ -49,17 +56,17 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.PromoEntries = retVal.CartPromoEntries;
             if (workContext.CurrentProduct != null)
             {
-                retVal.PromoEntry = workContext.CurrentProduct.ToPromotionItem();
+                retVal.PromoEntry = ProductConverter.ToPromotionItem(workContext.CurrentProduct);
             }
 
             if (products != null)
             {
-                retVal.PromoEntries = products.Select(x => x.ToPromotionItem()).ToList();
+                retVal.PromoEntries = products.Select(x => ProductConverter.ToPromotionItem(x)).ToList();
             }
             return retVal;
         }
 
-        public static marketingModel.PromotionEvaluationContext ToServiceModel(this PromotionEvaluationContext webModel)
+        public virtual marketingModel.PromotionEvaluationContext ToServiceModel(PromotionEvaluationContext webModel)
         {
             var serviceModel = new marketingModel.PromotionEvaluationContext();
 

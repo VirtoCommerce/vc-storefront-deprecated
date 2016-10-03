@@ -12,37 +12,38 @@ namespace VirtoCommerce.Storefront.Services
     public class PromotionEvaluator : IPromotionEvaluator
     {
         private readonly IMarketingModuleApiClient _marketingApi;
+        private readonly PromotionEvaluationContextConverter _promotionEvaluationContextConverter;
 
-        public PromotionEvaluator(IMarketingModuleApiClient marketingApi)
+        public PromotionEvaluator(IMarketingModuleApiClient marketingApi, PromotionEvaluationContextConverter promotionEvaluationContextConverter)
         {
             _marketingApi = marketingApi;
+            _promotionEvaluationContextConverter = promotionEvaluationContextConverter;
         }
 
         #region IPromotionEvaluator Members
-        public async Task EvaluateDiscountsAsync(PromotionEvaluationContext context, IEnumerable<IDiscountable> owners)
+
+        public virtual async Task EvaluateDiscountsAsync(PromotionEvaluationContext context, IEnumerable<IDiscountable> owners)
         {
-            var rewards = await _marketingApi.MarketingModulePromotion.EvaluatePromotionsAsync(context.ToServiceModel());
+            var rewards = await _marketingApi.MarketingModulePromotion.EvaluatePromotionsAsync(_promotionEvaluationContextConverter.ToServiceModel(context));
             InnerEvaluateDiscounts(rewards, owners);
         }
 
-        public void EvaluateDiscounts(PromotionEvaluationContext context, IEnumerable<IDiscountable> owners)
+        public virtual void EvaluateDiscounts(PromotionEvaluationContext context, IEnumerable<IDiscountable> owners)
         {
-            var rewards = _marketingApi.MarketingModulePromotion.EvaluatePromotions(context.ToServiceModel());
+            var rewards = _marketingApi.MarketingModulePromotion.EvaluatePromotions(_promotionEvaluationContextConverter.ToServiceModel(context));
             InnerEvaluateDiscounts(rewards, owners);
         }
 
         #endregion
 
-        private static void InnerEvaluateDiscounts(IList<marketingModel.PromotionReward> rewards, IEnumerable<IDiscountable> owners)
+        protected virtual void InnerEvaluateDiscounts(IList<marketingModel.PromotionReward> rewards, IEnumerable<IDiscountable> owners)
         {
-            if (rewards == null)
+            if (rewards != null)
             {
-                return;
-            }
-
-            foreach (var owner in owners)
-            {
-                owner.ApplyRewards(rewards.Select(r => r.ToWebModel(owner.Currency)));
+                foreach (var owner in owners)
+                {
+                    owner.ApplyRewards(rewards.Select(r => r.ToWebModel(owner.Currency)));
+                }
             }
         }
     }
