@@ -145,15 +145,16 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("StaticContentAssets", "assets/{*path}", defaults: new { controller = "Asset", action = "GetStaticContentAssets" });
 
             // Static content (no cms)
-            routes.AddStorefrontRoute("Pages.GetPage", "pages/{*page}", defaults: new { controller = "Page", action = "GetContentPageByName" });
+            routes.AddStorefrontRoute("Pages.GetPage", "pages/{*page}", defaults: new { controller = "StaticContent", action = "GetContentPageByName" });
             //Blog
-            routes.AddStorefrontRoute("Blogs.GetDefaultBlog", "blog", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByCategory", "blog/category/{category}", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByTag", "blog/tag/{tag}", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetBlogByName", "blogs/{blog}", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "Blog", action = "GetBlog" });
-          
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlog", "blog", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByCategory", "blog/category/{category}", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByTag", "blog/tag/{tag}", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogByName", "blogs/{blog}", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("StaticContent.Search", "content/search", defaults: new { controller = "StaticContent", action = "Search" });
+
 
             Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), workContextFactory, commerceCoreApiFactory, cacheManager, storefrontUrlBuilderFactory);
             routes.AddStorefrontRoute(name: "SeoRoute", url: "{*path}", defaults: new { controller = "StorefrontHome", action = "Index" }, constraints: null, routeFactory: seoRouteFactory);

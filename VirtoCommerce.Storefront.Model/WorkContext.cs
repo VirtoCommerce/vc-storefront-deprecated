@@ -162,6 +162,8 @@ namespace VirtoCommerce.Storefront.Model
         #region Static Content Properties
         public ContentPage CurrentPage { get; set; }
 
+        public StaticContentSearchCriteria CurrentStaticSearchCriteria { get; set; }
+
         public BlogSearchCriteria CurrentBlogSearchCritera { get; set; }
 
         public Blog CurrentBlog { get; set; }

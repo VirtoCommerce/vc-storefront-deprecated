@@ -169,6 +169,7 @@
     <Compile Include="ILiquidThemeEngine.cs" />
     <Compile Include="Objects\Address.cs" />
     <Compile Include="Objects\Article.cs" />
+    <Compile Include="Objects\Articles.cs" />
     <Compile Include="Objects\ArticleUser.cs" />
     <Compile Include="Objects\Attachment.cs" />
     <Compile Include="Objects\Blog.cs" />

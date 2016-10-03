@@ -4,6 +4,7 @@ using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent;
 using storefrontModel = VirtoCommerce.Storefront.Model;
+using DotLiquid;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -86,6 +87,36 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             {
                 result.Search = workContext.Products.ToShopifyModel(workContext.CurrentProductSearchCriteria.Keyword);
             }
+            else if (workContext.CurrentStaticSearchCriteria != null &&  !string.IsNullOrEmpty(workContext.CurrentStaticSearchCriteria.Keyword) && workContext.Pages != null)
+            {
+                result.Search = new Search
+                {
+                    Performed = true,
+                    Terms = workContext.CurrentStaticSearchCriteria.Keyword
+                };
+
+                var blogArticles = workContext.Pages.OfType<BlogArticle>();
+                if (blogArticles != null)
+                {
+                    result.Search.Results = new MutablePagedList<Drop>((pageNumber, pageSize, sortInfos) =>
+                    {
+                        var pagedBlogArticles = new MutablePagedList<BlogArticle>(blogArticles);
+                        pagedBlogArticles.Slice(pageNumber, pageSize, sortInfos);
+                        return new StaticPagedList<Drop>(blogArticles.Select(x => x.ToShopifyModel()).OfType<Drop>(), pagedBlogArticles);
+                    });
+                }
+
+                var contentPages = workContext.Pages.OfType<ContentPage>();
+                if (contentPages != null)
+                {
+                    result.Search.Results = new MutablePagedList<Drop>((pageNumber, pageSize, sortInfos) =>
+                    {
+                        var pagedContentPages = new MutablePagedList<ContentPage>(contentPages);
+                        pagedContentPages.Slice(pageNumber, pageSize, sortInfos);
+                        return new StaticPagedList<Drop>(contentPages.Select(x => x.ToShopifyModel()).OfType<Drop>(), pagedContentPages);
+                    });
+                }
+            }
 
             if (workContext.CurrentLinkLists != null)
             {
@@ -95,6 +126,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             if (workContext.Pages != null)
             {
                 result.Pages = new Pages(workContext.Pages.OfType<ContentPage>().Select(x => x.ToShopifyModel()));
+                result.Articles = new Articles(workContext.Pages.OfType<BlogArticle>().Select(x => x.ToShopifyModel()));
                 result.Blogs = new Blogs(workContext.Blogs.Select(x => x.ToShopifyModel(workContext.CurrentLanguage)));
             }
 

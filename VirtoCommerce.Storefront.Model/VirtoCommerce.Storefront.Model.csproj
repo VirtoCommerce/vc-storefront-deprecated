@@ -110,6 +110,7 @@
     <Compile Include="SeoLinksType.cs" />
     <Compile Include="SettingEntry.cs" />
     <Compile Include="LoginProvider.cs" />
+    <Compile Include="StaticContent\StaticContentSearchCriteria.cs" />
     <Compile Include="StaticContent\Services\IContentBlobProvider.cs" />
     <Compile Include="Tax\ITaxable.cs" />
     <Compile Include="LinkList\CategoryMenuLink.cs" />
