@@ -33,7 +33,6 @@ namespace VirtoCommerce.Storefront.Builders
         private readonly ILocalCacheManager _cacheManager;
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ITaxEvaluator _taxEvaluator;
-        private readonly PromotionEvaluationContextConverter _promotionEvaluationContextConverter;
         private ShoppingCart _cart;
         private const string _cartCacheRegion = "CartRegion";
 
@@ -43,8 +42,7 @@ namespace VirtoCommerce.Storefront.Builders
             ICatalogSearchService catalogSearchService,
             ILocalCacheManager cacheManager,
             IPromotionEvaluator promotionEvaluator,
-            ITaxEvaluator taxEvaluator,
-            PromotionEvaluationContextConverter promotionEvaluationContextConverter)
+            ITaxEvaluator taxEvaluator)
         {
             _cartApi = cartApi;
             _catalogSearchService = catalogSearchService;
@@ -52,7 +50,6 @@ namespace VirtoCommerce.Storefront.Builders
             _workContextFactory = workContextFactory;
             _promotionEvaluator = promotionEvaluator;
             _taxEvaluator = taxEvaluator;
-            _promotionEvaluationContextConverter = promotionEvaluationContextConverter;
         }
 
         #region ICartBuilder Members
@@ -349,7 +346,7 @@ namespace VirtoCommerce.Storefront.Builders
             var retVal = shippingRates.Select(x => x.ToWebModel(_cart.Currency, workContext.AllCurrencies)).ToList();
 
             //Evaluate promotions cart and apply rewards for available shipping methods
-            var promoEvalContext = _promotionEvaluationContextConverter.ToPromotionEvaluationContext(_cart);
+            var promoEvalContext = _cart.ToPromotionEvaluationContext();
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
 
             //Evaluate taxes for available shipping rates
@@ -378,7 +375,7 @@ namespace VirtoCommerce.Storefront.Builders
         public virtual async Task EvaluatePromotionsAsync()
         {
             EnsureThatCartExist();
-            var evalContext = _promotionEvaluationContextConverter.ToPromotionEvaluationContext(_cart);
+            var evalContext = _cart.ToPromotionEvaluationContext();
 
             await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { _cart });
         }

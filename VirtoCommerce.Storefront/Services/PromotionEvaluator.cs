@@ -12,25 +12,23 @@ namespace VirtoCommerce.Storefront.Services
     public class PromotionEvaluator : IPromotionEvaluator
     {
         private readonly IMarketingModuleApiClient _marketingApi;
-        private readonly PromotionEvaluationContextConverter _promotionEvaluationContextConverter;
 
-        public PromotionEvaluator(IMarketingModuleApiClient marketingApi, PromotionEvaluationContextConverter promotionEvaluationContextConverter)
+        public PromotionEvaluator(IMarketingModuleApiClient marketingApi)
         {
             _marketingApi = marketingApi;
-            _promotionEvaluationContextConverter = promotionEvaluationContextConverter;
         }
 
         #region IPromotionEvaluator Members
 
         public virtual async Task EvaluateDiscountsAsync(PromotionEvaluationContext context, IEnumerable<IDiscountable> owners)
         {
-            var rewards = await _marketingApi.MarketingModulePromotion.EvaluatePromotionsAsync(_promotionEvaluationContextConverter.ToServiceModel(context));
+            var rewards = await _marketingApi.MarketingModulePromotion.EvaluatePromotionsAsync(context.ToServiceModel());
             InnerEvaluateDiscounts(rewards, owners);
         }
 
         public virtual void EvaluateDiscounts(PromotionEvaluationContext context, IEnumerable<IDiscountable> owners)
         {
-            var rewards = _marketingApi.MarketingModulePromotion.EvaluatePromotions(_promotionEvaluationContextConverter.ToServiceModel(context));
+            var rewards = _marketingApi.MarketingModulePromotion.EvaluatePromotions(context.ToServiceModel());
             InnerEvaluateDiscounts(rewards, owners);
         }
 

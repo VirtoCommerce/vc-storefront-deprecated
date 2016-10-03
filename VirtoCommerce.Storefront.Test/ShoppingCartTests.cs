@@ -68,19 +68,15 @@ namespace VirtoCommerce.Storefront.Test
             var quoteApi = GetQuoteApiClient();
             var storeApi = GetStoreApiClient();
 
-            var categoryConverter = GetCategoryConverter();
-            var productConverter = GetProductConverter();
-            var promotionEvaluationContextConverter = GetPromotionEvaluationContextConverter();
-
             var cacheManager = new Mock<ILocalCacheManager>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
-            var promotionEvaluator = new PromotionEvaluator(marketingApi, promotionEvaluationContextConverter);
+            var promotionEvaluator = new PromotionEvaluator(marketingApi);
 
-            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, promotionEvaluator, promotionEvaluationContextConverter);
+            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, promotionEvaluator);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
-            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService, categoryConverter, productConverter);
+            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService);
 
-            var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, null, promotionEvaluationContextConverter);
+            var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, null);
             return retVal;
         }
     }

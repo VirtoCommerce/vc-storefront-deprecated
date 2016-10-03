@@ -11,15 +11,23 @@ using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.
 
 namespace VirtoCommerce.Storefront.Converters
 {
-    public class CategoryConverter
+    public static class CategoryStaticConverter
     {
-        protected Func<Category> CategoryFactory { get; set; }
-
-        public CategoryConverter(Func<Category> categoryFactory)
+        public static Category ToWebModel(this searchModel.Category category, Language currentLanguage, Store store)
         {
-            CategoryFactory = categoryFactory;
+            var converter = AbstractTypeFactory<CategoryConverter>.TryCreateInstance();
+            return converter.ToWebModel(category, currentLanguage, store);
         }
 
+        public static Category ToWebModel(this catalogModel.Category category, Language currentLanguage, Store store)
+        {
+            var converter = AbstractTypeFactory<CategoryConverter>.TryCreateInstance();
+            return converter.ToWebModel(category, currentLanguage, store);
+        }
+    }
+
+    public class CategoryConverter
+    {
         public virtual Category ToWebModel(searchModel.Category category, Language currentLanguage, Store store)
         {
             return ToWebModel(category.JsonConvert<catalogModel.Category>(), currentLanguage, store);
@@ -27,18 +35,14 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Category ToWebModel(catalogModel.Category category, Language currentLanguage, Store store)
         {
-            return ToWebModel(category, CategoryFactory(), currentLanguage, store);
-        }
-
-        public virtual T ToWebModel<T>(catalogModel.Category category, T result, Language currentLanguage, Store store)
-            where T : Category
-        {
+            var result = AbstractTypeFactory<Category>.TryCreateInstance();
             result.InjectFrom<NullableAndEnumValueInjecter>(category);
 
             result.SeoInfo = category.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage).ToWebModel();
             if (result.SeoInfo == null)
             {
-                result.SeoInfo = new SeoInfo { Slug = category.Id };
+                result.SeoInfo = AbstractTypeFactory<SeoInfo>.TryCreateInstance();
+                result.SeoInfo.Slug = category.Id;
             }
 
             result.Url = "~/" + category.Outlines.GetSeoPath(store, currentLanguage, "category/" + category.Id);
