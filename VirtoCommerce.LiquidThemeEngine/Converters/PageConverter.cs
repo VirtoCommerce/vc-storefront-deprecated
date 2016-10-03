@@ -7,11 +7,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
     public static class PageConverter
     {
-        public static Page ToShopifyModel(this StorefrontModel.StaticContent.ContentPage contentPage)
+        public static Page ToShopifyModel(this StorefrontModel.StaticContent.ContentItem contentItem)
         {
             var retVal = new Page();
-            retVal.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(contentPage);
-            retVal.Handle = contentPage.Url;
+            retVal.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(contentItem);
+            retVal.Handle = contentItem.Url;
             return retVal;
         }
     }

@@ -26,5 +26,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// Returns the string that was entered in the search input box. Use the highlight filter to apply a different 
         /// </summary>
         public string Terms { get; set; }
+
+        public string SearchIn { get; set; }
     }
 }
