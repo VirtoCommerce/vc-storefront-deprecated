@@ -29,21 +29,19 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Product ToWebModel(catalogModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            var retVal = new Product(currentCurrency, currentLanguage)
-            {
-                Currency = currentCurrency,
-                Price = new ProductPrice(currentCurrency),
-                Weight = (decimal?)product.Weight,
-                Height = (decimal?)product.Height,
-                Width = (decimal?)product.Width,
-                Length = (decimal?)product.Length
-            };
-
+            var retVal = ProductFactory();
             retVal.InjectFrom<NullableAndEnumValueInjecter>(product);
 
+            retVal.Currency = currentCurrency;
+            retVal.Price = new ProductPrice(currentCurrency);
+            retVal.Weight = (decimal?)product.Weight;
+            retVal.Height = (decimal?)product.Height;
+            retVal.Width = (decimal?)product.Width;
+            retVal.Length = (decimal?)product.Length;
             retVal.Sku = product.Code;
             retVal.VendorId = product.Vendor;
             retVal.Outline = product.Outlines.GetOutlinePath(store.Catalog);
+            retVal.Url = "~/" + product.Outlines.GetSeoPath(store, currentLanguage, "product/" + product.Id);
 
             if (product.Properties != null)
             {
@@ -84,7 +82,6 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.SeoInfo = productSeoInfo.ToWebModel();
             }
-            retVal.Url = "~/" + product.Outlines.GetSeoPath(store, currentLanguage, "product/" + product.Id);
 
             if (product.Reviews != null)
             {
