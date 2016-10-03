@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
@@ -24,17 +25,23 @@ namespace VirtoCommerce.Storefront.Builders
         private readonly IQuoteModuleApiClient _quoteApi;
         private readonly ILocalCacheManager _cacheManager;
         private readonly IEventPublisher<QuoteRequestUpdatedEvent> _quoteRequestUpdatedEventPublisher;
+        private readonly ProductConverter _productConverter;
 
         private QuoteRequest _quoteRequest;
         private const string _quoteRequestCacheRegion = "QuoteRequestRegion";
 
-        public QuoteRequestBuilder(IQuoteModuleApiClient quoteApi, ILocalCacheManager cacheManager,
-            IEventPublisher<QuoteRequestUpdatedEvent> quoteRequestUpdatedEventPublisher)
+        public QuoteRequestBuilder(
+            IQuoteModuleApiClient quoteApi,
+            ILocalCacheManager cacheManager,
+            IEventPublisher<QuoteRequestUpdatedEvent> quoteRequestUpdatedEventPublisher,
+            ProductConverter productConverter)
         {
             _quoteApi = quoteApi;
             _cacheManager = cacheManager;
             _quoteRequestUpdatedEventPublisher = quoteRequestUpdatedEventPublisher;
+            _productConverter = productConverter;
         }
+
         #region IQuoteRequestBuilder Members
 
         public async Task<IQuoteRequestBuilder> LoadQuoteRequestAsync(string number, Language language, IEnumerable<Currency> availCurrencies)
@@ -152,7 +159,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public IQuoteRequestBuilder AddItem(Product product, long quantity)
         {
-            _quoteRequest.Items.Add(product.ToQuoteItem(quantity));
+            _quoteRequest.Items.Add(_productConverter.ToQuoteItem(product, quantity));
 
             return this;
         }
@@ -260,7 +267,9 @@ namespace VirtoCommerce.Storefront.Builders
         }
 
         #endregion
+
         #region IObserver<UserLoginEvent> Members
+
         /// <summary>
         /// Merge anonymous user quote to newly logined user quote by loging event
         /// </summary>
@@ -281,7 +290,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         private string GetQuoteRequestCacheKey(string storeId, string customerId)
         {
-            return string.Format("QuoteRequest-{0}-{1}", storeId, customerId);
+            return string.Format(CultureInfo.InvariantCulture, "QuoteRequest-{0}-{1}", storeId, customerId);
         }
     }
 }

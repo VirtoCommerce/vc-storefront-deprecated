@@ -120,5 +120,15 @@ namespace VirtoCommerce.Storefront.Test
         {
             return new CategoryConverter(() => new Category());
         }
+
+        protected ProductConverter GetProductConverter()
+        {
+            return new ProductConverter(() => new Product());
+        }
+
+        protected PromotionEvaluationContextConverter GetPromotionEvaluationContextConverter()
+        {
+            return new PromotionEvaluationContextConverter(GetProductConverter());
+        }
     }
 }

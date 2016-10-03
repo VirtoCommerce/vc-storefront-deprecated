@@ -57,9 +57,8 @@ namespace VirtoCommerce.Storefront.Test
 
         private ICartBuilder GetCartBuilder()
         {
-            var catalogModuleApi = GetCatalogApiClient();
+            var catalogApi = GetCatalogApiClient();
             var cartApi = GetCartApiClient();
-            var commerceApi = GetCoreApiClient();
             var marketingApi = GetMarketingApiClient();
             var inventoryApi = GetInventoryApiClient();
             var pricingApi = GetPricingApiClient();
@@ -69,16 +68,19 @@ namespace VirtoCommerce.Storefront.Test
             var quoteApi = GetQuoteApiClient();
             var storeApi = GetStoreApiClient();
 
+            var categoryConverter = GetCategoryConverter();
+            var productConverter = GetProductConverter();
+            var promotionEvaluationContextConverter = GetPromotionEvaluationContextConverter();
+
             var cacheManager = new Mock<ILocalCacheManager>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
-            var promotionEvaluator = new PromotionEvaluator(marketingApi);
-            var categoryConverter = GetCategoryConverter();
+            var promotionEvaluator = new PromotionEvaluator(marketingApi, promotionEvaluationContextConverter);
 
-            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, null);
+            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, promotionEvaluator, promotionEvaluationContextConverter);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
-            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogModuleApi, pricingService, inventoryApi, searchApi, customerService, categoryConverter);
+            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService, categoryConverter, productConverter);
 
-            var retVal = new CartBuilder(cartApi, catalogSearchService, cacheManager, workContextFactory, null, null, null);
+            var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, null, promotionEvaluationContextConverter);
             return retVal;
         }
     }

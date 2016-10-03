@@ -161,14 +161,14 @@ namespace VirtoCommerce.Storefront.Test
             var quoteApi = GetQuoteApiClient();
             var cacheManager = new Mock<ILocalCacheManager>();
             var quoteRequestEventPublisher = new Mock<IEventPublisher<QuoteRequestUpdatedEvent>>();
+            var productConverter = GetProductConverter();
 
-            return new QuoteRequestBuilder(quoteApi, cacheManager.Object, quoteRequestEventPublisher.Object);
+            return new QuoteRequestBuilder(quoteApi, cacheManager.Object, quoteRequestEventPublisher.Object, productConverter);
         }
 
         private ICatalogSearchService GetCatalogSearchService()
         {
             var catalogApi = GetCatalogApiClient();
-            var commerceApi = GetCoreApiClient();
             var inventoryApi = GetInventoryApiClient();
             var marketingApi = GetMarketingApiClient();
             var pricingApi = GetPricingApiClient();
@@ -178,14 +178,17 @@ namespace VirtoCommerce.Storefront.Test
             var quoteApi = GetQuoteApiClient();
             var storeApi = GetStoreApiClient();
 
+            var categoryConverter = GetCategoryConverter();
+            var productConverter = GetProductConverter();
+            var promotionEvaluationContextConverter = GetPromotionEvaluationContextConverter();
+
             var cacheManager = new Mock<ILocalCacheManager>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
-            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, null);
-            var promotionEvaluator = new PromotionEvaluator(marketingApi);
-            var categoryConverter = GetCategoryConverter();
-
+            var promotionEvaluator = new PromotionEvaluator(marketingApi, promotionEvaluationContextConverter);
+            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, promotionEvaluator, promotionEvaluationContextConverter);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
-            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, pricingService, inventoryApi, searchApi, customerService, categoryConverter);
+
+            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService, categoryConverter, productConverter);
             return result;
         }
     }

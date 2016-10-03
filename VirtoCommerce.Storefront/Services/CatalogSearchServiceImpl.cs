@@ -18,15 +18,24 @@ namespace VirtoCommerce.Storefront.Services
 {
     public class CatalogSearchServiceImpl : ICatalogSearchService
     {
+        private readonly Func<WorkContext> _workContextFactory;
         private readonly ICatalogModuleApiClient _catalogModuleApi;
-        private readonly IPricingService _pricingService;
         private readonly IInventoryModuleApiClient _inventoryModuleApi;
         private readonly ISearchApiModuleApiClient _searchApi;
+        private readonly IPricingService _pricingService;
         private readonly ICustomerService _customerService;
-        private readonly Func<WorkContext> _workContextFactory;
         private readonly CategoryConverter _categoryConverter;
+        private readonly ProductConverter _productConverter;
 
-        public CatalogSearchServiceImpl(Func<WorkContext> workContextFactory, ICatalogModuleApiClient catalogModuleApi, IPricingService pricingService, IInventoryModuleApiClient inventoryModuleApi, ISearchApiModuleApiClient searchApi, ICustomerService customerService, CategoryConverter categoryConverter)
+        public CatalogSearchServiceImpl(
+            Func<WorkContext> workContextFactory,
+            ICatalogModuleApiClient catalogModuleApi,
+            IInventoryModuleApiClient inventoryModuleApi,
+            ISearchApiModuleApiClient searchApi,
+            IPricingService pricingService,
+            ICustomerService customerService,
+            CategoryConverter categoryConverter,
+            ProductConverter productConverter)
         {
             _workContextFactory = workContextFactory;
             _catalogModuleApi = catalogModuleApi;
@@ -35,10 +44,12 @@ namespace VirtoCommerce.Storefront.Services
             _searchApi = searchApi;
             _customerService = customerService;
             _categoryConverter = categoryConverter;
+            _productConverter = productConverter;
         }
 
         #region ICatalogSearchService Members
-        public async Task<Product[]> GetProductsAsync(string[] ids, ItemResponseGroup responseGroup = ItemResponseGroup.None)
+
+        public virtual async Task<Product[]> GetProductsAsync(string[] ids, ItemResponseGroup responseGroup = ItemResponseGroup.None)
         {
             var workContext = _workContextFactory();
             if (responseGroup == ItemResponseGroup.None)
@@ -46,7 +57,7 @@ namespace VirtoCommerce.Storefront.Services
                 responseGroup = workContext.CurrentProductResponseGroup;
             }
 
-            var retVal = (await _catalogModuleApi.CatalogModuleProducts.GetProductByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToArray();
+            var retVal = (await _catalogModuleApi.CatalogModuleProducts.GetProductByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => _productConverter.ToWebModel(x, workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToArray();
 
             var allProducts = retVal.Concat(retVal.SelectMany(x => x.Variations)).ToList();
 
@@ -80,7 +91,7 @@ namespace VirtoCommerce.Storefront.Services
             return retVal;
         }
 
-        public async Task<Category[]> GetCategoriesAsync(string[] ids, CategoryResponseGroup responseGroup = CategoryResponseGroup.Info)
+        public virtual async Task<Category[]> GetCategoriesAsync(string[] ids, CategoryResponseGroup responseGroup = CategoryResponseGroup.Info)
         {
             var workContext = _workContextFactory();
 
@@ -94,7 +105,7 @@ namespace VirtoCommerce.Storefront.Services
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public async Task<IPagedList<Category>> SearchCategoriesAsync(CategorySearchCriteria criteria)
+        public virtual async Task<IPagedList<Category>> SearchCategoriesAsync(CategorySearchCriteria criteria)
         {
             var workContext = _workContextFactory();
             criteria = criteria.Clone();
@@ -110,7 +121,7 @@ namespace VirtoCommerce.Storefront.Services
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public IPagedList<Category> SearchCategories(CategorySearchCriteria criteria)
+        public virtual IPagedList<Category> SearchCategories(CategorySearchCriteria criteria)
         {
             var workContext = _workContextFactory();
             criteria = criteria.Clone();
@@ -126,14 +137,14 @@ namespace VirtoCommerce.Storefront.Services
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public async Task<CatalogSearchResult> SearchProductsAsync(ProductSearchCriteria criteria)
+        public virtual async Task<CatalogSearchResult> SearchProductsAsync(ProductSearchCriteria criteria)
         {
             criteria = criteria.Clone();
 
             var workContext = _workContextFactory();
             var searchCriteria = criteria.ToSearchApiModel(workContext);
             var result = await _searchApi.SearchApiModule.SearchProductsAsync(workContext.CurrentStore.Id, searchCriteria);
-            var products = result.Products.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
+            var products = result.Products.Select(x => _productConverter.ToWebModel(x, workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
 
             if (products.Any())
             {
@@ -160,14 +171,14 @@ namespace VirtoCommerce.Storefront.Services
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public CatalogSearchResult SearchProducts(ProductSearchCriteria criteria)
+        public virtual CatalogSearchResult SearchProducts(ProductSearchCriteria criteria)
         {
             criteria = criteria.Clone();
 
             var workContext = _workContextFactory();
             var searchCriteria = criteria.ToSearchApiModel(workContext);
             var result = _searchApi.SearchApiModule.SearchProducts(workContext.CurrentStore.Id, searchCriteria);
-            var products = result.Products.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
+            var products = result.Products.Select(x => _productConverter.ToWebModel(x, workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
 
             if (products.Any())
             {
@@ -187,7 +198,7 @@ namespace VirtoCommerce.Storefront.Services
 
         #endregion
 
-        private async Task LoadProductVendorsAsync(List<Product> products)
+        protected virtual async Task LoadProductVendorsAsync(List<Product> products)
         {
             var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToList();
             var vendorTasks = vendorIds.Select(id => _customerService.GetVendorByIdAsync(id));
@@ -199,7 +210,7 @@ namespace VirtoCommerce.Storefront.Services
             }
         }
 
-        private void LoadProductVendors(List<Product> products)
+        protected virtual void LoadProductVendors(List<Product> products)
         {
             var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToList();
             var vendors = vendorIds.Select(id => _customerService.GetVendorById(id)).Where(x => x != null).ToList();
@@ -211,8 +222,6 @@ namespace VirtoCommerce.Storefront.Services
                 {
                     product.Vendor.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                     {
-                        var workContext = _workContextFactory();
-
                         var criteria = new ProductSearchCriteria
                         {
                             VendorId = product.VendorId,
@@ -220,6 +229,7 @@ namespace VirtoCommerce.Storefront.Services
                             PageSize = pageSize,
                             SortBy = SortInfo.ToString(sortInfos),
                         };
+
                         var searchResult = SearchProducts(criteria);
                         return searchResult.Products;
                     });
@@ -227,10 +237,8 @@ namespace VirtoCommerce.Storefront.Services
             }
         }
 
-        private async Task LoadProductAssociationsAsync(IEnumerable<Product> products)
+        protected virtual async Task LoadProductAssociationsAsync(IEnumerable<Product> products)
         {
-            var workContext = _workContextFactory();
-
             var allAssociations = products.SelectMany(x => x.Associations).ToList();
 
             var allProductAssociations = allAssociations.OfType<ProductAssociation>().ToList();
@@ -274,7 +282,7 @@ namespace VirtoCommerce.Storefront.Services
             }
         }
 
-        private async Task LoadProductInventoriesAsync(List<Product> products)
+        protected virtual async Task LoadProductInventoriesAsync(List<Product> products)
         {
             var inventories = await _inventoryModuleApi.InventoryModule.GetProductsInventoriesAsync(products.Select(x => x.Id).ToList());
             foreach (var item in products)
@@ -283,7 +291,7 @@ namespace VirtoCommerce.Storefront.Services
             }
         }
 
-        private void LoadProductInventories(List<Product> products)
+        protected virtual void LoadProductInventories(List<Product> products)
         {
             var inventories = _inventoryModuleApi.InventoryModule.GetProductsInventories(products.Select(x => x.Id).ToList());
             foreach (var item in products)

@@ -13,14 +13,21 @@ using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.
 
 namespace VirtoCommerce.Storefront.Converters
 {
-    public static class ProductConverter
+    public class ProductConverter
     {
-        public static Product ToWebModel(this searchModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
+        protected Func<Product> ProductFactory { get; set; }
+
+        public ProductConverter(Func<Product> productFactory)
         {
-            return product.JsonConvert<catalogModel.Product>().ToWebModel(currentLanguage, currentCurrency, store);
+            ProductFactory = productFactory;
         }
 
-        public static Product ToWebModel(this catalogModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
+        public virtual Product ToWebModel(searchModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
+        {
+            return ToWebModel(product.JsonConvert<catalogModel.Product>(), currentLanguage, currentCurrency, store);
+        }
+
+        public virtual Product ToWebModel(catalogModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
         {
             var retVal = new Product(currentCurrency, currentLanguage)
             {
@@ -64,7 +71,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (product.Variations != null)
             {
-                retVal.Variations = product.Variations.Select(v => v.ToWebModel(currentLanguage, currentCurrency, store)).ToList();
+                retVal.Variations = product.Variations.Select(v => ToWebModel(v, currentLanguage, currentCurrency, store)).ToList();
             }
 
             if (!product.Associations.IsNullOrEmpty())
@@ -93,7 +100,7 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public static QuoteItem ToQuoteItem(this Product product, long quantity)
+        public virtual QuoteItem ToQuoteItem(Product product, long quantity)
         {
             var quoteItem = new QuoteItem();
 
@@ -110,7 +117,7 @@ namespace VirtoCommerce.Storefront.Converters
             return quoteItem;
         }
 
-        public static PromotionProductEntry ToPromotionItem(this Product product)
+        public virtual PromotionProductEntry ToPromotionItem(Product product)
         {
             var promoItem = new PromotionProductEntry();
 
@@ -124,7 +131,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             promoItem.ProductId = product.Id;
             promoItem.Quantity = 1;
-            promoItem.Variations = product.Variations.Select(v => v.ToPromotionItem()).ToList();
+            promoItem.Variations = product.Variations.Select(ToPromotionItem).ToList();
 
             return promoItem;
         }
