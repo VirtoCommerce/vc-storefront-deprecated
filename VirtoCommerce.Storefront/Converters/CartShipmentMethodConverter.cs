@@ -5,6 +5,8 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Common;
 using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
+using storeModel = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
+using VirtoCommerce.Storefront.Common;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -34,6 +36,10 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.InjectFrom<NullableAndEnumValueInjecter>(shippingRate.ShippingMethod);
                 retVal.ShipmentMethodCode = shippingRate.ShippingMethod.Code;
+                if (shippingRate.ShippingMethod.Settings != null)
+                {
+                    retVal.Settings = shippingRate.ShippingMethod.Settings.Select(x => x.JsonConvert<storeModel.Setting>().ToWebModel()).ToList();
+                }
             }
             return retVal;
         }

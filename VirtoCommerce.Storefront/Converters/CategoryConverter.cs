@@ -11,41 +11,54 @@ using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.
 
 namespace VirtoCommerce.Storefront.Converters
 {
-    public static class CategoryConverter
+    public class CategoryConverter
     {
-        public static Category ToWebModel(this searchModel.Category product, Language currentLanguage, Store store)
+        protected Func<Category> CategoryFactory { get; set; }
+
+        public CategoryConverter(Func<Category> categoryFactory)
         {
-            return product.JsonConvert<catalogModel.Category>().ToWebModel(currentLanguage, store);
+            CategoryFactory = categoryFactory;
         }
 
-        public static Category ToWebModel(this catalogModel.Category category, Language currentLanguage, Store store, catalogModel.Product[] products = null)
+        public virtual Category ToWebModel(searchModel.Category category, Language currentLanguage, Store store)
         {
-            var retVal = new Category();
-            retVal.InjectFrom<NullableAndEnumValueInjecter>(category);
+            return ToWebModel(category.JsonConvert<catalogModel.Category>(), currentLanguage, store);
+        }
 
-            retVal.SeoInfo = category.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage).ToWebModel();
-            if (retVal.SeoInfo == null)
+        public virtual Category ToWebModel(catalogModel.Category category, Language currentLanguage, Store store)
+        {
+            return ToWebModel(category, CategoryFactory(), currentLanguage, store);
+        }
+
+        public virtual T ToWebModel<T>(catalogModel.Category category, T result, Language currentLanguage, Store store)
+            where T : Category
+        {
+            result.InjectFrom<NullableAndEnumValueInjecter>(category);
+
+            result.SeoInfo = category.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage).ToWebModel();
+            if (result.SeoInfo == null)
             {
-                retVal.SeoInfo = new SeoInfo { Slug = category.Id };
+                result.SeoInfo = new SeoInfo { Slug = category.Id };
             }
-            retVal.Url = "~/" + category.Outlines.GetSeoPath(store, currentLanguage, "category/" + category.Id);
-            retVal.Outline = category.Outlines.GetOutlinePath(store.Catalog);
+
+            result.Url = "~/" + category.Outlines.GetSeoPath(store, currentLanguage, "category/" + category.Id);
+            result.Outline = category.Outlines.GetOutlinePath(store.Catalog);
 
             if (category.Images != null)
             {
-                retVal.Images = category.Images.Select(i => i.ToWebModel()).ToArray();
-                retVal.PrimaryImage = retVal.Images.FirstOrDefault();
+                result.Images = category.Images.Select(i => i.ToWebModel()).ToArray();
+                result.PrimaryImage = result.Images.FirstOrDefault();
             }
 
             if (category.Properties != null)
             {
-                retVal.Properties = category.Properties
+                result.Properties = category.Properties
                     .Where(x => string.Equals(x.Type, "Category", StringComparison.OrdinalIgnoreCase))
                     .Select(p => p.ToWebModel(currentLanguage))
                     .ToList();
             }
 
-            return retVal;
+            return result;
         }
     }
 }
