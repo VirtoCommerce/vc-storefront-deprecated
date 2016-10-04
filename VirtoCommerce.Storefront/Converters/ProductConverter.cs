@@ -13,15 +13,35 @@ using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.
 
 namespace VirtoCommerce.Storefront.Converters
 {
-    public class ProductConverter
+    public static class ProductStaticConverter
     {
-        protected Func<Product> ProductFactory { get; set; }
-
-        public ProductConverter(Func<Product> productFactory)
+        public static Product ToWebModel(this searchModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            ProductFactory = productFactory;
+            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
+            return converter.ToWebModel(product, currentLanguage, currentCurrency, store);
         }
 
+        public static Product ToWebModel(this catalogModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
+        {
+            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
+            return converter.ToWebModel(product, currentLanguage, currentCurrency, store);
+        }
+
+        public static QuoteItem ToQuoteItem(this Product product, long quantity)
+        {
+            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
+            return converter.ToQuoteItem(product, quantity);
+        }
+
+        public static PromotionProductEntry ToPromotionItem(this Product product)
+        {
+            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
+            return converter.ToPromotionItem(product);
+        }
+    }
+
+    public class ProductConverter
+    {
         public virtual Product ToWebModel(searchModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
         {
             return ToWebModel(product.JsonConvert<catalogModel.Product>(), currentLanguage, currentCurrency, store);
@@ -29,28 +49,28 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Product ToWebModel(catalogModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            var retVal = ProductFactory();
-            retVal.InjectFrom<NullableAndEnumValueInjecter>(product);
+            var result = AbstractTypeFactory<Product>.TryCreateInstance();
+            result.InjectFrom<NullableAndEnumValueInjecter>(product);
 
-            retVal.Currency = currentCurrency;
-            retVal.Price = new ProductPrice(currentCurrency);
-            retVal.Weight = (decimal?)product.Weight;
-            retVal.Height = (decimal?)product.Height;
-            retVal.Width = (decimal?)product.Width;
-            retVal.Length = (decimal?)product.Length;
-            retVal.Sku = product.Code;
-            retVal.VendorId = product.Vendor;
-            retVal.Outline = product.Outlines.GetOutlinePath(store.Catalog);
-            retVal.Url = "~/" + product.Outlines.GetSeoPath(store, currentLanguage, "product/" + product.Id);
+            result.Currency = currentCurrency;
+            result.Price = new ProductPrice(currentCurrency);
+            result.Weight = (decimal?)product.Weight;
+            result.Height = (decimal?)product.Height;
+            result.Width = (decimal?)product.Width;
+            result.Length = (decimal?)product.Length;
+            result.Sku = product.Code;
+            result.VendorId = product.Vendor;
+            result.Outline = product.Outlines.GetOutlinePath(store.Catalog);
+            result.Url = "~/" + product.Outlines.GetSeoPath(store, currentLanguage, "product/" + product.Id);
 
             if (product.Properties != null)
             {
-                retVal.Properties = product.Properties
+                result.Properties = product.Properties
                     .Where(x => string.Equals(x.Type, "Product", StringComparison.InvariantCultureIgnoreCase))
                     .Select(p => p.ToWebModel(currentLanguage))
                     .ToList();
 
-                retVal.VariationProperties = product.Properties
+                result.VariationProperties = product.Properties
                     .Where(x => string.Equals(x.Type, "Variation", StringComparison.InvariantCultureIgnoreCase))
                     .Select(p => p.ToWebModel(currentLanguage))
                     .ToList();
@@ -58,49 +78,48 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (product.Images != null)
             {
-                retVal.Images = product.Images.Select(i => i.ToWebModel()).ToArray();
-                retVal.PrimaryImage = retVal.Images.FirstOrDefault(x => string.Equals(x.Url, product.ImgSrc, StringComparison.InvariantCultureIgnoreCase));
+                result.Images = product.Images.Select(i => i.ToWebModel()).ToArray();
+                result.PrimaryImage = result.Images.FirstOrDefault(x => string.Equals(x.Url, product.ImgSrc, StringComparison.InvariantCultureIgnoreCase));
             }
 
             if (product.Assets != null)
             {
-                retVal.Assets = product.Assets.Select(x => x.ToWebModel()).ToList();
+                result.Assets = product.Assets.Select(x => x.ToWebModel()).ToList();
             }
 
             if (product.Variations != null)
             {
-                retVal.Variations = product.Variations.Select(v => ToWebModel(v, currentLanguage, currentCurrency, store)).ToList();
+                result.Variations = product.Variations.Select(v => ToWebModel(v, currentLanguage, currentCurrency, store)).ToList();
             }
 
             if (!product.Associations.IsNullOrEmpty())
             {
-                retVal.Associations.AddRange(product.Associations.Select(x => x.ToWebModel()).Where(x => x != null));
+                result.Associations.AddRange(product.Associations.Select(x => x.ToWebModel()).Where(x => x != null));
             }
 
             var productSeoInfo = product.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage);
             if (productSeoInfo != null)
             {
-                retVal.SeoInfo = productSeoInfo.ToWebModel();
+                result.SeoInfo = productSeoInfo.ToWebModel();
             }
 
             if (product.Reviews != null)
             {
-                retVal.Descriptions = product.Reviews.Select(r => new EditorialReview
+                result.Descriptions = product.Reviews.Select(r => new EditorialReview
                 {
                     Language = new Language(r.LanguageCode),
                     ReviewType = r.ReviewType,
                     Value = r.Content
                 }).Where(x => x.Language.Equals(currentLanguage)).ToList();
-                retVal.Description = retVal.Descriptions.FindWithLanguage(currentLanguage, x => x.Value, null);
+                result.Description = result.Descriptions.FindWithLanguage(currentLanguage, x => x.Value, null);
             }
 
-            return retVal;
+            return result;
         }
 
         public virtual QuoteItem ToQuoteItem(Product product, long quantity)
         {
-            var quoteItem = new QuoteItem();
-
+            var quoteItem = AbstractTypeFactory<QuoteItem>.TryCreateInstance();
             quoteItem.InjectFrom<NullableAndEnumValueInjecter>(product);
 
             quoteItem.Id = null;
@@ -116,8 +135,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual PromotionProductEntry ToPromotionItem(Product product)
         {
-            var promoItem = new PromotionProductEntry();
-
+            var promoItem = AbstractTypeFactory<PromotionProductEntry>.TryCreateInstance();
             promoItem.InjectFrom(product);
 
             if (product.Price != null)

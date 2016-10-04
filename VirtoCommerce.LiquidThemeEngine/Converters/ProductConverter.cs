@@ -4,15 +4,30 @@ using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
-using StorefrontModel = VirtoCommerce.Storefront.Model;
+using storefrontModel = VirtoCommerce.Storefront.Model.Catalog;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
-    public static class ProductConverter
+    public static class ProductStaticConverter
     {
-        public static Product ToShopifyModel(this StorefrontModel.Catalog.Product product)
+        public static Product ToShopifyModel(this storefrontModel.Product product)
         {
-            var result = new Product();
+            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
+            return converter.ToShopifyModel(product);
+        }
+
+        public static Variant ToVariant(this storefrontModel.Product product)
+        {
+            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
+            return converter.ToVariant(product);
+        }
+    }
+
+    public class ProductConverter
+    {
+        public virtual Product ToShopifyModel(storefrontModel.Product product)
+        {
+            var result = AbstractTypeFactory<Product>.TryCreateInstance();
             result.InjectFrom<NullableAndEnumValueInjecter>(product);
 
             result.Variants.Add(product.ToVariant());
@@ -42,20 +57,25 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             result.Content = product.Description;
             result.Description = result.Content;
+
             result.Descriptions = new Descriptions(product.Descriptions.Select(d => new Description
             {
                 Content = d.Value,
                 Type = d.ReviewType
             }));
+
             result.FeaturedImage = product.PrimaryImage != null ? product.PrimaryImage.ToShopifyModel() : null;
+
             if (result.FeaturedImage != null)
             {
                 result.FeaturedImage.ProductId = product.Id;
                 result.FeaturedImage.AttachedToVariant = false;
             }
+
             result.FirstAvailableVariant = result.Variants.FirstOrDefault(x => x.Available);
             result.Handle = product.SeoInfo != null ? product.SeoInfo.Slug : product.Id;
             result.Images = product.Images.Select(x => x.ToShopifyModel()).ToArray();
+
             foreach (var image in result.Images)
             {
                 image.ProductId = product.Id;
@@ -66,11 +86,13 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             {
                 result.Options = product.VariationProperties.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => x.Name).ToArray();
             }
+
             if (product.Properties != null)
             {
                 result.Properties = product.Properties.Select(x => x.ToShopifyModel()).ToList();
                 result.Metafields = new MetaFieldNamespacesCollection(new[] { new MetafieldsCollection("properties", product.Properties) });
             }
+
             result.SelectedVariant = result.Variants.First();
             result.Title = product.Name;
             result.Type = product.ProductType;
@@ -83,13 +105,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     //Need to load related products from associated  product and categories
                     var skip = (pageNumber - 1) * pageSize;
                     var take = pageSize;
-                    var productAssociations = product.Associations.OfType<StorefrontModel.Catalog.ProductAssociation>().OrderBy(x => x.Priority);
+                    var productAssociations = product.Associations.OfType<storefrontModel.ProductAssociation>().OrderBy(x => x.Priority);
                     var retVal = productAssociations.Select(x => x.Product).Skip(skip).Take(take).ToList();
                     var totalCount = productAssociations.Count();
                     skip = Math.Max(0, skip - totalCount);
                     take = Math.Max(0, take - retVal.Count);
+
                     //Load product from associated categories with correct pagination
-                    foreach (var categoryAssociation in product.Associations.OfType<StorefrontModel.Catalog.CategoryAssociation>().OrderBy(x => x.Priority))
+                    foreach (var categoryAssociation in product.Associations.OfType<storefrontModel.CategoryAssociation>().OrderBy(x => x.Priority))
                     {
                         if (categoryAssociation.Category != null && categoryAssociation.Category.Products != null)
                         {
@@ -100,6 +123,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                             take = Math.Max(0, take - categoryAssociation.Category.Products.Count());
                         }
                     }
+
                     return new StaticPagedList<Product>(retVal.Select(x => x.ToShopifyModel()), pageNumber, pageSize, totalCount);
                 });
             }
@@ -111,23 +135,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             return result;
         }
 
-        public static Variant ToVariant(this StorefrontModel.Catalog.Product product)
+        public virtual Variant ToVariant(storefrontModel.Product product)
         {
-            var result = new Variant
-            {
-                Available = true, //product.IsActive && product.IsBuyable
-                Barcode = product.Gtin,
-                CatalogId = product.CatalogId,
-                CategoryId = product.CategoryId,
-                FeaturedImage = product.PrimaryImage != null ? product.PrimaryImage.ToShopifyModel() : null
-            };
+            var result = AbstractTypeFactory<Variant>.TryCreateInstance();
 
-            if (result.FeaturedImage != null)
-            {
-                result.FeaturedImage.ProductId = product.Id;
-                result.FeaturedImage.AttachedToVariant = true;
-                result.FeaturedImage.Variants = new[] { result };
-            }
+            result.Available = true;
+            result.Barcode = product.Gtin;
+            result.CatalogId = product.CatalogId;
+            result.CategoryId = product.CategoryId;
             result.Id = product.Id;
             result.InventoryPolicy = "continue";
             result.InventoryQuantity = product.Inventory != null ? product.Inventory.InStockQuantity ?? 0 : 0;
@@ -142,6 +157,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.Url = product.Url;
             result.Weight = product.Weight ?? 0m;
             result.WeightUnit = product.WeightUnit;
+            result.FeaturedImage = product.PrimaryImage != null ? product.PrimaryImage.ToShopifyModel() : null;
+
+            if (result.FeaturedImage != null)
+            {
+                result.FeaturedImage.ProductId = product.Id;
+                result.FeaturedImage.AttachedToVariant = true;
+                result.FeaturedImage.Variants = new[] { result };
+            }
+
             return result;
         }
     }

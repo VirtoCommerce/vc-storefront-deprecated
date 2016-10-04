@@ -161,9 +161,8 @@ namespace VirtoCommerce.Storefront.Test
             var quoteApi = GetQuoteApiClient();
             var cacheManager = new Mock<ILocalCacheManager>();
             var quoteRequestEventPublisher = new Mock<IEventPublisher<QuoteRequestUpdatedEvent>>();
-            var productConverter = GetProductConverter();
 
-            return new QuoteRequestBuilder(quoteApi, cacheManager.Object, quoteRequestEventPublisher.Object, productConverter);
+            return new QuoteRequestBuilder(quoteApi, cacheManager.Object, quoteRequestEventPublisher.Object);
         }
 
         private ICatalogSearchService GetCatalogSearchService()
@@ -178,17 +177,13 @@ namespace VirtoCommerce.Storefront.Test
             var quoteApi = GetQuoteApiClient();
             var storeApi = GetStoreApiClient();
 
-            var categoryConverter = GetCategoryConverter();
-            var productConverter = GetProductConverter();
-            var promotionEvaluationContextConverter = GetPromotionEvaluationContextConverter();
-
             var cacheManager = new Mock<ILocalCacheManager>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
-            var promotionEvaluator = new PromotionEvaluator(marketingApi, promotionEvaluationContextConverter);
-            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, promotionEvaluator, promotionEvaluationContextConverter);
+            var promotionEvaluator = new PromotionEvaluator(marketingApi);
+            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, promotionEvaluator);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
 
-            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService, categoryConverter, productConverter);
+            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService);
             return result;
         }
     }

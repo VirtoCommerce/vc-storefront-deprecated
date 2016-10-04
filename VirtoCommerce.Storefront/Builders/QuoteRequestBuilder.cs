@@ -25,7 +25,6 @@ namespace VirtoCommerce.Storefront.Builders
         private readonly IQuoteModuleApiClient _quoteApi;
         private readonly ILocalCacheManager _cacheManager;
         private readonly IEventPublisher<QuoteRequestUpdatedEvent> _quoteRequestUpdatedEventPublisher;
-        private readonly ProductConverter _productConverter;
 
         private QuoteRequest _quoteRequest;
         private const string _quoteRequestCacheRegion = "QuoteRequestRegion";
@@ -33,13 +32,11 @@ namespace VirtoCommerce.Storefront.Builders
         public QuoteRequestBuilder(
             IQuoteModuleApiClient quoteApi,
             ILocalCacheManager cacheManager,
-            IEventPublisher<QuoteRequestUpdatedEvent> quoteRequestUpdatedEventPublisher,
-            ProductConverter productConverter)
+            IEventPublisher<QuoteRequestUpdatedEvent> quoteRequestUpdatedEventPublisher)
         {
             _quoteApi = quoteApi;
             _cacheManager = cacheManager;
             _quoteRequestUpdatedEventPublisher = quoteRequestUpdatedEventPublisher;
-            _productConverter = productConverter;
         }
 
         #region IQuoteRequestBuilder Members
@@ -91,14 +88,9 @@ namespace VirtoCommerce.Storefront.Builders
                         Tag = "actual"
                     };
 
-                    if (!customer.IsRegisteredUser)
-                    {
-                        quoteRequest.CustomerName = StorefrontConstants.AnonymousUsername;
-                    }
-                    else
-                    {
-                        quoteRequest.CustomerName = string.Format("{0} {1}", customer.FirstName, customer.LastName);
-                    }
+                    quoteRequest.CustomerName = customer.IsRegisteredUser
+                    ? string.Join(" ", customer.FirstName, customer.LastName)
+                    : StorefrontConstants.AnonymousUsername;
                 }
                 else
                 {
@@ -159,7 +151,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public IQuoteRequestBuilder AddItem(Product product, long quantity)
         {
-            _quoteRequest.Items.Add(_productConverter.ToQuoteItem(product, quantity));
+            _quoteRequest.Items.Add(product.ToQuoteItem(quantity));
 
             return this;
         }

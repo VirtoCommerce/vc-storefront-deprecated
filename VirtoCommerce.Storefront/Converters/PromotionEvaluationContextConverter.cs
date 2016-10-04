@@ -10,66 +10,78 @@ using marketingModel = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleA
 
 namespace VirtoCommerce.Storefront.Converters
 {
-    public class PromotionEvaluationContextConverter
+    public static class PromotionEvaluationContexStatictConverter
     {
-        protected ProductConverter ProductConverter;
-
-        public PromotionEvaluationContextConverter(ProductConverter productConverter)
+        public static PromotionEvaluationContext ToPromotionEvaluationContext(this ShoppingCart cart)
         {
-            ProductConverter = productConverter;
+            var converter = AbstractTypeFactory<PromotionEvaluationContextConverter>.TryCreateInstance();
+            return converter.ToPromotionEvaluationContext(cart);
         }
 
+        public static PromotionEvaluationContext ToPromotionEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
+        {
+            var converter = AbstractTypeFactory<PromotionEvaluationContextConverter>.TryCreateInstance();
+            return converter.ToPromotionEvaluationContext(workContext, products);
+        }
+
+        public static marketingModel.PromotionEvaluationContext ToServiceModel(this PromotionEvaluationContext webModel)
+        {
+            var converter = AbstractTypeFactory<PromotionEvaluationContextConverter>.TryCreateInstance();
+            return converter.ToServiceModel(webModel);
+        }
+    }
+
+    public class PromotionEvaluationContextConverter
+    {
         public virtual PromotionEvaluationContext ToPromotionEvaluationContext(ShoppingCart cart)
         {
             var promotionItems = cart.Items.Select(i => i.ToPromotionItem()).ToList();
 
-            var retVal = new PromotionEvaluationContext
-            {
-                CartPromoEntries = promotionItems,
-                CartTotal = cart.Total,
-                Coupon = cart.Coupon != null ? cart.Coupon.Code : null,
-                Currency = cart.Currency,
-                CustomerId = cart.Customer.Id,
-                IsRegisteredUser = cart.Customer.IsRegisteredUser,
-                Language = cart.Language,
-                PromoEntries = promotionItems,
-                StoreId = cart.StoreId
-            };
+            var retVal = AbstractTypeFactory<PromotionEvaluationContext>.TryCreateInstance();
+            retVal.CartPromoEntries = promotionItems;
+            retVal.CartTotal = cart.Total;
+            retVal.Coupon = cart.Coupon != null ? cart.Coupon.Code : null;
+            retVal.Currency = cart.Currency;
+            retVal.CustomerId = cart.Customer.Id;
+            retVal.IsRegisteredUser = cart.Customer.IsRegisteredUser;
+            retVal.Language = cart.Language;
+            retVal.PromoEntries = promotionItems;
+            retVal.StoreId = cart.StoreId;
 
             return retVal;
         }
 
         public virtual PromotionEvaluationContext ToPromotionEvaluationContext(WorkContext workContext, IEnumerable<Product> products = null)
         {
-            var retVal = new PromotionEvaluationContext
-            {
-                CartPromoEntries = workContext.CurrentCart.Items.Select(x => x.ToPromotionItem()).ToList(),
-                CartTotal = workContext.CurrentCart.Total,
-                Coupon = workContext.CurrentCart.Coupon != null ? workContext.CurrentCart.Coupon.Code : null,
-                Currency = workContext.CurrentCurrency,
-                CustomerId = workContext.CurrentCustomer.Id,
-                IsRegisteredUser = workContext.CurrentCustomer.IsRegisteredUser,
-                Language = workContext.CurrentLanguage,
-                StoreId = workContext.CurrentStore.Id
-            };
+            var retVal = AbstractTypeFactory<PromotionEvaluationContext>.TryCreateInstance();
+            retVal.CartPromoEntries = workContext.CurrentCart.Items.Select(x => x.ToPromotionItem()).ToList();
+            retVal.CartTotal = workContext.CurrentCart.Total;
+            retVal.Coupon = workContext.CurrentCart.Coupon != null ? workContext.CurrentCart.Coupon.Code : null;
+            retVal.Currency = workContext.CurrentCurrency;
+            retVal.CustomerId = workContext.CurrentCustomer.Id;
+            retVal.IsRegisteredUser = workContext.CurrentCustomer.IsRegisteredUser;
+            retVal.Language = workContext.CurrentLanguage;
+            retVal.StoreId = workContext.CurrentStore.Id;
+
             //Set cart lineitems as default promo items
             retVal.PromoEntries = retVal.CartPromoEntries;
+
             if (workContext.CurrentProduct != null)
             {
-                retVal.PromoEntry = ProductConverter.ToPromotionItem(workContext.CurrentProduct);
+                retVal.PromoEntry = workContext.CurrentProduct.ToPromotionItem();
             }
 
             if (products != null)
             {
-                retVal.PromoEntries = products.Select(x => ProductConverter.ToPromotionItem(x)).ToList();
+                retVal.PromoEntries = products.Select(x => x.ToPromotionItem()).ToList();
             }
+
             return retVal;
         }
 
         public virtual marketingModel.PromotionEvaluationContext ToServiceModel(PromotionEvaluationContext webModel)
         {
-            var serviceModel = new marketingModel.PromotionEvaluationContext();
-
+            var serviceModel = AbstractTypeFactory<marketingModel.PromotionEvaluationContext>.TryCreateInstance();
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
 
             serviceModel.CartPromoEntries = webModel.CartPromoEntries.Select(pe => pe.ToServiceModel()).ToList();

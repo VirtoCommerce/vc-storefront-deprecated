@@ -88,6 +88,7 @@
     <Compile Include="Catalog\ProductSearchCriteria.cs" />
     <Compile Include="Catalog\Term.cs" />
     <Compile Include="Catalog\TermExtensions.cs" />
+    <Compile Include="Common\AbstractTypeFactory.cs" />
     <Compile Include="Common\AnonymousComparer.cs" />
     <Compile Include="Common\CacheManagerBase.cs" />
     <Compile Include="Common\DistributedCacheManager.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Common\MutablePagedList.cs" />
     <Compile Include="Common\NameValueCollectionExtensions.cs" />
     <Compile Include="Common\SortInfo.cs" />
+    <Compile Include="Common\TypeExtensions.cs" />
     <Compile Include="EditorialReview.cs" />
     <Compile Include="Common\StreamExtensions.cs" />
     <Compile Include="Common\SettingsExtension.cs" />
