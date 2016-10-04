@@ -18,13 +18,13 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Image ToShopifyModel(storefrontModel.Image image)
         {
-            var shopifyModel = new Image();
-            shopifyModel.InjectFrom<NullableAndEnumValueInjecter>(image);
+            var result = AbstractTypeFactory<Image>.TryCreateInstance();
+            result.InjectFrom<NullableAndEnumValueInjecter>(image);
 
-            shopifyModel.Name = image.Title;
-            shopifyModel.Src = image.Url;
+            result.Name = image.Title;
+            result.Src = image.Url;
 
-            return shopifyModel;
+            return result;
         }
     }
 }
