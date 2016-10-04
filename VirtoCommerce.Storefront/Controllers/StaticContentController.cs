@@ -77,8 +77,8 @@ namespace VirtoCommerce.Storefront.Controllers
                 context.CurrentPageSeo = new SeoInfo
                 {
                     Language = context.CurrentBlog.Language,
-                    MetaDescription = context.CurrentBlog.Name,
-                    Title = context.CurrentBlog.Name,
+                    MetaDescription = context.CurrentBlog.Title ?? context.CurrentBlog.Name,
+                    Title = context.CurrentBlog.Title ?? context.CurrentBlog.Name,
                     Slug = context.RequestUrl.AbsolutePath
                 };
                 return View("blog", context.CurrentBlog.Layout, WorkContext);
