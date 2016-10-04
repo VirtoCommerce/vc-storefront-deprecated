@@ -1,11 +1,10 @@
-﻿using Markdig;
-using Markdig.Renderers;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Markdig;
 using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.LiquidThemeEngine.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -40,7 +39,7 @@ namespace VirtoCommerce.Storefront.Services
                                         IStaticContentBlobProvider contentBlobProvider)
         {
             _liquidEngine = liquidEngine;
-            
+
             _cacheManager = cacheManager;
             _workContextFactory = workContextFactory;
             _urlBuilderFactory = urlBuilderFactory;

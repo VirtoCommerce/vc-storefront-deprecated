@@ -14,6 +14,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         }
 
         #region IViewEngine members
+
         public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
             if (_themeEngine.ResolveTemplatePath(partialViewName) != null)
@@ -43,6 +44,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         {
             //Nothing todo  
         }
+
         #endregion
     }
 
