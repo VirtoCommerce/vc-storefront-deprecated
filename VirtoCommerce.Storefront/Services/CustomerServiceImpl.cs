@@ -97,17 +97,16 @@ namespace VirtoCommerce.Storefront.Services
             return info.CanLoginOnBehalf == true;
         }
 
-        public async Task<Vendor> GetVendorByIdAsync(string vendorId)
+        public async Task<Vendor[]> GetVendorsByIdsAsync(params string[] vendorIds)
         {
             var workContext = _workContextFactory();
-            return (await _customerApi.CustomerModule.GetVendorByIdAsync(vendorId)).ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore);
+            return (await _customerApi.CustomerModule.GetVendorsByIdsAsync(vendorIds)).Select(x=>x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
         }
 
-        public Vendor GetVendorById(string vendorId)
+        public Vendor[] GetVendorsByIds(params string[] vendorIds)
         {
             var workContext = _workContextFactory();
-            var retVal = _customerApi.CustomerModule.GetVendorById(vendorId).ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore);
-
+            var retVal = _customerApi.CustomerModule.GetVendorsByIds(vendorIds).Select(x=>x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
             return retVal;
         }
 

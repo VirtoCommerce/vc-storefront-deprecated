@@ -194,10 +194,8 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual async Task LoadProductVendorsAsync(List<Product> products)
         {
-            var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToList();
-            var vendorTasks = vendorIds.Select(id => _customerService.GetVendorByIdAsync(id));
-            var vendors = await Task.WhenAll(vendorTasks);
-            vendors = vendors.Where(x => x != null).ToArray();
+            var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToArray();
+            var vendors = await _customerService.GetVendorsByIdsAsync(vendorIds);
             foreach (var product in products)
             {
                 product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
@@ -206,8 +204,8 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual void LoadProductVendors(List<Product> products)
         {
-            var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToList();
-            var vendors = vendorIds.Select(id => _customerService.GetVendorById(id)).Where(x => x != null).ToList();
+            var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToArray();
+            var vendors = _customerService.GetVendorsByIds(vendorIds);
 
             foreach (var product in products)
             {

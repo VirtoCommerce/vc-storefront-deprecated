@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;

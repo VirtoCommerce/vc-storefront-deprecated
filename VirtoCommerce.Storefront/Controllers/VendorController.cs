@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -32,7 +33,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> VendorDetails(string vendorId)
         {
-            var vendor = await _customerService.GetVendorByIdAsync(vendorId);
+            var vendor = (await _customerService.GetVendorsByIdsAsync(vendorId)).FirstOrDefault();
            
             if (vendor != null)
             {               
