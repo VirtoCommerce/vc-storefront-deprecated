@@ -19,7 +19,7 @@ namespace VirtoCommerce.Storefront.Services
             _cacheManager = cacheManager;
         }
 
-        public async Task<string> GetDynamicContentHtmlAsync(string storeId, string placeholderName)
+        public virtual async Task<string> GetDynamicContentHtmlAsync(string storeId, string placeholderName)
         {
             string htmlContent = null;
 

@@ -29,6 +29,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         }
 
         #region IView members
+
         public void Render(ViewContext viewContext, TextWriter writer)
         {
             if (viewContext == null)
@@ -92,7 +93,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             writer.Write(viewTemplate);
 
         }
-        #endregion
 
+        #endregion
     }
 }

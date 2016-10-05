@@ -9,7 +9,6 @@ using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Model.Stores;
 using VirtoCommerce.Storefront.Services;
 using Xunit;
-using Markdig.Renderers;
 
 namespace VirtoCommerce.Storefront.Test
 {

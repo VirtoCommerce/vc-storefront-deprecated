@@ -69,9 +69,9 @@ namespace VirtoCommerce.LiquidThemeEngine
             Template.RegisterFilter(typeof(HtmlFilters));
             Template.RegisterFilter(typeof(StringFilters));
             Template.RegisterFilter(typeof(ArrayFilters));
-			Template.RegisterFilter(typeof(BundleFilters));
+            Template.RegisterFilter(typeof(BundleFilters));
 
-			Condition.Operators["contains"] = CommonOperators.ContainsMethod;
+            Condition.Operators["contains"] = CommonOperators.ContainsMethod;
 
             Template.RegisterTag<LayoutTag>("layout");
             Template.RegisterTag<FormTag>("form");
@@ -96,7 +96,6 @@ namespace VirtoCommerce.LiquidThemeEngine
             };
         }
 
-
         /// <summary>
         /// Main work context
         /// </summary>
@@ -107,6 +106,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 return _workContextFactory();
             }
         }
+
         /// <summary>
         /// Store url builder
         /// </summary>
@@ -277,7 +277,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 throw new ArgumentNullException("templateName");
             }
             var templatePath = ResolveTemplatePath(templateName);
-            if(string.IsNullOrEmpty(templatePath))
+            if (string.IsNullOrEmpty(templatePath))
             {
                 throw new FileSystemException(string.Format("Template not found: '{0}'. Searched paths: {1}", templateName, string.Join("<br>", DiscoveryPaths)));
             }
