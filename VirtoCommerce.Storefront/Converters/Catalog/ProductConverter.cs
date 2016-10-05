@@ -22,13 +22,13 @@ namespace VirtoCommerce.Storefront.Converters
     {
         public static Product ToWebModel(this searchModel.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            var converter = ServiceLocator.Current.GetInstance<ProductConverter>();
-            return converter.ToWebModel(productDto, currentLanguage, currentCurrency, store);
+            return productDto.JsonConvert<catalogModel.Product>().ToWebModel(currentLanguage, currentCurrency, store);         
         }
 
         public static Product ToWebModel(this catalogModel.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            return productDto.JsonConvert<catalogModel.Product>().ToWebModel(currentLanguage, currentCurrency, store);
+            var converter = ServiceLocator.Current.GetInstance<ProductConverter>();
+            return converter.ToWebModel(productDto, currentLanguage, currentCurrency, store);
         }
 
         public static QuoteItem ToQuoteItem(this Product product, long quantity)
@@ -103,7 +103,15 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.SeoInfo = productSeoInfo.ToWebModel();
             }
-
+            else
+            {
+                retVal.SeoInfo = new SeoInfo
+                {
+                    Title = productDto.Id,
+                    Language = currentLanguage,
+                    Slug = productDto.Code
+                };
+            }
             if (productDto.Reviews != null)
             {
                 retVal.Descriptions = productDto.Reviews.Select(r => new EditorialReview

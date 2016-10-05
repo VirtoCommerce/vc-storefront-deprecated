@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Storefront.Model.Catalog.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
 using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
@@ -15,13 +17,13 @@ namespace VirtoCommerce.Storefront.Converters
     {
         public static Category ToWebModel(this searchModel.Category category, Language currentLanguage, Store store)
         {
-            var converter = AbstractTypeFactory<CategoryConverter>.TryCreateInstance();
+            var converter = ServiceLocator.Current.GetInstance<CategoryConverter>();
             return converter.ToWebModel(category, currentLanguage, store);
         }
 
         public static Category ToWebModel(this catalogModel.Category category, Language currentLanguage, Store store)
         {
-            var converter = AbstractTypeFactory<CategoryConverter>.TryCreateInstance();
+            var converter = ServiceLocator.Current.GetInstance<CategoryConverter>();
             return converter.ToWebModel(category, currentLanguage, store);
         }
     }
@@ -35,7 +37,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Category ToWebModel(catalogModel.Category category, Language currentLanguage, Store store)
         {
-            var result = AbstractTypeFactory<Category>.TryCreateInstance();
+            var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateCategory();
             result.InjectFrom<NullableAndEnumValueInjecter>(category);
 
             result.SeoInfo = category.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage).ToWebModel();

@@ -13,5 +13,20 @@ namespace VirtoCommerce.Storefront.Model.Catalog.Factories
         {
             return new Product(currency, language);
         }
+
+        public virtual Category CreateCategory()
+        {
+            return new Category();
+        }
+
+        public virtual Asset CreateAsset()
+        {
+            return new Asset();
+        }
+
+        public virtual Image CreateImage()
+        {
+            return new Image();
+        }
     }
 }

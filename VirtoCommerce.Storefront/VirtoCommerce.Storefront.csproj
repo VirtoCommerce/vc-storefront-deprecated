@@ -524,7 +524,7 @@
     <Compile Include="Controllers\StorefrontControllerBase.cs" />
     <Compile Include="Converters\AddressConverter.cs" />
     <Compile Include="Converters\AggregationConverters.cs" />
-    <Compile Include="Converters\AssetConverter.cs" />
+    <Compile Include="Converters\Catalog\AssetConverter.cs" />
     <Compile Include="Converters\CartPaymentMethodConverter.cs" />
     <Compile Include="Converters\CartShipmentItemConverter.cs" />
     <Compile Include="Converters\CartShipmentMethodConverter.cs" />
@@ -534,7 +534,7 @@
     <Compile Include="Converters\DynamicPropertyConverter.cs" />
     <Compile Include="Converters\CartConverter.cs" />
     <Compile Include="Converters\CartLineItemConverter.cs" />
-    <Compile Include="Converters\CategoryConverter.cs" />
+    <Compile Include="Converters\Catalog\CategoryConverter.cs" />
     <Compile Include="Converters\CustomerConverter.cs" />
     <Compile Include="Converters\InPaymentConverter.cs" />
     <Compile Include="Converters\InventoryConverter.cs" />
@@ -543,7 +543,7 @@
     <Compile Include="Converters\OrderLineItemConverter.cs" />
     <Compile Include="Converters\CartPaymentConverter.cs" />
     <Compile Include="Converters\PriceConverter.cs" />
-    <Compile Include="Converters\ProductConverter.cs" />
+    <Compile Include="Converters\Catalog\ProductConverter.cs" />
     <Compile Include="Converters\PromotionConverter.cs" />
     <Compile Include="Converters\PromotionEvaluationContextConverter.cs" />
     <Compile Include="Converters\PromotionProductEntryConverter.cs" />

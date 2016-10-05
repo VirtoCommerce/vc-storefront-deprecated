@@ -15,6 +15,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Owin;
 using Microsoft.Owin.Extensions;
 using Microsoft.Owin.Security;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Mvc;
 using Newtonsoft.Json;
@@ -100,6 +101,10 @@ namespace VirtoCommerce.Storefront
 
             UnityWebActivator.Start();
             var container = UnityConfig.GetConfiguredContainer();
+
+            UnityServiceLocator locator = new UnityServiceLocator(container);
+            ServiceLocator.SetLocatorProvider(() => locator);
+
             //Cure for System.Runtime.Caching.MemoryCache freezing 
             //https://www.zpqrtbnk.net/posts/appdomains-threads-cultureinfos-and-paracetamol
             app.SanitizeThreadCulture();
