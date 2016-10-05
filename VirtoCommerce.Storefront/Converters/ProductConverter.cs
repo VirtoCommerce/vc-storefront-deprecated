@@ -6,9 +6,12 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Storefront.Model.Catalog.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
+using VirtoCommerce.Storefront.Model.Marketing.Factories;
 using VirtoCommerce.Storefront.Model.Quote;
+using VirtoCommerce.Storefront.Model.Quote.Factories;
 using VirtoCommerce.Storefront.Model.Stores;
 using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 using searchModel = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models;
@@ -17,140 +20,137 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class ProductStaticConverter
     {
-        public static Product ToWebModel(this searchModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
+        public static Product ToWebModel(this searchModel.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
-            return converter.ToWebModel(product, currentLanguage, currentCurrency, store);
+            var converter = ServiceLocator.Current.GetInstance<ProductConverter>();
+            return converter.ToWebModel(productDto, currentLanguage, currentCurrency, store);
         }
 
-        public static Product ToWebModel(this catalogModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
+        public static Product ToWebModel(this catalogModel.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
-            return converter.ToWebModel(product, currentLanguage, currentCurrency, store);
+            return productDto.JsonConvert<catalogModel.Product>().ToWebModel(currentLanguage, currentCurrency, store);
         }
 
         public static QuoteItem ToQuoteItem(this Product product, long quantity)
         {
-            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
+            var converter = ServiceLocator.Current.GetInstance<ProductConverter>();
             return converter.ToQuoteItem(product, quantity);
         }
 
         public static PromotionProductEntry ToPromotionItem(this Product product)
         {
-            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
+            var converter = ServiceLocator.Current.GetInstance<ProductConverter>();
             return converter.ToPromotionItem(product);
         }
     }
-
+   
     public class ProductConverter
-    {
-        public virtual Product ToWebModel(searchModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
+    {       
+        public virtual Product ToWebModel(searchModel.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            return ToWebModel(product.JsonConvert<catalogModel.Product>(), currentLanguage, currentCurrency, store);
+            return ToWebModel(productDto.JsonConvert<catalogModel.Product>(), currentLanguage, currentCurrency, store);
         }
 
-        public virtual Product ToWebModel(catalogModel.Product product, Language currentLanguage, Currency currentCurrency, Store store)
+        public virtual Product ToWebModel(catalogModel.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            var result = AbstractTypeFactory<Product>.TryCreateInstance();
-            result.InjectFrom<NullableAndEnumValueInjecter>(product);
+            var retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProduct(currentCurrency, currentLanguage);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(productDto);
+            retVal.Weight = (decimal?)productDto.Weight;
+            retVal.Height = (decimal?)productDto.Height;
+            retVal.Width = (decimal?)productDto.Width;
+            retVal.Length = (decimal?)productDto.Length;
+            retVal.Sku = productDto.Code;
+            retVal.VendorId = productDto.Vendor;
+            retVal.Outline = productDto.Outlines.GetOutlinePath(store.Catalog);
+            retVal.Url = "~/" + productDto.Outlines.GetSeoPath(store, currentLanguage, "product/" + productDto.Id);
 
-            result.Currency = currentCurrency;
-            result.Price = new ProductPrice(currentCurrency);
-            result.Weight = (decimal?)product.Weight;
-            result.Height = (decimal?)product.Height;
-            result.Width = (decimal?)product.Width;
-            result.Length = (decimal?)product.Length;
-            result.Sku = product.Code;
-            result.VendorId = product.Vendor;
-            result.Outline = product.Outlines.GetOutlinePath(store.Catalog);
-            result.Url = "~/" + product.Outlines.GetSeoPath(store, currentLanguage, "product/" + product.Id);
-
-            if (product.Properties != null)
+            if (productDto.Properties != null)
             {
-                result.Properties = product.Properties
+                retVal.Properties = productDto.Properties
                     .Where(x => string.Equals(x.Type, "Product", StringComparison.InvariantCultureIgnoreCase))
                     .Select(p => p.ToWebModel(currentLanguage))
                     .ToList();
 
-                result.VariationProperties = product.Properties
+                retVal.VariationProperties = productDto.Properties
                     .Where(x => string.Equals(x.Type, "Variation", StringComparison.InvariantCultureIgnoreCase))
                     .Select(p => p.ToWebModel(currentLanguage))
                     .ToList();
             }
 
-            if (product.Images != null)
+            if (productDto.Images != null)
             {
-                result.Images = product.Images.Select(i => i.ToWebModel()).ToArray();
-                result.PrimaryImage = result.Images.FirstOrDefault(x => string.Equals(x.Url, product.ImgSrc, StringComparison.InvariantCultureIgnoreCase));
+                retVal.Images = productDto.Images.Select(i => i.ToWebModel()).ToArray();
+                retVal.PrimaryImage = retVal.Images.FirstOrDefault(x => string.Equals(x.Url, productDto.ImgSrc, StringComparison.InvariantCultureIgnoreCase));
             }
 
-            if (product.Assets != null)
+            if (productDto.Assets != null)
             {
-                result.Assets = product.Assets.Select(x => x.ToWebModel()).ToList();
+                retVal.Assets = productDto.Assets.Select(x => x.ToWebModel()).ToList();
             }
 
-            if (product.Variations != null)
+            if (productDto.Variations != null)
             {
-                result.Variations = product.Variations.Select(v => ToWebModel(v, currentLanguage, currentCurrency, store)).ToList();
+                retVal.Variations = productDto.Variations.Select(v => ToWebModel(v, currentLanguage, currentCurrency, store)).ToList();
             }
 
-            if (!product.Associations.IsNullOrEmpty())
+            if (!productDto.Associations.IsNullOrEmpty())
             {
-                result.Associations.AddRange(product.Associations.Select(x => x.ToWebModel()).Where(x => x != null));
+                retVal.Associations.AddRange(productDto.Associations.Select(x => x.ToWebModel()).Where(x => x != null));
             }
 
-            var productSeoInfo = product.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage);
+            var productSeoInfo = productDto.SeoInfos.GetBestMatchedSeoInfo(store, currentLanguage);
             if (productSeoInfo != null)
             {
-                result.SeoInfo = productSeoInfo.ToWebModel();
+                retVal.SeoInfo = productSeoInfo.ToWebModel();
             }
 
-            if (product.Reviews != null)
+            if (productDto.Reviews != null)
             {
-                result.Descriptions = product.Reviews.Select(r => new EditorialReview
+                retVal.Descriptions = productDto.Reviews.Select(r => new EditorialReview
                 {
                     Language = new Language(r.LanguageCode),
                     ReviewType = r.ReviewType,
                     Value = r.Content
                 }).Where(x => x.Language.Equals(currentLanguage)).ToList();
-                result.Description = result.Descriptions.FindWithLanguage(currentLanguage, x => x.Value, null);
+                retVal.Description = retVal.Descriptions.FindWithLanguage(currentLanguage, x => x.Value, null);
             }
 
-            return result;
+            return retVal;
         }
 
         public virtual QuoteItem ToQuoteItem(Product product, long quantity)
         {
-            var quoteItem = AbstractTypeFactory<QuoteItem>.TryCreateInstance();
-            quoteItem.InjectFrom<NullableAndEnumValueInjecter>(product);
+            var retVal = ServiceLocator.Current.GetInstance<QuoteFactory>().CreateQuoteItem();
 
-            quoteItem.Id = null;
-            quoteItem.ImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
-            quoteItem.ListPrice = product.Price.ListPrice;
-            quoteItem.ProductId = product.Id;
-            quoteItem.SalePrice = product.Price.SalePrice;
-            quoteItem.ProposalPrices.Add(new TierPrice(product.Price.SalePrice, quantity));
-            quoteItem.SelectedTierPrice = quoteItem.ProposalPrices.First();
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(product);
 
-            return quoteItem;
+            retVal.Id = null;
+            retVal.ImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
+            retVal.ListPrice = product.Price.ListPrice;
+            retVal.ProductId = product.Id;
+            retVal.SalePrice = product.Price.SalePrice;
+            retVal.ProposalPrices.Add(new TierPrice(product.Price.SalePrice, quantity));
+            retVal.SelectedTierPrice = retVal.ProposalPrices.First();
+
+            return retVal;
         }
 
         public virtual PromotionProductEntry ToPromotionItem(Product product)
         {
-            var promoItem = AbstractTypeFactory<PromotionProductEntry>.TryCreateInstance();
-            promoItem.InjectFrom(product);
+            var retVal = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionProductEntry();
+            retVal.InjectFrom(product);
 
             if (product.Price != null)
             {
-                promoItem.Discount = product.Price.DiscountAmount;
-                promoItem.Price = product.Price.SalePrice;
+                retVal.Discount = product.Price.DiscountAmount;
+                retVal.Price = product.Price.SalePrice;
             }
 
-            promoItem.ProductId = product.Id;
-            promoItem.Quantity = 1;
-            promoItem.Variations = product.Variations.Select(ToPromotionItem).ToList();
+            retVal.ProductId = product.Id;
+            retVal.Quantity = 1;
+            retVal.Variations = product.Variations.Select(ToPromotionItem).ToList();
 
-            return promoItem;
+            return retVal;
         }
     }
 }
