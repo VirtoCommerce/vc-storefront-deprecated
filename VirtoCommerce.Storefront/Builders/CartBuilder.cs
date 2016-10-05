@@ -551,7 +551,7 @@ namespace VirtoCommerce.Storefront.Builders
             var existingLineItem = _cart.Items.FirstOrDefault(li => li.ProductId == lineItem.ProductId);
             if (existingLineItem != null)
             {
-                await InnerChangeItemQuantityAsync(existingLineItem, existingLineItem.Quantity + 1);
+                await InnerChangeItemQuantityAsync(existingLineItem, existingLineItem.Quantity + Math.Max(1, lineItem.Quantity));
             }
             else
             {
