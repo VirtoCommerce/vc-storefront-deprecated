@@ -90,7 +90,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 throw new HttpException(404, "Order with number " + number + " not found. Or not belong to current user.");
             }
 
-            WorkContext.CurrentOrder = order.ToWebModel(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);
+            WorkContext.CurrentOrder = order.ToCustomerOrder(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);
             return View("customers/order", WorkContext);
         }
 
@@ -162,7 +162,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
                 //Next need create corresponding Customer contact in VC Customers (CRM) module
                 //Contacts and account has the same Id.
-                var customer = formModel.ToWebModel();
+                var customer = formModel.ToCustomerInfo();
                 customer.Id = storefrontUser.Id;
                 customer.UserId = storefrontUser.Id;
                 customer.UserName = storefrontUser.UserName;

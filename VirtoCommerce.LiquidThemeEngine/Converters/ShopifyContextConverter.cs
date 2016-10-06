@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using DotLiquid;
+using Microsoft.Practices.ServiceLocation;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
@@ -12,7 +13,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public static ShopifyThemeWorkContext ToShopifyModel(this storefrontModel.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
         {
-            var converter = AbstractTypeFactory<ShopifyContextConverter>.TryCreateInstance();
+            var converter = ServiceLocator.Current.GetInstance<ShopifyContextConverter>();
             return converter.ToShopifyModel(workContext, urlBuilder);
         }
     }
@@ -34,7 +35,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public virtual ShopifyThemeWorkContext ToShopifyModel(storefrontModel.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
         {
-            var result = AbstractTypeFactory<ShopifyThemeWorkContext>.TryCreateInstance();
+            var result = ServiceLocator.Current.GetInstance<ShopifyThemeWorkContext>();
 
             result.CurrentPage = 1;
             result.CountryOptionTags = string.Join("\r\n", workContext.AllCountries.OrderBy(c => c.Name).Select(c => c.ToOptionTag()));

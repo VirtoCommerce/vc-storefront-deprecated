@@ -127,7 +127,7 @@ namespace VirtoCommerce.Storefront.Owin
                 workContext.CurrentLanguage = GetLanguage(context, workContext.AllStores, workContext.CurrentStore);
 
                 var commerceApi = Container.Resolve<ICoreModuleApiClient>();
-                workContext.AllCurrencies = await CacheManager.GetAsync("GetAllCurrencies-" + workContext.CurrentLanguage.CultureName, "ApiRegion", async () => { return (await commerceApi.Commerce.GetAllCurrenciesAsync()).Select(x => x.ToWebModel(workContext.CurrentLanguage)).ToArray(); });
+                workContext.AllCurrencies = await CacheManager.GetAsync("GetAllCurrencies-" + workContext.CurrentLanguage.CultureName, "ApiRegion", async () => { return (await commerceApi.Commerce.GetAllCurrenciesAsync()).Select(x => x.ToCurrency(workContext.CurrentLanguage)).ToArray(); });
 
                 //Sync store currencies with avail in system
                 foreach (var store in workContext.AllStores)
@@ -312,7 +312,7 @@ namespace VirtoCommerce.Storefront.Owin
 
                 var pricingModuleApi = Container.Resolve<IPricingModuleApiClient>();
                 var pricingResult = await pricingModuleApi.PricingModule.EvaluatePriceListsAsync(evalContext);
-                return pricingResult.Select(p => p.ToWebModel()).ToList();
+                return pricingResult.Select(p => p.ToPricelist(workContext.AllCurrencies, workContext.CurrentLanguage)).ToList();
             });
 
             // Vendors with their products
@@ -346,7 +346,7 @@ namespace VirtoCommerce.Storefront.Owin
         {
             var storeApi = Container.Resolve<IStoreModuleApiClient>();
             var stores = await storeApi.StoreModule.GetStoresAsync();
-            var result = stores.Select(s => s.ToWebModel()).ToArray();
+            var result = stores.Select(s => s.ToStore()).ToArray();
             return result.Any() ? result : null;
         }
 

@@ -76,7 +76,7 @@ namespace VirtoCommerce.Storefront.Builders
                 };
 
                 var result = await _cartApi.CartModule.SearchAsync(cartSearchCriteria);
-                var cart = result.Results.Select(x => x.ToWebModel(currency, language, customer)).FirstOrDefault();
+                var cart = result.Results.Select(x => x.ToShoppingCart(currency, language, customer)).FirstOrDefault();
 
                 if (cart == null)
                 {
@@ -317,7 +317,7 @@ namespace VirtoCommerce.Storefront.Builders
                         var availableShippingMethod = availableShippingMethods.FirstOrDefault(sm => sm.ShipmentMethodCode == quoteRequest.ShipmentMethod.ShipmentMethodCode);
                         if (availableShippingMethod != null)
                         {
-                            shipment = quoteRequest.ShipmentMethod.ToShipmentModel(_cart.Currency);
+                            shipment = quoteRequest.ShipmentMethod.ToCartShipment(_cart.Currency);
                         }
                     }
                 }
@@ -343,7 +343,7 @@ namespace VirtoCommerce.Storefront.Builders
 
             //Request available shipping rates 
             var shippingRates = await _cartApi.CartModule.GetAvailableShippingRatesAsync(_cart.Id);
-            var retVal = shippingRates.Select(x => x.ToWebModel(_cart.Currency, workContext.AllCurrencies)).ToList();
+            var retVal = shippingRates.Select(x => x.ToShippingMethod(_cart.Currency, workContext.AllCurrencies)).ToList();
 
             //Evaluate promotions cart and apply rewards for available shipping methods
             var promoEvalContext = _cart.ToPromotionEvaluationContext();
@@ -362,7 +362,7 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureThatCartExist();
             var payments = await _cartApi.CartModule.GetAvailablePaymentMethodsAsync(_cart.Id);
-            return payments.Select(x => x.ToWebModel()).ToList();
+            return payments.Select(x => x.ToPaymentMethod()).ToList();
         }
 
         public async Task ValidateAsync()
@@ -401,7 +401,7 @@ namespace VirtoCommerce.Storefront.Builders
             await EvaluatePromotionsAsync();
             await EvaluateTaxesAsync();
 
-            var cart = _cart.ToServiceModel();
+            var cart = _cart.ToShoppingCartDTO();
             if (string.IsNullOrEmpty(cart.Id))
             {
                 cart = await _cartApi.CartModule.CreateAsync(cart);
@@ -411,7 +411,7 @@ namespace VirtoCommerce.Storefront.Builders
                 await _cartApi.CartModule.UpdateAsync(cart);
             }
             cart = await _cartApi.CartModule.GetCartByIdAsync(cart.Id);
-            _cart = cart.ToWebModel(_cart.Currency, _cart.Language, _cart.Customer);
+            _cart = cart.ToShoppingCart(_cart.Currency, _cart.Language, _cart.Customer);
         }
 
         #endregion

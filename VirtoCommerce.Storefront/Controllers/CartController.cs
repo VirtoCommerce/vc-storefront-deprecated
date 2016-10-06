@@ -105,7 +105,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 throw new HttpException(404, "Order with number " + orderNumber + " not found.");
             }
 
-            WorkContext.CurrentOrder = order.ToWebModel(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);
+            WorkContext.CurrentOrder = order.ToCustomerOrder(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);
 
             return View("thanks", WorkContext);
         }

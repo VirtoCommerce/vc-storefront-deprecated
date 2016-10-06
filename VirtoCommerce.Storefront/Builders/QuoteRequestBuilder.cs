@@ -48,7 +48,7 @@ namespace VirtoCommerce.Storefront.Builders
             {
                 throw new StorefrontException("Quote request for number " + number + " not found");
             }
-            _quoteRequest = quoteRequest.ToWebModel(availCurrencies, language);
+            _quoteRequest = quoteRequest.ToQuoteRequest(availCurrencies, language);
 
             return this;
         }
@@ -75,7 +75,7 @@ namespace VirtoCommerce.Storefront.Builders
 
                 var searchResult = await _quoteApi.QuoteModule.SearchAsync(activeQuoteSearchCriteria);
 
-                var quoteRequest = searchResult.QuoteRequests.Select(x => x.ToWebModel(store.Currencies, language)).FirstOrDefault();
+                var quoteRequest = searchResult.QuoteRequests.Select(x => x.ToQuoteRequest(store.Currencies, language)).FirstOrDefault();
                 if (quoteRequest == null)
                 {
                     quoteRequest = new QuoteRequest(currency, language)
@@ -94,7 +94,7 @@ namespace VirtoCommerce.Storefront.Builders
                 }
                 else
                 {
-                    quoteRequest = (await _quoteApi.QuoteModule.GetByIdAsync(quoteRequest.Id)).ToWebModel(store.Currencies, language);
+                    quoteRequest = (await _quoteApi.QuoteModule.GetByIdAsync(quoteRequest.Id)).ToQuoteRequest(store.Currencies, language);
                 }
 
                 quoteRequest.Customer = customer;
@@ -230,7 +230,7 @@ namespace VirtoCommerce.Storefront.Builders
         {
             _cacheManager.Remove(GetQuoteRequestCacheKey(_quoteRequest.StoreId, _quoteRequest.CustomerId), _quoteRequestCacheRegion);
 
-            var quoteDto = _quoteRequest.ToServiceModel();
+            var quoteDto = _quoteRequest.ToQuoteRequestDTO();
             if (_quoteRequest.IsTransient())
             {
                 await _quoteApi.QuoteModule.CreateAsync(quoteDto);
@@ -253,8 +253,8 @@ namespace VirtoCommerce.Storefront.Builders
 
         public async Task<IQuoteRequestBuilder> CalculateTotalsAsync()
         {
-            var result = await _quoteApi.QuoteModule.CalculateTotalsAsync(_quoteRequest.ToServiceModel());
-            _quoteRequest.Totals = result.Totals.ToWebModel(_quoteRequest.Currency);
+            var result = await _quoteApi.QuoteModule.CalculateTotalsAsync(_quoteRequest.ToQuoteRequestDTO());
+            _quoteRequest.Totals = result.Totals.ToQuoteTotals(_quoteRequest.Currency);
             return this;
         }
 

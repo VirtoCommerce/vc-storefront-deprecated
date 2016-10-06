@@ -248,7 +248,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 var order = await  _orderApi.OrderModule.CreateOrderFromCartAsync(_cartBuilder.Cart.Id);
 
                 //Raise domain event
-                await _orderPlacedEventPublisher.PublishAsync(new OrderPlacedEvent(order.ToWebModel(WorkContext.AllCurrencies, WorkContext.CurrentLanguage), _cartBuilder.Cart));
+                await _orderPlacedEventPublisher.PublishAsync(new OrderPlacedEvent(order.ToCustomerOrder(WorkContext.AllCurrencies, WorkContext.CurrentLanguage), _cartBuilder.Cart));
                 
 
                 orderModel.ProcessPaymentResult processingResult = null;

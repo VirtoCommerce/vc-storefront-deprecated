@@ -4,8 +4,8 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
-using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
-using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
+using catalogDTO = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Common
 {
@@ -48,7 +48,7 @@ namespace VirtoCommerce.Storefront.Common
         /// <param name="language"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static string GetSeoPath(this IEnumerable<catalogModel.Outline> outlines, Store store, Language language, string defaultValue)
+        public static string GetSeoPath(this IEnumerable<catalogDTO.Outline> outlines, Store store, Language language, string defaultValue)
         {
             var result = defaultValue;
 
@@ -64,7 +64,7 @@ namespace VirtoCommerce.Storefront.Common
                     if (store.SeoLinksType == SeoLinksType.Long)
                     {
                         pathSegments.AddRange(outline.Items
-                            .Where(i => i.SeoObjectType != "Catalog")
+                            .Where(i => i.SeoObjectType != "Catalog")                            
                             .Select(i => GetBestMatchedSeoKeyword(i.SeoInfos, store, language)));
                     }
                     else if (store.SeoLinksType == SeoLinksType.Collapsed)
@@ -92,24 +92,7 @@ namespace VirtoCommerce.Storefront.Common
             return result;
         }
 
-        /// <summary>
-        /// Duplicate method special for Customer.SeoInfo type
-        /// </summary>
-        public static customerModel.SeoInfo GetBestMatchedSeoInfo(this IEnumerable<customerModel.SeoInfo> seoRecords, Store store, Language language, string slug = null)
-        {
-            customerModel.SeoInfo retVal = null;
-
-            if (!seoRecords.IsNullOrEmpty())
-            {
-                var catalogSeoInfos = seoRecords.Select(x => x.JsonConvert<catalogModel.SeoInfo>());
-                var catalogSeoInfo = GetBestMatchedSeoInfo(catalogSeoInfos, store, language, slug);
-                if (catalogSeoInfo != null)
-                {
-                    retVal = catalogSeoInfo.JsonConvert<customerModel.SeoInfo>();
-                }
-            }
-            return retVal;
-        }
+      
 
         /// <summary>
         /// Find best SEO record using score base rules
@@ -120,9 +103,9 @@ namespace VirtoCommerce.Storefront.Common
         /// <param name="language"></param>
         /// <param name="slug"></param>
         /// <returns></returns>
-        public static catalogModel.SeoInfo GetBestMatchedSeoInfo(this IEnumerable<catalogModel.SeoInfo> seoRecords, Store store, Language language, string slug = null)
+        public static coreDTO.SeoInfo GetBestMatchedSeoInfo(this IEnumerable<coreDTO.SeoInfo> seoRecords, Store store, Language language, string slug = null)
         {
-            catalogModel.SeoInfo result = null;
+            coreDTO.SeoInfo result = null;
 
             if (seoRecords != null)
             {
@@ -148,8 +131,17 @@ namespace VirtoCommerce.Storefront.Common
             return result;
         }
 
+        private static string GetBestMatchedSeoKeyword(IEnumerable<catalogDTO.SeoInfo> seoRecords, Store store, Language language)
+        {
+            string result = null;
+            if(!seoRecords.IsNullOrEmpty())
+            {
+                return GetBestMatchedSeoKeyword(seoRecords.Select(x => x.JsonConvert<coreDTO.SeoInfo>()), store, language);
+            }
+            return result;
+        }
 
-        private static string GetBestMatchedSeoKeyword(IEnumerable<catalogModel.SeoInfo> seoRecords, Store store, Language language)
+        private static string GetBestMatchedSeoKeyword(IEnumerable<coreDTO.SeoInfo> seoRecords, Store store, Language language)
         {
             string result = null;
 

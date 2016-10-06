@@ -1,54 +1,21 @@
 ﻿using Omu.ValueInjecter;
-using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
-using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
-using coreModel = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
-using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
-using storeModel = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
+using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class SeoInfoConverter
     {
-        public static SeoInfo ToWebModel(this customerModel.SeoInfo seoDto)
+        public static SeoInfo ToSeoInfo(this coreDTO.SeoInfo seoDto)
         {
-            return seoDto.JsonConvert<catalogModel.SeoInfo>().ToWebModel();
-        }
+            var retVal = new SeoInfo();
+            retVal.InjectFrom(seoDto);
 
-        public static SeoInfo ToWebModel(this storeModel.SeoInfo seoDto)
-        {
-            return seoDto.JsonConvert<catalogModel.SeoInfo>().ToWebModel();
-        }
-
-        public static SeoInfo ToWebModel(this catalogModel.SeoInfo seoDto)
-        {
-            SeoInfo retVal = null;
-
-            if (seoDto != null)
-            {
-                retVal = new SeoInfo();
-                retVal.InjectFrom(seoDto);
-
-                retVal.Slug = seoDto.SemanticUrl;
-                retVal.Title = seoDto.PageTitle;
-                retVal.Language = string.IsNullOrEmpty(seoDto.LanguageCode) ? Language.InvariantLanguage : new Language(seoDto.LanguageCode);
-            }
-
+            retVal.Slug = seoDto.SemanticUrl;
+            retVal.Title = seoDto.PageTitle;
+            retVal.Language = string.IsNullOrEmpty(seoDto.LanguageCode) ? Language.InvariantLanguage : new Language(seoDto.LanguageCode);
             return retVal;
         }
 
-
-        public static catalogModel.SeoInfo ToCatalogModel(this coreModel.SeoInfo seoDto)
-        {
-            catalogModel.SeoInfo retVal = null;
-
-            if (seoDto != null)
-            {
-                retVal = new catalogModel.SeoInfo();
-                retVal.InjectFrom(seoDto);
-            }
-
-            return retVal;
-        }
     }
 }

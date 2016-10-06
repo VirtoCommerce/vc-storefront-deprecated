@@ -22,13 +22,13 @@ namespace VirtoCommerce.Storefront.Services
 
         public virtual async Task EvaluateDiscountsAsync(PromotionEvaluationContext context, IEnumerable<IDiscountable> owners)
         {
-            var rewards = await _marketingApi.MarketingModulePromotion.EvaluatePromotionsAsync(context.ToServiceModel());
+            var rewards = await _marketingApi.MarketingModulePromotion.EvaluatePromotionsAsync(context.ToPromotionEvaluationContextDTO());
             InnerEvaluateDiscounts(rewards, owners);
         }
 
         public virtual void EvaluateDiscounts(PromotionEvaluationContext context, IEnumerable<IDiscountable> owners)
         {
-            var rewards = _marketingApi.MarketingModulePromotion.EvaluatePromotions(context.ToServiceModel());
+            var rewards = _marketingApi.MarketingModulePromotion.EvaluatePromotions(context.ToPromotionEvaluationContextDTO());
             InnerEvaluateDiscounts(rewards, owners);
         }
 
@@ -40,7 +40,7 @@ namespace VirtoCommerce.Storefront.Services
             {
                 foreach (var owner in owners)
                 {
-                    owner.ApplyRewards(rewards.Select(r => r.ToWebModel(owner.Currency)));
+                    owner.ApplyRewards(rewards.Select(r => r.ToPromotionReward(owner.Currency)));
                 }
             }
         }

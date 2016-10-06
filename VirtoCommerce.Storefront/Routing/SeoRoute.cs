@@ -5,11 +5,10 @@ using System.Web;
 using System.Web.Routing;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.Common;
-using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent;
-using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Routing
 {
@@ -138,16 +137,16 @@ namespace VirtoCommerce.Storefront.Routing
             return result;
         }
 
-        private List<catalogModel.SeoInfo> GetSeoRecords(string slug)
+        private List<coreDTO.SeoInfo> GetSeoRecords(string slug)
         {
-            var seoRecords = new List<catalogModel.SeoInfo>();
+            var seoRecords = new List<coreDTO.SeoInfo>();
 
             if (!string.IsNullOrEmpty(slug))
             {
                 var commerceCoreApi = _commerceCoreApiFactory();
 
                 seoRecords = _cacheManager.Get(string.Join(":", "CommerceGetSeoInfoBySlug", slug), "ApiRegion", () =>
-                    commerceCoreApi.Commerce.GetSeoInfoBySlug(slug).Select(s => s.ToCatalogModel()).ToList());
+                    commerceCoreApi.Commerce.GetSeoInfoBySlug(slug)).ToList();
             }
 
             return seoRecords;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
@@ -12,13 +13,13 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public static Product ToShopifyModel(this storefrontModel.Product product)
         {
-            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
+            var converter = ServiceLocator.Current.GetInstance<ProductConverter>();
             return converter.ToShopifyModel(product);
         }
 
         public static Variant ToVariant(this storefrontModel.Product product)
         {
-            var converter = AbstractTypeFactory<ProductConverter>.TryCreateInstance();
+            var converter = ServiceLocator.Current.GetInstance<ProductConverter>();
             return converter.ToVariant(product);
         }
     }
@@ -27,7 +28,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Product ToShopifyModel(storefrontModel.Product product)
         {
-            var result = AbstractTypeFactory<Product>.TryCreateInstance();
+            var result = ServiceLocator.Current.GetInstance<Product>();
             result.InjectFrom<NullableAndEnumValueInjecter>(product);
 
             result.Variants.Add(product.ToVariant());
@@ -137,7 +138,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public virtual Variant ToVariant(storefrontModel.Product product)
         {
-            var result = AbstractTypeFactory<Variant>.TryCreateInstance();
+            var result = ServiceLocator.Current.GetInstance<Variant>();
 
             result.Available = true;
             result.Barcode = product.Gtin;

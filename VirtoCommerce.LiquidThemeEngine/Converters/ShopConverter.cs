@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
@@ -12,7 +13,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public static Shop ToShopifyModel(this Store store, storefrontModel.WorkContext workContext)
         {
-            var converter = AbstractTypeFactory<ShopConverter>.TryCreateInstance();
+            var converter = ServiceLocator.Current.GetInstance<ShopConverter>();
             return converter.ToShopifyModel(store, workContext);
         }
     }
@@ -21,7 +22,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Shop ToShopifyModel(Store store, storefrontModel.WorkContext workContext)
         {
-            var result = AbstractTypeFactory<Shop>.TryCreateInstance();
+            var result = ServiceLocator.Current.GetInstance<Shop>();
             result.InjectFrom<NullableAndEnumValueInjecter>(store);
 
             result.CustomerAccountsEnabled = true;

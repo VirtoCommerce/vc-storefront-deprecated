@@ -22,13 +22,13 @@ namespace VirtoCommerce.Storefront.Services
         #region ITaxEvaluator Members
         public async Task EvaluateTaxesAsync(TaxEvaluationContext context, IEnumerable<ITaxable> owners)
         {
-            var taxRates = await _coreModuleApiClient.Commerce.EvaluateTaxesAsync(context.StoreId, context.ToServiceModel());
+            var taxRates = await _coreModuleApiClient.Commerce.EvaluateTaxesAsync(context.StoreId, context.ToTaxEvaluationContextDTO());
             InnerEvaluateTaxes(taxRates, owners);
         }
 
         public void EvaluateTaxes(TaxEvaluationContext context, IEnumerable<ITaxable> owners)
         {
-            var taxRates = _coreModuleApiClient.Commerce.EvaluateTaxes(context.StoreId, context.ToServiceModel());
+            var taxRates = _coreModuleApiClient.Commerce.EvaluateTaxes(context.StoreId, context.ToTaxEvaluationContextDTO());
             InnerEvaluateTaxes(taxRates, owners);
         }
 
@@ -43,7 +43,7 @@ namespace VirtoCommerce.Storefront.Services
 
             foreach (var owner in owners)
             {
-                owner.ApplyTaxRates(taxRates.Select(x => x.ToWebModel(owner.Currency)));
+                owner.ApplyTaxRates(taxRates.Select(x => x.ToTaxRate(owner.Currency)));
             }
         }
     }

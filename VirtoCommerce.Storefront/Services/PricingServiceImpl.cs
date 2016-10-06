@@ -38,7 +38,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             var workContext = _workContextFactory();
             //Evaluate products prices
-            var evalContext = products.ToServiceModel(workContext);
+            var evalContext = products.ToPriceEvaluationContextDTO(workContext);
 
             var pricesResponse = await _pricingApi.PricingModule.EvaluatePricesAsync(evalContext);
             ApplyProductPricesInternal(products, pricesResponse);
@@ -54,7 +54,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             var workContext = _workContextFactory();
             //Evaluate products prices
-            var evalContext = products.ToServiceModel(workContext);
+            var evalContext = products.ToPriceEvaluationContextDTO(workContext);
 
             var pricesResponse = _pricingApi.PricingModule.EvaluatePrices(evalContext);
             ApplyProductPricesInternal(products, pricesResponse);
@@ -73,7 +73,7 @@ namespace VirtoCommerce.Storefront.Services
             foreach (var product in products)
             {
                 var productPrices = prices.Where(x => x.ProductId == product.Id)
-                                          .Select(x => x.ToWebModel(workContext.AllCurrencies, workContext.CurrentLanguage));
+                                          .Select(x => x.ToProductPrice(workContext.AllCurrencies, workContext.CurrentLanguage));
                 product.ApplyPrices(productPrices, workContext.CurrentCurrency, workContext.CurrentStore.Currencies);
             }
         }

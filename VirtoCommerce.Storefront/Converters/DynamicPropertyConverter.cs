@@ -1,103 +1,67 @@
 ﻿using System.Linq;
 using Newtonsoft.Json.Linq;
 using Omu.ValueInjecter;
-using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
-using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
-using marketingModel = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
-using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
-using platformModel = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
-using quoteModel = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
-using storeModel = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
+using platformDTO = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
+using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class DynamicPropertyConverter
     {
-        public static DynamicProperty ToWebModel(this cartModel.DynamicObjectProperty dto)
-        {
-            return dto.JsonConvert<orderModel.DynamicObjectProperty>().ToWebModel();
-        }
-
-        public static DynamicProperty ToWebModel(this customerModel.DynamicObjectProperty dto)
-        {
-            return dto.JsonConvert<orderModel.DynamicObjectProperty>().ToWebModel();
-        }
-
-        public static DynamicProperty ToWebModel(this marketingModel.DynamicObjectProperty dto)
-        {
-            return dto.JsonConvert<orderModel.DynamicObjectProperty>().ToWebModel();
-        }
-
-        public static DynamicProperty ToWebModel(this quoteModel.DynamicObjectProperty dto)
-        {
-            return dto.JsonConvert<orderModel.DynamicObjectProperty>().ToWebModel();
-        }
-
-        public static DynamicProperty ToWebModel(this storeModel.DynamicObjectProperty dto)
-        {
-            return dto.JsonConvert<orderModel.DynamicObjectProperty>().ToWebModel();
-        }
-
-        public static quoteModel.DynamicObjectProperty ToQuoteApiModel(this DynamicProperty dto)
-        {
-            return dto.ToCartApiModel().JsonConvert<quoteModel.DynamicObjectProperty>();
-        }
-
-        public static DynamicProperty ToWebModel(this orderModel.DynamicObjectProperty dto)
+        public static DynamicProperty ToDynamicProperty(this coreDTO.DynamicObjectProperty propertyDTO)
         {
             var result = new DynamicProperty();
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(dto);
+            result.InjectFrom<NullableAndEnumValueInjecter>(propertyDTO);
 
-            if (dto.DisplayNames != null)
+            if (propertyDTO.DisplayNames != null)
             {
-                result.DisplayNames = dto.DisplayNames.Select(x => new LocalizedString(new Language(x.Locale), x.Name)).ToList();
+                result.DisplayNames = propertyDTO.DisplayNames.Select(x => new LocalizedString(new Language(x.Locale), x.Name)).ToList();
             }
 
-            if (dto.Values != null)
+            if (propertyDTO.Values != null)
             {
                 if (result.IsDictionary)
                 {
-                    var dictValues = dto.Values.Where(x => x.Value != null)
+                    var dictValues = propertyDTO.Values.Where(x => x.Value != null)
                         .Select(x => x.Value)
                         .Cast<JObject>()
-                        .Select(x => x.ToObject<platformModel.DynamicPropertyDictionaryItem>())
+                        .Select(x => x.ToObject<platformDTO.DynamicPropertyDictionaryItem>())
                         .ToArray();
 
-                    result.DictionaryValues = dictValues.Select(x => x.ToWebModel()).ToList();
+                    result.DictionaryValues = dictValues.Select(x => x.ToDictItem()).ToList();
                 }
                 else
                 {
-                    result.Values = dto.Values.Select(x => x.ToWebModel()).ToList();
+                    result.Values = propertyDTO.Values.Select(x => x.ToLocalizedString()).ToList();
                 }
             }
 
             return result;
         }
 
-        public static cartModel.DynamicObjectProperty ToCartApiModel(this DynamicProperty dynamicProperty)
+
+        public static coreDTO.DynamicObjectProperty ToDynamicPropertyDTO(this DynamicProperty dynamicProperty)
         {
-            var result = new cartModel.DynamicObjectProperty();
+            var result = new coreDTO.DynamicObjectProperty();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(dynamicProperty);
 
             if (dynamicProperty.Values != null)
             {
-                result.Values = dynamicProperty.Values.Select(v => v.ToCartApiModel()).ToList();
+                result.Values = dynamicProperty.Values.Select(v => v.ToPropertyValueDTO()).ToList();
             }
             else if (dynamicProperty.DictionaryValues != null)
             {
-                result.Values = dynamicProperty.DictionaryValues.Select(x => x.ToCartApiModel()).ToList();
+                result.Values = dynamicProperty.DictionaryValues.Select(x => x.ToPropertyValueDTO()).ToList();
             }
 
             return result;
         }
 
-
-        private static DynamicPropertyDictionaryItem ToWebModel(this platformModel.DynamicPropertyDictionaryItem dto)
+        private static DynamicPropertyDictionaryItem ToDictItem(this platformDTO.DynamicPropertyDictionaryItem dto)
         {
             var result = new DynamicPropertyDictionaryItem();
             result.InjectFrom<NullableAndEnumValueInjecter>(dto);
@@ -108,26 +72,26 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        private static LocalizedString ToWebModel(this orderModel.DynamicPropertyObjectValue dto)
+        private static LocalizedString ToLocalizedString(this coreDTO.DynamicPropertyObjectValue dto)
         {
             return new LocalizedString(new Language(dto.Locale), dto.Value.ToString());
         }
 
-        private static cartModel.DynamicPropertyObjectValue ToCartApiModel(this DynamicPropertyDictionaryItem dictItem)
+        private static coreDTO.DynamicPropertyObjectValue ToPropertyValueDTO(this DynamicPropertyDictionaryItem dictItem)
         {
-            var result = new cartModel.DynamicPropertyObjectValue { Value = dictItem };
+            var result = new coreDTO.DynamicPropertyObjectValue { Value = dictItem };
             return result;
         }
 
-        private static cartModel.DynamicPropertyObjectValue ToCartApiModel(this LocalizedString dynamicPropertyObjectValue)
+        private static coreDTO.DynamicPropertyObjectValue ToPropertyValueDTO(this LocalizedString dynamicPropertyObjectValue)
         {
-            var result = new cartModel.DynamicPropertyObjectValue
+            var result = new coreDTO.DynamicPropertyObjectValue
             {
                 Value = dynamicPropertyObjectValue.Value,
                 Locale = dynamicPropertyObjectValue.Language.CultureName
             };
 
             return result;
-        }
+        }     
     }
 }

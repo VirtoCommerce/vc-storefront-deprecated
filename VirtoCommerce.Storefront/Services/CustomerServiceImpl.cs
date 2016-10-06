@@ -59,7 +59,7 @@ namespace VirtoCommerce.Storefront.Services
                 CustomerInfo result = null;
                 if (contact != null)
                 {
-                    result = contact.ToWebModel();
+                    result = contact.ToCustomerInfo();
                 }
                 return result;
             });
@@ -79,13 +79,13 @@ namespace VirtoCommerce.Storefront.Services
 
         public async Task CreateCustomerAsync(CustomerInfo customer)
         {
-            var contact = customer.ToServiceModel();
+            var contact = customer.ToCustomerContactDTO();
             await _customerApi.CustomerModule.CreateContactAsync(contact);
         }
 
         public async Task UpdateCustomerAsync(CustomerInfo customer)
         {
-            var contact = customer.ToServiceModel();
+            var contact = customer.ToCustomerContactDTO();
             await _customerApi.CustomerModule.UpdateContactAsync(contact);
             //Invalidate cache
             _cacheManager.ClearRegion(string.Format(_customerCacheRegionFormat, customer.Id));
@@ -100,13 +100,13 @@ namespace VirtoCommerce.Storefront.Services
         public async Task<Vendor[]> GetVendorsByIdsAsync(params string[] vendorIds)
         {
             var workContext = _workContextFactory();
-            return (await _customerApi.CustomerModule.GetVendorsByIdsAsync(vendorIds)).Select(x=>x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
+            return (await _customerApi.CustomerModule.GetVendorsByIdsAsync(vendorIds)).Select(x=>x.ToVendor(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
         }
 
         public Vendor[] GetVendorsByIds(params string[] vendorIds)
         {
             var workContext = _workContextFactory();
-            var retVal = _customerApi.CustomerModule.GetVendorsByIds(vendorIds).Select(x=>x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
+            var retVal = _customerApi.CustomerModule.GetVendorsByIds(vendorIds).Select(x=>x.ToVendor(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
             return retVal;
         }
 
@@ -127,7 +127,7 @@ namespace VirtoCommerce.Storefront.Services
                 criteria.Sort = SortInfo.ToString(sortInfos);
             }
             var result = _customerApi.CustomerModule.SearchVendors(criteria);
-            return new StaticPagedList<Vendor>(result.Vendors.Select(x => x.ToWebModel(workContext.CurrentLanguage, workContext.CurrentStore)), pageNumber, pageSize, result.TotalCount.Value);
+            return new StaticPagedList<Vendor>(result.Vendors.Select(x => x.ToVendor(workContext.CurrentLanguage, workContext.CurrentStore)), pageNumber, pageSize, result.TotalCount.Value);
         }
         #endregion
 
@@ -187,7 +187,7 @@ namespace VirtoCommerce.Storefront.Services
                 };
                 var cacheKey = "GetCustomerQuotes-" + quoteSearchCriteria.GetHashCode();
                 var quoteRequestsResponse = _cacheManager.Get(cacheKey, string.Format(_customerQuotesCacheRegionFormat, customer.Id), () => _quoteApi.QuoteModule.Search(quoteSearchCriteria));
-                return new StaticPagedList<QuoteRequest>(quoteRequestsResponse.QuoteRequests.Select(x => x.ToWebModel(workContext.AllCurrencies, workContext.CurrentLanguage)),
+                return new StaticPagedList<QuoteRequest>(quoteRequestsResponse.QuoteRequests.Select(x => x.ToQuoteRequest(workContext.AllCurrencies, workContext.CurrentLanguage)),
                                                          pageNumber, pageSize, quoteRequestsResponse.TotalCount.Value);
             };
 
@@ -210,7 +210,7 @@ namespace VirtoCommerce.Storefront.Services
                 orderSearchcriteria.Take = pageSize;
                 var cacheKey = "GetCustomerOrders-" + orderSearchcriteria.GetHashCode();
                 var ordersResponse = _cacheManager.Get(cacheKey, string.Format(_customerOrdersCacheRegionFormat, customer.Id), () => _orderApi.OrderModule.Search(orderSearchcriteria));
-                return new StaticPagedList<CustomerOrder>(ordersResponse.CustomerOrders.Select(x => x.ToWebModel(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,
+                return new StaticPagedList<CustomerOrder>(ordersResponse.CustomerOrders.Select(x => x.ToCustomerOrder(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,
                                                           ordersResponse.TotalCount.Value);
             };
             return new MutablePagedList<CustomerOrder>(ordersGetter);

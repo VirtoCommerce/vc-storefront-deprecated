@@ -1,5 +1,5 @@
 ﻿using Omu.ValueInjecter;
-using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
+using platformDTO = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 
@@ -7,12 +7,12 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class SettingConverter
     {
-        public static SettingEntry ToWebModel(this Setting dto)
+        public static SettingEntry ToSettingEntry(this platformDTO.Setting settingDTO)
         {
             var retVal = new SettingEntry();
-            retVal.InjectFrom<NullableAndEnumValueInjecter>(dto);
-            retVal.AllowedValues = dto.AllowedValues;
-            retVal.ArrayValues = dto.ArrayValues;
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(settingDTO);
+            retVal.AllowedValues = settingDTO.AllowedValues;
+            retVal.ArrayValues = settingDTO.ArrayValues;
             return retVal;
         }
     }
