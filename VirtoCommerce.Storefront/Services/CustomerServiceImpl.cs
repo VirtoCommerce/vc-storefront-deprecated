@@ -79,13 +79,13 @@ namespace VirtoCommerce.Storefront.Services
 
         public async Task CreateCustomerAsync(CustomerInfo customer)
         {
-            var contact = customer.ToCustomerContactDTO();
+            var contact = customer.ToCustomerContactDto();
             await _customerApi.CustomerModule.CreateContactAsync(contact);
         }
 
         public async Task UpdateCustomerAsync(CustomerInfo customer)
         {
-            var contact = customer.ToCustomerContactDTO();
+            var contact = customer.ToCustomerContactDto();
             await _customerApi.CustomerModule.UpdateContactAsync(contact);
             //Invalidate cache
             _cacheManager.ClearRegion(string.Format(_customerCacheRegionFormat, customer.Id));
@@ -100,13 +100,13 @@ namespace VirtoCommerce.Storefront.Services
         public async Task<Vendor[]> GetVendorsByIdsAsync(params string[] vendorIds)
         {
             var workContext = _workContextFactory();
-            return (await _customerApi.CustomerModule.GetVendorsByIdsAsync(vendorIds)).Select(x=>x.ToVendor(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
+            return (await _customerApi.CustomerModule.GetVendorsByIdsAsync(vendorIds)).Select(x => x.ToVendor(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
         }
 
         public Vendor[] GetVendorsByIds(params string[] vendorIds)
         {
             var workContext = _workContextFactory();
-            var retVal = _customerApi.CustomerModule.GetVendorsByIds(vendorIds).Select(x=>x.ToVendor(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
+            var retVal = _customerApi.CustomerModule.GetVendorsByIds(vendorIds).Select(x => x.ToVendor(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
             return retVal;
         }
 

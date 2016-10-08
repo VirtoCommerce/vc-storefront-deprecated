@@ -11,9 +11,9 @@ using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Marketing.Factories;
 using VirtoCommerce.Storefront.Model.Stores;
-using catalogDTO = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
-using searchDTO = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models;
-using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using catalogDto = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using searchDto = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -28,17 +28,17 @@ namespace VirtoCommerce.Storefront.Converters
         }
 
 
-        public static Product ToProduct(this searchDTO.Product productDTO, Language currentLanguage, Currency currentCurrency, Store store)
+        public static Product ToProduct(this searchDto.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            return CatalogConverterInstance.ToProduct(productDTO, currentLanguage, currentCurrency, store);
+            return CatalogConverterInstance.ToProduct(productDto, currentLanguage, currentCurrency, store);
         }
 
-        public static Product ToProduct(this catalogDTO.Product productDTO, Language currentLanguage, Currency currentCurrency, Store store)
+        public static Product ToProduct(this catalogDto.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            return CatalogConverterInstance.ToProduct(productDTO, currentLanguage, currentCurrency, store);
+            return CatalogConverterInstance.ToProduct(productDto, currentLanguage, currentCurrency, store);
         }
 
-   
+
         public static PromotionProductEntry ToPromotionItem(this Product product)
         {
             return CatalogConverterInstance.ToPromotionItem(product);
@@ -50,149 +50,149 @@ namespace VirtoCommerce.Storefront.Converters
             return CatalogConverterInstance.ToTaxLines(product);
         }
 
-        public static Image ToImage(this catalogDTO.Image imageDTO)
+        public static Image ToImage(this catalogDto.Image imageDto)
         {
-            return CatalogConverterInstance.ToImage(imageDTO);
+            return CatalogConverterInstance.ToImage(imageDto);
         }
 
-        public static Asset ToAsset(this catalogDTO.Asset assetDTO)
+        public static Asset ToAsset(this catalogDto.Asset assetDto)
         {
-            return CatalogConverterInstance.ToAsset(assetDTO);
+            return CatalogConverterInstance.ToAsset(assetDto);
         }
 
-        public static Category ToCategory(this searchDTO.Category categoryDTO, Language currentLanguage, Store store)
-        {
-            return CatalogConverterInstance.ToCategory(categoryDTO, currentLanguage, store);
-        }
-
-        public static Category ToCategory(this catalogDTO.Category categoryDto, Language currentLanguage, Store store)
+        public static Category ToCategory(this searchDto.Category categoryDto, Language currentLanguage, Store store)
         {
             return CatalogConverterInstance.ToCategory(categoryDto, currentLanguage, store);
         }
 
-        public static Association ToAssociation(this catalogDTO.ProductAssociation associationDTO)
+        public static Category ToCategory(this catalogDto.Category categoryDto, Language currentLanguage, Store store)
         {
-            return CatalogConverterInstance.ToAssociation(associationDTO);
+            return CatalogConverterInstance.ToCategory(categoryDto, currentLanguage, store);
         }
 
-        public static searchDTO.CategorySearch ToCategorySearchDto(this CategorySearchCriteria criteria, WorkContext workContext)
+        public static Association ToAssociation(this catalogDto.ProductAssociation associationDto)
         {
-            return CatalogConverterInstance.ToCategorySearchDTO(criteria, workContext);
+            return CatalogConverterInstance.ToAssociation(associationDto);
         }
 
-        public static searchDTO.ProductSearch ToProductSearchDTO(this ProductSearchCriteria criteria, WorkContext workContext)
+        public static searchDto.CategorySearch ToCategorySearchDto(this CategorySearchCriteria criteria, WorkContext workContext)
         {
-            return CatalogConverterInstance.ToProductSearchDTO(criteria, workContext);
+            return CatalogConverterInstance.ToCategorySearchDto(criteria, workContext);
         }
 
-        public static CatalogProperty ToProperty(this catalogDTO.Property propertyDTO, Language currentLanguage)
+        public static searchDto.ProductSearch ToProductSearchDto(this ProductSearchCriteria criteria, WorkContext workContext)
         {
-            return CatalogConverterInstance.ToProperty(propertyDTO, currentLanguage);
+            return CatalogConverterInstance.ToProductSearchDto(criteria, workContext);
         }
 
-        public static Aggregation ToAggregation(this searchDTO.Aggregation aggregationDTO, string currentLanguage)
+        public static CatalogProperty ToProperty(this catalogDto.Property propertyDto, Language currentLanguage)
         {
-            return CatalogConverterInstance.ToAggregation(aggregationDTO, currentLanguage);
+            return CatalogConverterInstance.ToProperty(propertyDto, currentLanguage);
         }
 
-        public static AggregationItem ToAggregationItem(this searchDTO.AggregationItem itemDto, string currentLanguage)
+        public static Aggregation ToAggregation(this searchDto.Aggregation aggregationDto, string currentLanguage)
+        {
+            return CatalogConverterInstance.ToAggregation(aggregationDto, currentLanguage);
+        }
+
+        public static AggregationItem ToAggregationItem(this searchDto.AggregationItem itemDto, string currentLanguage)
         {
             return CatalogConverterInstance.ToAggregationItem(itemDto, currentLanguage);
         }
 
-        public static SeoInfo ToSeoInfo(this catalogDTO.SeoInfo seoDTO)
+        public static SeoInfo ToSeoInfo(this catalogDto.SeoInfo seoDto)
         {
-            return CatalogConverterInstance.ToSeoInfo(seoDTO);
+            return CatalogConverterInstance.ToSeoInfo(seoDto);
         }
     }
-   
+
     public class CatalogConverter
     {
-        public virtual SeoInfo ToSeoInfo(catalogDTO.SeoInfo seoDTO)
+        public virtual SeoInfo ToSeoInfo(catalogDto.SeoInfo seoDto)
         {
-            return seoDTO.JsonConvert<coreDTO.SeoInfo>().ToSeoInfo();
+            return seoDto.JsonConvert<coreDto.SeoInfo>().ToSeoInfo();
         }
 
-        public virtual Aggregation ToAggregation(searchDTO.Aggregation aggregationDTO, string currentLanguage)
+        public virtual Aggregation ToAggregation(searchDto.Aggregation aggregationDto, string currentLanguage)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAggregation();
-            result.InjectFrom<NullableAndEnumValueInjecter>(aggregationDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(aggregationDto);
 
-            if (aggregationDTO.Items != null)
+            if (aggregationDto.Items != null)
             {
-                result.Items = aggregationDTO.Items
+                result.Items = aggregationDto.Items
                     .Select(i => i.ToAggregationItem(currentLanguage))
                     .ToArray();
             }
 
-            if (aggregationDTO.Labels != null)
+            if (aggregationDto.Labels != null)
             {
                 result.Label =
-                    aggregationDTO.Labels.Where(l => string.Equals(l.Language, currentLanguage, StringComparison.OrdinalIgnoreCase))
+                    aggregationDto.Labels.Where(l => string.Equals(l.Language, currentLanguage, StringComparison.OrdinalIgnoreCase))
                         .Select(l => l.Label)
                         .FirstOrDefault();
             }
 
             if (string.IsNullOrEmpty(result.Label))
             {
-                result.Label = aggregationDTO.Field;
+                result.Label = aggregationDto.Field;
             }
 
             return result;
         }
 
-        public virtual AggregationItem ToAggregationItem(searchDTO.AggregationItem itemDTO, string currentLanguage)
+        public virtual AggregationItem ToAggregationItem(searchDto.AggregationItem itemDto, string currentLanguage)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAggregationItem();
-            result.InjectFrom<NullableAndEnumValueInjecter>(itemDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(itemDto);
 
-            if (itemDTO.Labels != null)
+            if (itemDto.Labels != null)
             {
                 result.Label =
-                    itemDTO.Labels.Where(l => string.Equals(l.Language, currentLanguage, StringComparison.OrdinalIgnoreCase))
+                    itemDto.Labels.Where(l => string.Equals(l.Language, currentLanguage, StringComparison.OrdinalIgnoreCase))
                         .Select(l => l.Label)
                         .FirstOrDefault();
             }
 
-            if (string.IsNullOrEmpty(result.Label) && itemDTO.Value != null)
+            if (string.IsNullOrEmpty(result.Label) && itemDto.Value != null)
             {
-                result.Label = itemDTO.Value.ToString();
+                result.Label = itemDto.Value.ToString();
             }
 
             return result;
         }
 
-        public virtual CatalogProperty ToProperty(catalogDTO.Property propertyDTO, Language currentLanguage)
+        public virtual CatalogProperty ToProperty(catalogDto.Property propertyDto, Language currentLanguage)
         {
             var retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProperty();
 
-            retVal.InjectFrom<NullableAndEnumValueInjecter>(propertyDTO);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(propertyDto);
             //Set display names and set current display name for requested language
-            if (propertyDTO.DisplayNames != null)
+            if (propertyDto.DisplayNames != null)
             {
-                retVal.DisplayNames = propertyDTO.DisplayNames.Select(x => new LocalizedString(new Language(x.LanguageCode), x.Name)).ToList();
+                retVal.DisplayNames = propertyDto.DisplayNames.Select(x => new LocalizedString(new Language(x.LanguageCode), x.Name)).ToList();
                 retVal.DisplayName = retVal.DisplayNames.FindWithLanguage(currentLanguage, x => x.Value, null);
             }
 
             //if display name for requested language not set get system property name
             if (string.IsNullOrEmpty(retVal.DisplayName))
             {
-                retVal.DisplayName = propertyDTO.Name;
+                retVal.DisplayName = propertyDto.Name;
             }
 
             //For multilingual properties need populate LocalizedValues collection and set value for requested language
-            if (propertyDTO.Multilanguage ?? false)
+            if (propertyDto.Multilanguage ?? false)
             {
-                if (propertyDTO.Values != null)
+                if (propertyDto.Values != null)
                 {
-                    retVal.LocalizedValues = propertyDTO.Values.Where(x => x.Value != null).Select(x => new LocalizedString(new Language(x.LanguageCode), x.Value.ToString())).ToList();
+                    retVal.LocalizedValues = propertyDto.Values.Where(x => x.Value != null).Select(x => new LocalizedString(new Language(x.LanguageCode), x.Value.ToString())).ToList();
                 }
             }
 
             //Set property value
-            if (propertyDTO.Values != null)
+            if (propertyDto.Values != null)
             {
-                var propValue = propertyDTO.Values.FirstOrDefault(x => x.Value != null);
+                var propValue = propertyDto.Values.FirstOrDefault(x => x.Value != null);
                 if (propValue != null)
                 {
                     //Use only one prop value (reserve multi-values to other scenarios)
@@ -210,9 +210,9 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public virtual searchDTO.ProductSearch ToProductSearchDTO(ProductSearchCriteria criteria, WorkContext workContext)
+        public virtual searchDto.ProductSearch ToProductSearchDto(ProductSearchCriteria criteria, WorkContext workContext)
         {
-            var result = new searchDTO.ProductSearch()
+            var result = new searchDto.ProductSearch()
             {
                 SearchPhrase = criteria.Keyword,
                 Outline = criteria.Outline,
@@ -240,9 +240,9 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual searchDTO.CategorySearch ToCategorySearchDTO(CategorySearchCriteria criteria, WorkContext workContext)
+        public virtual searchDto.CategorySearch ToCategorySearchDto(CategorySearchCriteria criteria, WorkContext workContext)
         {
-            var result = new searchDTO.CategorySearch()
+            var result = new searchDto.CategorySearch()
             {
                 Skip = criteria.Start,
                 Take = criteria.PageSize,
@@ -255,67 +255,67 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual Association ToAssociation(catalogDTO.ProductAssociation associationDTO)
+        public virtual Association ToAssociation(catalogDto.ProductAssociation associationDto)
         {
             Association retVal = null;
-            if (associationDTO.AssociatedObjectType.EqualsInvariant("product"))
+            if (associationDto.AssociatedObjectType.EqualsInvariant("product"))
             {
-                retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProductAssociation(associationDTO.AssociatedObjectId);
+                retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProductAssociation(associationDto.AssociatedObjectId);
             }
-            else if (associationDTO.AssociatedObjectType.EqualsInvariant("category"))
+            else if (associationDto.AssociatedObjectType.EqualsInvariant("category"))
             {
-                retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateCategoryAssociation(associationDTO.AssociatedObjectId);
+                retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateCategoryAssociation(associationDto.AssociatedObjectId);
             }
             if (retVal != null)
             {
-                retVal.InjectFrom<NullableAndEnumValueInjecter>(associationDTO);
-                retVal.Image = new Image { Url = associationDTO.AssociatedObjectImg };
+                retVal.InjectFrom<NullableAndEnumValueInjecter>(associationDto);
+                retVal.Image = new Image { Url = associationDto.AssociatedObjectImg };
             }
 
             return retVal;
         }
 
-        public virtual Category ToCategory(searchDTO.Category categoryDTO, Language currentLanguage, Store store)
+        public virtual Category ToCategory(searchDto.Category categoryDto, Language currentLanguage, Store store)
         {
-            return ToCategory(categoryDTO.JsonConvert<catalogDTO.Category>(), currentLanguage, store);
+            return ToCategory(categoryDto.JsonConvert<catalogDto.Category>(), currentLanguage, store);
         }
 
-        public virtual Category ToCategory(catalogDTO.Category categoryDTO, Language currentLanguage, Store store)
+        public virtual Category ToCategory(catalogDto.Category categoryDto, Language currentLanguage, Store store)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateCategory();
-            result.InjectFrom<NullableAndEnumValueInjecter>(categoryDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(categoryDto);
 
-            if(!categoryDTO.SeoInfos.IsNullOrEmpty())
+            if (!categoryDto.SeoInfos.IsNullOrEmpty())
             {
-                var seoInfoDTO = categoryDTO.SeoInfos.Select(x => x.JsonConvert<coreDTO.SeoInfo>())
+                var seoInfoDto = categoryDto.SeoInfos.Select(x => x.JsonConvert<coreDto.SeoInfo>())
                                             .GetBestMatchedSeoInfo(store, currentLanguage);
-                if (seoInfoDTO != null)
+                if (seoInfoDto != null)
                 {
-                    result.SeoInfo = seoInfoDTO.ToSeoInfo();
+                    result.SeoInfo = seoInfoDto.ToSeoInfo();
                 }
             }
- 
+
             if (result.SeoInfo == null)
             {
                 result.SeoInfo = new SeoInfo
                 {
-                    Slug = categoryDTO.Id,
-                    Title = categoryDTO.Name
+                    Slug = categoryDto.Id,
+                    Title = categoryDto.Name
                 };
             }
 
-            result.Url = "~/" + categoryDTO.Outlines.GetSeoPath(store, currentLanguage, "category/" + categoryDTO.Id);
-            result.Outline = categoryDTO.Outlines.GetOutlinePath(store.Catalog);
+            result.Url = "~/" + categoryDto.Outlines.GetSeoPath(store, currentLanguage, "category/" + categoryDto.Id);
+            result.Outline = categoryDto.Outlines.GetOutlinePath(store.Catalog);
 
-            if (categoryDTO.Images != null)
+            if (categoryDto.Images != null)
             {
-                result.Images = categoryDTO.Images.Select(i => i.ToImage()).ToArray();
+                result.Images = categoryDto.Images.Select(i => i.ToImage()).ToArray();
                 result.PrimaryImage = result.Images.FirstOrDefault();
             }
 
-            if (categoryDTO.Properties != null)
+            if (categoryDto.Properties != null)
             {
-                result.Properties = categoryDTO.Properties
+                result.Properties = categoryDto.Properties
                     .Where(x => string.Equals(x.Type, "Category", StringComparison.OrdinalIgnoreCase))
                     .Select(p => p.ToProperty(currentLanguage))
                     .ToList();
@@ -324,79 +324,79 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual Image ToImage(catalogDTO.Image imageDTO)
+        public virtual Image ToImage(catalogDto.Image imageDto)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateImage();
-            result.InjectFrom<NullableAndEnumValueInjecter>(imageDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(imageDto);
             return result;
         }
 
-        public virtual Asset ToAsset(catalogDTO.Asset assetDTO)
+        public virtual Asset ToAsset(catalogDto.Asset assetDto)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAsset();
-            result.InjectFrom<NullableAndEnumValueInjecter>(assetDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(assetDto);
             return result;
         }
 
-        public virtual Product ToProduct(searchDTO.Product productDTO, Language currentLanguage, Currency currentCurrency, Store store)
+        public virtual Product ToProduct(searchDto.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            return ToProduct(productDTO.JsonConvert<catalogDTO.Product>(), currentLanguage, currentCurrency, store);
+            return ToProduct(productDto.JsonConvert<catalogDto.Product>(), currentLanguage, currentCurrency, store);
         }
 
-        public virtual Product ToProduct(catalogDTO.Product productDTO, Language currentLanguage, Currency currentCurrency, Store store)
+        public virtual Product ToProduct(catalogDto.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
             var retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProduct(currentCurrency, currentLanguage);
-            retVal.InjectFrom<NullableAndEnumValueInjecter>(productDTO);
-            retVal.Weight = (decimal?)productDTO.Weight;
-            retVal.Height = (decimal?)productDTO.Height;
-            retVal.Width = (decimal?)productDTO.Width;
-            retVal.Length = (decimal?)productDTO.Length;
-            retVal.Sku = productDTO.Code;
-            retVal.VendorId = productDTO.Vendor;
-            retVal.Outline = productDTO.Outlines.GetOutlinePath(store.Catalog);
-            retVal.Url = "~/" + productDTO.Outlines.GetSeoPath(store, currentLanguage, "product/" + productDTO.Id);
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(productDto);
+            retVal.Weight = (decimal?)productDto.Weight;
+            retVal.Height = (decimal?)productDto.Height;
+            retVal.Width = (decimal?)productDto.Width;
+            retVal.Length = (decimal?)productDto.Length;
+            retVal.Sku = productDto.Code;
+            retVal.VendorId = productDto.Vendor;
+            retVal.Outline = productDto.Outlines.GetOutlinePath(store.Catalog);
+            retVal.Url = "~/" + productDto.Outlines.GetSeoPath(store, currentLanguage, "product/" + productDto.Id);
 
-            if (productDTO.Properties != null)
+            if (productDto.Properties != null)
             {
-                retVal.Properties = productDTO.Properties
+                retVal.Properties = productDto.Properties
                     .Where(x => string.Equals(x.Type, "Product", StringComparison.InvariantCultureIgnoreCase))
                     .Select(p => p.ToProperty(currentLanguage))
                     .ToList();
 
-                retVal.VariationProperties = productDTO.Properties
+                retVal.VariationProperties = productDto.Properties
                     .Where(x => string.Equals(x.Type, "Variation", StringComparison.InvariantCultureIgnoreCase))
                     .Select(p => p.ToProperty(currentLanguage))
                     .ToList();
             }
 
-            if (productDTO.Images != null)
+            if (productDto.Images != null)
             {
-                retVal.Images = productDTO.Images.Select(ToImage).ToArray();
-                retVal.PrimaryImage = retVal.Images.FirstOrDefault(x => string.Equals(x.Url, productDTO.ImgSrc, StringComparison.InvariantCultureIgnoreCase));
+                retVal.Images = productDto.Images.Select(ToImage).ToArray();
+                retVal.PrimaryImage = retVal.Images.FirstOrDefault(x => string.Equals(x.Url, productDto.ImgSrc, StringComparison.InvariantCultureIgnoreCase));
             }
 
-            if (productDTO.Assets != null)
+            if (productDto.Assets != null)
             {
-                retVal.Assets = productDTO.Assets.Select(ToAsset).ToList();
+                retVal.Assets = productDto.Assets.Select(ToAsset).ToList();
             }
 
-            if (productDTO.Variations != null)
+            if (productDto.Variations != null)
             {
-                retVal.Variations = productDTO.Variations.Select(v => ToProduct(v, currentLanguage, currentCurrency, store)).ToList();
+                retVal.Variations = productDto.Variations.Select(v => ToProduct(v, currentLanguage, currentCurrency, store)).ToList();
             }
 
-            if (!productDTO.Associations.IsNullOrEmpty())
+            if (!productDto.Associations.IsNullOrEmpty())
             {
-                retVal.Associations.AddRange(productDTO.Associations.Select(ToAssociation).Where(x => x != null));
+                retVal.Associations.AddRange(productDto.Associations.Select(ToAssociation).Where(x => x != null));
             }
 
-            if(!productDTO.SeoInfos.IsNullOrEmpty())
+            if (!productDto.SeoInfos.IsNullOrEmpty())
             {
-                var seoInfoDTO = productDTO.SeoInfos.Select(x=> x.JsonConvert<coreDTO.SeoInfo>())
+                var seoInfoDto = productDto.SeoInfos.Select(x => x.JsonConvert<coreDto.SeoInfo>())
                                             .GetBestMatchedSeoInfo(store, currentLanguage);
-                if(seoInfoDTO != null)
+                if (seoInfoDto != null)
                 {
-                    retVal.SeoInfo = seoInfoDTO.ToSeoInfo();
+                    retVal.SeoInfo = seoInfoDto.ToSeoInfo();
                 }
             }
 
@@ -404,15 +404,15 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.SeoInfo = new SeoInfo
                 {
-                    Title = productDTO.Id,
+                    Title = productDto.Id,
                     Language = currentLanguage,
-                    Slug = productDTO.Code
+                    Slug = productDto.Code
                 };
             }
 
-            if (productDTO.Reviews != null)
+            if (productDto.Reviews != null)
             {
-                retVal.Descriptions = productDTO.Reviews.Select(r => new EditorialReview
+                retVal.Descriptions = productDto.Reviews.Select(r => new EditorialReview
                 {
                     Language = new Language(r.LanguageCode),
                     ReviewType = r.ReviewType,
@@ -424,7 +424,7 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-      
+
 
         public virtual PromotionProductEntry ToPromotionItem(Product product)
         {

@@ -2,15 +2,15 @@
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Marketing;
+using VirtoCommerce.Storefront.Model.Marketing.Factories;
 using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Order.Factories;
-using orderDTO = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
-using VirtoCommerce.Storefront.Model.Marketing.Factories;
-using VirtoCommerce.Storefront.Common;
-using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using orderDto = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -24,210 +24,210 @@ namespace VirtoCommerce.Storefront.Converters
             }
         }
 
-        public static CustomerOrder ToCustomerOrder(this orderDTO.CustomerOrder orderDTO, ICollection<Currency> availCurrencies, Language language)
-        {           
-            return OrderConverterInstance.ToCustomerOrder(orderDTO, availCurrencies, language);
-        }
-        
-        public static TaxDetail ToTaxDetail(this orderDTO.TaxDetail taxDetailDTO, Currency currency)
+        public static CustomerOrder ToCustomerOrder(this orderDto.CustomerOrder orderDto, ICollection<Currency> availCurrencies, Language language)
         {
-            return OrderConverterInstance.ToTaxDetail(taxDetailDTO, currency);
+            return OrderConverterInstance.ToCustomerOrder(orderDto, availCurrencies, language);
         }
 
-        public static Discount ToDiscount(this orderDTO.Discount discountDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public static TaxDetail ToTaxDetail(this orderDto.TaxDetail taxDetailDto, Currency currency)
         {
-            return OrderConverterInstance.ToDiscount(discountDTO, availCurrencies, language);
+            return OrderConverterInstance.ToTaxDetail(taxDetailDto, currency);
         }
 
-        public static PaymentIn ToOrderInPayment(this orderDTO.PaymentIn paymentInDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public static Discount ToDiscount(this orderDto.Discount discountDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            return OrderConverterInstance.ToOrderInPayment(paymentInDTO, availCurrencies, language);
+            return OrderConverterInstance.ToDiscount(discountDto, availCurrencies, language);
         }
 
-        public static LineItem ToOrderLineItem(this orderDTO.LineItem lineItemDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public static PaymentIn ToOrderInPayment(this orderDto.PaymentIn paymentInDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            return OrderConverterInstance.ToOrderLineItem(lineItemDTO, availCurrencies, language);
+            return OrderConverterInstance.ToOrderInPayment(paymentInDto, availCurrencies, language);
         }
 
-        public static Model.Order.Shipment ToOrderShipment(this orderDTO.Shipment shipmentDTO, ICollection<Currency> availCurrencies, Language language)
+        public static LineItem ToOrderLineItem(this orderDto.LineItem lineItemDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            return OrderConverterInstance.ToOrderShipment(shipmentDTO, availCurrencies, language);
+            return OrderConverterInstance.ToOrderLineItem(lineItemDto, availCurrencies, language);
         }
 
-        public static ShipmentItem ToShipmentItem(this orderDTO.ShipmentItem shipmentItemDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public static Model.Order.Shipment ToOrderShipment(this orderDto.Shipment shipmentDto, ICollection<Currency> availCurrencies, Language language)
         {
-            return OrderConverterInstance.ToShipmentItem(shipmentItemDTO, availCurrencies, language);
+            return OrderConverterInstance.ToOrderShipment(shipmentDto, availCurrencies, language);
         }
 
-        public static ShipmentPackage ToShipmentPackage(this orderDTO.ShipmentPackage shipmentPackageDTO, IEnumerable<Currency> currencies, Language language)
+        public static ShipmentItem ToShipmentItem(this orderDto.ShipmentItem shipmentItemDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            return OrderConverterInstance.ToShipmentPackage(shipmentPackageDTO, currencies, language);
+            return OrderConverterInstance.ToShipmentItem(shipmentItemDto, availCurrencies, language);
         }
 
-        public static orderDTO.Address ToOrderAddressDTO(this Address address)
+        public static ShipmentPackage ToShipmentPackage(this orderDto.ShipmentPackage shipmentPackageDto, IEnumerable<Currency> currencies, Language language)
         {
-            return OrderConverterInstance.ToOrderAddressDTO(address);
+            return OrderConverterInstance.ToShipmentPackage(shipmentPackageDto, currencies, language);
         }
 
-        public static Address ToAddress(this orderDTO.Address addressDTO)
+        public static orderDto.Address ToOrderAddressDto(this Address address)
         {
-            return OrderConverterInstance.ToAddress(addressDTO);
+            return OrderConverterInstance.ToOrderAddressDto(address);
         }
 
-        public static DynamicProperty ToDynamicProperty(this orderDTO.DynamicObjectProperty propertyDTO)
+        public static Address ToAddress(this orderDto.Address addressDto)
         {
-            return OrderConverterInstance.ToDynamicProperty(propertyDTO);
+            return OrderConverterInstance.ToAddress(addressDto);
         }
 
-        public static orderDTO.DynamicObjectProperty ToOrderDynamicPropertyDTO(this DynamicProperty property)
+        public static DynamicProperty ToDynamicProperty(this orderDto.DynamicObjectProperty propertyDto)
         {
-            return OrderConverterInstance.ToOrderDynamicPropertyDTO(property);
+            return OrderConverterInstance.ToDynamicProperty(propertyDto);
+        }
+
+        public static orderDto.DynamicObjectProperty ToOrderDynamicPropertyDto(this DynamicProperty property)
+        {
+            return OrderConverterInstance.ToOrderDynamicPropertyDto(property);
         }
     }
 
     public class OrderConverter
     {
-        public virtual DynamicProperty ToDynamicProperty(orderDTO.DynamicObjectProperty propertyDTO)
+        public virtual DynamicProperty ToDynamicProperty(orderDto.DynamicObjectProperty propertyDto)
         {
-            return propertyDTO.JsonConvert<coreDTO.DynamicObjectProperty>().ToDynamicProperty();
+            return propertyDto.JsonConvert<coreDto.DynamicObjectProperty>().ToDynamicProperty();
         }
 
-        public virtual orderDTO.DynamicObjectProperty ToOrderDynamicPropertyDTO(DynamicProperty property)
+        public virtual orderDto.DynamicObjectProperty ToOrderDynamicPropertyDto(DynamicProperty property)
         {
-            return property.ToDynamicPropertyDTO().JsonConvert<orderDTO.DynamicObjectProperty>();
+            return property.ToDynamicPropertyDto().JsonConvert<orderDto.DynamicObjectProperty>();
         }
 
-        public virtual orderDTO.Address ToOrderAddressDTO(Address address)
+        public virtual orderDto.Address ToOrderAddressDto(Address address)
         {
-            return address.ToCoreAddressDTO().JsonConvert<orderDTO.Address>();
+            return address.ToCoreAddressDto().JsonConvert<orderDto.Address>();
         }
 
-        public virtual Address ToAddress(orderDTO.Address addressDTO)
+        public virtual Address ToAddress(orderDto.Address addressDto)
         {
-            return addressDTO.JsonConvert<coreDTO.Address>().ToAddress();
+            return addressDto.JsonConvert<coreDto.Address>().ToAddress();
         }
 
-        public virtual ShipmentPackage ToShipmentPackage(orderDTO.ShipmentPackage shipmentPackageDTO, IEnumerable<Currency> currencies, Language language)
+        public virtual ShipmentPackage ToShipmentPackage(orderDto.ShipmentPackage shipmentPackageDto, IEnumerable<Currency> currencies, Language language)
         {
             var webModel = ServiceLocator.Current.GetInstance<OrderFactory>().CreateShipmentPackage();
 
-            webModel.InjectFrom<NullableAndEnumValueInjecter>(shipmentPackageDTO);
+            webModel.InjectFrom<NullableAndEnumValueInjecter>(shipmentPackageDto);
 
-            if (shipmentPackageDTO.Items != null)
+            if (shipmentPackageDto.Items != null)
             {
-                webModel.Items = shipmentPackageDTO.Items.Select(i => ToShipmentItem(i, currencies, language)).ToList();
+                webModel.Items = shipmentPackageDto.Items.Select(i => ToShipmentItem(i, currencies, language)).ToList();
             }
 
             return webModel;
         }
 
-        public virtual ShipmentItem ToShipmentItem(orderDTO.ShipmentItem shipmentItemDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public virtual ShipmentItem ToShipmentItem(orderDto.ShipmentItem shipmentItemDto, IEnumerable<Currency> availCurrencies, Language language)
         {
             var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateShipmentItem();
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(shipmentItemDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(shipmentItemDto);
 
-            if (shipmentItemDTO.LineItem != null)
+            if (shipmentItemDto.LineItem != null)
             {
-                result.LineItem = ToOrderLineItem(shipmentItemDTO.LineItem, availCurrencies, language);
+                result.LineItem = ToOrderLineItem(shipmentItemDto.LineItem, availCurrencies, language);
             }
 
             return result;
         }
 
-        public virtual Shipment ToOrderShipment(orderDTO.Shipment shipmentDTO, ICollection<Currency> availCurrencies, Language language)
+        public virtual Shipment ToOrderShipment(orderDto.Shipment shipmentDto, ICollection<Currency> availCurrencies, Language language)
         {
-            var currency = availCurrencies.FirstOrDefault(x => x.Equals(shipmentDTO.Currency)) ?? new Currency(language, shipmentDTO.Currency);
+            var currency = availCurrencies.FirstOrDefault(x => x.Equals(shipmentDto.Currency)) ?? new Currency(language, shipmentDto.Currency);
             var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateShipment(currency);
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(shipmentDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(shipmentDto);
 
             result.Currency = currency;
 
-            if (shipmentDTO.DeliveryAddress != null)
+            if (shipmentDto.DeliveryAddress != null)
             {
-                result.DeliveryAddress = ToAddress(shipmentDTO.DeliveryAddress);
+                result.DeliveryAddress = ToAddress(shipmentDto.DeliveryAddress);
             }
 
-            if (!shipmentDTO.Discounts.IsNullOrEmpty())
+            if (!shipmentDto.Discounts.IsNullOrEmpty())
             {
-                result.Discounts.AddRange(shipmentDTO.Discounts.Select(x => ToDiscount(x, new[] { currency }, language)));
+                result.Discounts.AddRange(shipmentDto.Discounts.Select(x => ToDiscount(x, new[] { currency }, language)));
             }
 
-            if (shipmentDTO.DynamicProperties != null)
+            if (shipmentDto.DynamicProperties != null)
             {
-                result.DynamicProperties = shipmentDTO.DynamicProperties.Select(ToDynamicProperty).ToList();
+                result.DynamicProperties = shipmentDto.DynamicProperties.Select(ToDynamicProperty).ToList();
             }
 
-            if (shipmentDTO.InPayments != null)
+            if (shipmentDto.InPayments != null)
             {
-                result.InPayments = shipmentDTO.InPayments.Select(p =>ToOrderInPayment(p, availCurrencies, language)).ToList();
+                result.InPayments = shipmentDto.InPayments.Select(p => ToOrderInPayment(p, availCurrencies, language)).ToList();
             }
 
-            if (shipmentDTO.Items != null)
+            if (shipmentDto.Items != null)
             {
-                result.Items = shipmentDTO.Items.Select(i => ToShipmentItem(i, availCurrencies, language)).ToList();
+                result.Items = shipmentDto.Items.Select(i => ToShipmentItem(i, availCurrencies, language)).ToList();
             }
 
-            if (shipmentDTO.Packages != null)
+            if (shipmentDto.Packages != null)
             {
-                result.Packages = shipmentDTO.Packages.Select(p => ToShipmentPackage(p, availCurrencies, language)).ToList();
+                result.Packages = shipmentDto.Packages.Select(p => ToShipmentPackage(p, availCurrencies, language)).ToList();
             }
 
-            result.Price = new Money(shipmentDTO.Price ?? 0, currency);
-            result.PriceWithTax = new Money(shipmentDTO.PriceWithTax ?? 0, currency);
-            result.DiscountAmount = new Money(shipmentDTO.DiscountAmount ?? 0, currency);
-            result.DiscountAmountWithTax = new Money(shipmentDTO.DiscountAmountWithTax ?? 0, currency);
-            result.Total = new Money(shipmentDTO.Total ?? 0, currency);
-            result.TotalWithTax = new Money(shipmentDTO.TotalWithTax ?? 0, currency);
-            result.TaxTotal = new Money(shipmentDTO.TaxTotal ?? 0, currency);
-            result.TaxPercentRate = (decimal?)shipmentDTO.TaxPercentRate ?? 0m;
-            if (shipmentDTO.TaxDetails != null)
+            result.Price = new Money(shipmentDto.Price ?? 0, currency);
+            result.PriceWithTax = new Money(shipmentDto.PriceWithTax ?? 0, currency);
+            result.DiscountAmount = new Money(shipmentDto.DiscountAmount ?? 0, currency);
+            result.DiscountAmountWithTax = new Money(shipmentDto.DiscountAmountWithTax ?? 0, currency);
+            result.Total = new Money(shipmentDto.Total ?? 0, currency);
+            result.TotalWithTax = new Money(shipmentDto.TotalWithTax ?? 0, currency);
+            result.TaxTotal = new Money(shipmentDto.TaxTotal ?? 0, currency);
+            result.TaxPercentRate = (decimal?)shipmentDto.TaxPercentRate ?? 0m;
+            if (shipmentDto.TaxDetails != null)
             {
-                result.TaxDetails = shipmentDTO.TaxDetails.Select(td => ToTaxDetail(td, currency)).ToList();
+                result.TaxDetails = shipmentDto.TaxDetails.Select(td => ToTaxDetail(td, currency)).ToList();
             }
             return result;
         }
 
-        public virtual LineItem ToOrderLineItem(orderDTO.LineItem lineItemDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public virtual LineItem ToOrderLineItem(orderDto.LineItem lineItemDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var currency = availCurrencies.FirstOrDefault(x => x.Equals(lineItemDTO.Currency)) ?? new Currency(language, lineItemDTO.Currency);
+            var currency = availCurrencies.FirstOrDefault(x => x.Equals(lineItemDto.Currency)) ?? new Currency(language, lineItemDto.Currency);
 
             var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateLineItem(currency);
-            result.InjectFrom<NullableAndEnumValueInjecter>(lineItemDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(lineItemDto);
 
             result.Currency = currency;
-            result.DiscountAmount = new Money(lineItemDTO.DiscountAmount ?? 0, currency);
+            result.DiscountAmount = new Money(lineItemDto.DiscountAmount ?? 0, currency);
 
-            if (lineItemDTO.DynamicProperties != null)
+            if (lineItemDto.DynamicProperties != null)
             {
-                result.DynamicProperties = lineItemDTO.DynamicProperties.Select(ToDynamicProperty).ToList();
+                result.DynamicProperties = lineItemDto.DynamicProperties.Select(ToDynamicProperty).ToList();
             }
-            result.Price = new Money(lineItemDTO.Price ?? 0, currency);
-            result.PriceWithTax = new Money(lineItemDTO.PriceWithTax ?? 0, currency);
-            result.DiscountAmount = new Money(lineItemDTO.DiscountAmount ?? 0, currency);
-            result.DiscountAmountWithTax = new Money(lineItemDTO.DiscountAmountWithTax ?? 0, currency);
-            result.PlacedPrice = new Money(lineItemDTO.PlacedPrice ?? 0, currency);
-            result.PlacedPriceWithTax = new Money(lineItemDTO.PlacedPriceWithTax ?? 0, currency);
-            result.ExtendedPrice = new Money(lineItemDTO.ExtendedPrice ?? 0, currency);
-            result.ExtendedPriceWithTax = new Money(lineItemDTO.ExtendedPriceWithTax ?? 0, currency);
-            result.DiscountTotal = new Money(lineItemDTO.DiscountTotal ?? 0, currency);
-            result.DiscountTotalWithTax = new Money(lineItemDTO.DiscountTotalWithTax ?? 0, currency);
-            result.TaxTotal = new Money(lineItemDTO.TaxTotal ?? 0, currency);
-            result.TaxPercentRate = (decimal?)lineItemDTO.TaxPercentRate ?? 0m;
-            if (!lineItemDTO.Discounts.IsNullOrEmpty())
+            result.Price = new Money(lineItemDto.Price ?? 0, currency);
+            result.PriceWithTax = new Money(lineItemDto.PriceWithTax ?? 0, currency);
+            result.DiscountAmount = new Money(lineItemDto.DiscountAmount ?? 0, currency);
+            result.DiscountAmountWithTax = new Money(lineItemDto.DiscountAmountWithTax ?? 0, currency);
+            result.PlacedPrice = new Money(lineItemDto.PlacedPrice ?? 0, currency);
+            result.PlacedPriceWithTax = new Money(lineItemDto.PlacedPriceWithTax ?? 0, currency);
+            result.ExtendedPrice = new Money(lineItemDto.ExtendedPrice ?? 0, currency);
+            result.ExtendedPriceWithTax = new Money(lineItemDto.ExtendedPriceWithTax ?? 0, currency);
+            result.DiscountTotal = new Money(lineItemDto.DiscountTotal ?? 0, currency);
+            result.DiscountTotalWithTax = new Money(lineItemDto.DiscountTotalWithTax ?? 0, currency);
+            result.TaxTotal = new Money(lineItemDto.TaxTotal ?? 0, currency);
+            result.TaxPercentRate = (decimal?)lineItemDto.TaxPercentRate ?? 0m;
+            if (!lineItemDto.Discounts.IsNullOrEmpty())
             {
-                result.Discounts.AddRange(lineItemDTO.Discounts.Select(x => ToDiscount(x, new[] { currency }, language)));
+                result.Discounts.AddRange(lineItemDto.Discounts.Select(x => ToDiscount(x, new[] { currency }, language)));
             }
-            if (lineItemDTO.TaxDetails != null)
+            if (lineItemDto.TaxDetails != null)
             {
-                result.TaxDetails = lineItemDTO.TaxDetails.Select(td => ToTaxDetail(td, currency)).ToList();
+                result.TaxDetails = lineItemDto.TaxDetails.Select(td => ToTaxDetail(td, currency)).ToList();
             }
 
             return result;
         }
 
-        public virtual PaymentIn ToOrderInPayment(orderDTO.PaymentIn paymentIn, IEnumerable<Currency> availCurrencies, Language language)
+        public virtual PaymentIn ToOrderInPayment(orderDto.PaymentIn paymentIn, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(paymentIn.Currency)) ?? new Currency(language, paymentIn.Currency);
             var retVal = ServiceLocator.Current.GetInstance<OrderFactory>().CreatePaymentIn(currency);
@@ -248,19 +248,19 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public virtual Discount ToDiscount(orderDTO.Discount discountDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public virtual Discount ToDiscount(orderDto.Discount discountDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var currency = availCurrencies.FirstOrDefault(x => x.Equals(discountDTO.Currency)) ?? new Currency(language, discountDTO.Currency);
+            var currency = availCurrencies.FirstOrDefault(x => x.Equals(discountDto.Currency)) ?? new Currency(language, discountDto.Currency);
             var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreateDiscount(currency);
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(discountDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(discountDto);
 
-            result.Amount = new Money(discountDTO.DiscountAmount ?? 0, currency);
+            result.Amount = new Money(discountDto.DiscountAmount ?? 0, currency);
 
             return result;
         }
 
-        public virtual CustomerOrder ToCustomerOrder(orderDTO.CustomerOrder order, ICollection<Currency> availCurrencies, Language language)
+        public virtual CustomerOrder ToCustomerOrder(orderDto.CustomerOrder order, ICollection<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(order.Currency)) ?? new Currency(language, order.Currency);
 
@@ -272,7 +272,7 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 result.Addresses = order.Addresses.Select(ToAddress).ToList();
             }
-           
+
 
             if (order.DynamicProperties != null)
             {
@@ -319,10 +319,10 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual TaxDetail ToTaxDetail(orderDTO.TaxDetail taxDetailDTO, Currency currency)
+        public virtual TaxDetail ToTaxDetail(orderDto.TaxDetail taxDetailDto, Currency currency)
         {
             var result = new TaxDetail(currency);
-            result.InjectFrom(taxDetailDTO);
+            result.InjectFrom(taxDetailDto);
             return result;
         }
     }

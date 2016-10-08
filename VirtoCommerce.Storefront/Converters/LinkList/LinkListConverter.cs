@@ -4,7 +4,7 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.LinkList.Factories;
-using contentDTO = VirtoCommerce.Storefront.AutoRestClients.ContentModuleApi.Models;
+using contentDto = VirtoCommerce.Storefront.AutoRestClients.ContentModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -18,39 +18,39 @@ namespace VirtoCommerce.Storefront.Converters
             }
         }
 
-        public static MenuLinkList ToMenuLinkList(this contentDTO.MenuLinkList menuLinkListDTO)
+        public static MenuLinkList ToMenuLinkList(this contentDto.MenuLinkList menuLinkListDto)
         {
-            return LinkListConverterInstance.ToMenuLinkList(menuLinkListDTO);
+            return LinkListConverterInstance.ToMenuLinkList(menuLinkListDto);
         }
 
-        public static MenuLink ToMenuLink(this contentDTO.MenuLink menuLinkDTO)
+        public static MenuLink ToMenuLink(this contentDto.MenuLink menuLinkDto)
         {
-            return LinkListConverterInstance.ToMenuLink(menuLinkDTO);
+            return LinkListConverterInstance.ToMenuLink(menuLinkDto);
         }
     }
 
     public class LinkListConverter
     {
-        public virtual MenuLinkList ToMenuLinkList(contentDTO.MenuLinkList menuLinkListDTO)
+        public virtual MenuLinkList ToMenuLinkList(contentDto.MenuLinkList menuLinkListDto)
         {
             var result = ServiceLocator.Current.GetInstance<LinkListFactory>().CreateMenuLinkList();
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(menuLinkListDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(menuLinkListDto);
 
-            result.Language = string.IsNullOrEmpty(menuLinkListDTO.Language) ? Language.InvariantLanguage : new Language(menuLinkListDTO.Language);
+            result.Language = string.IsNullOrEmpty(menuLinkListDto.Language) ? Language.InvariantLanguage : new Language(menuLinkListDto.Language);
 
-            if (menuLinkListDTO.MenuLinks != null)
+            if (menuLinkListDto.MenuLinks != null)
             {
-                result.MenuLinks = menuLinkListDTO.MenuLinks.Select(ToMenuLink).ToList();
+                result.MenuLinks = menuLinkListDto.MenuLinks.Select(ToMenuLink).ToList();
             }
 
             return result;
         }
 
-        public virtual MenuLink ToMenuLink(contentDTO.MenuLink menuLinkDTO)
+        public virtual MenuLink ToMenuLink(contentDto.MenuLink menuLinkDto)
         {
-            var result = ServiceLocator.Current.GetInstance<LinkListFactory>().CreateMenuLink(menuLinkDTO.AssociatedObjectType);
-            result.InjectFrom<NullableAndEnumValueInjecter>(menuLinkDTO);
+            var result = ServiceLocator.Current.GetInstance<LinkListFactory>().CreateMenuLink(menuLinkDto.AssociatedObjectType);
+            result.InjectFrom<NullableAndEnumValueInjecter>(menuLinkDto);
 
             return result;
         }

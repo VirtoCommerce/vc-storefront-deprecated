@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using coreService = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Tax;
 using VirtoCommerce.Storefront.Model.Tax.Services;
-using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
+using coreService = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Services
 {
@@ -22,13 +22,13 @@ namespace VirtoCommerce.Storefront.Services
         #region ITaxEvaluator Members
         public async Task EvaluateTaxesAsync(TaxEvaluationContext context, IEnumerable<ITaxable> owners)
         {
-            var taxRates = await _coreModuleApiClient.Commerce.EvaluateTaxesAsync(context.StoreId, context.ToTaxEvaluationContextDTO());
+            var taxRates = await _coreModuleApiClient.Commerce.EvaluateTaxesAsync(context.StoreId, context.ToTaxEvaluationContextDto());
             InnerEvaluateTaxes(taxRates, owners);
         }
 
         public void EvaluateTaxes(TaxEvaluationContext context, IEnumerable<ITaxable> owners)
         {
-            var taxRates = _coreModuleApiClient.Commerce.EvaluateTaxes(context.StoreId, context.ToTaxEvaluationContextDTO());
+            var taxRates = _coreModuleApiClient.Commerce.EvaluateTaxes(context.StoreId, context.ToTaxEvaluationContextDto());
             InnerEvaluateTaxes(taxRates, owners);
         }
 

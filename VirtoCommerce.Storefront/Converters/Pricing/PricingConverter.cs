@@ -8,7 +8,7 @@ using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Pricing;
 using VirtoCommerce.Storefront.Model.Pricing.Factories;
-using pricingDTO = VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models;
+using pricingDto = VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -22,62 +22,62 @@ namespace VirtoCommerce.Storefront.Converters
             }
         }
 
-        public static pricingDTO.PriceEvaluationContext ToPriceEvaluationContextDTO(this IEnumerable<Product> products, WorkContext workContext)
+        public static pricingDto.PriceEvaluationContext ToPriceEvaluationContextDto(this IEnumerable<Product> products, WorkContext workContext)
         {
-            return PricingConverterInstance.ToPriceEvaluationContextDTO(products, workContext);
+            return PricingConverterInstance.ToPriceEvaluationContextDto(products, workContext);
         }
 
-        public static ProductPrice ToProductPrice(this pricingDTO.Price priceDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public static ProductPrice ToProductPrice(this pricingDto.Price priceDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            return PricingConverterInstance.ToProductPrice(priceDTO, availCurrencies, language);
+            return PricingConverterInstance.ToProductPrice(priceDto, availCurrencies, language);
         }
 
-        public static Pricelist ToPricelist(this pricingDTO.Pricelist pricelistDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public static Pricelist ToPricelist(this pricingDto.Pricelist pricelistDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            return PricingConverterInstance.ToPricelist(pricelistDTO, availCurrencies, language);
+            return PricingConverterInstance.ToPricelist(pricelistDto, availCurrencies, language);
         }
 
-        public static TierPrice ToTierPrice(this pricingDTO.Price priceDTO, Currency currency)
+        public static TierPrice ToTierPrice(this pricingDto.Price priceDto, Currency currency)
         {
-            return PricingConverterInstance.ToTierPrice(priceDTO, currency);
+            return PricingConverterInstance.ToTierPrice(priceDto, currency);
         }
 
     }
 
     public class PricingConverter
     {
-        public virtual TierPrice ToTierPrice(pricingDTO.Price priceDTO, Currency currency)
+        public virtual TierPrice ToTierPrice(pricingDto.Price priceDto, Currency currency)
         {
-            var listPrice = new Money(priceDTO.List ?? 0, currency);
+            var listPrice = new Money(priceDto.List ?? 0, currency);
 
             return new TierPrice(currency)
             {
-                Quantity = priceDTO.MinQuantity ?? 1,
-                Price = priceDTO.Sale.HasValue ? new Money(priceDTO.Sale.Value, currency) : listPrice
+                Quantity = priceDto.MinQuantity ?? 1,
+                Price = priceDto.Sale.HasValue ? new Money(priceDto.Sale.Value, currency) : listPrice
             };
         }
 
-        public virtual Pricelist ToPricelist(pricingDTO.Pricelist pricelistDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public virtual Pricelist ToPricelist(pricingDto.Pricelist pricelistDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var currency = availCurrencies.FirstOrDefault(x => x.Equals(pricelistDTO.Currency)) ?? new Currency(language, pricelistDTO.Currency);
+            var currency = availCurrencies.FirstOrDefault(x => x.Equals(pricelistDto.Currency)) ?? new Currency(language, pricelistDto.Currency);
             var result = ServiceLocator.Current.GetInstance<PricingFactory>().CreatePricelist(currency);
-            result.Id = pricelistDTO.Id;
+            result.Id = pricelistDto.Id;
             return result;
         }
 
-        public virtual ProductPrice ToProductPrice(pricingDTO.Price priceDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public virtual ProductPrice ToProductPrice(pricingDto.Price priceDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var currency = availCurrencies.FirstOrDefault(x => x.Equals(priceDTO.Currency)) ?? new Currency(language, priceDTO.Currency);
+            var currency = availCurrencies.FirstOrDefault(x => x.Equals(priceDto.Currency)) ?? new Currency(language, priceDto.Currency);
             var result = ServiceLocator.Current.GetInstance<PricingFactory>().CreateProductPrice(currency);
-            result.InjectFrom<NullableAndEnumValueInjecter>(priceDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(priceDto);
             result.Currency = currency;
-            result.ListPrice = new Money(priceDTO.List ?? 0d, currency);
-            result.SalePrice = priceDTO.Sale == null ? result.ListPrice : new Money(priceDTO.Sale ?? 0d, currency);
-            result.MinQuantity = priceDTO.MinQuantity;
+            result.ListPrice = new Money(priceDto.List ?? 0d, currency);
+            result.SalePrice = priceDto.Sale == null ? result.ListPrice : new Money(priceDto.Sale ?? 0d, currency);
+            result.MinQuantity = priceDto.MinQuantity;
             return result;
         }
 
-        public virtual pricingDTO.PriceEvaluationContext ToPriceEvaluationContextDTO(IEnumerable<Product> products, WorkContext workContext)
+        public virtual pricingDto.PriceEvaluationContext ToPriceEvaluationContextDto(IEnumerable<Product> products, WorkContext workContext)
         {
             if (products == null)
             {
@@ -85,7 +85,7 @@ namespace VirtoCommerce.Storefront.Converters
             }
 
             //Evaluate products prices
-            var retVal = new pricingDTO.PriceEvaluationContext
+            var retVal = new pricingDto.PriceEvaluationContext
             {
                 ProductIds = products.Select(p => p.Id).ToList(),
                 PricelistIds = workContext.CurrentPricelists.Select(p => p.Id).ToList(),

@@ -1,12 +1,12 @@
 ﻿using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
-using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class SeoInfoConverter
     {
-        public static SeoInfo ToSeoInfo(this coreDTO.SeoInfo seoDto)
+        public static SeoInfo ToSeoInfo(this coreDto.SeoInfo seoDto)
         {
             var retVal = new SeoInfo();
             retVal.InjectFrom(seoDto);

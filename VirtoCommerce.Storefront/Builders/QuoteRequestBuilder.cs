@@ -230,7 +230,7 @@ namespace VirtoCommerce.Storefront.Builders
         {
             _cacheManager.Remove(GetQuoteRequestCacheKey(_quoteRequest.StoreId, _quoteRequest.CustomerId), _quoteRequestCacheRegion);
 
-            var quoteDto = _quoteRequest.ToQuoteRequestDTO();
+            var quoteDto = _quoteRequest.ToQuoteRequestDto();
             if (_quoteRequest.IsTransient())
             {
                 await _quoteApi.QuoteModule.CreateAsync(quoteDto);
@@ -253,7 +253,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public async Task<IQuoteRequestBuilder> CalculateTotalsAsync()
         {
-            var result = await _quoteApi.QuoteModule.CalculateTotalsAsync(_quoteRequest.ToQuoteRequestDTO());
+            var result = await _quoteApi.QuoteModule.CalculateTotalsAsync(_quoteRequest.ToQuoteRequestDto());
             _quoteRequest.Totals = result.Totals.ToQuoteTotals(_quoteRequest.Currency);
             return this;
         }

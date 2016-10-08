@@ -22,13 +22,13 @@ namespace VirtoCommerce.Storefront.Services
 
         public virtual async Task EvaluateDiscountsAsync(PromotionEvaluationContext context, IEnumerable<IDiscountable> owners)
         {
-            var rewards = await _marketingApi.MarketingModulePromotion.EvaluatePromotionsAsync(context.ToPromotionEvaluationContextDTO());
+            var rewards = await _marketingApi.MarketingModulePromotion.EvaluatePromotionsAsync(context.ToPromotionEvaluationContextDto());
             InnerEvaluateDiscounts(rewards, owners);
         }
 
         public virtual void EvaluateDiscounts(PromotionEvaluationContext context, IEnumerable<IDiscountable> owners)
         {
-            var rewards = _marketingApi.MarketingModulePromotion.EvaluatePromotions(context.ToPromotionEvaluationContextDTO());
+            var rewards = _marketingApi.MarketingModulePromotion.EvaluatePromotions(context.ToPromotionEvaluationContextDto());
             InnerEvaluateDiscounts(rewards, owners);
         }
 

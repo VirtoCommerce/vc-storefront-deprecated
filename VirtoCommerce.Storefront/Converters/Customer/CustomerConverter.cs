@@ -1,14 +1,14 @@
 ﻿using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
-using customerDTO = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
-using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using VirtoCommerce.Storefront.Model.Customer.Factories;
-using Microsoft.Practices.ServiceLocation;
 using VirtoCommerce.Storefront.Model.Stores;
-using VirtoCommerce.Storefront.Common;
+using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using customerDto = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -23,117 +23,117 @@ namespace VirtoCommerce.Storefront.Converters
         }
 
         public static CustomerInfo ToCustomerInfo(this Register formModel)
-        {           
+        {
             return CustomerConverterInstance.ToCustomerInfo(formModel);
         }
 
-        public static CustomerInfo ToCustomerInfo(this customerDTO.Contact contactDTO)
+        public static CustomerInfo ToCustomerInfo(this customerDto.Contact contactDto)
         {
-            return CustomerConverterInstance.ToCustomerInfo(contactDTO);
+            return CustomerConverterInstance.ToCustomerInfo(contactDto);
         }
 
-        public static customerDTO.Contact ToCustomerContactDTO(this CustomerInfo customer)
+        public static customerDto.Contact ToCustomerContactDto(this CustomerInfo customer)
         {
-            return CustomerConverterInstance.ToCustomerContactDTO(customer);
+            return CustomerConverterInstance.ToCustomerContactDto(customer);
         }
 
-        public static coreDTO.Contact ToCoreContactDTO(this CustomerInfo customer)
+        public static coreDto.Contact ToCoreContactDto(this CustomerInfo customer)
         {
-            return CustomerConverterInstance.ToCoreContactDTO(customer);
+            return CustomerConverterInstance.ToCoreContactDto(customer);
         }
 
-        public static Vendor ToVendor(this customerDTO.Vendor vendorDTO, Language currentLanguage, Store store)
+        public static Vendor ToVendor(this customerDto.Vendor vendorDto, Language currentLanguage, Store store)
         {
-            return CustomerConverterInstance.ToVendor(vendorDTO, currentLanguage, store);
+            return CustomerConverterInstance.ToVendor(vendorDto, currentLanguage, store);
         }
 
-        public static Address ToAddress(this customerDTO.Address addressDTO)
+        public static Address ToAddress(this customerDto.Address addressDto)
         {
-            return CustomerConverterInstance.ToAddress(addressDTO);
+            return CustomerConverterInstance.ToAddress(addressDto);
         }
 
-        public static customerDTO.Address ToCustomerAddressDTO(this Address address)
+        public static customerDto.Address ToCustomerAddressDto(this Address address)
         {
-            return CustomerConverterInstance.ToCustomerAddressDTO(address);
+            return CustomerConverterInstance.ToCustomerAddressDto(address);
         }
 
-        public static DynamicProperty ToDynamicProperty(this customerDTO.DynamicObjectProperty propertyDTO)
+        public static DynamicProperty ToDynamicProperty(this customerDto.DynamicObjectProperty propertyDto)
         {
-            return CustomerConverterInstance.ToDynamicProperty(propertyDTO);
+            return CustomerConverterInstance.ToDynamicProperty(propertyDto);
         }
 
-        public static customerDTO.DynamicObjectProperty ToCustomerDynamicPropertyDTO(this DynamicProperty property)
+        public static customerDto.DynamicObjectProperty ToCustomerDynamicPropertyDto(this DynamicProperty property)
         {
-            return CustomerConverterInstance.ToCustomerDynamicPropertyDTO(property);
-        }     
+            return CustomerConverterInstance.ToCustomerDynamicPropertyDto(property);
+        }
     }
 
     public class CustomerConverter
     {
         private static readonly char[] _nameSeparator = { ' ' };
 
-    
-        public virtual DynamicProperty ToDynamicProperty(customerDTO.DynamicObjectProperty propertyDTO)
+
+        public virtual DynamicProperty ToDynamicProperty(customerDto.DynamicObjectProperty propertyDto)
         {
-            return propertyDTO.JsonConvert<coreDTO.DynamicObjectProperty>().ToDynamicProperty();
+            return propertyDto.JsonConvert<coreDto.DynamicObjectProperty>().ToDynamicProperty();
         }
 
-        public virtual customerDTO.DynamicObjectProperty ToCustomerDynamicPropertyDTO(DynamicProperty property)
+        public virtual customerDto.DynamicObjectProperty ToCustomerDynamicPropertyDto(DynamicProperty property)
         {
-            return property.ToDynamicPropertyDTO().JsonConvert<customerDTO.DynamicObjectProperty>();
+            return property.ToDynamicPropertyDto().JsonConvert<customerDto.DynamicObjectProperty>();
         }
 
-        public virtual Address ToAddress(customerDTO.Address addressDTO)
+        public virtual Address ToAddress(customerDto.Address addressDto)
         {
-            return addressDTO.JsonConvert<coreDTO.Address>().ToAddress();
+            return addressDto.JsonConvert<coreDto.Address>().ToAddress();
         }
 
-        public virtual customerDTO.Address ToCustomerAddressDTO(Address address)
+        public virtual customerDto.Address ToCustomerAddressDto(Address address)
         {
-            return address.ToCoreAddressDTO().JsonConvert<customerDTO.Address>();
+            return address.ToCoreAddressDto().JsonConvert<customerDto.Address>();
         }
 
-        public virtual Vendor ToVendor(customerDTO.Vendor vendorDTO, Language currentLanguage, Store store)
+        public virtual Vendor ToVendor(customerDto.Vendor vendorDto, Language currentLanguage, Store store)
         {
             Vendor result = null;
 
-            if (vendorDTO != null)
+            if (vendorDto != null)
             {
                 result = ServiceLocator.Current.GetInstance<CustomerFactory>().CreateVendor();
-                result.Id = vendorDTO.Id;
-                result.Name = vendorDTO.Name;
-                result.Description = vendorDTO.Description;
-                result.LogoUrl = vendorDTO.LogoUrl;
-                result.SiteUrl = vendorDTO.SiteUrl;
-                result.GroupName = vendorDTO.GroupName;
+                result.Id = vendorDto.Id;
+                result.Name = vendorDto.Name;
+                result.Description = vendorDto.Description;
+                result.LogoUrl = vendorDto.LogoUrl;
+                result.SiteUrl = vendorDto.SiteUrl;
+                result.GroupName = vendorDto.GroupName;
 
-                if(!vendorDTO.SeoInfos.IsNullOrEmpty())
+                if (!vendorDto.SeoInfos.IsNullOrEmpty())
                 {
-                    var seoInfoDTO = vendorDTO.SeoInfos.Select(x => x.JsonConvert<coreDTO.SeoInfo>())
+                    var seoInfoDto = vendorDto.SeoInfos.Select(x => x.JsonConvert<coreDto.SeoInfo>())
                                                 .GetBestMatchedSeoInfo(store, currentLanguage);
-                    if(seoInfoDTO != null)
+                    if (seoInfoDto != null)
                     {
-                        result.SeoInfo = seoInfoDTO.ToSeoInfo();
+                        result.SeoInfo = seoInfoDto.ToSeoInfo();
                     }
                 }
 
-                if(result.SeoInfo == null)
+                if (result.SeoInfo == null)
                 {
                     result.SeoInfo = new SeoInfo
                     {
-                        Title = vendorDTO.Name,
+                        Title = vendorDto.Name,
                         Slug = string.Concat("/vendor/", result.Id)
                     };
                 }
 
-                if (vendorDTO.Addresses != null)
+                if (vendorDto.Addresses != null)
                 {
-                    result.Addresses = vendorDTO.Addresses.Select(ToAddress).ToList();
+                    result.Addresses = vendorDto.Addresses.Select(ToAddress).ToList();
                 }
 
-                if (vendorDTO.DynamicProperties != null)
+                if (vendorDto.DynamicProperties != null)
                 {
-                    result.DynamicProperties = vendorDTO.DynamicProperties.Select(ToDynamicProperty).ToList();
+                    result.DynamicProperties = vendorDto.DynamicProperties.Select(ToDynamicProperty).ToList();
                 }
             }
 
@@ -147,7 +147,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.FullName = string.Join(" ", formModel.FirstName, formModel.LastName);
             result.FirstName = formModel.FirstName;
             result.LastName = formModel.LastName;
-            
+
             if (string.IsNullOrEmpty(result.FullName) || string.IsNullOrWhiteSpace(result.FullName))
             {
                 result.FullName = formModel.Email;
@@ -155,24 +155,24 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual CustomerInfo ToCustomerInfo(customerDTO.Contact contactDTO)
+        public virtual CustomerInfo ToCustomerInfo(customerDto.Contact contactDto)
         {
-            var result = ServiceLocator.Current.GetInstance<CustomerFactory>().CreateCustomerInfo(); 
-            result.InjectFrom<NullableAndEnumValueInjecter>(contactDTO);
+            var result = ServiceLocator.Current.GetInstance<CustomerFactory>().CreateCustomerInfo();
+            result.InjectFrom<NullableAndEnumValueInjecter>(contactDto);
 
             result.IsRegisteredUser = true;
-            if (contactDTO.Addresses != null)
+            if (contactDto.Addresses != null)
             {
-                result.Addresses = contactDTO.Addresses.Select(ToAddress).ToList();
+                result.Addresses = contactDto.Addresses.Select(ToAddress).ToList();
             }
 
             result.DefaultBillingAddress = result.Addresses.FirstOrDefault(a => (a.Type & AddressType.Billing) == AddressType.Billing);
             result.DefaultShippingAddress = result.Addresses.FirstOrDefault(a => (a.Type & AddressType.Shipping) == AddressType.Shipping);
 
             // TODO: Need separate properties for first, middle and last name
-            if (!string.IsNullOrEmpty(contactDTO.FullName))
+            if (!string.IsNullOrEmpty(contactDto.FullName))
             {
-                var nameParts = contactDTO.FullName.Split(_nameSeparator, 2);
+                var nameParts = contactDto.FullName.Split(_nameSeparator, 2);
 
                 if (nameParts.Length > 0)
                 {
@@ -185,26 +185,26 @@ namespace VirtoCommerce.Storefront.Converters
                 }
             }
 
-            if (contactDTO.Emails != null)
+            if (contactDto.Emails != null)
             {
-                result.Email = contactDTO.Emails.FirstOrDefault();
+                result.Email = contactDto.Emails.FirstOrDefault();
             }
 
-            if (!contactDTO.DynamicProperties.IsNullOrEmpty())
+            if (!contactDto.DynamicProperties.IsNullOrEmpty())
             {
-                result.DynamicProperties = contactDTO.DynamicProperties.Select(ToDynamicProperty).ToList();
+                result.DynamicProperties = contactDto.DynamicProperties.Select(ToDynamicProperty).ToList();
             }
 
             return result;
         }
 
-        public virtual customerDTO.Contact ToCustomerContactDTO(CustomerInfo customer)
+        public virtual customerDto.Contact ToCustomerContactDto(CustomerInfo customer)
         {
-            var retVal = new customerDTO.Contact();
+            var retVal = new customerDto.Contact();
             retVal.InjectFrom<NullableAndEnumValueInjecter>(customer);
             if (customer.Addresses != null)
             {
-                retVal.Addresses = customer.Addresses.Select(ToCustomerAddressDTO).ToList();
+                retVal.Addresses = customer.Addresses.Select(ToCustomerAddressDto).ToList();
             }
             if (!string.IsNullOrEmpty(customer.Email))
             {
@@ -215,13 +215,13 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public virtual coreDTO.Contact ToCoreContactDTO(CustomerInfo customer)
+        public virtual coreDto.Contact ToCoreContactDto(CustomerInfo customer)
         {
-            var retVal = new coreDTO.Contact();
+            var retVal = new coreDto.Contact();
             retVal.InjectFrom<NullableAndEnumValueInjecter>(customer);
             if (customer.Addresses != null)
             {
-                retVal.Addresses = customer.Addresses.Select(x => x.ToCoreAddressDTO()).ToList();
+                retVal.Addresses = customer.Addresses.Select(x => x.ToCoreAddressDto()).ToList();
             }
             if (!string.IsNullOrEmpty(customer.Email))
             {

@@ -2,16 +2,16 @@
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
+using VirtoCommerce.Storefront.Model.Cart.Factories;
+using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
-using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Quote.Factories;
-using quoteDTO = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
-using VirtoCommerce.Storefront.Model.Cart.Factories;
-using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
-using VirtoCommerce.Storefront.Common;
+using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using quoteDto = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -25,39 +25,39 @@ namespace VirtoCommerce.Storefront.Converters
             }
         }
 
-        public static QuoteRequest ToQuoteRequest(this quoteDTO.QuoteRequest quoteRequestDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public static QuoteRequest ToQuoteRequest(this quoteDto.QuoteRequest quoteRequestDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            return QuoteConverterInstance.ToQuoteRequest(quoteRequestDTO, availCurrencies, language);
+            return QuoteConverterInstance.ToQuoteRequest(quoteRequestDto, availCurrencies, language);
         }
 
-        public static quoteDTO.QuoteRequest ToQuoteRequestDTO(this QuoteRequest quoteRequest)
+        public static quoteDto.QuoteRequest ToQuoteRequestDto(this QuoteRequest quoteRequest)
         {
-            return QuoteConverterInstance.ToQuoteRequestDTO(quoteRequest);
+            return QuoteConverterInstance.ToQuoteRequestDto(quoteRequest);
         }
 
-        public static TaxDetail ToTaxDetail(this quoteDTO.TaxDetail taxDetailDTO, Currency currency)
+        public static TaxDetail ToTaxDetail(this quoteDto.TaxDetail taxDetailDto, Currency currency)
         {
-            return QuoteConverterInstance.ToTaxDetail(taxDetailDTO, currency);
+            return QuoteConverterInstance.ToTaxDetail(taxDetailDto, currency);
         }
 
-        public static quoteDTO.TaxDetail ToQuoteTaxDetailDTO(this TaxDetail taxDetail)
+        public static quoteDto.TaxDetail ToQuoteTaxDetailDto(this TaxDetail taxDetail)
         {
-            return QuoteConverterInstance.ToQuoteTaxDetailDTO(taxDetail);
+            return QuoteConverterInstance.ToQuoteTaxDetailDto(taxDetail);
         }
 
-        public static quoteDTO.QuoteAttachment ToQuoteAttachmentDTO(this Attachment attachment)
+        public static quoteDto.QuoteAttachment ToQuoteAttachmentDto(this Attachment attachment)
         {
-            return QuoteConverterInstance.ToQuoteAttachmentDTO(attachment);
+            return QuoteConverterInstance.ToQuoteAttachmentDto(attachment);
         }
 
-        public static TierPrice ToTierPrice(this quoteDTO.TierPrice tierPriceDTO, Currency currency)
+        public static TierPrice ToTierPrice(this quoteDto.TierPrice tierPriceDto, Currency currency)
         {
-            return QuoteConverterInstance.ToTierPrice(tierPriceDTO, currency);
+            return QuoteConverterInstance.ToTierPrice(tierPriceDto, currency);
         }
 
-        public static quoteDTO.TierPrice ToQuoteTierPriceDTO(this TierPrice tierPrice)
+        public static quoteDto.TierPrice ToQuoteTierPriceDto(this TierPrice tierPrice)
         {
-            return QuoteConverterInstance.ToQuoteTierPriceDTO(tierPrice);
+            return QuoteConverterInstance.ToQuoteTierPriceDto(tierPrice);
         }
 
         public static QuoteItem ToQuoteItem(this Product product, long quantity)
@@ -65,158 +65,158 @@ namespace VirtoCommerce.Storefront.Converters
             return QuoteConverterInstance.ToQuoteItem(product, quantity);
         }
 
-        public static QuoteItem ToQuoteItem(this quoteDTO.QuoteItem quoteItemDTO, Currency currency)
+        public static QuoteItem ToQuoteItem(this quoteDto.QuoteItem quoteItemDto, Currency currency)
         {
-            return QuoteConverterInstance.ToQuoteItem(quoteItemDTO, currency);
+            return QuoteConverterInstance.ToQuoteItem(quoteItemDto, currency);
         }
 
-        public static quoteDTO.QuoteItem ToQuoteItemDTO(this QuoteItem quoteItem)
+        public static quoteDto.QuoteItem ToQuoteItemDto(this QuoteItem quoteItem)
         {
-            return QuoteConverterInstance.ToQuoteItemDTO(quoteItem);
+            return QuoteConverterInstance.ToQuoteItemDto(quoteItem);
         }
 
-        public static QuoteRequestTotals ToQuoteTotals(this quoteDTO.QuoteRequestTotals totalsDTO, Currency currency)
+        public static QuoteRequestTotals ToQuoteTotals(this quoteDto.QuoteRequestTotals totalsDto, Currency currency)
         {
-            return QuoteConverterInstance.ToQuoteTotals(totalsDTO, currency);
+            return QuoteConverterInstance.ToQuoteTotals(totalsDto, currency);
         }
 
-        public static quoteDTO.QuoteRequestTotals ToQuoteTotalsDTO(this QuoteRequestTotals totals)
+        public static quoteDto.QuoteRequestTotals ToQuoteTotalsDto(this QuoteRequestTotals totals)
         {
-            return QuoteConverterInstance.ToQuoteTotalsDTO(totals);
+            return QuoteConverterInstance.ToQuoteTotalsDto(totals);
         }
 
-        public static ShippingMethod ToShippingMethod(this quoteDTO.ShipmentMethod shippingMethodDTO, Currency currency)
+        public static ShippingMethod ToShippingMethod(this quoteDto.ShipmentMethod shippingMethodDto, Currency currency)
         {
-            return QuoteConverterInstance.ToShippingMethod(shippingMethodDTO, currency);
+            return QuoteConverterInstance.ToShippingMethod(shippingMethodDto, currency);
         }
 
-        public static Address ToAddress(this quoteDTO.Address addressDTO)
+        public static Address ToAddress(this quoteDto.Address addressDto)
         {
-            return QuoteConverterInstance.ToAddress(addressDTO);
+            return QuoteConverterInstance.ToAddress(addressDto);
         }
 
-        public static quoteDTO.Address ToQuoteAddressDTO(this Address address)
+        public static quoteDto.Address ToQuoteAddressDto(this Address address)
         {
-            return QuoteConverterInstance.ToQuoteAddressDTO(address);
+            return QuoteConverterInstance.ToQuoteAddressDto(address);
         }
 
-        public static Attachment ToAttachment(this quoteDTO.QuoteAttachment attachmentDTO)
+        public static Attachment ToAttachment(this quoteDto.QuoteAttachment attachmentDto)
         {
-            return QuoteConverterInstance.ToAttachment(attachmentDTO);
+            return QuoteConverterInstance.ToAttachment(attachmentDto);
         }
 
-        public static DynamicProperty ToDynamicProperty(this quoteDTO.DynamicObjectProperty propertyDTO)
+        public static DynamicProperty ToDynamicProperty(this quoteDto.DynamicObjectProperty propertyDto)
         {
-            return QuoteConverterInstance.ToDynamicProperty(propertyDTO);
+            return QuoteConverterInstance.ToDynamicProperty(propertyDto);
         }
 
-        public static quoteDTO.DynamicObjectProperty ToQuoteDynamicPropertyDTO(this DynamicProperty property)
+        public static quoteDto.DynamicObjectProperty ToQuoteDynamicPropertyDto(this DynamicProperty property)
         {
-            return QuoteConverterInstance.ToQuoteDynamicPropertyDTO(property);
+            return QuoteConverterInstance.ToQuoteDynamicPropertyDto(property);
         }
     }
 
     public class QuoteConverter
     {
-        public virtual DynamicProperty ToDynamicProperty(quoteDTO.DynamicObjectProperty propertyDTO)
+        public virtual DynamicProperty ToDynamicProperty(quoteDto.DynamicObjectProperty propertyDto)
         {
-            return propertyDTO.JsonConvert<coreDTO.DynamicObjectProperty>().ToDynamicProperty();
+            return propertyDto.JsonConvert<coreDto.DynamicObjectProperty>().ToDynamicProperty();
         }
 
-        public virtual quoteDTO.DynamicObjectProperty ToQuoteDynamicPropertyDTO(DynamicProperty property)
+        public virtual quoteDto.DynamicObjectProperty ToQuoteDynamicPropertyDto(DynamicProperty property)
         {
-            return property.ToDynamicPropertyDTO().JsonConvert<quoteDTO.DynamicObjectProperty>();
+            return property.ToDynamicPropertyDto().JsonConvert<quoteDto.DynamicObjectProperty>();
         }
 
-        public virtual Attachment ToAttachment(quoteDTO.QuoteAttachment attachmentDTO)
+        public virtual Attachment ToAttachment(quoteDto.QuoteAttachment attachmentDto)
         {
             var result = new Attachment();
-            result.InjectFrom<NullableAndEnumValueInjecter>(attachmentDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(attachmentDto);
             return result;
         }
 
-        public virtual Address ToAddress(quoteDTO.Address addressDTO)
+        public virtual Address ToAddress(quoteDto.Address addressDto)
         {
-            return addressDTO.JsonConvert<coreDTO.Address>().ToAddress();
+            return addressDto.JsonConvert<coreDto.Address>().ToAddress();
         }
 
-        public virtual quoteDTO.Address ToQuoteAddressDTO(Address address)
+        public virtual quoteDto.Address ToQuoteAddressDto(Address address)
         {
-            return address.ToCoreAddressDTO().JsonConvert<quoteDTO.Address>();
+            return address.ToCoreAddressDto().JsonConvert<quoteDto.Address>();
         }
 
-        public virtual QuoteRequest ToQuoteRequest(quoteDTO.QuoteRequest quoteRequestDTO, IEnumerable<Currency> availCurrencies, Language language)
+        public virtual QuoteRequest ToQuoteRequest(quoteDto.QuoteRequest quoteRequestDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var currency = availCurrencies.FirstOrDefault(x => x.Equals(quoteRequestDTO.Currency)) ?? new Currency(language, quoteRequestDTO.Currency);
+            var currency = availCurrencies.FirstOrDefault(x => x.Equals(quoteRequestDto.Currency)) ?? new Currency(language, quoteRequestDto.Currency);
             var result = ServiceLocator.Current.GetInstance<QuoteFactory>().CreateQuoteRequest(currency, language);
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(quoteRequestDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(quoteRequestDto);
 
             result.Currency = currency;
             result.Language = language;
-            result.ManualRelDiscountAmount = new Money(quoteRequestDTO.ManualRelDiscountAmount ?? 0, currency);
-            result.ManualShippingTotal = new Money(quoteRequestDTO.ManualShippingTotal ?? 0, currency);
-            result.ManualSubTotal = new Money(quoteRequestDTO.ManualSubTotal ?? 0, currency);
+            result.ManualRelDiscountAmount = new Money(quoteRequestDto.ManualRelDiscountAmount ?? 0, currency);
+            result.ManualShippingTotal = new Money(quoteRequestDto.ManualShippingTotal ?? 0, currency);
+            result.ManualSubTotal = new Money(quoteRequestDto.ManualSubTotal ?? 0, currency);
 
-            if (quoteRequestDTO.Addresses != null)
+            if (quoteRequestDto.Addresses != null)
             {
-                result.Addresses = quoteRequestDTO.Addresses.Select(a => ToAddress(a)).ToList();
+                result.Addresses = quoteRequestDto.Addresses.Select(a => ToAddress(a)).ToList();
             }
 
-            if (quoteRequestDTO.Attachments != null)
+            if (quoteRequestDto.Attachments != null)
             {
-                result.Attachments = quoteRequestDTO.Attachments.Select(a => ToAttachment(a)).ToList();
+                result.Attachments = quoteRequestDto.Attachments.Select(a => ToAttachment(a)).ToList();
             }
 
-            if (!string.IsNullOrEmpty(quoteRequestDTO.Coupon))
+            if (!string.IsNullOrEmpty(quoteRequestDto.Coupon))
             {
-                result.Coupon = new Coupon { AppliedSuccessfully = true, Code = quoteRequestDTO.Coupon };
+                result.Coupon = new Coupon { AppliedSuccessfully = true, Code = quoteRequestDto.Coupon };
             }
 
-            if (quoteRequestDTO.DynamicProperties != null)
+            if (quoteRequestDto.DynamicProperties != null)
             {
-                result.DynamicProperties = quoteRequestDTO.DynamicProperties.Select(ToDynamicProperty).ToList();
+                result.DynamicProperties = quoteRequestDto.DynamicProperties.Select(ToDynamicProperty).ToList();
             }
 
-            if (quoteRequestDTO.Items != null)
+            if (quoteRequestDto.Items != null)
             {
-                result.Items = quoteRequestDTO.Items.Select(i => ToQuoteItem(i, currency)).ToList();
+                result.Items = quoteRequestDto.Items.Select(i => ToQuoteItem(i, currency)).ToList();
             }
 
             // TODO
-            if (quoteRequestDTO.ShipmentMethod != null)
+            if (quoteRequestDto.ShipmentMethod != null)
             {
             }
 
-            if (quoteRequestDTO.TaxDetails != null)
+            if (quoteRequestDto.TaxDetails != null)
             {
-                result.TaxDetails = quoteRequestDTO.TaxDetails.Select(td => ToTaxDetail(td, currency)).ToList();
+                result.TaxDetails = quoteRequestDto.TaxDetails.Select(td => ToTaxDetail(td, currency)).ToList();
             }
 
-            if (quoteRequestDTO.Totals != null)
+            if (quoteRequestDto.Totals != null)
             {
-                result.Totals = ToQuoteTotals(quoteRequestDTO.Totals, currency);
+                result.Totals = ToQuoteTotals(quoteRequestDto.Totals, currency);
             }
 
             return result;
         }
 
-        public virtual quoteDTO.QuoteRequest ToQuoteRequestDTO(QuoteRequest quoteRequest)
+        public virtual quoteDto.QuoteRequest ToQuoteRequestDto(QuoteRequest quoteRequest)
         {
-            var serviceModel = new quoteDTO.QuoteRequest();
+            var serviceModel = new quoteDto.QuoteRequest();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(quoteRequest);
 
             serviceModel.Currency = quoteRequest.Currency.Code;
-            serviceModel.Addresses = quoteRequest.Addresses.Select(ToQuoteAddressDTO).ToList();
-            serviceModel.Attachments = quoteRequest.Attachments.Select(ToQuoteAttachmentDTO).ToList();
-            serviceModel.DynamicProperties = quoteRequest.DynamicProperties.Select(ToQuoteDynamicPropertyDTO).ToList();
-            serviceModel.Items = quoteRequest.Items.Select(ToQuoteItemDTO).ToList();
+            serviceModel.Addresses = quoteRequest.Addresses.Select(ToQuoteAddressDto).ToList();
+            serviceModel.Attachments = quoteRequest.Attachments.Select(ToQuoteAttachmentDto).ToList();
+            serviceModel.DynamicProperties = quoteRequest.DynamicProperties.Select(ToQuoteDynamicPropertyDto).ToList();
+            serviceModel.Items = quoteRequest.Items.Select(ToQuoteItemDto).ToList();
             serviceModel.LanguageCode = quoteRequest.Language.CultureName;
             serviceModel.ManualRelDiscountAmount = quoteRequest.ManualRelDiscountAmount != null ? (double?)quoteRequest.ManualRelDiscountAmount.Amount : null;
             serviceModel.ManualShippingTotal = quoteRequest.ManualShippingTotal != null ? (double?)quoteRequest.ManualShippingTotal.Amount : null;
             serviceModel.ManualSubTotal = quoteRequest.ManualSubTotal != null ? (double?)quoteRequest.ManualSubTotal.Amount : null;
-            serviceModel.TaxDetails = quoteRequest.TaxDetails.Select(ToQuoteTaxDetailDTO).ToList();
+            serviceModel.TaxDetails = quoteRequest.TaxDetails.Select(ToQuoteTaxDetailDto).ToList();
 
             if (quoteRequest.Coupon != null && quoteRequest.Coupon.AppliedSuccessfully)
             {
@@ -225,49 +225,49 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (quoteRequest.Totals != null)
             {
-                serviceModel.Totals = ToQuoteTotalsDTO(quoteRequest.Totals);
+                serviceModel.Totals = ToQuoteTotalsDto(quoteRequest.Totals);
             }
 
             return serviceModel;
         }
 
-        public virtual QuoteItem ToQuoteItem(quoteDTO.QuoteItem quoteItemDTO, Currency currency)
+        public virtual QuoteItem ToQuoteItem(quoteDto.QuoteItem quoteItemDto, Currency currency)
         {
             var result = ServiceLocator.Current.GetInstance<QuoteFactory>().CreateQuoteItem();
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(quoteItemDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(quoteItemDto);
 
             result.Currency = currency;
-            result.ListPrice = new Money(quoteItemDTO.ListPrice ?? 0, currency);
-            result.SalePrice = new Money(quoteItemDTO.SalePrice ?? 0, currency);
+            result.ListPrice = new Money(quoteItemDto.ListPrice ?? 0, currency);
+            result.SalePrice = new Money(quoteItemDto.SalePrice ?? 0, currency);
 
-            if (quoteItemDTO.ProposalPrices != null)
+            if (quoteItemDto.ProposalPrices != null)
             {
-                result.ProposalPrices = quoteItemDTO.ProposalPrices.Select(pp => ToTierPrice(pp, currency)).ToList();
+                result.ProposalPrices = quoteItemDto.ProposalPrices.Select(pp => ToTierPrice(pp, currency)).ToList();
             }
 
-            if (quoteItemDTO.SelectedTierPrice != null)
+            if (quoteItemDto.SelectedTierPrice != null)
             {
-                result.SelectedTierPrice = ToTierPrice( quoteItemDTO.SelectedTierPrice, currency);
+                result.SelectedTierPrice = ToTierPrice(quoteItemDto.SelectedTierPrice, currency);
             }
 
             return result;
         }
 
-        public virtual quoteDTO.QuoteItem ToQuoteItemDTO(QuoteItem quoteItem)
+        public virtual quoteDto.QuoteItem ToQuoteItemDto(QuoteItem quoteItem)
         {
-            var serviceModel = new quoteDTO.QuoteItem();
+            var serviceModel = new quoteDto.QuoteItem();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(quoteItem);
 
             serviceModel.Currency = quoteItem.Currency.Code;
             serviceModel.ListPrice = (double)quoteItem.ListPrice.Amount;
-            serviceModel.ProposalPrices = quoteItem.ProposalPrices.Select(ToQuoteTierPriceDTO).ToList();
+            serviceModel.ProposalPrices = quoteItem.ProposalPrices.Select(ToQuoteTierPriceDto).ToList();
             serviceModel.SalePrice = (double)quoteItem.SalePrice.Amount;
 
             if (quoteItem.SelectedTierPrice != null)
             {
-                serviceModel.SelectedTierPrice = ToQuoteTierPriceDTO(quoteItem.SelectedTierPrice);
+                serviceModel.SelectedTierPrice = ToQuoteTierPriceDto(quoteItem.SelectedTierPrice);
             }
 
             return serviceModel;
@@ -290,24 +290,24 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-        public virtual QuoteRequestTotals ToQuoteTotals(quoteDTO.QuoteRequestTotals totalsDTO, Currency currency)
+        public virtual QuoteRequestTotals ToQuoteTotals(quoteDto.QuoteRequestTotals totalsDto, Currency currency)
         {
             var result = ServiceLocator.Current.GetInstance<QuoteFactory>().CreateTotals(currency);
 
-            result.AdjustmentQuoteExlTax = new Money(totalsDTO.AdjustmentQuoteExlTax ?? 0, currency);
-            result.DiscountTotal = new Money(totalsDTO.DiscountTotal ?? 0, currency);
-            result.GrandTotalExlTax = new Money(totalsDTO.GrandTotalExlTax ?? 0, currency);
-            result.GrandTotalInclTax = new Money(totalsDTO.GrandTotalInclTax ?? 0, currency);
-            result.OriginalSubTotalExlTax = new Money(totalsDTO.OriginalSubTotalExlTax ?? 0, currency);
-            result.ShippingTotal = new Money(totalsDTO.ShippingTotal ?? 0, currency);
-            result.SubTotalExlTax = new Money(totalsDTO.SubTotalExlTax ?? 0, currency);
-            result.TaxTotal = new Money(totalsDTO.TaxTotal ?? 0, currency);
+            result.AdjustmentQuoteExlTax = new Money(totalsDto.AdjustmentQuoteExlTax ?? 0, currency);
+            result.DiscountTotal = new Money(totalsDto.DiscountTotal ?? 0, currency);
+            result.GrandTotalExlTax = new Money(totalsDto.GrandTotalExlTax ?? 0, currency);
+            result.GrandTotalInclTax = new Money(totalsDto.GrandTotalInclTax ?? 0, currency);
+            result.OriginalSubTotalExlTax = new Money(totalsDto.OriginalSubTotalExlTax ?? 0, currency);
+            result.ShippingTotal = new Money(totalsDto.ShippingTotal ?? 0, currency);
+            result.SubTotalExlTax = new Money(totalsDto.SubTotalExlTax ?? 0, currency);
+            result.TaxTotal = new Money(totalsDto.TaxTotal ?? 0, currency);
             return result;
         }
 
-        public virtual quoteDTO.QuoteRequestTotals ToQuoteTotalsDTO(QuoteRequestTotals totals)
+        public virtual quoteDto.QuoteRequestTotals ToQuoteTotalsDto(QuoteRequestTotals totals)
         {
-            var result = new quoteDTO.QuoteRequestTotals
+            var result = new quoteDto.QuoteRequestTotals
             {
                 AdjustmentQuoteExlTax = (double)totals.AdjustmentQuoteExlTax.Amount,
                 DiscountTotal = (double)totals.DiscountTotal.Amount,
@@ -322,46 +322,46 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual ShippingMethod ToShippingMethod(quoteDTO.ShipmentMethod shippingMethodDTO, Currency currency)
+        public virtual ShippingMethod ToShippingMethod(quoteDto.ShipmentMethod shippingMethodDto, Currency currency)
         {
             var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateShippingMethod(currency);
-            result.InjectFrom<NullableAndEnumValueInjecter>(shippingMethodDTO);
-            result.Price = new Money(shippingMethodDTO.Price ?? 0, currency);
+            result.InjectFrom<NullableAndEnumValueInjecter>(shippingMethodDto);
+            result.Price = new Money(shippingMethodDto.Price ?? 0, currency);
             return result;
         }
 
-        public virtual TaxDetail ToTaxDetail(quoteDTO.TaxDetail taxDetail, Currency currency)
+        public virtual TaxDetail ToTaxDetail(quoteDto.TaxDetail taxDetail, Currency currency)
         {
             var result = new TaxDetail(currency);
             result.InjectFrom(taxDetail);
             return result;
         }
 
-        public virtual quoteDTO.TaxDetail ToQuoteTaxDetailDTO(TaxDetail taxDetail)
+        public virtual quoteDto.TaxDetail ToQuoteTaxDetailDto(TaxDetail taxDetail)
         {
-            var result = new quoteDTO.TaxDetail();
+            var result = new quoteDto.TaxDetail();
             result.InjectFrom(taxDetail);
             return result;
         }
 
-        public virtual quoteDTO.QuoteAttachment ToQuoteAttachmentDTO(Attachment attachment)
+        public virtual quoteDto.QuoteAttachment ToQuoteAttachmentDto(Attachment attachment)
         {
-            var result = new quoteDTO.QuoteAttachment();
+            var result = new quoteDto.QuoteAttachment();
             result.InjectFrom<NullableAndEnumValueInjecter>(attachment);
             return result;
         }
 
-        public virtual TierPrice ToTierPrice(quoteDTO.TierPrice tierPriceDTO, Currency currency)
+        public virtual TierPrice ToTierPrice(quoteDto.TierPrice tierPriceDto, Currency currency)
         {
             var result = new TierPrice(currency);
-            result.InjectFrom<NullableAndEnumValueInjecter>(tierPriceDTO);
-            result.Price = new Money(tierPriceDTO.Price ?? 0, currency);
+            result.InjectFrom<NullableAndEnumValueInjecter>(tierPriceDto);
+            result.Price = new Money(tierPriceDto.Price ?? 0, currency);
             return result;
         }
 
-        public virtual quoteDTO.TierPrice ToQuoteTierPriceDTO(TierPrice webModel)
+        public virtual quoteDto.TierPrice ToQuoteTierPriceDto(TierPrice webModel)
         {
-            var serviceModel = new quoteDTO.TierPrice();
+            var serviceModel = new quoteDto.TierPrice();
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(webModel);
             serviceModel.Price = (double)webModel.Price.Amount;
             return serviceModel;

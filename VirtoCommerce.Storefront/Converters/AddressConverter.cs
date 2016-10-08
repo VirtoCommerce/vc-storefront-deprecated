@@ -3,31 +3,31 @@ using System.Linq;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.Storefront.Converters
 {
     public static class AddressConverter
     {
-        public static Address ToAddress(this coreDTO.Address addressDTO)
+        public static Address ToAddress(this coreDto.Address addressDto)
         {
             var retVal = new Address();
 
-            retVal.InjectFrom(addressDTO);
-            retVal.Type = (AddressType)Enum.Parse(typeof(AddressType), addressDTO.AddressType, true);
+            retVal.InjectFrom(addressDto);
+            retVal.Type = (AddressType)Enum.Parse(typeof(AddressType), addressDto.AddressType, true);
             return retVal;
         }
 
-        public static coreDTO.Address ToCoreAddressDTO(this Address address)
+        public static coreDto.Address ToCoreAddressDto(this Address address)
         {
-            var retVal = new coreDTO.Address();
+            var retVal = new coreDto.Address();
 
             retVal.InjectFrom<NullableAndEnumValueInjecter>(address);
             retVal.AddressType = address.Type.ToString();
 
             return retVal;
-        }       
+        }
 
 
         public static Address ToWebModel(this shopifyModel.Address address, Country[] countries)
@@ -36,7 +36,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.CopyFrom(address, countries);
             return result;
         }
-        
+
 
         public static Address CopyFrom(this Address result, shopifyModel.Address address, Country[] countries)
         {
@@ -70,8 +70,8 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-       
-    
+
+
 
     }
 }

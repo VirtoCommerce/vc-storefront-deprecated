@@ -136,7 +136,7 @@ namespace VirtoCommerce.Storefront.Services
             criteria = criteria.Clone();
 
             var workContext = _workContextFactory();
-            var searchCriteria = criteria.ToProductSearchDTO(workContext);
+            var searchCriteria = criteria.ToProductSearchDto(workContext);
             var result = await _searchApi.SearchApiModule.SearchProductsAsync(workContext.CurrentStore.Id, searchCriteria);
             var products = result.Products.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
 
@@ -170,7 +170,7 @@ namespace VirtoCommerce.Storefront.Services
             criteria = criteria.Clone();
 
             var workContext = _workContextFactory();
-            var searchCriteria = criteria.ToProductSearchDTO(workContext);
+            var searchCriteria = criteria.ToProductSearchDto(workContext);
             var result = _searchApi.SearchApiModule.SearchProducts(workContext.CurrentStore.Id, searchCriteria);
             var products = result.Products.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
 

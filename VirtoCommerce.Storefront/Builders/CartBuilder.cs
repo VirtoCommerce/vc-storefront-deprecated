@@ -401,7 +401,7 @@ namespace VirtoCommerce.Storefront.Builders
             await EvaluatePromotionsAsync();
             await EvaluateTaxesAsync();
 
-            var cart = _cart.ToShoppingCartDTO();
+            var cart = _cart.ToShoppingCartDto();
             if (string.IsNullOrEmpty(cart.Id))
             {
                 cart = await _cartApi.CartModule.CreateAsync(cart);

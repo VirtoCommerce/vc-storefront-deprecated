@@ -6,9 +6,9 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
 using VirtoCommerce.Storefront.Model.Stores.Factories;
-using storeDTO = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
-using platformDTO = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
-using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using platformDto = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
+using storeDto = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -22,35 +22,35 @@ namespace VirtoCommerce.Storefront.Converters
             }
         }
 
-        public static Store ToStore(this storeDTO.Store storeDto)
+        public static Store ToStore(this storeDto.Store storeDto)
         {
             return StoreConverterInstance.ToStore(storeDto);
         }
 
-        public static DynamicProperty ToDynamicProperty(this storeDTO.DynamicObjectProperty propertyDTO)
+        public static DynamicProperty ToDynamicProperty(this storeDto.DynamicObjectProperty propertyDto)
         {
-            return StoreConverterInstance.ToDynamicProperty(propertyDTO);
+            return StoreConverterInstance.ToDynamicProperty(propertyDto);
         }
 
-        public static SeoInfo ToSeoInfo(this storeDTO.SeoInfo seoDTO)
+        public static SeoInfo ToSeoInfo(this storeDto.SeoInfo seoDto)
         {
-            return StoreConverterInstance.ToSeoInfo(seoDTO);
+            return StoreConverterInstance.ToSeoInfo(seoDto);
         }
     }
 
     public class StoreConverter
     {
-        public virtual SeoInfo ToSeoInfo(storeDTO.SeoInfo seoDto)
+        public virtual SeoInfo ToSeoInfo(storeDto.SeoInfo seoDto)
         {
-            return seoDto.JsonConvert<coreDTO.SeoInfo>().ToSeoInfo();
+            return seoDto.JsonConvert<coreDto.SeoInfo>().ToSeoInfo();
         }
 
-        public virtual DynamicProperty ToDynamicProperty(storeDTO.DynamicObjectProperty propertyDTO)
+        public virtual DynamicProperty ToDynamicProperty(storeDto.DynamicObjectProperty propertyDto)
         {
-            return propertyDTO.JsonConvert<coreDTO.DynamicObjectProperty>().ToDynamicProperty();
+            return propertyDto.JsonConvert<coreDto.DynamicObjectProperty>().ToDynamicProperty();
         }
 
-        public virtual Store ToStore(storeDTO.Store storeDto)
+        public virtual Store ToStore(storeDto.Store storeDto)
         {
             var result = ServiceLocator.Current.GetInstance<StoreFactory>().CreateStore();
             result.InjectFrom<NullableAndEnumValueInjecter>(storeDto);
@@ -82,7 +82,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (!storeDto.Settings.IsNullOrEmpty())
             {
-                result.Settings = storeDto.Settings.Select(x => x.JsonConvert<platformDTO.Setting>().ToSettingEntry()).ToList();
+                result.Settings = storeDto.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
             }
 
             result.TrustedGroups = storeDto.TrustedGroups;

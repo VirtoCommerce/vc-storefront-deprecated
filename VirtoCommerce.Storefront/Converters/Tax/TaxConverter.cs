@@ -3,12 +3,11 @@ using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Tax;
 using VirtoCommerce.Storefront.Model.Tax.Factories;
-using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -22,9 +21,9 @@ namespace VirtoCommerce.Storefront.Converters
             }
         }
 
-        public static coreDTO.TaxEvaluationContext ToTaxEvaluationContextDTO(this TaxEvaluationContext taxContext)
+        public static coreDto.TaxEvaluationContext ToTaxEvaluationContextDto(this TaxEvaluationContext taxContext)
         {
-            return TaxConverterInstance.ToTaxEvaluationContextDTO(taxContext);
+            return TaxConverterInstance.ToTaxEvaluationContextDto(taxContext);
         }
 
         public static TaxEvaluationContext ToTaxEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
@@ -32,55 +31,55 @@ namespace VirtoCommerce.Storefront.Converters
             return TaxConverterInstance.ToTaxEvaluationContext(workContext, products);
         }
 
-        public static TaxRate ToTaxRate(this coreDTO.TaxRate taxRateDTO, Currency currency)
+        public static TaxRate ToTaxRate(this coreDto.TaxRate taxRateDto, Currency currency)
         {
-            return TaxConverterInstance.ToTaxRate(taxRateDTO, currency);
+            return TaxConverterInstance.ToTaxRate(taxRateDto, currency);
         }
     }
 
     public class TaxConverter
     {
-        public virtual TaxRate ToTaxRate(coreDTO.TaxRate taxRateDTO, Currency currency)
+        public virtual TaxRate ToTaxRate(coreDto.TaxRate taxRateDto, Currency currency)
         {
             var result = new TaxRate(currency)
             {
-                Rate = new Money(taxRateDTO.Rate.Value, currency)
+                Rate = new Money(taxRateDto.Rate.Value, currency)
             };
 
-            if (taxRateDTO.Line != null)
+            if (taxRateDto.Line != null)
             {
                 result.Line = new TaxLine(currency);
-                result.Line.InjectFrom(taxRateDTO.Line);
-                result.Line.Amount = new Money(taxRateDTO.Line.Amount.Value, currency);
-                result.Line.Price = new Money(taxRateDTO.Line.Price.Value, currency);
+                result.Line.InjectFrom(taxRateDto.Line);
+                result.Line.Amount = new Money(taxRateDto.Line.Amount.Value, currency);
+                result.Line.Price = new Money(taxRateDto.Line.Price.Value, currency);
             }
 
             return result;
         }
 
-        public virtual coreDTO.TaxEvaluationContext ToTaxEvaluationContextDTO(TaxEvaluationContext taxContext)
+        public virtual coreDto.TaxEvaluationContext ToTaxEvaluationContextDto(TaxEvaluationContext taxContext)
         {
-            var retVal = new coreDTO.TaxEvaluationContext();
+            var retVal = new coreDto.TaxEvaluationContext();
             retVal.InjectFrom<NullableAndEnumValueInjecter>(taxContext);
             if (taxContext.Address != null)
             {
-                retVal.Address = taxContext.Address.ToCoreAddressDTO();
+                retVal.Address = taxContext.Address.ToCoreAddressDto();
             }
             if (taxContext.Customer != null)
             {
-                retVal.Customer = taxContext.Customer.ToCoreContactDTO();
+                retVal.Customer = taxContext.Customer.ToCoreContactDto();
             }
             if (taxContext.Currency != null)
             {
                 retVal.Currency = taxContext.Currency.Code;
             }
 
-            retVal.Lines = new List<coreDTO.TaxLine>();
+            retVal.Lines = new List<coreDto.TaxLine>();
             if (!taxContext.Lines.IsNullOrEmpty())
             {
-                foreach(var line in taxContext.Lines)
+                foreach (var line in taxContext.Lines)
                 {
-                    var serviceModelLine = new coreDTO.TaxLine();
+                    var serviceModelLine = new coreDto.TaxLine();
                     serviceModelLine.InjectFrom<NullableAndEnumValueInjecter>(line);
                     serviceModelLine.Amount = (double)line.Amount.Amount;
                     serviceModelLine.Price = (double)line.Price.Amount;
@@ -91,7 +90,7 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
-      
+
         public virtual TaxEvaluationContext ToTaxEvaluationContext(WorkContext workContext, IEnumerable<Product> products = null)
         {
             var result = ServiceLocator.Current.GetInstance<TaxFactory>().CreateTaxEvaluationContext(workContext.CurrentStore.Id);
@@ -100,7 +99,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.Type = "";
             result.Address = workContext.CurrentCustomer.DefaultBillingAddress;
             result.Customer = workContext.CurrentCustomer;
-           
+
             if (products != null)
             {
                 result.Lines = products.SelectMany(x => x.ToTaxLines()).ToList();
@@ -108,6 +107,6 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-     
+
     }
 }

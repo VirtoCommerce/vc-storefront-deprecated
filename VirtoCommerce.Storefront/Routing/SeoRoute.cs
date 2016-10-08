@@ -8,7 +8,7 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent;
-using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Routing
 {
@@ -137,9 +137,9 @@ namespace VirtoCommerce.Storefront.Routing
             return result;
         }
 
-        private List<coreDTO.SeoInfo> GetSeoRecords(string slug)
+        private List<coreDto.SeoInfo> GetSeoRecords(string slug)
         {
-            var seoRecords = new List<coreDTO.SeoInfo>();
+            var seoRecords = new List<coreDto.SeoInfo>();
 
             if (!string.IsNullOrEmpty(slug))
             {

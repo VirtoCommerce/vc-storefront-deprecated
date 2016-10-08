@@ -4,16 +4,15 @@ using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Marketing.Factories;
-using marketingDTO = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
-using coreDTO = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
+using marketingDto = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 namespace VirtoCommerce.Storefront.Converters
 {
-    
+
     public static class MarketingConverterExtension
     {
         public static MarketingConverter MarketingConverterInstance
@@ -25,73 +24,73 @@ namespace VirtoCommerce.Storefront.Converters
         }
 
         public static PromotionEvaluationContext ToPromotionEvaluationContext(this WorkContext workContext, IEnumerable<Product> products = null)
-        {           
+        {
             return MarketingConverterInstance.ToPromotionEvaluationContext(workContext, products);
         }
 
-        public static marketingDTO.PromotionEvaluationContext ToPromotionEvaluationContextDTO(this PromotionEvaluationContext promoEvaluationContext)
+        public static marketingDto.PromotionEvaluationContext ToPromotionEvaluationContextDto(this PromotionEvaluationContext promoEvaluationContext)
         {
-            return MarketingConverterInstance.ToPromotionEvaluationContextDTO(promoEvaluationContext);
+            return MarketingConverterInstance.ToPromotionEvaluationContextDto(promoEvaluationContext);
         }
 
-        public static Promotion ToWebModel(this marketingDTO.Promotion promotionDTO)
+        public static Promotion ToWebModel(this marketingDto.Promotion promotionDto)
         {
-            return MarketingConverterInstance.ToPromotion(promotionDTO);
+            return MarketingConverterInstance.ToPromotion(promotionDto);
         }
 
-        public static marketingDTO.ProductPromoEntry ToProductPromoEntryDTO(this PromotionProductEntry promoProductEntry)
+        public static marketingDto.ProductPromoEntry ToProductPromoEntryDto(this PromotionProductEntry promoProductEntry)
         {
-            return MarketingConverterInstance.ToProductPromoEntryDTO(promoProductEntry);
+            return MarketingConverterInstance.ToProductPromoEntryDto(promoProductEntry);
         }
 
-        public static PromotionReward ToPromotionReward(this marketingDTO.PromotionReward rewardDTO, Currency currency)
+        public static PromotionReward ToPromotionReward(this marketingDto.PromotionReward rewardDto, Currency currency)
         {
-            return MarketingConverterInstance.ToPromotionReward(rewardDTO, currency);
+            return MarketingConverterInstance.ToPromotionReward(rewardDto, currency);
         }
 
-        public static DynamicContentItem ToDynamicContentItem(this marketingDTO.DynamicContentItem contentItemDTO)
+        public static DynamicContentItem ToDynamicContentItem(this marketingDto.DynamicContentItem contentItemDto)
         {
-            return MarketingConverterInstance.ToDynamicContentItem(contentItemDTO);
+            return MarketingConverterInstance.ToDynamicContentItem(contentItemDto);
         }
 
-        public static DynamicProperty ToDynamicProperty(this marketingDTO.DynamicObjectProperty propertyDTO)
+        public static DynamicProperty ToDynamicProperty(this marketingDto.DynamicObjectProperty propertyDto)
         {
-            return MarketingConverterInstance.ToDynamicProperty(propertyDTO);
+            return MarketingConverterInstance.ToDynamicProperty(propertyDto);
         }
 
-        public static marketingDTO.DynamicObjectProperty ToMarketingDynamicPropertyDTO(this DynamicProperty property)
+        public static marketingDto.DynamicObjectProperty ToMarketingDynamicPropertyDto(this DynamicProperty property)
         {
-            return MarketingConverterInstance.ToMarketingDynamicPropertyDTO(property);
+            return MarketingConverterInstance.ToMarketingDynamicPropertyDto(property);
         }
     }
 
     public class MarketingConverter
     {
-        public virtual DynamicProperty ToDynamicProperty(marketingDTO.DynamicObjectProperty propertyDTO)
+        public virtual DynamicProperty ToDynamicProperty(marketingDto.DynamicObjectProperty propertyDto)
         {
-            return propertyDTO.JsonConvert<coreDTO.DynamicObjectProperty>().ToDynamicProperty();
+            return propertyDto.JsonConvert<coreDto.DynamicObjectProperty>().ToDynamicProperty();
         }
 
-        public virtual marketingDTO.DynamicObjectProperty ToMarketingDynamicPropertyDTO(DynamicProperty property)
+        public virtual marketingDto.DynamicObjectProperty ToMarketingDynamicPropertyDto(DynamicProperty property)
         {
-            return property.ToDynamicPropertyDTO().JsonConvert<marketingDTO.DynamicObjectProperty>();
+            return property.ToDynamicPropertyDto().JsonConvert<marketingDto.DynamicObjectProperty>();
         }
 
-        public virtual DynamicContentItem ToDynamicContentItem(marketingDTO.DynamicContentItem contentItemDTO)
+        public virtual DynamicContentItem ToDynamicContentItem(marketingDto.DynamicContentItem contentItemDto)
         {
             var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreateDynamicContentItem();
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(contentItemDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(contentItemDto);
 
-            if (contentItemDTO.DynamicProperties != null)
+            if (contentItemDto.DynamicProperties != null)
             {
-                result.DynamicProperties = contentItemDTO.DynamicProperties.Select(ToDynamicProperty).ToList();
+                result.DynamicProperties = contentItemDto.DynamicProperties.Select(ToDynamicProperty).ToList();
             }
 
             return result;
         }
 
-        public virtual PromotionReward ToPromotionReward(marketingDTO.PromotionReward serviceModel, Currency currency)
+        public virtual PromotionReward ToPromotionReward(marketingDto.PromotionReward serviceModel, Currency currency)
         {
             var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionReward();
 
@@ -108,26 +107,26 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public marketingDTO.ProductPromoEntry ToProductPromoEntryDTO(PromotionProductEntry promoProductEntry)
+        public marketingDto.ProductPromoEntry ToProductPromoEntryDto(PromotionProductEntry promoProductEntry)
         {
-            var serviceModel = new marketingDTO.ProductPromoEntry();
+            var serviceModel = new marketingDto.ProductPromoEntry();
 
             serviceModel.InjectFrom<NullableAndEnumValueInjecter>(promoProductEntry);
 
             serviceModel.Discount = promoProductEntry.Discount != null ? (double?)promoProductEntry.Discount.Amount : null;
             serviceModel.Price = promoProductEntry.Price != null ? (double?)promoProductEntry.Price.Amount : null;
-            serviceModel.Variations = promoProductEntry.Variations != null ? promoProductEntry.Variations.Select(ToProductPromoEntryDTO).ToList() : null;
+            serviceModel.Variations = promoProductEntry.Variations != null ? promoProductEntry.Variations.Select(ToProductPromoEntryDto).ToList() : null;
 
             return serviceModel;
         }
 
-        public virtual Promotion ToPromotion(marketingDTO.Promotion promotionDTO)
+        public virtual Promotion ToPromotion(marketingDto.Promotion promotionDto)
         {
             var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotion();
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(promotionDTO);
+            result.InjectFrom<NullableAndEnumValueInjecter>(promotionDto);
 
-            result.Coupons = promotionDTO.Coupons;
+            result.Coupons = promotionDto.Coupons;
 
             return result;
         }
@@ -160,18 +159,18 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual marketingDTO.PromotionEvaluationContext ToPromotionEvaluationContextDTO(PromotionEvaluationContext promoEvalContext)
+        public virtual marketingDto.PromotionEvaluationContext ToPromotionEvaluationContextDto(PromotionEvaluationContext promoEvalContext)
         {
-            var result = new marketingDTO.PromotionEvaluationContext();
+            var result = new marketingDto.PromotionEvaluationContext();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(promoEvalContext);
 
-            result.CartPromoEntries = promoEvalContext.CartPromoEntries.Select(ToProductPromoEntryDTO).ToList();
+            result.CartPromoEntries = promoEvalContext.CartPromoEntries.Select(ToProductPromoEntryDto).ToList();
             result.CartTotal = promoEvalContext.CartTotal != null ? (double?)promoEvalContext.CartTotal.Amount : null;
             result.Currency = promoEvalContext.Currency != null ? promoEvalContext.Currency.Code : null;
             result.Language = promoEvalContext.Language != null ? promoEvalContext.Language.CultureName : null;
-            result.PromoEntries = promoEvalContext.PromoEntries.Select(ToProductPromoEntryDTO).ToList();
-            result.PromoEntry = promoEvalContext.PromoEntry != null ? ToProductPromoEntryDTO(promoEvalContext.PromoEntry) : null;
+            result.PromoEntries = promoEvalContext.PromoEntries.Select(ToProductPromoEntryDto).ToList();
+            result.PromoEntry = promoEvalContext.PromoEntry != null ? ToProductPromoEntryDto(promoEvalContext.PromoEntry) : null;
             result.ShipmentMethodPrice = promoEvalContext.ShipmentMethodPrice != null ? (double?)promoEvalContext.ShipmentMethodPrice.Amount : null;
 
             return result;
