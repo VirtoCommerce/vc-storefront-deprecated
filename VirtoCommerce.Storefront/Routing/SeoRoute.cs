@@ -45,7 +45,7 @@ namespace VirtoCommerce.Storefront.Routing
                     // Get all seo records for requested slug and also all other seo records with different slug and languages but related to same object
                     var seoRecords = GetSeoRecords(slug);
 
-                    var seoRecord = seoRecords.Where(x => x.IsActive == true).GetBestMatchedSeoInfo(workContext.CurrentStore, workContext.CurrentLanguage, slug);
+                    var seoRecord = seoRecords.Where(x => x.IsActive == true).GetBestMatchingSeoInfos(workContext.CurrentStore, workContext.CurrentLanguage, slug).FirstOrDefault();
                     if (seoRecord != null)
                     {
                         if (seoRecord.SemanticUrl.EqualsInvariant(slug))
