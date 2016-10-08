@@ -9,30 +9,23 @@ using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Common
 {
-    /// <summary>
-    /// Find best seo match based for passed store and language
-    /// </summary>
     public static class SeoExtensions
     {
         /// <summary>
-        /// Returns product category.
+        /// Returns product's category outline.
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
         public static string GetCategoryOutline(this Product product)
         {
             var result = string.Empty;
+
             if (product != null && !string.IsNullOrEmpty(product.Outline))
             {
-                var outlineArray = product.Outline.Split(new[] { '/' });
-
-                if (outlineArray == null || outlineArray.Length == 0)
-                    return string.Empty;
-
-                var pathSegments = outlineArray.Reverse().Skip(1).Reverse();
-                if (pathSegments.All(s => s != null))
+                var i = product.Outline.LastIndexOf('/');
+                if (i >= 0)
                 {
-                    result = string.Join("/", pathSegments);
+                    result = product.Outline.Substring(0, i);
                 }
             }
 
@@ -65,20 +58,20 @@ namespace VirtoCommerce.Storefront.Common
                     {
                         pathSegments.AddRange(outline.Items
                             .Where(i => i.SeoObjectType != "Catalog")
-                            .Select(i => GetBestMatchedSeoKeyword(i.SeoInfos, store, language)));
+                            .Select(i => GetBestMatchingSeoKeyword(i.SeoInfos, store, language)));
                     }
                     else if (store.SeoLinksType == SeoLinksType.Collapsed)
                     {
                         pathSegments.AddRange(outline.Items
                             .Where(i => i.SeoObjectType != "Catalog" && i.HasVirtualParent != true)
-                            .Select(i => GetBestMatchedSeoKeyword(i.SeoInfos, store, language)));
+                            .Select(i => GetBestMatchingSeoKeyword(i.SeoInfos, store, language)));
                     }
                     else
                     {
                         var lastItem = outline.Items.LastOrDefault();
                         if (lastItem != null)
                         {
-                            pathSegments.Add(GetBestMatchedSeoKeyword(lastItem.SeoInfos, store, language));
+                            pathSegments.Add(GetBestMatchingSeoKeyword(lastItem.SeoInfos, store, language));
                         }
                     }
 
@@ -92,24 +85,22 @@ namespace VirtoCommerce.Storefront.Common
             return result;
         }
 
-
-
         /// <summary>
-        /// Find best SEO record using score base rules
+        /// Returns SEO records with highest score
         /// http://docs.virtocommerce.com/display/vc2devguide/SEO
         /// </summary>
         /// <param name="seoRecords"></param>
-        /// <param name="store"></param> 
+        /// <param name="store"></param>
         /// <param name="language"></param>
         /// <param name="slug"></param>
         /// <returns></returns>
-        public static coreDto.SeoInfo GetBestMatchedSeoInfo(this IEnumerable<coreDto.SeoInfo> seoRecords, Store store, Language language, string slug = null)
+        public static IList<coreDto.SeoInfo> GetBestMatchingSeoInfos(this IEnumerable<coreDto.SeoInfo> seoRecords, Store store, Language language, string slug = null)
         {
-            coreDto.SeoInfo result = null;
+            var result = new List<coreDto.SeoInfo>();
 
             if (seoRecords != null)
             {
-                result = seoRecords
+                var items = seoRecords
                     .Select(s =>
                     {
                         var score = 0;
@@ -124,31 +115,29 @@ namespace VirtoCommerce.Storefront.Common
                         return new { SeoRecord = s, Score = score };
                     })
                     .OrderByDescending(x => x.Score)
-                    .Select(x => x.SeoRecord)
-                    .FirstOrDefault();
+                    .ToList();
+
+                var first = items.FirstOrDefault();
+                if (first != null)
+                {
+                    result.AddRange(items.Where(i => i.Score == first.Score).Select(i => i.SeoRecord));
+                }
             }
 
             return result;
         }
 
-        private static string GetBestMatchedSeoKeyword(IEnumerable<catalogDto.SeoInfo> seoRecords, Store store, Language language)
-        {
-            string result = null;
-            if (!seoRecords.IsNullOrEmpty())
-            {
-                return GetBestMatchedSeoKeyword(seoRecords.Select(x => x.JsonConvert<coreDto.SeoInfo>()), store, language);
-            }
-            return result;
-        }
-
-        private static string GetBestMatchedSeoKeyword(IEnumerable<coreDto.SeoInfo> seoRecords, Store store, Language language)
+        private static string GetBestMatchingSeoKeyword(IEnumerable<catalogDto.SeoInfo> seoRecords, Store store, Language language)
         {
             string result = null;
 
             if (seoRecords != null)
             {
-                // Select best matched SEO by StoreId and Language
-                var bestMatchedSeo = seoRecords.GetBestMatchedSeoInfo(store, language);
+                // Select best matching SEO by StoreId and Language
+                var bestMatchedSeo = seoRecords.Select(x => x.JsonConvert<coreDto.SeoInfo>())
+                    .GetBestMatchingSeoInfos(store, language)
+                    .FirstOrDefault();
+
                 if (bestMatchedSeo != null)
                 {
                     result = bestMatchedSeo.SemanticUrl;

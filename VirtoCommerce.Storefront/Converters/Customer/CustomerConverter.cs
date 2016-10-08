@@ -110,7 +110,9 @@ namespace VirtoCommerce.Storefront.Converters
                 if (!vendorDto.SeoInfos.IsNullOrEmpty())
                 {
                     var seoInfoDto = vendorDto.SeoInfos.Select(x => x.JsonConvert<coreDto.SeoInfo>())
-                                                .GetBestMatchedSeoInfo(store, currentLanguage);
+                        .GetBestMatchingSeoInfos(store, currentLanguage)
+                        .FirstOrDefault();
+
                     if (seoInfoDto != null)
                     {
                         result.SeoInfo = seoInfoDto.ToSeoInfo();

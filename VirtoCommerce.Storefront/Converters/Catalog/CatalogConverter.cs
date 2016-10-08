@@ -288,7 +288,9 @@ namespace VirtoCommerce.Storefront.Converters
             if (!categoryDto.SeoInfos.IsNullOrEmpty())
             {
                 var seoInfoDto = categoryDto.SeoInfos.Select(x => x.JsonConvert<coreDto.SeoInfo>())
-                                            .GetBestMatchedSeoInfo(store, currentLanguage);
+                    .GetBestMatchingSeoInfos(store, currentLanguage)
+                    .FirstOrDefault();
+
                 if (seoInfoDto != null)
                 {
                     result.SeoInfo = seoInfoDto.ToSeoInfo();
@@ -393,7 +395,9 @@ namespace VirtoCommerce.Storefront.Converters
             if (!productDto.SeoInfos.IsNullOrEmpty())
             {
                 var seoInfoDto = productDto.SeoInfos.Select(x => x.JsonConvert<coreDto.SeoInfo>())
-                                            .GetBestMatchedSeoInfo(store, currentLanguage);
+                    .GetBestMatchingSeoInfos(store, currentLanguage)
+                    .FirstOrDefault();
+
                 if (seoInfoDto != null)
                 {
                     retVal.SeoInfo = seoInfoDto.ToSeoInfo();
