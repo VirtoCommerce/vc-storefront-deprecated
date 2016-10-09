@@ -57,6 +57,7 @@ using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Model.Tax.Services;
 using VirtoCommerce.Storefront.Owin;
+using VirtoCommerce.Storefront.Routing;
 using VirtoCommerce.Storefront.Services;
 
 [assembly: OwinStartup(typeof(Startup))]
@@ -208,6 +209,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IPricingService, PricingServiceImpl>();
             container.RegisterType<ICustomerService, CustomerServiceImpl>();
             container.RegisterType<IMenuLinkListService, MenuLinkListServiceImpl>();
+            container.RegisterType<ISeoRouteService, SeoRouteService>();
 
             container.RegisterType<ICartBuilder, CartBuilder>();
             container.RegisterType<IQuoteRequestBuilder, QuoteRequestBuilder>();
@@ -225,7 +227,6 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IAsyncObserver<QuoteRequestUpdatedEvent>, CustomerServiceImpl>("Invalidate customer cache when quote request was updated");
             container.RegisterType<IAsyncObserver<UserLoginEvent>, CartBuilder>("Merge anonymous cart with loggined user cart");
             container.RegisterType<IAsyncObserver<UserLoginEvent>, QuoteRequestBuilder>("Merge anonymous quote request with loggined user quote");
-
 
             var cmsContentConnectionString = BlobConnectionString.Parse(ConfigurationManager.ConnectionStrings["ContentConnectionString"].ConnectionString);
             var themesBasePath = cmsContentConnectionString.RootPath.TrimEnd('/') + "/" + "Themes";
@@ -260,7 +261,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterInstance<IStaticContentService>(staticContentService);
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters, workContextFactory, () => container.Resolve<CommonController>());
-            RouteConfig.RegisterRoutes(RouteTable.Routes, workContextFactory, () => container.Resolve<ICoreModuleApiClient>(), container.Resolve<IStaticContentService>(), localCacheManager, () => container.Resolve<IStorefrontUrlBuilder>());
+            RouteConfig.RegisterRoutes(RouteTable.Routes, container.Resolve<ISeoRouteService>(), workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>());
             AuthConfig.ConfigureAuth(app, () => container.Resolve<IStorefrontUrlBuilder>());
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
