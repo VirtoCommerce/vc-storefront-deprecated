@@ -1,25 +1,35 @@
 ﻿using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
+using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using storefrontModel = VirtoCommerce.Storefront.Model;
+using storefrontModel = VirtoCommerce.Storefront.Model.Catalog;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
-    public static class CollectionConverter
+    public static class CollectionStaticConverter
+    {
+        public static Collection ToShopifyModel(this storefrontModel.Category category, WorkContext workContext)
+        {
+            var converter = ServiceLocator.Current.GetInstance<CollectionConverter>();
+            return converter.ToShopifyModel(category, workContext);
+        }
+    }
+
+    public class CollectionConverter
     {
 
-        public static Collection ToShopifyModel(this storefrontModel.Catalog.Category category, storefrontModel.WorkContext workContext)
+        public virtual Collection ToShopifyModel(storefrontModel.Category category, WorkContext workContext)
         {
-            var result = new Collection
-            {
-                Id = category.Id,
-                Description = null,
-                Handle = category.SeoInfo != null ? category.SeoInfo.Slug : category.Id,
-                Title = category.Name,
-                Url = category.Url,
-                DefaultSortBy = "manual",
-            };
+            var result = ServiceLocator.Current.GetInstance<Collection>();
+
+            result.Id = category.Id;
+            result.Description = null;
+            result.Handle = category.SeoInfo != null ? category.SeoInfo.Slug : category.Id;
+            result.Title = category.Name;
+            result.Url = category.Url;
+            result.DefaultSortBy = "manual";
 
             if (category.PrimaryImage != null)
             {
