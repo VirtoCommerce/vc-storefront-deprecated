@@ -94,9 +94,13 @@ namespace VirtoCommerce.Storefront.Routing
                 .Select(s => new SeoEntity { ObjectType = s.ObjectType, ObjectId = s.ObjectId, SeoPath = s.SemanticUrl })
                 .ToList();
 
-            foreach (var group in entities.GroupBy(e => e.ObjectType))
+            // Don't load objects for short SEO links
+            if (workContext.CurrentStore.SeoLinksType != SeoLinksType.None && workContext.CurrentStore.SeoLinksType != SeoLinksType.Short)
             {
-                LoadObjectsAndBuildFullSeoPaths(group.Key, group.ToList(), workContext.CurrentStore, workContext.CurrentLanguage);
+                foreach (var group in entities.GroupBy(e => e.ObjectType))
+                {
+                    LoadObjectsAndBuildFullSeoPaths(group.Key, group.ToList(), workContext.CurrentStore, workContext.CurrentLanguage);
+                }
             }
 
             // If found only one entity, just return it
