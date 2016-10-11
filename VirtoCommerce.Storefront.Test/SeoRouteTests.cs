@@ -91,46 +91,54 @@ namespace VirtoCommerce.Storefront.Test
         }
 
         [Theory]
-        [InlineData("ac1", "Category", "c1", "ac1")]
-        [InlineData("ic1", "Category", "c1", "ac1")]
-        [InlineData("ac1/ac2", "Category", "c2", "ac1/ac2")]
-        [InlineData("ic1/ac2", "Category", "c2", "ac1/ac2")]
-        [InlineData("ac2", "Category", "c2", "ac1/ac2")]
-        [InlineData("ac1/acd", "Category", "c3", "ac1/acd")]
-        [InlineData("ac1/ic3", "Category", "c3", "ac1/acd")]
-        [InlineData("acd", null, null, null)]
-        [InlineData("ic3", "Category", "c3", "ac1/acd")]
-        [InlineData("ac1/acd/acd", "Category", "c4", "ac1/acd/acd")]
-        [InlineData("ac1/ic3/ic4", "Category", "c4", "ac1/acd/acd")]
-        [InlineData("ac1/ic3/acd", null, null, null)]
-        [InlineData("ac1/ac3/ip1", "CatalogProduct", "p1", "ac1/acd/ap1")]
-        [InlineData("ap1", "CatalogProduct", "p1", "ac1/acd/ap1")]
-        [InlineData("ip1", "CatalogProduct", "p1", "ac1/acd/ap1")]
-        [InlineData("ipd", null, null, null)]
-        [InlineData("ac1/ac3/ipd", null, null, null)]
-        [InlineData("av1", "Vendor", "v1", "av1")]
-        [InlineData("iv1", "Vendor", "v1", "av1")]
-        [InlineData("ag1", "Page", null, "ag1")]
-        [InlineData("ig1", "Page", null, "ag1")]
-        public void FindAndValidateSeoEntity(string seoPath, string expectedObjectType, string expectedObjectId, string expectedSeoPath)
+        [InlineData("ac1", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c1")]
+        [InlineData("ic1", "ac1", null, null, null, null)]
+        [InlineData("ac1/ac2", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c2")]
+        [InlineData("ic1/ac2", "ac1/ac2", null, null, null, null)]
+        [InlineData("ac2", "ac1/ac2", null, null, null, null)]
+        [InlineData("ac1/acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c3")]
+        [InlineData("ac1/ic3", "ac1/acd", null, null, null, null)]
+        [InlineData("acd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("ic3", "ac1/acd", null, null, null, null)]
+        [InlineData("ac1/acd/acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c4")]
+        [InlineData("ac1/ic3/ic4", "ac1/acd/acd", null, null, null, null)]
+        [InlineData("ac1/ic3/acd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("ac1/ac3/ip1", "ac1/acd/ap1", null, null, null, null)]
+        [InlineData("ap1", "ac1/acd/ap1", null, null, null, null)]
+        [InlineData("ip1", "ac1/acd/ap1", null, null, null, null)]
+        [InlineData("ipd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("ac1/ac3/ipd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("av1", null, "Vendor", "VendorDetails", "vendorId", "v1")]
+        [InlineData("iv1", "av1", null, null, null, null)]
+        [InlineData("ag1", null, "Page", "GetContentPage", null, null)]
+        [InlineData("ig1", "ag1", null, null, null, null)]
+        public void FindAndValidateSeoEntity(string seoPath, string expectedRedirectLocation, string expectedController, string expectedAction, string expectedObjectIdName, string expectedObjectId)
         {
             var service = GetSeoRouteService();
-            var entity = service.FindEntityBySeoPath(seoPath, _workContext);
+            var response = service.HandleSeoRequest(seoPath, _workContext);
 
-            if (expectedObjectType == null)
+            Assert.NotNull(response);
+            Assert.Equal(expectedRedirectLocation, response.RedirectLocation);
+
+            if (expectedRedirectLocation != null)
             {
-                Assert.Null(entity);
+                Assert.True(response.Redirect);
             }
             else
             {
-                Assert.NotNull(entity);
-                Assert.Equal(expectedObjectType, entity.ObjectType);
-                Assert.Equal(expectedObjectId, entity.ObjectId);
-                Assert.Equal(expectedSeoPath, entity.SeoPath);
+                Assert.False(response.Redirect);
+                Assert.NotNull(response.RouteData);
+                Assert.Equal(expectedController, response.RouteData["controller"]);
+                Assert.Equal(expectedAction, response.RouteData["action"]);
 
-                if (expectedObjectType == "Page")
+                if (expectedObjectIdName != null)
                 {
-                    Assert.NotNull(entity.ObjectInstance);
+                    Assert.Equal(expectedObjectId, response.RouteData[expectedObjectIdName]);
+                }
+
+                if (expectedController == "Page")
+                {
+                    Assert.NotNull(response.RouteData["page"]);
                 }
             }
         }

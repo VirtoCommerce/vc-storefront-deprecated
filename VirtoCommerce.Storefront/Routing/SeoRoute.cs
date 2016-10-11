@@ -30,48 +30,24 @@ namespace VirtoCommerce.Storefront.Routing
 
                 if (path != null)
                 {
-                    var entity = _seoRouteService.FindEntityBySeoPath(path, _workContextFactory());
-                    if (entity != null)
+                    var seoRouteResponse = _seoRouteService.HandleSeoRequest(path, _workContextFactory());
+                    if (seoRouteResponse != null)
                     {
-                        if (entity.SeoPath.EqualsInvariant(path))
-                        {
-                            switch (entity.ObjectType)
-                            {
-                                case "CatalogProduct":
-                                    data.Values["controller"] = "Product";
-                                    data.Values["action"] = "ProductDetails";
-                                    data.Values["productId"] = entity.ObjectId;
-                                    break;
-                                case "Category":
-                                    data.Values["controller"] = "CatalogSearch";
-                                    data.Values["action"] = "CategoryBrowsing";
-                                    data.Values["categoryId"] = entity.ObjectId;
-                                    break;
-                                case "Vendor":
-                                    data.Values["controller"] = "Vendor";
-                                    data.Values["action"] = "VendorDetails";
-                                    data.Values["vendorId"] = entity.ObjectId;
-                                    break;
-                                case "Page":
-                                    data.Values["controller"] = "Page";
-                                    data.Values["action"] = "GetContentPage";
-                                    data.Values["page"] = entity.ObjectInstance;
-                                    break;
-                            }
-                        }
-                        else
+                        if (seoRouteResponse.Redirect)
                         {
                             var response = httpContext.Response;
                             response.Status = "301 Moved Permanently";
-                            response.RedirectLocation = _storefrontUrlBuilderFactory().ToAppAbsolute(entity.SeoPath);
+                            response.RedirectLocation = _storefrontUrlBuilderFactory().ToAppAbsolute(seoRouteResponse.RedirectLocation);
                             response.End();
                             data = null;
                         }
-                    }
-                    else
-                    {
-                        data.Values["controller"] = "Asset";
-                        data.Values["action"] = "HandleStaticFiles";
+                        else if (seoRouteResponse.RouteData != null)
+                        {
+                            foreach (var kvp in seoRouteResponse.RouteData)
+                            {
+                                data.Values[kvp.Key] = kvp.Value;
+                            }
+                        }
                     }
                 }
             }

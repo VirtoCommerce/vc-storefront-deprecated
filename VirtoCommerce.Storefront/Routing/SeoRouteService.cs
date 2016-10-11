@@ -26,7 +26,59 @@ namespace VirtoCommerce.Storefront.Routing
             _catalogApiFactory = catalogApiFactory;
         }
 
-        public virtual SeoEntity FindEntityBySeoPath(string seoPath, WorkContext workContext)
+        public virtual SeoRouteResponse HandleSeoRequest(string seoPath, WorkContext workContext)
+        {
+            var entity = FindEntityBySeoPath(seoPath, workContext) ?? new SeoEntity { ObjectType = "Asset", SeoPath = seoPath };
+            var response = entity.SeoPath.EqualsInvariant(seoPath) ? View(entity) : Redirect(entity);
+            return response;
+        }
+
+
+        protected virtual SeoRouteResponse View(SeoEntity entity)
+        {
+            var response = new SeoRouteResponse();
+
+            switch (entity.ObjectType)
+            {
+                case "Category":
+                    response.RouteData["controller"] = "CatalogSearch";
+                    response.RouteData["action"] = "CategoryBrowsing";
+                    response.RouteData["categoryId"] = entity.ObjectId;
+                    break;
+                case "CatalogProduct":
+                    response.RouteData["controller"] = "Product";
+                    response.RouteData["action"] = "ProductDetails";
+                    response.RouteData["productId"] = entity.ObjectId;
+                    break;
+                case "Vendor":
+                    response.RouteData["controller"] = "Vendor";
+                    response.RouteData["action"] = "VendorDetails";
+                    response.RouteData["vendorId"] = entity.ObjectId;
+                    break;
+                case "Page":
+                    response.RouteData["controller"] = "Page";
+                    response.RouteData["action"] = "GetContentPage";
+                    response.RouteData["page"] = entity.ObjectInstance;
+                    break;
+                case "Asset":
+                    response.RouteData["controller"] = "Asset";
+                    response.RouteData["action"] = "HandleStaticFiles";
+                    break;
+            }
+
+            return response;
+        }
+
+        protected virtual SeoRouteResponse Redirect(SeoEntity entity)
+        {
+            return new SeoRouteResponse
+            {
+                Redirect = true,
+                RedirectLocation = entity.SeoPath,
+            };
+        }
+
+        protected virtual SeoEntity FindEntityBySeoPath(string seoPath, WorkContext workContext)
         {
             seoPath = seoPath.Trim('/');
 
@@ -77,9 +129,7 @@ namespace VirtoCommerce.Storefront.Routing
             if (workContext.Pages != null)
             {
                 var pages = workContext.Pages
-                    .Where(x =>
-                            string.Equals(x.Permalink, seoPath, StringComparison.OrdinalIgnoreCase) ||
-                            string.Equals(x.Url, seoPath, StringComparison.OrdinalIgnoreCase))
+                    .Where(p => string.Equals(p.Url, seoPath, StringComparison.OrdinalIgnoreCase))
                     .ToList();
 
                 // Find page with current language
@@ -132,33 +182,44 @@ namespace VirtoCommerce.Storefront.Routing
             }
         }
 
-        protected virtual Dictionary<string, string> GetFullSeoPaths(string objectType, string[] objectIds, Store store, Language language)
+        protected virtual IDictionary<string, string> GetFullSeoPaths(string objectType, string[] objectIds, Store store, Language language)
         {
-            Dictionary<string, string> result = null;
+            IDictionary<string, string> result = null;
 
-            var cacheKeyItems = new List<string> { "GetFullSeoPaths", objectType };
-            cacheKeyItems.AddRange(objectIds);
-            var cacheKey = string.Join(":", cacheKeyItems);
+            var cacheKey = BuildCacheKey("GetFullSeoPaths", objectType, objectIds);
 
             switch (objectType)
             {
-                case "CatalogProduct":
-                    result = _cacheManager.Get(cacheKey, "ApiRegion", () =>
-                        _catalogApiFactory().CatalogModuleProducts
-                            .GetProductByIds(objectIds, (ItemResponseGroup.Outlines | ItemResponseGroup.Seo).ToString())
-                            .ToDictionary(x => x.Id, x => x.Outlines.GetSeoPath(store, language, null))
-                    );
-                    break;
                 case "Category":
-                    result = _cacheManager.Get(cacheKey, "ApiRegion", () =>
-                        _catalogApiFactory().CatalogModuleCategories
-                            .GetCategoriesByIds(objectIds, (CategoryResponseGroup.WithOutlines | CategoryResponseGroup.WithSeo).ToString())
-                            .ToDictionary(x => x.Id, x => x.Outlines.GetSeoPath(store, language, null))
-                    );
+                    result = _cacheManager.Get(cacheKey, "ApiRegion", () => GetCategorySeoPaths(objectIds, store, language));
+                    break;
+                case "CatalogProduct":
+                    result = _cacheManager.Get(cacheKey, "ApiRegion", () => GetProductSeoPaths(objectIds, store, language));
                     break;
             }
 
             return result;
+        }
+
+        protected virtual string BuildCacheKey(string firstKeyItem, string secondKeyItem, params string[] otherKeyItems)
+        {
+            var cacheKeyItems = new List<string> { firstKeyItem, secondKeyItem };
+            cacheKeyItems.AddRange(otherKeyItems.OrderBy(id => id));
+            return string.Join(":", cacheKeyItems);
+        }
+
+        protected virtual IDictionary<string, string> GetCategorySeoPaths(string[] objectIds, Store store, Language language)
+        {
+            return _catalogApiFactory().CatalogModuleCategories
+                .GetCategoriesByIds(objectIds, (CategoryResponseGroup.WithOutlines | CategoryResponseGroup.WithSeo).ToString())
+                .ToDictionary(x => x.Id, x => x.Outlines.GetSeoPath(store, language, null));
+        }
+
+        protected virtual IDictionary<string, string> GetProductSeoPaths(string[] objectIds, Store store, Language language)
+        {
+            return _catalogApiFactory().CatalogModuleProducts
+                .GetProductByIds(objectIds, (ItemResponseGroup.Outlines | ItemResponseGroup.Seo).ToString())
+                .ToDictionary(x => x.Id, x => x.Outlines.GetSeoPath(store, language, null));
         }
     }
 }
