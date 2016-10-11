@@ -85,6 +85,7 @@ namespace VirtoCommerce.Storefront.Builders
                         CustomerId = customer.Id,
                         Name = "Default",
                         StoreId = store.Id,
+                        Language = language,
                         IsAnonymous = !customer.IsRegisteredUser,
                         CustomerName = customer.IsRegisteredUser ? customer.UserName : StorefrontConstants.AnonymousUsername
                     };
