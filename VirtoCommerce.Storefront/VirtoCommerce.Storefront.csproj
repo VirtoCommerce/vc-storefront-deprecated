@@ -487,6 +487,10 @@
     <Compile Include="Converters\Quote\QuoteConverter.cs" />
     <Compile Include="JsonConverters\CurrencyJsonConverter.cs" />
     <Compile Include="Owin\StorefrontUrlRewriterOwinMiddleware.cs" />
+    <Compile Include="Routing\ISeoRouteService.cs" />
+    <Compile Include="Routing\SeoEntity.cs" />
+    <Compile Include="Routing\SeoRouteResponse.cs" />
+    <Compile Include="Routing\SeoRouteService.cs" />
     <Compile Include="Services\ContentBlobProviders\AzureBlobContentProvider.cs" />
     <Compile Include="Services\ContentBlobProviders\FileSystemContentBlobProvider.cs" />
     <Compile Include="Services\CustomerServiceImpl.cs" />

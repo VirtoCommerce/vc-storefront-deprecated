@@ -195,36 +195,42 @@ namespace VirtoCommerce.Storefront.Services
         protected virtual async Task LoadProductVendorsAsync(List<Product> products)
         {
             var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToArray();
-            var vendors = await _customerService.GetVendorsByIdsAsync(vendorIds);
-            foreach (var product in products)
+            if (!vendorIds.IsNullOrEmpty())
             {
-                product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
+                var vendors = await _customerService.GetVendorsByIdsAsync(vendorIds);
+                foreach (var product in products)
+                {
+                    product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
+                }
             }
         }
 
         protected virtual void LoadProductVendors(List<Product> products)
         {
             var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToArray();
-            var vendors = _customerService.GetVendorsByIds(vendorIds);
-
-            foreach (var product in products)
+            if (!vendorIds.IsNullOrEmpty())
             {
-                product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
-                if (product.Vendor != null)
-                {
-                    product.Vendor.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
-                    {
-                        var criteria = new ProductSearchCriteria
-                        {
-                            VendorId = product.VendorId,
-                            PageNumber = pageNumber,
-                            PageSize = pageSize,
-                            SortBy = SortInfo.ToString(sortInfos),
-                        };
+                var vendors = _customerService.GetVendorsByIds(vendorIds);
 
-                        var searchResult = SearchProducts(criteria);
-                        return searchResult.Products;
-                    });
+                foreach (var product in products)
+                {
+                    product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
+                    if (product.Vendor != null)
+                    {
+                        product.Vendor.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
+                        {
+                            var criteria = new ProductSearchCriteria
+                            {
+                                VendorId = product.VendorId,
+                                PageNumber = pageNumber,
+                                PageSize = pageSize,
+                                SortBy = SortInfo.ToString(sortInfos),
+                            };
+
+                            var searchResult = SearchProducts(criteria);
+                            return searchResult.Products;
+                        });
+                    }
                 }
             }
         }

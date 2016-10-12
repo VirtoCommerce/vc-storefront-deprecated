@@ -522,6 +522,10 @@ namespace VirtoCommerce.Storefront.Converters
 
             result.InjectFrom<NullableAndEnumValueInjecter>(cart);
 
+            if(cart.Language != null)
+            {
+                result.LanguageCode = cart.Language.CultureName;
+            }
             result.Addresses = cart.Addresses.Select(ToCartAddressDto).ToList();
             result.Coupon = cart.Coupon != null ? new cartDto.Coupon { Code = cart.Coupon.Code, IsValid = cart.Coupon.AppliedSuccessfully } : null;
             result.Currency = cart.Currency.Code;
