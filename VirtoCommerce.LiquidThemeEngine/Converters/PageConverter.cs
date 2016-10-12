@@ -12,6 +12,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             var retVal = new Page();
             retVal.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(contentItem);
             retVal.Handle = contentItem.Url;
+            if (contentItem.PublishedDate.HasValue)
+            {
+                retVal.PublishedAt = contentItem.PublishedDate.Value;
+            }
             return retVal;
         }
     }
