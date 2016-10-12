@@ -93,7 +93,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (!string.IsNullOrEmpty(workContext.CurrentProductSearchCriteria.Keyword) && workContext.Products != null)
             {
-                result.Search = workContext.Products.ToShopifyModel(workContext.CurrentProductSearchCriteria.Keyword);
+                result.Search = workContext.Products.ToShopifyModel(workContext);
             }
             else if (workContext.CurrentStaticSearchCriteria != null && !string.IsNullOrEmpty(workContext.CurrentStaticSearchCriteria.Keyword) && workContext.Pages != null)
             {
