@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Routing;
 
 namespace VirtoCommerce.Storefront
 {
     public class RouteConfig
     {
-        public static void RegisterRoutes(RouteCollection routes, Func<WorkContext> workContextFactory, Func<ICoreModuleApiClient> commerceCoreApiFactory, IStaticContentService staticContentService, ILocalCacheManager cacheManager, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
+        public static void RegisterRoutes(RouteCollection routes, ISeoRouteService seoRouteService, Func<WorkContext> workContextFactory, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
         {
             routes.IgnoreRoute("favicon.ico");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -156,7 +154,7 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("StaticContent.Search", "content/search", defaults: new { controller = "StaticContent", action = "Search" });
 
 
-            Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), workContextFactory, commerceCoreApiFactory, cacheManager, storefrontUrlBuilderFactory);
+            Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), seoRouteService, workContextFactory, storefrontUrlBuilderFactory);
             routes.AddStorefrontRoute(name: "SeoRoute", url: "{*path}", defaults: new { controller = "StorefrontHome", action = "Index" }, constraints: null, routeFactory: seoRouteFactory);
         }
     }
