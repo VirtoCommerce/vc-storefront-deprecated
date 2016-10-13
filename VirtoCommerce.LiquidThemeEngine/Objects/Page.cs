@@ -51,6 +51,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
 
         public string Type { get; set; }
 
-        public int Sorting { get; set; }
+        public int Priority { get; set; }
     }
 }

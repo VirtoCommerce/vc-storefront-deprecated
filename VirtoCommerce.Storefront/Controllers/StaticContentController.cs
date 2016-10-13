@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Web;
 using System.Web.Mvc;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent;
@@ -108,6 +109,34 @@ namespace VirtoCommerce.Storefront.Controllers
             WorkContext.Pages = new MutablePagedList<ContentItem>(contentItems.Where(x => x.Language.IsInvariant || x.Language == WorkContext.CurrentLanguage));
 
             return View("search", request.Layout, WorkContext);
+        }
+
+        [HttpGet]
+        public ActionResult BlogRssFeed(string blogName)
+        {
+            if (string.IsNullOrEmpty(blogName))
+            {
+                WorkContext.CurrentBlog = WorkContext.Blogs.FirstOrDefault();
+            }
+            else
+            {
+                WorkContext.CurrentBlog = WorkContext.Blogs.FirstOrDefault(x => x.Name.EqualsInvariant(blogName));
+            }
+
+            var blog = WorkContext.CurrentBlog;
+            var articles = blog.Articles.OrderByDescending(a => a.PublishedDate)
+                .Select(a => new SyndicationItem(a.Title, a.Excerpt, new Uri(a.Url, UriKind.Relative))
+                {
+                    PublishDate = a.PublishedDate.HasValue ? new DateTimeOffset(a.PublishedDate.Value) : new DateTimeOffset()
+                });
+
+            var feed = new SyndicationFeed(blog.Title, blog.Title, new Uri(blog.Url, UriKind.Relative), articles)
+            {
+                Language = WorkContext.CurrentLanguage.CultureName,
+                Title = new TextSyndicationContent(blog.Title)
+            };
+
+            return new FeedResult(new Rss20FeedFormatter(feed));
         }
 
         private void SetCurrentPage(ContentPage contentPage)

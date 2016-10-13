@@ -86,7 +86,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
 
         public Language Language { get; set; }
 
-        public int Sorting { get; set; }
+        public int Priority { get; set; }
 
         public virtual void LoadContent(string content, IDictionary<string, IEnumerable<string>> metaInfoMap, IDictionary themeSettings)
         {
@@ -142,10 +142,10 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                         case "layout":
                             Layout = settingValue;
                             break;
-                        case "sorting":
-                            int sorting = 0;
-                            int.TryParse(settingValue, out sorting);
-                            Sorting = sorting;
+                        case "priority":
+                            int priority = 0;
+                            int.TryParse(settingValue, out priority);
+                            Priority = priority;
                             break;
                     }
                 }
