@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
@@ -41,6 +42,10 @@ namespace VirtoCommerce.Storefront.Controllers
         public async Task<ActionResult> CategoryBrowsing(string categoryId, string view)
         {
             var category = (await _searchService.GetCategoriesAsync(new[] { categoryId }, CategoryResponseGroup.Full)).FirstOrDefault();
+            if(category == null)
+            {
+                throw new HttpException(404, String.Format("Category {0} not found.", categoryId));
+            }
             WorkContext.CurrentCategory = category;
             WorkContext.CurrentProductSearchCriteria.Outline = string.Format("{0}*", category.Outline); // should we simply take it from current category?
 

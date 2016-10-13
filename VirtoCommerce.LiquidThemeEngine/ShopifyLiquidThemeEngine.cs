@@ -34,11 +34,11 @@ namespace VirtoCommerce.LiquidThemeEngine
     /// </summary>
     public class ShopifyLiquidThemeEngine : IFileSystem, ILiquidThemeEngine
     {
+        private static readonly Regex _isLiquid = new Regex("[{}|]", RegexOptions.Compiled);
         private const string _globalThemeName = "default";
         private const string _defaultMasterView = "theme";
         private const string _liquidTemplateFormat = "{0}.liquid";
         private static readonly string[] _templatesDiscoveryFolders = { "templates", "snippets", "layout", "assets" };
-        private static readonly Regex _templateRegex = new Regex(@"[a-zA-Z0-9]+$", RegexOptions.Compiled);
         private readonly string _themesAssetsRelativeUrl;
         private readonly string _globalThemeAssetsRelativeUrl;
         private readonly Func<WorkContext> _workContextFactory;
@@ -298,6 +298,13 @@ namespace VirtoCommerce.LiquidThemeEngine
             {
                 return templateContent;
             }
+
+            Match isLiquidTemplate = _isLiquid.Match(templateContent);
+            if (!isLiquidTemplate.Success)
+            {
+                return templateContent;
+            }
+
             if (parameters == null)
             {
                 parameters = new Dictionary<string, object>();
