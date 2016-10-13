@@ -152,8 +152,9 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "StaticContent", action = "GetBlog" });
             routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "StaticContent", action = "GetBlog" });
             routes.AddStorefrontRoute("StaticContent.Search", "content/search", defaults: new { controller = "StaticContent", action = "Search" });
-            routes.AddStorefrontRoute("StaticContent.BlogByName.RssFeed", "blogs/{blogname}/rss", defaults: new { controller = "StaticContent", action = "BlogRssFeed" });
-            routes.AddStorefrontRoute("StaticContent.Blog.RssFeed", "blog/rss", defaults: new { controller = "StaticContent", action = "BlogRssFeed" });
+
+            routes.AddStorefrontRoute("StaticContent.BlogByName.RssFeed", "blogs/{blogname}/{rss}", defaults: new { controller = "StaticContent", action = "BlogRssFeed" }, constraints: new { rss = @"(rss|feed)" });
+            routes.AddStorefrontRoute("StaticContent.Blog.RssFeed", "blog/{rss}", defaults: new { controller = "StaticContent", action = "BlogRssFeed" }, constraints: new { rss = @"(rss|feed)" });
 
             Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), seoRouteService, workContextFactory, storefrontUrlBuilderFactory);
             routes.AddStorefrontRoute(name: "SeoRoute", url: "{*path}", defaults: new { controller = "StorefrontHome", action = "Index" }, constraints: null, routeFactory: seoRouteFactory);

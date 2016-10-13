@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
@@ -111,26 +113,39 @@ namespace VirtoCommerce.Storefront.Controllers
             return View("search", request.Layout, WorkContext);
         }
 
+        /// <summary>
+        /// GET blogs/{blogname}/rss,  blogs/rss,  blogs/{blogname}/feed,  blogs/feed
+        /// </summary>
+        /// <param name="blogName"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult BlogRssFeed(string blogName)
         {
-            if (string.IsNullOrEmpty(blogName))
-            {
-                WorkContext.CurrentBlog = WorkContext.Blogs.FirstOrDefault();
-            }
-            else
-            {
+            Blog blog = WorkContext.Blogs.FirstOrDefault();
+            if (!string.IsNullOrEmpty(blogName))
+            {           
                 WorkContext.CurrentBlog = WorkContext.Blogs.FirstOrDefault(x => x.Name.EqualsInvariant(blogName));
             }
 
-            var blog = WorkContext.CurrentBlog;
-            var articles = blog.Articles.OrderByDescending(a => a.PublishedDate)
-                .Select(a => new SyndicationItem(a.Title, a.Excerpt, new Uri(a.Url, UriKind.Relative))
-                {
-                    PublishDate = a.PublishedDate.HasValue ? new DateTimeOffset(a.PublishedDate.Value) : new DateTimeOffset()
-                });
+            if (blog == null)
+            {
+                throw new HttpException(404, blogName);
+            }
 
-            var feed = new SyndicationFeed(blog.Title, blog.Title, new Uri(blog.Url, UriKind.Relative), articles)
+            var feedItems = new List<SyndicationItem>();
+            foreach(var article in blog.Articles.OrderByDescending(a => a.PublishedDate))
+            {
+                if (!string.IsNullOrEmpty(article.Url))
+                {
+                    var baseUri = new Uri(Request.Url.Scheme + System.Uri.SchemeDelimiter + Request.Url.Host);
+                    var fullUrl = new Uri(baseUri, UrlBuilder.ToAppAbsolute(article.Url, WorkContext.CurrentStore, WorkContext.CurrentLanguage));
+                    var syndicationItem = new SyndicationItem(article.Title, article.Excerpt, fullUrl);
+                    syndicationItem.PublishDate = article.PublishedDate.HasValue ? new DateTimeOffset(article.PublishedDate.Value) : new DateTimeOffset();
+                    feedItems.Add(syndicationItem);
+                }
+            }
+      
+            var feed = new SyndicationFeed(blog.Title, blog.Title, new Uri(blog.Url, UriKind.Relative), feedItems)
             {
                 Language = WorkContext.CurrentLanguage.CultureName,
                 Title = new TextSyndicationContent(blog.Title)
