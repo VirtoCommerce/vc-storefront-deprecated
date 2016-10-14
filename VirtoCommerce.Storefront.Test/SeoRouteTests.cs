@@ -46,6 +46,14 @@ namespace VirtoCommerce.Storefront.Test
         //         |- c4    acd, ic4
         //         |- p1    ap1, ipd, ip1
         //         L- p2    ap2, ipd
+        //
+        // v1
+        // |- v11 -> c2      ac2
+        // L- v12 -> c3      acd
+        //
+        // v2
+        // |- v21 -> c2      ac2
+        // |- v22 -> c3      acd
 
         public SeoRouteTests()
         {
@@ -60,11 +68,20 @@ namespace VirtoCommerce.Storefront.Test
             };
 
             var c = new catalogDto.Catalog { Id = "c" };
+            var v1 = new catalogDto.Catalog { Id = "v1", IsVirtual = true };
+            var v2 = new catalogDto.Catalog { Id = "v2", IsVirtual = true };
 
             var c1 = AddCategory(c, "c1", "ac1", "ic1");
             var c2 = AddCategory(c, "c2", "ac2");
             var c3 = AddCategory(c, "c3", "acd", "ic3");
             var c4 = AddCategory(c, "c4", "acd", "ic4");
+
+            var v11 = AddCategory(v1, "v11", "ac2");
+            var v12 = AddCategory(v1, "v12", "acd");
+
+            var v21 = AddCategory(v2, "v21", "ac2");
+            var v22 = AddCategory(v2, "v22", "acd");
+
             var p1 = AddProduct(c, "p1", "ap1", "ipd", "ip1");
             var p2 = AddProduct(c, "p2", "ap2", "ipd");
 
@@ -72,6 +89,17 @@ namespace VirtoCommerce.Storefront.Test
             c2.Outlines.Add(CreateOutline(c, new[] { c1, c2 }));
             c3.Outlines.Add(CreateOutline(c, new[] { c1, c3 }));
             c4.Outlines.Add(CreateOutline(c, new[] { c1, c3, c4 }));
+
+            v11.Outlines.Add(CreateOutline(v1, new[] { v11 }));
+            v12.Outlines.Add(CreateOutline(v1, new[] { v12 }));
+            c2.Outlines.Add(CreateOutline(v1, new[] { v11, c2 }));
+            c3.Outlines.Add(CreateOutline(v1, new[] { v12, c3 }));
+
+            v21.Outlines.Add(CreateOutline(v2, new[] { v21 }));
+            v22.Outlines.Add(CreateOutline(v2, new[] { v22 }));
+            c2.Outlines.Add(CreateOutline(v2, new[] { v21, c2 }));
+            c3.Outlines.Add(CreateOutline(v2, new[] { v22, c3 }));
+
             p1.Outlines.Add(CreateOutline(c, new[] { c1, c3 }, p1));
             p2.Outlines.Add(CreateOutline(c, new[] { c1, c3 }, p2));
 
@@ -81,57 +109,63 @@ namespace VirtoCommerce.Storefront.Test
         }
 
         [Theory]
-        [InlineData(SeoLinksType.Short, "ac1", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c1")]
-        [InlineData(SeoLinksType.Short, "ic1", "ac1", null, null, null, null)]
-        [InlineData(SeoLinksType.Short, "ac1/ac2", "ac2", null, null, null, null)]
-        [InlineData(SeoLinksType.Short, "ic1/ac2", "ac2", null, null, null, null)]
-        [InlineData(SeoLinksType.Short, "ac2", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c2")]
-        [InlineData(SeoLinksType.Short, "ac1/acd", null, "Asset", "HandleStaticFiles", null, null)]
-        [InlineData(SeoLinksType.Short, "ac1/ic3", "acd", null, null, null, null)]
-        [InlineData(SeoLinksType.Short, "acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c3")]
-        [InlineData(SeoLinksType.Short, "ic3", "acd", null, null, null, null)]
-        [InlineData(SeoLinksType.Short, "ac1/acd/acd", null, "Asset", "HandleStaticFiles", null, null)]
-        [InlineData(SeoLinksType.Short, "ac1/ic3/ic4", "acd", null, null, null, null)]
-        [InlineData(SeoLinksType.Short, "ac1/ic3/acd", null, "Asset", "HandleStaticFiles", null, null)]
-        [InlineData(SeoLinksType.Short, "ac1/acd/ap1", "ap1", null, null, null, null)]
-        [InlineData(SeoLinksType.Short, "ac1/acd/ip1", "ap1", null, null, null, null)]
-        [InlineData(SeoLinksType.Short, "ap1", null, "Product", "ProductDetails", "productId", "p1")]
-        [InlineData(SeoLinksType.Short, "ip1", "ap1", null, null, null, null)]
-        [InlineData(SeoLinksType.Short, "ipd", null, "Asset", "HandleStaticFiles", null, null)]
-        [InlineData(SeoLinksType.Short, "ac1/acd/ipd", null, "Asset", "HandleStaticFiles", null, null)]
-        [InlineData(SeoLinksType.Short, "av1", null, "Vendor", "VendorDetails", "vendorId", "v1")]
-        [InlineData(SeoLinksType.Short, "iv1", "av1", null, null, null, null)]
-        [InlineData(SeoLinksType.Short, "ag1", null, "Page", "GetContentPage", null, null)]
-        [InlineData(SeoLinksType.Short, "ig1", "ag1", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ac1", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c1")]
-        [InlineData(SeoLinksType.Collapsed, "ic1", "ac1", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ac1/ac2", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c2")]
-        [InlineData(SeoLinksType.Collapsed, "ic1/ac2", "ac1/ac2", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ac2", "ac1/ac2", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ac1/acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c3")]
-        [InlineData(SeoLinksType.Collapsed, "ac1/ic3", "ac1/acd", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "acd", null, "Asset", "HandleStaticFiles", null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ic3", "ac1/acd", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ac1/acd/acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c4")]
-        [InlineData(SeoLinksType.Collapsed, "ac1/ic3/ic4", "ac1/acd/acd", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ac1/ic3/acd", null, "Asset", "HandleStaticFiles", null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ac1/acd/ap1", null, "Product", "ProductDetails", "productId", "p1")]
-        [InlineData(SeoLinksType.Collapsed, "ac1/acd/ip1", "ac1/acd/ap1", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ap1", "ac1/acd/ap1", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ip1", "ac1/acd/ap1", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ipd", null, "Asset", "HandleStaticFiles", null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ac1/acd/ipd", null, "Asset", "HandleStaticFiles", null, null)]
-        [InlineData(SeoLinksType.Collapsed, "av1", null, "Vendor", "VendorDetails", "vendorId", "v1")]
-        [InlineData(SeoLinksType.Collapsed, "iv1", "av1", null, null, null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ag1", null, "Page", "GetContentPage", null, null)]
-        [InlineData(SeoLinksType.Collapsed, "ig1", "ag1", null, null, null, null)]
-        public void ValidateSeoRouteResponse(SeoLinksType linksType, string seoPath, string expectedRedirectLocation, string expectedController, string expectedAction, string expectedObjectIdName, string expectedObjectId)
+        [InlineData("c", SeoLinksType.Short, "ac1", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c1")]
+        [InlineData("c", SeoLinksType.Short, "ic1", "ac1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac1/ac2", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ic1/ac2", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac2", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac1/acd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac1/ic3", "acd", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Short, "acd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ic3", "acd", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac1/acd/acd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac1/ic3/ic4", "acd", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac1/ic3/acd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac1/acd/ap1", "ap1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac1/acd/ip1", "ap1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Short, "ap1", null, "Product", "ProductDetails", "productId", "p1")]
+        [InlineData("c", SeoLinksType.Short, "ip1", "ap1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Short, "ipd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac1/acd/ipd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Short, "av1", null, "Vendor", "VendorDetails", "vendorId", "v1")]
+        [InlineData("c", SeoLinksType.Short, "iv1", "av1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Short, "ag1", null, "Page", "GetContentPage", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ig1", "ag1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ac1", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c1")]
+        [InlineData("c", SeoLinksType.Collapsed, "ic1", "ac1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ac1/ac2", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c2")]
+        [InlineData("c", SeoLinksType.Collapsed, "ic1/ac2", "ac1/ac2", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ac2", "ac1/ac2", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ac1/acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c3")]
+        [InlineData("c", SeoLinksType.Collapsed, "ac1/ic3", "ac1/acd", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "acd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ic3", "ac1/acd", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ac1/acd/acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c4")]
+        [InlineData("c", SeoLinksType.Collapsed, "ac1/ic3/ic4", "ac1/acd/acd", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ac1/ic3/acd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ac1/acd/ap1", null, "Product", "ProductDetails", "productId", "p1")]
+        [InlineData("c", SeoLinksType.Collapsed, "ac1/acd/ip1", "ac1/acd/ap1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ap1", "ac1/acd/ap1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ip1", "ac1/acd/ap1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ipd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ac1/acd/ipd", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "av1", null, "Vendor", "VendorDetails", "vendorId", "v1")]
+        [InlineData("c", SeoLinksType.Collapsed, "iv1", "av1", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ag1", null, "Page", "GetContentPage", null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ig1", "ag1", null, null, null, null)]
+        [InlineData("v1", SeoLinksType.Collapsed, "ac1", null, "Asset", "HandleStaticFiles", null, null)]
+        [InlineData("v1", SeoLinksType.Collapsed, "acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "v12")]
+        [InlineData("v1", SeoLinksType.Collapsed, "acd/acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c3")]
+        [InlineData("v2", SeoLinksType.Collapsed, "acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "v22")]
+        [InlineData("v2", SeoLinksType.Collapsed, "acd/acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c3")]
+        public void ValidateSeoRouteResponse(string catalogId, SeoLinksType linksType, string seoPath, string expectedRedirectLocation, string expectedController, string expectedAction, string expectedObjectIdName, string expectedObjectId)
         {
             // Don't use catalog API client for short SEO links
-            var catalogApi = linksType == SeoLinksType.Collapsed ? CreateCatalogApiClient() : null;
+            var shortLinks = linksType == SeoLinksType.None || linksType == SeoLinksType.Short;
+            var catalogApi = shortLinks ? null : CreateCatalogApiClient();
             var service = CreateSeoRouteService(catalogApi);
 
-            var workContext = CreateWorkContext(linksType);
+            var workContext = CreateWorkContext(catalogId, linksType);
             var response = service.HandleSeoRequest(seoPath, workContext);
 
             Assert.NotNull(response);
@@ -161,9 +195,9 @@ namespace VirtoCommerce.Storefront.Test
         }
 
 
-        private WorkContext CreateWorkContext(SeoLinksType linksType)
+        private WorkContext CreateWorkContext(string catalogId, SeoLinksType linksType)
         {
-            var store = CreateStore("s", "c", linksType, "en-US", "ru-RU");
+            var store = CreateStore("s", catalogId, linksType, "en-US", "ru-RU");
 
             return new WorkContext
             {
@@ -304,7 +338,8 @@ namespace VirtoCommerce.Storefront.Test
             {
                 Body = _coreSeoRecords
                     .Where(s => s.SemanticUrl.EqualsInvariant(slug))
-                    .Join(_coreSeoRecords, x => x.ObjectId, y => y.ObjectId, (x, y) => y)
+                    .Join(_coreSeoRecords, x => string.Join("_", x.ObjectType, x.ObjectId), y => string.Join("_", y.ObjectType, y.ObjectId), (x, y) => y)
+                    //.Reverse()
                     .ToList()
             };
             return Task.FromResult(result);
