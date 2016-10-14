@@ -36,7 +36,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public CategorySearchCriteria Clone()
         {
             var retVal = new CategorySearchCriteria(Language);
-            retVal.Language = Language;
+            retVal.Outline = Outline;
             retVal.Keyword = Keyword;
             retVal.SortBy = SortBy;
             retVal.PageNumber = PageNumber;
