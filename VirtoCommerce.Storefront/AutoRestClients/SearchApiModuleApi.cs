@@ -789,8 +789,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductSearch class.
         /// </summary>
-        public ProductSearch(string currency = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string outline = default(string), System.Collections.Generic.IList<string> priceLists = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        /// <param name="responseGroup">Possible values include: 'none',
+        /// 'itemInfo', 'itemAssets', 'itemProperties', 'itemAssociations',
+        /// 'itemEditorialReviews', 'variations', 'seo', 'links',
+        /// 'inventory', 'outlines', 'itemSmall', 'itemMedium',
+        /// 'itemLarge'</param>
+        public ProductSearch(string responseGroup = default(string), string currency = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string outline = default(string), System.Collections.Generic.IList<string> priceLists = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
         {
+            ResponseGroup = responseGroup;
             Currency = currency;
             Terms = terms;
             SearchPhrase = searchPhrase;
@@ -800,6 +806,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
             Skip = skip;
             Take = take;
         }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'none', 'itemInfo',
+        /// 'itemAssets', 'itemProperties', 'itemAssociations',
+        /// 'itemEditorialReviews', 'variations', 'seo', 'links',
+        /// 'inventory', 'outlines', 'itemSmall', 'itemMedium', 'itemLarge'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2547,13 +2562,25 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the CategorySearch class.
         /// </summary>
-        public CategorySearch(string outline = default(string), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        /// <param name="responseGroup">Possible values include: 'none',
+        /// 'info', 'withImages', 'withProperties', 'withLinks', 'withSeo',
+        /// 'withParents', 'withOutlines', 'full'</param>
+        public CategorySearch(string responseGroup = default(string), string outline = default(string), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
         {
+            ResponseGroup = responseGroup;
             Outline = outline;
             Sort = sort;
             Skip = skip;
             Take = take;
         }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'none', 'info',
+        /// 'withImages', 'withProperties', 'withLinks', 'withSeo',
+        /// 'withParents', 'withOutlines', 'full'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
 
         /// <summary>
         /// </summary>

@@ -27,6 +27,8 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             Parse(queryString);
         }
 
+        public ItemResponseGroup ResponseGroup { get; set; }
+
         public string Outline { get; set; }
 
         public Currency Currency { get; set; }
@@ -52,7 +54,8 @@ namespace VirtoCommerce.Storefront.Model.Catalog
                 Keyword = Keyword,
                 SortBy = SortBy,
                 PageNumber = PageNumber,
-                PageSize = PageSize
+                PageSize = PageSize,
+                ResponseGroup = ResponseGroup
             };
 
             if (Terms != null)
@@ -69,6 +72,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
             SortBy = queryString.Get("sort_by");
 
+            ResponseGroup = EnumUtility.SafeParse<ItemResponseGroup>(queryString.Get("resp_group"), ItemResponseGroup.ItemSmall);
             // terms=name1:value1,value2,value3;name2:value1,value2,value3
             Terms = (queryString.GetValues("terms") ?? new string[0])
                 .SelectMany(s => s.Split(';'))

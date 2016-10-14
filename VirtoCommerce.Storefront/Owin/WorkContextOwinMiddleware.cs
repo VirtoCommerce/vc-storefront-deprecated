@@ -145,8 +145,8 @@ namespace VirtoCommerce.Storefront.Owin
                     //CatalogId = workContext.CurrentStore.Catalog
                 };
 
-                //Initialize product response group
-                workContext.CurrentProductResponseGroup = EnumUtility.SafeParse(qs.Get("resp_group"), ItemResponseGroup.ItemLarge);
+                //Initialize product response group. Exclude properties meta-information for performance reason (property values will be returned)
+                workContext.CurrentProductResponseGroup = EnumUtility.SafeParse(qs.Get("resp_group"), ItemResponseGroup.ItemLarge & ~ItemResponseGroup.ItemProperties);
 
                 workContext.PageNumber = qs.Get("page").ToNullableInt();
                 workContext.PageSize = qs.Get("count").ToNullableInt() ?? qs.Get("page_size").ToNullableInt();
@@ -159,7 +159,8 @@ namespace VirtoCommerce.Storefront.Owin
                     var criteria = new CategorySearchCriteria(workContext.CurrentLanguage)
                     {
                         PageNumber = pageNumber,
-                        PageSize = pageSize
+                        PageSize = pageSize,
+                        ResponseGroup = CategoryResponseGroup.Small
                     };
 
                     if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
@@ -175,7 +176,8 @@ namespace VirtoCommerce.Storefront.Owin
                             {
                                 PageNumber = pageNumber2,
                                 PageSize = pageSize2,
-                                Outline = category.Outline
+                                Outline = category.Outline,
+                                ResponseGroup = ItemResponseGroup.ItemSmall
                             };
 
                             //criteria.CategoryId = category.Id;
@@ -331,6 +333,7 @@ namespace VirtoCommerce.Storefront.Owin
                             VendorId = vendor.Id,
                             PageNumber = pageNumber2,
                             PageSize = pageSize2,
+                            ResponseGroup = ItemResponseGroup.ItemSmall,
                             SortBy = SortInfo.ToString(sortInfos2),
                         };
                         var searchResult = catalogSearchService.SearchProducts(criteria);

@@ -220,7 +220,8 @@ namespace VirtoCommerce.Storefront.Converters
                 Terms = criteria.Terms.ToStrings(),
                 PriceLists = workContext.CurrentPricelists.Where(p => p.Currency.Equals(workContext.CurrentCurrency)).Select(p => p.Id).ToList(),
                 Skip = criteria.Start,
-                Take = criteria.PageSize
+                Take = criteria.PageSize,
+                ResponseGroup = ((int)criteria.ResponseGroup).ToString()
             };
 
             // Add vendor id to terms
@@ -245,8 +246,9 @@ namespace VirtoCommerce.Storefront.Converters
             var result = new searchDto.CategorySearch()
             {
                 Skip = criteria.Start,
-                Take = criteria.PageSize,
-                Outline = criteria.Outline
+                Take = criteria.PageSize,                
+                Outline = criteria.Outline,
+                ResponseGroup = ((int)criteria.ResponseGroup).ToString()
             };
 
             if (criteria.SortBy != null)

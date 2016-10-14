@@ -224,6 +224,7 @@ namespace VirtoCommerce.Storefront.Services
                                 VendorId = product.VendorId,
                                 PageNumber = pageNumber,
                                 PageSize = pageSize,
+                                ResponseGroup = ItemResponseGroup.ItemSmall,
                                 SortBy = SortInfo.ToString(sortInfos),
                             };
 
@@ -266,7 +267,8 @@ namespace VirtoCommerce.Storefront.Services
                            {
                                PageNumber = pageNumber,
                                PageSize = pageSize,
-                               Outline = categoryAssociation.Category.Outline
+                               Outline = categoryAssociation.Category.Outline,
+                               ResponseGroup = ItemResponseGroup.ItemSmall
                            };
                            if (!sortInfos.IsNullOrEmpty())
                            {

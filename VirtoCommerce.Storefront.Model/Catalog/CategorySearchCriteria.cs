@@ -25,6 +25,8 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             Parse(queryString);
         }
 
+        public CategoryResponseGroup  ResponseGroup { get; set; }
+
         public string Outline { get; set; }
 
         public Language Language { get; set; }
@@ -41,6 +43,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             retVal.SortBy = SortBy;
             retVal.PageNumber = PageNumber;
             retVal.PageSize = PageSize;
+            retVal.ResponseGroup = ResponseGroup;
             return retVal;
         }
 
@@ -48,6 +51,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         {
             Keyword = queryString.Get("q");
             SortBy = queryString.Get("sort_by");
+            ResponseGroup = EnumUtility.SafeParse<CategoryResponseGroup>(queryString.Get("resp_group"), CategoryResponseGroup.Small);
         }
 
 
