@@ -110,7 +110,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
             WorkContext.StaticContentSearchResult = new MutablePagedList<ContentItem>(contentItems.Where(x => x.Language.IsInvariant || x.Language == WorkContext.CurrentLanguage));
 
-            return View("search", request.Layout, WorkContext);
+            return View("content.search", request.Layout, WorkContext);
         }
 
         /// <summary>
