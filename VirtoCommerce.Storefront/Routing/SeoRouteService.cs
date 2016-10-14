@@ -101,11 +101,18 @@ namespace VirtoCommerce.Storefront.Routing
                 {
                     LoadObjectsAndBuildFullSeoPaths(group.Key, group.ToList(), workContext.CurrentStore, workContext.CurrentLanguage);
                 }
+
+                entities = entities.Where(e => !string.IsNullOrEmpty(e.SeoPath)).ToList();
             }
 
-            // If found only one entity, just return it
-            // If found multiple entities, return the one with given SEO path
-            var result = entities.FirstOrDefault(e => entities.Count == 1 || e.SeoPath.EqualsInvariant(seoPath));
+            // If found multiple entities, keep those which have the requested SEO path
+            if (entities.Count > 1)
+            {
+                entities = entities.Where(e => e.SeoPath.EqualsInvariant(seoPath)).ToList();
+            }
+
+            // If still found multiple entities, give up
+            var result = entities.Count == 1 ? entities.FirstOrDefault() : null;
 
             if (result == null)
             {

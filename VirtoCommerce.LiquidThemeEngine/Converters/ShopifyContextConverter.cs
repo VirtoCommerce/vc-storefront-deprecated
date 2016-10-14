@@ -95,7 +95,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             {
                 result.Search = workContext.Products.ToShopifyModel(workContext);
             }
-            else if (workContext.CurrentStaticSearchCriteria != null && !string.IsNullOrEmpty(workContext.CurrentStaticSearchCriteria.Keyword) && workContext.Pages != null)
+            else if (workContext.CurrentStaticSearchCriteria != null &&
+                !string.IsNullOrEmpty(workContext.CurrentStaticSearchCriteria.Keyword) &&
+                workContext.StaticContentSearchResult != null &&
+                workContext.StaticContentSearchResult.Any())
+
             {
                 result.Search = new Search
                 {
@@ -104,9 +108,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     Terms = workContext.CurrentStaticSearchCriteria.Keyword,
                     Results = new MutablePagedList<Drop>((pageNumber, pageSize, sortInfos) =>
                     {
-                        var pagedContentItems = new MutablePagedList<ContentItem>(workContext.Pages);
+                        var pagedContentItems = new MutablePagedList<ContentItem>(workContext.StaticContentSearchResult);
                         pagedContentItems.Slice(pageNumber, pageSize, sortInfos);
-                        return new StaticPagedList<Drop>(workContext.Pages.Select(x => x.ToShopifyModel()), pagedContentItems);
+                        return new StaticPagedList<Drop>(workContext.StaticContentSearchResult.Select(x => x.ToShopifyModel()), pagedContentItems);
                     })
                 };
             }
