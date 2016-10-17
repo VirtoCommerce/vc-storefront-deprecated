@@ -13,6 +13,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         WithSeo = 1 << 4,
         WithParents = 1 << 5,
         WithOutlines = 1 << 6,
+        Small = Info | WithImages | WithSeo | WithOutlines,
         Full = Info | WithImages | WithProperties | WithLinks | WithSeo | WithParents | WithOutlines
     }
 }
