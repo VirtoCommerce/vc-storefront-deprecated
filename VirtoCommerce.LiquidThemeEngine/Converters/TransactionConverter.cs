@@ -1,6 +1,8 @@
 ﻿using System;
+using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
+using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using StorefrontModel = VirtoCommerce.Storefront.Model.Order;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
@@ -9,8 +11,17 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public static Transaction ToShopifyModel(this StorefrontModel.PaymentIn payment)
         {
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidTransaction(payment);
+        }
+    }
 
-            var result = new Transaction();
+    public partial class ShopifyModelConverter
+    {
+        public virtual Transaction ToLiquidTransaction(StorefrontModel.PaymentIn payment)
+        {
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateTransaction();
             result.Amount = payment.Sum.Amount * 100;
             result.CreatedAt = payment.CreatedDate ?? default(DateTime);
             result.Gateway = payment.GatewayCode;
@@ -21,7 +32,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.Status = payment.Status;
             result.StatusLabel = payment.Status;
             result.PaymentDetails = payment.Purpose;
-            
             return result;
         }
     }

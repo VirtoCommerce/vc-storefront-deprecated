@@ -4,6 +4,7 @@ using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
+using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using storefrontModel = VirtoCommerce.Storefront.Model.Catalog;
 
@@ -13,25 +14,26 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public static Product ToShopifyModel(this storefrontModel.Product product)
         {
-            var converter = ServiceLocator.Current.GetInstance<ProductConverter>();
-            return converter.ToShopifyModel(product);
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidProduct(product);
         }
 
         public static Variant ToVariant(this storefrontModel.Product product)
         {
-            var converter = ServiceLocator.Current.GetInstance<ProductConverter>();
-            return converter.ToVariant(product);
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidVariant(product);
         }
     }
 
-    public class ProductConverter
+    public partial class ShopifyModelConverter
     {
-        public virtual Product ToShopifyModel(storefrontModel.Product product)
+        public virtual Product ToLiquidProduct(storefrontModel.Product product)
         {
-            var result = ServiceLocator.Current.GetInstance<Product>();
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateProduct();
             result.InjectFrom<NullableAndEnumValueInjecter>(product);
 
-            result.Variants.Add(product.ToVariant());
+            result.Variants.Add(ToLiquidVariant(product));
 
             if (product.Variations != null)
             {
@@ -136,7 +138,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             return result;
         }
 
-        public virtual Variant ToVariant(storefrontModel.Product product)
+        public virtual Variant ToLiquidVariant(storefrontModel.Product product)
         {
             var result = ServiceLocator.Current.GetInstance<Variant>();
 

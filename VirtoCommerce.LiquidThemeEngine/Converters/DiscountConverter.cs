@@ -1,13 +1,24 @@
-﻿using VirtoCommerce.Storefront.Model.Marketing;
-using ShopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
+﻿
+
+using Microsoft.Practices.ServiceLocation;
+using VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
     public static class DiscountConverter
     {
-        public static ShopifyModel.Discount ToShopifyModel(this Discount discount)
+        public static Discount ToShopifyModel(this Storefront.Model.Marketing.Discount discount)
         {
-            var result = new ShopifyModel.Discount
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidDiscount(discount);
+        }
+    }
+
+    public partial class ShopifyModelConverter
+    {
+        public virtual Discount ToLiquidDiscount(Storefront.Model.Marketing.Discount discount)
+        {
+            var result = new Discount
             {
                 Amount = discount.Amount.Amount * 100,
                 Code = discount.PromotionId,

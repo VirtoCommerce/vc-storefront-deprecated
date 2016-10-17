@@ -3,6 +3,7 @@ using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
+using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
 using storefrontModel = VirtoCommerce.Storefront.Model;
@@ -13,16 +14,18 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public static Shop ToShopifyModel(this Store store, storefrontModel.WorkContext workContext)
         {
-            var converter = ServiceLocator.Current.GetInstance<ShopConverter>();
-            return converter.ToShopifyModel(store, workContext);
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidShop(store, workContext);
         }
     }
 
-    public class ShopConverter
+    public partial class ShopifyModelConverter
     {
-        public virtual Shop ToShopifyModel(Store store, storefrontModel.WorkContext workContext)
+        public virtual Shop ToLiquidShop(Store store, storefrontModel.WorkContext workContext)
         {
-            var result = ServiceLocator.Current.GetInstance<Shop>();
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateShop();
+
             result.InjectFrom<NullableAndEnumValueInjecter>(store);
 
             result.CustomerAccountsEnabled = true;
@@ -50,7 +53,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 result.Collections = new MutablePagedList<Collection>((pageNumber, pageSize, sortInfos) =>
                 {
                     workContext.Categories.Slice(pageNumber, pageSize, sortInfos);
-                    return new StaticPagedList<Collection>(workContext.Categories.Select(x => x.ToShopifyModel(workContext)), workContext.Categories);
+                    return new StaticPagedList<Collection>(workContext.Categories.Select(x => ToLiquidCollection(x, workContext)), workContext.Categories);
                 });
             }
 

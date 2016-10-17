@@ -2,6 +2,7 @@
 using Microsoft.Practices.ServiceLocation;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
+using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using dotLiquid = DotLiquid;
@@ -13,15 +14,17 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public static Search ToShopifyModel(this IMutablePagedList<storefrontModel.Product> products, WorkContext workContext)
         {
-            return ServiceLocator.Current.GetInstance<SearchConverter>().ToShopifyModel(products, workContext);
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidSearch(products, workContext);
         }
     }
 
-    public class SearchConverter
+    public partial class ShopifyModelConverter
     {
-        public virtual Search ToShopifyModel(IMutablePagedList<storefrontModel.Product> products, WorkContext workContext)
+        public virtual Search ToLiquidSearch(IMutablePagedList<storefrontModel.Product> products, WorkContext workContext)
         {
-            var result = ServiceLocator.Current.GetInstance<Search>();
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateSearch();
 
             result.Performed = true;
             result.Terms = workContext.CurrentProductSearchCriteria.Keyword;

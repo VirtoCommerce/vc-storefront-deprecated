@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
+using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
@@ -12,9 +14,19 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
     public static class OrderConverter
     {
-        public static Order ToShopifyModel(this CustomerOrder order, IStorefrontUrlBuilder urlBuilder)
+        public static Order ToShopifyModel(this CustomerOrder order, Storefront.Model.Language language, IStorefrontUrlBuilder urlBuilder)
         {
-            var result = new Order();
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidOrder(order, language, urlBuilder);
+        }
+    }
+
+    public partial class ShopifyModelConverter
+    {
+        public virtual Order ToLiquidOrder(CustomerOrder order, Storefront.Model.Language language, IStorefrontUrlBuilder urlBuilder)
+        {
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateOrder();
             result.InjectFrom<NullableAndEnumValueInjecter>(order);
 
             result.Cancelled = order.IsCancelled == true;
@@ -33,7 +45,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
                 if (shippingAddress != null)
                 {
-                    result.ShippingAddress = shippingAddress.ToShopifyModel();
+                    result.ShippingAddress = ToLiquidAddress(shippingAddress);
                 }
 
                 var billingAddress = order.Addresses
@@ -41,11 +53,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
                 if (billingAddress != null)
                 {
-                    result.BillingAddress = billingAddress.ToShopifyModel();
+                    result.BillingAddress = ToLiquidAddress(billingAddress);
                 }
                 else if (shippingAddress != null)
                 {
-                    result.BillingAddress = shippingAddress.ToShopifyModel();
+                    result.BillingAddress = ToLiquidAddress(shippingAddress);
                 }
 
                 result.Email = order.Addresses
@@ -60,7 +72,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (order.Discount != null)
             {
-                discounts.Add(order.Discount.ToShopifyModel());
+                discounts.Add(ToLiquidDiscount(order.Discount));
             }
 
             var taxLines = new List<Objects.TaxLine>();
@@ -87,7 +99,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (order.Shipments != null)
             {
-                result.ShippingMethods = order.Shipments.Select(s => s.ToShopifyModel()).ToArray();
+                result.ShippingMethods = order.Shipments.Select(s => ToLiquidShippingMethod(s)).ToArray();
                 result.ShippingPrice = result.ShippingMethods.Sum(s => s.Price);
                 result.ShippingPriceWithTax = result.ShippingMethods.Sum(s => s.PriceWithTax);
 
@@ -104,8 +116,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     {
                         result.FulfillmentStatus = orderShipment.Status;
                         result.FulfillmentStatusLabel = orderShipment.Status;
-                    }                 
-                }              
+                    }
+                }
 
                 if (order.ShippingTaxTotal.Amount > 0)
                 {
@@ -115,10 +127,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                         Price = order.ShippingTaxTotal.Amount * 100,
                         Rate = order.Shipments.Average(s => s.TaxPercentRate)
                     });
-                }               
+                }
                 if (order.ShippingDiscountTotal.Amount > 0)
                 {
-                     discounts.Add(new Discount
+                    discounts.Add(new Discount
                     {
                         Type = "ShippingDiscount",
                         Code = "Shipping",
@@ -129,7 +141,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (order.Items != null)
             {
-                result.LineItems = order.Items.Select(i => i.ToShopifyModel(urlBuilder)).ToArray();
+                result.LineItems = order.Items.Select(i => ToLiquidLineItem(i, language, urlBuilder)).ToArray();
                 result.SubtotalPrice = order.SubTotal.Amount * 100;
                 result.SubtotalPriceWithTax = order.SubTotalWithTax.Amount * 100;
 
@@ -141,7 +153,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                         Price = order.SubTotalTaxTotal.Amount * 100,
                         Rate = order.Items.Average(i => i.TaxPercentRate)
                     });
-                }          
+                }
             }
 
 
@@ -157,7 +169,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (!order.InPayments.IsNullOrEmpty())
             {
-                result.Transactions = order.InPayments.Select(x => x.ToShopifyModel()).ToArray();
+                result.Transactions = order.InPayments.Select(x => ToLiquidTransaction(x)).ToArray();
             }
 
             result.TaxLines = taxLines.ToArray();

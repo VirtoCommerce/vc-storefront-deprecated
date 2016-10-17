@@ -2,6 +2,7 @@
 using Microsoft.Practices.ServiceLocation;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
+using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using storefrontModel = VirtoCommerce.Storefront.Model.Catalog;
@@ -12,17 +13,18 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public static Collection ToShopifyModel(this storefrontModel.Category category, WorkContext workContext)
         {
-            var converter = ServiceLocator.Current.GetInstance<CollectionConverter>();
-            return converter.ToShopifyModel(category, workContext);
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidCollection(category, workContext);
         }
     }
 
-    public class CollectionConverter
+    public partial class ShopifyModelConverter
     {
 
-        public virtual Collection ToShopifyModel(storefrontModel.Category category, WorkContext workContext)
+        public virtual Collection ToLiquidCollection(storefrontModel.Category category, WorkContext workContext)
         {
-            var result = ServiceLocator.Current.GetInstance<Collection>();
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateCollection();
 
             result.Id = category.Id;
             result.Description = null;
@@ -33,7 +35,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (category.PrimaryImage != null)
             {
-                result.Image = category.PrimaryImage.ToShopifyModel();
+                result.Image = ToLiquidImage(category.PrimaryImage);
             }
 
             if (category.Products != null)
@@ -41,7 +43,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 result.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                 {
                     category.Products.Slice(pageNumber, pageSize, sortInfos);
-                    return new StaticPagedList<Product>(category.Products.Select(x => x.ToShopifyModel()), category.Products);
+                    return new StaticPagedList<Product>(category.Products.Select(x => ToLiquidProduct(x)), category.Products);
                 }, category.Products.PageNumber, category.Products.PageSize);
             }
 
@@ -51,7 +53,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 {
                     workContext.Aggregations.Slice(pageNumber, pageSize, sortInfos);
                     var tags = workContext.Aggregations.Where(a => a.Items != null)
-                                           .SelectMany(a => a.Items.Select(item => item.ToShopifyModel(a.Field, a.Label)));
+                                           .SelectMany(a => a.Items.Select(item => ToLiquidTag(item, a.Field, a.Label)));
                     return new StaticPagedList<Tag>(tags, workContext.Aggregations);
 
                 }, workContext.Aggregations.PageNumber, workContext.Aggregations.PageSize));
