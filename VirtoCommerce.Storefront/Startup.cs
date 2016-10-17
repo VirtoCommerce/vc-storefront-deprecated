@@ -89,6 +89,12 @@ namespace VirtoCommerce.Storefront
         public void Configuration(IAppBuilder app)
         {
             var applicationInsightsKey = ConfigurationManager.AppSettings.GetValue("ApplicationInsightsInstrumentationKey", string.Empty);
+
+            if (string.IsNullOrEmpty(applicationInsightsKey))
+            {
+                applicationInsightsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
+            }
+
             if (!string.IsNullOrEmpty(applicationInsightsKey))
             {
                 TelemetryConfiguration.Active.InstrumentationKey = applicationInsightsKey;
