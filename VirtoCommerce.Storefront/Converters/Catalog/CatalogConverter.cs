@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Markdig;
 using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
@@ -108,6 +109,12 @@ namespace VirtoCommerce.Storefront.Converters
 
     public class CatalogConverter
     {
+        private readonly MarkdownPipeline _markdownPipeline;
+        public CatalogConverter()
+        {
+            _markdownPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+        }
+
         public virtual SeoInfo ToSeoInfo(catalogDto.SeoInfo seoDto)
         {
             return seoDto.JsonConvert<coreDto.SeoInfo>().ToSeoInfo();
@@ -422,7 +429,7 @@ namespace VirtoCommerce.Storefront.Converters
                 {
                     Language = new Language(r.LanguageCode),
                     ReviewType = r.ReviewType,
-                    Value = r.Content
+                    Value = Markdown.ToHtml(r.Content, _markdownPipeline)
                 }).Where(x => x.Language.Equals(currentLanguage)).ToList();
                 retVal.Description = retVal.Descriptions.FindWithLanguage(currentLanguage, x => x.Value, null);
             }
