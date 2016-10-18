@@ -57,9 +57,8 @@ namespace VirtoCommerce.Storefront.Test
 
         private ICartBuilder GetCartBuilder()
         {
-            var catalogModuleApi = GetCatalogApiClient();
+            var catalogApi = GetCatalogApiClient();
             var cartApi = GetCartApiClient();
-            var commerceApi = GetCoreApiClient();
             var marketingApi = GetMarketingApiClient();
             var inventoryApi = GetInventoryApiClient();
             var pricingApi = GetPricingApiClient();
@@ -73,11 +72,11 @@ namespace VirtoCommerce.Storefront.Test
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
 
-            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, null);
+            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, promotionEvaluator);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
-            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogModuleApi, pricingService, inventoryApi, searchApi, customerService);
+            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService);
 
-            var retVal = new CartBuilder(cartApi, catalogSearchService,  cacheManager, workContextFactory, null, null, null);
+            var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, null);
             return retVal;
         }
     }

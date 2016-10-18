@@ -92,6 +92,11 @@ namespace VirtoCommerce.Storefront.Model
             }
         }
 
+        /// <summary>
+        /// Custom properties for shipping method
+        /// </summary>
+        public List<SettingEntry> Settings { get; set; }
+
         #region ITaxable Members
         /// <summary>
         /// Gets the value of total shipping method tax 

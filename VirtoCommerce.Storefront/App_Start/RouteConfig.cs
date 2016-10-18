@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Routing;
 
 namespace VirtoCommerce.Storefront
 {
     public class RouteConfig
     {
-        public static void RegisterRoutes(RouteCollection routes, Func<WorkContext> workContextFactory, Func<ICoreModuleApiClient> commerceCoreApiFactory, IStaticContentService staticContentService, ILocalCacheManager cacheManager, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
+        public static void RegisterRoutes(RouteCollection routes, ISeoRouteService seoRouteService, Func<WorkContext> workContextFactory, Func<IStorefrontUrlBuilder> storefrontUrlBuilderFactory)
         {
             routes.IgnoreRoute("favicon.ico");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -93,7 +91,7 @@ namespace VirtoCommerce.Storefront
             // Cart
             routes.AddStorefrontRoute("Cart.Index", "cart", defaults: new { controller = "Cart", action = "Index" }, constraints: new { httpMethod = new HttpMethodConstraint("GET") });
             routes.AddStorefrontRoute("Cart.Checkout", "cart/checkout", defaults: new { controller = "Cart", action = "Checkout" });
-            routes.AddStorefrontRoute("Cart.ExternalPaymentCallback", "cart/externalpaymentcallback", defaults: new { controller = "Cart", action = "ExternalPaymentCallback" });
+            routes.AddStorefrontRoute("Cart.ExternalPaymentCallback", "cart/externalpaymentcallback", defaults: new { controller = "Cart", action = "ExternalPaymentCallback" }, constraints: new { httpMethod = new HttpMethodConstraint("GET", "POST") });
             routes.AddStorefrontRoute("Cart.Thanks", "cart/thanks/{orderNumber}", defaults: new { controller = "Cart", action = "Thanks" });
             routes.AddStorefrontRoute("Cart.PaymentForm", "cart/checkout/paymentform", defaults: new { controller = "Cart", action = "PaymentForm" });
 
@@ -145,17 +143,20 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("StaticContentAssets", "assets/{*path}", defaults: new { controller = "Asset", action = "GetStaticContentAssets" });
 
             // Static content (no cms)
-            routes.AddStorefrontRoute("Pages.GetPage", "pages/{*page}", defaults: new { controller = "Page", action = "GetContentPageByName" });
+            routes.AddStorefrontRoute("Pages.GetPage", "pages/{*page}", defaults: new { controller = "StaticContent", action = "GetContentPageByName" });
             //Blog
-            routes.AddStorefrontRoute("Blogs.GetDefaultBlog", "blog", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByCategory", "blog/category/{category}", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByTag", "blog/tag/{tag}", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetBlogByName", "blogs/{blog}", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "Blog", action = "GetBlog" });
-            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "Blog", action = "GetBlog" });
-          
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlog", "blog", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByCategory", "blog/category/{category}", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetDefaultBlogWithFilterByTag", "blog/tag/{tag}", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogByName", "blogs/{blog}", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByCategory", "blogs/{blogname}/category/{category}", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("Blogs.GetBlogWithFilterByTag", "blogs/{blogname}/tag/{tag}", defaults: new { controller = "StaticContent", action = "GetBlog" });
+            routes.AddStorefrontRoute("StaticContent.Search", "content/search", defaults: new { controller = "StaticContent", action = "Search" });
 
-            Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), workContextFactory, commerceCoreApiFactory, cacheManager, storefrontUrlBuilderFactory);
+            routes.AddStorefrontRoute("StaticContent.BlogByName.RssFeed", "blogs/{blogname}/{rss}", defaults: new { controller = "StaticContent", action = "BlogRssFeed" }, constraints: new { rss = @"(rss|feed)" });
+            routes.AddStorefrontRoute("StaticContent.Blog.RssFeed", "blog/{rss}", defaults: new { controller = "StaticContent", action = "BlogRssFeed" }, constraints: new { rss = @"(rss|feed)" });
+
+            Func<string, Route> seoRouteFactory = url => new SeoRoute(url, new MvcRouteHandler(), seoRouteService, workContextFactory, storefrontUrlBuilderFactory);
             routes.AddStorefrontRoute(name: "SeoRoute", url: "{*path}", defaults: new { controller = "StorefrontHome", action = "Index" }, constraints: null, routeFactory: seoRouteFactory);
         }
     }

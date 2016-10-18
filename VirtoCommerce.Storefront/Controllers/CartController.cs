@@ -56,8 +56,8 @@ namespace VirtoCommerce.Storefront.Controllers
             return View("payment-form", WorkContext);
         }
 
-        // GET: /cart/externalpaymentcallback
-        [HttpGet]
+        // GET/POST: /cart/externalpaymentcallback
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public async Task<ActionResult> ExternalPaymentCallback()
         {
             var callback = new orderModel.PaymentCallbackParameters
@@ -105,7 +105,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 throw new HttpException(404, "Order with number " + orderNumber + " not found.");
             }
 
-            WorkContext.CurrentOrder = order.ToWebModel(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);
+            WorkContext.CurrentOrder = order.ToCustomerOrder(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);
 
             return View("thanks", WorkContext);
         }

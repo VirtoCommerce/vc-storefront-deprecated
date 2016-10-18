@@ -4,6 +4,8 @@ using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 using PagedList;
+using Microsoft.Practices.ServiceLocation;
+using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -11,25 +13,35 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public static Vendor ToShopifyModel(this StorefrontModel.Vendor vendor)
         {
-            var retVal = new Vendor();
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidVendor(vendor);
+        }
+    }
 
-            retVal.InjectFrom<NullableAndEnumValueInjecter>(vendor);
-            retVal.Handle = vendor.SeoInfo != null ? vendor.SeoInfo.Slug : vendor.Id;
+    public partial class ShopifyModelConverter
+    {
+        public virtual Vendor ToLiquidVendor(Storefront.Model.Vendor vendor)
+        {
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateVendor();
+            result.InjectFrom<NullableAndEnumValueInjecter>(vendor);
+            result.Handle = vendor.SeoInfo != null ? vendor.SeoInfo.Slug : vendor.Id;
 
-            var shopifyAddressModels = vendor.Addresses.Select(a => a.ToShopifyModel());
-            retVal.Addresses = new MutablePagedList<Address>(shopifyAddressModels);
-            retVal.DynamicProperties = vendor.DynamicProperties;
+            var shopifyAddressModels = vendor.Addresses.Select(a => ToLiquidAddress(a));
+            result.Addresses = new MutablePagedList<Address>(shopifyAddressModels);
+            result.DynamicProperties = vendor.DynamicProperties;
 
             if (vendor.Products != null)
             {
-                retVal.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
+                result.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
                 {
                     vendor.Products.Slice(pageNumber, pageSize, sortInfos);
-                    return new StaticPagedList<Product>(vendor.Products.Select(x => x.ToShopifyModel()), vendor.Products);
+                    return new StaticPagedList<Product>(vendor.Products.Select(x => ToLiquidProduct(x)), vendor.Products);
                 }, vendor.Products.PageNumber, vendor.Products.PageSize);
             }
 
-            return retVal;
+            return result;
         }
     }
+
 }

@@ -34,11 +34,11 @@ namespace VirtoCommerce.LiquidThemeEngine
     /// </summary>
     public class ShopifyLiquidThemeEngine : IFileSystem, ILiquidThemeEngine
     {
+        private static readonly Regex _isLiquid = new Regex("[{}|]", RegexOptions.Compiled);
         private const string _globalThemeName = "default";
         private const string _defaultMasterView = "theme";
         private const string _liquidTemplateFormat = "{0}.liquid";
         private static readonly string[] _templatesDiscoveryFolders = { "templates", "snippets", "layout", "assets" };
-        private static readonly Regex _templateRegex = new Regex(@"[a-zA-Z0-9]+$", RegexOptions.Compiled);
         private readonly string _themesAssetsRelativeUrl;
         private readonly string _globalThemeAssetsRelativeUrl;
         private readonly Func<WorkContext> _workContextFactory;
@@ -69,9 +69,9 @@ namespace VirtoCommerce.LiquidThemeEngine
             Template.RegisterFilter(typeof(HtmlFilters));
             Template.RegisterFilter(typeof(StringFilters));
             Template.RegisterFilter(typeof(ArrayFilters));
-			Template.RegisterFilter(typeof(BundleFilters));
+            Template.RegisterFilter(typeof(BundleFilters));
 
-			Condition.Operators["contains"] = CommonOperators.ContainsMethod;
+            Condition.Operators["contains"] = CommonOperators.ContainsMethod;
 
             Template.RegisterTag<LayoutTag>("layout");
             Template.RegisterTag<FormTag>("form");
@@ -96,7 +96,6 @@ namespace VirtoCommerce.LiquidThemeEngine
             };
         }
 
-
         /// <summary>
         /// Main work context
         /// </summary>
@@ -107,6 +106,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 return _workContextFactory();
             }
         }
+
         /// <summary>
         /// Store url builder
         /// </summary>
@@ -277,7 +277,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 throw new ArgumentNullException("templateName");
             }
             var templatePath = ResolveTemplatePath(templateName);
-            if(string.IsNullOrEmpty(templatePath))
+            if (string.IsNullOrEmpty(templatePath))
             {
                 throw new FileSystemException(string.Format("Template not found: '{0}'. Searched paths: {1}", templateName, string.Join("<br>", DiscoveryPaths)));
             }
@@ -298,6 +298,13 @@ namespace VirtoCommerce.LiquidThemeEngine
             {
                 return templateContent;
             }
+
+            Match isLiquidTemplate = _isLiquid.Match(templateContent);
+            if (!isLiquidTemplate.Success)
+            {
+                return templateContent;
+            }
+
             if (parameters == null)
             {
                 parameters = new Dictionary<string, object>();

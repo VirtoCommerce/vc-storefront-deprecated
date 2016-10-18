@@ -2,6 +2,8 @@
 using System.Linq;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
+using Microsoft.Practices.ServiceLocation;
+using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -9,11 +11,20 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public static ProductProperty ToShopifyModel(this StorefrontModel.Catalog.CatalogProperty property)
         {
-            var result = new ProductProperty();
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidProductProperty(property);
+        }
+    }
 
-            result.InjectFrom(property);
-
+    public partial class ShopifyModelConverter
+    {
+        public virtual ProductProperty ToLiquidProductProperty(StorefrontModel.Catalog.CatalogProperty property)
+        {
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateProductProperty();
+            result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(property);
             return result;
         }
     }
+
 }

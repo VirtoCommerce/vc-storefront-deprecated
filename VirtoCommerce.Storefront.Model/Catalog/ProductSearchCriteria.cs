@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using VirtoCommerce.Storefront.Model.Common;
 
@@ -7,7 +8,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 {
     public class ProductSearchCriteria : PagedSearchCriteria
     {
-        //For JSON deserialization 
+        //For JSON deserialization
         public ProductSearchCriteria()
             : base(new NameValueCollection())
         {
@@ -26,6 +27,8 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             Parse(queryString);
         }
 
+        public ItemResponseGroup ResponseGroup { get; set; }
+
         public string Outline { get; set; }
 
         public Currency Currency { get; set; }
@@ -42,28 +45,35 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
         public ProductSearchCriteria Clone()
         {
-            var retVal = new ProductSearchCriteria(Language, Currency);
-            retVal.Outline = Outline;
-            retVal.VendorId = VendorId;
-            retVal.Currency = Currency;
-            retVal.Language = Language;
-            retVal.Keyword = Keyword;
-            retVal.SortBy = SortBy;
-            retVal.PageNumber = PageNumber;
-            retVal.PageSize = PageSize;
+            var result = new ProductSearchCriteria(Language, Currency)
+            {
+                Outline = Outline,
+                VendorId = VendorId,
+                Currency = Currency,
+                Language = Language,
+                Keyword = Keyword,
+                SortBy = SortBy,
+                PageNumber = PageNumber,
+                PageSize = PageSize,
+                ResponseGroup = ResponseGroup
+            };
+
             if (Terms != null)
             {
-                retVal.Terms = Terms.Select(x => new Term { Name = x.Name, Value = x.Value }).ToArray();
+                result.Terms = Terms.Select(x => new Term { Name = x.Name, Value = x.Value }).ToArray();
             }
-            return retVal;
+
+            return result;
         }
 
         private void Parse(NameValueCollection queryString)
         {
-            Keyword = queryString.Get("q");
-            //TODO move this code to Parse or Converter method
-            // tags=name1:value1,value2,value3;name2:value1,value2,value3
+            Keyword = queryString.Get("q") ?? queryString.Get("keyword");
+
             SortBy = queryString.Get("sort_by");
+
+            ResponseGroup = EnumUtility.SafeParse<ItemResponseGroup>(queryString.Get("resp_group"), ItemResponseGroup.ItemSmall);
+            // terms=name1:value1,value2,value3;name2:value1,value2,value3
             Terms = (queryString.GetValues("terms") ?? new string[0])
                 .SelectMany(s => s.Split(';'))
                 .Select(s => s.Split(':'))
@@ -84,23 +94,23 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             {
                 int hash = base.GetHashCode();
 
-                if (this.Outline != null)
-                    hash = hash * 59 + this.Outline.GetHashCode();
+                if (Outline != null)
+                    hash = hash * 59 + Outline.GetHashCode();
 
-                if (this.VendorId != null)
-                    hash = hash * 59 + this.VendorId.GetHashCode();
+                if (VendorId != null)
+                    hash = hash * 59 + VendorId.GetHashCode();
 
-                if (this.Currency != null)
-                    hash = hash * 59 + this.Currency.Code.GetHashCode();
+                if (Currency != null)
+                    hash = hash * 59 + Currency.Code.GetHashCode();
 
-                if (this.Language != null)
-                    hash = hash * 59 + this.Language.CultureName.GetHashCode();
+                if (Language != null)
+                    hash = hash * 59 + Language.CultureName.GetHashCode();
 
-                if (this.Keyword != null)
-                    hash = hash * 59 + this.Keyword.GetHashCode();
+                if (Keyword != null)
+                    hash = hash * 59 + Keyword.GetHashCode();
 
-                if (this.SortBy != null)
-                    hash = hash * 59 + this.SortBy.GetHashCode();
+                if (SortBy != null)
+                    hash = hash * 59 + SortBy.GetHashCode();
 
                 return hash;
             }
@@ -108,14 +118,18 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
         public override string ToString()
         {
-            var retVal = new List<string>();
-            retVal.Add(string.Format("page={0}", PageNumber));
-            retVal.Add(string.Format("page_size={0}", PageSize));
+            var result = new List<string>
+            {
+                string.Format(CultureInfo.InvariantCulture, "page={0}", PageNumber),
+                string.Format(CultureInfo.InvariantCulture, "page_size={0}", PageSize)
+            };
+
             if (Keyword != null)
             {
-                retVal.Add(string.Format("q={0}", Keyword));
+                result.Add(string.Format(CultureInfo.InvariantCulture, "q={0}", Keyword));
             }
-            return string.Join("&", retVal);
+
+            return string.Join("&", result);
         }
     }
 }

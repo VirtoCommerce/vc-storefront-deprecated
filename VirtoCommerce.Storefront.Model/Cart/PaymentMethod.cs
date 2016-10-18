@@ -1,4 +1,5 @@
-﻿using VirtoCommerce.Storefront.Model.Common;
+﻿using System.Collections.Generic;
+using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
 {
@@ -49,5 +50,10 @@ namespace VirtoCommerce.Storefront.Model
         /// Is payment method available for partial payments
         /// </summary>
         public bool IsAvailableForPartial { get; set; }
+
+        /// <summary>
+        /// Custom properties for payment method
+        /// </summary>
+        public List<SettingEntry> Settings { get; set; }
     }
 }

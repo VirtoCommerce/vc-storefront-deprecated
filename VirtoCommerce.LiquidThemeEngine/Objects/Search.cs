@@ -23,8 +23,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public int ResultsCount { get { return Results.GetTotalCount(); } }
 
         /// <summary>
-        /// Returns the string that was entered in the search input box. Use the highlight filter to apply a different 
+        /// Returns the string that was entered in the search input box.
         /// </summary>
         public string Terms { get; set; }
+
+        public string SearchIn { get; set; }
+
+        /// <summary>
+        /// Returns a list of all tags in a search result.
+        /// </summary>
+        public TagCollection AllTags { get; set; }
     }
 }

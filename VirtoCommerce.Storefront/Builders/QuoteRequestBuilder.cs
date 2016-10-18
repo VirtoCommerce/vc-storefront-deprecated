@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
@@ -28,13 +29,16 @@ namespace VirtoCommerce.Storefront.Builders
         private QuoteRequest _quoteRequest;
         private const string _quoteRequestCacheRegion = "QuoteRequestRegion";
 
-        public QuoteRequestBuilder(IQuoteModuleApiClient quoteApi, ILocalCacheManager cacheManager,
+        public QuoteRequestBuilder(
+            IQuoteModuleApiClient quoteApi,
+            ILocalCacheManager cacheManager,
             IEventPublisher<QuoteRequestUpdatedEvent> quoteRequestUpdatedEventPublisher)
         {
             _quoteApi = quoteApi;
             _cacheManager = cacheManager;
             _quoteRequestUpdatedEventPublisher = quoteRequestUpdatedEventPublisher;
         }
+
         #region IQuoteRequestBuilder Members
 
         public async Task<IQuoteRequestBuilder> LoadQuoteRequestAsync(string number, Language language, IEnumerable<Currency> availCurrencies)
@@ -44,7 +48,7 @@ namespace VirtoCommerce.Storefront.Builders
             {
                 throw new StorefrontException("Quote request for number " + number + " not found");
             }
-            _quoteRequest = quoteRequest.ToWebModel(availCurrencies, language);
+            _quoteRequest = quoteRequest.ToQuoteRequest(availCurrencies, language);
 
             return this;
         }
@@ -71,7 +75,7 @@ namespace VirtoCommerce.Storefront.Builders
 
                 var searchResult = await _quoteApi.QuoteModule.SearchAsync(activeQuoteSearchCriteria);
 
-                var quoteRequest = searchResult.QuoteRequests.Select(x => x.ToWebModel(store.Currencies, language)).FirstOrDefault();
+                var quoteRequest = searchResult.QuoteRequests.Select(x => x.ToQuoteRequest(store.Currencies, language)).FirstOrDefault();
                 if (quoteRequest == null)
                 {
                     quoteRequest = new QuoteRequest(currency, language)
@@ -84,18 +88,13 @@ namespace VirtoCommerce.Storefront.Builders
                         Tag = "actual"
                     };
 
-                    if (!customer.IsRegisteredUser)
-                    {
-                        quoteRequest.CustomerName = StorefrontConstants.AnonymousUsername;
-                    }
-                    else
-                    {
-                        quoteRequest.CustomerName = string.Format("{0} {1}", customer.FirstName, customer.LastName);
-                    }
+                    quoteRequest.CustomerName = customer.IsRegisteredUser
+                    ? string.Join(" ", customer.FirstName, customer.LastName)
+                    : StorefrontConstants.AnonymousUsername;
                 }
                 else
                 {
-                    quoteRequest = (await _quoteApi.QuoteModule.GetByIdAsync(quoteRequest.Id)).ToWebModel(store.Currencies, language);
+                    quoteRequest = (await _quoteApi.QuoteModule.GetByIdAsync(quoteRequest.Id)).ToQuoteRequest(store.Currencies, language);
                 }
 
                 quoteRequest.Customer = customer;
@@ -231,7 +230,7 @@ namespace VirtoCommerce.Storefront.Builders
         {
             _cacheManager.Remove(GetQuoteRequestCacheKey(_quoteRequest.StoreId, _quoteRequest.CustomerId), _quoteRequestCacheRegion);
 
-            var quoteDto = _quoteRequest.ToServiceModel();
+            var quoteDto = _quoteRequest.ToQuoteRequestDto();
             if (_quoteRequest.IsTransient())
             {
                 await _quoteApi.QuoteModule.CreateAsync(quoteDto);
@@ -254,13 +253,15 @@ namespace VirtoCommerce.Storefront.Builders
 
         public async Task<IQuoteRequestBuilder> CalculateTotalsAsync()
         {
-            var result = await _quoteApi.QuoteModule.CalculateTotalsAsync(_quoteRequest.ToServiceModel());
-            _quoteRequest.Totals = result.Totals.ToWebModel(_quoteRequest.Currency);
+            var result = await _quoteApi.QuoteModule.CalculateTotalsAsync(_quoteRequest.ToQuoteRequestDto());
+            _quoteRequest.Totals = result.Totals.ToQuoteTotals(_quoteRequest.Currency);
             return this;
         }
 
         #endregion
+
         #region IObserver<UserLoginEvent> Members
+
         /// <summary>
         /// Merge anonymous user quote to newly logined user quote by loging event
         /// </summary>
@@ -281,7 +282,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         private string GetQuoteRequestCacheKey(string storeId, string customerId)
         {
-            return string.Format("QuoteRequest-{0}-{1}", storeId, customerId);
+            return string.Format(CultureInfo.InvariantCulture, "QuoteRequest-{0}-{1}", storeId, customerId);
         }
     }
 }

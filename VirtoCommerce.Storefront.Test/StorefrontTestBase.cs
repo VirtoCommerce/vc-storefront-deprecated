@@ -11,7 +11,6 @@ using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi;
-using VirtoCommerce.Storefront.AutoRestClients.SearchModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
@@ -27,9 +26,9 @@ namespace VirtoCommerce.Storefront.Test
             var coreApi = GetCoreApiClient();
             var storeApi = GetStoreApiClient();
 
-            var allStores = storeApi.StoreModule.GetStores().Select(x => x.ToWebModel());
+            var allStores = storeApi.StoreModule.GetStores().Select(x => x.ToStore());
             var defaultStore = allStores.FirstOrDefault(x => string.Equals(x.Id, "Electronics", StringComparison.InvariantCultureIgnoreCase));
-            var currencies = coreApi.Commerce.GetAllCurrencies().Select(x => x.ToWebModel(defaultStore.DefaultLanguage));
+            var currencies = coreApi.Commerce.GetAllCurrencies().Select(x => x.ToCurrency(defaultStore.DefaultLanguage));
             defaultStore.SyncCurrencies(currencies, defaultStore.DefaultLanguage);
 
             var retVal = new WorkContext

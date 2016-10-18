@@ -127,7 +127,7 @@ namespace VirtoCommerce.Storefront.Owin
                 workContext.CurrentLanguage = GetLanguage(context, workContext.AllStores, workContext.CurrentStore);
 
                 var commerceApi = Container.Resolve<ICoreModuleApiClient>();
-                workContext.AllCurrencies = await CacheManager.GetAsync("GetAllCurrencies-" + workContext.CurrentLanguage.CultureName, "ApiRegion", async () => { return (await commerceApi.Commerce.GetAllCurrenciesAsync()).Select(x => x.ToWebModel(workContext.CurrentLanguage)).ToArray(); });
+                workContext.AllCurrencies = await CacheManager.GetAsync("GetAllCurrencies-" + workContext.CurrentLanguage.CultureName, "ApiRegion", async () => { return (await commerceApi.Commerce.GetAllCurrenciesAsync()).Select(x => x.ToCurrency(workContext.CurrentLanguage)).ToArray(); });
 
                 //Sync store currencies with avail in system
                 foreach (var store in workContext.AllStores)
@@ -145,8 +145,8 @@ namespace VirtoCommerce.Storefront.Owin
                     //CatalogId = workContext.CurrentStore.Catalog
                 };
 
-                //Initialize product response group
-                workContext.CurrentProductResponseGroup = EnumUtility.SafeParse(qs.Get("resp_group"), ItemResponseGroup.ItemLarge);
+                //Initialize product response group. Exclude properties meta-information for performance reason (property values will be returned)
+                workContext.CurrentProductResponseGroup = EnumUtility.SafeParse(qs.Get("resp_group"), ItemResponseGroup.ItemLarge & ~ItemResponseGroup.ItemProperties);
 
                 workContext.PageNumber = qs.Get("page").ToNullableInt();
                 workContext.PageSize = qs.Get("count").ToNullableInt() ?? qs.Get("page_size").ToNullableInt();
@@ -159,7 +159,8 @@ namespace VirtoCommerce.Storefront.Owin
                     var criteria = new CategorySearchCriteria(workContext.CurrentLanguage)
                     {
                         PageNumber = pageNumber,
-                        PageSize = pageSize
+                        PageSize = pageSize,
+                        ResponseGroup = CategoryResponseGroup.Small
                     };
 
                     if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos.IsNullOrEmpty())
@@ -175,7 +176,8 @@ namespace VirtoCommerce.Storefront.Owin
                             {
                                 PageNumber = pageNumber2,
                                 PageSize = pageSize2,
-                                Outline = category.Outline
+                                Outline = category.Outline,
+                                ResponseGroup = ItemResponseGroup.ItemSmall
                             };
 
                             //criteria.CategoryId = category.Id;
@@ -312,7 +314,7 @@ namespace VirtoCommerce.Storefront.Owin
 
                 var pricingModuleApi = Container.Resolve<IPricingModuleApiClient>();
                 var pricingResult = await pricingModuleApi.PricingModule.EvaluatePriceListsAsync(evalContext);
-                return pricingResult.Select(p => p.ToWebModel()).ToList();
+                return pricingResult.Select(p => p.ToPricelist(workContext.AllCurrencies, workContext.CurrentLanguage)).ToList();
             });
 
             // Vendors with their products
@@ -331,6 +333,7 @@ namespace VirtoCommerce.Storefront.Owin
                             VendorId = vendor.Id,
                             PageNumber = pageNumber2,
                             PageSize = pageSize2,
+                            ResponseGroup = ItemResponseGroup.ItemSmall,
                             SortBy = SortInfo.ToString(sortInfos2),
                         };
                         var searchResult = catalogSearchService.SearchProducts(criteria);
@@ -346,7 +349,7 @@ namespace VirtoCommerce.Storefront.Owin
         {
             var storeApi = Container.Resolve<IStoreModuleApiClient>();
             var stores = await storeApi.StoreModule.GetStoresAsync();
-            var result = stores.Select(s => s.ToWebModel()).ToArray();
+            var result = stores.Select(s => s.ToStore()).ToArray();
             return result.Any() ? result : null;
         }
 

@@ -9,8 +9,11 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// </summary>
     public class PaymentIn
     {
-        public PaymentIn()
+        public PaymentIn(Currency currency)
         {
+            Currency = currency;
+            Sum = new Money(currency);
+
             ChildrenOperations = new List<Operation>();
             DynamicProperties = new List<DynamicProperty>();
         }

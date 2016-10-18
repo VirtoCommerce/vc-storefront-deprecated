@@ -86,6 +86,8 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
 
         public Language Language { get; set; }
 
+        public int Priority { get; set; }
+
         public virtual void LoadContent(string content, IDictionary<string, IEnumerable<string>> metaInfoMap, IDictionary themeSettings)
         {
             if (metaInfoMap != null)
@@ -139,6 +141,11 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
 
                         case "layout":
                             Layout = settingValue;
+                            break;
+                        case "priority":
+                            int priority = 0;
+                            int.TryParse(settingValue, out priority);
+                            Priority = priority;
                             break;
                     }
                 }

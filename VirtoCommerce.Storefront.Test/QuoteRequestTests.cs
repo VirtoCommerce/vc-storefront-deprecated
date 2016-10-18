@@ -16,7 +16,7 @@ using Xunit;
 namespace VirtoCommerce.Storefront.Test
 {
     public class QuoteRequestTests : StorefrontTestBase
-    {   
+    {
         [Fact]
         public void CreateAnonymousQuoteRequest()
         {
@@ -168,7 +168,6 @@ namespace VirtoCommerce.Storefront.Test
         private ICatalogSearchService GetCatalogSearchService()
         {
             var catalogApi = GetCatalogApiClient();
-            var commerceApi = GetCoreApiClient();
             var inventoryApi = GetInventoryApiClient();
             var marketingApi = GetMarketingApiClient();
             var pricingApi = GetPricingApiClient();
@@ -180,11 +179,11 @@ namespace VirtoCommerce.Storefront.Test
 
             var cacheManager = new Mock<ILocalCacheManager>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
-            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, null);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
-
+            var pricingService = new PricingServiceImpl(workContextFactory, pricingApi, null, promotionEvaluator);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, cacheManager);
-            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, pricingService, inventoryApi, searchApi, customerService);
+
+            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService);
             return result;
         }
     }

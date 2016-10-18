@@ -75,6 +75,10 @@ namespace VirtoCommerce.Storefront.Controllers
         {
             await _storeModuleApi.StoreModule.SendDynamicNotificationAnStoreEmailAsync(model.ToServiceModel(WorkContext));
             WorkContext.ContactUsForm = model;
+            if (model.Contact.ContainsKey("RedirectUrl") && model.Contact["RedirectUrl"].Any())
+            {
+                return StoreFrontRedirect(model.Contact["RedirectUrl"].First());
+            }
             return View(viewName, WorkContext);
         }
 

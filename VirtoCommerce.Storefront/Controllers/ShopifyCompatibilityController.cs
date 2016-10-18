@@ -102,7 +102,7 @@ namespace VirtoCommerce.Storefront.Controllers
         {
             EnsureThatCartExist();
 
-            return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext));
+            return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext.CurrentLanguage, UrlBuilder));
         }
 
         // POST: /cart/add.js
@@ -124,7 +124,7 @@ namespace VirtoCommerce.Storefront.Controllers
                     lineItem = _cartBuilder.Cart.Items.FirstOrDefault(i => i.ProductId == id);
                 }
             }
-            return LiquidJson(lineItem != null ? lineItem.ToShopifyModel(_workContext) : null);
+            return LiquidJson(lineItem != null ? lineItem.ToShopifyModel(_workContext.CurrentLanguage, UrlBuilder) : null);
         }
 
         // POST: /cart/change.js
@@ -138,7 +138,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 await _cartBuilder.ChangeItemQuantityAsync(id, quantity);
                 await _cartBuilder.SaveAsync();
             }
-            return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext));
+            return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext.CurrentLanguage, UrlBuilder));
         }
 
         // POST: /cart/update.js
@@ -152,7 +152,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 await _cartBuilder.ChangeItemsQuantitiesAsync(updates);
                 await _cartBuilder.SaveAsync();
             }
-            return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext));
+            return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext.CurrentLanguage, UrlBuilder));
         }
 
         // POST: /cart/clear.js
@@ -165,7 +165,7 @@ namespace VirtoCommerce.Storefront.Controllers
             {
                 await _cartBuilder.Clear().SaveAsync();
             }
-            return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext));
+            return LiquidJson(_cartBuilder.Cart.ToShopifyModel(WorkContext.CurrentLanguage, UrlBuilder));
         }
 
         /// GET collections

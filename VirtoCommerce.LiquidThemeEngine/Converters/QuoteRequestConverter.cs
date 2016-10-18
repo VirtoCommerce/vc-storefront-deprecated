@@ -2,105 +2,133 @@
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using System.Collections.Generic;
+using Microsoft.Practices.ServiceLocation;
+using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
     public static class QuoteRequestConverter
     {
-        public static QuoteRequest ToShopifyModel(this Storefront.Model.Quote.QuoteRequest storefrontModel)
+        public static QuoteRequest ToShopifyModel(this Storefront.Model.Quote.QuoteRequest quoteRequest)
         {
-            var shopifyModel = new QuoteRequest();
-
-            shopifyModel.InjectFrom<NullableAndEnumValueInjecter>(storefrontModel);
-
-            shopifyModel.Addresses = new List<Address>();
-            foreach (var address in storefrontModel.Addresses)
-            {
-                shopifyModel.Addresses.Add(address.ToShopifyModel());
-            }
-
-            shopifyModel.Attachments = new List<Attachment>();
-            foreach (var attachment in storefrontModel.Attachments)
-            {
-                shopifyModel.Attachments.Add(attachment.ToShopifyModel());
-            }
-
-            if (storefrontModel.Coupon != null)
-            {
-                shopifyModel.Coupon = storefrontModel.Coupon.Code;
-            }
-
-            shopifyModel.Currency = storefrontModel.Currency.ToShopifyModel();
-
-            shopifyModel.Items = new List<QuoteItem>();
-            foreach (var quoteItem in storefrontModel.Items)
-            {
-                shopifyModel.Items.Add(quoteItem.ToShopifyModel());
-            }
-
-            shopifyModel.Language = storefrontModel.Language.ToShopifyModel();
-            shopifyModel.ManualRelDiscountAmount = storefrontModel.ManualRelDiscountAmount.Amount;
-            shopifyModel.ManualShippingTotal = storefrontModel.ManualShippingTotal.Amount;
-            shopifyModel.ManualSubTotal = storefrontModel.ManualSubTotal.Amount;
-
-            if (storefrontModel.ShipmentMethod != null)
-            {
-                shopifyModel.ShipmentMethod = storefrontModel.ShipmentMethod.ToShopifyModel();
-            }
-
-            shopifyModel.TaxDetails = new List<TaxLine>();
-            foreach (var taxDetail in storefrontModel.TaxDetails)
-            {
-                shopifyModel.TaxDetails.Add(taxDetail.ToShopifyModel());
-            }
-
-            if (storefrontModel.Totals != null)
-            {
-                shopifyModel.Totals = storefrontModel.Totals.ToShopifyModel();
-            }
-
-            return shopifyModel;
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidQuoteRequest(quoteRequest);
         }
 
-        public static QuoteItem ToShopifyModel(this Storefront.Model.Quote.QuoteItem storefrontModel)
+        public static QuoteItem ToShopifyModel(this Storefront.Model.Quote.QuoteItem quoteItem)
         {
-            var shopifyModel = new QuoteItem();
-
-            shopifyModel.InjectFrom<NullableAndEnumValueInjecter>(storefrontModel);
-
-            shopifyModel.Currency = storefrontModel.Currency.ToShopifyModel();
-            shopifyModel.ListPrice = storefrontModel.ListPrice.Amount * 100;
-
-            shopifyModel.ProposalPrices = new List<TierPrice>();
-            foreach (var proposalPrice in storefrontModel.ProposalPrices)
-            {
-                shopifyModel.ProposalPrices.Add(proposalPrice.ToShopifyModel());
-            }
-
-            shopifyModel.SalePrice = storefrontModel.SalePrice.Amount * 100;
-
-            if (storefrontModel.SelectedTierPrice != null)
-            {
-                shopifyModel.SelectedTierPrice = storefrontModel.SelectedTierPrice.ToShopifyModel();
-            }
-
-            return shopifyModel;
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidQuoteItem(quoteItem);
         }
 
-        public static QuoteRequestTotals ToShopifyModel(this Storefront.Model.Quote.QuoteRequestTotals storefrontModel)
+        public static QuoteRequestTotals ToShopifyModel(this Storefront.Model.Quote.QuoteRequestTotals totals)
         {
-            var shopifyModel = new QuoteRequestTotals();
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidRequestTotal(totals);
+        }
+    }
 
-            shopifyModel.AdjustmentQuoteExlTax = storefrontModel.AdjustmentQuoteExlTax.Amount * 100;
-            shopifyModel.DiscountTotal = storefrontModel.DiscountTotal.Amount * 100;
-            shopifyModel.GrandTotalExlTax = storefrontModel.GrandTotalExlTax.Amount * 100;
-            shopifyModel.GrandTotalInclTax = storefrontModel.GrandTotalInclTax.Amount * 100;
-            shopifyModel.OriginalSubTotalExlTax = storefrontModel.OriginalSubTotalExlTax.Amount * 100;
-            shopifyModel.ShippingTotal = storefrontModel.ShippingTotal.Amount * 100;
-            shopifyModel.SubTotalExlTax = storefrontModel.SubTotalExlTax.Amount * 100;
-            shopifyModel.TaxTotal = storefrontModel.TaxTotal.Amount * 100;
+    public partial class ShopifyModelConverter
+    {
+        public virtual QuoteRequest ToLiquidQuoteRequest(Storefront.Model.Quote.QuoteRequest quoteRequest)
+        {
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateQuoteRequest();
 
-            return shopifyModel;
+            result.InjectFrom<NullableAndEnumValueInjecter>(quoteRequest);
+
+            result.Addresses = new List<Address>();
+            foreach (var address in quoteRequest.Addresses)
+            {
+                result.Addresses.Add(ToLiquidAddress(address));
+            }
+
+            result.Attachments = new List<Attachment>();
+            foreach (var attachment in quoteRequest.Attachments)
+            {
+                result.Attachments.Add(ToLiquidAttachment(attachment));
+            }
+
+            if (quoteRequest.Coupon != null)
+            {
+                result.Coupon = quoteRequest.Coupon.Code;
+            }
+
+            result.Currency = ToLiquidCurrency(quoteRequest.Currency);
+
+            result.Items = new List<QuoteItem>();
+            foreach (var quoteItem in quoteRequest.Items)
+            {
+                result.Items.Add(ToLiquidQuoteItem(quoteItem));
+            }
+
+            result.Language = ToLiquidLanguage(quoteRequest.Language);
+            result.ManualRelDiscountAmount = quoteRequest.ManualRelDiscountAmount.Amount;
+            result.ManualShippingTotal = quoteRequest.ManualShippingTotal.Amount;
+            result.ManualSubTotal = quoteRequest.ManualSubTotal.Amount;
+
+            if (quoteRequest.ShipmentMethod != null)
+            {
+                result.ShipmentMethod = ToLiquidShippingMethod(quoteRequest.ShipmentMethod);
+            }
+
+            result.TaxDetails = new List<TaxLine>();
+            foreach (var taxDetail in quoteRequest.TaxDetails)
+            {
+                result.TaxDetails.Add(ToLiquidTaxLine(taxDetail));
+            }
+
+            if (quoteRequest.Totals != null)
+            {
+                result.Totals = ToLiquidRequestTotal(quoteRequest.Totals);
+            }
+
+            return result;
+        }
+
+        public virtual QuoteItem ToLiquidQuoteItem(Storefront.Model.Quote.QuoteItem quoteItem)
+        {
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateQuoteItem();
+
+
+            result.InjectFrom<NullableAndEnumValueInjecter>(quoteItem);
+
+            result.Currency = ToLiquidCurrency(quoteItem.Currency);
+            result.ListPrice = quoteItem.ListPrice.Amount * 100;
+
+            result.ProposalPrices = new List<TierPrice>();
+            foreach (var proposalPrice in quoteItem.ProposalPrices)
+            {
+                result.ProposalPrices.Add(ToLiquidTierPrice(proposalPrice));
+            }
+
+            result.SalePrice = quoteItem.SalePrice.Amount * 100;
+
+            if (quoteItem.SelectedTierPrice != null)
+            {
+                result.SelectedTierPrice = ToLiquidTierPrice(quoteItem.SelectedTierPrice);
+            }
+
+            return result;
+        }
+
+        public virtual QuoteRequestTotals ToLiquidRequestTotal(Storefront.Model.Quote.QuoteRequestTotals requestTotal)
+        {
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateQuoteRequestTotals();
+
+
+            result.AdjustmentQuoteExlTax = requestTotal.AdjustmentQuoteExlTax.Amount * 100;
+            result.DiscountTotal = requestTotal.DiscountTotal.Amount * 100;
+            result.GrandTotalExlTax = requestTotal.GrandTotalExlTax.Amount * 100;
+            result.GrandTotalInclTax = requestTotal.GrandTotalInclTax.Amount * 100;
+            result.OriginalSubTotalExlTax = requestTotal.OriginalSubTotalExlTax.Amount * 100;
+            result.ShippingTotal = requestTotal.ShippingTotal.Amount * 100;
+            result.SubTotalExlTax = requestTotal.SubTotalExlTax.Amount * 100;
+            result.TaxTotal = requestTotal.TaxTotal.Amount * 100;
+
+            return result;
         }
     }
 }
