@@ -186,6 +186,7 @@
     <Compile Include="Objects\Description.cs" />
     <Compile Include="Objects\Descriptions.cs" />
     <Compile Include="Objects\Discount.cs" />
+    <Compile Include="Objects\Factories\ShopifyModelFactory.cs" />
     <Compile Include="Objects\Form.cs" />
     <Compile Include="Objects\FormErrors.cs" />
     <Compile Include="Objects\Fulfillment.cs" />

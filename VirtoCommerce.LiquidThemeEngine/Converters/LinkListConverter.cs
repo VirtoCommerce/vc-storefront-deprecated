@@ -1,5 +1,8 @@
 ﻿using System.Linq;
+using Microsoft.Practices.ServiceLocation;
+using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
+using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 
@@ -8,46 +11,64 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
     public static class LinkListConverter
     {
-        public static Linklist ToShopifyModel(this StorefrontModel.MenuLinkList storefrontModel, Storefront.Model.WorkContext workContext,  IStorefrontUrlBuilder urlBuilder)
+        public static Linklist ToShopifyModel(this StorefrontModel.MenuLinkList linkList, Storefront.Model.WorkContext workContext,  IStorefrontUrlBuilder urlBuilder)
         {
-            var shopifyModel = new Linklist();
-
-            shopifyModel.Handle = storefrontModel.Name;
-            shopifyModel.Id = storefrontModel.Id;
-            shopifyModel.Links = storefrontModel.MenuLinks.Select(ml => ml.ToShopfiyModel(workContext, urlBuilder)).ToList();
-            shopifyModel.Title = storefrontModel.Name;
-
-            return shopifyModel;
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidLinklist(linkList, workContext, urlBuilder);
         }
 
-        public static Link ToShopfiyModel(this StorefrontModel.MenuLink storefrontModel, Storefront.Model.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
+        public static Link ToShopfiyModel(this StorefrontModel.MenuLink link, Storefront.Model.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
         {
-            var shopifyModel = new Link();
+            var converter = ServiceLocator.Current.GetInstance<ShopifyModelConverter>();
+            return converter.ToLiquidLink(link, workContext, urlBuilder);
+        }
+    }
 
-            shopifyModel.Object = "";
-            shopifyModel.Title = storefrontModel.Title;
-            shopifyModel.Type = "";
-            shopifyModel.Url = urlBuilder.ToAppAbsolute(storefrontModel.Url);
+    public partial class ShopifyModelConverter
+    {
+        public virtual Linklist ToLiquidLinklist(StorefrontModel.MenuLinkList linkList, Storefront.Model.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
+        {
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateLinklist();
+            result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(linkList);
 
-            var productLink = storefrontModel as StorefrontModel.ProductMenuLink;
-            var categoryLink = storefrontModel as StorefrontModel.CategoryMenuLink;
+            result.Handle = linkList.Name;
+            result.Links = linkList.MenuLinks.Select(ml => ToLiquidLink(ml, workContext, urlBuilder)).ToList();
+            result.Title = linkList.Name;
+
+            return result;
+        }
+
+        public virtual Link ToLiquidLink(StorefrontModel.MenuLink link, Storefront.Model.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
+        {
+            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
+            var result = factory.CreateLink();
+            result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(link);
+
+            result.Object = "";
+            result.Title = link.Title;
+            result.Type = "";
+            result.Url = urlBuilder.ToAppAbsolute(link.Url);
+
+            var productLink = link as StorefrontModel.ProductMenuLink;
+            var categoryLink = link as StorefrontModel.CategoryMenuLink;
             if (productLink != null)
             {
-                shopifyModel.Type = "product";
+                result.Type = "product";
                 if (productLink.Product != null)
                 {
-                    shopifyModel.Object = productLink.Product.ToShopifyModel();
+                    result.Object = productLink.Product.ToShopifyModel();
                 }
             }
             if (categoryLink != null)
             {
-                shopifyModel.Type = "collection";
+                result.Type = "collection";
                 if (categoryLink.Category != null)
                 {
-                    shopifyModel.Object = categoryLink.Category.ToShopifyModel(workContext);
+                    result.Object = categoryLink.Category.ToShopifyModel(workContext);
                 }
             }
-            return shopifyModel;
+            return result;
         }
     }
 }
