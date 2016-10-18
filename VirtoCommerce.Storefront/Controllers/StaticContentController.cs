@@ -99,16 +99,19 @@ namespace VirtoCommerce.Storefront.Controllers
 
             WorkContext.CurrentStaticSearchCriteria = request;
 
-            var contentItems = WorkContext.Pages.Where(i =>
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                var contentItems = WorkContext.Pages.Where(i =>
                 !string.IsNullOrEmpty(i.Content) && i.Content.IndexOf(request.Keyword, StringComparison.OrdinalIgnoreCase) >= 0 ||
                 !string.IsNullOrEmpty(i.Title) && i.Title.IndexOf(request.Keyword, StringComparison.OrdinalIgnoreCase) >= 0);
 
-            if (!string.IsNullOrEmpty(request.SearchIn))
-            {
-                contentItems = contentItems.Where(i => !string.IsNullOrEmpty(i.StoragePath) && i.StoragePath.StartsWith(request.SearchIn, StringComparison.OrdinalIgnoreCase));
-            }
+                if (!string.IsNullOrEmpty(request.SearchIn))
+                {
+                    contentItems = contentItems.Where(i => !string.IsNullOrEmpty(i.StoragePath) && i.StoragePath.StartsWith(request.SearchIn, StringComparison.OrdinalIgnoreCase));
+                }
 
-            WorkContext.StaticContentSearchResult = new MutablePagedList<ContentItem>(contentItems.Where(x => x.Language.IsInvariant || x.Language == WorkContext.CurrentLanguage));
+                WorkContext.StaticContentSearchResult = new MutablePagedList<ContentItem>(contentItems.Where(x => x.Language.IsInvariant || x.Language == WorkContext.CurrentLanguage));
+            }
 
             return View("search", request.Layout, WorkContext);
         }
