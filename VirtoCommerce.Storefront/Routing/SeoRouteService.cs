@@ -240,7 +240,7 @@ namespace VirtoCommerce.Storefront.Routing
             {
                 if (x == null)
                 {
-                    return y != null;
+                    return y == null;
                 }
 
                 if (y == null)
