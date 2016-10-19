@@ -789,12 +789,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductSearch class.
         /// </summary>
-        public ProductSearch(string responseGroup = default(string), string currency = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string outline = default(string), System.Collections.Generic.IList<string> priceLists = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        public ProductSearch(string responseGroup = default(string), string currency = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string locale = default(string), string outline = default(string), System.Collections.Generic.IList<string> priceLists = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
         {
             ResponseGroup = responseGroup;
             Currency = currency;
             Terms = terms;
             SearchPhrase = searchPhrase;
+            Locale = locale;
             Outline = outline;
             PriceLists = priceLists;
             Sort = sort;
@@ -821,6 +822,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
         public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "locale")]
+        public string Locale { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2487,10 +2493,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductAssociation class.
         /// </summary>
-        public ProductAssociation(string type = default(string), int? priority = default(int?), string associatedObjectId = default(string), string associatedObjectName = default(string), string associatedObjectType = default(string), string associatedObjectImg = default(string), System.Collections.Generic.IList<string> tags = default(System.Collections.Generic.IList<string>))
+        public ProductAssociation(string type = default(string), int? priority = default(int?), int? quantity = default(int?), string associatedObjectId = default(string), string associatedObjectName = default(string), string associatedObjectType = default(string), string associatedObjectImg = default(string), System.Collections.Generic.IList<string> tags = default(System.Collections.Generic.IList<string>))
         {
             Type = type;
             Priority = priority;
+            Quantity = quantity;
             AssociatedObjectId = associatedObjectId;
             AssociatedObjectName = associatedObjectName;
             AssociatedObjectType = associatedObjectType;
@@ -2507,6 +2514,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
         public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "quantity")]
+        public int? Quantity { get; set; }
 
         /// <summary>
         /// </summary>
