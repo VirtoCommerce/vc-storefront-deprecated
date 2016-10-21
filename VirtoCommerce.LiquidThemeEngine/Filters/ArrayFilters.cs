@@ -28,7 +28,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 var elementType = enumerable.GetType().GetEnumerableType();
 
                 ParameterExpression paramX = Expression.Parameter(elementType, "x");
-                var left = Expression.Property(paramX, elementType.GetProperty(propName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance));
+                var propInfo = elementType.GetProperty(propName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                var left = Expression.Property(paramX, propInfo);
                 var objValue = ParseString(value);
                 var right = Expression.Constant(objValue);
                 BinaryExpression binaryOp;
@@ -46,6 +47,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 else if (op.EqualsInvariant("contains"))
                 {
                     var containsMethod = typeof(Enumerable).GetMethods().Where(x => x.Name == "Contains" && x.GetParameters().Count() == 2).First().MakeGenericMethod(new Type[] { objValue.GetType() });
+                    if (propInfo.PropertyType == typeof(string))
+                    {
+                        containsMethod = typeof(string).GetMethods().Where(x => x.Name == "Contains").First();                   
+                    }                  
                     var expr = Expression.Call(containsMethod, left, right);
                     //where(x=> x.Tags.Contains(y))
                     binaryOp = Expression.Equal(expr, Expression.Constant(true));
