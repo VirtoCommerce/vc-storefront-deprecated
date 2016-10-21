@@ -89,10 +89,11 @@ namespace VirtoCommerce.Storefront.Routing
             var allSeoRecords = GetAllSeoRecords(lastSlug);
             var bestSeoRecords = allSeoRecords.GetBestMatchingSeoInfos(workContext.CurrentStore, workContext.CurrentLanguage, lastSlug);
 
+            var seoEntityComparer = AnonymousComparer.Create((SeoEntity x) => string.Join(":", x.ObjectType, x.ObjectId, x.SeoPath));
             // Find distinct objects
             var entities = bestSeoRecords
                 .Select(s => new SeoEntity { ObjectType = s.ObjectType, ObjectId = s.ObjectId, SeoPath = s.SemanticUrl })
-                .Distinct(new SeoEntityComparer())
+                .Distinct(seoEntityComparer)
                 .ToList();
 
             // Don't load objects for short SEO links
@@ -232,44 +233,6 @@ namespace VirtoCommerce.Storefront.Routing
             return _catalogApiFactory().CatalogModuleProducts
                 .GetProductByIds(objectIds, (ItemResponseGroup.Outlines | ItemResponseGroup.Seo).ToString())
                 .ToDictionary(x => x.Id, x => x.Outlines.GetSeoPath(store, language, null));
-        }
-
-        private class SeoEntityComparer : IEqualityComparer<SeoEntity>
-        {
-            public bool Equals(SeoEntity x, SeoEntity y)
-            {
-                if (x == null)
-                {
-                    return y == null;
-                }
-
-                if (y == null)
-                {
-                    return false;
-                }
-
-                return x.ObjectType == y.ObjectType && x.ObjectId == y.ObjectId && x.SeoPath == y.SeoPath;
-            }
-
-            public int GetHashCode(SeoEntity obj)
-            {
-                // credit: http://stackoverflow.com/a/263416/677735
-                unchecked // Overflow is fine, just wrap
-                {
-                    var hash = base.GetHashCode();
-
-                    if (obj.ObjectType != null)
-                        hash = hash * 59 + obj.ObjectType.GetHashCode();
-
-                    if (obj.ObjectId != null)
-                        hash = hash * 59 + obj.ObjectId.GetHashCode();
-
-                    if (obj.SeoPath != null)
-                        hash = hash * 59 + obj.SeoPath.GetHashCode();
-
-                    return hash;
-                }
-            }
         }
     }
 }
