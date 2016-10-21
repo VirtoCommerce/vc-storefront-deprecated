@@ -46,12 +46,18 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                     binaryOp = Expression.LessThan(left, right);
                 else if (op.EqualsInvariant("contains"))
                 {
-                    var containsMethod = typeof(Enumerable).GetMethods().Where(x => x.Name == "Contains" && x.GetParameters().Count() == 2).First().MakeGenericMethod(new Type[] { objValue.GetType() });
+                    Expression expr = null;
                     if (propInfo.PropertyType == typeof(string))
                     {
-                        containsMethod = typeof(string).GetMethods().Where(x => x.Name == "Contains").First();                   
-                    }                  
-                    var expr = Expression.Call(containsMethod, left, right);
+                        var containsMethod = typeof(string).GetMethods().Where(x => x.Name == "Contains").First();
+                        expr = Expression.Call(left, containsMethod, right);
+                    } 
+                    else
+                    {
+                        var containsMethod = typeof(Enumerable).GetMethods().Where(x => x.Name == "Contains" && x.GetParameters().Count() == 2).First().MakeGenericMethod(new Type[] { objValue.GetType() });
+                        expr = Expression.Call(containsMethod, left, right);
+                    }                 
+                
                     //where(x=> x.Tags.Contains(y))
                     binaryOp = Expression.Equal(expr, Expression.Constant(true));
                 }
