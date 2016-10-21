@@ -26,7 +26,7 @@ namespace VirtoCommerce.Storefront.Test
         private readonly List<catalogDto.Product> _products;
         private readonly List<catalogDto.SeoInfo> _catalogSeoRecords;
         private readonly List<ContentPage> _pages;
-        private readonly coreDto.SeoInfo[] _coreSeoRecords;
+        private readonly List<coreDto.SeoInfo> _coreSeoRecords;
 
         // Catalog structure
         //
@@ -105,7 +105,10 @@ namespace VirtoCommerce.Storefront.Test
 
             AddPage("en-US", "ag1", "ig1");
 
-            _coreSeoRecords = _catalogSeoRecords.Select(s => s.JsonConvert<coreDto.SeoInfo>()).ToArray();
+            _coreSeoRecords = _catalogSeoRecords.Select(s => s.JsonConvert<coreDto.SeoInfo>()).ToList();
+
+            // Create duplicates
+            _coreSeoRecords.AddRange(_coreSeoRecords);
         }
 
         [Theory]

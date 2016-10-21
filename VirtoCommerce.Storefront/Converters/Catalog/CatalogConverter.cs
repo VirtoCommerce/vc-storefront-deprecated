@@ -172,8 +172,8 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual CatalogProperty ToProperty(catalogDto.Property propertyDto, Language currentLanguage)
         {
             var retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProperty();
-
             retVal.InjectFrom<NullableAndEnumValueInjecter>(propertyDto);
+
             //Set display names and set current display name for requested language
             if (propertyDto.DisplayNames != null)
             {
@@ -219,8 +219,9 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual searchDto.ProductSearch ToProductSearchDto(ProductSearchCriteria criteria, WorkContext workContext)
         {
-            var result = new searchDto.ProductSearch()
+            var result = new searchDto.ProductSearch
             {
+                Locale = criteria.Language != null ? criteria.Language.CultureName : workContext.CurrentLanguage.CultureName,
                 SearchPhrase = criteria.Keyword,
                 Outline = criteria.Outline,
                 Currency = criteria.Currency == null ? workContext.CurrentCurrency.Code : criteria.Currency.Code,
@@ -239,27 +240,27 @@ namespace VirtoCommerce.Storefront.Converters
                     result.Terms = new List<string>();
                 }
 
-                result.Terms.Add(string.Format("vendor:{0}", criteria.VendorId));
+                result.Terms.Add(string.Concat("vendor:", criteria.VendorId));
             }
 
             if (criteria.SortBy != null)
-                result.Sort = new string[] { criteria.SortBy };
+                result.Sort = new[] { criteria.SortBy };
 
             return result;
         }
 
         public virtual searchDto.CategorySearch ToCategorySearchDto(CategorySearchCriteria criteria, WorkContext workContext)
         {
-            var result = new searchDto.CategorySearch()
+            var result = new searchDto.CategorySearch
             {
                 Skip = criteria.Start,
-                Take = criteria.PageSize,                
+                Take = criteria.PageSize,
                 Outline = criteria.Outline,
                 ResponseGroup = ((int)criteria.ResponseGroup).ToString()
             };
 
             if (criteria.SortBy != null)
-                result.Sort = new string[] { criteria.SortBy };
+                result.Sort = new[] { criteria.SortBy };
 
             return result;
         }
@@ -267,6 +268,7 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Association ToAssociation(catalogDto.ProductAssociation associationDto)
         {
             Association retVal = null;
+
             if (associationDto.AssociatedObjectType.EqualsInvariant("product"))
             {
                 retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProductAssociation(associationDto.AssociatedObjectId);
@@ -486,6 +488,5 @@ namespace VirtoCommerce.Storefront.Converters
             }
             return retVal.ToArray();
         }
-
     }
 }
