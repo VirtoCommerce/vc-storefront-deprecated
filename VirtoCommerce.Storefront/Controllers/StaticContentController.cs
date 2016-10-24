@@ -25,7 +25,7 @@ namespace VirtoCommerce.Storefront.Controllers
             WorkContext.CurrentPageSeo = new SeoInfo
             {
                 Language = page.Language,
-                MetaDescription = page.Title,
+                MetaDescription = string.IsNullOrEmpty(page.Description) ? page.Title : page.Description,
                 Title = page.Title,
                 Slug = page.Url
             };
@@ -163,6 +163,7 @@ namespace VirtoCommerce.Storefront.Controllers
             WorkContext.CurrentPageSeo = new SeoInfo
             {
                 Language = contentPage.Language,
+                MetaDescription = string.IsNullOrEmpty(contentPage.Description) ? contentPage.Title : contentPage.Description,
                 Title = contentPage.Title,
                 Slug = contentPage.Permalink
             };

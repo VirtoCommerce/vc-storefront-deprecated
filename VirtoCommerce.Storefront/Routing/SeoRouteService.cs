@@ -56,7 +56,7 @@ namespace VirtoCommerce.Storefront.Routing
                     response.RouteData["vendorId"] = entity.ObjectId;
                     break;
                 case "Page":
-                    response.RouteData["controller"] = "Page";
+                    response.RouteData["controller"] = "StaticContent";
                     response.RouteData["action"] = "GetContentPage";
                     response.RouteData["page"] = entity.ObjectInstance;
                     break;
