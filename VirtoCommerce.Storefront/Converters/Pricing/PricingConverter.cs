@@ -69,7 +69,9 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(priceDto.Currency)) ?? new Currency(language, priceDto.Currency);
             var result = ServiceLocator.Current.GetInstance<PricingFactory>().CreateProductPrice(currency);
-            result.InjectFrom<NullableAndEnumValueInjecter>(priceDto);
+            result.ProductId = priceDto.ProductId;
+            result.PricelistId = priceDto.PricelistId;
+           
             result.Currency = currency;
             result.ListPrice = new Money(priceDto.List ?? 0d, currency);
             result.SalePrice = priceDto.Sale == null ? result.ListPrice : new Money(priceDto.Sale ?? 0d, currency);

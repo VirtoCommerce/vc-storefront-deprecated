@@ -123,8 +123,9 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Aggregation ToAggregation(searchDto.Aggregation aggregationDto, string currentLanguage)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAggregation();
-            result.InjectFrom<NullableAndEnumValueInjecter>(aggregationDto);
-
+            result.AggregationType = aggregationDto.AggregationType;
+            result.Field = aggregationDto.Field;
+           
             if (aggregationDto.Items != null)
             {
                 result.Items = aggregationDto.Items
@@ -151,7 +152,9 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual AggregationItem ToAggregationItem(searchDto.AggregationItem itemDto, string currentLanguage)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAggregationItem();
-            result.InjectFrom<NullableAndEnumValueInjecter>(itemDto);
+            result.Value = itemDto.Value;
+            result.IsApplied = itemDto.IsApplied ?? false;
+            result.Count = itemDto.Count ?? 0;
 
             if (itemDto.Labels != null)
             {
@@ -172,7 +175,11 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual CatalogProperty ToProperty(catalogDto.Property propertyDto, Language currentLanguage)
         {
             var retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProperty();
-            retVal.InjectFrom<NullableAndEnumValueInjecter>(propertyDto);
+
+            retVal.Id = propertyDto.Id;
+            retVal.Name = propertyDto.Name;
+            retVal.Type = propertyDto.Type;
+            retVal.ValueType = propertyDto.ValueType;
 
             //Set display names and set current display name for requested language
             if (propertyDto.DisplayNames != null)
@@ -279,9 +286,9 @@ namespace VirtoCommerce.Storefront.Converters
             }
             if (retVal != null)
             {
-                retVal.InjectFrom<NullableAndEnumValueInjecter>(associationDto);
-                retVal.Image = new Image { Url = associationDto.AssociatedObjectImg };
-            }
+                retVal.Type = associationDto.Type;
+                retVal.Priority = associationDto.Priority ?? 0;
+                retVal.Image = new Image { Url = associationDto.AssociatedObjectImg };            }
 
             return retVal;
         }
@@ -294,7 +301,12 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Category ToCategory(catalogDto.Category categoryDto, Language currentLanguage, Store store)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateCategory();
-            result.InjectFrom<NullableAndEnumValueInjecter>(categoryDto);
+            result.Id = categoryDto.Id;
+            result.CatalogId = categoryDto.CatalogId;
+            result.Code = categoryDto.Code;
+            result.Name = categoryDto.Name;
+            result.ParentId = categoryDto.ParentId;
+            result.TaxType = categoryDto.TaxType;            
 
             if (!categoryDto.SeoInfos.IsNullOrEmpty())
             {
@@ -322,7 +334,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (categoryDto.Images != null)
             {
-                result.Images = categoryDto.Images.Select(i => i.ToImage()).ToArray();
+                result.Images = categoryDto.Images.Select(i => ToImage(i)).ToArray();
                 result.PrimaryImage = result.Images.FirstOrDefault();
             }
 
@@ -330,7 +342,7 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 result.Properties = categoryDto.Properties
                     .Where(x => string.Equals(x.Type, "Category", StringComparison.OrdinalIgnoreCase))
-                    .Select(p => p.ToProperty(currentLanguage))
+                    .Select(p => ToProperty(p, currentLanguage))
                     .ToList();
             }
 
@@ -340,14 +352,20 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Image ToImage(catalogDto.Image imageDto)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateImage();
-            result.InjectFrom<NullableAndEnumValueInjecter>(imageDto);
+            result.Url = imageDto.Url;
+            
             return result;
         }
 
         public virtual Asset ToAsset(catalogDto.Asset assetDto)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAsset();
-            result.InjectFrom<NullableAndEnumValueInjecter>(assetDto);
+            result.Url = assetDto.Url;
+            result.TypeId = assetDto.TypeId;
+            result.Size = assetDto.Size;
+            result.Name = assetDto.Name;
+            result.MimeType = assetDto.MimeType;
+            result.Group = assetDto.Group;
             return result;
         }
 
@@ -373,12 +391,12 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.Properties = productDto.Properties
                     .Where(x => string.Equals(x.Type, "Product", StringComparison.InvariantCultureIgnoreCase))
-                    .Select(p => p.ToProperty(currentLanguage))
+                    .Select(p => ToProperty(p, currentLanguage))
                     .ToList();
 
                 retVal.VariationProperties = productDto.Properties
                     .Where(x => string.Equals(x.Type, "Variation", StringComparison.InvariantCultureIgnoreCase))
-                    .Select(p => p.ToProperty(currentLanguage))
+                    .Select(p => ToProperty(p, currentLanguage))
                     .ToList();
             }
 
@@ -444,8 +462,10 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual PromotionProductEntry ToPromotionItem(Product product)
         {
             var retVal = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionProductEntry();
-            retVal.InjectFrom(product);
-
+            retVal.CatalogId = product.CatalogId;
+            retVal.CategoryId = product.CategoryId;
+            retVal.Outline = product.Outline;
+           
             if (product.Price != null)
             {
                 retVal.Discount = product.Price.DiscountAmount;
