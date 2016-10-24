@@ -186,15 +186,8 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureCartExists();
 
-            Shipment existShipment = null;
-            if (!shipment.IsTransient())
-            {
-                existShipment = Cart.Shipments.FirstOrDefault(s => s.Id == shipment.Id);
-            }
-            if (existShipment != null)
-            {
-                Cart.Shipments.Remove(existShipment);
-            }
+            await RemoveExistingShipmentAsync(shipment);
+
             shipment.Currency = Cart.Currency;
             Cart.Shipments.Add(shipment);
 
@@ -517,6 +510,20 @@ namespace VirtoCommerce.Storefront.Builders
                 if (existingPayment != null)
                 {
                     Cart.Payments.Remove(existingPayment);
+                }
+            }
+
+            return Task.FromResult((object)null);
+        }
+
+        protected virtual Task RemoveExistingShipmentAsync(Shipment shipment)
+        {
+            if (shipment != null)
+            {
+                var existShipment = !shipment.IsTransient() ? Cart.Shipments.FirstOrDefault(s => s.Id == shipment.Id) : null;
+                if (existShipment != null)
+                {
+                    Cart.Shipments.Remove(existShipment);
                 }
             }
 
