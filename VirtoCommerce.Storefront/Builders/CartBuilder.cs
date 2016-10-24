@@ -106,7 +106,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task AddItemAsync(Product product, int quantity)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
 
             var lineItem = product.ToLineItem(Cart.Language, quantity);
             await AddLineItemAsync(lineItem);
@@ -114,7 +114,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task ChangeItemQuantityAsync(string id, int quantity)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
 
             var lineItem = Cart.Items.FirstOrDefault(i => i.Id == id);
             if (lineItem != null)
@@ -125,7 +125,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task ChangeItemQuantityAsync(int lineItemIndex, int quantity)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
 
             var lineItem = Cart.Items.ElementAt(lineItemIndex);
             if (lineItem != null)
@@ -136,7 +136,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task ChangeItemsQuantitiesAsync(int[] quantities)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
 
             for (var i = 0; i < quantities.Length; i++)
             {
@@ -150,7 +150,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual Task RemoveItemAsync(string id)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
 
             var lineItem = Cart.Items.FirstOrDefault(x => x.Id == id);
             if (lineItem != null)
@@ -163,28 +163,28 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual Task AddCouponAsync(string couponCode)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
             Cart.Coupon = new Coupon { Code = couponCode };
             return Task.FromResult((object)null);
         }
 
         public virtual Task RemoveCouponAsync()
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
             Cart.Coupon = null;
             return Task.FromResult((object)null);
         }
 
         public virtual Task ClearAsync()
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
             Cart.Items.Clear();
             return Task.FromResult((object)null);
         }
 
         public virtual async Task AddOrUpdateShipmentAsync(Shipment shipment)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
 
             Shipment existShipment = null;
             if (!shipment.IsTransient())
@@ -214,7 +214,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual Task RemoveShipmentAsync(string shipmentId)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
 
             var shipment = Cart.Shipments.FirstOrDefault(s => s.Id == shipmentId);
             if (shipment != null)
@@ -227,18 +227,10 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task AddOrUpdatePaymentAsync(Payment payment)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
 
-            Payment existPayment = null;
-            if (!payment.IsTransient())
-            {
-                existPayment = Cart.Payments.FirstOrDefault(s => s.Id == payment.Id);
-            }
+            await RemoveExistingPaymentAsync(payment);
 
-            if (existPayment != null)
-            {
-                Cart.Payments.Remove(existPayment);
-            }
             Cart.Payments.Add(payment);
 
             if (!string.IsNullOrEmpty(payment.PaymentGatewayCode))
@@ -254,7 +246,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task MergeWithCartAsync(ShoppingCart cart)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
 
             foreach (var lineItem in cart.Items)
             {
@@ -271,14 +263,14 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task RemoveCartAsync()
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
             InvalidateCache();
             await _cartApi.CartModule.DeleteCartsAsync(new List<string> { Cart.Id });
         }
 
         public virtual async Task FillFromQuoteRequestAsync(QuoteRequest quoteRequest)
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
 
             var productIds = quoteRequest.Items.Select(i => i.ProductId);
             var products = await _catalogSearchService.GetProductsAsync(productIds.ToArray(), ItemResponseGroup.ItemLarge);
@@ -364,21 +356,21 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task<ICollection<PaymentMethod>> GetAvailablePaymentMethodsAsync()
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
             var payments = await _cartApi.CartModule.GetAvailablePaymentMethodsAsync(Cart.Id);
             return payments.Select(x => x.ToPaymentMethod()).ToList();
         }
 
         public async Task ValidateAsync()
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
             await Task.WhenAll(ValidateCartItemsAsync(), ValidateCartShipmentsAsync());
             Cart.IsValid = Cart.Items.All(x => x.IsValid) && Cart.Shipments.All(x => x.IsValid);
         }
 
         public virtual async Task EvaluatePromotionsAsync()
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
             var evalContext = Cart.ToPromotionEvaluationContext();
 
             await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
@@ -391,7 +383,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task SaveAsync()
         {
-            EnsureThatCartExist();
+            EnsureCartExists();
             InvalidateCache();
 
             await EvaluatePromotionsAsync();
@@ -517,6 +509,20 @@ namespace VirtoCommerce.Storefront.Builders
             }
         }
 
+        protected virtual Task RemoveExistingPaymentAsync(Payment payment)
+        {
+            if (payment != null)
+            {
+                var existingPayment = !payment.IsTransient() ? Cart.Payments.FirstOrDefault(s => s.Id == payment.Id) : null;
+                if (existingPayment != null)
+                {
+                    Cart.Payments.Remove(existingPayment);
+                }
+            }
+
+            return Task.FromResult((object)null);
+        }
+
         protected virtual async Task ChangeItemQuantityAsync(LineItem lineItem, int quantity)
         {
             if (lineItem != null && !lineItem.IsReadOnly)
@@ -556,7 +562,7 @@ namespace VirtoCommerce.Storefront.Builders
             }
         }
 
-        private void EnsureThatCartExist()
+        protected virtual void EnsureCartExists()
         {
             if (Cart == null)
             {
