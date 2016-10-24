@@ -9,8 +9,9 @@ namespace VirtoCommerce.Storefront.Converters
         public static SeoInfo ToSeoInfo(this coreDto.SeoInfo seoDto)
         {
             var retVal = new SeoInfo();
-            retVal.InjectFrom(seoDto);
-
+            retVal.MetaDescription = seoDto.MetaDescription;
+            retVal.MetaKeywords = seoDto.MetaKeywords;
+            
             retVal.Slug = seoDto.SemanticUrl;
             retVal.Title = seoDto.PageTitle;
             retVal.Language = string.IsNullOrEmpty(seoDto.LanguageCode) ? Language.InvariantLanguage : new Language(seoDto.LanguageCode);

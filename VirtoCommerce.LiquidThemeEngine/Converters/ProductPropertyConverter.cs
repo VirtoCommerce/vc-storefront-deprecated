@@ -22,7 +22,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
         {
             var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
             var result = factory.CreateProductProperty();
-            result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(property);
+            result.ValueType = property.ValueType;
+            result.Value = property.Value;
+            result.Name = property.Name;
+            
             return result;
         }
     }
