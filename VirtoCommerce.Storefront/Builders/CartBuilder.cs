@@ -33,7 +33,6 @@ namespace VirtoCommerce.Storefront.Builders
         private readonly ILocalCacheManager _cacheManager;
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ITaxEvaluator _taxEvaluator;
-        private ShoppingCart _cart;
         private const string _cartCacheRegion = "CartRegion";
 
         public CartBuilder(
@@ -54,17 +53,20 @@ namespace VirtoCommerce.Storefront.Builders
 
         #region ICartBuilder Members
 
-        public virtual ICartBuilder TakeCart(ShoppingCart cart)
+        public virtual ShoppingCart Cart { get; private set; }
+
+        public virtual Task TakeCartAsync(ShoppingCart cart)
         {
-            _cart = cart;
-            return this;
+            Cart = cart;
+            return Task.FromResult((object)null);
         }
 
         public virtual async Task LoadOrCreateNewTransientCartAsync(string cartName, Store store, CustomerInfo customer, Language language, Currency currency)
         {
             var cacheKey = GetCartCacheKey(store.Id, cartName, customer.Id, currency.Code);
             bool needReevaluate = false;
-            _cart = await _cacheManager.GetAsync(cacheKey, _cartCacheRegion, async () =>
+
+            Cart = await _cacheManager.GetAsync(cacheKey, _cartCacheRegion, async () =>
             {
                 needReevaluate = true;
                 var cartSearchCriteria = new AutoRestClients.CartModuleApi.Models.ShoppingCartSearchCriteria
@@ -106,7 +108,7 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureThatCartExist();
 
-            var lineItem = product.ToLineItem(_cart.Language, quantity);
+            var lineItem = product.ToLineItem(Cart.Language, quantity);
             await AddLineItemAsync(lineItem);
         }
 
@@ -114,10 +116,10 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureThatCartExist();
 
-            var lineItem = _cart.Items.FirstOrDefault(i => i.Id == id);
+            var lineItem = Cart.Items.FirstOrDefault(i => i.Id == id);
             if (lineItem != null)
             {
-                await InnerChangeItemQuantityAsync(lineItem, quantity);
+                await ChangeItemQuantityAsync(lineItem, quantity);
             }
         }
 
@@ -125,10 +127,10 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureThatCartExist();
 
-            var lineItem = _cart.Items.ElementAt(lineItemIndex);
+            var lineItem = Cart.Items.ElementAt(lineItemIndex);
             if (lineItem != null)
             {
-                await InnerChangeItemQuantityAsync(lineItem, quantity);
+                await ChangeItemQuantityAsync(lineItem, quantity);
             }
         }
 
@@ -138,47 +140,46 @@ namespace VirtoCommerce.Storefront.Builders
 
             for (var i = 0; i < quantities.Length; i++)
             {
-                var lineItem = _cart.Items.ElementAt(i);
+                var lineItem = Cart.Items.ElementAt(i);
                 if (lineItem != null && quantities[i] > 0)
                 {
-                    await InnerChangeItemQuantityAsync(lineItem, quantities[i]);
+                    await ChangeItemQuantityAsync(lineItem, quantities[i]);
                 }
             }
         }
 
-        public virtual ICartBuilder RemoveItem(string id)
+        public virtual Task RemoveItemAsync(string id)
         {
             EnsureThatCartExist();
 
-            var lineItem = _cart.Items.FirstOrDefault(x => x.Id == id);
+            var lineItem = Cart.Items.FirstOrDefault(x => x.Id == id);
             if (lineItem != null)
             {
-                _cart.Items.Remove(lineItem);
+                Cart.Items.Remove(lineItem);
             }
-            return this;
+
+            return Task.FromResult((object)null);
         }
 
-        public virtual ICartBuilder AddCoupon(string couponCode)
+        public virtual Task AddCouponAsync(string couponCode)
         {
             EnsureThatCartExist();
-            _cart.Coupon = new Coupon { Code = couponCode };
-            return this;
+            Cart.Coupon = new Coupon { Code = couponCode };
+            return Task.FromResult((object)null);
         }
 
-
-        public virtual ICartBuilder RemoveCoupon()
+        public virtual Task RemoveCouponAsync()
         {
             EnsureThatCartExist();
-            _cart.Coupon = null;
-            return this;
+            Cart.Coupon = null;
+            return Task.FromResult((object)null);
         }
 
-
-        public virtual ICartBuilder Clear()
+        public virtual Task ClearAsync()
         {
             EnsureThatCartExist();
-            _cart.Items.Clear();
-            return this;
+            Cart.Items.Clear();
+            return Task.FromResult((object)null);
         }
 
         public virtual async Task AddOrUpdateShipmentAsync(Shipment shipment)
@@ -188,14 +189,14 @@ namespace VirtoCommerce.Storefront.Builders
             Shipment existShipment = null;
             if (!shipment.IsTransient())
             {
-                existShipment = _cart.Shipments.FirstOrDefault(s => s.Id == shipment.Id);
+                existShipment = Cart.Shipments.FirstOrDefault(s => s.Id == shipment.Id);
             }
             if (existShipment != null)
             {
-                _cart.Shipments.Remove(existShipment);
+                Cart.Shipments.Remove(existShipment);
             }
-            shipment.Currency = _cart.Currency;
-            _cart.Shipments.Add(shipment);
+            shipment.Currency = Cart.Currency;
+            Cart.Shipments.Add(shipment);
 
             if (!string.IsNullOrEmpty(shipment.ShipmentMethodCode))
             {
@@ -211,16 +212,17 @@ namespace VirtoCommerce.Storefront.Builders
             }
         }
 
-        public virtual ICartBuilder RemoveShipment(string shipmentId)
+        public virtual Task RemoveShipmentAsync(string shipmentId)
         {
             EnsureThatCartExist();
 
-            var shipment = _cart.Shipments.FirstOrDefault(s => s.Id == shipmentId);
+            var shipment = Cart.Shipments.FirstOrDefault(s => s.Id == shipmentId);
             if (shipment != null)
             {
-                _cart.Shipments.Remove(shipment);
+                Cart.Shipments.Remove(shipment);
             }
-            return this;
+
+            return Task.FromResult((object)null);
         }
 
         public virtual async Task AddOrUpdatePaymentAsync(Payment payment)
@@ -230,14 +232,14 @@ namespace VirtoCommerce.Storefront.Builders
             Payment existPayment = null;
             if (!payment.IsTransient())
             {
-                existPayment = _cart.Payments.FirstOrDefault(s => s.Id == payment.Id);
+                existPayment = Cart.Payments.FirstOrDefault(s => s.Id == payment.Id);
             }
 
             if (existPayment != null)
             {
-                _cart.Payments.Remove(existPayment);
+                Cart.Payments.Remove(existPayment);
             }
-            _cart.Payments.Add(payment);
+            Cart.Payments.Add(payment);
 
             if (!string.IsNullOrEmpty(payment.PaymentGatewayCode))
             {
@@ -258,20 +260,20 @@ namespace VirtoCommerce.Storefront.Builders
             {
                 await AddLineItemAsync(lineItem);
             }
-            _cart.Coupon = cart.Coupon;
+            Cart.Coupon = cart.Coupon;
 
-            _cart.Shipments.Clear();
-            _cart.Shipments = cart.Shipments;
+            Cart.Shipments.Clear();
+            Cart.Shipments = cart.Shipments;
 
-            _cart.Payments.Clear();
-            _cart.Payments = cart.Payments;
+            Cart.Payments.Clear();
+            Cart.Payments = cart.Payments;
         }
 
         public virtual async Task RemoveCartAsync()
         {
             EnsureThatCartExist();
             InvalidateCache();
-            await _cartApi.CartModule.DeleteCartsAsync(new List<string> { _cart.Id });
+            await _cartApi.CartModule.DeleteCartsAsync(new List<string> { Cart.Id });
         }
 
         public virtual async Task FillFromQuoteRequestAsync(QuoteRequest quoteRequest)
@@ -281,13 +283,13 @@ namespace VirtoCommerce.Storefront.Builders
             var productIds = quoteRequest.Items.Select(i => i.ProductId);
             var products = await _catalogSearchService.GetProductsAsync(productIds.ToArray(), ItemResponseGroup.ItemLarge);
 
-            _cart.Items.Clear();
+            Cart.Items.Clear();
             foreach (var product in products)
             {
                 var quoteItem = quoteRequest.Items.FirstOrDefault(i => i.ProductId == product.Id);
                 if (quoteItem != null)
                 {
-                    var lineItem = product.ToLineItem(_cart.Language, (int)quoteItem.SelectedTierPrice.Quantity);
+                    var lineItem = product.ToLineItem(Cart.Language, (int)quoteItem.SelectedTierPrice.Quantity);
                     lineItem.ListPrice = quoteItem.ListPrice;
                     lineItem.SalePrice = quoteItem.SelectedTierPrice.Price;
                     if (lineItem.ListPrice < lineItem.SalePrice)
@@ -296,14 +298,14 @@ namespace VirtoCommerce.Storefront.Builders
                     }
                     lineItem.IsReadOnly = true;
                     lineItem.Id = null;
-                    _cart.Items.Add(lineItem);
+                    Cart.Items.Add(lineItem);
                 }
             }
 
             if (quoteRequest.RequestShippingQuote)
             {
-                _cart.Shipments.Clear();
-                var shipment = new Shipment(_cart.Currency);
+                Cart.Shipments.Clear();
+                var shipment = new Shipment(Cart.Currency);
 
                 if (quoteRequest.ShippingAddress != null)
                 {
@@ -318,24 +320,25 @@ namespace VirtoCommerce.Storefront.Builders
                         var availableShippingMethod = availableShippingMethods.FirstOrDefault(sm => sm.ShipmentMethodCode == quoteRequest.ShipmentMethod.ShipmentMethodCode);
                         if (availableShippingMethod != null)
                         {
-                            shipment = quoteRequest.ShipmentMethod.ToCartShipment(_cart.Currency);
+                            shipment = quoteRequest.ShipmentMethod.ToCartShipment(Cart.Currency);
                         }
                     }
                 }
-                _cart.Shipments.Add(shipment);
+                Cart.Shipments.Add(shipment);
             }
 
-            _cart.Payments.Clear();
-            var payment = new Payment(_cart.Currency);
+            var payment = new Payment(Cart.Currency)
+            {
+                Amount = quoteRequest.Totals.GrandTotalInclTax
+            };
 
             if (quoteRequest.BillingAddress != null)
             {
                 payment.BillingAddress = quoteRequest.BillingAddress;
             }
 
-            payment.Amount = quoteRequest.Totals.GrandTotalInclTax;
-
-            _cart.Payments.Add(payment);
+            Cart.Payments.Clear();
+            Cart.Payments.Add(payment);
         }
 
         public virtual async Task<ICollection<ShippingMethod>> GetAvailableShippingMethodsAsync()
@@ -343,15 +346,15 @@ namespace VirtoCommerce.Storefront.Builders
             var workContext = _workContextFactory();
 
             //Request available shipping rates 
-            var shippingRates = await _cartApi.CartModule.GetAvailableShippingRatesAsync(_cart.Id);
-            var retVal = shippingRates.Select(x => x.ToShippingMethod(_cart.Currency, workContext.AllCurrencies)).ToList();
+            var shippingRates = await _cartApi.CartModule.GetAvailableShippingRatesAsync(Cart.Id);
+            var retVal = shippingRates.Select(x => x.ToShippingMethod(Cart.Currency, workContext.AllCurrencies)).ToList();
 
             //Evaluate promotions cart and apply rewards for available shipping methods
-            var promoEvalContext = _cart.ToPromotionEvaluationContext();
+            var promoEvalContext = Cart.ToPromotionEvaluationContext();
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
 
             //Evaluate taxes for available shipping rates
-            var taxEvalContext = _cart.ToTaxEvalContext();
+            var taxEvalContext = Cart.ToTaxEvalContext();
             taxEvalContext.Lines.Clear();
             taxEvalContext.Lines.AddRange(retVal.SelectMany(x => x.ToTaxLines()));
             await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
@@ -362,7 +365,7 @@ namespace VirtoCommerce.Storefront.Builders
         public virtual async Task<ICollection<PaymentMethod>> GetAvailablePaymentMethodsAsync()
         {
             EnsureThatCartExist();
-            var payments = await _cartApi.CartModule.GetAvailablePaymentMethodsAsync(_cart.Id);
+            var payments = await _cartApi.CartModule.GetAvailablePaymentMethodsAsync(Cart.Id);
             return payments.Select(x => x.ToPaymentMethod()).ToList();
         }
 
@@ -370,28 +373,20 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureThatCartExist();
             await Task.WhenAll(ValidateCartItemsAsync(), ValidateCartShipmentsAsync());
-            _cart.IsValid = _cart.Items.All(x => x.IsValid) && _cart.Shipments.All(x => x.IsValid);
+            Cart.IsValid = Cart.Items.All(x => x.IsValid) && Cart.Shipments.All(x => x.IsValid);
         }
 
         public virtual async Task EvaluatePromotionsAsync()
         {
             EnsureThatCartExist();
-            var evalContext = _cart.ToPromotionEvaluationContext();
+            var evalContext = Cart.ToPromotionEvaluationContext();
 
-            await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { _cart });
+            await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
         }
 
         public async Task EvaluateTaxesAsync()
         {
-            await _taxEvaluator.EvaluateTaxesAsync(_cart.ToTaxEvalContext(), new[] { _cart });
-        }
-
-        public ShoppingCart Cart
-        {
-            get
-            {
-                return _cart;
-            }
+            await _taxEvaluator.EvaluateTaxesAsync(Cart.ToTaxEvalContext(), new[] { Cart });
         }
 
         public virtual async Task SaveAsync()
@@ -402,7 +397,7 @@ namespace VirtoCommerce.Storefront.Builders
             await EvaluatePromotionsAsync();
             await EvaluateTaxesAsync();
 
-            var cart = _cart.ToShoppingCartDto();
+            var cart = Cart.ToShoppingCartDto();
             if (string.IsNullOrEmpty(cart.Id))
             {
                 cart = await _cartApi.CartModule.CreateAsync(cart);
@@ -412,7 +407,7 @@ namespace VirtoCommerce.Storefront.Builders
                 await _cartApi.CartModule.UpdateAsync(cart);
             }
             cart = await _cartApi.CartModule.GetCartByIdAsync(cart.Id);
-            _cart = cart.ToShoppingCart(_cart.Currency, _cart.Language, _cart.Customer);
+            Cart = cart.ToShoppingCart(Cart.Currency, Cart.Language, Cart.Customer);
         }
 
         #endregion
@@ -420,10 +415,10 @@ namespace VirtoCommerce.Storefront.Builders
         #region IObserver<UserLoginEvent> Members
 
         /// <summary>
-        /// Merger anonymous cart by loging event
+        /// Merges anonymous cart and logged in customer cart
         /// </summary>
         /// <param name="userLoginEvent"></param>
-        public async Task OnNextAsync(UserLoginEvent userLoginEvent)
+        public virtual async Task OnNextAsync(UserLoginEvent userLoginEvent)
         {
             if (userLoginEvent == null)
                 return;
@@ -449,8 +444,8 @@ namespace VirtoCommerce.Storefront.Builders
         protected virtual void InvalidateCache()
         {
             //Invalidate cart in cache
-            _cacheManager.Remove(GetCartCacheKey(_cart.StoreId, _cart.Name, _cart.CustomerId, _cart.Currency.Code), _cartCacheRegion);
-            _cacheManager.Remove(GetCartCacheKey(_cart.Id), _cartCacheRegion);
+            _cacheManager.Remove(GetCartCacheKey(Cart.StoreId, Cart.Name, Cart.CustomerId, Cart.Currency.Code), _cartCacheRegion);
+            _cacheManager.Remove(GetCartCacheKey(Cart.Id), _cartCacheRegion);
         }
 
         protected virtual string GetCartCacheKey(string cartId)
@@ -464,11 +459,11 @@ namespace VirtoCommerce.Storefront.Builders
 
         protected virtual async Task ValidateCartItemsAsync()
         {
-            var productIds = _cart.Items.Select(i => i.ProductId).ToArray();
-            var cacheKey = "CartBuilder.ValidateCartItemsAsync:" + _cart.Id + ":" + string.Join(":", productIds);
+            var productIds = Cart.Items.Select(i => i.ProductId).ToArray();
+            var cacheKey = "CartBuilder.ValidateCartItemsAsync:" + Cart.Id + ":" + string.Join(":", productIds);
             var products = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => await _catalogSearchService.GetProductsAsync(productIds, ItemResponseGroup.ItemWithPrices | ItemResponseGroup.ItemWithDiscounts | ItemResponseGroup.Inventory));
 
-            foreach (var lineItem in _cart.Items.ToList())
+            foreach (var lineItem in Cart.Items.ToList())
             {
                 lineItem.ValidationErrors.Clear();
 
@@ -505,7 +500,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         protected virtual async Task ValidateCartShipmentsAsync()
         {
-            foreach (var shipment in _cart.Shipments.ToArray())
+            foreach (var shipment in Cart.Shipments.ToArray())
             {
                 shipment.ValidationErrors.Clear();
 
@@ -522,7 +517,7 @@ namespace VirtoCommerce.Storefront.Builders
             }
         }
 
-        private async Task InnerChangeItemQuantityAsync(LineItem lineItem, int quantity)
+        protected virtual async Task ChangeItemQuantityAsync(LineItem lineItem, int quantity)
         {
             if (lineItem != null && !lineItem.IsReadOnly)
             {
@@ -542,29 +537,28 @@ namespace VirtoCommerce.Storefront.Builders
                 }
                 else
                 {
-                    _cart.Items.Remove(lineItem);
+                    Cart.Items.Remove(lineItem);
                 }
             }
         }
 
-        private async Task AddLineItemAsync(LineItem lineItem)
+        protected virtual async Task AddLineItemAsync(LineItem lineItem)
         {
-            var existingLineItem = _cart.Items.FirstOrDefault(li => li.ProductId == lineItem.ProductId);
+            var existingLineItem = Cart.Items.FirstOrDefault(li => li.ProductId == lineItem.ProductId);
             if (existingLineItem != null)
             {
-                await InnerChangeItemQuantityAsync(existingLineItem, existingLineItem.Quantity + Math.Max(1, lineItem.Quantity));
+                await ChangeItemQuantityAsync(existingLineItem, existingLineItem.Quantity + Math.Max(1, lineItem.Quantity));
             }
             else
             {
                 lineItem.Id = null;
-                _cart.Items.Add(lineItem);
+                Cart.Items.Add(lineItem);
             }
         }
 
-
         private void EnsureThatCartExist()
         {
-            if (_cart == null)
+            if (Cart == null)
             {
                 throw new StorefrontException("Cart not loaded.");
             }
