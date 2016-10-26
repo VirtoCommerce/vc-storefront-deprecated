@@ -359,14 +359,11 @@ namespace VirtoCommerce.Storefront.Model.Common
                 {
                     retVal = Amount.ToString(Currency.CustomFormatting);
                 }
-                else
+                else if (Currency.NumberFormat != null)
                 {
-                    var numberFormat = Currency.NumberFormat?.Clone() as NumberFormatInfo;
-                    if (numberFormat != null)
-                    {
-                        numberFormat.CurrencyDecimalDigits = 0;
-                        retVal = Amount.ToString("C", numberFormat);
-                    }
+                    var numberFormat = (NumberFormatInfo)Currency.NumberFormat.Clone();
+                    numberFormat.CurrencyDecimalDigits = 0;
+                    retVal = Amount.ToString("C", numberFormat);
                 }
             }
             return retVal;
