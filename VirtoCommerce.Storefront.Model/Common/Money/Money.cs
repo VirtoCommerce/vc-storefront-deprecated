@@ -29,6 +29,7 @@
  */
 
 using System;
+using System.Globalization;
 
 namespace VirtoCommerce.Storefront.Model.Common
 {
@@ -105,6 +106,14 @@ namespace VirtoCommerce.Storefront.Model.Common
             get
             {
                 return ToString();
+            }
+        }
+
+        public string FormatedAmountWithoutPoint
+        {
+            get
+            {
+                return ToStringWithoutPoint();
             }
         }
 
@@ -336,6 +345,28 @@ namespace VirtoCommerce.Storefront.Model.Common
                 else if (Currency.NumberFormat != null)
                 {
                     retVal = Amount.ToString("C", Currency.NumberFormat);
+                }
+            }
+            return retVal;
+        }
+
+        public string ToStringWithoutPoint()
+        {
+            string retVal = ((int)Amount).ToString();
+            if (Currency != null)
+            {
+                if (!string.IsNullOrEmpty(Currency.CustomFormatting))
+                {
+                    retVal = Amount.ToString(Currency.CustomFormatting);
+                }
+                else
+                {
+                    var numberFormat = Currency.NumberFormat?.Clone() as NumberFormatInfo;
+                    if (numberFormat != null)
+                    {
+                        numberFormat.CurrencyDecimalDigits = 0;
+                        retVal = Amount.ToString("C", numberFormat);
+                    }
                 }
             }
             return retVal;
