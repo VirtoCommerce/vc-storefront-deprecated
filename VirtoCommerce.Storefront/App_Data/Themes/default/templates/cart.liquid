@@ -33,9 +33,9 @@
                                 <span ng-bind="lineItem.name"></span>
 								<div class="note" ng-class="{ 'form-error' : !lineItem.isValid }" ng-repeat-start="error in lineItem.validationErrors">
 									{% if settings.show_prices_with_taxes %}
-									<span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPriceWithTax.formatedAmount"></span>
+									<span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPriceWithTax.formattedAmount"></span>
 									{% else %}
-									<span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPrice.formatedAmount"></span>
+									<span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPrice.formattedAmount"></span>
 									{% endif %} 
 									<span ng-if="error.errorCode == 'PriceError'" style="color: #204a80; cursor: pointer; margin-left: 10px;" ng-click="changeLineItemPrice(lineItem.id, error.newPrice.amount)">Apply new price</span>
 									<span ng-if="error.errorCode == 'UnavailableError'" ng-bind="'Product is currently unavailable!'"></span>
@@ -59,14 +59,14 @@
                             <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
                                 {% if settings.show_prices_with_taxes %}
                                     <span class="h2">
-                                        <small ng-bind="lineItem.placedPriceWithTax.formatedAmount"></small> 
+                                        <small ng-bind="lineItem.placedPriceWithTax.formattedAmount"></small> 
                                     </span>
-                                    <span style="text-decoration: line-through;" ng-if="lineItem.listPriceWithTax.amount != lineItem.placedPriceWithTax.amount" ng-bind="lineItem.listPriceWithTax.formatedAmount"></span>
+                                    <span style="text-decoration: line-through;" ng-if="lineItem.listPriceWithTax.amount != lineItem.placedPriceWithTax.amount" ng-bind="lineItem.listPriceWithTax.formattedAmount"></span>
                                 {% else %}
                                     <span class="h2">
-                                        <small ng-bind="lineItem.placedPrice.formatedAmount"></small>
+                                        <small ng-bind="lineItem.placedPrice.formattedAmount"></small>
                                     </span>
-                                    <span style="text-decoration: line-through;" ng-if="lineItem.listPrice.amount != lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formatedAmount"></span>
+                                    <span style="text-decoration: line-through;" ng-if="lineItem.listPrice.amount != lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></span>
                                 {% endif %}
                             </div>
                             <div class="grid-item one-sixth medium-down--one-third text-right">
@@ -90,12 +90,12 @@
                             {% if settings.show_prices_with_taxes %}
                                 {{ 'cart.general.subtotalWithTax' | t }}
                                 <span class="h1 cart-subtotal--price">
-                                    <small ng-bind="cart.extendedPriceTotalWithTax.formatedAmount"></small>
+                                    <small ng-bind="cart.extendedPriceTotalWithTax.formattedAmount"></small>
                                 </span>
                             {% else %}
                                 {{ 'cart.general.subtotal' | t }}
                                 <span class="h1 cart-subtotal--price">
-                                    <small ng-bind="cart.extendedPriceTotal.formatedAmount"></small>
+                                    <small ng-bind="cart.extendedPriceTotal.formattedAmount"></small>
                                 </span>
                             {% endif %}
                         </div>

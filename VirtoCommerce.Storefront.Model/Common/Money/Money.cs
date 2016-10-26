@@ -25,7 +25,7 @@
  * http://stackoverflow.com/questions/366852/c-sharp-decimal-datatype-performance
  * Use the .InternalAmount property to get to the double member.
  * All the Money comparison operators use the Decimal wrapper with significant digits for the currency.
- * All the Money arithmatic (+-/*) operators use the internal double value.
+ * All the Money arithmetic (+-/*) operators use the internal double value.
  */
 
 using System;
@@ -35,10 +35,8 @@ namespace VirtoCommerce.Storefront.Model.Common
 {
     public class Money : IComparable<Money>, IEquatable<Money>, IComparable, IConvertible<Money>
     {
-        private Currency _currency;
-        private decimal _amount;
-
         #region Constructors
+
         public Money()
         {
         }
@@ -56,11 +54,10 @@ namespace VirtoCommerce.Storefront.Model.Common
         public Money(decimal amount, Currency currency)
         {
             if (currency == null)
-            {
                 throw new ArgumentNullException("currency");
-            }
-            _currency = currency;
-            _amount = amount;
+
+            Currency = currency;
+            InternalAmount = amount;
         }
 
         #endregion
@@ -70,11 +67,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         /// Accesses the internal representation of the value of the Money
         /// </summary>
         /// <returns>A decimal with the internal amount stored for this Money.</returns>
-        public decimal InternalAmount
-        {
-            get { return _amount; }
-            set { _amount = value; }
-        }
+        public decimal InternalAmount { get; private set; }
 
         /// <summary>
         /// Rounds the amount to the number of significant decimal digits
@@ -85,7 +78,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             get
             {
-                return decimal.Round(_amount, DecimalDigits, MidpointRounding.AwayFromZero);
+                return decimal.Round(InternalAmount, DecimalDigits, MidpointRounding.AwayFromZero);
             }
         }
 
@@ -98,30 +91,26 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             get
             {
-                return (decimal)((long)Math.Truncate(_amount * DecimalDigits)) / DecimalDigits;
-            }
-        }
-        public string FormatedAmount
-        {
-            get
-            {
-                return ToString();
+                return (decimal)(long)Math.Truncate(InternalAmount * DecimalDigits) / DecimalDigits;
             }
         }
 
-        public string FormatedAmountWithoutPoint
+        public string FormattedAmount
         {
-            get
-            {
-                return ToStringWithoutPoint();
-            }
+            get { return ToString(true, true); }
         }
 
-        public Currency Currency
+        public string FormattedAmountWithoutPoint
         {
-            get { return _currency; }
-            set { _currency = value; }
+            get { return ToString(false, true); }
         }
+
+        public string FormattedAmountWithoutPointAndCurrency
+        {
+            get { return ToString(false, false); }
+        }
+
+        public Currency Currency { get; private set; }
 
 
         /// <summary>
@@ -130,7 +119,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         /// <returns>An int containing the number of decimal digits.</returns>
         public int DecimalDigits
         {
-            get { return _currency.NumberFormat.CurrencyDecimalDigits; }
+            get { return Currency.NumberFormat.CurrencyDecimalDigits; }
         }
         #endregion
 
@@ -138,7 +127,7 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public override int GetHashCode()
         {
-            return Amount.GetHashCode() ^ _currency.Code.GetHashCode();
+            return Amount.GetHashCode() ^ Currency.Code.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -199,6 +188,7 @@ namespace VirtoCommerce.Storefront.Model.Common
                 return 1;
             if (!(obj is Money))
                 throw new ArgumentException("Argument must be Money");
+
             return CompareTo((Money)obj);
         }
 
@@ -280,6 +270,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             if (money == null)
                 throw new ArgumentNullException("money");
+
             return new Money(money.Amount + value, money.Currency);
         }
 
@@ -295,6 +286,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             if (money == null)
                 throw new ArgumentNullException("money");
+
             return new Money(money.Amount - value, money.Currency);
         }
 
@@ -310,6 +302,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             if (money == null)
                 throw new ArgumentNullException("money");
+
             return new Money(money.Amount * value, money.Currency);
         }
 
@@ -326,6 +319,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             if (money == null)
                 throw new ArgumentNullException("money");
+
             return new Money(money.Amount / value, money.Currency);
         }
 
@@ -335,38 +329,36 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public override string ToString()
         {
-            var retVal = Amount.ToString();
-            if (Currency != null)
-            {
-                if (!string.IsNullOrEmpty(Currency.CustomFormatting))
-                {
-                    retVal = Amount.ToString(Currency.CustomFormatting);
-                }
-                else if (Currency.NumberFormat != null)
-                {
-                    retVal = Amount.ToString("C", Currency.NumberFormat);
-                }
-            }
-            return retVal;
+            return ToString(true, true);
         }
 
-        public string ToStringWithoutPoint()
+        public virtual string ToString(bool showDecimalDigits, bool showCurrencySymbol)
         {
-            string retVal = ((int)Amount).ToString();
-            if (Currency != null)
+            string result = null;
+
+            if (Currency != null && !string.IsNullOrEmpty(Currency.CustomFormatting))
             {
-                if (!string.IsNullOrEmpty(Currency.CustomFormatting))
-                {
-                    retVal = Amount.ToString(Currency.CustomFormatting);
-                }
-                else if (Currency.NumberFormat != null)
-                {
-                    var numberFormat = (NumberFormatInfo)Currency.NumberFormat.Clone();
-                    numberFormat.CurrencyDecimalDigits = 0;
-                    retVal = Amount.ToString("C", numberFormat);
-                }
+                result = Amount.ToString(Currency.CustomFormatting);
             }
-            return retVal;
+
+            if (result == null)
+            {
+                var format = showDecimalDigits ? "C" : "C0";
+
+                var numberFormat = Currency != null && Currency.NumberFormat != null
+                    ? Currency.NumberFormat
+                    : CultureInfo.InvariantCulture.NumberFormat;
+
+                if (!showCurrencySymbol)
+                {
+                    numberFormat = (NumberFormatInfo)numberFormat.Clone();
+                    numberFormat.CurrencySymbol = string.Empty;
+                }
+
+                result = Amount.ToString(format, numberFormat);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -379,26 +371,33 @@ namespace VirtoCommerce.Storefront.Model.Common
         public Money[] Allocate(int n)
         {
             var cents = Math.Pow(10, DecimalDigits);
-            var lowResult = ((long)Math.Truncate((double)_amount / n * cents)) / cents;
+            var lowResult = ((long)Math.Truncate((double)InternalAmount / n * cents)) / cents;
             var highResult = lowResult + 1.0d / cents;
+            var remainder = (int)(((double)InternalAmount * cents) % n);
+
             var results = new Money[n];
-            var remainder = (int)(((double)_amount * cents) % n);
+
             for (var i = 0; i < remainder; i++)
-                results[i] = new Money((decimal)highResult, _currency);
+                results[i] = new Money((decimal)highResult, Currency);
+
             for (var i = remainder; i < n; i++)
-                results[i] = new Money((decimal)lowResult, _currency);
+                results[i] = new Money((decimal)lowResult, Currency);
+
             return results;
         }
 
         #endregion
 
         #region IConvertible<Money> Members
+
         public Money ConvertTo(Currency toCurrency)
         {
             if (Currency == toCurrency)
                 return this;
-            return new Money((_amount * Currency.ExchangeRate) / toCurrency.ExchangeRate, toCurrency);
+
+            return new Money(InternalAmount * Currency.ExchangeRate / toCurrency.ExchangeRate, toCurrency);
         }
+
         #endregion
     }
 }
