@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Practices.ServiceLocation;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
+using VirtoCommerce.Storefront.Model.Cart.Factories;
 using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
 using VirtoCommerce.Storefront.Model.Catalog;
@@ -82,15 +84,13 @@ namespace VirtoCommerce.Storefront.Builders
 
                 if (cart == null)
                 {
-                    cart = new ShoppingCart(currency, language)
-                    {
-                        CustomerId = customer.Id,
-                        Name = "Default",
-                        StoreId = store.Id,
-                        Language = language,
-                        IsAnonymous = !customer.IsRegisteredUser,
-                        CustomerName = customer.IsRegisteredUser ? customer.UserName : StorefrontConstants.AnonymousUsername
-                    };
+                    cart = ServiceLocator.Current.GetInstance<CartFactory>().CreateCart(currency, language);
+                    cart.CustomerId = customer.Id;
+                    cart.Name = "Default";
+                    cart.StoreId = store.Id;
+                    cart.Language = language;
+                    cart.IsAnonymous = !customer.IsRegisteredUser;
+                    cart.CustomerName = customer.IsRegisteredUser ? customer.UserName : StorefrontConstants.AnonymousUsername;
                 }
 
                 cart.Customer = customer;
