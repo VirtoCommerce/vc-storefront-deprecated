@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using PagedList;
 
 namespace VirtoCommerce.Storefront.Model.Common
@@ -10,7 +6,7 @@ namespace VirtoCommerce.Storefront.Model.Common
     /// <summary>
     /// PagedList which page number and page size can be changed  (on render view time for example)
     /// </summary>
-    public interface IMutablePagedList : IPagedList 
+    public interface IMutablePagedList : IPagedList
     {
         /// <summary>
         /// Contains information for sorting order

@@ -79,7 +79,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// Coupon object
         /// </value>
         public Coupon Coupon { get; set; }
-    
+
         /// <summary>
         /// Gets or sets the flag of shopping cart is recurring
         /// </summary>
@@ -230,7 +230,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         public Money HandlingTotal { get; set; }
         public Money HandlingTotalWithTax { get; set; }
 
-        public Money DiscountAmount { get; set; } 
+        public Money DiscountAmount { get; set; }
 
         /// <summary>
         /// Gets the value of total discount amount
@@ -241,7 +241,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             {
                 var itemDiscountTotal = Items.Sum(i => i.DiscountTotal.Amount);
                 var shipmentDiscountTotal = Shipments.Sum(s => s.DiscountAmount.Amount);
-  
+
                 return new Money(DiscountAmount.Amount + itemDiscountTotal + shipmentDiscountTotal, Currency);
             }
         }
@@ -264,7 +264,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <value>
         /// Collection of Address objects
         /// </value>
-        public ICollection<Address> Addresses { get; set; }      
+        public ICollection<Address> Addresses { get; set; }
 
         /// <summary>
         /// Gets or sets the value of shopping cart line items
@@ -277,7 +277,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// <summary>
         /// Gets or sets shopping cart items quantity (sum of each line item quantity * items count)
         /// </summary>
-        public int ItemsCount
+        public virtual int ItemsCount
         {
             get
             {
@@ -312,8 +312,8 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// Dynamic properties collections
         /// </summary>
         /// <value>Dynamic properties collections</value>
-        public ICollection<DynamicProperty> DynamicProperties { get; set; }      
-   
+        public ICollection<DynamicProperty> DynamicProperties { get; set; }
+
 
         public ICollection<PaymentMethod> AvailablePaymentMethods { get; set; }
 
@@ -323,7 +323,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             {
                 return Items.OrderByDescending(i => i.CreatedDate).FirstOrDefault();
             }
-        }       
+        }
 
         #region IValidatable Members
         public bool IsValid { get; set; }
@@ -346,14 +346,14 @@ namespace VirtoCommerce.Storefront.Model.Cart
                 //When a discount is applied to the cart subtotal, the tax calculation has already been applied, and is reflected in the tax subtotal.
                 //Therefore, a discount applying to the cart subtotal will occur after tax.
                 //For instance, if the cart subtotal is $100, and $15 is the tax subtotal, a cart - wide discount of 10 % will yield a total of $105($100 subtotal – $10 discount + $15 tax on the original $100).
-                              
+
                 var discount = reward.ToDiscountModel(ExtendedPriceTotal);
 
                 if (reward.IsValid)
                 {
                     Discounts.Add(discount);
                 }
-                DiscountAmount = discount.Amount;   
+                DiscountAmount = discount.Amount;
             }
 
             var lineItemRewards = rewards.Where(x => x.RewardType == PromotionRewardType.CatalogItemAmountReward);
@@ -371,9 +371,9 @@ namespace VirtoCommerce.Storefront.Model.Cart
             if (Coupon != null && !string.IsNullOrEmpty(Coupon.Code))
             {
                 Coupon.AppliedSuccessfully = rewards.Any(x => x.IsValid && x.Promotion.Coupons != null
-                                                              && x.Promotion.Coupons.Contains(Coupon.Code, StringComparer.OrdinalIgnoreCase));                
+                                                              && x.Promotion.Coupons.Contains(Coupon.Code, StringComparer.OrdinalIgnoreCase));
             }
-          
+
         }
         #endregion
 
@@ -396,7 +396,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
                 foreach (var shipment in Shipments)
                 {
                     retVal += shipment.TaxTotal;
-                }             
+                }
                 return retVal;
             }
         }
@@ -435,7 +435,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public override string ToString()
         {
-            return string.Format("Cart #{0} Items({1}) {2}", Id ?? "undef", ItemsCount, Customer != null ? Customer.ToString() : "undef"); 
+            return string.Format("Cart #{0} Items({1}) {2}", Id ?? "undef", ItemsCount, Customer != null ? Customer.ToString() : "undef");
         }
     }
 }

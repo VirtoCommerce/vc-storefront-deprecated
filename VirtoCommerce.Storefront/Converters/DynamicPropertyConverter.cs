@@ -25,7 +25,8 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 if (result.IsDictionary)
                 {
-                    var dictValues = propertyDto.Values.Where(x => x.Value != null)
+                    var dictValues = propertyDto.Values
+                        .Where(x => x.Value != null)
                         .Select(x => x.Value)
                         .Cast<JObject>()
                         .Select(x => x.ToObject<platformDto.DynamicPropertyDictionaryItem>())
@@ -35,7 +36,10 @@ namespace VirtoCommerce.Storefront.Converters
                 }
                 else
                 {
-                    result.Values = propertyDto.Values.Select(x => x.ToLocalizedString()).ToList();
+                    result.Values = propertyDto.Values
+                        .Where(x => x.Value != null)
+                        .Select(x => x.ToLocalizedString())
+                        .ToList();
                 }
             }
 

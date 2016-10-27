@@ -114,11 +114,11 @@
                         </div>
                         <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right proposal-prices">
                             <span class="h2 tier-price" ng-repeat="tierPrice in quoteItem.proposalPrices" ng-if="displayForStatuses(['New', 'Processing', 'Rejected', 'Canceled'])">
-                                <small ng-bind="tierPrice.price.formatedAmount"></small>
+                                <small ng-bind="tierPrice.price.formattedAmount"></small>
                             </span>
                             <span class="h2 tier-price" ng-repeat="tierPrice in quoteItem.proposalPrices" ng-if="displayForStatuses(['Proposal sent', 'Ordered'])">
                                 <input id="{% raw %}{{ 'QuoteItem_' + quoteItem.id + '_' + tierPrice.id }}{% endraw %}" name="{% raw %}{{ 'QuoteItem_' + quoteItem.id + '_SelectedTierPrice' }}{% endraw %}" style="display: inline-block;" type="radio" ng-model="quoteItem.selectedTierPrice" ng-value="tierPrice" ng-change="selectTierPrice()" ng-disabled="quoteRequest.status === 'Ordered'" />
-                                <label for="{% raw %}{{ 'QuoteItem_' + quoteItem.id + '_' + tierPrice.id }}{% endraw %}" style="display: inline-block;" ng-bind="tierPrice.price.formatedAmount"></label>
+                                <label for="{% raw %}{{ 'QuoteItem_' + quoteItem.id + '_' + tierPrice.id }}{% endraw %}" style="display: inline-block;" ng-bind="tierPrice.price.formattedAmount"></label>
                             </span>
                         </div>
                         <div class="grid-item one-sixth medium-down--one-third text-right" ng-if="displayForStatuses(['New'])">
@@ -137,25 +137,25 @@
                     <div class="cart-total">
                         Subtotal
                         <span class="h1 cart-subtotal--price">
-                            <small id="quote-subtotal" ng-bind="quoteRequest.totals.subTotalExlTax.formatedAmount"></small>
+                            <small id="quote-subtotal" ng-bind="quoteRequest.totals.subTotalExlTax.formattedAmount"></small>
                         </span>
                     </div>
                     <div class="cart-total" ng-if="quoteRequest.totals.discountTotal.amount > 0">
                         Discount
                         <span class="h1 cart-subtotal--price">
-                            <small id="quote-subtotal" ng-bind="quoteRequest.totals.discountTotal.formatedAmount"></small>
+                            <small id="quote-subtotal" ng-bind="quoteRequest.totals.discountTotal.formattedAmount"></small>
                         </span>
                     </div>
                     <div class="cart-total">
                         Tax
                         <span class="h1 cart-subtotal--price">
-                            <small id="quote-tax-total" ng-bind="quoteRequest.totals.taxTotal.formatedAmount"></small>
+                            <small id="quote-tax-total" ng-bind="quoteRequest.totals.taxTotal.formattedAmount"></small>
                         </span>
                     </div>
                     <div class="cart-total">
                         Grand total
                         <span class="h1 cart-subtotal--price">
-                            <small id="quote-grand-total" ng-bind="quoteRequest.totals.grandTotalInclTax.formatedAmount"></small>
+                            <small id="quote-grand-total" ng-bind="quoteRequest.totals.grandTotalInclTax.formattedAmount"></small>
                         </span>
                     </div>
                 </div>

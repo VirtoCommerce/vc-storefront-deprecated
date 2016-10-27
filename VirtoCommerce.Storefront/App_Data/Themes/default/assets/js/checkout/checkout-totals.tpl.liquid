@@ -14,12 +14,12 @@
             {% if settings.show_prices_with_taxes %}
             <td class="total-line__name">{{ 'checkout.subtotalWithTax' | t }}</td>
             <td class="total-line__price">
-                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.subTotalWithTax.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.subTotalWithTax.formattedAmount"></span>
             </td>
             {% else %}
             <td class="total-line__name">{{ 'checkout.subtotal' | t }}</td>
             <td class="total-line__price">
-                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.subTotal.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.subTotal.formattedAmount"></span>
             </td>
             {% endif %}
         </tr>
@@ -27,12 +27,12 @@
             {% if settings.show_prices_with_taxes %}
             <td class="total-line__name">{{ 'checkout.shippingWithTax' | t }}</td>
             <td class="total-line__price">
-                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.shippingPriceWithTax.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.shippingPriceWithTax.formattedAmount"></span>
             </td>
             {% else %}
             <td class="total-line__name">{{ 'checkout.shipping' | t }}</td>
             <td class="total-line__price">
-                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.shippingPrice.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.shippingPrice.formattedAmount"></span>
             </td>
             {% endif %}
         </tr>
@@ -40,16 +40,16 @@
             <td class="total-line__name">{{ 'checkout.discount' | t }}</td>
             <td class="total-line__price">
                 {% if settings.show_prices_with_taxes %}
-                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.discountTotalWithTax.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.discountTotalWithTax.formattedAmount"></span>
                 {% else %}
-                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.discountTotal.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.discountTotal.formattedAmount"></span>
                 {% endif %}
             </td>
         </tr>
         <tr class="total-line total-line--taxes">
             <td class="total-line__name">{{ 'checkout.taxes' | t }}</td>
             <td class="total-line__price">
-                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.taxTotal.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.taxTotal.formattedAmount"></span>
             </td>
         </tr>
     </tbody>
@@ -58,7 +58,7 @@
             <td class="total-line__name payment-due-label">{{ 'checkout.total' | t }}</td>
             <td class="total-line__price payment-due">
                 <span class="payment-due__currency" ng-bind="$ctrl.cart.total.currency.code"></span>
-                <span class="payment-due__price" ng-bind="$ctrl.cart.total.formatedAmount"></span>
+                <span class="payment-due__price" ng-bind="$ctrl.cart.total.formattedAmount"></span>
             </td>
         </tr>
     </tbody>

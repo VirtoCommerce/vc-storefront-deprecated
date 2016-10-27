@@ -77,22 +77,22 @@
                 <li ng-if="selectedVariation.id">
                     {% if settings.show_prices_with_taxes %}
                         <span ng-if="selectedVariation.price.discountAmountWithTax.amount > 0" class="old">
-                            <small ng-bind="selectedVariation.price.listPriceWithTax.formatedAmount"></small>                      
+                            <small ng-bind="selectedVariation.price.listPriceWithTax.formattedAmount"></small>                      
                         </span>
-                        <span ng-if="selectedVariation.price.discountAmountWithTax.amount > 0" id="comparePrice" class="sale-tag large" ng-bind="'{{ 'products.general.save_html' | t }}' + selectedVariation.price.discountAmountWithTax.formatedAmount">
+                        <span ng-if="selectedVariation.price.discountAmountWithTax.amount > 0" id="comparePrice" class="sale-tag large" ng-bind="'{{ 'products.general.save_html' | t }}' + selectedVariation.price.discountAmountWithTax.formattedAmount">
                         </span>
                         <span id="productPrice" class="h1">
-                            <small ng-bind="selectedVariation.price.actualPriceWithTax.formatedAmount"></small>                           
+                            <small ng-bind="selectedVariation.price.actualPriceWithTax.formattedAmount"></small>                           
                         </span>
                         <span>Inc VAT</span>      
                     {% else %}
                         <span ng-if="selectedVariation.price.discountAmount.amount > 0" class="old">
-                            <small ng-bind="selectedVariation.price.listPrice.formatedAmount"></small>
+                            <small ng-bind="selectedVariation.price.listPrice.formattedAmount"></small>
                         </span>
-                        <span ng-if="selectedVariation.price.discountAmount.amount > 0" id="comparePrice" class="sale-tag large" ng-bind="'{{ 'products.general.save_html' | t }}' + selectedVariation.price.discountAmount.formatedAmount">
+                        <span ng-if="selectedVariation.price.discountAmount.amount > 0" id="comparePrice" class="sale-tag large" ng-bind="'{{ 'products.general.save_html' | t }}' + selectedVariation.price.discountAmount.formattedAmount">
                         </span>
                         <span id="productPrice" class="h1">
-                            <small ng-bind="selectedVariation.price.actualPrice.formatedAmount"></small>
+                            <small ng-bind="selectedVariation.price.actualPrice.formattedAmount"></small>
                         </span>
                     {% endif %}
                 </li>
