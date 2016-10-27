@@ -6,11 +6,61 @@ using System.Linq.Expressions;
 using System.Reflection;
 using DotLiquid;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.LiquidThemeEngine.Filters
 {
     public class ArrayFilters
     {
+        public static object Tree(object input, string propName, string titlePropName, string delimiter, string sortByPropName)
+        {
+            var tree = new List<TreeNode>();
+
+            var enumerable = input as IEnumerable;
+            if (enumerable != null)
+            {
+                var elementType = enumerable.GetType().GetEnumerableType();
+                var propInfo = elementType.GetProperty(propName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                var titlePropInfo = elementType.GetProperty(titlePropName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                var sortByPropInfo = elementType.GetProperty(sortByPropName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                if (propInfo != null)
+                {
+                    foreach (var element in enumerable)
+                    {
+                        var propValue = propInfo.GetValue(element) as string;
+                        var parts = propValue.Split(delimiter.ToCharArray());
+
+                        var treeNode = new TreeNode
+                        {
+                            Id = propValue,
+                            Level = parts.Length,
+                            Priority = sortByPropInfo != null ? sortByPropInfo.GetValue(element) as int? : null,
+                            Title = titlePropInfo != null ? titlePropInfo.GetValue(element) as string : null
+                        };
+
+                        var parentParts = new List<string>();
+                        for (var i = 0; i < parts.Length - 1; i++)
+                        {
+                            parentParts.Add(parts[i]);
+                            var parent = new TreeNode { Id = string.Join("/", parentParts) };
+                            treeNode.Parents.Add(parent);
+                        }
+
+                        tree.Add(treeNode);
+                    }
+
+                    foreach (var treeNode in tree)
+                    {
+                        var treeNodeLevel = treeNode.Id.Split('/').Length;
+                        var children = tree.Where(n => n.Id.IndexOf(treeNode.Id + "/") >= 0).OrderBy(n => n.Priority);
+                        treeNode.Children.AddRange(children);
+                    }
+                }
+            }
+
+            return tree;
+        }
+
         /// <summary>
         /// Filter the elements of an array by a given condition
         /// {% assign sorted = pages | where:"propName","==","value" %}
