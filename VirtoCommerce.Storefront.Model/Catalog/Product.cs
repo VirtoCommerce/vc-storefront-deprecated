@@ -142,7 +142,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         /// <summary>
         /// Indicating whether this product can be reviewed in storefront
         /// </summary>
-        public decimal EnableReview { get; set; }
+        public bool EnableReview { get; set; }
 
         /// <summary>
         /// Maximum number of downloads of product (for digital product only)
@@ -162,7 +162,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         /// <summary>
         /// Indicating whether this product has user agreement (for digital product only)
         /// </summary>
-        public decimal HasUserAgreement { get; set; }
+        public bool HasUserAgreement { get; set; }
 
         /// <summary>
         /// Type of product shipping

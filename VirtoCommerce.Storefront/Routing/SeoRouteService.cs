@@ -114,7 +114,7 @@ namespace VirtoCommerce.Storefront.Routing
             }
 
             // If still found multiple entities, give up
-            var result = entities.Count == 1 ? entities.FirstOrDefault() : null;
+            var result = entities.FirstOrDefault();
 
             if (result == null)
             {
