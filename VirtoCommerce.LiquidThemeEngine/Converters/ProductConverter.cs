@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
-using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
@@ -37,7 +36,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.Description = product.Description;
             result.IsQuotable = product.IsQuotable;
             result.TaxType = product.TaxType;
-    
+
             result.Variants.Add(ToLiquidVariant(product));
 
             if (product.Variations != null)
@@ -133,7 +132,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     }
 
                     return new StaticPagedList<Product>(retVal.Select(x => x.ToShopifyModel()), pageNumber, pageSize, totalCount);
-                });
+                }, 1, 20);
             }
 
             if (product.Vendor != null)

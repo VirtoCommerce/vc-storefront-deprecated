@@ -19,7 +19,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             PageCount = 1;
         }
 
-        public MutablePagedList(Func<int, int, IEnumerable<SortInfo>, IPagedList<T>> getter, int pageNumber = 1, int pageSize = 20)
+        public MutablePagedList(Func<int, int, IEnumerable<SortInfo>, IPagedList<T>> getter, int pageNumber, int pageSize)
         {
             PageNumber = pageNumber;
             PageSize = pageSize;

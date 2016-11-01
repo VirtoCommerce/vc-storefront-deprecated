@@ -33,7 +33,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             {
                 products.Slice(pageNumber, pageSize, sortInfos);
                 return new StaticPagedList<dotLiquid.Drop>(products.Select(x => x.ToShopifyModel()), products);
-            });
+            }, 1, products.PageSize);
 
             if (workContext.Aggregations != null)
             {
