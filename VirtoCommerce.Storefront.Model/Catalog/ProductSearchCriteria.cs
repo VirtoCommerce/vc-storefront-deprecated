@@ -8,9 +8,11 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 {
     public class ProductSearchCriteria : PagedSearchCriteria
     {
+        public static int DefaultPageSize { get; set; }
+
         //For JSON deserialization
         public ProductSearchCriteria()
-            : base(new NameValueCollection())
+            : this(null, null)
         {
         }
 
@@ -19,7 +21,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         {
         }
         public ProductSearchCriteria(Language language, Currency currency, NameValueCollection queryString)
-            : base(queryString)
+            : base(queryString, DefaultPageSize)
         {
             Language = language;
             Currency = currency;

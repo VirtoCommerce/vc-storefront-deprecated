@@ -230,7 +230,7 @@ namespace VirtoCommerce.Storefront.Services
 
                             var searchResult = SearchProducts(criteria);
                             return searchResult.Products;
-                        });
+                        }, 1, ProductSearchCriteria.DefaultPageSize);
                     }
                 }
             }
@@ -276,7 +276,7 @@ namespace VirtoCommerce.Storefront.Services
                            }
                            var searchResult = SearchProducts(criteria);
                            return searchResult.Products;
-                       });
+                       }, 1, ProductSearchCriteria.DefaultPageSize);
                     }
                 }
             }

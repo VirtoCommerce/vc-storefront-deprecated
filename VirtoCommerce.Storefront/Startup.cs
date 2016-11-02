@@ -45,16 +45,21 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Controllers;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart.Services;
+using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
+using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Customer.Services;
 using VirtoCommerce.Storefront.Model.LinkList.Services;
 using VirtoCommerce.Storefront.Model.Marketing.Services;
+using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Pricing.Services;
+using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Quote.Events;
 using VirtoCommerce.Storefront.Model.Quote.Services;
 using VirtoCommerce.Storefront.Model.Services;
+using VirtoCommerce.Storefront.Model.StaticContent;
 using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Model.Tax.Services;
 using VirtoCommerce.Storefront.Owin;
@@ -102,6 +107,15 @@ namespace VirtoCommerce.Storefront
                 CallChildConfigure(app, _managerAssembly, "VirtoCommerce.Platform.Web.Startup", "Configuration", "~/areas/admin", "admin/");
             }
 
+            var appSettings = ConfigurationManager.AppSettings;
+
+            BlogSearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Blogs", 20);
+            CategorySearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Categories", 20);
+            OrderSearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Orders", 20);
+            ProductSearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Products", 20);
+            QuoteSearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Quotes", 20);
+            VendorSearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Vendors", 20);
+
             UnityWebActivator.Start();
             var container = UnityConfig.GetConfiguredContainer();
 
@@ -139,7 +153,7 @@ namespace VirtoCommerce.Storefront
             var distributedCache = CacheFactory.Build("distributedCache", settings =>
       {
           var jsonSerializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
-          var redisCacheEnabled = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:RedisCache:Enabled", false);
+          var redisCacheEnabled = appSettings.GetValue("VirtoCommerce:Storefront:RedisCache:Enabled", false);
 
           var memoryHandlePart = settings
               .WithJsonSerializer(jsonSerializerSettings, jsonSerializerSettings)
@@ -149,7 +163,7 @@ namespace VirtoCommerce.Storefront
 
           if (redisCacheEnabled)
           {
-              var redisCacheConnectionStringName = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:RedisCache:ConnectionStringName", "RedisCache");
+              var redisCacheConnectionStringName = appSettings.GetValue("VirtoCommerce:Storefront:RedisCache:ConnectionStringName", "RedisCache");
               var redisConnectionString = ConfigurationManager.ConnectionStrings[redisCacheConnectionStringName].ConnectionString;
 
               memoryHandlePart
@@ -184,8 +198,8 @@ namespace VirtoCommerce.Storefront
                 }
             }
 
-            var apiAppId = ConfigurationManager.AppSettings["vc-public-ApiAppId"];
-            var apiSecretKey = ConfigurationManager.AppSettings["vc-public-ApiSecretKey"];
+            var apiAppId = appSettings["vc-public-ApiAppId"];
+            var apiSecretKey = appSettings["vc-public-ApiSecretKey"];
             container.RegisterInstance(new HmacCredentials(apiAppId, apiSecretKey));
 
             container.RegisterType<VirtoCommerceApiRequestHandler>(new PerRequestLifetimeManager());
@@ -224,7 +238,6 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IQuoteRequestBuilder, QuoteRequestBuilder>();
             container.RegisterType<ICatalogSearchService, CatalogSearchServiceImpl>();
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(context => HttpContext.Current.GetOwinContext().Authentication));
-
             container.RegisterType<IStorefrontUrlBuilder, StorefrontUrlBuilder>(new PerRequestLifetimeManager());
 
             //Register domain events

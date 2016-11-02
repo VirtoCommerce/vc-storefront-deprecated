@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
     public class CategorySearchCriteria : PagedSearchCriteria
     {
+        public static int DefaultPageSize { get; set; }
+
         //For JSON deserialization 
         public CategorySearchCriteria()
-            : base(new NameValueCollection())
+            : this(null)
         {
         }
 
@@ -17,15 +18,15 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             : this(language, new NameValueCollection())
         {
         }
+
         public CategorySearchCriteria(Language language, NameValueCollection queryString)
-            : base(queryString)
+            : base(queryString, DefaultPageSize)
         {
             Language = language;
-
             Parse(queryString);
         }
 
-        public CategoryResponseGroup  ResponseGroup { get; set; }
+        public CategoryResponseGroup ResponseGroup { get; set; }
 
         public string Outline { get; set; }
 

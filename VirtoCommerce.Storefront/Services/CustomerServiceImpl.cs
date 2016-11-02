@@ -191,7 +191,7 @@ namespace VirtoCommerce.Storefront.Services
                                                          pageNumber, pageSize, quoteRequestsResponse.TotalCount.Value);
             };
 
-            return new MutablePagedList<QuoteRequest>(quotesGetter);
+            return new MutablePagedList<QuoteRequest>(quotesGetter, 1, QuoteSearchCriteria.DefaultPageSize);
         }
 
         private IMutablePagedList<CustomerOrder> GetCustomerOrders(CustomerInfo customer)
@@ -213,7 +213,7 @@ namespace VirtoCommerce.Storefront.Services
                 return new StaticPagedList<CustomerOrder>(ordersResponse.CustomerOrders.Select(x => x.ToCustomerOrder(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,
                                                           ordersResponse.TotalCount.Value);
             };
-            return new MutablePagedList<CustomerOrder>(ordersGetter);
+            return new MutablePagedList<CustomerOrder>(ordersGetter, 1, OrderSearchCriteria.DefaultPageSize);
         }
     }
 }

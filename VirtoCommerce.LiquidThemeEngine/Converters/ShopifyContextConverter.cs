@@ -65,7 +65,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (workContext.CurrentCategory != null)
             {
-                result.Collection = ToLiquidCollection( workContext.CurrentCategory, workContext);
+                result.Collection = ToLiquidCollection(workContext.CurrentCategory, workContext);
             }
 
             if (workContext.Categories != null)
@@ -74,7 +74,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 {
                     workContext.Categories.Slice(pageNumber, pageSize, sortInfos);
                     return new StaticPagedList<Collection>(workContext.Categories.Select(x => ToLiquidCollection(x, workContext)), workContext.Categories);
-                }));
+                }, 1, workContext.Categories.PageSize));
             }
 
             if (workContext.Products != null)
@@ -115,7 +115,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                         var pagedContentItems = new MutablePagedList<ContentItem>(workContext.StaticContentSearchResult);
                         pagedContentItems.Slice(pageNumber, pageSize, sortInfos);
                         return new StaticPagedList<Drop>(workContext.StaticContentSearchResult.Select(x => ToLiquidPage(x)), pagedContentItems);
-                    })
+                    }, 1, workContext.StaticContentSearchResult.PageSize)
                 };
             }
 
