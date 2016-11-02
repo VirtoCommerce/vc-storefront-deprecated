@@ -38,14 +38,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                             Title = titlePropInfo != null ? titlePropInfo.GetValue(element) as string : null
                         };
 
-                        var parentParts = new List<string>();
-                        for (var i = 0; i < parts.Length - 1; i++)
-                        {
-                            parentParts.Add(parts[i]);
-                            var parent = new TreeNode { Id = string.Join("/", parentParts) };
-                            treeNode.Parents.Add(parent);
-                        }
-
                         tree.Add(treeNode);
                     }
 
@@ -54,6 +46,19 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                         var treeNodeLevel = treeNode.Id.Split('/').Length;
                         var children = tree.Where(n => n.Id.IndexOf(treeNode.Id + "/") >= 0).OrderBy(n => n.Priority);
                         treeNode.Children.AddRange(children);
+
+                        var idParts = treeNode.Id.Split('/');
+                        var parentIdParts = new List<string>();
+                        for (var i = 0; i < idParts.Length - 1; i++)
+                        {
+                            parentIdParts.Add(idParts[i]);
+                            var parentId = string.Join("/", parentIdParts);
+                            var parent = tree.FirstOrDefault(n => n.Id == parentId);
+                            if (parent != null)
+                            {
+                                treeNode.Parents.Add(parent);
+                            }
+                        }
                     }
                 }
             }
