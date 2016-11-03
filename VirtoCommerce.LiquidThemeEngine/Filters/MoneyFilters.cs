@@ -16,7 +16,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string Money(object input)
+        public static string Money(object input, string currencyCode = null)
         {
             if (input == null)
             {
@@ -24,7 +24,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             }
             var themeEngine = (ShopifyLiquidThemeEngine)Template.FileSystem;
             var amount = Convert.ToDecimal(input, CultureInfo.InvariantCulture);
-            var money = new Money(amount / 100, themeEngine.WorkContext.CurrentCurrency);
+            var currency = currencyCode == null ? themeEngine.WorkContext.CurrentCurrency : new Currency(themeEngine.WorkContext.CurrentLanguage, currencyCode);
+            var money = new Money(amount / 100, currency);
 
             return money.ToString();
         }

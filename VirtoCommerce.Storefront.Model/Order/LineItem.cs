@@ -53,6 +53,11 @@ namespace VirtoCommerce.Storefront.Model.Order
         public string ProductId { get; set; }
 
         /// <summary>
+        /// Gets or Sets SKU
+        /// </summary>
+        public string Sku { get; set; }
+
+        /// <summary>
         /// Gets or Sets CatalogId
         /// </summary>
         public string CatalogId { get; set; }
