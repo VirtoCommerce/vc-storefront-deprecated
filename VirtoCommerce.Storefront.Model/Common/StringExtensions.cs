@@ -88,5 +88,21 @@ namespace VirtoCommerce.Storefront.Model.Common
             }
             return retVal;
         }
+
+        //http://www.ietf.org/rfc/rfc3986.txt
+        //section 4.2 Relative reference
+        //Remove leading protocol scheme from uri. http://host/path -> //host/path
+        public static string RemoveLeadingUriScheme(this string str)
+        {
+            if (!string.IsNullOrEmpty(str) && Uri.IsWellFormedUriString(str, UriKind.Absolute))
+            {
+                //remove scheme from image url
+                //http://www.ietf.org/rfc/rfc3986.txt
+                //section 4.2
+                var uri = new Uri(str);
+                str = "//" + uri.Host + uri.PathAndQuery;
+            }
+            return str;
+        }
     }
 }

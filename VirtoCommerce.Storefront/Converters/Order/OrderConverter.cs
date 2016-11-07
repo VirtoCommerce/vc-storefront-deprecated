@@ -195,7 +195,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateLineItem(currency);
             result.InjectFrom<NullableAndEnumValueInjecter>(lineItemDto);
-
+            result.ImageUrl = result.ImageUrl.RemoveLeadingUriScheme();
             result.Currency = currency;
             result.DiscountAmount = new Money(lineItemDto.DiscountAmount ?? 0, currency);
 

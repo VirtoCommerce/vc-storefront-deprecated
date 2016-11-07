@@ -351,15 +351,14 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Image ToImage(catalogDto.Image imageDto)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateImage();
-            result.Url = imageDto.Url;
-            
+            result.Url = imageDto.Url.RemoveLeadingUriScheme();           
             return result;
         }
 
         public virtual Asset ToAsset(catalogDto.Asset assetDto)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAsset();
-            result.Url = assetDto.Url;
+            result.Url = assetDto.Url.RemoveLeadingUriScheme();
             result.TypeId = assetDto.TypeId;
             result.Size = assetDto.Size;
             result.Name = assetDto.Name;
@@ -425,7 +424,7 @@ namespace VirtoCommerce.Storefront.Converters
             if (productDto.Images != null)
             {
                 retVal.Images = productDto.Images.Select(ToImage).ToArray();
-                retVal.PrimaryImage = retVal.Images.FirstOrDefault(x => string.Equals(x.Url, productDto.ImgSrc, StringComparison.InvariantCultureIgnoreCase));
+                retVal.PrimaryImage = retVal.Images.FirstOrDefault();
             }
 
             if (productDto.Assets != null)

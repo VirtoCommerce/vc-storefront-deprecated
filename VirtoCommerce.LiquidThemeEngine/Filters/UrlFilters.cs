@@ -5,6 +5,7 @@ using System.Web;
 using DotLiquid;
 using VirtoCommerce.LiquidThemeEngine.Extensions;
 using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
 using shopifyModel = VirtoCommerce.LiquidThemeEngine.Objects;
 using storefrontModel = VirtoCommerce.Storefront.Model;
@@ -81,8 +82,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 retVal = collection.Image != null ? collection.Image.Src : null;
             }
 
-            var url = new Uri(retVal);
-            retVal = url.AbsoluteUri.Replace(url.Scheme + ":", string.Empty);
+            if (!string.IsNullOrEmpty(retVal))
+            {
+                retVal = retVal.RemoveLeadingUriScheme();
+            }
 
             return retVal;
         }

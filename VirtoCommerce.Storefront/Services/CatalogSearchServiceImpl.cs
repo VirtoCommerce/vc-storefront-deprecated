@@ -71,7 +71,7 @@ namespace VirtoCommerce.Storefront.Services
 
                 if (responseGroup.HasFlag(ItemResponseGroup.ItemWithPrices))
                 {
-                    await _pricingService.EvaluateProductPricesAsync(allProducts);
+                    await _pricingService.EvaluateProductPricesAsync(allProducts, workContext);
                 }
 
                 if (responseGroup.HasFlag(ItemResponseGroup.ItemWithVendor))
@@ -102,12 +102,7 @@ namespace VirtoCommerce.Storefront.Services
         public virtual async Task<IPagedList<Category>> SearchCategoriesAsync(CategorySearchCriteria criteria)
         {
             var workContext = _workContextFactory();
-            criteria = criteria.Clone();
-            var searchCriteria = criteria.ToCategorySearchDto(workContext);
-            var result = await _searchApi.SearchApiModule.SearchCategoriesAsync(workContext.CurrentStore.Id, searchCriteria);
-
-            //API temporary does not support paginating request to categories (that's uses PagedList with superset instead StaticPagedList)
-            return new PagedList<Category>(result.Categories.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
+            return await InnerSearchCategoriesAsync(criteria, workContext);
         }
 
         /// <summary>
@@ -118,12 +113,7 @@ namespace VirtoCommerce.Storefront.Services
         public virtual IPagedList<Category> SearchCategories(CategorySearchCriteria criteria)
         {
             var workContext = _workContextFactory();
-            criteria = criteria.Clone();
-            var searchCriteria = criteria.ToCategorySearchDto(workContext);
-            var categories = _searchApi.SearchApiModule.SearchCategories(workContext.CurrentStore.Id, searchCriteria).Categories.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)).ToList();
-
-            //API temporary does not support paginating request to categories (that's uses PagedList with superset)
-            return new PagedList<Category>(categories, criteria.PageNumber, criteria.PageSize);
+            return System.Threading.Tasks.Task.Factory.StartNew(() => InnerSearchCategoriesAsync(criteria, workContext), System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -132,10 +122,37 @@ namespace VirtoCommerce.Storefront.Services
         /// <param name="criteria"></param>
         /// <returns></returns>
         public virtual async Task<CatalogSearchResult> SearchProductsAsync(ProductSearchCriteria criteria)
+        {         
+            var workContext = _workContextFactory();
+            return await InnerSearchProductsAsync(criteria, workContext);
+        }
+        
+        /// <summary>
+        /// Search products by given criteria 
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        public virtual CatalogSearchResult SearchProducts(ProductSearchCriteria criteria)
+        {
+            var workContext = _workContextFactory();
+            return System.Threading.Tasks.Task.Factory.StartNew(() => InnerSearchProductsAsync(criteria, workContext), System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+        }
+
+        #endregion
+        private async Task<IPagedList<Category>> InnerSearchCategoriesAsync(CategorySearchCriteria criteria, WorkContext workContext)
+        {
+            criteria = criteria.Clone();
+            var searchCriteria = criteria.ToCategorySearchDto(workContext);
+            var result = await _searchApi.SearchApiModule.SearchCategoriesAsync(workContext.CurrentStore.Id, searchCriteria);
+
+            //API temporary does not support paginating request to categories (that's uses PagedList with superset instead StaticPagedList)
+            return new PagedList<Category>(result.Categories.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
+        }
+
+        private async Task<CatalogSearchResult> InnerSearchProductsAsync(ProductSearchCriteria criteria, WorkContext workContext)
         {
             criteria = criteria.Clone();
 
-            var workContext = _workContextFactory();
             var searchCriteria = criteria.ToProductSearchDto(workContext);
             var result = await _searchApi.SearchApiModule.SearchProductsAsync(workContext.CurrentStore.Id, searchCriteria);
             var products = result.Products.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
@@ -147,7 +164,7 @@ namespace VirtoCommerce.Storefront.Services
                 {
                     LoadProductInventoriesAsync(productsWithVariations),
                     LoadProductVendorsAsync(productsWithVariations),
-                    _pricingService.EvaluateProductPricesAsync(productsWithVariations)
+                    _pricingService.EvaluateProductPricesAsync(productsWithVariations, workContext)
                 };
                 await Task.WhenAll(taskList.ToArray());
             }
@@ -158,39 +175,6 @@ namespace VirtoCommerce.Storefront.Services
                 Aggregations = !result.Aggregations.IsNullOrEmpty() ? result.Aggregations.Select(x => x.ToAggregation(workContext.CurrentLanguage.CultureName)).ToArray() : new Aggregation[] { }
             };
         }
-
-
-        /// <summary>
-        /// Search products by given criteria 
-        /// </summary>
-        /// <param name="criteria"></param>
-        /// <returns></returns>
-        public virtual CatalogSearchResult SearchProducts(ProductSearchCriteria criteria)
-        {
-            criteria = criteria.Clone();
-
-            var workContext = _workContextFactory();
-            var searchCriteria = criteria.ToProductSearchDto(workContext);
-            var result = _searchApi.SearchApiModule.SearchProducts(workContext.CurrentStore.Id, searchCriteria);
-            var products = result.Products.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
-
-            if (products.Any())
-            {
-                var productsWithVariations = products.Concat(products.SelectMany(x => x.Variations)).ToList();
-                //Unable to make parallel call because its synchronous method (in future this information pricing and inventory will be getting from search index) and this lines can be removed
-                _pricingService.EvaluateProductPrices(productsWithVariations);
-                LoadProductInventories(productsWithVariations);
-                LoadProductVendors(productsWithVariations);
-            }
-
-            return new CatalogSearchResult
-            {
-                Products = new StaticPagedList<Product>(products, criteria.PageNumber, criteria.PageSize, (int?)result.TotalCount ?? 0),
-                Aggregations = !result.Aggregations.IsNullOrEmpty() ? result.Aggregations.Select(x => x.ToAggregation(workContext.CurrentLanguage.CultureName)).ToArray() : new Aggregation[] { }
-            };
-        }
-
-        #endregion
 
         protected virtual async Task LoadProductVendorsAsync(List<Product> products)
         {

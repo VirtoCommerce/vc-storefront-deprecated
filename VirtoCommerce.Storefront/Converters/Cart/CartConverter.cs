@@ -625,6 +625,8 @@ namespace VirtoCommerce.Storefront.Converters
 
             result.InjectFrom<NullableAndEnumValueInjecter>(lineItemDto);
 
+            result.ImageUrl = lineItemDto.ImageUrl.RemoveLeadingUriScheme();
+
             if (lineItemDto.TaxDetails != null)
             {
                 result.TaxDetails = lineItemDto.TaxDetails.Select(td => ToTaxDetail(td, currency)).ToList();
