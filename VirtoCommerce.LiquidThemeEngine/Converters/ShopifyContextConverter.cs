@@ -99,24 +99,23 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             {
                 result.Search = ToLiquidSearch(workContext.Products, workContext);
             }
-            else if (workContext.CurrentStaticSearchCriteria != null &&
-                !string.IsNullOrEmpty(workContext.CurrentStaticSearchCriteria.Keyword) &&
-                workContext.StaticContentSearchResult != null &&
-                workContext.StaticContentSearchResult.Any())
-
+            else if (workContext.CurrentStaticSearchCriteria != null && !string.IsNullOrEmpty(workContext.CurrentStaticSearchCriteria.Keyword))
             {
                 result.Search = new Search
                 {
                     Performed = true,
                     SearchIn = workContext.CurrentStaticSearchCriteria.SearchIn,
-                    Terms = workContext.CurrentStaticSearchCriteria.Keyword,
-                    Results = new MutablePagedList<Drop>((pageNumber, pageSize, sortInfos) =>
+                    Terms = workContext.CurrentStaticSearchCriteria.Keyword
+                };
+                if (workContext.StaticContentSearchResult != null && workContext.StaticContentSearchResult.Any())
+                {
+                    result.Search.Results = new MutablePagedList<Drop>((pageNumber, pageSize, sortInfos) =>
                     {
                         var pagedContentItems = new MutablePagedList<ContentItem>(workContext.StaticContentSearchResult);
                         pagedContentItems.Slice(pageNumber, pageSize, sortInfos);
                         return new StaticPagedList<Drop>(workContext.StaticContentSearchResult.Select(x => ToLiquidPage(x)), pagedContentItems);
-                    }, 1, workContext.StaticContentSearchResult.PageSize)
-                };
+                    }, 1, workContext.StaticContentSearchResult.PageSize);
+                }
             }
 
             if (workContext.CurrentLinkLists != null)
