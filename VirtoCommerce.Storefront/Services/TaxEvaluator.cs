@@ -20,13 +20,13 @@ namespace VirtoCommerce.Storefront.Services
         }
 
         #region ITaxEvaluator Members
-        public async Task EvaluateTaxesAsync(TaxEvaluationContext context, IEnumerable<ITaxable> owners)
+        public virtual async Task EvaluateTaxesAsync(TaxEvaluationContext context, IEnumerable<ITaxable> owners)
         {
             var taxRates = await _coreModuleApiClient.Commerce.EvaluateTaxesAsync(context.StoreId, context.ToTaxEvaluationContextDto());
             InnerEvaluateTaxes(taxRates, owners);
         }
 
-        public void EvaluateTaxes(TaxEvaluationContext context, IEnumerable<ITaxable> owners)
+        public virtual void EvaluateTaxes(TaxEvaluationContext context, IEnumerable<ITaxable> owners)
         {
             var taxRates = _coreModuleApiClient.Commerce.EvaluateTaxes(context.StoreId, context.ToTaxEvaluationContextDto());
             InnerEvaluateTaxes(taxRates, owners);
