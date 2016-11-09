@@ -59,7 +59,7 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public static Tuple<string, string, string> SplitIntoTuple(this string input, char separator)
         {
-            if(input == null)
+            if (input == null)
             {
                 throw new ArgumentNullException("input");
             }
@@ -70,8 +70,8 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public static string RemoveAccent(this string txt)
         {
-            byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(txt);
-            return System.Text.Encoding.ASCII.GetString(bytes);
+            var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(txt);
+            return Encoding.ASCII.GetString(bytes);
         }
 
         public static string Handelize(this string phrase)
@@ -100,7 +100,7 @@ namespace VirtoCommerce.Storefront.Model.Common
                 //http://www.ietf.org/rfc/rfc3986.txt
                 //section 4.2
                 var uri = new Uri(str);
-                str = "//" + uri.Host + uri.PathAndQuery;
+                str = "//" + uri.Authority + uri.PathAndQuery;
             }
             return str;
         }

@@ -76,7 +76,7 @@ namespace VirtoCommerce.Storefront.Services
 
                 if (responseGroup.HasFlag(ItemResponseGroup.ItemWithVendor))
                 {
-                    await LoadProductVendorsAsync(allProducts);
+                    await LoadProductVendorsAsync(allProducts, workContext);
                 }
 
                 await Task.WhenAll(taskList.ToArray());
@@ -163,7 +163,7 @@ namespace VirtoCommerce.Storefront.Services
                 var taskList = new List<Task>
                 {
                     LoadProductInventoriesAsync(productsWithVariations),
-                    LoadProductVendorsAsync(productsWithVariations),
+                    LoadProductVendorsAsync(productsWithVariations, workContext),
                     _pricingService.EvaluateProductPricesAsync(productsWithVariations, workContext)
                 };
                 await Task.WhenAll(taskList.ToArray());
@@ -176,26 +176,12 @@ namespace VirtoCommerce.Storefront.Services
             };
         }
 
-        protected virtual async Task LoadProductVendorsAsync(List<Product> products)
+        protected virtual async Task LoadProductVendorsAsync(List<Product> products, WorkContext workContext)
         {
             var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToArray();
             if (!vendorIds.IsNullOrEmpty())
             {
-                var vendors = await _customerService.GetVendorsByIdsAsync(vendorIds);
-                foreach (var product in products)
-                {
-                    product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
-                }
-            }
-        }
-
-        protected virtual void LoadProductVendors(List<Product> products)
-        {
-            var vendorIds = products.Where(p => !string.IsNullOrEmpty(p.VendorId)).Select(p => p.VendorId).Distinct().ToArray();
-            if (!vendorIds.IsNullOrEmpty())
-            {
-                var vendors = _customerService.GetVendorsByIds(vendorIds);
-
+                var vendors = await _customerService.GetVendorsByIdsAsync(workContext.CurrentStore, workContext.CurrentLanguage, vendorIds);
                 foreach (var product in products)
                 {
                     product.Vendor = vendors.FirstOrDefault(v => v != null && v.Id == product.VendorId);
@@ -220,6 +206,7 @@ namespace VirtoCommerce.Storefront.Services
             }
         }
 
+   
         protected virtual async Task LoadProductAssociationsAsync(IEnumerable<Product> products)
         {
             var allAssociations = products.SelectMany(x => x.Associations).ToList();

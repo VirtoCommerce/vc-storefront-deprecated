@@ -199,7 +199,7 @@ namespace VirtoCommerce.Storefront.Routing
         {
             IDictionary<string, string> result = null;
 
-            var cacheKey = BuildCacheKey("GetFullSeoPaths", objectType, objectIds);
+            var cacheKey = BuildCacheKey(new[] { "GetFullSeoPaths", store.Id, objectType }, objectIds);
 
             switch (objectType)
             {
@@ -214,10 +214,10 @@ namespace VirtoCommerce.Storefront.Routing
             return result;
         }
 
-        protected virtual string BuildCacheKey(string firstKeyItem, string secondKeyItem, params string[] otherKeyItems)
+        protected virtual string BuildCacheKey(string[] keyItems, params string[] objectIds)
         {
-            var cacheKeyItems = new List<string> { firstKeyItem, secondKeyItem };
-            cacheKeyItems.AddRange(otherKeyItems.OrderBy(id => id));
+            var cacheKeyItems = new List<string>(keyItems);
+            cacheKeyItems.AddRange(objectIds.OrderBy(id => id));
             return string.Join(":", cacheKeyItems);
         }
 

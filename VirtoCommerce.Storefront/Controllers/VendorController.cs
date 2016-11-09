@@ -32,7 +32,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpGet]
         public async Task<ActionResult> VendorDetails(string vendorId)
         {
-            var vendor = (await _customerService.GetVendorsByIdsAsync(vendorId)).FirstOrDefault();
+            var vendor = (await _customerService.GetVendorsByIdsAsync(base.WorkContext.CurrentStore, base.WorkContext.CurrentLanguage, vendorId)).FirstOrDefault();
 
             if (vendor != null)
             {

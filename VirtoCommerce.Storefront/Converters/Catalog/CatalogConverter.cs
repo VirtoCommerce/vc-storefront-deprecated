@@ -27,7 +27,6 @@ namespace VirtoCommerce.Storefront.Converters
             }
         }
 
-
         public static Product ToProduct(this searchDto.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
             return CatalogConverterInstance.ToProduct(productDto, currentLanguage, currentCurrency, store);
@@ -38,12 +37,10 @@ namespace VirtoCommerce.Storefront.Converters
             return CatalogConverterInstance.ToProduct(productDto, currentLanguage, currentCurrency, store);
         }
 
-
         public static PromotionProductEntry ToPromotionItem(this Product product)
         {
             return CatalogConverterInstance.ToPromotionItem(product);
         }
-
 
         public static TaxLine[] ToTaxLines(this Product product)
         {
@@ -109,6 +106,7 @@ namespace VirtoCommerce.Storefront.Converters
     public class CatalogConverter
     {
         private readonly MarkdownPipeline _markdownPipeline;
+
         public CatalogConverter()
         {
             _markdownPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
@@ -124,7 +122,7 @@ namespace VirtoCommerce.Storefront.Converters
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAggregation();
             result.AggregationType = aggregationDto.AggregationType;
             result.Field = aggregationDto.Field;
-           
+
             if (aggregationDto.Items != null)
             {
                 result.Items = aggregationDto.Items
@@ -283,11 +281,13 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateCategoryAssociation(associationDto.AssociatedObjectId);
             }
+
             if (retVal != null)
             {
                 retVal.Type = associationDto.Type;
                 retVal.Priority = associationDto.Priority ?? 0;
-                retVal.Image = new Image { Url = associationDto.AssociatedObjectImg };            }
+                retVal.Image = new Image { Url = associationDto.AssociatedObjectImg };
+            }
 
             return retVal;
         }
@@ -305,7 +305,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.Code = categoryDto.Code;
             result.Name = categoryDto.Name;
             result.ParentId = categoryDto.ParentId;
-            result.TaxType = categoryDto.TaxType;            
+            result.TaxType = categoryDto.TaxType;
 
             if (!categoryDto.SeoInfos.IsNullOrEmpty())
             {
@@ -328,8 +328,9 @@ namespace VirtoCommerce.Storefront.Converters
                 };
             }
 
-            result.Url = "~/" + categoryDto.Outlines.GetSeoPath(store, currentLanguage, "category/" + categoryDto.Id);
             result.Outline = categoryDto.Outlines.GetOutlinePath(store.Catalog);
+            result.SeoPath = categoryDto.Outlines.GetSeoPath(store, currentLanguage, null);
+            result.Url = "~/" + (result.SeoPath ?? "category/" + categoryDto.Id);
 
             if (categoryDto.Images != null)
             {
@@ -351,7 +352,7 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Image ToImage(catalogDto.Image imageDto)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateImage();
-            result.Url = imageDto.Url.RemoveLeadingUriScheme();           
+            result.Url = imageDto.Url.RemoveLeadingUriScheme();
             return result;
         }
 
@@ -486,7 +487,7 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.CatalogId = product.CatalogId;
             retVal.CategoryId = product.CategoryId;
             retVal.Outline = product.Outline;
-           
+
             if (product.Price != null)
             {
                 retVal.Discount = product.Price.DiscountAmount;
@@ -527,6 +528,7 @@ namespace VirtoCommerce.Storefront.Converters
                     Amount = tierPrice.Price
                 });
             }
+
             return retVal.ToArray();
         }
     }

@@ -38,6 +38,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public ICollection<CatalogProperty> Properties { get; set; }
         #endregion
 
+        public string SeoPath { get; set; }
         public string Url { get; set; }
     }
 }
