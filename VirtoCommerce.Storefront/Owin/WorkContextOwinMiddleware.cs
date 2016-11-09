@@ -227,7 +227,7 @@ namespace VirtoCommerce.Storefront.Owin
                     //Force to load products and its also populate workContext.Aggregations by preloaded values
                     workContext.Products.Slice(pageNumber, pageSize, sortInfos);
                     return workContext.Aggregations;
-                }, 1, int.MaxValue);
+                }, 1, CategorySearchCriteria.DefaultPageSize);
 
                 workContext.CurrentOrderSearchCriteria = new Model.Order.OrderSearchCriteria(qs);
                 workContext.CurrentQuoteSearchCriteria = new Model.Quote.QuoteSearchCriteria(qs);
