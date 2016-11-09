@@ -45,21 +45,16 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Controllers;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart.Services;
-using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
-using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Customer.Services;
 using VirtoCommerce.Storefront.Model.LinkList.Services;
 using VirtoCommerce.Storefront.Model.Marketing.Services;
-using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Pricing.Services;
-using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Quote.Events;
 using VirtoCommerce.Storefront.Model.Quote.Services;
 using VirtoCommerce.Storefront.Model.Services;
-using VirtoCommerce.Storefront.Model.StaticContent;
 using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Model.Tax.Services;
 using VirtoCommerce.Storefront.Owin;
@@ -108,13 +103,6 @@ namespace VirtoCommerce.Storefront
             }
 
             var appSettings = ConfigurationManager.AppSettings;
-
-            BlogSearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Blogs", 20);
-            CategorySearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Categories", 20);
-            OrderSearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Orders", 20);
-            ProductSearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Products", 20);
-            QuoteSearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Quotes", 20);
-            VendorSearchCriteria.DefaultPageSize = appSettings.GetValue("VirtoCommerce:Storefront:DefaultPageSize:Vendors", 20);
 
             UnityWebActivator.Start();
             var container = UnityConfig.GetConfiguredContainer();

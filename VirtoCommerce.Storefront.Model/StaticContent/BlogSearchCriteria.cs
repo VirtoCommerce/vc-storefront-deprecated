@@ -5,7 +5,13 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
 {
     public class BlogSearchCriteria : PagedSearchCriteria
     {
-        public static int DefaultPageSize { get; set; }
+        private static int _defaultPageSize = 20;
+
+        public static int DefaultPageSize
+        {
+            get { return _defaultPageSize; }
+            set { _defaultPageSize = value; }
+        }
 
         public BlogSearchCriteria()
             : this(new NameValueCollection())

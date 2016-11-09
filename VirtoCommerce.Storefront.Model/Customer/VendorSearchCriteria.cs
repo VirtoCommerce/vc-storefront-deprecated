@@ -5,7 +5,13 @@ namespace VirtoCommerce.Storefront.Model.Customer
 {
     public class VendorSearchCriteria : PagedSearchCriteria
     {
-        public static int DefaultPageSize { get; set; }
+        private static int _defaultPageSize = 20;
+
+        public static int DefaultPageSize
+        {
+            get { return _defaultPageSize; }
+            set { _defaultPageSize = value; }
+        }
 
         public VendorSearchCriteria(NameValueCollection queryString)
             : base(queryString, DefaultPageSize)

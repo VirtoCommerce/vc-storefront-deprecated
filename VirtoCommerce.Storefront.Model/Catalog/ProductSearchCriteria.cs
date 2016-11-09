@@ -8,7 +8,13 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 {
     public class ProductSearchCriteria : PagedSearchCriteria
     {
-        public static int DefaultPageSize { get; set; }
+        private static int _defaultPageSize = 20;
+
+        public static int DefaultPageSize
+        {
+            get { return _defaultPageSize; }
+            set { _defaultPageSize = value; }
+        }
 
         //For JSON deserialization
         public ProductSearchCriteria()
