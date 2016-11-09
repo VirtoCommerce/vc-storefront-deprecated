@@ -25,40 +25,43 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 var sortByPropInfo = elementType.GetProperty(sortByPropName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
                 if (propInfo != null)
                 {
+                    var charDelimiter = delimiter.ToCharArray();
+
                     foreach (var element in enumerable)
                     {
-                        var propValue = propInfo.GetValue(element) as string;
-                        var parts = propValue.Split(delimiter.ToCharArray());
-
-                        var treeNode = new TreeNode
+                        var path = propInfo.GetValue(element) as string;
+                        var parts = path.Split(charDelimiter);
+                        for (var i = parts.Length; i > 0; i--)
                         {
-                            Id = propValue,
-                            Level = parts.Length,
-                            Priority = sortByPropInfo != null ? sortByPropInfo.GetValue(element) as int? : null,
-                            Title = titlePropInfo != null ? titlePropInfo.GetValue(element) as string : null
-                        };
-
-                        tree.Add(treeNode);
-                    }
-
-                    foreach (var treeNode in tree)
-                    {
-                        var treeNodeLevel = treeNode.Id.Split('/').Length;
-                        var children = tree.Where(n => n.Id.IndexOf(treeNode.Id + "/") >= 0).OrderBy(n => n.Priority);
-                        treeNode.Children.AddRange(children);
-
-                        var idParts = treeNode.Id.Split('/');
-                        var parentIdParts = new List<string>();
-                        for (var i = 0; i < idParts.Length - 1; i++)
-                        {
-                            parentIdParts.Add(idParts[i]);
-                            var parentId = string.Join("/", parentIdParts);
-                            var parent = tree.FirstOrDefault(n => n.Id == parentId);
-                            if (parent != null)
+                            path = string.Join(delimiter, parts.Take(i));
+                            var treeNode = tree.FirstOrDefault(n => n.Path == path);
+                            if (treeNode == null)
                             {
-                                treeNode.Parents.Add(parent);
+                                tree.Add(new TreeNode
+                                {
+                                    Level = i,
+                                    ParentPath = string.Join(delimiter, parts.Take(Math.Max(0, i - 1))),
+                                    Path = path,
+                                    Priority = sortByPropInfo != null ? sortByPropInfo.GetValue(element) as int? : null,
+                                    Title = titlePropInfo != null ? titlePropInfo.GetValue(element) as string : null
+                                });
                             }
                         }
+                    }
+
+                    foreach (var treeNode in tree.OrderBy(n => n.Priority))
+                    {
+                        if (!string.IsNullOrEmpty(treeNode.ParentPath))
+                        {
+                            var parent = tree.FirstOrDefault(n => n.Path == treeNode.ParentPath);
+                            if (parent != null)
+                            {
+                                treeNode.Parent = parent;
+                                parent.Children.Add(treeNode);
+                            }
+                        }
+
+                        treeNode.AllChildren = tree.Where(n => n.Path.StartsWith(treeNode.Path + delimiter)).ToList();
                     }
                 }
             }
