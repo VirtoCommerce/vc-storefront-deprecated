@@ -1,5 +1,4 @@
 ﻿using DotLiquid;
-using System;
 using System.Runtime.Serialization;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
@@ -40,7 +39,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         {
             get
             {
-                return Math.Round(Rate * 100, 2);
+                return Rate * 100;
             }
         }
     }
