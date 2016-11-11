@@ -26,11 +26,13 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             : this(language, currency, new NameValueCollection())
         {
         }
+
         public ProductSearchCriteria(Language language, Currency currency, NameValueCollection queryString)
             : base(queryString, DefaultPageSize)
         {
             Language = language;
             Currency = currency;
+            Outline = "*";
 
             Parse(queryString);
         }

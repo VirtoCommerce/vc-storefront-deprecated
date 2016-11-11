@@ -280,7 +280,6 @@ namespace VirtoCommerce.Storefront.Test
         {
             var product = new catalogModel.Product
             {
-                Category = new catalogModel.Category(),
             };
 
             var result = product.Outlines.GetSeoPath(_store, new Language("en-US"), null);
