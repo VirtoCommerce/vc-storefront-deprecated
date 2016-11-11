@@ -487,6 +487,7 @@
     <Compile Include="Converters\Tax\TaxConverter.cs" />
     <Compile Include="Converters\CurrencyConverter.cs" />
     <Compile Include="Converters\Quote\QuoteConverter.cs" />
+    <Compile Include="JsonConverters\MoneyJsonConverter.cs" />
     <Compile Include="JsonConverters\CurrencyJsonConverter.cs" />
     <Compile Include="Owin\StorefrontUrlRewriterOwinMiddleware.cs" />
     <Compile Include="Routing\ISeoRouteService.cs" />

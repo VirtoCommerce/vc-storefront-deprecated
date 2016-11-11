@@ -52,6 +52,7 @@ namespace VirtoCommerce.Storefront.Binders
             var reader = new StreamReader(controllerContext.HttpContext.Request.InputStream);
             var bodyText = reader.ReadToEnd();
             var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new MoneyJsonConverter(workContext.AllCurrencies));
             settings.Converters.Add(new CurrencyJsonConverter(workContext.AllCurrencies));
             JsonConvert.PopulateObject(bodyText, retVal, settings);
             return retVal;

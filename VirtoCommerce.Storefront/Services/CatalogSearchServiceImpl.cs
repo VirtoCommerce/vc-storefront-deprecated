@@ -71,12 +71,12 @@ namespace VirtoCommerce.Storefront.Services
 
                 if (responseGroup.HasFlag(ItemResponseGroup.ItemWithPrices))
                 {
-                    await _pricingService.EvaluateProductPricesAsync(allProducts, workContext);
+                    taskList.Add(_pricingService.EvaluateProductPricesAsync(allProducts, workContext));
                 }
 
                 if (responseGroup.HasFlag(ItemResponseGroup.ItemWithVendor))
                 {
-                    await LoadProductVendorsAsync(allProducts, workContext);
+                    taskList.Add(LoadProductVendorsAsync(allProducts, workContext));
                 }
 
                 await Task.WhenAll(taskList.ToArray());
