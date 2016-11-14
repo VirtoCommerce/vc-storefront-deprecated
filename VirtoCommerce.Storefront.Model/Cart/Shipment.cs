@@ -183,7 +183,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             }
             if (shipmentTaxRate != null && Total.Amount > 0 && shipmentTaxRate.Rate.Amount > 0)
             {
-                TaxPercentRate = shipmentTaxRate.Rate.Amount / Total.Amount;              
+                TaxPercentRate = TaxRate.TaxPercentRound(shipmentTaxRate.Rate.Amount / Total.Amount);              
             }
         }
         #endregion

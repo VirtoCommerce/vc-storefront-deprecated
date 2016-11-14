@@ -15,5 +15,10 @@ namespace VirtoCommerce.Storefront.Model
         }
         public Money Rate { get; set; }
         public TaxLine Line { get; set; }
+
+        public static decimal TaxPercentRound(decimal percent)
+        {
+            return Math.Round(percent, 3, MidpointRounding.AwayFromZero);
+        }
     }
 }

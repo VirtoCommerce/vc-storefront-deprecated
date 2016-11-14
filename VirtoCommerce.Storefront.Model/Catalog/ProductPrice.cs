@@ -172,7 +172,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             var taxRate = taxRates.FirstOrDefault(x => x.Line.Quantity == 0);
             if (taxRate != null && ActualPrice.Amount > 0 && taxRate.Rate.Amount > 0)
             {
-                TaxPercentRate = taxRate.Rate.Amount / ActualPrice.Amount;
+                TaxPercentRate = TaxRate.TaxPercentRound(taxRate.Rate.Amount / ActualPrice.Amount);
             }
             foreach(var tierPrice in TierPrices)
             {
