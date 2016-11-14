@@ -49,7 +49,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     if (cart.shipments.length) {
                         $scope.checkout.shipment = cart.shipments[0];
                     }
-                    $scope.checkout.billingAddressEqualsShipping = !angular.isDefined($scope.checkout.payment.billingAddress);
+                    $scope.checkout.billingAddressEqualsShipping = !angular.isObject($scope.checkout.payment.billingAddress);
                     if (!cart.hasPhysicalProducts) {
                         $scope.checkout.billingAddressEqualsShipping = false;
                     }
