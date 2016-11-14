@@ -223,6 +223,10 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         public async Task<ActionResult> AddOrUpdateCartPayment(Payment payment)
         {
             await EnsureCartExistsAsync();
+            if (payment.Amount.Amount == decimal.Zero)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Valid payment amount is required");
+            }
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
