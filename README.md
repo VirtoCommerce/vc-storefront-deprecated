@@ -24,8 +24,8 @@ Setup your own private Microsoft Cloud environment and evaluate the latest versi
 
 # Documentation
 Developer guide:
-* <a href="http://docs.virtocommerce.com/x/TQAqAQ" target="_blank">Storefront Source Code Getting Started</a>
-* <a href="http://docs.virtocommerce.com/x/IQDr" target="_blank">Working with Storefront</a> tutorials
+* <a href="https://virtocommerce.com/docs/vc2devguide/deployment/storefront-deployment/storefront-source-code-getting-started" target="_blank">Storefront Source Code Getting Started</a>
+* <a href="https://virtocommerce.com/docs/vc2devguide/working-with-storefront" target="_blank">Working with Storefront</a> tutorials
 
 
 # License
