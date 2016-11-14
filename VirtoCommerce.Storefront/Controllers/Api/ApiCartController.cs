@@ -87,11 +87,15 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 if (lineItem != null)
                 {
                     var newPriceMoney = new Money(newPrice, _cartBuilder.Cart.Currency);
+                    //do not allow to set less price via this API call
                     if (lineItem.ListPrice < newPriceMoney)
                     {
                         lineItem.ListPrice = newPriceMoney;
                     }
-                    lineItem.SalePrice = newPriceMoney;
+                    if (lineItem.SalePrice < newPriceMoney)
+                    {
+                        lineItem.SalePrice = newPriceMoney;
+                    }
                 }
                 await _cartBuilder.SaveAsync();
 
