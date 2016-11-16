@@ -160,12 +160,19 @@ namespace VirtoCommerce.Storefront.Services
             if (products.Any())
             {
                 var productsWithVariations = products.Concat(products.SelectMany(x => x.Variations)).ToList();
-                var taskList = new List<Task>
+                var taskList = new List<Task>();
+                if (criteria.ResponseGroup.HasFlag(ItemResponseGroup.Inventory))
                 {
-                    LoadProductInventoriesAsync(productsWithVariations),
-                    LoadProductVendorsAsync(productsWithVariations, workContext),
-                    _pricingService.EvaluateProductPricesAsync(productsWithVariations, workContext)
-                };
+                    taskList.Add(LoadProductInventoriesAsync(productsWithVariations));
+                }
+                if (criteria.ResponseGroup.HasFlag(ItemResponseGroup.ItemWithVendor))
+                {
+                    taskList.Add(LoadProductVendorsAsync(productsWithVariations, workContext));
+                }
+                if (criteria.ResponseGroup.HasFlag(ItemResponseGroup.ItemWithPrices))
+                {
+                    taskList.Add(_pricingService.EvaluateProductPricesAsync(productsWithVariations, workContext));
+                }
                 await Task.WhenAll(taskList.ToArray());
             }
 
@@ -194,7 +201,7 @@ namespace VirtoCommerce.Storefront.Services
                                 VendorId = product.VendorId,
                                 PageNumber = pageNumber,
                                 PageSize = pageSize,
-                                ResponseGroup = ItemResponseGroup.ItemSmall,
+                                ResponseGroup = workContext.CurrentProductSearchCriteria.ResponseGroup & ~ItemResponseGroup.ItemWithVendor,
                                 SortBy = SortInfo.ToString(sortInfos),
                             };
 
@@ -239,7 +246,7 @@ namespace VirtoCommerce.Storefront.Services
                                PageNumber = pageNumber,
                                PageSize = pageSize,
                                Outline = categoryAssociation.Category.Outline,
-                               ResponseGroup = ItemResponseGroup.ItemSmall
+                               ResponseGroup = ItemResponseGroup.ItemInfo | ItemResponseGroup.ItemWithPrices | ItemResponseGroup.Inventory | ItemResponseGroup.ItemWithVendor
                            };
                            if (!sortInfos.IsNullOrEmpty())
                            {

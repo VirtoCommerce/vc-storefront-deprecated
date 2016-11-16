@@ -177,7 +177,7 @@ namespace VirtoCommerce.Storefront.Owin
                                 PageNumber = pageNumber2,
                                 PageSize = pageSize2,
                                 Outline = category.Outline,
-                                ResponseGroup = ItemResponseGroup.ItemSmall
+                                ResponseGroup = workContext.CurrentProductSearchCriteria.ResponseGroup
                             };
 
                             //criteria.CategoryId = category.Id;
@@ -333,7 +333,7 @@ namespace VirtoCommerce.Storefront.Owin
                             VendorId = vendor.Id,
                             PageNumber = pageNumber2,
                             PageSize = pageSize2,
-                            ResponseGroup = ItemResponseGroup.ItemSmall,
+                            ResponseGroup = workContext.CurrentProductSearchCriteria.ResponseGroup & ~ItemResponseGroup.ItemWithVendor,
                             SortBy = SortInfo.ToString(sortInfos2),
                         };
                         var searchResult = catalogSearchService.SearchProducts(criteria);

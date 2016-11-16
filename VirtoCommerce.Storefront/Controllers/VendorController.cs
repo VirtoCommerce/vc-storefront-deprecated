@@ -44,7 +44,7 @@ namespace VirtoCommerce.Storefront.Controllers
                         PageNumber = pageNumber,
                         PageSize = pageSize,
                         SortBy = SortInfo.ToString(sortInfos),
-                        ResponseGroup = ItemResponseGroup.ItemSmall
+                        ResponseGroup = base.WorkContext.CurrentProductSearchCriteria.ResponseGroup
                     };
 
                     var searchResult = _catalogSearchService.SearchProducts(criteria);
