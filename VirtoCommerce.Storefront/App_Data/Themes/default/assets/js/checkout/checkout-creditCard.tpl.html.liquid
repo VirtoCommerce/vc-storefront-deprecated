@@ -26,7 +26,7 @@
         <div class="field field--half field--required" ng-class="{ 'field--show-floating-label': $ctrl.card.cardholderName.length, 'field--error': ($ctrl.form.BankCardCardholderName.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardCardholderName.$invalid }">
             <div class="field__input-wrapper">
                 <label class="field__label" for="BankCardCardholderName">{{ 'checkout.payment_method.cardholder_name' | t }}</label>
-                <input class="field__input" id="BankCardCardholderName" name="BankCardCardholderName" placeholder="{{ 'checkout.payment_method.cardholder_name' | t }}" required="required" size="30" type="text" ng-model="$ctrl.card.bankCardHolderName">
+                <input class="field__input" id="BankCardCardholderName" name="BankCardCardholderName" placeholder="{{ 'checkout.payment_method.cardholder_name' | t }}" required="required" size="30" type="text" ng-model="$ctrl.card.cardholderName">
             </div>
             <p class="field__message field__message--error" ng-if="($ctrl.form.BankCardCardholderName.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardCardholderName.$error.required">
                 {{ 'checkout.payment_method.required_cardholder_name_message' | t }}
