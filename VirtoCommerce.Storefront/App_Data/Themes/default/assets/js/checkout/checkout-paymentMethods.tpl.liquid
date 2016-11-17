@@ -1,0 +1,24 @@
+﻿<div class="content-box" ng-repeat="paymentMethod in $ctrl.availPaymentMethods | orderBy: 'priority'">
+    <div class="radio-wrapper content-box__row">
+        <div class="radio__input">
+            <input class="input-radio" id="{% raw %}{{ paymentMethod.code }}{% endraw %}" name="PaymentMethodCode" type="radio" ng-model="$ctrl.paymentMethod" ng-required="true" ng-value="paymentMethod" ng-change="$ctrl.selectMethod(paymentMethod)" />
+        </div>
+        <label class="radio__label" for="{% raw %}{{ paymentMethod.code }}{% endraw %}" ng-bind="paymentMethod.name"></label>
+        <div ng-if="paymentMethod.total.amount > 0">
+            {% if settings.show_prices_with_taxes %}
+            <span class="order-summary__emphasis" ng-bind="paymentMethod.totalWithTax.formattedAmount"></span>
+            <span ng-if="paymentMethod.discountAmountWithTax.amount > 0">
+                <span class="order-summary__small-text strikethrough" ng-bind="paymentMethod.priceWithTax.formattedAmount"></span>
+            </span>
+            {% else %}
+            <span class="order-summary__emphasis" ng-bind="paymentMethod.total.formattedAmount"></span>
+            <span ng-if="paymentMethod.discountAmount.amount > 0">
+                <span class="order-summary__small-text strikethrough" ng-bind="paymentMethod.price.formattedAmount"></span>
+            </span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="radio-wrapper content-box__row content-box__row--secondary" ng-if="paymentMethod == $ctrl.paymentMethod && $ctrl.paymentMethod.paymentMethodType == 'standard'">
+        <vc-checkout-credit-card card="$ctrl.paymentMethod.card"></vc-checkout-credit-card>
+    </div>
+</div>

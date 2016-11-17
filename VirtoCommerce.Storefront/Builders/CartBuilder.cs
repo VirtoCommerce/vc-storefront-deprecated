@@ -351,7 +351,19 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureCartExists();
             var payments = await _cartApi.CartModule.GetAvailablePaymentMethodsAsync(Cart.Id);
-            return payments.Select(x => x.ToPaymentMethod()).ToList();
+            var retVal =  payments.Select(x => x.ToPaymentMethod(Cart)).ToList();
+
+            //Evaluate promotions cart and apply rewards for available shipping methods
+            var promoEvalContext = Cart.ToPromotionEvaluationContext();
+            await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
+
+            //Evaluate taxes for available payments 
+            var taxEvalContext = Cart.ToTaxEvalContext();
+            taxEvalContext.Lines.Clear();
+            taxEvalContext.Lines.AddRange(retVal.SelectMany(x => x.ToTaxLines()));
+            await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
+
+            return retVal;
         }
 
         public async Task ValidateAsync()

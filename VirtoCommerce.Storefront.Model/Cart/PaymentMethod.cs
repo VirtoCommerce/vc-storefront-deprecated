@@ -1,10 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class PaymentMethod : ValueObject<PaymentMethod>
+    public class PaymentMethod : ITaxable, IDiscountable
     {
+      
+        public PaymentMethod(Currency currency)
+        {
+            Currency = currency;
+
+            Price = new Money(currency);
+            DiscountAmount = new Money(currency);
+            TaxDetails = new List<TaxDetail>();
+            Discounts = new List<Discount>();
+        }
+
+
         /// <summary>
         /// Gets or sets the value of payment gateway code
         /// </summary>
@@ -55,5 +69,120 @@ namespace VirtoCommerce.Storefront.Model
         /// Custom properties for payment method
         /// </summary>
         public List<SettingEntry> Settings { get; set; }
+
+        public Currency Currency { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of shipping price
+        /// </summary>
+        public Money Price { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets the value of shipping price including tax
+        /// </summary>
+        public Money PriceWithTax
+        {
+            get
+            {
+                return Price + Price * TaxPercentRate;
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of total shipping price without taxes
+        /// </summary>
+        public Money Total
+        {
+            get
+            {
+                return Price - DiscountAmount;
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of total shipping price including taxes
+        /// </summary>
+        public Money TotalWithTax
+        {
+            get
+            {
+                return PriceWithTax - DiscountAmountWithTax;
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of total shipping discount amount
+        /// </summary>
+        public Money DiscountAmount { get; set; }
+        public Money DiscountAmountWithTax
+        {
+            get
+            {
+                return DiscountAmount + DiscountAmount * TaxPercentRate;
+            }
+        }
+
+        #region ITaxable Members
+        /// <summary>
+        /// Gets or sets the value of total shipping tax amount
+        /// </summary>
+        public Money TaxTotal
+        {
+            get
+            {
+                return TotalWithTax - Total;
+            }
+        }
+
+        public decimal TaxPercentRate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of shipping tax type
+        /// </summary>
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of line item tax details lines
+        /// </summary>
+        /// <value>
+        /// Collection of TaxDetail objects
+        /// </value>
+        public ICollection<TaxDetail> TaxDetails { get; set; }
+
+        public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
+        {
+            var paymentTaxRate = taxRates.FirstOrDefault(x => x.Line.Id != null && x.Line.Id.EqualsInvariant(Code ?? ""));          
+            if (paymentTaxRate != null && Total.Amount > 0 && paymentTaxRate.Rate.Amount > 0)
+            {
+                TaxPercentRate = TaxRate.TaxPercentRound(paymentTaxRate.Rate.Amount / Total.Amount);
+            }
+        }
+        #endregion
+
+        #region IDiscountable Members
+        public ICollection<Discount> Discounts { get; private set; }
+
+        public void ApplyRewards(IEnumerable<PromotionReward> rewards)
+        {
+            var paymentRewards = rewards.Where(r => r.RewardType == PromotionRewardType.PaymentReward && (r.PaymentMethodCode.IsNullOrEmpty() || r.PaymentMethodCode.EqualsInvariant(Code)));
+
+            Discounts.Clear();
+
+            DiscountAmount = new Money(0m, Currency);
+
+            foreach (var reward in paymentRewards)
+            {
+                var discount = reward.ToDiscountModel(Price);
+
+                if (reward.IsValid)
+                {
+                    Discounts.Add(discount);
+                    DiscountAmount += discount.Amount;
+                }
+            }
+        }
+        #endregion
+
     }
 }

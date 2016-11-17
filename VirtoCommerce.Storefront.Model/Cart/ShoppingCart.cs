@@ -35,6 +35,9 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// </summary>
         public string Name { get; set; }
 
+
+        public string Status { get; set; }
+
         /// <summary>
         /// Gets or sets the value of store id
         /// </summary>
@@ -132,7 +135,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return SubTotal + TaxTotal + ShippingPrice - DiscountTotal;
+                return SubTotal + TaxTotal + ShippingPrice + PaymentPrice - DiscountTotal;
             }
         }
 
@@ -224,6 +227,42 @@ namespace VirtoCommerce.Storefront.Model.Cart
             }
         }
 
+        public Money PaymentPrice
+        {
+            get
+            {
+                var paymentPrice = Payments.Sum(s => s.Price.Amount);
+                return new Money(paymentPrice, Currency);
+            }
+        }
+
+        public Money PaymentPriceWithTax
+        {
+            get
+            {
+                var paymentPriceWithTax = Payments.Sum(s => s.PriceWithTax.Amount);
+                return new Money(paymentPriceWithTax, Currency);
+            }
+        }
+
+        public virtual Money PaymentTotal
+        {
+            get
+            {
+                var paymentTotal = Payments.Sum(s => s.Total.Amount);
+                return new Money(paymentTotal, Currency);
+            }
+        }
+
+        public virtual Money PaymentTotalWithTax
+        {
+            get
+            {
+                var paymentTotalWithTax = Payments.Sum(s => s.TotalWithTax.Amount);
+                return new Money(paymentTotalWithTax, Currency);
+            }
+        }
+
         /// <summary>
         /// Gets or sets the value of handling total cost
         /// </summary>
@@ -241,8 +280,9 @@ namespace VirtoCommerce.Storefront.Model.Cart
             {
                 var itemDiscountTotal = Items.Sum(i => i.DiscountTotal.Amount);
                 var shipmentDiscountTotal = Shipments.Sum(s => s.DiscountAmount.Amount);
+                var paymentDiscountTotal = Payments.Sum(s => s.DiscountAmount.Amount);
 
-                return new Money(DiscountAmount.Amount + itemDiscountTotal + shipmentDiscountTotal, Currency);
+                return new Money(DiscountAmount.Amount + itemDiscountTotal + shipmentDiscountTotal + paymentDiscountTotal, Currency);
             }
         }
 
@@ -253,8 +293,9 @@ namespace VirtoCommerce.Storefront.Model.Cart
             {
                 var itemDiscountTotalWithTax = Items.Sum(i => i.DiscountTotalWithTax.Amount);
                 var shipmentDiscountTotalWithTax = Shipments.Sum(s => s.DiscountAmountWithTax.Amount);
+                var paymentDiscountTotalWithTax = Payments.Sum(s => s.DiscountAmountWithTax.Amount);
 
-                return new Money(DiscountAmount.Amount + itemDiscountTotalWithTax + shipmentDiscountTotalWithTax, Currency);
+                return new Money(DiscountAmount.Amount + itemDiscountTotalWithTax + shipmentDiscountTotalWithTax + paymentDiscountTotalWithTax, Currency);
             }
         }
 
@@ -391,11 +432,14 @@ namespace VirtoCommerce.Storefront.Model.Cart
                 foreach (var lineItem in Items)
                 {
                     retVal += lineItem.TaxTotal;
-
                 }
                 foreach (var shipment in Shipments)
                 {
                     retVal += shipment.TaxTotal;
+                }
+                foreach (var payment in Payments)
+                {
+                    retVal += payment.TaxTotal;
                 }
                 return retVal;
             }
@@ -425,6 +469,10 @@ namespace VirtoCommerce.Storefront.Model.Cart
             foreach (var shipment in Shipments)
             {
                 shipment.ApplyTaxRates(taxRates);
+            }
+            foreach (var payment in Payments)
+            {
+                payment.ApplyTaxRates(taxRates);
             }
         }
         #endregion

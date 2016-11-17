@@ -19,9 +19,9 @@ namespace VirtoCommerce.Storefront.Model.Cart.Factories
             return new CartShipmentItem();
         }
 
-        public virtual PaymentMethod CreatePaymentMethod()
+        public virtual PaymentMethod CreatePaymentMethod(Currency currency)
         {
-            return new PaymentMethod();
+            return new PaymentMethod(currency);
         }
 
         public virtual Shipment CreateShipment(Currency currency)
