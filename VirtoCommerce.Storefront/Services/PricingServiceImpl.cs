@@ -35,7 +35,7 @@ namespace VirtoCommerce.Storefront.Services
         public virtual async Task EvaluateProductPricesAsync(ICollection<Product> products, WorkContext workContext)
         {
             //Evaluate products prices
-            var evalContext = products.ToPriceEvaluationContextDto(workContext);
+            var evalContext = workContext.ToPriceEvaluationContextDto(products);
 
             var pricesResponse = await _pricingApi.PricingModule.EvaluatePricesAsync(evalContext);
             ApplyProductPricesInternal(products, pricesResponse, workContext);

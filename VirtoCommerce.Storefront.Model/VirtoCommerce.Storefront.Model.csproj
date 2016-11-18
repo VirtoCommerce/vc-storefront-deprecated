@@ -168,7 +168,6 @@
     <Compile Include="LinkList\MenuLink.cs" />
     <Compile Include="LinkList\MenuLinkList.cs" />
     <Compile Include="Marketing\Promotion.cs" />
-    <Compile Include="Marketing\PromotionProductEntry.cs" />
     <Compile Include="Marketing\PromotionEvaluationContext.cs" />
     <Compile Include="Marketing\PromotionReward.cs" />
     <Compile Include="Marketing\PromotionRewardType.cs" />

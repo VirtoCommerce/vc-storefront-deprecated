@@ -304,14 +304,7 @@ namespace VirtoCommerce.Storefront.Owin
             var pricelistCacheKey = string.Join("-", "EvaluatePriceLists", workContext.CurrentStore.Id, workContext.CurrentCustomer.Id);
             workContext.CurrentPricelists = await CacheManager.GetAsync(pricelistCacheKey, "ApiRegion", async () =>
             {
-                var evalContext = new pricingModel.PriceEvaluationContext
-                {
-                    StoreId = workContext.CurrentStore.Id,
-                    CatalogId = workContext.CurrentStore.Catalog,
-                    CustomerId = workContext.CurrentCustomer.Id,
-                    Quantity = 1
-                };
-
+                var evalContext = workContext.ToPriceEvaluationContextDto();
                 var pricingModuleApi = Container.Resolve<IPricingModuleApiClient>();
                 var pricingResult = await pricingModuleApi.PricingModule.EvaluatePriceListsAsync(evalContext);
                 return pricingResult.Select(p => p.ToPricelist(workContext.AllCurrencies, workContext.CurrentLanguage)).ToList();

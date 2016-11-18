@@ -16,6 +16,7 @@ using VirtoCommerce.Storefront.Model.Tax.Factories;
 using cartDto = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using platformDto = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
+using marketingDto = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -79,9 +80,9 @@ namespace VirtoCommerce.Storefront.Converters
             return CartConverterInstance.ToShipmentItem(lineItem);
         }
 
-        public static PromotionProductEntry ToPromotionItem(this LineItem lineItem)
+        public static marketingDto.ProductPromoEntry ToProductPromoEntryDto(this LineItem lineItem)
         {
-            return CartConverterInstance.ToPromotionItem(lineItem);
+            return CartConverterInstance.ToProductPromoEntryDto(lineItem);
         }
 
         public static cartDto.Address ToCartAddressDto(this Address address)
@@ -478,19 +479,13 @@ namespace VirtoCommerce.Storefront.Converters
         }
 
         public virtual PromotionEvaluationContext ToPromotionEvaluationContext(ShoppingCart cart)
-        {
-            var promotionItems = cart.Items.Select(ToPromotionItem).ToList();
-
+        {        
             var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionEvaluationContext();
-            result.CartPromoEntries = promotionItems;
-            result.CartTotal = cart.Total;
-            result.Coupon = cart.Coupon != null ? cart.Coupon.Code : null;
+            result.Cart = cart;
+            result.Customer = cart.Customer;
             result.Currency = cart.Currency;
-            result.CustomerId = cart.Customer.Id;
-            result.IsRegisteredUser = cart.Customer.IsRegisteredUser;
             result.Language = cart.Language;
-            result.PromoEntries = promotionItems;
-            result.StoreId = cart.StoreId;
+            result.StoreId = cart.StoreId;            
 
             return result;
         }
@@ -759,18 +754,20 @@ namespace VirtoCommerce.Storefront.Converters
             return shipmentItem;
         }
 
-        public virtual PromotionProductEntry ToPromotionItem(LineItem lineItem)
+        public virtual marketingDto.ProductPromoEntry ToProductPromoEntryDto(LineItem lineItem)
         {
-            var promoItem = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionProductEntry();
+            var result = new marketingDto.ProductPromoEntry();
 
-            promoItem.InjectFrom(lineItem);
+            result.CatalogId = lineItem.CatalogId;
+            result.CategoryId = lineItem.CategoryId;
+            result.Code = lineItem.Sku;
+            result.ProductId = lineItem.ProductId;
+            result.Discount = (double)lineItem.DiscountTotal.Amount;
+            result.Price = (double)lineItem.PlacedPrice.Amount;
+            result.Quantity = lineItem.Quantity;
+            result.Variations = null; // TODO
 
-            promoItem.Discount = new Money(lineItem.DiscountTotal.Amount, lineItem.DiscountTotal.Currency);
-            promoItem.Price = new Money(lineItem.PlacedPrice.Amount, lineItem.PlacedPrice.Currency);
-            promoItem.Quantity = lineItem.Quantity;
-            promoItem.Variations = null; // TODO
-
-            return promoItem;
+            return result;
         }
     }
 }

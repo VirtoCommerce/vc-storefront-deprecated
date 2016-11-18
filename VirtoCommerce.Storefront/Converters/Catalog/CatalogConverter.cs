@@ -14,6 +14,7 @@ using VirtoCommerce.Storefront.Model.Stores;
 using catalogDto = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using searchDto = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models;
+using marketingDto = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -37,9 +38,9 @@ namespace VirtoCommerce.Storefront.Converters
             return CatalogConverterInstance.ToProduct(productDto, currentLanguage, currentCurrency, store);
         }
 
-        public static PromotionProductEntry ToPromotionItem(this Product product)
+        public static marketingDto.ProductPromoEntry ToProductPromoEntryDto(this Product product)
         {
-            return CatalogConverterInstance.ToPromotionItem(product);
+            return CatalogConverterInstance.ToProductPromoEntryDto(product);
         }
 
         public static TaxLine[] ToTaxLines(this Product product)
@@ -480,26 +481,26 @@ namespace VirtoCommerce.Storefront.Converters
         }
 
 
-
-        public virtual PromotionProductEntry ToPromotionItem(Product product)
+        public virtual marketingDto.ProductPromoEntry ToProductPromoEntryDto(Product product)
         {
-            var retVal = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionProductEntry();
+            var retVal = new marketingDto.ProductPromoEntry();
             retVal.CatalogId = product.CatalogId;
             retVal.CategoryId = product.CategoryId;
             retVal.Outline = product.Outline;
 
             if (product.Price != null)
             {
-                retVal.Discount = product.Price.DiscountAmount;
-                retVal.Price = product.Price.SalePrice;
+                retVal.Discount = (double)product.Price.DiscountAmount.Amount;
+                retVal.Price = (double)product.Price.SalePrice.Amount;
             }
 
             retVal.ProductId = product.Id;
             retVal.Quantity = 1;
-            retVal.Variations = product.Variations.Select(ToPromotionItem).ToList();
+            retVal.Variations = product.Variations != null ? product.Variations.Select(ToProductPromoEntryDto).ToList() : null;
 
             return retVal;
         }
+      
 
         public virtual TaxLine[] ToTaxLines(Product product)
         {

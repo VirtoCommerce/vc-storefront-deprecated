@@ -4266,7 +4266,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PriceEvaluationContext class.
         /// </summary>
-        public PriceEvaluationContext(string storeId = default(string), string catalogId = default(string), System.Collections.Generic.IList<string> productIds = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> pricelistIds = default(System.Collections.Generic.IList<string>), double? quantity = default(double?), string customerId = default(string), string organizationId = default(string), System.DateTime? certainDate = default(System.DateTime?), string currency = default(string), System.Collections.Generic.IList<string> tags = default(System.Collections.Generic.IList<string>), object contextObject = default(object), string geoCity = default(string), string geoState = default(string), string geoCountry = default(string), string geoContinent = default(string), string geoZipCode = default(string), string geoConnectionType = default(string), string geoTimeZone = default(string), string geoIpRoutingType = default(string), string geoIspSecondLevel = default(string), string geoIspTopLevel = default(string), int? shopperAge = default(int?), string shopperGender = default(string), string language = default(string), string shopperSearchedPhraseInStore = default(string), string shopperSearchedPhraseOnInternet = default(string), string currentUrl = default(string), string referredUrl = default(string))
+        public PriceEvaluationContext(string storeId = default(string), string catalogId = default(string), System.Collections.Generic.IList<string> productIds = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> pricelistIds = default(System.Collections.Generic.IList<string>), double? quantity = default(double?), string customerId = default(string), string organizationId = default(string), System.DateTime? certainDate = default(System.DateTime?), string currency = default(string), object contextObject = default(object), string geoCity = default(string), string geoState = default(string), string geoCountry = default(string), string geoContinent = default(string), string geoZipCode = default(string), string geoConnectionType = default(string), string geoTimeZone = default(string), string geoIpRoutingType = default(string), string geoIspSecondLevel = default(string), string geoIspTopLevel = default(string), int? shopperAge = default(int?), string shopperGender = default(string), string language = default(string), System.Collections.Generic.IList<string> userGroups = default(System.Collections.Generic.IList<string>), string shopperSearchedPhraseInStore = default(string), string shopperSearchedPhraseOnInternet = default(string), string currentUrl = default(string), string referredUrl = default(string))
         {
             StoreId = storeId;
             CatalogId = catalogId;
@@ -4277,7 +4277,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
             OrganizationId = organizationId;
             CertainDate = certainDate;
             Currency = currency;
-            Tags = tags;
             ContextObject = contextObject;
             GeoCity = geoCity;
             GeoState = geoState;
@@ -4292,6 +4291,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
             ShopperAge = shopperAge;
             ShopperGender = shopperGender;
             Language = language;
+            UserGroups = userGroups;
             ShopperSearchedPhraseInStore = shopperSearchedPhraseInStore;
             ShopperSearchedPhraseOnInternet = shopperSearchedPhraseOnInternet;
             CurrentUrl = currentUrl;
@@ -4342,11 +4342,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "tags")]
-        public System.Collections.Generic.IList<string> Tags { get; set; }
 
         /// <summary>
         /// </summary>
@@ -4417,6 +4412,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "language")]
         public string Language { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "userGroups")]
+        public System.Collections.Generic.IList<string> UserGroups { get; set; }
 
         /// <summary>
         /// </summary>

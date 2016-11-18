@@ -6405,7 +6405,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// Initializes a new instance of the DynamicContentEvaluationContext
         /// class.
         /// </summary>
-        public DynamicContentEvaluationContext(string storeId = default(string), string placeName = default(string), System.Collections.Generic.IList<string> tags = default(System.Collections.Generic.IList<string>), System.DateTime? toDate = default(System.DateTime?), object contextObject = default(object), string geoCity = default(string), string geoState = default(string), string geoCountry = default(string), string geoContinent = default(string), string geoZipCode = default(string), string geoConnectionType = default(string), string geoTimeZone = default(string), string geoIpRoutingType = default(string), string geoIspSecondLevel = default(string), string geoIspTopLevel = default(string), int? shopperAge = default(int?), string shopperGender = default(string), string language = default(string), string shopperSearchedPhraseInStore = default(string), string shopperSearchedPhraseOnInternet = default(string), string currentUrl = default(string), string referredUrl = default(string))
+        public DynamicContentEvaluationContext(string storeId = default(string), string placeName = default(string), System.Collections.Generic.IList<string> tags = default(System.Collections.Generic.IList<string>), System.DateTime? toDate = default(System.DateTime?), object contextObject = default(object), string geoCity = default(string), string geoState = default(string), string geoCountry = default(string), string geoContinent = default(string), string geoZipCode = default(string), string geoConnectionType = default(string), string geoTimeZone = default(string), string geoIpRoutingType = default(string), string geoIspSecondLevel = default(string), string geoIspTopLevel = default(string), int? shopperAge = default(int?), string shopperGender = default(string), string language = default(string), System.Collections.Generic.IList<string> userGroups = default(System.Collections.Generic.IList<string>), string shopperSearchedPhraseInStore = default(string), string shopperSearchedPhraseOnInternet = default(string), string currentUrl = default(string), string referredUrl = default(string))
         {
             StoreId = storeId;
             PlaceName = placeName;
@@ -6425,6 +6425,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
             ShopperAge = shopperAge;
             ShopperGender = shopperGender;
             Language = language;
+            UserGroups = userGroups;
             ShopperSearchedPhraseInStore = shopperSearchedPhraseInStore;
             ShopperSearchedPhraseOnInternet = shopperSearchedPhraseOnInternet;
             CurrentUrl = currentUrl;
@@ -6523,6 +6524,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "userGroups")]
+        public System.Collections.Generic.IList<string> UserGroups { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shopperSearchedPhraseInStore")]
         public string ShopperSearchedPhraseInStore { get; set; }
 
@@ -6561,7 +6567,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PromotionEvaluationContext class.
         /// </summary>
-        public PromotionEvaluationContext(System.Collections.Generic.IList<string> refusedGiftIds = default(System.Collections.Generic.IList<string>), string storeId = default(string), string currency = default(string), string customerId = default(string), bool? isRegisteredUser = default(bool?), bool? isFirstTimeBuyer = default(bool?), bool? isEveryone = default(bool?), double? cartTotal = default(double?), string shipmentMethodCode = default(string), double? shipmentMethodPrice = default(double?), System.Collections.Generic.IList<string> availableShipmentMethodCodes = default(System.Collections.Generic.IList<string>), string coupon = default(string), System.Collections.Generic.IList<ProductPromoEntry> cartPromoEntries = default(System.Collections.Generic.IList<ProductPromoEntry>), System.Collections.Generic.IList<ProductPromoEntry> promoEntries = default(System.Collections.Generic.IList<ProductPromoEntry>), ProductPromoEntry promoEntry = default(ProductPromoEntry), object contextObject = default(object), string geoCity = default(string), string geoState = default(string), string geoCountry = default(string), string geoContinent = default(string), string geoZipCode = default(string), string geoConnectionType = default(string), string geoTimeZone = default(string), string geoIpRoutingType = default(string), string geoIspSecondLevel = default(string), string geoIspTopLevel = default(string), int? shopperAge = default(int?), string shopperGender = default(string), string language = default(string), string shopperSearchedPhraseInStore = default(string), string shopperSearchedPhraseOnInternet = default(string), string currentUrl = default(string), string referredUrl = default(string))
+        public PromotionEvaluationContext(System.Collections.Generic.IList<string> refusedGiftIds = default(System.Collections.Generic.IList<string>), string storeId = default(string), string currency = default(string), string customerId = default(string), bool? isRegisteredUser = default(bool?), bool? isFirstTimeBuyer = default(bool?), bool? isEveryone = default(bool?), double? cartTotal = default(double?), string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), double? shipmentMethodPrice = default(double?), System.Collections.Generic.IList<string> availableShipmentMethodCodes = default(System.Collections.Generic.IList<string>), string paymentMethodCode = default(string), double? paymentMethodPrice = default(double?), System.Collections.Generic.IList<string> availablePaymentMethodCodes = default(System.Collections.Generic.IList<string>), string coupon = default(string), System.Collections.Generic.IList<ProductPromoEntry> cartPromoEntries = default(System.Collections.Generic.IList<ProductPromoEntry>), System.Collections.Generic.IList<ProductPromoEntry> promoEntries = default(System.Collections.Generic.IList<ProductPromoEntry>), ProductPromoEntry promoEntry = default(ProductPromoEntry), object contextObject = default(object), string geoCity = default(string), string geoState = default(string), string geoCountry = default(string), string geoContinent = default(string), string geoZipCode = default(string), string geoConnectionType = default(string), string geoTimeZone = default(string), string geoIpRoutingType = default(string), string geoIspSecondLevel = default(string), string geoIspTopLevel = default(string), int? shopperAge = default(int?), string shopperGender = default(string), string language = default(string), System.Collections.Generic.IList<string> userGroups = default(System.Collections.Generic.IList<string>), string shopperSearchedPhraseInStore = default(string), string shopperSearchedPhraseOnInternet = default(string), string currentUrl = default(string), string referredUrl = default(string))
         {
             RefusedGiftIds = refusedGiftIds;
             StoreId = storeId;
@@ -6572,8 +6578,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
             IsEveryone = isEveryone;
             CartTotal = cartTotal;
             ShipmentMethodCode = shipmentMethodCode;
+            ShipmentMethodOption = shipmentMethodOption;
             ShipmentMethodPrice = shipmentMethodPrice;
             AvailableShipmentMethodCodes = availableShipmentMethodCodes;
+            PaymentMethodCode = paymentMethodCode;
+            PaymentMethodPrice = paymentMethodPrice;
+            AvailablePaymentMethodCodes = availablePaymentMethodCodes;
             Coupon = coupon;
             CartPromoEntries = cartPromoEntries;
             PromoEntries = promoEntries;
@@ -6592,6 +6602,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
             ShopperAge = shopperAge;
             ShopperGender = shopperGender;
             Language = language;
+            UserGroups = userGroups;
             ShopperSearchedPhraseInStore = shopperSearchedPhraseInStore;
             ShopperSearchedPhraseOnInternet = shopperSearchedPhraseOnInternet;
             CurrentUrl = currentUrl;
@@ -6645,6 +6656,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodOption")]
+        public string ShipmentMethodOption { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shipmentMethodPrice")]
         public double? ShipmentMethodPrice { get; set; }
 
@@ -6652,6 +6668,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "availableShipmentMethodCodes")]
         public System.Collections.Generic.IList<string> AvailableShipmentMethodCodes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodCode")]
+        public string PaymentMethodCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodPrice")]
+        public double? PaymentMethodPrice { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "availablePaymentMethodCodes")]
+        public System.Collections.Generic.IList<string> AvailablePaymentMethodCodes { get; set; }
 
         /// <summary>
         /// </summary>
@@ -6742,6 +6773,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "language")]
         public string Language { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "userGroups")]
+        public System.Collections.Generic.IList<string> UserGroups { get; set; }
 
         /// <summary>
         /// </summary>

@@ -33,10 +33,6 @@ namespace VirtoCommerce.Storefront.Model.Marketing.Factories
         {
             return new PromotionEvaluationContext();
         }
-
-        public virtual PromotionProductEntry CreatePromotionProductEntry()
-        {
-            return new PromotionProductEntry();
-        }
+   
     }
 }
