@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 using DotLiquid;
 using DotLiquid.Exceptions;
 using DotLiquid.Util;
@@ -22,11 +21,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Tags
     /// </summary>
     public class PaginateTag : Block
     {
-        private static readonly Regex _syntax = R.B(R.Q(@"({0})\s*by\s*({0}+)?"), DotLiquid.Liquid.QuotedFragment);
+        private static readonly Regex _syntax = R.B(R.Q(@"({0})\s*by\s*({0}+)?"), Liquid.QuotedFragment);
 
         private string _collectionName;
-        private int _pageSize;
-        #region Public Methods and Operators
+        private string _paginateBy;
 
         public override void Initialize(string tagName, string markup, List<string> tokens)
         {
@@ -35,18 +33,12 @@ namespace VirtoCommerce.LiquidThemeEngine.Tags
             if (match.Success)
             {
                 _collectionName = match.Groups[1].Value;
-                var pageSize =  match.Groups[2].Value;
-                if(!string.IsNullOrEmpty(pageSize))
-                {
-                    int.TryParse(pageSize, out _pageSize);
-                }
+                _paginateBy = match.Groups[2].Value;
             }
             else
             {
                 throw new SyntaxException("PaginateSyntaxException");
             }
-
-            _pageSize = _pageSize > 0 ? _pageSize : 20;
 
             base.Initialize(tagName, markup, tokens);
         }
@@ -59,16 +51,17 @@ namespace VirtoCommerce.LiquidThemeEngine.Tags
             Uri requestUrl;
             Uri.TryCreate(context["request_url"] as string, UriKind.RelativeOrAbsolute, out requestUrl);
             var pageNumber = (int)context["current_page"];
-            var pageSize = (int)context["page_size"];
+            var globalPageSize = (int)context["page_size"];
+            var localPageSize = GetIntegerValue(_paginateBy, context, 20);
 
             if (mutablePagedList != null)
             {
-                mutablePagedList.Slice(pageNumber, pageSize > 0 ? pageSize : _pageSize, mutablePagedList.SortInfos);
+                mutablePagedList.Slice(pageNumber, globalPageSize > 0 ? globalPageSize : localPageSize, mutablePagedList.SortInfos);
                 pagedList = mutablePagedList;
             }
             else if (collection != null)
             {
-                pagedList = new PagedList<Drop>(collection.OfType<Drop>().AsQueryable(), pageNumber, _pageSize);                
+                pagedList = new PagedList<Drop>(collection.OfType<Drop>().AsQueryable(), pageNumber, localPageSize);
                 //TODO: Need find way to replace ICollection instance in liquid context to paged instance
                 //var hash = context.Environments.FirstOrDefault(s => s.ContainsKey(_collectionName));
                 //hash[_collectionName] = pagedList;
@@ -77,16 +70,40 @@ namespace VirtoCommerce.LiquidThemeEngine.Tags
             if (pagedList != null)
             {
                 var paginate = new Paginate(pagedList);
-                context["paginate"] = paginate;
 
-                for (int i = 1; i <= pagedList.PageCount; i++)
+                for (var i = 1; i <= pagedList.PageCount; i++)
                 {
-                    paginate.Parts.Add(new Part { IsLink = i != pagedList.PageNumber, Title = i.ToString(), Url = requestUrl != null ? requestUrl.SetQueryParameter("page", i.ToString()).ToString() : i.ToString() });
+                    var part = new Part
+                    {
+                        IsLink = i != pagedList.PageNumber,
+                        Title = i.ToString(),
+                        Url = requestUrl != null ? requestUrl.SetQueryParameter("page", i > 1 ? i.ToString() : null).ToString() : i.ToString()
+                    };
+
+                    paginate.Parts.Add(part);
                 }
+
+                context["paginate"] = paginate;
                 RenderAll(NodeList, context, result);
             }
         }
 
-        #endregion
+        private static int GetIntegerValue(string paginateBy, Context context, int defaultValue)
+        {
+            int? result = null;
+
+            int pageSize;
+            if (int.TryParse(paginateBy, out pageSize))
+            {
+                result = pageSize;
+            }
+
+            if (result == null && context.HasKey(paginateBy))
+            {
+                result = Convert.ToInt32(context[paginateBy]);
+            }
+
+            return result ?? defaultValue;
+        }
     }
 }
