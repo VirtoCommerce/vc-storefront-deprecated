@@ -17,9 +17,7 @@ namespace VirtoCommerce.Storefront
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider.min.js")
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider-bullet-nav.js")
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider-captions.js")
-                    .IncludeDirectory("~/App_Data/Themes/default/assets/js/", "*.js")
-                    .Include("~/App_Data/Themes/default/assets/js/checkout/checkout-address.js")
-                    .IncludeDirectory("~/App_Data/Themes/default/assets/js/account/", "*.js"));
+                    .IncludeDirectory("~/App_Data/Themes/default/assets/js/", "*.js"));
 
             bundles.Add(
                 new ScriptBundle("~/default-theme/checkout/scripts")
@@ -28,6 +26,16 @@ namespace VirtoCommerce.Storefront
                     .Include("~/App_Data/Themes/default/assets/js/directives.js")
                     .Include("~/App_Data/Themes/default/assets/js/main.js")
                     .IncludeDirectory("~/App_Data/Themes/default/assets/js/checkout/", "*.js"));
+
+            bundles.Add(
+                new ScriptBundle("~/default-theme/account/scripts")
+                    .Include("~/App_Data/Themes/default/assets/modernizr.min.js")
+                    .Include("~/App_Data/Themes/default/assets/ideal-image-slider.min.js")
+                    .Include("~/App_Data/Themes/default/assets/ideal-image-slider-bullet-nav.js")
+                    .Include("~/App_Data/Themes/default/assets/ideal-image-slider-captions.js")
+                    .IncludeDirectory("~/App_Data/Themes/default/assets/js/", "*.js")
+                    .Include("~/App_Data/Themes/default/assets/js/checkout/checkout-address.js")
+                    .IncludeDirectory("~/App_Data/Themes/default/assets/js/account/", "*.js"));
 
             #endregion
 

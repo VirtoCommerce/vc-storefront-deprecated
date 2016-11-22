@@ -1,5 +1,4 @@
 ﻿var storefrontAppDependencies = [
-'ngRoute',
 'ui.bootstrap'
 ]
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);
@@ -27,17 +26,7 @@ storefrontApp.factory('httpErrorInterceptor', ['$q', '$rootScope', function ($q,
     return httpErrorInterceptor;
 }])
 
-storefrontApp.config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
+storefrontApp.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpErrorInterceptor');
 
-    $routeProvider
-        .when('/shipping-address', {
-            templateUrl: 'storefront.checkout.shipping-address.tpl'
-        })
-        .when('/shipping-method', {
-            templateUrl: 'storefront.checkout.shipping-method.tpl'
-        })
-        .when('/payment-method', {
-            templateUrl: 'storefront.checkout.payment-method.tpl'
-        });
 }]);
