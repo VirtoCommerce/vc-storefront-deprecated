@@ -11,8 +11,8 @@ angular.module(moduleName, ['ngResource'])
     $templateCache.put('pagerTemplate.html', '<uib-pagination boundary-links="true" max-size="$ctrl.pageSettings.numPages" items-per-page="$ctrl.pageSettings.itemsPerPageCount" total-items="$ctrl.pageSettings.totalItems" ng-model="$ctrl.pageSettings.currentPage" ng-change="$ctrl.pageSettings.pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>');
 }])
 
-.controller('accountController', ['$scope', '$window', 'storefront.accountApi',
-    function ($scope, $window, accountApi) {
+.controller('accountController', ['$scope', 'storefront.accountApi',
+    function ($scope, accountApi) {
         $scope.getOrders = function (pageNumber, pageSize, sortInfos, callback) {
             wrapLoading(function () {
                 return accountApi.getOrders({ pageNumber: pageNumber, pageSize: pageSize, sortInfos: sortInfos }, callback).$promise;
@@ -31,7 +31,7 @@ angular.module(moduleName, ['ngResource'])
             });
         };
 
-        $scope.updateAddresses = function (data) {
+        function updateAddresses(data) {
             return wrapLoading(function () {
                 return accountApi.updateAddresses(data, $scope.getCustomer).$promise;
             });
@@ -60,4 +60,42 @@ angular.module(moduleName, ['ngResource'])
 			function () { $scope.isLoading = false; });
         }
 
+        // address management
+        var addr = $scope.addr = {};        
+        addr.addNewAddress = function () {
+            if (_.last(components).validate()) {
+                $scope.customer.addresses.push(addr.newAddress);
+                updateAddresses($scope.customer.addresses).then(function () {
+                    addr.newAddress = null;
+                });
+            }
+        };
+
+        addr.submit = function ($index, addrCopy) {
+            if (components[$index].validate()) {
+                angular.copy(addrCopy, $scope.customer.addresses[$index]);
+                updateAddresses($scope.customer.addresses);
+            }
+        };
+
+        addr.cancel = function ($index, addrCopy) {
+            angular.copy($scope.customer.addresses[$index], addrCopy);
+        };
+
+        $scope.clone = function (x) {
+            return angular.copy(x);
+        };
+
+        addr.delete = function ($index) {
+            $scope.customer.addresses.splice($index, 1);
+            updateAddresses($scope.customer.addresses);
+        };
+
+        var components = [];
+        addr.addComponent = function (component) {
+            components.push(component);
+        };
+        addr.removeComponent = function (component) {
+            components = _.without(components, component);
+        };
     }]);

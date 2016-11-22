@@ -348,7 +348,6 @@
     <Content Include="App_Data\Themes\default\assets\jquery.zoom.min.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-quotes.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-orders.js" />
-    <Content Include="App_Data\Themes\default\assets\js\account\addresses-crud.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-profile-update.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\accountApi.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\%24account.js" />
@@ -442,7 +441,6 @@
     <Content Include="App_Data\Themes\default\assets\js\account\account-orders.tpl.liquid">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Themes\default\assets\js\account\addresses-crud.tpl.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-quotes.tpl.liquid">
       <SubType>Designer</SubType>
     </Content>

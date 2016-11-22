@@ -5,26 +5,26 @@ storefrontApp.component('vcCheckoutAddress', {
         address: '=',
         addresses: '<',
         countries: '=',
+        parent: '=',
         getCountryRegions: '&',
         editMode: '<',
         onUpdate: '&'
     },
     require: {
-        adddressesCrud: '?^vcAddressesCrud',
         checkoutStep: '?^vcCheckoutWizardStep'
     },
     controller: ['$scope', function ($scope) {
         var ctrl = this;
         this.$onInit = function () {
-            if (ctrl.adddressesCrud)
-                ctrl.adddressesCrud.addComponent(this);
+            if (ctrl.parent)
+                ctrl.parent.addComponent(this);
             if (ctrl.checkoutStep)
                 ctrl.checkoutStep.addComponent(this);
         };
 
         this.$onDestroy = function () {
-            if (ctrl.adddressesCrud)
-                ctrl.adddressesCrud.removeComponent(this);
+            if (ctrl.parent)
+                ctrl.parent.removeComponent(this);
             if (ctrl.checkoutStep)
                 ctrl.checkoutStep.removeComponent(this);
         };
