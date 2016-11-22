@@ -17,7 +17,9 @@ namespace VirtoCommerce.Storefront
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider.min.js")
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider-bullet-nav.js")
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider-captions.js")
-                    .IncludeDirectory("~/App_Data/Themes/default/assets/js/", "*.js"));
+                    .IncludeDirectory("~/App_Data/Themes/default/assets/js/", "*.js")
+                    .Include("~/App_Data/Themes/default/assets/js/checkout/checkout-address.js")
+                    .IncludeDirectory("~/App_Data/Themes/default/assets/js/account/", "*.js"));
 
             bundles.Add(
                 new ScriptBundle("~/default-theme/checkout/scripts")

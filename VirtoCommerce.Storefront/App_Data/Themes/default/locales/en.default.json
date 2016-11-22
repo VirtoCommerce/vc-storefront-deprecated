@@ -189,7 +189,7 @@
     },
     "quotes": {
         "general": {
-            "empty": "You have no any quote requests.",
+            "empty": "You have no quote requests.",
             "continue_browsing_html": "Continue browsing <a href=\"collections/all\">here</a>.",
             "title": "Quotes",
             "email": "E-mail address",
@@ -250,8 +250,10 @@
         "account": {
             "title": "My Account",
             "details": "Account Details",
-            "view_addresses": "View Addresses",
-            "return": "Return to Account Details"
+            "return": "Return to Account Details",
+            "validation": {
+                "same_passwords": "Old and new passwords are the same!"
+            }
         },
         "activate_account": {
             "title": "Activate Account",
@@ -264,7 +266,8 @@
         "addresses": {
             "title": "Your Addresses",
             "default": "Default",
-            "add_new": "Add a New Address",
+            "add_new": "Add new Address",
+            "edit_old": "Edit address",
             "first_name": "First Name",
             "last_name": "Last Name",
             "company": "Company",
@@ -298,6 +301,7 @@
             "title": "Order History",
             "order_number": "Order",
             "date": "Date",
+            "status": "Status",
             "payment_status": "Payment Status",
             "fulfillment_status": "Fulfillment Status",
             "total": "Total",
@@ -325,7 +329,7 @@
         },
         "quotes": {
             "title": "Quote requests",
-            "none": "You haven't submit any quote requests yet.",
+            "none": "You haven't submitted any quote requests yet.",
             "quote_number": "Number",
             "date": "Date",
             "total": "Total",

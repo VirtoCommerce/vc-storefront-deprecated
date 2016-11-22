@@ -1,0 +1,29 @@
+﻿<h4>{{ 'customer.orders.title' | t }}</h4>
+<table class="full" ng-if="$ctrl.entries.length">
+    <thead>
+        <tr>
+            <th>{{ 'customer.orders.order_number' | t }}</th>
+            <th>{{ 'customer.orders.date' | t }}</th>
+            <th>{{ 'customer.orders.status' | t }}</th>
+            <th>{{ 'customer.orders.payment_status' | t }}</th>
+            <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+            <th>{{ 'customer.orders.total' | t }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="order in $ctrl.entries">
+            <td>
+                <a ng-bind="order.number" href="account/order/{% raw %}{{ order.number }}{% endraw %}"></a>
+            </td>
+            <td ng-bind="order.createdDate | date"></td>
+            <td ng-bind="order.status"></td>
+            <td ng-bind="order | orderToFinancialStatusLabel"></td>
+            <td ng-bind="order | orderToFulfillmentStatusLabel"></td>
+            <td ng-bind="order.total.formattedAmount"></td>
+        </tr>
+    </tbody>
+</table>
+
+<div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+
+<p ng-if="!$ctrl.entries.length">{{ 'customer.orders.none' | t }}</p>

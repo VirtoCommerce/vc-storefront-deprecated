@@ -346,6 +346,13 @@
     <Content Include="App_Data\Themes\default\assets\informer-loader.gif" />
     <Content Include="App_Data\Themes\default\assets\jcb.svg" />
     <Content Include="App_Data\Themes\default\assets\jquery.zoom.min.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-quotes.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-orders.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\addresses-crud.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-profile-update.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\accountApi.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\%24account.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-password-change.js" />
     <Content Include="App_Data\Themes\default\assets\js\cart.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-totals.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-totals.tpl.liquid" />
@@ -353,12 +360,16 @@
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-lineItems.tpl.liquid" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.tpl.html.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.tpl.html" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.js" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard-step.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard-step.tpl.html" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard.js" />
@@ -426,6 +437,15 @@
     <Content Include="App_Data\x64\libsassnet.dll" />
     <Content Include="App_Data\x86\LibSass.x86.dll" />
     <Content Include="App_Data\x86\libsassnet.dll" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-password-change.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-profile-update.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-orders.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\js\account\addresses-crud.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-quotes.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -585,7 +605,9 @@
     <Content Include="App_Data\Themes\default\snippets\collection-views.liquid" />
     <Content Include="App_Data\Themes\default\snippets\comment.liquid" />
     <Content Include="App_Data\Themes\default\snippets\content_header.liquid" />
-    <Content Include="App_Data\Themes\default\snippets\customer-menu.liquid" />
+    <Content Include="App_Data\Themes\default\snippets\customer-menu.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\snippets\error_popup.liquid" />
     <Content Include="App_Data\Themes\default\snippets\featured-collection.liquid" />
     <Content Include="App_Data\Themes\default\snippets\featured-row.liquid" />
@@ -640,7 +662,9 @@
     <Content Include="App_Data\Themes\default\templates\customers\addresses.liquid" />
     <Content Include="App_Data\Themes\default\templates\customers\login.liquid" />
     <Content Include="App_Data\Themes\default\templates\customers\order.liquid" />
-    <Content Include="App_Data\Themes\default\templates\customers\quote-requests.liquid" />
+    <Content Include="App_Data\Themes\default\templates\customers\quote-requests.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\templates\customers\register.liquid" />
     <Content Include="App_Data\Themes\default\templates\customers\reset_password.liquid" />
     <Content Include="App_Data\Themes\default\templates\error.liquid" />
