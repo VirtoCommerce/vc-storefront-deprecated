@@ -44,6 +44,11 @@ namespace VirtoCommerce.Storefront.Converters
             return OrderConverterInstance.ToOrderInPayment(paymentInDto, availCurrencies, language);
         }
 
+        public static orderDto.PaymentIn ToOrderPaymentInDto(this PaymentIn paymentIn)
+        {
+            return OrderConverterInstance.ToOrderPaymentInDto(paymentIn);
+        }
+
         public static LineItem ToOrderLineItem(this orderDto.LineItem lineItemDto, IEnumerable<Currency> availCurrencies, Language language)
         {
             return OrderConverterInstance.ToOrderLineItem(lineItemDto, availCurrencies, language);
@@ -245,6 +250,26 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.GatewayCode = paymentIn.PaymentMethod.Code;
             }
+            return retVal;
+        }
+
+        public virtual orderDto.PaymentIn ToOrderPaymentInDto(PaymentIn payment)
+        {
+            var retVal = new orderDto.PaymentIn();
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(payment);
+            retVal.Sum = (double)payment.Sum.Amount;
+            retVal.Currency = payment.Currency.Code;
+
+            if (payment.DynamicProperties != null)
+            {
+                retVal.DynamicProperties = payment.DynamicProperties.Select(ToOrderDynamicPropertyDto).ToList();
+            }
+
+            //if (payment.GatewayCode != null)
+            //{
+            //    var a = retVal.GatewayCode;
+            //}
+
             return retVal;
         }
 

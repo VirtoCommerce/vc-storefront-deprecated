@@ -250,10 +250,7 @@
         "account": {
             "title": "My Account",
             "details": "Account Details",
-            "return": "Return to Account Details",
-            "validation": {
-                "same_passwords": "Old and new passwords are the same!"
-            }
+            "return": "Return to Account Details"
         },
         "activate_account": {
             "title": "Activate Account",
@@ -299,6 +296,7 @@
         },
         "orders": {
             "title": "Order History",
+            "return": "Return to list",
             "order_number": "Order",
             "date": "Date",
             "status": "Status",
@@ -326,6 +324,9 @@
             "total": "Total",
             "fulfilled_on": "Fulfilled on {{ date }}",
             "subtotal": "Subtotal"
+        },
+        "order_payment": {
+            "submit":  "Confirm payment"
         },
         "quotes": {
             "title": "Quote requests",
@@ -379,7 +380,12 @@
             "new_password": "New Password",
             "new_password_confirm": "Confirm New Password",
             "submit": "Save",
-            "cancel": "Cancel"
+            "cancel": "Cancel",
+            "validation": {
+                "current-password": "Required",
+                "new-password": "Old and new passwords are the same!",
+                "repeat-password": "New passwords doesn't match!"
+            }
         }
     },
     "homepage": {
@@ -455,7 +461,7 @@
             "only_left": "Only {{ count }} left!",
             "quantity": "Quantity",
             "add_to_cart": "Add to Cart",
-            "details_tab" :  "Product details"
+            "details_tab": "Product details"
         }
     },
     "gift_cards": {

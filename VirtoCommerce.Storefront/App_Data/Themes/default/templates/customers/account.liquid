@@ -5,7 +5,7 @@
 <div ng-controller="accountController">
     <uib-tabset>
         <uib-tab heading="Orders">
-            <vc-account-orders get-orders="getOrders" loading="isLoading"></vc-account-orders>
+            <vc-account-orders></vc-account-orders>
         </uib-tab>
         {% if shop.quotes_enabled %}
         <uib-tab heading="Quote requests">

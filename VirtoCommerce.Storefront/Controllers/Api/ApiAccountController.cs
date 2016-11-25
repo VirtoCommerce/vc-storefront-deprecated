@@ -11,7 +11,6 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Customer.Services;
-using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Quote;
 
 namespace VirtoCommerce.Storefront.Controllers.Api
@@ -35,21 +34,6 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         public ActionResult GetCurrentCustomer()
         {
             return Json(WorkContext.CurrentCustomer);
-        }
-
-        // GET: storefrontapi/account/orders
-        [HttpGet]
-        public ActionResult GetCustomerOrders(int pageNumber, int pageSize, IEnumerable<SortInfo> sortInfos)
-        {
-            var orders = WorkContext.CurrentCustomer.Orders;
-            orders.Slice(pageNumber, pageSize, sortInfos);
-            var retVal = new StaticPagedList<CustomerOrder>(orders.Select(x => x), orders);
-
-            return Json(new
-            {
-                Results = retVal,
-                TotalCount = retVal.TotalItemCount
-            });
         }
 
         // GET: storefrontapi/account/quotes

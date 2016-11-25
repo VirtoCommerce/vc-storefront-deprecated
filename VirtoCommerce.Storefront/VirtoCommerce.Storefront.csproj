@@ -445,6 +445,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Themes\default\layout\account_layout.liquid" />
+    <Content Include="App_Data\Themes\default\assets\account.scss.liquid" />
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -477,6 +478,7 @@
     <Compile Include="AutoRestClients\SearchApiModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
     <Compile Include="AutoRestClients\StoreModuleApi.cs" />
+    <Compile Include="Binders\OrderTypesModelBinder.cs" />
     <Compile Include="Binders\CartTypesModelBinder.cs" />
     <Compile Include="Common\AppBuilderExtension.cs" />
     <Compile Include="Common\FeedResult.cs" />
@@ -492,6 +494,7 @@
     <Compile Include="Common\ObjectExtensions.cs" />
     <Compile Include="Common\RequireHttps.cs" />
     <Compile Include="Common\SeoExtensions.cs" />
+    <Compile Include="Controllers\Api\ApiOrderController.cs" />
     <Compile Include="Controllers\Api\ApiBlogController.cs" />
     <Compile Include="Controllers\Api\ApiQuoteRequestController.cs" />
     <Compile Include="Controllers\Api\ApiCommonController.cs" />

@@ -4,21 +4,17 @@ var moduleName = "storefront.account";
 if (storefrontAppDependencies !== undefined) {
     storefrontAppDependencies.push(moduleName);
 }
-angular.module(moduleName, ['ngResource'])
+angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards'])
+
+.value('$routerRootComponent', 'vcAccountOrders')
 
 .run(['$templateCache', function ($templateCache) {
     // cache application level templates
     $templateCache.put('pagerTemplate.html', '<uib-pagination boundary-links="true" max-size="$ctrl.pageSettings.numPages" items-per-page="$ctrl.pageSettings.itemsPerPageCount" total-items="$ctrl.pageSettings.totalItems" ng-model="$ctrl.pageSettings.currentPage" ng-change="$ctrl.pageSettings.pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>');
 }])
 
-.controller('accountController', ['$scope', 'storefront.accountApi',
-    function ($scope, accountApi) {
-        $scope.getOrders = function (pageNumber, pageSize, sortInfos, callback) {
-            wrapLoading(function () {
-                return accountApi.getOrders({ pageNumber: pageNumber, pageSize: pageSize, sortInfos: sortInfos }, callback).$promise;
-            });
-        };
-
+.controller('accountController', ['$scope', 'storefront.accountApi', 'confirmService',
+    function ($scope, accountApi, confirmService) {
         $scope.getQuotes = function (pageNumber, pageSize, sortInfos, callback) {
             wrapLoading(function () {
                 return accountApi.getQuotes({ pageNumber: pageNumber, pageSize: pageSize, sortInfos: sortInfos }, callback).$promise;
@@ -35,7 +31,7 @@ angular.module(moduleName, ['ngResource'])
             return wrapLoading(function () {
                 return accountApi.updateAddresses(data, $scope.getCustomer).$promise;
             });
-        };
+        }
 
         $scope.availCountries = accountApi.getCountries();
 
@@ -61,7 +57,7 @@ angular.module(moduleName, ['ngResource'])
         }
 
         // address management
-        var addr = $scope.addr = {};        
+        var addr = $scope.addr = {};
         addr.addNewAddress = function () {
             if (_.last(components).validate()) {
                 $scope.customer.addresses.push(addr.newAddress);
@@ -87,8 +83,12 @@ angular.module(moduleName, ['ngResource'])
         };
 
         addr.delete = function ($index) {
-            $scope.customer.addresses.splice($index, 1);
-            updateAddresses($scope.customer.addresses);
+            confirmService.confirm('Delete this address?').then(function (confirmed) {
+                if (confirmed) {
+                    $scope.customer.addresses.splice($index, 1);
+                    updateAddresses($scope.customer.addresses);
+                }
+            });
         };
 
         var components = [];
@@ -98,4 +98,10 @@ angular.module(moduleName, ['ngResource'])
         addr.removeComponent = function (component) {
             components = _.without(components, component);
         };
-    }]);
+    }])
+
+.service('confirmService', ['$q', function ($q) {
+    this.confirm = function (message) {
+        return $q.when(window.confirm(message || 'Is it OK?'));
+    };
+}]);

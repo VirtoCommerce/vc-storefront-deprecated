@@ -1,29 +1,202 @@
 ﻿<h4>{{ 'customer.orders.title' | t }}</h4>
-<table class="full" ng-if="$ctrl.entries.length">
-    <thead>
-        <tr>
-            <th>{{ 'customer.orders.order_number' | t }}</th>
-            <th>{{ 'customer.orders.date' | t }}</th>
-            <th>{{ 'customer.orders.status' | t }}</th>
-            <th>{{ 'customer.orders.payment_status' | t }}</th>
-            <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
-            <th>{{ 'customer.orders.total' | t }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="order in $ctrl.entries">
-            <td>
-                <a ng-bind="order.number" href="account/order/{% raw %}{{ order.number }}{% endraw %}"></a>
-            </td>
-            <td ng-bind="order.createdDate | date"></td>
-            <td ng-bind="order.status"></td>
-            <td ng-bind="order | orderToFinancialStatusLabel"></td>
-            <td ng-bind="order | orderToFulfillmentStatusLabel"></td>
-            <td ng-bind="order.total.formattedAmount"></td>
-        </tr>
-    </tbody>
-</table>
+<ng-outlet></ng-outlet>
 
-<div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+<script id="account-orders-list.tpl" type="text/ng-template">
+    <table class="full" ng-if="$ctrl.entries.length">
+        <thead>
+            <tr>
+                <th>{{ 'customer.orders.order_number' | t }}</th>
+                <th>{{ 'customer.orders.date' | t }}</th>
+                <th>{{ 'customer.orders.status' | t }}</th>
+                <th>{{ 'customer.orders.payment_status' | t }}</th>
+                <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                <th>{{ 'customer.orders.total' | t }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="order in $ctrl.entries">
+                <td>
+                    <a ng-bind="order.number" ng-link="['OrderDetail', {number: order.number, pageNumber: $ctrl.pageSettings.currentPage}]"></a>
+                </td>
+                <td ng-bind="order.createdDate | date"></td>
+                <td ng-bind="order.status"></td>
+                <td ng-bind="order | orderToFinancialStatusLabel"></td>
+                <td ng-bind="order | orderToFulfillmentStatusLabel"></td>
+                <td ng-bind="order.total.formattedAmount"></td>
+            </tr>
+        </tbody>
+    </table>
 
-<p ng-if="!$ctrl.entries.length">{{ 'customer.orders.none' | t }}</p>
+    <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+
+    <p ng-if="!$ctrl.entries.length">{{ 'customer.orders.none' | t }}</p>
+</script>
+
+<script id="account-order-detail.tpl" type="text/ng-template">
+    <p>
+        <a ng-link="['OrderList', {pageNumber: $ctrl.pageNumber}]">
+            <span class="fa fa-arrow-left"></span> {{ 'customer.orders.return' | t }}
+        </a>
+    </p>
+
+    <div class="grid">
+        <div class="grid-item two-thirds medium-down--one-whole">
+            <h4>{{ 'customer.order.title' | t }} {% raw %}{{$ctrl.order.number}}{% endraw %}</h4>
+            <p>
+                {{ 'customer.order.placed_on_date_html' | t }}
+                <strong ng-bind="$ctrl.order.createdDate | date: 'medium'"></strong>
+            </p>
+
+            <div ng-if="$ctrl.order.isCancelled" class="errors">
+                <h5>
+                    {{ 'customer.order.cancelled_on' | t }}
+                    <span ng-bind="$ctrl.order.modifiedDate | date: 'medium'"></span>
+                </h5>
+                <p>{{ 'customer.order.cancel_reason' | t }}: {% raw %}{{ $ctrl.order.cancelReason }}{% endraw %}</p>
+            </div>
+
+            <table class="full">
+                <thead>
+                    <tr>
+                        <th>{{ 'customer.order.product' | t }}</th>
+                        <th>{{ 'customer.order.sku' | t }}</th>
+                        <th>{{ 'customer.order.price' | t }}</th>
+                        <th class="text-center">{{ 'customer.order.quantity' | t }}</th>
+                        <th class="text-right">{{ 'customer.order.total' | t }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="line_item in $ctrl.order.items" id="{{ line_item.id }}">
+                        <td>
+                            <a ng-bind="line_item.name" href="{% raw %}{{ 'product/' + line_item.productId }}{% endraw %}"></a>
+                            <div ng-if="line_item.fulfillment" class="note">
+                                {{ 'customer.order.fulfilled_on' | t }} {% raw %}{{ line_item.fulfillment.createdDate | date }}{% endraw %}
+                                <a ng-if="line_item.fulfillment.trackingNumber" href="{% raw %}{{ line_item.fulfillment.trackingUrl }}{% endraw %}">{% raw %}{{ line_item.fulfillment.trackingCompany }} #{{ line_item.fulfillment.trackingNumber}}{% endraw %}</a>
+                            </div>
+                        </td>
+                        <td ng-bind="line_item.sku"></td>
+                        {% if settings.show_prices_with_taxes %}
+                        <td ng-bind="line_item.priceWithTax.formattedAmount"></td>
+                        <td ng-bind="line_item.quantity" class="text-center"></td>
+                        <td ng-bind="line_item.extendedPriceWithTax.formattedAmount" class="text-right"></td>
+                        {% else %}
+                        <td ng-bind="line_item.price.formattedAmount"></td>
+                        <td ng-bind="line_item.quantity" class="text-center"></td>
+                        <td ng-bind="line_item.extendedPrice.formattedAmount" class="text-right"></td>
+                        {% endif %}
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">{{ 'customer.order.subtotal' | t }}:</td>
+                        {% if settings.show_prices_with_taxes %}
+                        <td class="text-right">{{ $ctrl.order.subtotal_price_with_tax | money: $ctrl.order.currency_code }}</td>
+                        {% else %}
+                        <td class="text-right">{{ $ctrl.order.subtotal_price | money: $ctrl.order.currency_code }}</td>
+                        {% endif %}
+                    </tr>
+
+                    {% for discount in $ctrl.order.discounts %}
+                    <tr class="order_summary discount">
+                        <td colspan="4">{{ discount.code }} {{ 'customer.order.discount' | t }}:</td>
+                        <td class="text-right">{{ discount.amount | money: $ctrl.order.currency_code }}</td>
+                    </tr>
+                    {% endfor %}
+
+                    {% for shipping_method in $ctrl.order.shipping_methods %}
+                    <tr>
+                        <td colspan="4">{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }}):</td>
+                        <td class="text-right">{{ shipping_method.price | money: $ctrl.order.currency_code }}</td>
+                    </tr>
+                    {% endfor %}
+
+                    {% for tax_line in $ctrl.order.tax_lines %}
+                    <tr>
+                        <td colspan="4">{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate_percentage }}%):</td>
+                        <td class="text-right">{{ tax_line.price | money: $ctrl.order.currency_code }}</td>
+                    </tr>
+                    {% endfor %}
+
+                    <tr>
+                        <td colspan="4">
+                            <strong>{{ 'customer.order.total' | t }}:</strong>
+                        </td>
+                        <td class="text-right">
+                            <strong>{{ $ctrl.order.total_price | money: $ctrl.order.currency_code }}</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <vc-checkout-totals cart="$ctrl.order"></vc-checkout-totals>
+        </div>
+
+        <div class="grid-item one-third medium-down--one-whole">
+            <h4>{{ 'customer.order.payment_status' | t }}</h4>
+            <p>
+                <strong>{{ 'customer.order.payment_status' | t }}:</strong> {% raw %}{{ $ctrl.order | orderToFinancialStatusLabel }}{% endraw %}
+            </p>
+            <p>
+                <strong>{{ 'customer.order.billing_address' | t }}:</strong>
+                <vc-checkout-address address="$ctrl.billingAddress"></vc-checkout-address>
+            </p>
+            <p ng-if="'Pending' === ($ctrl.order | orderToFinancialStatusLabel)">
+                <a ng-link="['PayOrder', {number: $ctrl.order.number, pageNumber: $ctrl.pageNumber}]" class="btn">Pay order</a>
+                <!--<a ng-click="$ctrl.gotoPayment()" class="btn">Pay order</a>-->
+            </p>
+
+            <h4>{{ 'customer.order.fulfillment_status' | t }}</h4>
+            <p>
+                <strong>{{ 'customer.order.fulfillment_status' | t }}:</strong> {% raw %}{{ $ctrl.order | orderToFulfillmentStatusLabel }}{% endraw %}
+            </p>
+            <p>
+                <strong>{{ 'customer.order.shipping_address' | t }}:</strong>
+                <vc-checkout-address address="$ctrl.order.shipments[0].deliveryAddress"></vc-checkout-address>
+            </p>
+        </div>
+    </div>
+</script>
+
+<script id="account-order-pay.tpl" type="text/ng-template">
+    <p>
+        <a ng-link="['OrderDetail', {number: $ctrl.orderNumber}]">
+            <span class="fa fa-arrow-left"></span> Return
+        </a>
+    </p>
+
+    <div class="edit_checkout animate-floating-labels">
+        <div class="step__sections">
+            <div class="section section--payment-method">
+                <div class="section__header">
+                    <h2 class="section__title">{{ 'checkout.payment_method.title' | t }}</h2>
+                    <p class="section__text">{{ 'checkout.payment_method.subtitle' | t }}</p>
+                </div>
+                <div class="section__content">
+                    <vc-checkout-payment-methods get-avail-payment-methods="$ctrl.getAvailPaymentMethods()" payment-method="$ctrl.paymentMethod" on-select-method="$ctrl.selectPaymentMethod(paymentMethod)"></vc-checkout-payment-methods>
+                </div>
+            </div>
+            <div class="section section--billing-address">
+                <div class="section__header">
+                    <h2 class="section__title">{{ 'checkout.payment_method.billing_address' | t }}</h2>
+                </div>
+                <div class="section__content">
+                    <div class="content-box">
+                        <div class="checkbox-wrapper content-box__row" ng-if="$ctrl.hasPhysicalProducts">
+                            <div class="checkbox__input">
+                                <input class="input-checkbox" id="BillingAddressEqualsShipping" name="BillingAddressEqualsShipping" ng-model="$ctrl.billingAddressEqualsShipping" type="checkbox" ng-checked="$ctrl.billingAddressEqualsShipping" ng-change="$ctrl.validate()"  />
+                            </div>
+                            <label class="checkbox__label" for="BillingAddressEqualsShipping">{{ 'checkout.payment_method.billing_address_equals_shipping' | t }}</label>
+                        </div>
+                        <div class="radio-group__row content-box__row content-box__row--secondary" ng-if="!$ctrl.billingAddressEqualsShipping">
+                            <vc-checkout-address address="$ctrl.payment.billingAddress" countries="$ctrl.availCountries" get-country-regions="getCountryRegions(country)" addresses="$ctrl.customer.addresses" on-update="$ctrl.validate()" edit-mode="true"></vc-checkout-address>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <strong>Total:</strong> {% raw %}{{ $ctrl.order.total.formattedAmount }}{% endraw %}
+    <div class="text-center">
+        <a ng-click="$ctrl.submit()" class="btn">{{ 'customer.order_payment.submit' | t }}</a>
+    </div>
+</script>

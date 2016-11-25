@@ -23,7 +23,7 @@
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css' | stylesheet_tag }}
 
-    {{ 'default.scss.css' | asset_url | stylesheet_tag }}
+    {{ 'account.scss.css' | asset_url | stylesheet_tag }}
     <!--{{ 'checkout.css' | global_asset_url | stylesheet_tag }}-->
 
     {% include 'google-fonts' %}
@@ -33,7 +33,9 @@
     {{ '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js' | script_tag }}
     {{ '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js' | script_tag }}
     {{ '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-resource.min.js' | script_tag }}
+    {{ '//unpkg.com/@angular/router@0.2.0/angular1/angular_1_router.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap-tpls.min.js' | script_tag }}
+    {{ '//rawgit.com/bendrucker/angular-credit-cards/v3.0.1/release/angular-credit-cards.js' | script_tag }}
 
     {{ '~/default-theme/account/scripts' | script_bundle_tag }}
 
@@ -52,17 +54,17 @@
                 <div class="grid-item large--one-third">
                     {% if template == 'index' %}
                     <h1 class="header-logo" itemscope itemtype="http://schema.org/Organization">
+                    {% else %}
+                        <div class="h1 header-logo" itemscope itemtype="http://schema.org/Organization" />
+                        {% endif %}
+                        {% if settings.logo_use_image %}
+                        <a href="{{ '/' | absolute_url }}" itemprop="url">
+                            <img alt="{{ shop.name }}" src="{{ 'logo.png' | asset_url }}" itemprop="logo" />
+                        </a>
                         {% else %}
-                        <div class="h1 header-logo" itemscope itemtype="http://schema.org/Organization">
-                            {% endif %}
-                            {% if settings.logo_use_image %}
-                            <a href="{{ '/' | absolute_url }}" itemprop="url">
-                                <img alt="{{ shop.name }}" src="{{ 'logo.png' | asset_url }}" itemprop="logo" />
-                            </a>
-                            {% else %}
-                            <a href="{{ '/' | absolute_url }}" itemprop="url">{{ shop.name }}</a>
-                            {% endif %}
-                            {% if template == 'index' %}
+                        <a href="{{ '/' | absolute_url }}" itemprop="url">{{ shop.name }}</a>
+                        {% endif %}
+                    {% if template == 'index' %}
                     </h1>
                     {% else %}
                 </div>
