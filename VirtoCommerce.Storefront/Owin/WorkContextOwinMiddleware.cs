@@ -177,7 +177,7 @@ namespace VirtoCommerce.Storefront.Owin
                                 PageNumber = pageNumber2,
                                 PageSize = pageSize2,
                                 Outline = category.Outline,
-                                ResponseGroup = ItemResponseGroup.ItemSmall
+                                ResponseGroup = workContext.CurrentProductSearchCriteria.ResponseGroup
                             };
 
                             //criteria.CategoryId = category.Id;
@@ -192,10 +192,10 @@ namespace VirtoCommerce.Storefront.Owin
                             //now workContext.Aggregation will be contains preloaded aggregations for current category
                             workContext.Aggregations = new MutablePagedList<Aggregation>(searchResult.Aggregations);
                             return searchResult.Products;
-                        });
+                        }, 1, ProductSearchCriteria.DefaultPageSize);
                     }
                     return result;
-                });
+                }, 1, CategorySearchCriteria.DefaultPageSize);
 
                 //This line make delay products loading initialization (products can be evaluated on view rendering time)
                 workContext.Products = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
@@ -213,7 +213,7 @@ namespace VirtoCommerce.Storefront.Owin
                     //now workContext.Aggregation will be contains preloaded aggregations for current search criteria
                     workContext.Aggregations = new MutablePagedList<Aggregation>(result.Aggregations);
                     return result.Products;
-                });
+                }, 1, ProductSearchCriteria.DefaultPageSize);
                 //This line make delay aggregation loading initialization (aggregation can be evaluated on view rendering time)
                 workContext.Aggregations = new MutablePagedList<Aggregation>((pageNumber, pageSize, sortInfos) =>
                 {
@@ -227,7 +227,7 @@ namespace VirtoCommerce.Storefront.Owin
                     //Force to load products and its also populate workContext.Aggregations by preloaded values
                     workContext.Products.Slice(pageNumber, pageSize, sortInfos);
                     return workContext.Aggregations;
-                });
+                }, 1, ProductSearchCriteria.DefaultPageSize);
 
                 workContext.CurrentOrderSearchCriteria = new Model.Order.OrderSearchCriteria(qs);
                 workContext.CurrentQuoteSearchCriteria = new Model.Quote.QuoteSearchCriteria(qs);
@@ -304,14 +304,7 @@ namespace VirtoCommerce.Storefront.Owin
             var pricelistCacheKey = string.Join("-", "EvaluatePriceLists", workContext.CurrentStore.Id, workContext.CurrentCustomer.Id);
             workContext.CurrentPricelists = await CacheManager.GetAsync(pricelistCacheKey, "ApiRegion", async () =>
             {
-                var evalContext = new pricingModel.PriceEvaluationContext
-                {
-                    StoreId = workContext.CurrentStore.Id,
-                    CatalogId = workContext.CurrentStore.Catalog,
-                    CustomerId = workContext.CurrentCustomer.Id,
-                    Quantity = 1
-                };
-
+                var evalContext = workContext.ToPriceEvaluationContextDto();
                 var pricingModuleApi = Container.Resolve<IPricingModuleApiClient>();
                 var pricingResult = await pricingModuleApi.PricingModule.EvaluatePriceListsAsync(evalContext);
                 return pricingResult.Select(p => p.ToPricelist(workContext.AllCurrencies, workContext.CurrentLanguage)).ToList();
@@ -333,16 +326,16 @@ namespace VirtoCommerce.Storefront.Owin
                             VendorId = vendor.Id,
                             PageNumber = pageNumber2,
                             PageSize = pageSize2,
-                            ResponseGroup = ItemResponseGroup.ItemSmall,
+                            ResponseGroup = workContext.CurrentProductSearchCriteria.ResponseGroup & ~ItemResponseGroup.ItemWithVendor,
                             SortBy = SortInfo.ToString(sortInfos2),
                         };
                         var searchResult = catalogSearchService.SearchProducts(criteria);
                         return searchResult.Products;
-                    });
+                    }, 1, ProductSearchCriteria.DefaultPageSize);
                 }
 
                 return vendors;
-            });
+            }, 1, VendorSearchCriteria.DefaultPageSize);
         }
 
         protected virtual async Task<Store[]> GetAllStoresAsync()

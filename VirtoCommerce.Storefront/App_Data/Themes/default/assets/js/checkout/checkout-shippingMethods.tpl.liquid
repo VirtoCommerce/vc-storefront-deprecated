@@ -12,14 +12,14 @@
                 </div>
                 <label class="radio__label" for="{% raw %}{{ method.id }}{% endraw %}" ng-bind="method.name + '&nbsp' + method.optionName"></label>
                 {% if settings.show_prices_with_taxes %}
-                <span class="order-summary__emphasis" ng-bind="method.totalWithTax.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="method.totalWithTax.formattedAmount"></span>
                 <span ng-if="method.discountAmountWithTax.amount > 0">
-                    <span class="order-summary__small-text strikethrough" ng-bind="method.priceWithTax.formatedAmount"></span>
+                    <span class="order-summary__small-text strikethrough" ng-bind="method.priceWithTax.formattedAmount"></span>
                 </span>
                 {% else %}
-                <span class="order-summary__emphasis" ng-bind="method.total.formatedAmount"></span>
+                <span class="order-summary__emphasis" ng-bind="method.total.formattedAmount"></span>
                 <span ng-if="method.discountAmount.amount > 0">
-                    <span class="order-summary__small-text strikethrough" ng-bind="method.price.formatedAmount"></span>
+                    <span class="order-summary__small-text strikethrough" ng-bind="method.price.formattedAmount"></span>
                 </span>
                 {% endif %}
             </div>

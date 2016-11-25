@@ -6,7 +6,6 @@ namespace VirtoCommerce.Storefront.Model.Pricing.Services
 {
     public interface IPricingService
     {
-        Task EvaluateProductPricesAsync(ICollection<Product> products);
-        void EvaluateProductPrices(ICollection<Product> products);
+        Task EvaluateProductPricesAsync(ICollection<Product> products, WorkContext workContext);      
     }
 }

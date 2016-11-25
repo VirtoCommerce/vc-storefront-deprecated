@@ -54,7 +54,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 {
                     workContext.Categories.Slice(pageNumber, pageSize, sortInfos);
                     return new StaticPagedList<Collection>(workContext.Categories.Select(x => ToLiquidCollection(x, workContext)), workContext.Categories);
-                });
+                }, 1, workContext.Categories.PageSize);
             }
 
             return result;

@@ -6,6 +6,7 @@
         ShipmentReward,
         SpecialOfferReward,
         CatalogItemAmountReward,
-        GiftReward
+        GiftReward,
+        PaymentReward
     }
 }

@@ -36,12 +36,7 @@ namespace VirtoCommerce.Storefront.Converters
         public static Promotion ToWebModel(this marketingDto.Promotion promotionDto)
         {
             return MarketingConverterInstance.ToPromotion(promotionDto);
-        }
-
-        public static marketingDto.ProductPromoEntry ToProductPromoEntryDto(this PromotionProductEntry promoProductEntry)
-        {
-            return MarketingConverterInstance.ToProductPromoEntryDto(promoProductEntry);
-        }
+        }       
 
         public static PromotionReward ToPromotionReward(this marketingDto.PromotionReward rewardDto, Currency currency)
         {
@@ -107,18 +102,7 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public marketingDto.ProductPromoEntry ToProductPromoEntryDto(PromotionProductEntry promoProductEntry)
-        {
-            var serviceModel = new marketingDto.ProductPromoEntry();
-
-            serviceModel.InjectFrom<NullableAndEnumValueInjecter>(promoProductEntry);
-
-            serviceModel.Discount = promoProductEntry.Discount != null ? (double?)promoProductEntry.Discount.Amount : null;
-            serviceModel.Price = promoProductEntry.Price != null ? (double?)promoProductEntry.Price.Amount : null;
-            serviceModel.Variations = promoProductEntry.Variations != null ? promoProductEntry.Variations.Select(ToProductPromoEntryDto).ToList() : null;
-
-            return serviceModel;
-        }
+      
 
         public virtual Promotion ToPromotion(marketingDto.Promotion promotionDto)
         {
@@ -134,26 +118,17 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual PromotionEvaluationContext ToPromotionEvaluationContext(WorkContext workContext, IEnumerable<Product> products = null)
         {
             var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionEvaluationContext();
-            result.CartPromoEntries = workContext.CurrentCart.Items.Select(x => x.ToPromotionItem()).ToList();
-            result.CartTotal = workContext.CurrentCart.Total;
-            result.Coupon = workContext.CurrentCart.Coupon != null ? workContext.CurrentCart.Coupon.Code : null;
+
             result.Currency = workContext.CurrentCurrency;
-            result.CustomerId = workContext.CurrentCustomer.Id;
-            result.IsRegisteredUser = workContext.CurrentCustomer.IsRegisteredUser;
+            result.Customer = workContext.CurrentCustomer;
             result.Language = workContext.CurrentLanguage;
             result.StoreId = workContext.CurrentStore.Id;
 
-            //Set cart lineitems as default promo items
-            result.PromoEntries = result.CartPromoEntries;
-
-            if (workContext.CurrentProduct != null)
-            {
-                result.PromoEntry = workContext.CurrentProduct.ToPromotionItem();
-            }
+            result.Product = workContext.CurrentProduct;
 
             if (products != null)
             {
-                result.PromoEntries = products.Select(x => x.ToPromotionItem()).ToList();
+                result.Products = products.ToList();
             }
 
             return result;
@@ -163,16 +138,63 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = new marketingDto.PromotionEvaluationContext();
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(promoEvalContext);
+            if (promoEvalContext.Cart != null)
+            {
+                result.CartPromoEntries = promoEvalContext.Cart.Items.Select(x => x.ToProductPromoEntryDto()).ToList();
 
-            result.CartPromoEntries = promoEvalContext.CartPromoEntries.Select(ToProductPromoEntryDto).ToList();
-            result.CartTotal = promoEvalContext.CartTotal != null ? (double?)promoEvalContext.CartTotal.Amount : null;
+                result.CartTotal = (double)promoEvalContext.Cart.Total.Amount;
+                result.Coupon = promoEvalContext.Cart.Coupon != null ? promoEvalContext.Cart.Coupon.Code : null;
+                result.Currency = promoEvalContext.Cart.Currency.Code;
+                result.CustomerId = promoEvalContext.Cart.Customer.Id;
+                if (promoEvalContext.Cart.Customer.UserGroups != null)
+                {
+                    result.UserGroups = promoEvalContext.Cart.Customer.UserGroups.ToList();
+                }
+                result.IsRegisteredUser = promoEvalContext.Cart.Customer.IsRegisteredUser;
+                result.Language = promoEvalContext.Cart.Language.CultureName;
+                //Set cart line items as default promo items
+                result.PromoEntries = result.CartPromoEntries;
+
+                if(!promoEvalContext.Cart.Shipments.IsNullOrEmpty())
+                {
+                    var shipment = promoEvalContext.Cart.Shipments.First();
+                    result.ShipmentMethodCode = shipment.ShipmentMethodCode;
+                    result.ShipmentMethodOption = shipment.ShipmentMethodOption;
+                    result.ShipmentMethodPrice = (double)shipment.Price.Amount;
+                }
+                if (!promoEvalContext.Cart.Payments.IsNullOrEmpty())
+                {
+                    var payment = promoEvalContext.Cart.Payments.First();
+                    result.PaymentMethodCode = payment.PaymentGatewayCode;
+                    result.PaymentMethodPrice = (double)payment.Price.Amount;
+                }              
+            }
+
+            if (promoEvalContext.Products != null)
+            {
+                result.PromoEntries = promoEvalContext.Products.Select(x=>x.ToProductPromoEntryDto()).ToList();
+            }
+
+            if(promoEvalContext.Product != null)
+            {
+                result.PromoEntry = promoEvalContext.Product.ToProductPromoEntryDto();
+            }
+           
+            if (promoEvalContext.Customer != null)
+            {
+                if (promoEvalContext.Customer.UserGroups != null)
+                {
+                    result.UserGroups = promoEvalContext.Customer.UserGroups.ToList();
+                }
+                result.CustomerId = promoEvalContext.Customer.Id;
+                result.IsEveryone = true;
+                result.IsRegisteredUser = promoEvalContext.Customer.IsRegisteredUser;               
+            }
+
             result.Currency = promoEvalContext.Currency != null ? promoEvalContext.Currency.Code : null;
             result.Language = promoEvalContext.Language != null ? promoEvalContext.Language.CultureName : null;
-            result.PromoEntries = promoEvalContext.PromoEntries.Select(ToProductPromoEntryDto).ToList();
-            result.PromoEntry = promoEvalContext.PromoEntry != null ? ToProductPromoEntryDto(promoEvalContext.PromoEntry) : null;
-            result.ShipmentMethodPrice = promoEvalContext.ShipmentMethodPrice != null ? (double?)promoEvalContext.ShipmentMethodPrice.Amount : null;
-
+            result.StoreId = promoEvalContext.StoreId;
+            
             return result;
         }
     }

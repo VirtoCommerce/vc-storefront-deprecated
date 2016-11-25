@@ -56,7 +56,7 @@ namespace VirtoCommerce.Storefront.Routing
                     response.RouteData["vendorId"] = entity.ObjectId;
                     break;
                 case "Page":
-                    response.RouteData["controller"] = "Page";
+                    response.RouteData["controller"] = "StaticContent";
                     response.RouteData["action"] = "GetContentPage";
                     response.RouteData["page"] = entity.ObjectInstance;
                     break;
@@ -89,9 +89,11 @@ namespace VirtoCommerce.Storefront.Routing
             var allSeoRecords = GetAllSeoRecords(lastSlug);
             var bestSeoRecords = allSeoRecords.GetBestMatchingSeoInfos(workContext.CurrentStore, workContext.CurrentLanguage, lastSlug);
 
+            var seoEntityComparer = AnonymousComparer.Create((SeoEntity x) => string.Join(":", x.ObjectType, x.ObjectId, x.SeoPath));
             // Find distinct objects
             var entities = bestSeoRecords
                 .Select(s => new SeoEntity { ObjectType = s.ObjectType, ObjectId = s.ObjectId, SeoPath = s.SemanticUrl })
+                .Distinct(seoEntityComparer)
                 .ToList();
 
             // Don't load objects for short SEO links
@@ -197,7 +199,7 @@ namespace VirtoCommerce.Storefront.Routing
         {
             IDictionary<string, string> result = null;
 
-            var cacheKey = BuildCacheKey("GetFullSeoPaths", objectType, objectIds);
+            var cacheKey = BuildCacheKey(new[] { "GetFullSeoPaths", store.Id, objectType }, objectIds);
 
             switch (objectType)
             {
@@ -212,10 +214,10 @@ namespace VirtoCommerce.Storefront.Routing
             return result;
         }
 
-        protected virtual string BuildCacheKey(string firstKeyItem, string secondKeyItem, params string[] otherKeyItems)
+        protected virtual string BuildCacheKey(string[] keyItems, params string[] objectIds)
         {
-            var cacheKeyItems = new List<string> { firstKeyItem, secondKeyItem };
-            cacheKeyItems.AddRange(otherKeyItems.OrderBy(id => id));
+            var cacheKeyItems = new List<string>(keyItems);
+            cacheKeyItems.AddRange(objectIds.OrderBy(id => id));
             return string.Join(":", cacheKeyItems);
         }
 

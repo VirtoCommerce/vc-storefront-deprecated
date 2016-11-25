@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Markdig;
 using Microsoft.Practices.ServiceLocation;
-using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
@@ -15,6 +14,7 @@ using VirtoCommerce.Storefront.Model.Stores;
 using catalogDto = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using searchDto = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models;
+using marketingDto = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -28,7 +28,6 @@ namespace VirtoCommerce.Storefront.Converters
             }
         }
 
-
         public static Product ToProduct(this searchDto.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
             return CatalogConverterInstance.ToProduct(productDto, currentLanguage, currentCurrency, store);
@@ -39,12 +38,10 @@ namespace VirtoCommerce.Storefront.Converters
             return CatalogConverterInstance.ToProduct(productDto, currentLanguage, currentCurrency, store);
         }
 
-
-        public static PromotionProductEntry ToPromotionItem(this Product product)
+        public static marketingDto.ProductPromoEntry ToProductPromoEntryDto(this Product product)
         {
-            return CatalogConverterInstance.ToPromotionItem(product);
+            return CatalogConverterInstance.ToProductPromoEntryDto(product);
         }
-
 
         public static TaxLine[] ToTaxLines(this Product product)
         {
@@ -110,6 +107,7 @@ namespace VirtoCommerce.Storefront.Converters
     public class CatalogConverter
     {
         private readonly MarkdownPipeline _markdownPipeline;
+
         public CatalogConverter()
         {
             _markdownPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
@@ -123,7 +121,8 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Aggregation ToAggregation(searchDto.Aggregation aggregationDto, string currentLanguage)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAggregation();
-            result.InjectFrom<NullableAndEnumValueInjecter>(aggregationDto);
+            result.AggregationType = aggregationDto.AggregationType;
+            result.Field = aggregationDto.Field;
 
             if (aggregationDto.Items != null)
             {
@@ -151,7 +150,9 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual AggregationItem ToAggregationItem(searchDto.AggregationItem itemDto, string currentLanguage)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAggregationItem();
-            result.InjectFrom<NullableAndEnumValueInjecter>(itemDto);
+            result.Value = itemDto.Value;
+            result.IsApplied = itemDto.IsApplied ?? false;
+            result.Count = itemDto.Count ?? 0;
 
             if (itemDto.Labels != null)
             {
@@ -173,7 +174,11 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProperty();
 
-            retVal.InjectFrom<NullableAndEnumValueInjecter>(propertyDto);
+            retVal.Id = propertyDto.Id;
+            retVal.Name = propertyDto.Name;
+            retVal.Type = propertyDto.Type;
+            retVal.ValueType = propertyDto.ValueType;
+
             //Set display names and set current display name for requested language
             if (propertyDto.DisplayNames != null)
             {
@@ -219,8 +224,9 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual searchDto.ProductSearch ToProductSearchDto(ProductSearchCriteria criteria, WorkContext workContext)
         {
-            var result = new searchDto.ProductSearch()
+            var result = new searchDto.ProductSearch
             {
+                Locale = criteria.Language != null ? criteria.Language.CultureName : workContext.CurrentLanguage.CultureName,
                 SearchPhrase = criteria.Keyword,
                 Outline = criteria.Outline,
                 Currency = criteria.Currency == null ? workContext.CurrentCurrency.Code : criteria.Currency.Code,
@@ -239,27 +245,27 @@ namespace VirtoCommerce.Storefront.Converters
                     result.Terms = new List<string>();
                 }
 
-                result.Terms.Add(string.Format("vendor:{0}", criteria.VendorId));
+                result.Terms.Add(string.Concat("vendor:", criteria.VendorId));
             }
 
             if (criteria.SortBy != null)
-                result.Sort = new string[] { criteria.SortBy };
+                result.Sort = new[] { criteria.SortBy };
 
             return result;
         }
 
         public virtual searchDto.CategorySearch ToCategorySearchDto(CategorySearchCriteria criteria, WorkContext workContext)
         {
-            var result = new searchDto.CategorySearch()
+            var result = new searchDto.CategorySearch
             {
                 Skip = criteria.Start,
-                Take = criteria.PageSize,                
+                Take = criteria.PageSize,
                 Outline = criteria.Outline,
                 ResponseGroup = ((int)criteria.ResponseGroup).ToString()
             };
 
             if (criteria.SortBy != null)
-                result.Sort = new string[] { criteria.SortBy };
+                result.Sort = new[] { criteria.SortBy };
 
             return result;
         }
@@ -267,6 +273,7 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Association ToAssociation(catalogDto.ProductAssociation associationDto)
         {
             Association retVal = null;
+
             if (associationDto.AssociatedObjectType.EqualsInvariant("product"))
             {
                 retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProductAssociation(associationDto.AssociatedObjectId);
@@ -275,9 +282,11 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateCategoryAssociation(associationDto.AssociatedObjectId);
             }
+
             if (retVal != null)
             {
-                retVal.InjectFrom<NullableAndEnumValueInjecter>(associationDto);
+                retVal.Type = associationDto.Type;
+                retVal.Priority = associationDto.Priority ?? 0;
                 retVal.Image = new Image { Url = associationDto.AssociatedObjectImg };
             }
 
@@ -292,7 +301,12 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Category ToCategory(catalogDto.Category categoryDto, Language currentLanguage, Store store)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateCategory();
-            result.InjectFrom<NullableAndEnumValueInjecter>(categoryDto);
+            result.Id = categoryDto.Id;
+            result.CatalogId = categoryDto.CatalogId;
+            result.Code = categoryDto.Code;
+            result.Name = categoryDto.Name;
+            result.ParentId = categoryDto.ParentId;
+            result.TaxType = categoryDto.TaxType;
 
             if (!categoryDto.SeoInfos.IsNullOrEmpty())
             {
@@ -315,12 +329,13 @@ namespace VirtoCommerce.Storefront.Converters
                 };
             }
 
-            result.Url = "~/" + categoryDto.Outlines.GetSeoPath(store, currentLanguage, "category/" + categoryDto.Id);
             result.Outline = categoryDto.Outlines.GetOutlinePath(store.Catalog);
+            result.SeoPath = categoryDto.Outlines.GetSeoPath(store, currentLanguage, null);
+            result.Url = "~/" + (result.SeoPath ?? "category/" + categoryDto.Id);
 
             if (categoryDto.Images != null)
             {
-                result.Images = categoryDto.Images.Select(i => i.ToImage()).ToArray();
+                result.Images = categoryDto.Images.Select(i => ToImage(i)).ToArray();
                 result.PrimaryImage = result.Images.FirstOrDefault();
             }
 
@@ -328,7 +343,7 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 result.Properties = categoryDto.Properties
                     .Where(x => string.Equals(x.Type, "Category", StringComparison.OrdinalIgnoreCase))
-                    .Select(p => p.ToProperty(currentLanguage))
+                    .Select(p => ToProperty(p, currentLanguage))
                     .ToList();
             }
 
@@ -338,14 +353,19 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Image ToImage(catalogDto.Image imageDto)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateImage();
-            result.InjectFrom<NullableAndEnumValueInjecter>(imageDto);
+            result.Url = imageDto.Url.RemoveLeadingUriScheme();
             return result;
         }
 
         public virtual Asset ToAsset(catalogDto.Asset assetDto)
         {
             var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAsset();
-            result.InjectFrom<NullableAndEnumValueInjecter>(assetDto);
+            result.Url = assetDto.Url.RemoveLeadingUriScheme();
+            result.TypeId = assetDto.TypeId;
+            result.Size = assetDto.Size;
+            result.Name = assetDto.Name;
+            result.MimeType = assetDto.MimeType;
+            result.Group = assetDto.Group;
             return result;
         }
 
@@ -357,7 +377,30 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Product ToProduct(catalogDto.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
             var retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProduct(currentCurrency, currentLanguage);
-            retVal.InjectFrom<NullableAndEnumValueInjecter>(productDto);
+            retVal.Id = productDto.Id;
+            retVal.CatalogId = productDto.CatalogId;
+            retVal.CategoryId = productDto.CategoryId;
+            retVal.DownloadExpiration = productDto.DownloadExpiration;
+            retVal.DownloadType = productDto.DownloadType;
+            retVal.EnableReview = productDto.EnableReview ?? false;
+            retVal.Gtin = productDto.Gtin;
+            retVal.HasUserAgreement = productDto.HasUserAgreement ?? false;
+            retVal.IsActive = productDto.IsActive ?? false;
+            retVal.IsBuyable = productDto.IsBuyable ?? false;
+            retVal.ManufacturerPartNumber = productDto.ManufacturerPartNumber;
+            retVal.MaxNumberOfDownload = productDto.MaxNumberOfDownload ?? 0;
+            retVal.MaxQuantity = productDto.MaxQuantity ?? 0;
+            retVal.MeasureUnit = productDto.MeasureUnit;
+            retVal.MinQuantity = productDto.MinQuantity ?? 0;
+            retVal.Name = productDto.Name;
+            retVal.Outline = productDto.Outline;
+            retVal.PackageType = productDto.PackageType;
+            retVal.ProductType = productDto.ProductType;
+            retVal.ShippingType = productDto.ShippingType;
+            retVal.TaxType = productDto.TaxType;
+            retVal.TrackInventory = productDto.TrackInventory ?? false;
+            retVal.VendorId = productDto.Vendor;
+            retVal.WeightUnit = productDto.WeightUnit;
             retVal.Weight = (decimal?)productDto.Weight;
             retVal.Height = (decimal?)productDto.Height;
             retVal.Width = (decimal?)productDto.Width;
@@ -371,19 +414,19 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.Properties = productDto.Properties
                     .Where(x => string.Equals(x.Type, "Product", StringComparison.InvariantCultureIgnoreCase))
-                    .Select(p => p.ToProperty(currentLanguage))
+                    .Select(p => ToProperty(p, currentLanguage))
                     .ToList();
 
                 retVal.VariationProperties = productDto.Properties
                     .Where(x => string.Equals(x.Type, "Variation", StringComparison.InvariantCultureIgnoreCase))
-                    .Select(p => p.ToProperty(currentLanguage))
+                    .Select(p => ToProperty(p, currentLanguage))
                     .ToList();
             }
 
             if (productDto.Images != null)
             {
                 retVal.Images = productDto.Images.Select(ToImage).ToArray();
-                retVal.PrimaryImage = retVal.Images.FirstOrDefault(x => string.Equals(x.Url, productDto.ImgSrc, StringComparison.InvariantCultureIgnoreCase));
+                retVal.PrimaryImage = retVal.Images.FirstOrDefault();
             }
 
             if (productDto.Assets != null)
@@ -438,24 +481,26 @@ namespace VirtoCommerce.Storefront.Converters
         }
 
 
-
-        public virtual PromotionProductEntry ToPromotionItem(Product product)
+        public virtual marketingDto.ProductPromoEntry ToProductPromoEntryDto(Product product)
         {
-            var retVal = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionProductEntry();
-            retVal.InjectFrom(product);
+            var retVal = new marketingDto.ProductPromoEntry();
+            retVal.CatalogId = product.CatalogId;
+            retVal.CategoryId = product.CategoryId;
+            retVal.Outline = product.Outline;
 
             if (product.Price != null)
             {
-                retVal.Discount = product.Price.DiscountAmount;
-                retVal.Price = product.Price.SalePrice;
+                retVal.Discount = (double)product.Price.DiscountAmount.Amount;
+                retVal.Price = (double)product.Price.SalePrice.Amount;
             }
 
             retVal.ProductId = product.Id;
             retVal.Quantity = 1;
-            retVal.Variations = product.Variations.Select(ToPromotionItem).ToList();
+            retVal.Variations = product.Variations != null ? product.Variations.Select(ToProductPromoEntryDto).ToList() : null;
 
             return retVal;
         }
+      
 
         public virtual TaxLine[] ToTaxLines(Product product)
         {
@@ -484,8 +529,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Amount = tierPrice.Price
                 });
             }
+
             return retVal.ToArray();
         }
-
     }
 }

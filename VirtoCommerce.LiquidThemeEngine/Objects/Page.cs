@@ -44,6 +44,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// </summary>
         public string Title { get; set; }
 
+        public string Description { get; set; }
+
         /// <summary>
         /// Returns the relative URL of the page.
         /// </summary>

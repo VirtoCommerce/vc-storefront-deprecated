@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VirtoCommerce.Storefront.Model.Common
 {
@@ -25,7 +23,7 @@ namespace VirtoCommerce.Storefront.Model.Common
     {
         public override string ToString()
         {
-            return SortColumn + ":" + (SortDirection == SortDirection.Descending ? "desc" : "asc");
+            return SortColumn + "-" + (SortDirection == SortDirection.Descending ? "desc" : "asc");
         }
         public static string ToString(IEnumerable<SortInfo> sortInfos)
         {

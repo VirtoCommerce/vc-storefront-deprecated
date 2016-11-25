@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
-using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
@@ -31,7 +30,12 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
         {
             var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
             var result = factory.CreateProduct();
-            result.InjectFrom<NullableAndEnumValueInjecter>(product);
+            result.Id = product.Id;
+            result.CatalogId = product.CatalogId;
+            result.CategoryId = product.CategoryId;
+            result.Description = product.Description;
+            result.IsQuotable = product.IsQuotable;
+            result.TaxType = product.TaxType;
 
             result.Variants.Add(ToLiquidVariant(product));
 
@@ -128,7 +132,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     }
 
                     return new StaticPagedList<Product>(retVal.Select(x => x.ToShopifyModel()), pageNumber, pageSize, totalCount);
-                });
+                }, 1, 20);
             }
 
             if (product.Vendor != null)

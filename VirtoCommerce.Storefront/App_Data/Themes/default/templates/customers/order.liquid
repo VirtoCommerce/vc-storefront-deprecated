@@ -64,13 +64,13 @@
           </td>
           <td>{{ line_item.sku }}</td>
             {% if settings.show_prices_with_taxes %}
-                <td>{{ line_item.price_with_tax | money }}</td>
+                <td>{{ line_item.price_with_tax | money: order.currency_code }}</td>
                 <td class="text-center">{{ line_item.quantity }}</td>
-                <td class="text-right">{{ line_item.line_price_with_tax | money }}</td>
+                <td class="text-right">{{ line_item.line_price_with_tax | money: order.currency_code }}</td>
             {% else %}
-                <td>{{ line_item.price | money }}</td>
+                <td>{{ line_item.price | money: order.currency_code }}</td>
                 <td class="text-center">{{ line_item.quantity }}</td>
-                <td class="text-right">{{ line_item.line_price | money }}</td>
+                <td class="text-right">{{ line_item.line_price | money: order.currency_code }}</td>
             {% endif %}  
         </tr>
         {% endfor %}
@@ -79,36 +79,36 @@
         <tr>
           <td colspan="4">{{ 'customer.order.subtotal' | t }}:</td>
             {% if settings.show_prices_with_taxes %}
-                <td class="text-right">{{ order.subtotal_price_with_tax | money }}</td>
+                <td class="text-right">{{ order.subtotal_price_with_tax | money: order.currency_code }}</td>
             {% else %}
-                 <td class="text-right">{{ order.subtotal_price | money }}</td>
+                 <td class="text-right">{{ order.subtotal_price | money: order.currency_code }}</td>
             {% endif %}  
         </tr>
 
         {% for discount in order.discounts %}
           <tr class="order_summary discount">
             <td colspan="4">{{ discount.code }} {{ 'customer.order.discount' | t }}:</td>
-            <td class="text-right">{{ discount.amount | money }}</td>
+            <td class="text-right">{{ discount.amount | money: order.currency_code }}</td>
           </tr>
         {% endfor %}
 
         {% for shipping_method in order.shipping_methods %}
         <tr>
           <td colspan="4">{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }}):</td>
-          <td class="text-right">{{ shipping_method.price | money }}</td>
+          <td class="text-right">{{ shipping_method.price | money: order.currency_code }}</td>
         </tr>
         {% endfor %}
 
         {% for tax_line in order.tax_lines %}
           <tr>
             <td colspan="4">{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate_percentage }}%):</td>
-            <td class="text-right">{{ tax_line.price | money }}</td>
+            <td class="text-right">{{ tax_line.price | money: order.currency_code }}</td>
           </tr>
         {% endfor %}
 
         <tr>
           <td colspan="4"><strong>{{ 'customer.order.total' | t }}:</strong></td>
-          <td class="text-right"><strong>{{ order.total_price | money }} {{ order.currency }}</strong></td>
+          <td class="text-right"><strong>{{ order.total_price | money: order.currency_code }}</strong></td>
         </tr>
       </tfoot>
     </table>

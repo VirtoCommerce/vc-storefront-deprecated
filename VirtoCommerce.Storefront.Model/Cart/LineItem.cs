@@ -312,7 +312,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
             }           
             if (lineItemTaxRate != null && ExtendedPrice.Amount > 0 && lineItemTaxRate.Rate.Amount > 0)
             {
-                TaxPercentRate = lineItemTaxRate.Rate.Amount / ExtendedPrice.Amount;
+                TaxPercentRate = TaxRate.TaxPercentRound(lineItemTaxRate.Rate.Amount / ExtendedPrice.Amount);
             }
         }
         #endregion

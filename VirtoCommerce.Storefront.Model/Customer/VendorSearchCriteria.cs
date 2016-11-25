@@ -1,9 +1,9 @@
 ﻿using System.Collections.Specialized;
 using VirtoCommerce.Storefront.Model.Common;
 
-namespace VirtoCommerce.Storefront.Model.Quote
+namespace VirtoCommerce.Storefront.Model.Customer
 {
-    public class QuoteSearchCriteria : PagedSearchCriteria
+    public class VendorSearchCriteria : PagedSearchCriteria
     {
         private static int _defaultPageSize = 20;
 
@@ -13,7 +13,7 @@ namespace VirtoCommerce.Storefront.Model.Quote
             set { _defaultPageSize = value; }
         }
 
-        public QuoteSearchCriteria(NameValueCollection queryString)
+        public VendorSearchCriteria(NameValueCollection queryString)
             : base(queryString, DefaultPageSize)
         {
         }

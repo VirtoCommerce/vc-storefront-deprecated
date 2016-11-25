@@ -13,16 +13,19 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
     /// </summary>
     public interface ICartBuilder
     {
+        ShoppingCart Cart { get; }
+
         /// <summary>
         ///  Capture cart and all next changes will be implemented on it
         /// </summary>
         /// <param name="cart"></param>
         /// <returns></returns>
-        ICartBuilder TakeCart(ShoppingCart cart);
+        Task TakeCartAsync(ShoppingCart cart);
 
         /// <summary>
         /// Load or created new cart for specified parameters and capture it.  All next changes will be implemented on it
         /// </summary>
+        /// <param name="cartName"></param>
         /// <param name="store"></param>
         /// <param name="customer"></param>
         /// <param name="language"></param>
@@ -61,31 +64,31 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// </summary>
         /// <param name="lineItemId"></param>
         /// <returns></returns>
-        ICartBuilder RemoveItem(string lineItemId);
+        Task RemoveItemAsync(string lineItemId);
 
         /// <summary>
         /// Apply marketing coupon to captured cart
         /// </summary>
         /// <param name="couponCode"></param>
         /// <returns></returns>
-        ICartBuilder AddCoupon(string couponCode);
+        Task AddCouponAsync(string couponCode);
 
         /// <summary>
         /// remove exist coupon from cart
         /// </summary>
         /// <returns></returns>
-        ICartBuilder RemoveCoupon();
+        Task RemoveCouponAsync();
 
         /// <summary>
         /// Clear cart remove all items and shipments and payments
         /// </summary>
         /// <returns></returns>
-        ICartBuilder Clear();
+        Task ClearAsync();
 
         /// <summary>
         /// Add or update shipment to cart
         /// </summary>
-        /// <param name="updateModel"></param>
+        /// <param name="shipment"></param>
         /// <returns></returns>
         Task AddOrUpdateShipmentAsync(Shipment shipment);
 
@@ -94,12 +97,12 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// </summary>
         /// <param name="shipmentId"></param>
         /// <returns></returns>
-        ICartBuilder RemoveShipment(string shipmentId);
+        Task RemoveShipmentAsync(string shipmentId);
 
         /// <summary>
         /// Add or update payment in cart
         /// </summary>
-        /// <param name="updateModel"></param>
+        /// <param name="payment"></param>
         /// <returns></returns>
         Task AddOrUpdatePaymentAsync(Payment payment);
 
@@ -147,11 +150,7 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// <returns></returns>
         Task EvaluateTaxesAsync();
 
-
         Task ValidateAsync();
-
-        ShoppingCart Cart { get; }
-
 
         Task SaveAsync();
     }

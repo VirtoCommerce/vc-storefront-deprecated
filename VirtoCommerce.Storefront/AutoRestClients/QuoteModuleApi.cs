@@ -243,8 +243,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
                 DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc,
                 NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize,
-                ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
+                // ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
                 Converters = new  System.Collections.Generic.List<Newtonsoft.Json.JsonConverter>
                     {
                         new Microsoft.Rest.Serialization.Iso8601TimeSpanConverter()
@@ -255,8 +255,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi
                 DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc,
                 NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize,
-                ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
+                // ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
                 Converters = new System.Collections.Generic.List<Newtonsoft.Json.JsonConverter>
                     {
                         new Microsoft.Rest.Serialization.Iso8601TimeSpanConverter()
@@ -4324,10 +4324,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductAssociation class.
         /// </summary>
-        public ProductAssociation(string type = default(string), int? priority = default(int?), string associatedObjectId = default(string), string associatedObjectType = default(string), Entity associatedObject = default(Entity), System.Collections.Generic.IList<string> tags = default(System.Collections.Generic.IList<string>))
+        public ProductAssociation(string type = default(string), int? priority = default(int?), int? quantity = default(int?), string associatedObjectId = default(string), string associatedObjectType = default(string), Entity associatedObject = default(Entity), System.Collections.Generic.IList<string> tags = default(System.Collections.Generic.IList<string>))
         {
             Type = type;
             Priority = priority;
+            Quantity = quantity;
             AssociatedObjectId = associatedObjectId;
             AssociatedObjectType = associatedObjectType;
             AssociatedObject = associatedObject;
@@ -4343,6 +4344,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
         public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "quantity")]
+        public int? Quantity { get; set; }
 
         /// <summary>
         /// </summary>

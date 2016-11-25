@@ -51,6 +51,12 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
+        /// Returns the Currency code.
+        /// </summary>
+        [DataMember]
+        public string CurrencyCode { get; set; }
+
+        /// <summary>
         /// Returns the customer associated with the order.
         /// </summary>
         [DataMember]

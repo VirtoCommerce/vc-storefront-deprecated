@@ -6,11 +6,69 @@ using System.Linq.Expressions;
 using System.Reflection;
 using DotLiquid;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.LiquidThemeEngine.Objects;
 
 namespace VirtoCommerce.LiquidThemeEngine.Filters
 {
     public class ArrayFilters
     {
+        public static object Tree(object input, string propName, string titlePropName, string delimiter, string sortByPropName)
+        {
+            var tree = new List<TreeNode>();
+
+            var enumerable = input as IEnumerable;
+            if (enumerable != null)
+            {
+                var elementType = enumerable.GetType().GetEnumerableType();
+                var propInfo = elementType.GetProperty(propName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                var titlePropInfo = elementType.GetProperty(titlePropName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                var sortByPropInfo = elementType.GetProperty(sortByPropName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                if (propInfo != null)
+                {
+                    var charDelimiter = delimiter.ToCharArray();
+
+                    foreach (var element in enumerable)
+                    {
+                        var path = propInfo.GetValue(element) as string;
+                        var parts = path.Split(charDelimiter);
+                        for (var i = parts.Length; i > 0; i--)
+                        {
+                            path = string.Join(delimiter, parts.Take(i));
+                            var treeNode = tree.FirstOrDefault(n => n.Path == path);
+                            if (treeNode == null)
+                            {
+                                tree.Add(new TreeNode
+                                {
+                                    Level = i,
+                                    ParentPath = string.Join(delimiter, parts.Take(Math.Max(0, i - 1))),
+                                    Path = path,
+                                    Priority = sortByPropInfo != null ? sortByPropInfo.GetValue(element) as int? : null,
+                                    Title = titlePropInfo != null ? titlePropInfo.GetValue(element) as string : null
+                                });
+                            }
+                        }
+                    }
+
+                    foreach (var treeNode in tree.OrderBy(n => n.Priority))
+                    {
+                        if (!string.IsNullOrEmpty(treeNode.ParentPath))
+                        {
+                            var parent = tree.FirstOrDefault(n => n.Path == treeNode.ParentPath);
+                            if (parent != null)
+                            {
+                                treeNode.Parent = parent;
+                                parent.Children.Add(treeNode);
+                            }
+                        }
+
+                        treeNode.AllChildren = tree.Where(n => n.Path.StartsWith(treeNode.Path + delimiter)).ToList();
+                    }
+                }
+            }
+
+            return tree;
+        }
+
         /// <summary>
         /// Filter the elements of an array by a given condition
         /// {% assign sorted = pages | where:"propName","==","value" %}
@@ -28,7 +86,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 var elementType = enumerable.GetType().GetEnumerableType();
 
                 ParameterExpression paramX = Expression.Parameter(elementType, "x");
-                var left = Expression.Property(paramX, elementType.GetProperty(propName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance));
+                var propInfo = elementType.GetProperty(propName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                var left = Expression.Property(paramX, propInfo);
                 var objValue = ParseString(value);
                 var right = Expression.Constant(objValue);
                 BinaryExpression binaryOp;
@@ -45,8 +104,18 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                     binaryOp = Expression.LessThan(left, right);
                 else if (op.EqualsInvariant("contains"))
                 {
-                    var containsMethod = typeof(Enumerable).GetMethods().Where(x => x.Name == "Contains" && x.GetParameters().Count() == 2).First().MakeGenericMethod(new Type[] { objValue.GetType() });
-                    var expr = Expression.Call(containsMethod, left, right);
+                    Expression expr = null;
+                    if (propInfo.PropertyType == typeof(string))
+                    {
+                        var containsMethod = typeof(string).GetMethods().Where(x => x.Name == "Contains").First();
+                        expr = Expression.Call(left, containsMethod, right);
+                    } 
+                    else
+                    {
+                        var containsMethod = typeof(Enumerable).GetMethods().Where(x => x.Name == "Contains" && x.GetParameters().Count() == 2).First().MakeGenericMethod(new Type[] { objValue.GetType() });
+                        expr = Expression.Call(containsMethod, left, right);
+                    }                 
+                
                     //where(x=> x.Tags.Contains(y))
                     binaryOp = Expression.Equal(expr, Expression.Constant(true));
                 }

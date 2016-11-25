@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VirtoCommerce.Storefront.Model.Common
 {
     public class PagedSearchCriteria
-    {  
-        public PagedSearchCriteria(NameValueCollection queryString)
+    {
+        public PagedSearchCriteria(NameValueCollection queryString, int defaultPageSize)
         {
             PageNumber = Convert.ToInt32(queryString.Get("page") ?? 1.ToString());
-            PageSize = Convert.ToInt32(queryString.Get("count") ?? queryString.Get("page_size") ?? 20.ToString());
+            PageSize = Convert.ToInt32(queryString.Get("count") ?? queryString.Get("page_size") ?? defaultPageSize.ToString());
         }
 
         public int Start
@@ -22,7 +18,7 @@ namespace VirtoCommerce.Storefront.Model.Common
                 return (PageNumber - 1) * PageSize;
             }
         }
-                
+
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
 
@@ -36,17 +32,12 @@ namespace VirtoCommerce.Storefront.Model.Common
             unchecked // Overflow is fine, just wrap
             {
                 int hash = 41;
-                // Suitable nullity checks etc, of course :)
 
-
-                hash = hash * 59 + this.PageNumber.GetHashCode();
-                hash = hash * 59 + this.PageSize.GetHashCode();
-
+                hash = hash * 59 + PageNumber.GetHashCode();
+                hash = hash * 59 + PageSize.GetHashCode();
 
                 return hash;
             }
         }
-
-
     }
 }

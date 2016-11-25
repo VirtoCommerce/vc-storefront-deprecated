@@ -356,7 +356,7 @@
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.tpl.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.tpl.html.liquid" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.tpl.html" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.tpl.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.tpl.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard-step.js" />
@@ -487,6 +487,7 @@
     <Compile Include="Converters\Tax\TaxConverter.cs" />
     <Compile Include="Converters\CurrencyConverter.cs" />
     <Compile Include="Converters\Quote\QuoteConverter.cs" />
+    <Compile Include="JsonConverters\MoneyJsonConverter.cs" />
     <Compile Include="JsonConverters\CurrencyJsonConverter.cs" />
     <Compile Include="Owin\StorefrontUrlRewriterOwinMiddleware.cs" />
     <Compile Include="Routing\ISeoRouteService.cs" />

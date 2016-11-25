@@ -62,10 +62,11 @@ namespace VirtoCommerce.Storefront.Common
                     }
                     else if (store.SeoLinksType == SeoLinksType.Collapsed)
                     {
-                        if (outline.Items.Last().HasVirtualParent != true)
+                        var lastItem = outline.Items.Last();
+                        if (lastItem.SeoObjectType != "Category" || lastItem.HasVirtualParent != true)
                         {
                             pathSegments.AddRange(outline.Items
-                                .Where(i => i.SeoObjectType != "Catalog" && i.HasVirtualParent != true)
+                                .Where(i => i.SeoObjectType != "Catalog" && (lastItem.SeoObjectType != "Category" || i.HasVirtualParent != true))
                                 .Select(i => GetBestMatchingSeoKeyword(i.SeoInfos, store, language)));
                         }
                     }

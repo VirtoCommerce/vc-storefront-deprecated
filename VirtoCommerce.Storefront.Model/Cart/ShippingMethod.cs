@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
@@ -129,7 +130,7 @@ namespace VirtoCommerce.Storefront.Model
             var taxRate = taxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item1 == ShipmentMethodCode && x.Line.Id.SplitIntoTuple('&').Item2 == OptionName);
             if (taxRate != null && Total.Amount > 0 && taxRate.Rate.Amount > 0)
             {
-                TaxPercentRate = taxRate.Rate.Amount / Total.Amount;            
+                TaxPercentRate = TaxRate.TaxPercentRound(taxRate.Rate.Amount / Total.Amount);         
             }
         }
 

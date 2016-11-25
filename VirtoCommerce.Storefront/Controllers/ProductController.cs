@@ -61,7 +61,7 @@ namespace VirtoCommerce.Storefront.Controllers
                                 criteria.SortBy = SortInfo.ToString(sortInfos);
                             }
                             return _catalogSearchService.SearchProducts(criteria).Products;
-                        });
+                        }, 1, ProductSearchCriteria.DefaultPageSize);
                     }
                 }
             }

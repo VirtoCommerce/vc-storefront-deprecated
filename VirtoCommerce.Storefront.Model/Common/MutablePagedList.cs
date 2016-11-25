@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PagedList;
 
 namespace VirtoCommerce.Storefront.Model.Common
@@ -12,7 +9,7 @@ namespace VirtoCommerce.Storefront.Model.Common
     public sealed class MutablePagedList<T> : PagedListMetaData, IMutablePagedList<T>
     {
         private readonly Func<int, int, IEnumerable<SortInfo>, IPagedList<T>> _getter;
-        private IPagedList<T> _pagedList;        
+        private IPagedList<T> _pagedList;
         private readonly object _lockObject = new object();
 
         public MutablePagedList(IEnumerable<T> superSet)
@@ -22,7 +19,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             PageCount = 1;
         }
 
-        public MutablePagedList(Func<int, int, IEnumerable<SortInfo>, IPagedList<T>> getter, int pageNumber = 1, int pageSize = 20)
+        public MutablePagedList(Func<int, int, IEnumerable<SortInfo>, IPagedList<T>> getter, int pageNumber, int pageSize)
         {
             PageNumber = pageNumber;
             PageSize = pageSize;
@@ -30,6 +27,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         }
 
         #region IMutablePagedList Members
+
         public IEnumerable<SortInfo> SortInfos { get; private set; }
         /// <summary>
         /// Resize current paged data list by new PageNumber and PageSize values (it may cause reloading data from source)
@@ -59,10 +57,12 @@ namespace VirtoCommerce.Storefront.Model.Common
                 SortInfos = sortInfos;
                 _pagedList = null;
             }
-          
+
             TryReloadPagedData();
         }
+
         #endregion
+
         #region IPagedList<T> Members
 
         /// <summary>
@@ -104,7 +104,6 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             get
             {
-
                 TryReloadPagedData();
                 return _pagedList.Count;
             }
@@ -149,8 +148,5 @@ namespace VirtoCommerce.Storefront.Model.Common
                                      : numberOfLastItemOnPage;
             }
         }
-
-
-
     }
 }

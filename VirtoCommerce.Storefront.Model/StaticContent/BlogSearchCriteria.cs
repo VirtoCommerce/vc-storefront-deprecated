@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Specialized;
 using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.StaticContent
 {
     public class BlogSearchCriteria : PagedSearchCriteria
     {
+        private static int _defaultPageSize = 20;
+
+        public static int DefaultPageSize
+        {
+            get { return _defaultPageSize; }
+            set { _defaultPageSize = value; }
+        }
+
         public BlogSearchCriteria()
-            : base(new NameValueCollection())
+            : this(new NameValueCollection())
         {
         }
 
         public BlogSearchCriteria(NameValueCollection queryString)
-            : base(queryString)
+            : base(queryString, DefaultPageSize)
         {
         }
 
@@ -28,9 +31,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
         {
             Category = queryString.Get("category");
             Tag = queryString.Get("tag");
-            Author = queryString.Get("author");        
+            Author = queryString.Get("author");
         }
-
-
     }
 }

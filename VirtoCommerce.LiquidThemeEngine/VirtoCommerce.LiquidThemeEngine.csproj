@@ -221,6 +221,7 @@
     <Compile Include="Objects\TaxLine.cs" />
     <Compile Include="Objects\TierPrice.cs" />
     <Compile Include="Objects\Transaction.cs" />
+    <Compile Include="Objects\TreeNode.cs" />
     <Compile Include="Objects\Variant.cs" />
     <Compile Include="Objects\Vendor.cs" />
     <Compile Include="Tags\FormTag.cs" />

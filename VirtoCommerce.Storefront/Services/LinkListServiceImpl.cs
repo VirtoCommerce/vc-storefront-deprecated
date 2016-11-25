@@ -40,7 +40,7 @@ namespace VirtoCommerce.Storefront.Services
                 var productIds = productLinks.Select(x => x.AssociatedObjectId).ToArray();
                 if (productIds.Any())
                 {
-                    productsLoadingTask = _catalogSearchService.GetProductsAsync(productIds, ItemResponseGroup.ItemSmall | ItemResponseGroup.Seo | ItemResponseGroup.Outlines);
+                    productsLoadingTask = _catalogSearchService.GetProductsAsync(productIds, ItemResponseGroup.ItemSmall);
                 }
                 var categoriesIds = categoryLinks.Select(x => x.AssociatedObjectId).ToArray();
                 if (categoriesIds.Any())

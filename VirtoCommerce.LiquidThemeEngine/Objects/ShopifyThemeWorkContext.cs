@@ -67,7 +67,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public Page Page { get; set; }
 
         public Blog Blog { get; set; }
-        
+
         /// <summary>
         /// Current blog article
         /// </summary>

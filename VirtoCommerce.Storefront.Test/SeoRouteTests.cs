@@ -26,7 +26,7 @@ namespace VirtoCommerce.Storefront.Test
         private readonly List<catalogDto.Product> _products;
         private readonly List<catalogDto.SeoInfo> _catalogSeoRecords;
         private readonly List<ContentPage> _pages;
-        private readonly coreDto.SeoInfo[] _coreSeoRecords;
+        private readonly List<coreDto.SeoInfo> _coreSeoRecords;
 
         // Catalog structure
         //
@@ -105,7 +105,10 @@ namespace VirtoCommerce.Storefront.Test
 
             AddPage("en-US", "ag1", "ig1");
 
-            _coreSeoRecords = _catalogSeoRecords.Select(s => s.JsonConvert<coreDto.SeoInfo>()).ToArray();
+            _coreSeoRecords = _catalogSeoRecords.Select(s => s.JsonConvert<coreDto.SeoInfo>()).ToList();
+
+            // Create duplicates
+            _coreSeoRecords.AddRange(_coreSeoRecords);
         }
 
         [Theory]
@@ -129,7 +132,7 @@ namespace VirtoCommerce.Storefront.Test
         [InlineData("c", SeoLinksType.Short, "ac1/acd/ipd", null, "Asset", "HandleStaticFiles", null, null)]
         [InlineData("c", SeoLinksType.Short, "av1", null, "Vendor", "VendorDetails", "vendorId", "v1")]
         [InlineData("c", SeoLinksType.Short, "iv1", "av1", null, null, null, null)]
-        [InlineData("c", SeoLinksType.Short, "ag1", null, "Page", "GetContentPage", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ag1", null, "StaticContent", "GetContentPage", null, null)]
         [InlineData("c", SeoLinksType.Short, "ig1", "ag1", null, null, null, null)]
         [InlineData("c", SeoLinksType.Collapsed, "ac1", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c1")]
         [InlineData("c", SeoLinksType.Collapsed, "ic1", "ac1", null, null, null, null)]
@@ -151,7 +154,7 @@ namespace VirtoCommerce.Storefront.Test
         [InlineData("c", SeoLinksType.Collapsed, "ac1/acd/ipd", null, "Asset", "HandleStaticFiles", null, null)]
         [InlineData("c", SeoLinksType.Collapsed, "av1", null, "Vendor", "VendorDetails", "vendorId", "v1")]
         [InlineData("c", SeoLinksType.Collapsed, "iv1", "av1", null, null, null, null)]
-        [InlineData("c", SeoLinksType.Collapsed, "ag1", null, "Page", "GetContentPage", null, null)]
+        [InlineData("c", SeoLinksType.Collapsed, "ag1", null, "StaticContent", "GetContentPage", null, null)]
         [InlineData("c", SeoLinksType.Collapsed, "ig1", "ag1", null, null, null, null)]
         [InlineData("v1", SeoLinksType.Collapsed, "ac1", null, "Asset", "HandleStaticFiles", null, null)]
         [InlineData("v1", SeoLinksType.Collapsed, "acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "v12")]
@@ -187,7 +190,7 @@ namespace VirtoCommerce.Storefront.Test
                     Assert.Equal(expectedObjectId, response.RouteData[expectedObjectIdName]);
                 }
 
-                if (expectedController == "Page")
+                if (expectedController == "StaticContent")
                 {
                     Assert.NotNull(response.RouteData["page"]);
                 }
@@ -227,7 +230,6 @@ namespace VirtoCommerce.Storefront.Test
             var result = new catalogDto.Category
             {
                 Id = categoryId,
-                Catalog = catalog,
                 CatalogId = catalog.Id,
                 Outlines = new List<catalogDto.Outline>()
             };
@@ -243,7 +245,6 @@ namespace VirtoCommerce.Storefront.Test
             var result = new catalogDto.Product
             {
                 Id = productId,
-                Catalog = catalog,
                 CatalogId = catalog.Id,
                 Outlines = new List<catalogDto.Outline>()
             };

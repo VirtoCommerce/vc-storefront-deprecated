@@ -1,46 +1,60 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using NLog;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Controllers;
+using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront
 {
     public class MvcApplication : HttpApplication
     {
         /// <summary>
-        /// We Use this method for generate current user id for caching keys
+        /// Returns cache key
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="arg"></param>
+        /// <param name="custom"></param>
         /// <returns></returns>
-        public override string GetVaryByCustomString(HttpContext context, string arg)
+        public override string GetVaryByCustomString(HttpContext context, string custom)
         {
-            var retVal = base.GetVaryByCustomString(context, arg);
-            if (arg.Equals("User", StringComparison.InvariantCultureIgnoreCase))
+            var varyItems = new List<string>
             {
-                retVal = context.User.Identity.Name;
-                if (!context.User.Identity.IsAuthenticated)
+                base.GetVaryByCustomString(context, custom)
+            };
+
+            var customStrings = custom.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var customString in customStrings)
+            {
+                if (customString.EqualsInvariant("User"))
                 {
-                    var anonymousCookie = context.Request.Cookies.Get(StorefrontConstants.AnonymousCustomerIdCookie);
-                    if (anonymousCookie != null)
+                    string userId = null;
+                    if (!context.User.Identity.IsAuthenticated)
                     {
-                        retVal = anonymousCookie.Value;
+                        var anonymousCookie = context.Request.Cookies.Get(StorefrontConstants.AnonymousCustomerIdCookie);
+                        if (anonymousCookie != null)
+                        {
+                            userId = anonymousCookie.Value;
+                        }
+                    }
+                    varyItems.Add(userId ?? context.User.Identity.Name);
+                }
+                else if (customString.EqualsInvariant("Currency"))
+                {
+                    var currencyCookie = context.Request.Cookies.Get(StorefrontConstants.CurrencyCookie);
+                    if (currencyCookie != null)
+                    {
+                        varyItems.Add(currencyCookie.Value);
                     }
                 }
             }
-            else if (arg.Equals("Currency", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var currencyCookie = context.Request.Cookies.Get(StorefrontConstants.CurrencyCookie);
-                if (currencyCookie != null)
-                {
-                    retVal = currencyCookie.Value;
-                }
-            }
 
-            return retVal;
+            var result = string.Join("-", varyItems.Where(s => !string.IsNullOrEmpty(s)));
+            return result;
         }
 
         protected void Application_Start()

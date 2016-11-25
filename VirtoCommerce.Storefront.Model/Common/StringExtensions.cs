@@ -59,7 +59,7 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public static Tuple<string, string, string> SplitIntoTuple(this string input, char separator)
         {
-            if(input == null)
+            if (input == null)
             {
                 throw new ArgumentNullException("input");
             }
@@ -70,8 +70,8 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public static string RemoveAccent(this string txt)
         {
-            byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(txt);
-            return System.Text.Encoding.ASCII.GetString(bytes);
+            var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(txt);
+            return Encoding.ASCII.GetString(bytes);
         }
 
         public static string Handelize(this string phrase)
@@ -87,6 +87,22 @@ namespace VirtoCommerce.Storefront.Model.Common
                 retVal = Regex.Replace(retVal, @"\s", "-"); // hyphens   
             }
             return retVal;
+        }
+
+        //http://www.ietf.org/rfc/rfc3986.txt
+        //section 4.2 Relative reference
+        //Remove leading protocol scheme from uri. http://host/path -> //host/path
+        public static string RemoveLeadingUriScheme(this string str)
+        {
+            if (!string.IsNullOrEmpty(str) && Uri.IsWellFormedUriString(str, UriKind.Absolute))
+            {
+                //remove scheme from image url
+                //http://www.ietf.org/rfc/rfc3986.txt
+                //section 4.2
+                var uri = new Uri(str);
+                str = "//" + uri.Authority + uri.PathAndQuery;
+            }
+            return str;
         }
     }
 }

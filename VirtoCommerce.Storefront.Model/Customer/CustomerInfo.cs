@@ -93,6 +93,11 @@ namespace VirtoCommerce.Storefront.Model.Customer
         /// </summary>
         public IEnumerable<string> AllowedStores { get; set; }
 
+        /// <summary>
+        /// User groups such as VIP, Wholesaler etc
+        /// </summary>
+        public IEnumerable<string> UserGroups { get; set; }
+
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "user#{0} {1} {2}", Id ?? "undef", UserName ?? "undef", IsRegisteredUser ? "registered" : "anonymous");
