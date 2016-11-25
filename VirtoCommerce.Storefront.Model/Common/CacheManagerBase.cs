@@ -236,6 +236,26 @@ namespace VirtoCommerce.Storefront.Model.Common
             return _cacheManager.TryUpdate(key, region, updateValue, maxRetries, out value);
         }
 
+        public object GetOrAdd(string key, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetOrAdd(string key, string region, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetOrAdd(string key, Func<string, object> valueFactory)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetOrAdd(string key, string region, Func<string, string, object> valueFactory)
+        {
+            throw new NotImplementedException();
+        }
+
         public IReadOnlyCacheManagerConfiguration Configuration
         {
             get { return _cacheManager.Configuration; }
