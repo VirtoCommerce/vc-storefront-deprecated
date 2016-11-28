@@ -89,8 +89,16 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionReward();
 
-            result.InjectFrom<NullableAndEnumValueInjecter>(serviceModel);
-
+            result.CategoryId = serviceModel.CategoryId;
+            result.Coupon = serviceModel.Coupon;
+            result.Description = serviceModel.Description;
+            result.IsValid = serviceModel.IsValid ?? false;
+            result.LineItemId = serviceModel.LineItemId;
+            result.MeasureUnit = serviceModel.MeasureUnit;
+            result.ProductId = serviceModel.ProductId;
+            result.PromotionId = serviceModel.PromotionId;
+            result.Quantity = serviceModel.Quantity ?? 0;
+            
             result.Amount = (decimal)(serviceModel.Amount ?? 0);
             result.AmountType = EnumUtility.SafeParse(serviceModel.AmountType, AmountType.Absolute);
             result.CouponAmount = new Money(serviceModel.CouponAmount ?? 0, currency);
@@ -107,10 +115,11 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Promotion ToPromotion(marketingDto.Promotion promotionDto)
         {
             var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotion();
-
-            result.InjectFrom<NullableAndEnumValueInjecter>(promotionDto);
-
-            result.Coupons = promotionDto.Coupons;
+          
+            result.Id = promotionDto.Id;      
+            result.Name = promotionDto.Name;
+            result.Description = promotionDto.Description;
+            result.Coupons = promotionDto.Coupons;   
 
             return result;
         }

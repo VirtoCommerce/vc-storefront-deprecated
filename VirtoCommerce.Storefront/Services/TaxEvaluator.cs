@@ -40,10 +40,11 @@ namespace VirtoCommerce.Storefront.Services
             {
                 return;
             }
+            var taxRatesMap = owners.Select(x => x.Currency).Distinct().ToDictionary(x => x, x => taxRates.Select(r => r.ToTaxRate(x)).ToArray());
 
             foreach (var owner in owners)
             {
-                owner.ApplyTaxRates(taxRates.Select(x => x.ToTaxRate(owner.Currency)));
+                owner.ApplyTaxRates(taxRatesMap[owner.Currency]);
             }
         }
     }
