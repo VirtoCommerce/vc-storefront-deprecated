@@ -30,6 +30,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         {
             Language = language;
             Parse(queryString);
+            Outline = "*";
         }
 
         public CategoryResponseGroup ResponseGroup { get; set; }
