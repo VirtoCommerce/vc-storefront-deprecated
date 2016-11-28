@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
+using System;
 using System.Configuration;
 using System.Linq;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
@@ -23,6 +25,8 @@ namespace VirtoCommerce.Storefront.Test
     {
         protected WorkContext GetTestWorkContext()
         {
+            ServiceLocator.SetLocatorProvider(() => new UnityServiceLocator(new UnityContainer()));
+
             var coreApi = GetCoreApiClient();
             var storeApi = GetStoreApiClient();
 
