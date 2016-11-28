@@ -9,6 +9,8 @@
         "subtotalWithTax": "Subtotal (Inc VAT)",
         "shipping": "Shipping",
         "shippingWithTax": "Shipping (Inc VAT)",
+        "paymentFees": "Payment fees",
+        "paymentFeesWithTax": "Payment fees (Inc VAT)",
         "taxes": "Taxes",
         "total": "Total",
         "cart": "Cart",

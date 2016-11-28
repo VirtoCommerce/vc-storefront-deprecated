@@ -5460,7 +5460,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// 'unknown', 'standard', 'redirection', 'preparedForm'</param>
         /// <param name="paymentMethodGroupType">Possible values include:
         /// 'paypal', 'bankCard', 'alternative', 'manual'</param>
-        public PaymentMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), bool? isAvailableForPartial = default(bool?), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string paymentMethodType = default(string), string paymentMethodGroupType = default(string), string id = default(string))
+        public PaymentMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), bool? isAvailableForPartial = default(bool?), string currency = default(string), double? price = default(double?), double? priceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string paymentMethodType = default(string), string paymentMethodGroupType = default(string), string id = default(string))
         {
             Code = code;
             Name = name;
@@ -5469,7 +5469,18 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
             IsActive = isActive;
             Priority = priority;
             IsAvailableForPartial = isAvailableForPartial;
+            Currency = currency;
+            Price = price;
+            PriceWithTax = priceWithTax;
+            Total = total;
+            TotalWithTax = totalWithTax;
+            DiscountAmount = discountAmount;
+            DiscountAmountWithTax = discountAmountWithTax;
             Settings = settings;
+            TaxType = taxType;
+            TaxTotal = taxTotal;
+            TaxPercentRate = taxPercentRate;
+            TaxDetails = taxDetails;
             PaymentMethodType = paymentMethodType;
             PaymentMethodGroupType = paymentMethodGroupType;
             Id = id;
@@ -5512,8 +5523,63 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "price")]
+        public double? Price { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priceWithTax")]
+        public double? PriceWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
+        public double? Total { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalWithTax")]
+        public double? TotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
+        public double? DiscountAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
+        public double? DiscountAmountWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
         public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
+        public double? TaxTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxPercentRate")]
+        public double? TaxPercentRate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
+        public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
 
         /// <summary>
         /// Gets possible values include: 'unknown', 'standard',
@@ -5533,6 +5599,48 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class TaxDetail
+    {
+        /// <summary>
+        /// Initializes a new instance of the TaxDetail class.
+        /// </summary>
+        public TaxDetail() { }
+
+        /// <summary>
+        /// Initializes a new instance of the TaxDetail class.
+        /// </summary>
+        public TaxDetail(double? rate = default(double?), double? amount = default(double?), string name = default(string))
+        {
+            Rate = rate;
+            Amount = amount;
+            Name = name;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "rate")]
+        public double? Rate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "amount")]
+        public double? Amount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
     }
 }
@@ -5755,12 +5863,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// <param name="valueType">Possible values include: 'undefined',
         /// 'shortText', 'longText', 'integer', 'decimal', 'dateTime',
         /// 'boolean', 'html'</param>
-        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ObjectId = objectId;
             Values = values;
             Name = name;
-            Description = description;
             ObjectType = objectType;
             IsArray = isArray;
             IsDictionary = isDictionary;
@@ -5789,11 +5896,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
 
         /// <summary>
         /// </summary>
@@ -5949,7 +6051,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Contact class.
         /// </summary>
-        public Contact(string firstName = default(string), string middleName = default(string), string lastName = default(string), string fullName = default(string), string timeZone = default(string), string defaultLanguage = default(string), System.DateTime? birthDate = default(System.DateTime?), string taxpayerId = default(string), string preferredDelivery = default(string), string preferredCommunication = default(string), string salutation = default(string), System.Collections.Generic.IList<string> organizations = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<ApplicationUserExtended> securityAccounts = default(System.Collections.Generic.IList<ApplicationUserExtended>), string name = default(string), string memberType = default(string), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<string> phones = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> emails = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<Note> notes = default(System.Collections.Generic.IList<Note>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public Contact(string firstName = default(string), string middleName = default(string), string lastName = default(string), string fullName = default(string), string timeZone = default(string), string defaultLanguage = default(string), System.DateTime? birthDate = default(System.DateTime?), string taxpayerId = default(string), string preferredDelivery = default(string), string preferredCommunication = default(string), string salutation = default(string), System.Collections.Generic.IList<string> organizations = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<ApplicationUserExtended> securityAccounts = default(System.Collections.Generic.IList<ApplicationUserExtended>), string name = default(string), string memberType = default(string), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<string> phones = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> emails = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<Note> notes = default(System.Collections.Generic.IList<Note>), System.Collections.Generic.IList<string> groups = default(System.Collections.Generic.IList<string>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             FirstName = firstName;
             MiddleName = middleName;
@@ -5970,6 +6072,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
             Phones = phones;
             Emails = emails;
             Notes = notes;
+            Groups = groups;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
             CreatedDate = createdDate;
@@ -6073,6 +6176,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "notes")]
         public System.Collections.Generic.IList<Note> Notes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "groups")]
+        public System.Collections.Generic.IList<string> Groups { get; set; }
 
         /// <summary>
         /// </summary>
@@ -6710,7 +6818,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Organization class.
         /// </summary>
-        public Organization(string description = default(string), string businessCategory = default(string), string ownerId = default(string), string parentId = default(string), string name = default(string), string memberType = default(string), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<string> phones = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> emails = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<Note> notes = default(System.Collections.Generic.IList<Note>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public Organization(string description = default(string), string businessCategory = default(string), string ownerId = default(string), string parentId = default(string), string name = default(string), string memberType = default(string), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<string> phones = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> emails = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<Note> notes = default(System.Collections.Generic.IList<Note>), System.Collections.Generic.IList<string> groups = default(System.Collections.Generic.IList<string>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Description = description;
             BusinessCategory = businessCategory;
@@ -6722,6 +6830,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
             Phones = phones;
             Emails = emails;
             Notes = notes;
+            Groups = groups;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
             CreatedDate = createdDate;
@@ -6780,6 +6889,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "notes")]
         public System.Collections.Generic.IList<Note> Notes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "groups")]
+        public System.Collections.Generic.IList<string> Groups { get; set; }
 
         /// <summary>
         /// </summary>

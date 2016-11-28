@@ -149,7 +149,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.FullName = string.Join(" ", formModel.FirstName, formModel.LastName);
             result.FirstName = formModel.FirstName;
             result.LastName = formModel.LastName;
-
+            
             if (string.IsNullOrEmpty(result.FullName) || string.IsNullOrWhiteSpace(result.FullName))
             {
                 result.FullName = formModel.Email;
@@ -161,7 +161,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = ServiceLocator.Current.GetInstance<CustomerFactory>().CreateCustomerInfo();
             result.InjectFrom<NullableAndEnumValueInjecter>(contactDto);
-
+            result.UserGroups = contactDto.Groups;
             result.IsRegisteredUser = true;
             if (contactDto.Addresses != null)
             {
@@ -190,8 +190,7 @@ namespace VirtoCommerce.Storefront.Converters
             if (contactDto.Emails != null)
             {
                 result.Email = contactDto.Emails.FirstOrDefault();
-            }
-
+            }         
             if (!contactDto.DynamicProperties.IsNullOrEmpty())
             {
                 result.DynamicProperties = contactDto.DynamicProperties.Select(ToDynamicProperty).ToList();
@@ -204,6 +203,11 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var retVal = new customerDto.Contact();
             retVal.InjectFrom<NullableAndEnumValueInjecter>(customer);
+
+            if (customer.UserGroups != null)
+            {
+                retVal.Groups = customer.UserGroups.ToArray();
+            }
             if (customer.Addresses != null)
             {
                 retVal.Addresses = customer.Addresses.Select(ToCustomerAddressDto).ToList();
@@ -221,6 +225,11 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var retVal = new coreDto.Contact();
             retVal.InjectFrom<NullableAndEnumValueInjecter>(customer);
+
+            if (customer.UserGroups != null)
+            {
+                retVal.Groups = customer.UserGroups.ToArray();
+            }
             if (customer.Addresses != null)
             {
                 retVal.Addresses = customer.Addresses.Select(x => x.ToCoreAddressDto()).ToList();

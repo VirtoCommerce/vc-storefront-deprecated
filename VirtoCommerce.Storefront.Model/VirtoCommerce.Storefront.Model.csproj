@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VirtoCommerce.Storefront.Model</RootNamespace>
     <AssemblyName>VirtoCommerce.Storefront.Model</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CacheManager.Core, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CacheManager.Core.0.8.0\lib\net45\CacheManager.Core.dll</HintPath>
+    <Reference Include="CacheManager.Core, Version=0.9.1.0, Culture=neutral, PublicKeyToken=5b450b4fb65c4cdb, processorArchitecture=MSIL">
+      <HintPath>..\packages\CacheManager.Core.0.9.1\lib\net45\CacheManager.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Omu.ValueInjecter, Version=2.3.3.0, Culture=neutral, PublicKeyToken=c7694541b0ac80e4, processorArchitecture=MSIL">
@@ -168,7 +168,6 @@
     <Compile Include="LinkList\MenuLink.cs" />
     <Compile Include="LinkList\MenuLinkList.cs" />
     <Compile Include="Marketing\Promotion.cs" />
-    <Compile Include="Marketing\PromotionProductEntry.cs" />
     <Compile Include="Marketing\PromotionEvaluationContext.cs" />
     <Compile Include="Marketing\PromotionReward.cs" />
     <Compile Include="Marketing\PromotionRewardType.cs" />

@@ -36,6 +36,19 @@
             </td>
             {% endif %}
         </tr>
+        <tr class="total-line total-line--shipping" ng-if="$ctrl.cart.paymentTotal.amount > 0">
+            {% if settings.show_prices_with_taxes %}
+            <td class="total-line__name">{{ 'checkout.paymentFeesWithTax' | t }}</td>
+            <td class="total-line__price">
+                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.paymentPriceWithTax.formattedAmount"></span>
+            </td>
+            {% else %}
+            <td class="total-line__name">{{ 'checkout.paymentFees' | t }}</td>
+            <td class="total-line__price">
+                <span class="order-summary__emphasis" ng-bind="$ctrl.cart.paymentPrice.formattedAmount"></span>
+            </td>
+            {% endif %}
+        </tr>
         <tr class="total-line total-line--subtotal">
             <td class="total-line__name">{{ 'checkout.discount' | t }}</td>
             <td class="total-line__price">

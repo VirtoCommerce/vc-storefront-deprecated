@@ -26,11 +26,13 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             : this(language, currency, new NameValueCollection())
         {
         }
+
         public ProductSearchCriteria(Language language, Currency currency, NameValueCollection queryString)
             : base(queryString, DefaultPageSize)
         {
             Language = language;
             Currency = currency;
+            Outline = "*";
 
             Parse(queryString);
         }
@@ -80,7 +82,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
             SortBy = queryString.Get("sort_by");
 
-            ResponseGroup = EnumUtility.SafeParse<ItemResponseGroup>(queryString.Get("resp_group"), ItemResponseGroup.ItemSmall);
+            ResponseGroup = EnumUtility.SafeParse<ItemResponseGroup>(queryString.Get("resp_group"), ItemResponseGroup.ItemSmall | ItemResponseGroup.ItemWithPrices | ItemResponseGroup.Inventory | ItemResponseGroup.ItemWithVendor);
             // terms=name1:value1,value2,value3;name2:value1,value2,value3
             Terms = (queryString.GetValues("terms") ?? new string[0])
                 .SelectMany(s => s.Split(';'))

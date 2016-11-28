@@ -22,11 +22,11 @@ namespace VirtoCommerce.Storefront.Converters
             }
         }
 
-        public static pricingDto.PriceEvaluationContext ToPriceEvaluationContextDto(this IEnumerable<Product> products, WorkContext workContext)
+        public static pricingDto.PriceEvaluationContext ToPriceEvaluationContextDto(this WorkContext workContext, IEnumerable<Product> products = null)
         {
-            return PricingConverterInstance.ToPriceEvaluationContextDto(products, workContext);
+            return PricingConverterInstance.ToPriceEvaluationContextDto(workContext, products);
         }
-
+      
         public static ProductPrice ToProductPrice(this pricingDto.Price priceDto, IEnumerable<Currency> availCurrencies, Language language)
         {
             return PricingConverterInstance.ToProductPrice(priceDto, availCurrencies, language);
@@ -79,26 +79,34 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual pricingDto.PriceEvaluationContext ToPriceEvaluationContextDto(IEnumerable<Product> products, WorkContext workContext)
+        public virtual pricingDto.PriceEvaluationContext ToPriceEvaluationContextDto(WorkContext workContext, IEnumerable<Product> products = null)
         {
-            if (products == null)
-            {
-                throw new ArgumentNullException("products");
-            }
 
             //Evaluate products prices
             var retVal = new pricingDto.PriceEvaluationContext
             {
-                ProductIds = products.Select(p => p.Id).ToList(),
                 PricelistIds = workContext.CurrentPricelists.Select(p => p.Id).ToList(),
                 CatalogId = workContext.CurrentStore.Catalog,
-                CustomerId = workContext.CurrentCustomer.Id,
                 Language = workContext.CurrentLanguage.CultureName,
                 CertainDate = workContext.StorefrontUtcNow,
                 StoreId = workContext.CurrentStore.Id
             };
 
+            if (workContext.CurrentCustomer != null)
+            {
+                retVal.CustomerId = workContext.CurrentCustomer.Id;
+                if (workContext.CurrentCustomer.UserGroups != null)
+                {
+                    retVal.UserGroups = workContext.CurrentCustomer.UserGroups.ToList();
+                }
+            }
+
+            if (products != null)
+            {
+                retVal.ProductIds = products.Select(p => p.Id).ToList();
+            }
             return retVal;
         }
+      
     }
 }

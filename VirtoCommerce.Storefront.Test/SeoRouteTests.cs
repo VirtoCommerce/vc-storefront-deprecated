@@ -230,7 +230,6 @@ namespace VirtoCommerce.Storefront.Test
             var result = new catalogDto.Category
             {
                 Id = categoryId,
-                Catalog = catalog,
                 CatalogId = catalog.Id,
                 Outlines = new List<catalogDto.Outline>()
             };
@@ -246,7 +245,6 @@ namespace VirtoCommerce.Storefront.Test
             var result = new catalogDto.Product
             {
                 Id = productId,
-                Catalog = catalog,
                 CatalogId = catalog.Id,
                 Outlines = new List<catalogDto.Outline>()
             };

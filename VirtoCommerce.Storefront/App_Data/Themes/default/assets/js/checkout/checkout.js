@@ -49,7 +49,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     if (cart.shipments.length) {
                         $scope.checkout.shipment = cart.shipments[0];
                     }
-                    $scope.checkout.billingAddressEqualsShipping = !angular.isDefined($scope.checkout.payment.billingAddress);
+                    $scope.checkout.billingAddressEqualsShipping = !angular.isObject($scope.checkout.payment.billingAddress);
                     if (!cart.hasPhysicalProducts) {
                         $scope.checkout.billingAddressEqualsShipping = false;
                     }
@@ -81,8 +81,13 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
         }
 
         $scope.selectPaymentMethod = function (paymentMethod) {
+            angular.extend($scope.checkout.payment, paymentMethod);
             $scope.checkout.payment.paymentGatewayCode = paymentMethod.code;
             $scope.checkout.payment.amount = $scope.checkout.cart.total;
+            $scope.checkout.payment.amount.amount += paymentMethod.totalWithTax.amount;
+
+            updatePayment($scope.checkout.payment)
+
             $scope.validateCheckout($scope.checkout);
         };
 
@@ -140,9 +145,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
 
         $scope.createOrder = function () {
             $scope.checkout.loading = true;
-            updatePayment($scope.checkout.payment).then(function () {
-                return cartService.createOrder($scope.checkout.paymentMethod.card);
-            }).then(function (response) {
+            cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
                 var order = response.data.order;
                 var orderProcessingResult = response.data.orderProcessingResult;
                 var paymentMethod = response.data.paymentMethod;
@@ -158,7 +161,9 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             if (payment.billingAddress) {
                 payment.billingAddress.type = 'Billing';
             }
-            return cartService.addOrUpdatePayment(payment)
+            return wrapLoading(function () {
+                return cartService.addOrUpdatePayment(payment).then($scope.reloadCart);
+            });
         }
 
         function handlePostPaymentResult(order, orderProcessingResult, paymentMethod) {

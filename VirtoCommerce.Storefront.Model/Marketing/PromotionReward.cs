@@ -92,6 +92,11 @@ namespace VirtoCommerce.Storefront.Model.Marketing
         /// </summary>
         public string ShippingMethodCode { get; set; }
 
+        /// <summary>
+        /// Gets or sets the payment method code for the marketing reward
+        /// </summary>
+        public string PaymentMethodCode { get; set; }
+
         public Discount ToDiscountModel(Money amount)
         {
             var absoluteAmount = GetAbsoluteDiscountAmount(amount.Amount);
