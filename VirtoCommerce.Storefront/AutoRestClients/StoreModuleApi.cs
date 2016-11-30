@@ -2144,8 +2144,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SortInfo class.
         /// </summary>
-        /// <param name="sortDirection">Possible values include: 'ascending',
-        /// 'descending'</param>
+        /// <param name="sortDirection">Possible values include: 'Ascending',
+        /// 'Descending'</param>
         public SortInfo(string sortColumn = default(string), string sortDirection = default(string))
         {
             SortColumn = sortColumn;
@@ -2158,7 +2158,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string SortColumn { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'ascending', 'descending'
+        /// Gets or sets possible values include: 'Ascending', 'Descending'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sortDirection")]
         public string SortDirection { get; set; }
@@ -2219,29 +2219,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Store class.
         /// </summary>
-        /// <param name="url">Url of store storefront, required</param>
-        /// <param name="storeState">State of store. Possible values include:
-        /// 'open', 'closed', 'restrictedAccess'</param>
-        /// <param name="defaultLanguage">Default locale of store</param>
-        /// <param name="defaultCurrency">Default currency of store. Use ISO
-        /// 4217 currency codes</param>
-        /// <param name="catalog">Product catalog id of store</param>
-        /// <param name="secureUrl">Secure url of store, must use https
-        /// protocol, required</param>
-        /// <param name="email">Contact email of store</param>
-        /// <param name="adminEmail">Administrator contact email of
-        /// store</param>
-        /// <param name="displayOutOfStock">If true - store shows product with
-        /// status out of stock</param>
-        /// <param name="languages">All store supported languages</param>
-        /// <param name="currencies">All store supported currencies</param>
-        /// <param name="trustedGroups">All linked stores (their accounts can
-        /// be reused here)</param>
-        public Store(string name = default(string), string description = default(string), string url = default(string), string storeState = default(string), string timeZone = default(string), string country = default(string), string region = default(string), string defaultLanguage = default(string), string defaultCurrency = default(string), string catalog = default(string), bool? creditCardSavePolicy = default(bool?), string secureUrl = default(string), string email = default(string), string adminEmail = default(string), bool? displayOutOfStock = default(bool?), FulfillmentCenter fulfillmentCenter = default(FulfillmentCenter), FulfillmentCenter returnsFulfillmentCenter = default(FulfillmentCenter), System.Collections.Generic.IList<string> languages = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> currencies = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> trustedGroups = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<PaymentMethod> paymentMethods = default(System.Collections.Generic.IList<PaymentMethod>), System.Collections.Generic.IList<ShippingMethod> shippingMethods = default(System.Collections.Generic.IList<ShippingMethod>), System.Collections.Generic.IList<TaxProvider> taxProviders = default(System.Collections.Generic.IList<TaxProvider>), System.Collections.Generic.IList<string> securityScopes = default(System.Collections.Generic.IList<string>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.Collections.Generic.IList<Setting> settings = default(System.Collections.Generic.IList<Setting>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        /// <param name="storeState">Possible values include: 'Open',
+        /// 'Closed', 'RestrictedAccess'</param>
+        public Store(string name = default(string), string description = default(string), string storeState = default(string), string timeZone = default(string), string country = default(string), string region = default(string), string defaultLanguage = default(string), string defaultCurrency = default(string), string catalog = default(string), bool? creditCardSavePolicy = default(bool?), string url = default(string), string secureUrl = default(string), string email = default(string), string adminEmail = default(string), bool? displayOutOfStock = default(bool?), FulfillmentCenter fulfillmentCenter = default(FulfillmentCenter), FulfillmentCenter returnsFulfillmentCenter = default(FulfillmentCenter), System.Collections.Generic.IList<string> languages = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> currencies = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> trustedGroups = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<TaxProvider> taxProviders = default(System.Collections.Generic.IList<TaxProvider>), System.Collections.Generic.IList<PaymentMethod> paymentMethods = default(System.Collections.Generic.IList<PaymentMethod>), System.Collections.Generic.IList<ShippingMethod> shippingMethods = default(System.Collections.Generic.IList<ShippingMethod>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), System.Collections.Generic.IList<string> scopes = default(System.Collections.Generic.IList<string>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
             Description = description;
-            Url = url;
             StoreState = storeState;
             TimeZone = timeZone;
             Country = country;
@@ -2250,6 +2233,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
             DefaultCurrency = defaultCurrency;
             Catalog = catalog;
             CreditCardSavePolicy = creditCardSavePolicy;
+            Url = url;
             SecureUrl = secureUrl;
             Email = email;
             AdminEmail = adminEmail;
@@ -2259,15 +2243,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
             Languages = languages;
             Currencies = currencies;
             TrustedGroups = trustedGroups;
+            TaxProviders = taxProviders;
             PaymentMethods = paymentMethods;
             ShippingMethods = shippingMethods;
-            TaxProviders = taxProviders;
-            SecurityScopes = securityScopes;
             SeoObjectType = seoObjectType;
             SeoInfos = seoInfos;
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
             Settings = settings;
+            Scopes = scopes;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
@@ -2286,14 +2270,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets url of store storefront, required
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "url")]
-        public string Url { get; set; }
-
-        /// <summary>
-        /// Gets or sets state of store. Possible values include: 'open',
-        /// 'closed', 'restrictedAccess'
+        /// Gets or sets possible values include: 'Open', 'Closed',
+        /// 'RestrictedAccess'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "storeState")]
         public string StoreState { get; set; }
@@ -2314,19 +2292,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string Region { get; set; }
 
         /// <summary>
-        /// Gets or sets default locale of store
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "defaultLanguage")]
         public string DefaultLanguage { get; set; }
 
         /// <summary>
-        /// Gets or sets default currency of store. Use ISO 4217 currency codes
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "defaultCurrency")]
         public string DefaultCurrency { get; set; }
 
         /// <summary>
-        /// Gets or sets product catalog id of store
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
         public string Catalog { get; set; }
@@ -2337,25 +2312,26 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public bool? CreditCardSavePolicy { get; set; }
 
         /// <summary>
-        /// Gets or sets secure url of store, must use https protocol, required
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
+
+        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "secureUrl")]
         public string SecureUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets contact email of store
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
 
         /// <summary>
-        /// Gets or sets administrator contact email of store
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "adminEmail")]
         public string AdminEmail { get; set; }
 
         /// <summary>
-        /// Gets or sets if true - store shows product with status out of stock
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "displayOutOfStock")]
         public bool? DisplayOutOfStock { get; set; }
@@ -2371,22 +2347,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public FulfillmentCenter ReturnsFulfillmentCenter { get; set; }
 
         /// <summary>
-        /// Gets or sets all store supported languages
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "languages")]
         public System.Collections.Generic.IList<string> Languages { get; set; }
 
         /// <summary>
-        /// Gets or sets all store supported currencies
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currencies")]
         public System.Collections.Generic.IList<string> Currencies { get; set; }
 
         /// <summary>
-        /// Gets or sets all linked stores (their accounts can be reused here)
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "trustedGroups")]
         public System.Collections.Generic.IList<string> TrustedGroups { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxProviders")]
+        public System.Collections.Generic.IList<TaxProvider> TaxProviders { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2397,16 +2375,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "shippingMethods")]
         public System.Collections.Generic.IList<ShippingMethod> ShippingMethods { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxProviders")]
-        public System.Collections.Generic.IList<TaxProvider> TaxProviders { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "securityScopes")]
-        public System.Collections.Generic.IList<string> SecurityScopes { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2431,7 +2399,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
-        public System.Collections.Generic.IList<Setting> Settings { get; set; }
+        public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "scopes")]
+        public System.Collections.Generic.IList<string> Scopes { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2478,20 +2451,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the FulfillmentCenter class.
         /// </summary>
-        /// <param name="line1">Part of fulfillment center address,
-        /// line1</param>
-        /// <param name="line2">Part of fulfillment center address,
-        /// line2</param>
-        /// <param name="city">Part of fulfillment center address, city</param>
-        /// <param name="stateProvince">Part of fulfillment center address,
-        /// state province</param>
-        /// <param name="countryCode">Part of fulfillment center address,
-        /// country code</param>
-        /// <param name="countryName">Part of fulfillment center address,
-        /// country name</param>
-        /// <param name="postalCode">Part of fulfillment center address,
-        /// postal code</param>
-        public FulfillmentCenter(string name = default(string), string description = default(string), int? maxReleasesPerPickBatch = default(int?), int? pickDelay = default(int?), string daytimePhoneNumber = default(string), string line1 = default(string), string line2 = default(string), string city = default(string), string stateProvince = default(string), string countryCode = default(string), string countryName = default(string), string postalCode = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public FulfillmentCenter(string name = default(string), string description = default(string), int? maxReleasesPerPickBatch = default(int?), int? pickDelay = default(int?), string daytimePhoneNumber = default(string), string line1 = default(string), string line2 = default(string), string city = default(string), string stateProvince = default(string), string countryCode = default(string), string countryName = default(string), string postalCode = default(string), string id = default(string))
         {
             Name = name;
             Description = description;
@@ -2505,10 +2465,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
             CountryCode = countryCode;
             CountryName = countryName;
             PostalCode = postalCode;
-            CreatedDate = createdDate;
-            ModifiedDate = modifiedDate;
-            CreatedBy = createdBy;
-            ModifiedBy = modifiedBy;
             Id = id;
         }
 
@@ -2538,349 +2494,39 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string DaytimePhoneNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets part of fulfillment center address, line1
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "line1")]
         public string Line1 { get; set; }
 
         /// <summary>
-        /// Gets or sets part of fulfillment center address, line2
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "line2")]
         public string Line2 { get; set; }
 
         /// <summary>
-        /// Gets or sets part of fulfillment center address, city
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "city")]
         public string City { get; set; }
 
         /// <summary>
-        /// Gets or sets part of fulfillment center address, state province
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "stateProvince")]
         public string StateProvince { get; set; }
 
         /// <summary>
-        /// Gets or sets part of fulfillment center address, country code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "countryCode")]
         public string CountryCode { get; set; }
 
         /// <summary>
-        /// Gets or sets part of fulfillment center address, country name
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "countryName")]
         public string CountryName { get; set; }
 
         /// <summary>
-        /// Gets or sets part of fulfillment center address, postal code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "postalCode")]
         public string PostalCode { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
-        public System.DateTime? CreatedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
-        public System.DateTime? ModifiedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
-        public string CreatedBy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
-        public string ModifiedBy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class PaymentMethod
-    {
-        /// <summary>
-        /// Initializes a new instance of the PaymentMethod class.
-        /// </summary>
-        public PaymentMethod() { }
-
-        /// <summary>
-        /// Initializes a new instance of the PaymentMethod class.
-        /// </summary>
-        /// <param name="code">Inner unique method code</param>
-        /// <param name="name">Display name of payment method</param>
-        /// <param name="logoUrl">Absolute logo url of shipping method, can be
-        /// used in UI</param>
-        /// <param name="isActive">If true - method can be available on
-        /// storefront</param>
-        public PaymentMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), bool? isAvailableForPartial = default(bool?), System.Collections.Generic.IList<Setting> settings = default(System.Collections.Generic.IList<Setting>), string id = default(string))
-        {
-            Code = code;
-            Name = name;
-            Description = description;
-            LogoUrl = logoUrl;
-            IsActive = isActive;
-            Priority = priority;
-            IsAvailableForPartial = isAvailableForPartial;
-            Settings = settings;
-            Id = id;
-        }
-
-        /// <summary>
-        /// Gets or sets inner unique method code
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// Gets or sets display name of payment method
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets absolute logo url of shipping method, can be used in
-        /// UI
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
-        public string LogoUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets if true - method can be available on storefront
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
-        public bool? IsActive { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
-        public int? Priority { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isAvailableForPartial")]
-        public bool? IsAvailableForPartial { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
-        public System.Collections.Generic.IList<Setting> Settings { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class Setting
-    {
-        /// <summary>
-        /// Initializes a new instance of the Setting class.
-        /// </summary>
-        public Setting() { }
-
-        /// <summary>
-        /// Initializes a new instance of the Setting class.
-        /// </summary>
-        /// <param name="name">System name (ID) of the setting</param>
-        /// <param name="value">Current value for non-array setting</param>
-        /// <param name="valueType">Possible values include: 'shortText',
-        /// 'longText', 'integer', 'decimal', 'dateTime', 'boolean',
-        /// 'secureString'</param>
-        /// <param name="allowedValues">Predefined set of allowed values for
-        /// this setting</param>
-        /// <param name="isArray">Defines whether the setting can have
-        /// multiple values</param>
-        /// <param name="arrayValues">Current values for array setting</param>
-        /// <param name="title">User-friendly name of the setting</param>
-        public Setting(string groupName = default(string), string name = default(string), string value = default(string), string valueType = default(string), System.Collections.Generic.IList<string> allowedValues = default(System.Collections.Generic.IList<string>), string defaultValue = default(string), bool? isArray = default(bool?), System.Collections.Generic.IList<string> arrayValues = default(System.Collections.Generic.IList<string>), string title = default(string), string description = default(string))
-        {
-            GroupName = groupName;
-            Name = name;
-            Value = value;
-            ValueType = valueType;
-            AllowedValues = allowedValues;
-            DefaultValue = defaultValue;
-            IsArray = isArray;
-            ArrayValues = arrayValues;
-            Title = title;
-            Description = description;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "groupName")]
-        public string GroupName { get; set; }
-
-        /// <summary>
-        /// Gets or sets system name (ID) of the setting
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets current value for non-array setting
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
-        public string Value { get; set; }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'shortText', 'longText',
-        /// 'integer', 'decimal', 'dateTime', 'boolean', 'secureString'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
-        public string ValueType { get; set; }
-
-        /// <summary>
-        /// Gets or sets predefined set of allowed values for this setting
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "allowedValues")]
-        public System.Collections.Generic.IList<string> AllowedValues { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "defaultValue")]
-        public string DefaultValue { get; set; }
-
-        /// <summary>
-        /// Gets or sets defines whether the setting can have multiple values
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isArray")]
-        public bool? IsArray { get; set; }
-
-        /// <summary>
-        /// Gets or sets current values for array setting
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "arrayValues")]
-        public System.Collections.Generic.IList<string> ArrayValues { get; set; }
-
-        /// <summary>
-        /// Gets or sets user-friendly name of the setting
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "title")]
-        public string Title { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class ShippingMethod
-    {
-        /// <summary>
-        /// Initializes a new instance of the ShippingMethod class.
-        /// </summary>
-        public ShippingMethod() { }
-
-        /// <summary>
-        /// Initializes a new instance of the ShippingMethod class.
-        /// </summary>
-        /// <param name="code">Inner unique method code</param>
-        /// <param name="name">Display name of shipping method</param>
-        /// <param name="logoUrl">Absolute logo url of shipping method, can be
-        /// used in UI</param>
-        /// <param name="isActive">If true - method can be available on
-        /// storefront</param>
-        /// <param name="taxType">Type of tax</param>
-        public ShippingMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), string taxType = default(string), System.Collections.Generic.IList<Setting> settings = default(System.Collections.Generic.IList<Setting>), string id = default(string))
-        {
-            Code = code;
-            Name = name;
-            Description = description;
-            LogoUrl = logoUrl;
-            IsActive = isActive;
-            Priority = priority;
-            TaxType = taxType;
-            Settings = settings;
-            Id = id;
-        }
-
-        /// <summary>
-        /// Gets or sets inner unique method code
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// Gets or sets display name of shipping method
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets absolute logo url of shipping method, can be used in
-        /// UI
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
-        public string LogoUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets if true - method can be available on storefront
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
-        public bool? IsActive { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
-        public int? Priority { get; set; }
-
-        /// <summary>
-        /// Gets or sets type of tax
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
-        public string TaxType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
-        public System.Collections.Generic.IList<Setting> Settings { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2907,13 +2553,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the TaxProvider class.
         /// </summary>
-        /// <param name="code">Inner unique method code</param>
-        /// <param name="name">Display name of shipping method</param>
-        /// <param name="logoUrl">Absolute logo url of shipping method, can be
-        /// used in UI</param>
-        /// <param name="isActive">If true - method can be available on
-        /// storefront</param>
-        public TaxProvider(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), System.Collections.Generic.IList<Setting> settings = default(System.Collections.Generic.IList<Setting>))
+        public TaxProvider(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string id = default(string))
         {
             Code = code;
             Name = name;
@@ -2922,16 +2562,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
             IsActive = isActive;
             Priority = priority;
             Settings = settings;
+            Id = id;
         }
 
         /// <summary>
-        /// Gets or sets inner unique method code
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets display name of shipping method
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
@@ -2942,14 +2581,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets absolute logo url of shipping method, can be used in
-        /// UI
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
         public string LogoUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets if true - method can be available on storefront
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
         public bool? IsActive { get; set; }
@@ -2962,7 +2598,403 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
-        public System.Collections.Generic.IList<Setting> Settings { get; set; }
+        public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class SettingEntry
+    {
+        /// <summary>
+        /// Initializes a new instance of the SettingEntry class.
+        /// </summary>
+        public SettingEntry() { }
+
+        /// <summary>
+        /// Initializes a new instance of the SettingEntry class.
+        /// </summary>
+        /// <param name="valueType">Possible values include: 'ShortText',
+        /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean',
+        /// 'SecureString'</param>
+        public SettingEntry(string moduleId = default(string), string objectId = default(string), string objectType = default(string), string groupName = default(string), string name = default(string), string value = default(string), string valueType = default(string), System.Collections.Generic.IList<string> allowedValues = default(System.Collections.Generic.IList<string>), string defaultValue = default(string), bool? isArray = default(bool?), System.Collections.Generic.IList<string> arrayValues = default(System.Collections.Generic.IList<string>), string title = default(string), string description = default(string))
+        {
+            ModuleId = moduleId;
+            ObjectId = objectId;
+            ObjectType = objectType;
+            GroupName = groupName;
+            Name = name;
+            Value = value;
+            ValueType = valueType;
+            AllowedValues = allowedValues;
+            DefaultValue = defaultValue;
+            IsArray = isArray;
+            ArrayValues = arrayValues;
+            Title = title;
+            Description = description;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "moduleId")]
+        public string ModuleId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectId")]
+        public string ObjectId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "groupName")]
+        public string GroupName { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'ShortText', 'LongText',
+        /// 'Integer', 'Decimal', 'DateTime', 'Boolean', 'SecureString'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
+        public string ValueType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "allowedValues")]
+        public System.Collections.Generic.IList<string> AllowedValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "defaultValue")]
+        public string DefaultValue { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isArray")]
+        public bool? IsArray { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "arrayValues")]
+        public System.Collections.Generic.IList<string> ArrayValues { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PaymentMethod
+    {
+        /// <summary>
+        /// Initializes a new instance of the PaymentMethod class.
+        /// </summary>
+        public PaymentMethod() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PaymentMethod class.
+        /// </summary>
+        /// <param name="paymentMethodType">Possible values include:
+        /// 'Unknown', 'Standard', 'Redirection', 'PreparedForm'</param>
+        /// <param name="paymentMethodGroupType">Possible values include:
+        /// 'Paypal', 'BankCard', 'Alternative', 'Manual'</param>
+        public PaymentMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), bool? isAvailableForPartial = default(bool?), string currency = default(string), double? price = default(double?), double? priceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string paymentMethodType = default(string), string paymentMethodGroupType = default(string), string id = default(string))
+        {
+            Code = code;
+            Name = name;
+            Description = description;
+            LogoUrl = logoUrl;
+            IsActive = isActive;
+            Priority = priority;
+            IsAvailableForPartial = isAvailableForPartial;
+            Currency = currency;
+            Price = price;
+            PriceWithTax = priceWithTax;
+            Total = total;
+            TotalWithTax = totalWithTax;
+            DiscountAmount = discountAmount;
+            DiscountAmountWithTax = discountAmountWithTax;
+            Settings = settings;
+            TaxType = taxType;
+            TaxTotal = taxTotal;
+            TaxPercentRate = taxPercentRate;
+            TaxDetails = taxDetails;
+            PaymentMethodType = paymentMethodType;
+            PaymentMethodGroupType = paymentMethodGroupType;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
+        public string LogoUrl { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isAvailableForPartial")]
+        public bool? IsAvailableForPartial { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "price")]
+        public double? Price { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priceWithTax")]
+        public double? PriceWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
+        public double? Total { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalWithTax")]
+        public double? TotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
+        public double? DiscountAmount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
+        public double? DiscountAmountWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
+        public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
+        public double? TaxTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxPercentRate")]
+        public double? TaxPercentRate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
+        public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
+
+        /// <summary>
+        /// Gets possible values include: 'Unknown', 'Standard',
+        /// 'Redirection', 'PreparedForm'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodType")]
+        public string PaymentMethodType { get; private set; }
+
+        /// <summary>
+        /// Gets possible values include: 'Paypal', 'BankCard', 'Alternative',
+        /// 'Manual'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodGroupType")]
+        public string PaymentMethodGroupType { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class TaxDetail
+    {
+        /// <summary>
+        /// Initializes a new instance of the TaxDetail class.
+        /// </summary>
+        public TaxDetail() { }
+
+        /// <summary>
+        /// Initializes a new instance of the TaxDetail class.
+        /// </summary>
+        public TaxDetail(double? rate = default(double?), double? amount = default(double?), string name = default(string))
+        {
+            Rate = rate;
+            Amount = amount;
+            Name = name;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "rate")]
+        public double? Rate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "amount")]
+        public double? Amount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class ShippingMethod
+    {
+        /// <summary>
+        /// Initializes a new instance of the ShippingMethod class.
+        /// </summary>
+        public ShippingMethod() { }
+
+        /// <summary>
+        /// Initializes a new instance of the ShippingMethod class.
+        /// </summary>
+        public ShippingMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), string taxType = default(string), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string id = default(string))
+        {
+            Code = code;
+            Name = name;
+            Description = description;
+            LogoUrl = logoUrl;
+            IsActive = isActive;
+            Priority = priority;
+            TaxType = taxType;
+            Settings = settings;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
+        public string Code { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
+        public string LogoUrl { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
+        public string TaxType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
+        public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
     }
 }
@@ -3104,14 +3136,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the DynamicObjectProperty class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'undefined',
-        /// 'shortText', 'longText', 'integer', 'decimal', 'dateTime',
-        /// 'boolean', 'html'</param>
-        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        /// <param name="valueType">Possible values include: 'Undefined',
+        /// 'ShortText', 'LongText', 'Integer', 'Decimal', 'DateTime',
+        /// 'Boolean', 'Html'</param>
+        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ObjectId = objectId;
             Values = values;
             Name = name;
+            Description = description;
             ObjectType = objectType;
             IsArray = isArray;
             IsDictionary = isDictionary;
@@ -3143,6 +3176,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
@@ -3167,8 +3205,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         public bool? IsRequired { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'undefined', 'shortText',
-        /// 'longText', 'integer', 'decimal', 'dateTime', 'boolean', 'html'
+        /// Gets or sets possible values include: 'Undefined', 'ShortText',
+        /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean', 'Html'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
