@@ -30,7 +30,7 @@ namespace VirtoCommerce.Storefront.Common
         public string ToAppAbsolute(string virtualPath, Store store, Language language)
         {
             var appRelativePath = ToAppRelative(virtualPath, store, language);
-            var result = appRelativePath.StartsWith("~")
+            var result = appRelativePath != null && appRelativePath.StartsWith("~")
                 ? VirtualPathUtility.ToAbsolute(appRelativePath)
                 : appRelativePath;
             return result;
@@ -47,7 +47,7 @@ namespace VirtoCommerce.Storefront.Common
 
             // Don't process absolute URL
             Uri absoluteUri;
-            if (!Uri.TryCreate(virtualPath, UriKind.Absolute, out absoluteUri))
+            if (virtualPath != null && !Uri.TryCreate(virtualPath, UriKind.Absolute, out absoluteUri))
             {
                 var builder = new StringBuilder("~");
 
