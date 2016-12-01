@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Practices.ServiceLocation;
+﻿using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
+using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
@@ -11,6 +11,8 @@ using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Order.Factories;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using orderDto = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
+using platformDto = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
+using storeDto = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -37,6 +39,11 @@ namespace VirtoCommerce.Storefront.Converters
         public static Discount ToDiscount(this orderDto.Discount discountDto, IEnumerable<Currency> availCurrencies, Language language)
         {
             return OrderConverterInstance.ToDiscount(discountDto, availCurrencies, language);
+        }
+
+        public static PaymentMethod ToPaymentMethod(this storeDto.PaymentMethod dto, CustomerOrder order)
+        {
+            return OrderConverterInstance.ToPaymentMethod(dto, order);
         }
 
         public static PaymentIn ToOrderInPayment(this orderDto.PaymentIn paymentInDto, IEnumerable<Currency> availCurrencies, Language language)
@@ -348,6 +355,38 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = new TaxDetail(currency);
             result.InjectFrom(taxDetailDto);
+            return result;
+        }
+
+        public virtual PaymentMethod ToPaymentMethod(storeDto.PaymentMethod paymentMethodDto, CustomerOrder order)
+        {
+            var retVal = ServiceLocator.Current.GetInstance<OrderFactory>().CreatePaymentMethod(order.Currency);
+
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(paymentMethodDto);
+            retVal.Priority = paymentMethodDto.Priority ?? 0;
+
+            if (paymentMethodDto.Settings != null)
+            {
+                retVal.Settings = paymentMethodDto.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
+            }
+
+            retVal.Currency = order.Currency;
+            retVal.Price = new Money(paymentMethodDto.Price ?? 0, order.Currency);
+            retVal.DiscountAmount = new Money(paymentMethodDto.DiscountAmount ?? 0, order.Currency);
+            retVal.TaxPercentRate = (decimal?)paymentMethodDto.TaxPercentRate ?? 0m;
+
+            if (paymentMethodDto.TaxDetails != null)
+            {
+                retVal.TaxDetails = paymentMethodDto.TaxDetails.Select(td => ToTaxDetail(td, order.Currency)).ToList();
+            }
+
+            return retVal;
+        }
+
+        public virtual TaxDetail ToTaxDetail(storeDto.TaxDetail dto, Currency currency)
+        {
+            var result = new TaxDetail(currency);
+            result.InjectFrom(dto);
             return result;
         }
     }

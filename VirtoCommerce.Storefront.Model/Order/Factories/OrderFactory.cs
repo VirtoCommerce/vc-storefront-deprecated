@@ -13,6 +13,12 @@ namespace VirtoCommerce.Storefront.Model.Order.Factories
         {
             return new PaymentIn(currency);
         }
+
+        public virtual PaymentMethod CreatePaymentMethod(Currency currency)
+        {
+            return new PaymentMethod(currency);
+        }
+
         public virtual Shipment CreateShipment(Currency currency)
         {
             return new Shipment(currency);

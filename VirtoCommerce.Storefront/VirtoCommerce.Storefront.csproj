@@ -290,6 +290,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\countries.json" />
+    <Content Include="App_Data\Themes\default\assets\account-checkout.css" />
     <Content Include="App_Data\Themes\default\assets\active-bg.png" />
     <Content Include="App_Data\Themes\default\assets\amazon-payments.svg" />
     <Content Include="App_Data\Themes\default\assets\amazon.svg" />
@@ -451,6 +452,8 @@
     </Content>
     <Content Include="App_Data\Themes\default\layout\account_layout.liquid" />
     <Content Include="App_Data\Themes\default\assets\account.scss.liquid" />
+    <Content Include="App_Data\Themes\default\assets\account-bootstrap.css" />
+    <Content Include="App_Data\Themes\default\assets\account-checkout2.css" />
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -697,7 +700,9 @@
     <Content Include="App_Data\Themes\default\templates\checkout.liquid">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Themes\default\templates\cart.liquid" />
+    <Content Include="App_Data\Themes\default\templates\cart.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\templates\thanks.liquid" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

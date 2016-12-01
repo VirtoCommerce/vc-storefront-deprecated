@@ -14,16 +14,17 @@ namespace VirtoCommerce.Storefront.Test
         {
             var existingOrderNumber = "CU1508131823004";
             var orderApi = GetOrderApiClient();
-            var workContext = GetTestWorkContext();
-
+            var orderDto = orderApi.OrderModule.GetByNumber(existingOrderNumber);
+            
             var currency = new Currency(new Language("en-US"), "USD");
             var payment = new PaymentIn(currency)
             {
                 GatewayCode = "DefaultManualPaymentMethod",
-                Sum = new Money(1219.19, currency)
+                Sum = new Money(1219.19, currency),
+                CustomerId = GetTestWorkContext().CurrentCustomer.Id,
+                Purpose = "test payment"
             };
             
-            var orderDto = orderApi.OrderModule.GetByNumber(existingOrderNumber);
             var initialCount = orderDto.InPayments.Count;
             orderDto.InPayments.Add(payment.ToOrderPaymentInDto());
             orderApi.OrderModule.Update(orderDto);

@@ -21,10 +21,13 @@
     <link rel="canonical" href="{{ canonical_url }}" />
 
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
-    {{ '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css' | stylesheet_tag }}
+    <!--{{ '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css' | stylesheet_tag }}-->
+    {{ 'account-bootstrap.css' | asset_url | stylesheet_tag }}
 
     {{ 'account.scss.css' | asset_url | stylesheet_tag }}
-    <!--{{ 'checkout.css' | global_asset_url | stylesheet_tag }}-->
+    {{ 'account-checkout2.css' | asset_url | stylesheet_tag }}
+    <!--{{ 'account-checkout.css' | asset_url | stylesheet_tag }}
+    {{ 'checkout.css' | global_asset_url | stylesheet_tag }}-->
 
     {% include 'google-fonts' %}
 
@@ -41,7 +44,7 @@
 
     {{ content_for_header }}
 </head>
-<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-controller="accountController" ng-init="baseUrl='{{ '/' | absolute_url }}'">
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-init="baseUrl='{{ '/' | absolute_url }}'">
     {% include 'notification' %}
     {% include 'recently-added-cart-item-dialog' %}
     {% include 'recently-added-actual-quote-request-item-dialog' %}
@@ -54,7 +57,7 @@
                 <div class="grid-item large--one-third">
                     {% if template == 'index' %}
                     <h1 class="header-logo" itemscope itemtype="http://schema.org/Organization">
-                    {% else %}
+                        {% else %}
                         <div class="h1 header-logo" itemscope itemtype="http://schema.org/Organization" />
                         {% endif %}
                         {% if settings.logo_use_image %}
@@ -64,7 +67,7 @@
                         {% else %}
                         <a href="{{ '/' | absolute_url }}" itemprop="url">{{ shop.name }}</a>
                         {% endif %}
-                    {% if template == 'index' %}
+                        {% if template == 'index' %}
                     </h1>
                     {% else %}
                 </div>

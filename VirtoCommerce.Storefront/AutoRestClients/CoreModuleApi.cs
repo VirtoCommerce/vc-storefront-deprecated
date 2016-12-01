@@ -4951,7 +4951,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// </summary>
         /// <param name="storeState">Possible values include: 'open',
         /// 'closed', 'restrictedAccess'</param>
-        public Store(string name = default(string), string description = default(string), string storeState = default(string), string timeZone = default(string), string country = default(string), string region = default(string), string defaultLanguage = default(string), string defaultCurrency = default(string), string catalog = default(string), bool? creditCardSavePolicy = default(bool?), string url = default(string), string secureUrl = default(string), string email = default(string), string adminEmail = default(string), bool? displayOutOfStock = default(bool?), FulfillmentCenter fulfillmentCenter = default(FulfillmentCenter), FulfillmentCenter returnsFulfillmentCenter = default(FulfillmentCenter), System.Collections.Generic.IList<string> languages = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> currencies = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> trustedGroups = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<TaxProvider> taxProviders = default(System.Collections.Generic.IList<TaxProvider>), System.Collections.Generic.IList<PaymentMethod> paymentMethods = default(System.Collections.Generic.IList<PaymentMethod>), System.Collections.Generic.IList<ShippingMethod> shippingMethods = default(System.Collections.Generic.IList<ShippingMethod>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public Store(string name = default(string), string description = default(string), string storeState = default(string), string timeZone = default(string), string country = default(string), string region = default(string), string defaultLanguage = default(string), string defaultCurrency = default(string), string catalog = default(string), bool? creditCardSavePolicy = default(bool?), string url = default(string), string secureUrl = default(string), string email = default(string), string adminEmail = default(string), bool? displayOutOfStock = default(bool?), FulfillmentCenter fulfillmentCenter = default(FulfillmentCenter), FulfillmentCenter returnsFulfillmentCenter = default(FulfillmentCenter), System.Collections.Generic.IList<string> languages = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> currencies = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> trustedGroups = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<TaxProvider> taxProviders = default(System.Collections.Generic.IList<TaxProvider>), System.Collections.Generic.IList<PaymentMethod> paymentMethods = default(System.Collections.Generic.IList<PaymentMethod>), System.Collections.Generic.IList<ShippingMethod> shippingMethods = default(System.Collections.Generic.IList<ShippingMethod>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), System.Collections.Generic.IList<string> scopes = default(System.Collections.Generic.IList<string>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
             Description = description;
@@ -4981,6 +4981,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
             ObjectType = objectType;
             DynamicProperties = dynamicProperties;
             Settings = settings;
+            Scopes = scopes;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
@@ -5129,6 +5130,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
         public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "scopes")]
+        public System.Collections.Generic.IList<string> Scopes { get; set; }
 
         /// <summary>
         /// </summary>
@@ -5863,11 +5869,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// <param name="valueType">Possible values include: 'undefined',
         /// 'shortText', 'longText', 'integer', 'decimal', 'dateTime',
         /// 'boolean', 'html'</param>
-        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ObjectId = objectId;
             Values = values;
             Name = name;
+            Description = description;
             ObjectType = objectType;
             IsArray = isArray;
             IsDictionary = isDictionary;
@@ -5896,6 +5903,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// </summary>

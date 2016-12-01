@@ -3,21 +3,26 @@
 <h1>{{ 'customer.account.title' | t }}</h1>
 
 <div ng-controller="accountController">
+    <div class="ajax-informer" ng-class="{ 'fade': loader.isLoading }">
+        <div class="loader"></div>
+        <span>Working...</span>
+    </div>
+
     <uib-tabset>
         <uib-tab heading="Orders">
-            <vc-account-orders></vc-account-orders>
+            <vc-account-orders customer="customer" countries="availCountries" base-url="baseUrl" get-country-regions="getCountryRegions(country)"></vc-account-orders>
         </uib-tab>
         {% if shop.quotes_enabled %}
         <uib-tab heading="Quote requests">
             <div class="one-half">
-                <vc-account-quotes get-quotes="getQuotes" loading="isLoading"></vc-account-quotes>
+                <vc-account-quotes get-quotes="getQuotes" loading="loader.isLoading"></vc-account-quotes>
             </div>
         </uib-tab>
         {% endif %}
 
         <uib-tab heading="Profile">
             <div class="one-half">
-                <vc-account-profile-update customer="customer" on-update="updateProfile" loading="isLoading"></vc-account-profile-update>
+                <vc-account-profile-update customer="customer" on-update="updateProfile" loading="loader.isLoading"></vc-account-profile-update>
             </div>
         </uib-tab>
         <uib-tab heading="Addresses">

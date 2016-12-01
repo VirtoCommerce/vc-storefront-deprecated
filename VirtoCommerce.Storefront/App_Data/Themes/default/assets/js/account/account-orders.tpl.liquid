@@ -1,7 +1,7 @@
 ﻿<h4>{{ 'customer.orders.title' | t }}</h4>
 <ng-outlet></ng-outlet>
 
-<script id="account-orders-list.tpl" type="text/ng-template">
+<script id="account-orders-list.tpl" type="text/ng-template">    
     <table class="full" ng-if="$ctrl.entries.length">
         <thead>
             <tr>
@@ -29,7 +29,7 @@
 
     <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
 
-    <p ng-if="!$ctrl.entries.length">{{ 'customer.orders.none' | t }}</p>
+    <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.orders.none' | t }}</p>
 </script>
 
 <script id="account-order-detail.tpl" type="text/ng-template">
@@ -139,7 +139,8 @@
                 <strong>{{ 'customer.order.billing_address' | t }}:</strong>
                 <vc-checkout-address address="$ctrl.billingAddress"></vc-checkout-address>
             </p>
-            <p ng-if="'Pending' === ($ctrl.order | orderToFinancialStatusLabel)">
+            <!--<p ng-if="'Pending' === ($ctrl.order | orderToFinancialStatusLabel)">-->
+            <p>
                 <a ng-link="['PayOrder', {number: $ctrl.order.number, pageNumber: $ctrl.pageNumber}]" class="btn">Pay order</a>
                 <!--<a ng-click="$ctrl.gotoPayment()" class="btn">Pay order</a>-->
             </p>
@@ -163,7 +164,7 @@
         </a>
     </p>
 
-    <div class="edit_checkout animate-floating-labels">
+    <div class="multi-step windows chrome desktop page--no-banner page--logo-main page--show js flexbox flexboxlegacy rgba multiplebgs boxshadow opacity cssanimations csstransitions generatedcontent svg inlinesvg cors boxsizing display-table pointerevents placeholder mediaqueries floating-labels edit_checkout animate-floating-labels">
         <div class="step__sections">
             <div class="section section--payment-method">
                 <div class="section__header">
@@ -187,7 +188,7 @@
                             <label class="checkbox__label" for="BillingAddressEqualsShipping">{{ 'checkout.payment_method.billing_address_equals_shipping' | t }}</label>
                         </div>
                         <div class="radio-group__row content-box__row content-box__row--secondary" ng-if="!$ctrl.billingAddressEqualsShipping">
-                            <vc-checkout-address address="$ctrl.payment.billingAddress" countries="$ctrl.availCountries" get-country-regions="getCountryRegions(country)" addresses="$ctrl.customer.addresses" on-update="$ctrl.validate()" edit-mode="true"></vc-checkout-address>
+                            <vc-checkout-address address="$ctrl.payment.billingAddress" countries="$ctrl.parentComponent.countries" get-country-regions="$ctrl.parentComponent.getCountryRegions({country: country})" addresses="$ctrl.parentComponent.customer.addresses" on-update="$ctrl.validate()" edit-mode="true"></vc-checkout-address>
                         </div>
                     </div>
                 </div>

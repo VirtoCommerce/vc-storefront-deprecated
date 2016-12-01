@@ -23,10 +23,13 @@ namespace VirtoCommerce.Storefront.Test
 {
     public class StorefrontTestBase
     {
-        protected WorkContext GetTestWorkContext()
+        public StorefrontTestBase()
         {
             ServiceLocator.SetLocatorProvider(() => new UnityServiceLocator(new UnityContainer()));
+        }
 
+        protected WorkContext GetTestWorkContext()
+        {
             var coreApi = GetCoreApiClient();
             var storeApi = GetStoreApiClient();
 

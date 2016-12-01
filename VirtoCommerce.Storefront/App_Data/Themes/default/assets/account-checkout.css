@@ -1,0 +1,473 @@
+
+body {
+    font-size: 14px;
+    font-family: "Helvetica Neue", sans-serif;
+    line-height: 1.3em;
+    -webkit-font-smoothing: subpixel-antialiased
+}
+::selection {
+    background: #1990c6;
+    color: white
+}
+
+.content-box {
+    border-radius: 4px;
+    background: #fff;
+    color: #737373
+}
+.no-js .content-box,
+.no-boxshadow .content-box {
+    border: 1px solid #d9d9d9
+}
+.boxshadow .content-box {
+    box-shadow: 0 0 0 1px #d9d9d9
+}
+.content-box,
+.content-box-spacing {
+    margin-top: 1em
+}
+.content-box:first-child,
+.content-box-spacing:first-child {
+    margin-top: 0
+}
+.content-box__emphasis {
+    font-weight: 500;
+    color: #4d4d4d
+}
+.content-box__small-text {
+    font-size: 0.85714em;
+    color: #999999
+}
+.content-box__row {
+    padding: 1.3em;
+    border-top: 1px solid #d9d9d9;
+    zoom: 1
+}
+.content-box__row:first-child {
+    border-top: none
+}
+.content-box__row:after,
+.content-box__row:before {
+    content: "";
+    display: table
+}
+.content-box__row:after {
+    clear: both
+}
+.display-table .content-box__row {
+    display: table;
+    box-sizing: border-box;
+    width: 100%
+}
+.content-box__row:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px
+}
+.content-box__row:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px
+}
+.content-box__row--compact {
+    padding: 0.975em 1.3em
+}
+.content-box__row-collapsed {
+    display: none
+}
+.content-box__row--secondary {
+    background-color: #fafafa
+}
+.content-box__row--no-border {
+    padding-bottom: 0
+}
+.content-box__row+.content-box__row--no-border {
+    border-top: none;
+    padding-top: 0
+}
+.content-box__row--no-border+.content-box__row {
+    border-top: none
+}
+.content-box__row--no-padding {
+    padding: 0
+}
+.display-table .content-box__row__stretch {
+    display: table-cell;
+    width: 100%
+}
+.no-js .content-box__row__stretch,
+.no-display-table .content-box__row__stretch {
+    float: left
+}
+.content-box__row__right {
+    padding-left: 0.75em;
+    white-space: nowrap
+}
+.display-table .content-box__row__right {
+    display: table-cell
+}
+.no-js .content-box__row__right,
+.no-display-table .content-box__row__right {
+    float: right
+}
+.content-box__row__left {
+    padding-left: 0.75em;
+    white-space: nowrap
+}
+.display-table .content-box__row__left {
+    display: table-cell
+}
+.no-js .content-box__row__left,
+.no-display-table .content-box__row__left {
+    float: right
+}
+.content-box__hr {
+    border: 0;
+    border-bottom: 1px solid #e6e6e6;
+    margin: 1.3em 0
+}
+.content-box--applied-reduction-code-list {
+    margin-top: 0.9em;
+    background-color: #fafafa
+}
+
+.input-checkbox,
+.input-radio {
+    width: 18px;
+    height: 18px;
+    box-shadow: 0 0 0 0 #1990c6 inset;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    cursor: pointer;
+    vertical-align: -4px;
+    outline: 0;
+    border: 1px solid
+}
+.main .input-checkbox,
+.main .input-radio {
+    border-color: #d9d9d9
+}
+.main .input-checkbox:hover,
+.main .input-radio:hover {
+    border-color: #cccccc
+}
+.main .input-checkbox:disabled,
+.main .input-radio:disabled {
+    background-color: #fafafa;
+    border-color: #cccccc
+}
+.sidebar .input-checkbox,
+.sidebar .input-radio {
+    border-color: #d5d5d5
+}
+.sidebar .input-checkbox:hover,
+.sidebar .input-radio:hover {
+    border-color: #c8c8c8
+}
+.sidebar .input-checkbox:disabled,
+.sidebar .input-radio:disabled {
+    background-color: whitesmoke;
+    border-color: #c8c8c8
+}
+.content-box .input-checkbox,
+.content-box .input-radio {
+    border-color: #d9d9d9
+}
+.content-box .input-checkbox:hover,
+.content-box .input-radio:hover {
+    border-color: #cccccc
+}
+.content-box .input-checkbox:disabled,
+.content-box .input-radio:disabled {
+    background-color: #fafafa;
+    border-color: #cccccc
+}
+.leaflet-popup-content .input-checkbox,
+.leaflet-popup-content .input-radio {
+    border-color: #d9d9d9
+}
+.leaflet-popup-content .input-checkbox:hover,
+.leaflet-popup-content .input-radio:hover {
+    border-color: #cccccc
+}
+.leaflet-popup-content .input-checkbox:disabled,
+.leaflet-popup-content .input-radio:disabled {
+    background-color: #fafafa;
+    border-color: #cccccc
+}
+.input-checkbox:after,
+.input-radio:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: scale(0.2);
+    -ms-transform: scale(0.2);
+    transform: scale(0.2);
+    -webkit-transition: all 0.2s ease-in-out 0.1s;
+    transition: all 0.2s ease-in-out 0.1s;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 0 ")";
+    filter: alpha(opacity=0)
+}
+.input-checkbox:focus,
+.input-radio:focus {
+    border-color: #d9d9d9;
+}
+.input-checkbox:checked,
+.input-radio:checked {
+    border: none;
+    border-color: #d9d9d9;
+    box-shadow: 0 0 0 10px #1990c6 inset
+}
+.input-checkbox:checked:after,
+.input-radio:checked:after {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
+    filter: alpha(opacity=100)
+}
+.input-checkbox:checked:focus,
+.input-radio:checked:focus {
+    border-color: #136f99
+}
+.input-radio {
+    border-radius: 50%
+}
+.input-radio:after {
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    margin-top: -2px;
+    background-color: #fff;
+    border-radius: 50%
+}
+.input-checkbox {
+    border-radius: 4px
+}
+.input-checkbox:after {
+    width: 10px;
+    height: 8px;
+    margin-left: -5px;
+    margin-top: -4px;
+    background-image: url('checkbox-tick.svg');
+    background-image: url('checkbox-tick.svg'), none
+}
+.radio-wrapper,
+.checkbox-wrapper {
+    zoom: 1
+}
+.radio-wrapper:after,
+.radio-wrapper:before,
+.checkbox-wrapper:after,
+.checkbox-wrapper:before {
+    content: "";
+    display: table
+}
+.radio-wrapper:after,
+.checkbox-wrapper:after {
+    clear: both
+}
+.display-table .radio-wrapper,
+.display-table .checkbox-wrapper {
+    display: table;
+    box-sizing: border-box;
+    width: 100%
+}
+.checkbox-wrapper {
+    margin-bottom: 1em
+}
+.radio__input,
+.checkbox__input {
+    padding-right: 0.75em;
+    white-space: nowrap
+}
+.display-table .radio__input,
+.display-table .checkbox__input {
+    display: table-cell
+}
+.no-js .radio__input,
+.no-display-table .radio__input,
+.no-js .checkbox__input,
+.no-display-table .checkbox__input {
+    float: left
+}
+.radio__label,
+.checkbox__label {
+    cursor: pointer;
+    vertical-align: middle
+}
+.display-table .radio__label,
+.display-table .checkbox__label {
+    display: table-cell;
+    width: 100%
+}
+.no-js .radio__label,
+.no-display-table .radio__label,
+.no-js .checkbox__label,
+.no-display-table .checkbox__label {
+    float: left
+}
+.radio__accessory {
+    padding-left: 0.75em;
+    white-space: nowrap
+}
+.display-table .radio__accessory {
+    display: table-cell
+}
+.no-js .radio__accessory,
+.no-display-table .radio__accessory {
+    float: right
+}
+.radio__accessory .payment-icon {
+    margin: -2px 0 -6px
+}
+.payment-icon {
+    display: inline-block;
+    width: 38px;
+    height: 24px;
+    -webkit-transition: opacity 0.5s cubic-bezier(0.3, 0, 0, 1);
+    transition: opacity 0.5s cubic-bezier(0.3, 0, 0, 1);
+    -webkit-backface-visibility: hidden
+}
+.blank-slate .payment-icon {
+    vertical-align: middle
+}
+.payment-icon--amazon {
+    background-image: url('amazon.svg');
+    background-image: url('amazon.svg'), none
+}
+.payment-icon--american-express {
+    background-image: url('american-express.svg');
+    background-image: url('american-express.svg'), none
+}
+.payment-icon--bitcoin {
+    background-image: url('bitcoin.svg');
+    background-image: url('bitcoin.svg'), none
+}
+.payment-icon--bogus {
+    background-image: url('bogus.svg');
+    background-image: url('bogus.svg'), none
+}
+.payment-icon--boleto {
+    background-image: url('boleto.svg');
+    background-image: url('boleto.svg'), none
+}
+.payment-icon--cash {
+    background-image: url('cash.svg');
+    background-image: url('cash.svg'), none
+}
+.payment-icon--dankort {
+    background-image: url('dankort.svg');
+    background-image: url('dankort.svg'), none
+}
+.payment-icon--diners-club {
+    background-image: url('diners-club.svg');
+    background-image: url('diners-club.svg'), none
+}
+.payment-icon--discover {
+    background-image: url('discover.svg');
+    background-image: url('discover.svg'), none
+}
+.payment-icon--dogecoin {
+    background-image: url('dogecoin.svg');
+    background-image: url('dogecoin.svg'), none
+}
+.payment-icon--litecoin {
+    background-image: url('litecoin.svg');
+    background-image: url('litecoin.svg'), none
+}
+.payment-icon--forbrugsforeningen {
+    background-image: url('forbrugsforeningen.svg');
+    background-image: url('forbrugsforeningen.svg'), none
+}
+.payment-icon--generic {
+    background-image: url('generic.svg');
+    background-image: url('generic.svg'), none
+}
+.payment-icon--gift-card {
+    background-image: url('gift-card-payment.svg');
+    background-image: url('gift-card-payment.svg'), none
+}
+.payment-icon--google-wallet {
+    background-image: url('google-wallet-payment.svg');
+    background-image: url('google-wallet-payment.svg'), none
+}
+.payment-icon--jcb {
+    background-image: url('jcb.svg');
+    background-image: url('jcb.svg'), none
+}
+.payment-icon--laser {
+    background-image: url('laser.svg');
+    background-image: url('laser.svg'), none
+}
+.payment-icon--maestro {
+    background-image: url('maestro.svg');
+    background-image: url('maestro.svg'), none
+}
+.payment-icon--master {
+    background-image: url('master.svg');
+    background-image: url('master.svg'), none
+}
+.payment-icon--paypal {
+    background-image: url('paypal.svg');
+    background-image: url('paypal.svg'), none
+}
+.payment-icon--sofort {
+    background-image: url('sofort.svg');
+    background-image: url('sofort.svg'), none
+}
+.payment-icon--solo {
+    background-image: url('solo.svg');
+    background-image: url('solo.svg'), none
+}
+.payment-icon--switch {
+    background-image: url('switch.svg');
+    background-image: url('switch.svg'), none
+}
+.payment-icon--unionpay {
+    background-image: url('unionpay.svg');
+    background-image: url('unionpay.svg'), none
+}
+.payment-icon--visa {
+    background-image: url('visa.svg');
+    background-image: url('visa.svg'), none
+}
+.radio__accessory.known .payment-icon.selected {
+    -webkit-animation: bump 0.5s ease-in-out;
+    animation: bump 0.5s ease-in-out
+}
+.radio__accessory.known .payment-icon:not(.selected) {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    opacity: 0.4;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 40 ")";
+    filter: alpha(opacity=40)
+}
+.offsite-payment-gateway-logo {
+    height: 24px;
+    margin-top: -2px
+}
+.payment-method-list__item {
+    padding-top: 2px;
+    margin-bottom: 0.5em
+}
+.payment-method-list__item__icon {
+    vertical-align: middle;
+    margin: -0.25em 0.25em 0 0
+}
+.payment-icon-list__more {
+    vertical-align: top;
+    margin-top: -2px;
+    margin-left: 0.25em
+}
+.amazon-payments__widget {
+    width: 100%;
+    height: 400px
+}
+.amazon-payments__link {
+    display: block;
+    margin-top: 1.5em
+}

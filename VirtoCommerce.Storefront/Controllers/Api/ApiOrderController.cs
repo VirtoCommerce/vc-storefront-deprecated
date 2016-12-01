@@ -1,5 +1,4 @@
-﻿using PagedList;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -11,6 +10,7 @@ using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
+using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Controllers.Api
 {
@@ -33,57 +33,103 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         {
             var orders = WorkContext.CurrentCustomer.Orders;
             orders.Slice(pageNumber, pageSize, sortInfos);
-            var retVal = new StaticPagedList<CustomerOrder>(orders.Select(x => x), orders);
 
             return Json(new
             {
-                Results = retVal,
-                TotalCount = retVal.TotalItemCount
+                Results = orders.ToArray(),
+                TotalCount = orders.TotalItemCount
             });
         }
 
         // GET: storefrontapi/orders:number
         [HttpGet]
-        public ActionResult GetCustomerOrder(string number)
+        public async Task<ActionResult> GetCustomerOrder(string number)
         {
-            var retVal = GetOrderByNumber(number);
+            var retVal = await GetOrderByNumber(number);
             return Json(retVal, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: storefrontapi/orders/{number}/paymentmethods
+        // GET: storefrontapi/orders/{number}/newpaymentdata
         [HttpGet]
-        public async Task<ActionResult> GetAvailPaymentMethods(string number)
+        public async Task<ActionResult> GetNewPaymentData(string number)
         {
-            var order = GetOrderByNumber(number);
-            var store = await _storeApi.StoreModule.GetStoreByIdAsync(order.StoreId);
-            var paymentMethods = store.PaymentMethods.Where(x => x.IsActive.Value).ToList();
-            return Json(paymentMethods, JsonRequestBehavior.AllowGet);
+            var order = await GetOrderByNumber(number);
+
+            var storeDto = await _storeApi.StoreModule.GetStoreByIdAsync(order.StoreId);
+            var paymentMethods = storeDto.PaymentMethods
+                                        .Where(x => x.IsActive.Value)
+                                        .Select(x => x.ToPaymentMethod(order));
+
+            var paymentDto = await _orderApi.OrderModule.GetNewPaymentAsync(order.Id);
+            var payment = paymentDto.ToOrderInPayment(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);
+
+            return Json(new
+            {
+                Payment = payment,
+                PaymentMethods = paymentMethods,
+                Order = order
+            }, JsonRequestBehavior.AllowGet);
         }
 
         // POST: storefrontapi/orders/{number}/payments
         [HttpPost]
-        public async Task<ActionResult> AddOrUpdatePayment(string number, PaymentIn payment)
+        public async Task<ActionResult> AddOrUpdatePayment(PaymentIn payment /*, orderModel.BankCardInfo bankCardInfo*/)
         {
-            var order = GetOrderByNumber(number);
-            //Need lock to prevent concurrent access to same object
-            using (await AsyncLock.GetLockByKey(GetAsyncLockKey(order)).LockAsync())
+            var number = (string)RouteData.Values["number"];
+            orderModel.BankCardInfo bankCardInfo = null;
+            orderModel.ProcessPaymentResult processingResult = null;
+
+            if (payment.Sum.Amount == decimal.Zero)
             {
-                var orderDto = await _orderApi.OrderModule.GetByNumberAsync(number);
-                orderDto.InPayments.Add(payment.ToOrderPaymentInDto());
-                await _orderApi.OrderModule.UpdateAsync(orderDto);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Valid payment amount is required");
             }
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            payment.CustomerId = WorkContext.CurrentCustomer.Id;
+            payment.CustomerName = WorkContext.CurrentCustomer.FullName;
+            var paymentDto = payment.ToOrderPaymentInDto();
+
+            //Need lock to prevent concurrent access to same object
+            using (await AsyncLock.GetLockByKey(GetAsyncLockKey(number, WorkContext)).LockAsync())
+            {
+                var orderDto = await GetOrderDtoByNumber(number);
+                orderDto.InPayments.Add(paymentDto);
+                await _orderApi.OrderModule.UpdateAsync(orderDto);
+
+                orderDto = await _orderApi.OrderModule.GetByIdAsync(orderDto.Id);
+                paymentDto = orderDto.InPayments
+                    .Where(x => x.Sum.Value == paymentDto.Sum.Value && paymentDto.GatewayCode == x.GatewayCode)
+                    .OrderByDescending(x => x.CreatedDate)
+                    .First();
+
+                processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(orderDto.Id, paymentDto.Id, bankCardInfo);
+            }
+
+            return Json(new { orderProcessingResult = processingResult, paymentMethod = paymentDto.PaymentMethod });
         }
 
 
-        private CustomerOrder GetOrderByNumber(string number)
+        private async Task<CustomerOrder> GetOrderByNumber(string number)
         {
-            return WorkContext.CurrentCustomer.Orders.FirstOrDefault(x => x.Number == number);
+            var order = await GetOrderDtoByNumber(number);
+
+            WorkContext.CurrentOrder = order.ToCustomerOrder(WorkContext.AllCurrencies, WorkContext.CurrentLanguage);
+            return WorkContext.CurrentOrder;
         }
 
-        private static string GetAsyncLockKey(CustomerOrder entry)
+        private async Task<orderModel.CustomerOrder> GetOrderDtoByNumber(string number)
         {
-            return string.Join(":", "Order", entry.Id, entry.StoreId, entry.CustomerId);
+            var order = await _orderApi.OrderModule.GetByNumberAsync(number);
+
+            if (order == null || order.CustomerId != WorkContext.CurrentCustomer.Id)
+            {
+                throw new System.Web.HttpException(404, "Order with number " + number + " not found (or not belongs to current user).");
+            }
+
+            return order;
+        }
+
+        private static string GetAsyncLockKey(string orderNumber, WorkContext ctx)
+        {
+            return string.Join(":", "Order", orderNumber, ctx.CurrentStore.Id, ctx.CurrentCustomer.Id);
         }
     }
 }

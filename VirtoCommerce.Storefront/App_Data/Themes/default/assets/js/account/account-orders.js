@@ -2,7 +2,10 @@
 .component('vcAccountOrders', {
     templateUrl: "themes/assets/js/account/account-orders.tpl.liquid",
     bindings: {
-        loading: '<'
+        baseUrl: '<',
+        customer: '<',
+        countries: '<',
+        getCountryRegions: '&'
     },
     $routeConfig: [
      { path: '/', name: 'OrderList', component: 'vcAccountOrdersList', useAsDefault: true },
@@ -13,20 +16,20 @@
 
 .component('vcAccountOrdersList', {
     templateUrl: "account-orders-list.tpl",
-    bindings: {
-        loading: '<'
-    },
-    controller: ['storefront.orderApi', function (orderApi) {
+    controller: ['storefront.orderApi', 'loadingIndicatorService', function (orderApi, loader) {
         var ctrl = this;
+        ctrl.loader = loader;
         ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 5, numPages: 10 };
         ctrl.pageSettings.pageChanged = function () {
-            orderApi.getOrders({
-                pageNumber: ctrl.pageSettings.currentPage,
-                pageSize: ctrl.pageSettings.itemsPerPageCount,
-                sortInfos: ctrl.sortInfos
-            }, function (data) {
-                ctrl.entries = data.results;
-                ctrl.pageSettings.totalItems = data.totalCount;
+            loader.wrapLoading(function () {
+                return orderApi.getOrders({
+                    pageNumber: ctrl.pageSettings.currentPage,
+                    pageSize: ctrl.pageSettings.itemsPerPageCount,
+                    sortInfos: ctrl.sortInfos
+                }, function (data) {
+                    ctrl.entries = data.results;
+                    ctrl.pageSettings.totalItems = data.totalCount;
+                }).$promise;
             });
         };
 
@@ -40,13 +43,16 @@
 .component('vcAccountOrderDetail', {
     templateUrl: "account-order-detail.tpl",
     bindings: { $router: '<' },
-    controller: ['storefront.orderApi', function (orderApi) {
+    controller: ['storefront.orderApi', 'loadingIndicatorService', function (orderApi, loader) {
         var $ctrl = this;
 
         this.$routerOnActivate = function (next) {
             $ctrl.pageNumber = next.params.pageNumber;
-            $ctrl.order = orderApi.get({ number: next.params.number }, function (result) {
-                $ctrl.billingAddress = _.findWhere($ctrl.order.addresses, { type: 'billing' }) || _.first($ctrl.order.addresses);
+            loader.wrapLoading(function () {
+                $ctrl.order = orderApi.get({ number: next.params.number }, function (result) {
+                    $ctrl.billingAddress = _.findWhere($ctrl.order.addresses, { type: 'billing' }) || _.first($ctrl.order.addresses);
+                });
+                return $ctrl.order.$promise;
             });
         };
 
@@ -59,14 +65,33 @@
 .component('vcAccountOrderPay', {
     templateUrl: "account-order-pay.tpl",
     bindings: { $router: '<' },
-    controller: ['storefront.orderApi', function (orderApi) {
+    require: {
+        parentComponent: '^vcAccountOrders',
+    },
+    controller: ['storefront.orderApi', '$rootScope', '$window', 'loadingIndicatorService', function (orderApi, $rootScope, $window, loader) {
         var $ctrl = this;
-        $ctrl.payment = {};
         $ctrl.hasPhysicalProducts = true;
         $ctrl.billingAddressEqualsShipping = true;
 
+        var loadPromise;
         $ctrl.getAvailPaymentMethods = function () {
-            return orderApi.getAvailablePaymentMethods({ number: $ctrl.orderNumber }).$promise;
+            return loadPromise.then(function (result) {
+                return result.paymentMethods;
+            });
+        };
+
+        this.$routerOnActivate = function (next) {
+            $ctrl.pageNumber = next.params.pageNumber;
+            $ctrl.orderNumber = next.params.number;
+
+            loader.wrapLoading(function () {
+                return loadPromise = orderApi.getNewPaymentData({ number: $ctrl.orderNumber }, function (result) {
+                    $ctrl.order = result.order;
+                    $ctrl.payment = result.payment;
+                    $ctrl.payment.sum = $ctrl.order.total;
+                    $ctrl.payment.purpose = 'Repeated payment';
+                }).$promise;
+            });
         };
 
         $ctrl.selectPaymentMethod = function (paymentMethod) {
@@ -75,7 +100,7 @@
         };
 
         $ctrl.validate = function () {
-            $ctrl.isValid = $ctrl.payment.gatewayCode && $ctrl.payment.sum && $ctrl.payment.sum.amount > 0;
+            $ctrl.isValid = $ctrl.payment && $ctrl.payment.gatewayCode && $ctrl.payment.sum && $ctrl.payment.sum.amount > 0;
             if ($ctrl.isValid && !$ctrl.billingAddressEqualsShipping) {
                 $ctrl.isValid = angular.isObject($ctrl.payment.billingAddress);
             }
@@ -84,21 +109,40 @@
 
         $ctrl.submit = function () {
             if ($ctrl.validate()) {
-                orderApi.addOrUpdatePayment({ number: $ctrl.orderNumber }, $ctrl.payment, function () {
-                    // todo
+                loader.wrapLoading(function () {
+                    //return orderApi.addOrUpdatePayment({ number: $ctrl.orderNumber }, { payment: $ctrl.payment, bankCardInfo: {} }, function (result) {
+                    return orderApi.addOrUpdatePayment({ number: $ctrl.orderNumber }, $ctrl.payment, function (result) {
+                        var orderProcessingResult = result.orderProcessingResult;
+                        var paymentMethod = result.paymentMethod;
+
+                        if (!orderProcessingResult.isSuccess) {
+                            $ctrl.loading = false;
+                            $rootScope.$broadcast('storefrontError', {
+                                type: 'error',
+                                title: ['Error in new payment processing: ', orderProcessingResult.error, 'New Payment status: ' + orderProcessingResult.newPaymentStatus].join(' '),
+                                message: orderProcessingResult.error,
+                            });
+                            return;
+                        }
+
+                        if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() === 'preparedform' && orderProcessingResult.htmlForm) {
+                            outerRedirect($ctrl.parentComponent.baseUrl + 'cart/checkout/paymentform?orderNumber=' + $ctrl.orderNumber);
+                        } else if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() === 'redirection' && orderProcessingResult.redirectUrl) {
+                            outerRedirect(orderProcessingResult.redirectUrl);
+                        } else {
+                            if ($ctrl.parentComponent.customer.isRegisteredUser) {
+                                $ctrl.$router.navigate(['OrderDetail', { number: $ctrl.orderNumber, pageNumber: $ctrl.pageNumber }]);
+                            } else {
+                                outerRedirect($ctrl.parentComponent.baseUrl + 'cart/thanks/' + $ctrl.orderNumber);
+                            }
+                        }
+                    }).$promise;
                 });
             }
         };
 
-        this.$routerOnActivate = function (next) {
-            $ctrl.pageNumber = next.params.pageNumber;
-            $ctrl.orderNumber = next.params.number;
-            $ctrl.order = orderApi.get({ number: next.params.number }, function (result) {
-                //$ctrl.payment.amount = result.total.amount;
-                $ctrl.payment.sum = result.total;
-                $ctrl.payment.currency = result.currency;
-                $ctrl.payment.purpose = 'Repeated payment';
-            });
+        function outerRedirect(absUrl) {
+            $window.location.href = absUrl;
         };
     }]
 })
