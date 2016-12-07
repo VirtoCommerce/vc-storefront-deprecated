@@ -5360,8 +5360,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// Initializes a new instance of the MarketingSearchCriteria class.
         /// </summary>
         /// <param name="responseGroup">Possible values include:
-        /// 'withPromotions', 'withContentItems', 'withContentPlaces',
-        /// 'withContentPublications', 'withFolders', 'full'</param>
+        /// 'WithPromotions', 'WithContentItems', 'WithContentPlaces',
+        /// 'WithContentPublications', 'WithFolders', 'Full'</param>
         public MarketingSearchCriteria(string folderId = default(string), string responseGroup = default(string), string keyword = default(string), int? start = default(int?), int? count = default(int?))
         {
             FolderId = folderId;
@@ -5377,9 +5377,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public string FolderId { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'withPromotions',
-        /// 'withContentItems', 'withContentPlaces',
-        /// 'withContentPublications', 'withFolders', 'full'
+        /// Gets or sets possible values include: 'WithPromotions',
+        /// 'WithContentItems', 'WithContentPlaces',
+        /// 'WithContentPublications', 'WithFolders', 'Full'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
         public string ResponseGroup { get; set; }
@@ -5941,9 +5941,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the DynamicObjectProperty class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'undefined',
-        /// 'shortText', 'longText', 'integer', 'decimal', 'dateTime',
-        /// 'boolean', 'html'</param>
+        /// <param name="valueType">Possible values include: 'Undefined',
+        /// 'ShortText', 'LongText', 'Integer', 'Decimal', 'DateTime',
+        /// 'Boolean', 'Html'</param>
         public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ObjectId = objectId;
@@ -6010,8 +6010,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public bool? IsRequired { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'undefined', 'shortText',
-        /// 'longText', 'integer', 'decimal', 'dateTime', 'boolean', 'html'
+        /// Gets or sets possible values include: 'Undefined', 'ShortText',
+        /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean', 'Html'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -6931,8 +6931,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <param name="rewardType">Gets or sets the value of promotion
         /// reward type</param>
         /// <param name="amountType">Gets or sets the value of promotion
-        /// reward amount type. Possible values include: 'absolute',
-        /// 'relative'</param>
+        /// reward amount type. Possible values include: 'Absolute',
+        /// 'Relative'</param>
         /// <param name="amount">Gets or sets the value of promotion reward
         /// amount</param>
         /// <param name="quantity">Gets or sets the value of line item
@@ -7022,7 +7022,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 
         /// <summary>
         /// Gets or sets the value of promotion reward amount type. Possible
-        /// values include: 'absolute', 'relative'
+        /// values include: 'Absolute', 'Relative'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "amountType")]
         public string AmountType { get; set; }

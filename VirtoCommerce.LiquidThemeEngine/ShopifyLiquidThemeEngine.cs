@@ -70,6 +70,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             Template.RegisterFilter(typeof(StringFilters));
             Template.RegisterFilter(typeof(ArrayFilters));
             Template.RegisterFilter(typeof(BundleFilters));
+            Template.RegisterFilter(typeof(MathFilters));
 
             Condition.Operators["contains"] = CommonOperators.ContainsMethod;
 

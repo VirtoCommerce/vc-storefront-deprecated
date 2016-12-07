@@ -9622,7 +9622,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
         /// Generates new key but does not save it.
         /// </remarks>
         /// <param name='type'>
-        /// . Possible values include: 'undefined', 'hmac', 'simple'
+        /// . Possible values include: 'Undefined', 'Hmac', 'Simple'
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -11368,7 +11368,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
             /// The operations group for this extension method.
             /// </param>
             /// <param name='type'>
-            /// . Possible values include: 'undefined', 'hmac', 'simple'
+            /// . Possible values include: 'Undefined', 'Hmac', 'Simple'
             /// </param>
             public static ApiAccount GenerateNewApiAccount(this ISecurity operations, string type)
             {
@@ -11385,7 +11385,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
             /// The operations group for this extension method.
             /// </param>
             /// <param name='type'>
-            /// . Possible values include: 'undefined', 'hmac', 'simple'
+            /// . Possible values include: 'Undefined', 'Hmac', 'Simple'
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -11894,7 +11894,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi
         /// Generates new key but does not save it.
         /// </remarks>
         /// <param name='type'>
-        /// . Possible values include: 'undefined', 'hmac', 'simple'
+        /// . Possible values include: 'Undefined', 'Hmac', 'Simple'
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -13113,9 +13113,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the DynamicProperty class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'undefined',
-        /// 'shortText', 'longText', 'integer', 'decimal', 'dateTime',
-        /// 'boolean', 'html'</param>
+        /// <param name="valueType">Possible values include: 'Undefined',
+        /// 'ShortText', 'LongText', 'Integer', 'Decimal', 'DateTime',
+        /// 'Boolean', 'Html'</param>
         public DynamicProperty(string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
@@ -13170,8 +13170,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         public bool? IsRequired { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'undefined', 'shortText',
-        /// 'longText', 'integer', 'decimal', 'dateTime', 'boolean', 'html'
+        /// Gets or sets possible values include: 'Undefined', 'ShortText',
+        /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean', 'Html'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -14093,8 +14093,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         /// used for display detailed information about parameter</param>
         /// <param name="parameterCodeInView">Code template for notification
         /// parameter for template resolver</param>
-        /// <param name="type">Possible values include: 'string', 'integer',
-        /// 'decimal', 'dateTime', 'boolean'</param>
+        /// <param name="type">Possible values include: 'String', 'Integer',
+        /// 'Decimal', 'DateTime', 'Boolean'</param>
         public NotificationParameter(string parameterName = default(string), string parameterDescription = default(string), string parameterCodeInView = default(string), bool? isDictionary = default(bool?), bool? isArray = default(bool?), string type = default(string), object value = default(object))
         {
             ParameterName = parameterName;
@@ -14136,8 +14136,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         public bool? IsArray { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'string', 'integer',
-        /// 'decimal', 'dateTime', 'boolean'
+        /// Gets or sets possible values include: 'String', 'Integer',
+        /// 'Decimal', 'DateTime', 'Boolean'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
@@ -14560,7 +14560,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         /// Initializes a new instance of the ApplicationUserExtended class.
         /// </summary>
         /// <param name="userState">Possible values include:
-        /// 'pendingApproval', 'approved', 'rejected'</param>
+        /// 'PendingApproval', 'Approved', 'Rejected'</param>
         public ApplicationUserExtended(string id = default(string), string userName = default(string), string email = default(string), string phoneNumber = default(string), string storeId = default(string), string memberId = default(string), string icon = default(string), bool? isAdministrator = default(bool?), string userType = default(string), string userState = default(string), string password = default(string), string passwordHash = default(string), string securityStamp = default(string), System.Collections.Generic.IList<ApplicationUserLogin> logins = default(System.Collections.Generic.IList<ApplicationUserLogin>), System.Collections.Generic.IList<Role> roles = default(System.Collections.Generic.IList<Role>), System.Collections.Generic.IList<string> permissions = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<ApiAccount> apiAccounts = default(System.Collections.Generic.IList<ApiAccount>))
         {
             Id = id;
@@ -14628,8 +14628,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         public string UserType { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'pendingApproval',
-        /// 'approved', 'rejected'
+        /// Gets or sets possible values include: 'PendingApproval',
+        /// 'Approved', 'Rejected'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "userState")]
         public string UserState { get; set; }
@@ -14881,8 +14881,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ApiAccount class.
         /// </summary>
-        /// <param name="apiAccountType">Possible values include: 'undefined',
-        /// 'hmac', 'simple'</param>
+        /// <param name="apiAccountType">Possible values include: 'Undefined',
+        /// 'Hmac', 'Simple'</param>
         public ApiAccount(string id = default(string), string name = default(string), string apiAccountType = default(string), bool? isActive = default(bool?), string appId = default(string), string secretKey = default(string))
         {
             Id = id;
@@ -14904,7 +14904,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'undefined', 'hmac', 'simple'
+        /// Gets or sets possible values include: 'Undefined', 'Hmac', 'Simple'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "apiAccountType")]
         public string ApiAccountType { get; set; }
@@ -15246,9 +15246,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         /// </summary>
         /// <param name="name">System name (ID) of the setting</param>
         /// <param name="value">Current value for non-array setting</param>
-        /// <param name="valueType">Possible values include: 'shortText',
-        /// 'longText', 'integer', 'decimal', 'dateTime', 'boolean',
-        /// 'secureString'</param>
+        /// <param name="valueType">Possible values include: 'ShortText',
+        /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean',
+        /// 'SecureString'</param>
         /// <param name="allowedValues">Predefined set of allowed values for
         /// this setting</param>
         /// <param name="isArray">Defines whether the setting can have
@@ -15287,8 +15287,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models
         public string Value { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'shortText', 'longText',
-        /// 'integer', 'decimal', 'dateTime', 'boolean', 'secureString'
+        /// Gets or sets possible values include: 'ShortText', 'LongText',
+        /// 'Integer', 'Decimal', 'DateTime', 'Boolean', 'SecureString'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }

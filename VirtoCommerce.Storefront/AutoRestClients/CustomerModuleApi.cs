@@ -4231,8 +4231,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Address class.
         /// </summary>
-        /// <param name="addressType">Possible values include: 'billing',
-        /// 'shipping', 'billingAndShipping'</param>
+        /// <param name="addressType">Possible values include: 'Billing',
+        /// 'Shipping', 'BillingAndShipping'</param>
         public Address(string addressType = default(string), string name = default(string), string organization = default(string), string countryCode = default(string), string countryName = default(string), string city = default(string), string postalCode = default(string), string zip = default(string), string line1 = default(string), string line2 = default(string), string regionId = default(string), string regionName = default(string), string firstName = default(string), string middleName = default(string), string lastName = default(string), string phone = default(string), string email = default(string))
         {
             AddressType = addressType;
@@ -4255,8 +4255,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets possible values include: 'billing', 'shipping',
-        /// 'billingAndShipping'
+        /// Gets or sets possible values include: 'Billing', 'Shipping',
+        /// 'BillingAndShipping'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "addressType")]
         public string AddressType { get; set; }
@@ -4427,9 +4427,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the DynamicObjectProperty class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'undefined',
-        /// 'shortText', 'longText', 'integer', 'decimal', 'dateTime',
-        /// 'boolean', 'html'</param>
+        /// <param name="valueType">Possible values include: 'Undefined',
+        /// 'ShortText', 'LongText', 'Integer', 'Decimal', 'DateTime',
+        /// 'Boolean', 'Html'</param>
         public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ObjectId = objectId;
@@ -4496,8 +4496,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         public bool? IsRequired { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'undefined', 'shortText',
-        /// 'longText', 'integer', 'decimal', 'dateTime', 'boolean', 'html'
+        /// Gets or sets possible values include: 'Undefined', 'ShortText',
+        /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean', 'Html'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -4714,8 +4714,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SortInfo class.
         /// </summary>
-        /// <param name="sortDirection">Possible values include: 'ascending',
-        /// 'descending'</param>
+        /// <param name="sortDirection">Possible values include: 'Ascending',
+        /// 'Descending'</param>
         public SortInfo(string sortColumn = default(string), string sortDirection = default(string))
         {
             SortColumn = sortColumn;
@@ -4728,7 +4728,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         public string SortColumn { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'ascending', 'descending'
+        /// Gets or sets possible values include: 'Ascending', 'Descending'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sortDirection")]
         public string SortDirection { get; set; }
@@ -5084,7 +5084,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// Initializes a new instance of the ApplicationUserExtended class.
         /// </summary>
         /// <param name="userState">Possible values include:
-        /// 'pendingApproval', 'approved', 'rejected'</param>
+        /// 'PendingApproval', 'Approved', 'Rejected'</param>
         public ApplicationUserExtended(string id = default(string), string userName = default(string), string email = default(string), string phoneNumber = default(string), string storeId = default(string), string memberId = default(string), string icon = default(string), bool? isAdministrator = default(bool?), string userType = default(string), string userState = default(string), string password = default(string), string passwordHash = default(string), string securityStamp = default(string), System.Collections.Generic.IList<ApplicationUserLogin> logins = default(System.Collections.Generic.IList<ApplicationUserLogin>), System.Collections.Generic.IList<Role> roles = default(System.Collections.Generic.IList<Role>), System.Collections.Generic.IList<string> permissions = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<ApiAccount> apiAccounts = default(System.Collections.Generic.IList<ApiAccount>))
         {
             Id = id;
@@ -5152,8 +5152,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         public string UserType { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'pendingApproval',
-        /// 'approved', 'rejected'
+        /// Gets or sets possible values include: 'PendingApproval',
+        /// 'Approved', 'Rejected'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "userState")]
         public string UserState { get; set; }
@@ -5405,8 +5405,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ApiAccount class.
         /// </summary>
-        /// <param name="apiAccountType">Possible values include: 'undefined',
-        /// 'hmac', 'simple'</param>
+        /// <param name="apiAccountType">Possible values include: 'Undefined',
+        /// 'Hmac', 'Simple'</param>
         public ApiAccount(string id = default(string), string name = default(string), string apiAccountType = default(string), bool? isActive = default(bool?), string appId = default(string), string secretKey = default(string))
         {
             Id = id;
@@ -5428,7 +5428,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'undefined', 'hmac', 'simple'
+        /// Gets or sets possible values include: 'Undefined', 'Hmac', 'Simple'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "apiAccountType")]
         public string ApiAccountType { get; set; }
