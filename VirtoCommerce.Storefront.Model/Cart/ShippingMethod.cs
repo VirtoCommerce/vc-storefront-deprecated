@@ -1,24 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class ShippingMethod :  ITaxable, IDiscountable
+    public class ShippingMethod : ITaxable, IDiscountable
     {
         public ShippingMethod()
         {
             Discounts = new List<Discount>();
         }
+
         public ShippingMethod(Currency currency)
             : this()
         {
             Currency = currency;
             Price = new Money(currency);
-            DiscountAmount = new Money(currency);           
+            DiscountAmount = new Money(currency);
         }
+
+        /// <summary>
+        /// Gets or sets the value of shipping method priority
+        /// </summary>
+        public int Priority { get; set; }
+
         /// <summary>
         /// Gets or sets the value of shipping method code
         /// </summary>
@@ -126,11 +132,11 @@ namespace VirtoCommerce.Storefront.Model
         public ICollection<TaxDetail> TaxDetails { get; set; }
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
-        {          
+        {
             var taxRate = taxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item1 == ShipmentMethodCode && x.Line.Id.SplitIntoTuple('&').Item2 == OptionName);
             if (taxRate != null && Total.Amount > 0 && taxRate.Rate.Amount > 0)
             {
-                TaxPercentRate = TaxRate.TaxPercentRound(taxRate.Rate.Amount / Total.Amount);         
+                TaxPercentRate = TaxRate.TaxPercentRound(taxRate.Rate.Amount / Total.Amount);
             }
         }
 

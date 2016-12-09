@@ -332,7 +332,7 @@ namespace VirtoCommerce.Storefront.Builders
 
             //Request available shipping rates 
             var shippingRates = await _cartApi.CartModule.GetAvailableShippingRatesAsync(Cart.Id);
-            var retVal = shippingRates.Select(x => x.ToShippingMethod(Cart.Currency, workContext.AllCurrencies)).ToList();
+            var retVal = shippingRates.Select(x => x.ToShippingMethod(Cart.Currency, workContext.AllCurrencies)).OrderBy(x => x.Priority).ToList();
 
             //Evaluate promotions cart and apply rewards for available shipping methods
             var promoEvalContext = Cart.ToPromotionEvaluationContext();
@@ -351,7 +351,7 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureCartExists();
             var payments = await _cartApi.CartModule.GetAvailablePaymentMethodsAsync(Cart.Id);
-            var retVal =  payments.Select(x => x.ToPaymentMethod(Cart)).ToList();
+            var retVal = payments.Select(x => x.ToPaymentMethod(Cart)).OrderBy(x => x.Priority).ToList();
 
             //Evaluate promotions cart and apply rewards for available shipping methods
             var promoEvalContext = Cart.ToPromotionEvaluationContext();
