@@ -180,5 +180,7 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets Id
         /// </summary>
         public string Id { get; set; }
+
+        public BankCardInfo BankCardInfo { get; set; }        
     }
 }

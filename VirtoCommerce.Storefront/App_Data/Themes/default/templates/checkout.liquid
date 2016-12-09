@@ -8,16 +8,13 @@
 		<div class="sidebar__content">
 			<div class="order-summary" ng-class="{ 'order-summary--is-expanded': orderSummaryVisible, 'order-summary--is-collapsed': !orderSummaryVisible }">
 				<div class="order-summary__section order-summary__section--product-list">
-					<vc-checkout-line-items items="checkout.cart.items" ></vc-checkout-line-items>
+					<vc-line-items items="checkout.cart.items"></vc-line-items>
 				</div>
 				<div class="order-summary__section order-summary__section--discount">
 					<vc-checkout-coupon coupon="checkout.coupon" on-apply-coupon="applyCoupon(coupon)" on-remove-coupon="removeCoupon(coupon)"></vc-checkout-coupon>
 				</div>
 				<div class="order-summary__section order-summary__section--total-lines">
-					<vc-checkout-totals cart="checkout.cart"></vc-checkout-totals>
-				</div>
-				<div class="order-summary__section order-summary__section--total">
-					<vc-checkout-totals display-only-total="true" cart="checkout.cart"></vc-checkout-totals>
+					<vc-totals order="checkout.cart"></vc-totals>
 				</div>
 			</div>
 		</div>
@@ -32,7 +29,7 @@
 					<a class="breadcrumb__link" ng-href="{{ 'cart' | absolute_url }}">{{ 'checkout.cart' | t }}</a>
 				</li>
 				<li class="breadcrumb__item" ng-repeat="step in checkout.wizard.steps" ng-if="!step.stepDisabled && !step.final" ng-class="{ 'breadcrumb__item--current': step.isActive, 'breadcrumb__item--completed': !step.isActive }">
-					<a class="breadcrumb__link" ng-click="checkout.wizard.goToStep(step)" ng-if="!step.isActive" ng-bind="step.title"></a>
+					<a class="breadcrumb_link" ng-click="checkout.wizard.goToStep(step)" ng-if="!step.isActive" ng-bind="step.title"></a>
 					<span ng-class="current" ng-if="step.isActive" ng-bind="step.title"></span>
 				</li>
 			</ul>
@@ -59,7 +56,7 @@
 									<h2 class="section__title">{{ 'checkout.shipping_address' | t }}</h2>
 								</div>
 								<div class="section__content">
-									<vc-checkout-address address="checkout.shipment.deliveryAddress" countries="checkout.availCountries"  get-country-regions="getCountryRegions(country)" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-checkout-address>
+                                    <vc-address address="checkout.shipment.deliveryAddress" countries="checkout.availCountries" get-country-regions="getCountryRegions(country)" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-address>
 								</div>
 							</div>
 						</div>
@@ -73,7 +70,7 @@
 							</div>
 							<div class="section__content">
 								<p>
-									<vc-checkout-address address="checkout.shipment.deliveryAddress" edit-mode="false"></vc-checkout-address>
+                                    <vc-address address="checkout.shipment.deliveryAddress" edit-mode="false"></vc-address>
 								</p>
 							</div>
 						</div>
@@ -88,17 +85,10 @@
 					</div>
 				</vc-checkout-wizard-step>
 				<vc-checkout-wizard-step  name="payment-method" title="{{ 'checkout.payment_method.title' | t }}">
+                    <vc-payment-methods get-avail-payment-methods="getAvailPaymentMethods()" payment-method="checkout.paymentMethod" on-select-method="selectPaymentMethod(paymentMethod)"></vc-payment-methods>
 					<div class="edit_checkout animate-floating-labels">
 						<div class="step__sections">
-							<div class="section section--payment-method">
-								<div class="section__header">
-									<h2 class="section__title">{{ 'checkout.payment_method.title' | t }}</h2>
-									<p class="section__text">{{ 'checkout.payment_method.subtitle' | t }}</p>
-								</div>
-								<div class="section__content">
-									<vc-checkout-payment-methods get-avail-payment-methods="getAvailPaymentMethods()" payment-method="checkout.paymentMethod" on-select-method="selectPaymentMethod(paymentMethod)"></vc-checkout-payment-methods>
-								</div>
-							</div>
+
 							<div class="section section--billing-address">
 								<div class="section__header">
 									<h2 class="section__title">{{ 'checkout.payment_method.billing_address' | t }}</h2>
@@ -112,7 +102,7 @@
 											<label class="checkbox__label" for="BillingAddressEqualsShipping">{{ 'checkout.payment_method.billing_address_equals_shipping' | t }}</label>
 										</div>
 										<div class="radio-group__row content-box__row content-box__row--secondary" ng-if="!checkout.billingAddressEqualsShipping">
-											<vc-checkout-address address="checkout.payment.billingAddress" countries="checkout.availCountries" get-country-regions="getCountryRegions(country)" addresses="checkout.cart.customer.addresses" on-update="validateCheckout(checkout)" edit-mode="true"></vc-checkout-address>
+                                            <vc-address address="checkout.payment.billingAddress" countries="checkout.availCountries" get-country-regions="getCountryRegions(country)" addresses="checkout.cart.customer.addresses" on-update="validateCheckout(checkout)" edit-mode="true"></vc-address>
 										</div>
 									</div>
 								</div>

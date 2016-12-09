@@ -1,14 +1,15 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.component('vcCheckoutPaymentMethods', {
-    templateUrl: "themes/assets/js/checkout/checkout-paymentMethods.tpl.html",
+storefrontApp.component('vcPaymentMethods', {
+    templateUrl: "themes/assets/js/common-components/paymentMethods.tpl.html",
     require: {
         checkoutStep: '?^vcCheckoutWizardStep'
     },
     bindings: {
         getAvailPaymentMethods: '&',
         onSelectMethod: '&',
-        paymentMethod: '='
+        paymentMethod: '=',
+        validationContainer: '='
     },
     controller: ['$scope', function ($scope) {
         var ctrl = this;
@@ -23,11 +24,15 @@ storefrontApp.component('vcCheckoutPaymentMethods', {
                     ctrl.selectMethod(ctrl.availPaymentMethods[0]);
                 }
             })
+            if (ctrl.validationContainer)
+                ctrl.validationContainer.addComponent(this);
             if (ctrl.checkoutStep)
                 ctrl.checkoutStep.addComponent(this);
         };
 
         this.$onDestroy = function () {
+            if (ctrl.validationContainer)
+                ctrl.validationContainer.removeComponent(this);
             if (ctrl.checkoutStep)
                 ctrl.checkoutStep.removeComponent(this);
         };

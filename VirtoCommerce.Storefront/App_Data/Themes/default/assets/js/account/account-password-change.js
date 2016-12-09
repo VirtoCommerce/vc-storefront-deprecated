@@ -2,6 +2,7 @@
 .component('vcAccountPasswordChange', {
     templateUrl: "themes/assets/js/account/account-password-change.tpl.liquid",
     bindings: {
+        loading: '<',
         onPasswordChange: '&'
     },
     controller: [function () {

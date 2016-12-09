@@ -73,10 +73,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
         // POST: storefrontapi/orders/{number}/payments
         [HttpPost]
-        public async Task<ActionResult> AddOrUpdatePayment(PaymentIn payment /*, orderModel.BankCardInfo bankCardInfo*/)
+        public async Task<ActionResult> AddOrUpdatePayment(PaymentIn payment)
         {
             var number = (string)RouteData.Values["number"];
-            orderModel.BankCardInfo bankCardInfo = null;
             orderModel.ProcessPaymentResult processingResult = null;
 
             if (payment.Sum.Amount == decimal.Zero)
@@ -91,16 +90,21 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             using (await AsyncLock.GetLockByKey(GetAsyncLockKey(number, WorkContext)).LockAsync())
             {
                 var orderDto = await GetOrderDtoByNumber(number);
+
+                var found = orderDto.InPayments.FirstOrDefault(x => x.Id == paymentDto.Id);
+                if (found != null)
+                {
+                    orderDto.InPayments.Remove(found);
+                }
                 orderDto.InPayments.Add(paymentDto);
                 await _orderApi.OrderModule.UpdateAsync(orderDto);
 
                 orderDto = await _orderApi.OrderModule.GetByIdAsync(orderDto.Id);
-                paymentDto = orderDto.InPayments
-                    .Where(x => x.Sum.Value == paymentDto.Sum.Value && paymentDto.GatewayCode == x.GatewayCode)
-                    .OrderByDescending(x => x.CreatedDate)
-                    .First();
-
-                processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(orderDto.Id, paymentDto.Id, bankCardInfo);
+                paymentDto = orderDto.InPayments.First(x => x.Id == paymentDto.Id);
+                if (!paymentDto.IsCancelled.HasValue || !paymentDto.IsCancelled.Value)
+                {
+                    processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(orderDto.Id, paymentDto.Id, payment.BankCardInfo.ToBankCardInfoDto());
+                }
             }
 
             return Json(new { orderProcessingResult = processingResult, paymentMethod = paymentDto.PaymentMethod });

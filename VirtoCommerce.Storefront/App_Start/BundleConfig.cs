@@ -25,21 +25,18 @@ namespace VirtoCommerce.Storefront
                     .Include("~/App_Data/Themes/default/assets/js/services.js")
                     .Include("~/App_Data/Themes/default/assets/js/directives.js")
                     .Include("~/App_Data/Themes/default/assets/js/main.js")
+                    .IncludeDirectory("~/App_Data/Themes/default/assets/js/common-components/", "*.js")
                     .IncludeDirectory("~/App_Data/Themes/default/assets/js/checkout/", "*.js"));
 
             bundles.Add(
                 new ScriptBundle("~/default-theme/account/scripts")
                     .Include("~/App_Data/Themes/default/assets/modernizr.min.js")
-                    //.Include("~/App_Data/Themes/default/assets/ideal-image-slider.min.js")
-                    //.Include("~/App_Data/Themes/default/assets/ideal-image-slider-bullet-nav.js")
-                    //.Include("~/App_Data/Themes/default/assets/ideal-image-slider-captions.js")
                     .Include("~/App_Data/Themes/default/assets/js/app.js")
                     .Include("~/App_Data/Themes/default/assets/js/services.js")
                     .Include("~/App_Data/Themes/default/assets/js/main.js")
                     .Include("~/App_Data/Themes/default/assets/js/cart.js")
                     .Include("~/App_Data/Themes/default/assets/js/quote-request.js")
-                    .Include("~/App_Data/Themes/default/assets/js/checkout/checkout-address.js")
-                    .Include("~/App_Data/Themes/default/assets/js/checkout/checkout-paymentMethods.js")
+                    .IncludeDirectory("~/App_Data/Themes/default/assets/js/common-components/", "*.js")
                     .IncludeDirectory("~/App_Data/Themes/default/assets/js/account/", "*.js"));
 
             #endregion
@@ -51,6 +48,11 @@ namespace VirtoCommerce.Storefront
                     .Include("~/App_Data/Themes/default/assets/storefront.css", new CustomCssRewriteUrlTransform())
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider.css", new CustomCssRewriteUrlTransform())
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider-default-theme.css", new CustomCssRewriteUrlTransform()));
+
+            bundles.Add(
+                new StyleBundle("~/default-theme/account/css")
+                .Include("~/App_Data/Themes/default/assets/account-bootstrap.css", new CustomCssRewriteUrlTransform())
+                .Include("~/App_Data/Themes/default/assets/common-components.css", new CustomCssRewriteUrlTransform()));
 
             #endregion
         }

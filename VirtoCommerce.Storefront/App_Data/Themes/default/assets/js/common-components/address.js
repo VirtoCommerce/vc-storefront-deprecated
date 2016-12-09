@@ -1,11 +1,11 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcCheckoutAddress', {
-    templateUrl: "themes/assets/js/checkout/checkout-address.tpl.html",
+storefrontApp.component('vcAddress', {
+    templateUrl: "themes/assets/js/common-components/address.tpl.html",
     bindings: {
         address: '=',
         addresses: '<',
         countries: '=',
-        parent: '=',
+        validationContainer: '=',
         getCountryRegions: '&',
         editMode: '<',
         onUpdate: '&'
@@ -16,15 +16,15 @@ storefrontApp.component('vcCheckoutAddress', {
     controller: ['$scope', function ($scope) {
         var ctrl = this;
         this.$onInit = function () {
-            if (ctrl.parent)
-                ctrl.parent.addComponent(this);
+            if (ctrl.validationContainer)
+                ctrl.validationContainer.addComponent(this);
             if (ctrl.checkoutStep)
                 ctrl.checkoutStep.addComponent(this);
         };
 
         this.$onDestroy = function () {
-            if (ctrl.parent)
-                ctrl.parent.removeComponent(this);
+            if (ctrl.validationContainer)
+                ctrl.validationContainer.removeComponent(this);
             if (ctrl.checkoutStep)
                 ctrl.checkoutStep.removeComponent(this);
         };
@@ -32,7 +32,7 @@ storefrontApp.component('vcCheckoutAddress', {
         function populateRegionalDataForAddress(address) {
             if (address) {
                 //Set country object for address
-                address.country = _.find(ctrl.countries, function (x) { return x.code3 == address.countryCode; });
+                address.country = _.find(ctrl.countries, function (x) { return x.code3 === address.countryCode; });
                 if (address.country != null) {
                     ctrl.address.countryName = ctrl.address.country.name;
                     ctrl.address.countryCode = ctrl.address.country.code3;
@@ -50,10 +50,10 @@ storefrontApp.component('vcCheckoutAddress', {
                     }
                 }
             }
-        };
+        }
 
         function setAddressRegion(address, regions) {
-            address.region = _.find(regions, function (x) { return x.code == address.regionId; });
+            address.region = _.find(regions, function (x) { return x.code === address.regionId; });
             if (address.region) {
                 ctrl.address.regionId = ctrl.address.region.code;
                 ctrl.address.regionName = ctrl.address.region.name;
@@ -64,21 +64,25 @@ storefrontApp.component('vcCheckoutAddress', {
             }
         }
 
+        ctrl.setForm = function (frm) {
+            ctrl.form = frm;
+        };
+
         ctrl.validate = function () {
             if (ctrl.form) {
                 ctrl.form.$setSubmitted();
-                return !ctrl.form.$invalid;
+                return ctrl.form.$valid;
             }
             return true;
-        }
+        };
 
         function stringifyAddress(address) {
             var stringifiedAddress = address.firstName + ' ' + address.lastName + ', ';
             stringifiedAddress += address.organization ? address.organization + ', ' : '';
             stringifiedAddress += address.countryName + ', ';
             stringifiedAddress += address.regionName ? address.regionName + ', ' : '';
-            stringifiedAddress += address.city;
-            stringifiedAddress += address.line1 + ', '
+            stringifiedAddress += address.city + ' ';
+            stringifiedAddress += address.line1 + ', ';
             stringifiedAddress += address.line2 ? address.line2 : '';
             stringifiedAddress += address.postalCode;
             return stringifiedAddress;

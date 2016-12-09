@@ -1,4 +1,8 @@
 {
+    "common": {
+        "required": "Required",
+        "invalid": "Invalid"
+    },
     "checkout": {
         "title": "Checkout",
         "description": "Description",
@@ -81,12 +85,12 @@
             "continue_text": "Complete order",
             "return_text": "Return to shipping method",
             "required_card_number_message": "Please enter your bank card number",
-            "invalid_card_number_message": "Please enter your bank card number",
+            "invalid_card_number_message": "Please enter valid card number",
             "required_cardholder_name_message": "Please enter card holder name",
             "required_expiration_month_message": "Please enter expiration month",
-            "invalid_expiration_month_message": "The month invalid",
+            "invalid_expiration_month_message": "Invalid month",
             "required_expiration_year_message": "Please enter expiration year",
-            "invalid_expiration_year_message": "The year invalid",
+            "invalid_expiration_year_message": "Invalid year",
             "required_cvv_message": "Please enter CVV",
             "invalid_cvv_message": "Please enter correct CVV"
         },
@@ -299,7 +303,7 @@
         "orders": {
             "title": "Order History",
             "return": "Return to list",
-            "order_number": "Order",
+            "order_number": "Order Number",
             "date": "Date",
             "status": "Status",
             "payment_status": "Payment Status",
@@ -314,6 +318,7 @@
             "cancel_reason": "Reason",
             "billing_address": "Billing Address",
             "payment_status": "Payment Status",
+            "new_payment": "Pay",
             "shipping_address": "Shipping Address",
             "fulfillment_status": "Fulfillment Status",
             "discount": "Discount",
@@ -328,7 +333,8 @@
             "subtotal": "Subtotal"
         },
         "order_payment": {
-            "submit":  "Confirm payment"
+            "cancel": "Cancel payment",
+            "submit": "Confirm payment"
         },
         "quotes": {
             "title": "Quote requests",
@@ -373,7 +379,7 @@
             "first_name": "First Name",
             "last_name": "Last Name",
             "email": "Email",
-            "submit": "Save",
+            "submit": "Update",
             "cancel": "Cancel"
         },
         "change_password": {
@@ -381,8 +387,7 @@
             "old_password": "Old Password",
             "new_password": "New Password",
             "new_password_confirm": "Confirm New Password",
-            "submit": "Save",
-            "cancel": "Cancel",
+            "submit": "Change password",
             "validation": {
                 "current-password": "Required",
                 "new-password": "Old and new passwords are the same!",

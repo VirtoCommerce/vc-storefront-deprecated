@@ -22,12 +22,9 @@
 
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
     <!--{{ '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css' | stylesheet_tag }}-->
-    {{ 'account-bootstrap.css' | asset_url | stylesheet_tag }}
+    {{ '~/default-theme/account/css' | stylesheet_bundle_tag }}
 
     {{ 'account.scss.css' | asset_url | stylesheet_tag }}
-    {{ 'account-checkout2.css' | asset_url | stylesheet_tag }}
-    <!--{{ 'account-checkout.css' | asset_url | stylesheet_tag }}
-    {{ 'checkout.css' | global_asset_url | stylesheet_tag }}-->
 
     {% include 'google-fonts' %}
 

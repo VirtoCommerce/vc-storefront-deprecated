@@ -55,6 +55,10 @@ namespace VirtoCommerce.Storefront.Converters
         {
             return OrderConverterInstance.ToOrderPaymentInDto(paymentIn);
         }
+        public static orderDto.BankCardInfo ToBankCardInfoDto(this BankCardInfo model)
+        {
+            return OrderConverterInstance.ToBankCardInfoDto(model);
+        }
 
         public static LineItem ToOrderLineItem(this orderDto.LineItem lineItemDto, IEnumerable<Currency> availCurrencies, Language language)
         {
@@ -266,6 +270,7 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.InjectFrom<NullableAndEnumValueInjecter>(payment);
             retVal.Sum = (double)payment.Sum.Amount;
             retVal.Currency = payment.Currency.Code;
+            retVal.PaymentStatus = payment.Status;
 
             if (payment.DynamicProperties != null)
             {
@@ -276,6 +281,17 @@ namespace VirtoCommerce.Storefront.Converters
             //{
             //    var a = retVal.GatewayCode;
             //}
+
+            return retVal;
+        }
+        public virtual orderDto.BankCardInfo ToBankCardInfoDto(BankCardInfo model)
+        {
+            orderDto.BankCardInfo retVal = null;
+            if (model != null)
+            {
+                retVal = new orderDto.BankCardInfo();
+                retVal.InjectFrom<NullableAndEnumValueInjecter>(model);
+            }
 
             return retVal;
         }

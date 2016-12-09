@@ -83,7 +83,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
         $scope.selectPaymentMethod = function (paymentMethod) {
             angular.extend($scope.checkout.payment, paymentMethod);
             $scope.checkout.payment.paymentGatewayCode = paymentMethod.code;
-            $scope.checkout.payment.amount = $scope.checkout.cart.total;
+            $scope.checkout.payment.amount = angular.copy($scope.checkout.cart.total);
             $scope.checkout.payment.amount.amount += paymentMethod.totalWithTax.amount;
 
             updatePayment($scope.checkout.payment)
@@ -185,7 +185,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 if (!$scope.customer.isRegisteredUser) {
                     $scope.outerRedirect($scope.baseUrl + 'cart/thanks/' + order.number);
                 } else {
-                    $scope.outerRedirect($scope.baseUrl + 'account/order/' + order.number);
+                    $scope.outerRedirect($scope.baseUrl + 'account#/' + order.number);
                 }
             }
         }

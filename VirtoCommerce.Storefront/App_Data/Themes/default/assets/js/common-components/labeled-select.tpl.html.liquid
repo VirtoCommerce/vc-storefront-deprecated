@@ -1,0 +1,7 @@
+﻿<div class="form-group form-select" ng-class="{'keyuped': $ctrl.value.length, 'error': ($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$invalid }">
+    <label for="#" class="form-label" ng-bind="$ctrl.placeholder"></label>
+    <select ng-model="$ctrl.value" ng-options="x as x.name for x in $ctrl.options" class="form-input" size="1">
+        <option value="" ng-bind="$ctrl.noSelectionLabel"></option>
+    </select>
+    <!--<select ng-model="$ctrl.address" ng-options="x as x.name for x in $ctrl.addresses"></select>-->
+</div>

@@ -1,0 +1,81 @@
+﻿<form accept-charset="UTF8" name="$ctrl.form" novalidate="novalidate">
+    <div class="form-fieldset">
+        <div class="form-group" ng-class="{'keyuped': $ctrl.form.BankCardNumber.$viewValue, 'error': ($ctrl.form.BankCardNumber.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardNumber.$invalid }">
+            <label for="#" class="form-label">{{ 'checkout.payment_method.card_number' | t }}</label>
+            <input ng-model="$ctrl.card.bankCardNumber"
+                   cc-number="" cc-eager-type="" name="BankCardNumber"
+                   placeholder="{{ 'checkout.payment_method.card_number' | t }}"
+                   required="required" class="form-input" autofocus=""/>
+            <span class="field__icon icon icon--lock"></span>
+            <span class="field__icon icon payment-icon has-tooltip"
+                      ng-class="{ 'American Express': 'payment-icon--american-express', 'Dankort': 'payment-icon--dankort', 'Diners Club' : 'payment-icon--diners-club',
+                                  'Discover' : 'payment-icon--discover', 'JCB' :'payment-icon--jcb', 'Laser' : 'payment-icon--laser',
+                                  'Maestro' : 'payment-icon--maestro', 'MasterCard' : 'payment-icon--master', 'UnionPay' : 'payment-icon--unionpay', 'Visa' : 'payment-icon--visa'}[$ctrl.form.BankCardNumber.$ccEagerType]"
+                      ng-if="$ctrl.form.BankCardNumber.$valid">
+                <span class="tooltip" ng-bind="$ctrl.form.BankCardNumber.$ccEagerType"></span>
+                <span class="payment-name" ng-bind="$ctrl.form.BankCardNumber.$ccEagerType"></span>
+            </span>
+            <span class="form-error" ng-if="($ctrl.form.BankCardNumber.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardNumber.$error.required">{{ 'checkout.payment_method.required_card_number_message' | t }}</span>
+            <span class="form-error" ng-if="($ctrl.form.BankCardNumber.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardNumber.$error.required && $ctrl.form.BankCardNumber.$invalid">{{ 'checkout.payment_method.invalid_card_number_message' | t }}</span>
+        </div>
+
+        <div class="form-group">
+            <div class="cols">
+                <div class="col col-50">
+                    <vc-labeled-input value="$ctrl.card.cardholderName" name="BankCardCardholderName" placeholder="{{ 'checkout.payment_method.cardholder_name' | t }}" form="$ctrl.form" required="true" autofocus="true"></vc-labeled-input>
+                </div>
+                <div class="col col-50">
+                    <div class="cols">
+                        <div class="col col-50">
+                            <div class="form-group" ng-class="{'keyuped': $ctrl.card.bankCardMonth, 'error': ($ctrl.form.BankCardExpirationMonth.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardExpirationMonth.$invalid }">
+                                <label for="#" class="form-label">{{ 'checkout.payment_method.expiry_month' | t }}</label>
+                                <input placeholder="{{ 'checkout.payment_method.expiry_month' | t }}" type="text" id="BankCardExpirationMonth" class="form-input" cc-exp-month="" name="BankCardExpirationMonth" required="required" ng-model="$ctrl.card.bankCardMonth" />
+
+                                <p class="form-error" ng-if="($ctrl.form.BankCardExpirationMonth.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardExpirationMonth.$error.required">
+                                    {{ 'checkout.payment_method.required_expiration_month_message' | t }}
+                                </p>
+                                <p class="form-error" ng-if="($ctrl.form.BankCardExpirationMonth.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardExpirationMonth.$error.required && $ctrl.form.BankCardExpirationMonth.$invalid">
+                                    {{ 'checkout.payment_method.invalid_expiration_month_message' | t }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col col-50">
+                            <div class="form-group" ng-class="{'keyuped': $ctrl.card.bankCardYear, 'error': ($ctrl.form.BankCardExpirationYear.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardExpirationYear.$invalid }">
+                                <label for="#" class="form-label">{{ 'checkout.payment_method.expiry_year' | t }}</label>
+                                <input placeholder="{{ 'checkout.payment_method.expiry_year' | t }}" type="text" id="BankCardExpirationYear" class="form-input" cc-exp-year="" name="BankCardExpirationYear" required="required" ng-model="$ctrl.card.bankCardYear" />
+
+                                <p class="form-error" ng-if="($ctrl.form.BankCardExpirationYear.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardExpirationYear.$error.required">
+                                    {{ 'checkout.payment_method.required_expiration_year_message' | t }}
+                                </p>
+                                <p class="form-error" ng-if="($ctrl.form.BankCardExpirationYear.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardExpirationYear.$error.required && $ctrl.form.BankCardExpirationYear.$invalid">
+                                    {{ 'checkout.payment_method.invalid_expiration_year_message' | t }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="cols">
+                <div class="col col-33">
+                    <div class="form-group" ng-class="{'keyuped': $ctrl.form.BankCardCvv.$viewValue , 'error': ($ctrl.form.BankCardCvv.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardCvv.$invalid }">
+                        <label for="#" class="form-label">{{ 'checkout.payment_method.cvv' | t }}</label>
+                        <input type="text" placeholder="{{ 'checkout.payment_method.cvv' | t }}" class="form-input" id="BankCardCvv" cc-cvc="" cc-type="$ctrl.form.BankCardNumber.$ccType" name="BankCardCvv" required="required" ng-model="$ctrl.card.bankCardCVV2" />
+                        <span class="field__icon icon icon--question has-tooltip">
+                            <span class="tooltip">{{ 'checkout.payment_method.cvv_unknown_tooltip_text' | t }}</span>
+                        </span>
+                        <p class="form-error" ng-if="($ctrl.form.BankCardCvv.$dirty || $ctrl.form.$submitted) && $ctrl.form.BankCardCvv.$error.required">
+                            {{ 'checkout.payment_method.required_cvv_message' | t }}
+                        </p>
+                        <p class="form-error" ng-if="($ctrl.form.BankCardCvv.$dirty || $ctrl.form.$submitted) && !$ctrl.form.BankCardCvv.$error.required && $ctrl.form.BankCardCvv.$invalid">
+                            {{ 'checkout.payment_method.invalid_cvv_message' | t }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
