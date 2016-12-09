@@ -216,15 +216,12 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var rateCurrency = availCurrencies.FirstOrDefault(x => x.Equals(shippingRate.Currency)) ?? new Currency(new Language(currency.CultureName), shippingRate.Currency);
             var ratePrice = new Money(shippingRate.Rate ?? 0, rateCurrency);
-            var ratePriceWithTax = new Money(shippingRate.RateWithTax ?? 0, rateCurrency);
             var rateDiscount = new Money(shippingRate.DiscountAmount ?? 0, rateCurrency);
-            var rateDiscountWithTax = new Money(shippingRate.DiscountAmountWithTax ?? 0, rateCurrency);
+
             if (rateCurrency != currency)
             {
                 ratePrice = ratePrice.ConvertTo(currency);
-                ratePriceWithTax = ratePriceWithTax.ConvertTo(currency);
                 rateDiscount = rateDiscount.ConvertTo(currency);
-                rateDiscountWithTax = rateDiscountWithTax.ConvertTo(currency);
             }
 
             var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateShippingMethod(currency);
@@ -242,6 +239,7 @@ namespace VirtoCommerce.Storefront.Converters
                     result.Settings = shippingRate.ShippingMethod.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
                 }
             }
+
             return result;
         }
 
@@ -406,6 +404,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.DiscountAmount = paymentMethod.DiscountAmount;
             result.TaxPercentRate = paymentMethod.TaxPercentRate;
             result.TaxDetails = paymentMethod.TaxDetails;
+
             return result;
         }
 
@@ -517,21 +516,6 @@ namespace VirtoCommerce.Storefront.Converters
             if (cartDto.Addresses != null)
             {
                 result.Addresses = cartDto.Addresses.Select(ToAddress).ToList();
-
-                var billingAddress = result.Addresses.FirstOrDefault(a => a.Type == AddressType.Billing);
-                if (billingAddress == null)
-                {
-                    billingAddress = new Address { Type = AddressType.Billing };
-                }
-
-                if (result.HasPhysicalProducts)
-                {
-                    var shippingAddress = result.Addresses.FirstOrDefault(a => a.Type == AddressType.Shipping);
-                    if (shippingAddress == null)
-                    {
-                        shippingAddress = new Address { Type = AddressType.Shipping };
-                    }
-                }
             }
 
             if (cartDto.Payments != null)
@@ -553,6 +537,7 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 result.TaxDetails = cartDto.TaxDetails.Select(td => ToTaxDetail(td, currency)).ToList();
             }
+
             result.DiscountAmount = new Money(cartDto.DiscountAmount ?? 0, currency);
             result.HandlingTotal = new Money(cartDto.HandlingTotal ?? 0, currency);
             result.HandlingTotalWithTax = new Money(cartDto.HandlingTotalWithTax ?? 0, currency);
