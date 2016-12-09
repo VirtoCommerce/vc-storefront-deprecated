@@ -133,11 +133,18 @@ namespace VirtoCommerce.Storefront.Model
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-            var taxRate = taxRates.FirstOrDefault(x => x.Line.Id.SplitIntoTuple('&').Item1 == ShipmentMethodCode && x.Line.Id.SplitIntoTuple('&').Item2 == OptionName);
+            var taxLineId = BuildTaxLineId();
+            var taxRate = taxRates.FirstOrDefault(x => x.Line.Id == taxLineId);
+
             if (taxRate != null && Total.Amount > 0 && taxRate.Rate.Amount > 0)
             {
                 TaxPercentRate = TaxRate.TaxPercentRound(taxRate.Rate.Amount / Total.Amount);
             }
+        }
+
+        public virtual string BuildTaxLineId()
+        {
+            return string.Join("&", ShipmentMethodCode, OptionName);
         }
 
         #endregion
