@@ -15,8 +15,8 @@ using VirtoCommerce.Storefront.Model.Tax;
 using VirtoCommerce.Storefront.Model.Tax.Factories;
 using cartDto = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
-using platformDto = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
 using marketingDto = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
+using platformDto = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -216,15 +216,12 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var rateCurrency = availCurrencies.FirstOrDefault(x => x.Equals(shippingRate.Currency)) ?? new Currency(new Language(currency.CultureName), shippingRate.Currency);
             var ratePrice = new Money(shippingRate.Rate ?? 0, rateCurrency);
-            var ratePriceWithTax = new Money(shippingRate.RateWithTax ?? 0, rateCurrency);
             var rateDiscount = new Money(shippingRate.DiscountAmount ?? 0, rateCurrency);
-            var rateDiscountWithTax = new Money(shippingRate.DiscountAmountWithTax ?? 0, rateCurrency);
+
             if (rateCurrency != currency)
             {
                 ratePrice = ratePrice.ConvertTo(currency);
-                ratePriceWithTax = ratePriceWithTax.ConvertTo(currency);
                 rateDiscount = rateDiscount.ConvertTo(currency);
-                rateDiscountWithTax = rateDiscountWithTax.ConvertTo(currency);
             }
 
             var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateShippingMethod(currency);
@@ -242,6 +239,7 @@ namespace VirtoCommerce.Storefront.Converters
                     result.Settings = shippingRate.ShippingMethod.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
                 }
             }
+
             return result;
         }
 
@@ -260,7 +258,7 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 new TaxLine(shipmentMethod.Currency)
                 {
-                    Id = string.Join("&", shipmentMethod.ShipmentMethodCode, shipmentMethod.OptionName),
+                    Id = shipmentMethod.BuildTaxLineId(),
                     Code = shipmentMethod.ShipmentMethodCode,
                     TaxType = shipmentMethod.TaxType,
                     Amount = shipmentMethod.Total
@@ -387,7 +385,7 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.Price = new Money(paymentMethodDto.Price ?? 0, cart.Currency);
             retVal.DiscountAmount = new Money(paymentMethodDto.DiscountAmount ?? 0, cart.Currency);
             retVal.TaxPercentRate = (decimal?)paymentMethodDto.TaxPercentRate ?? 0m;
-    
+
             if (paymentMethodDto.TaxDetails != null)
             {
                 retVal.TaxDetails = paymentMethodDto.TaxDetails.Select(td => ToTaxDetail(td, cart.Currency)).ToList();
@@ -406,8 +404,8 @@ namespace VirtoCommerce.Storefront.Converters
             result.DiscountAmount = paymentMethod.DiscountAmount;
             result.TaxPercentRate = paymentMethod.TaxPercentRate;
             result.TaxDetails = paymentMethod.TaxDetails;
+
             return result;
-;
         }
 
         public virtual Payment ToPayment(cartDto.Payment paymentDto, ShoppingCart cart)
@@ -446,7 +444,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             result.Amount = (double)payment.Amount.Amount;
 
-     
+
             result.Currency = payment.Currency.Code;
             result.Price = (double)payment.Price.Amount;
             result.DiscountAmount = (double)payment.DiscountAmount.Amount;
@@ -479,13 +477,13 @@ namespace VirtoCommerce.Storefront.Converters
         }
 
         public virtual PromotionEvaluationContext ToPromotionEvaluationContext(ShoppingCart cart)
-        {        
+        {
             var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionEvaluationContext();
             result.Cart = cart;
             result.Customer = cart.Customer;
             result.Currency = cart.Currency;
             result.Language = cart.Language;
-            result.StoreId = cart.StoreId;            
+            result.StoreId = cart.StoreId;
 
             return result;
         }
@@ -518,21 +516,6 @@ namespace VirtoCommerce.Storefront.Converters
             if (cartDto.Addresses != null)
             {
                 result.Addresses = cartDto.Addresses.Select(ToAddress).ToList();
-
-                var billingAddress = result.Addresses.FirstOrDefault(a => a.Type == AddressType.Billing);
-                if (billingAddress == null)
-                {
-                    billingAddress = new Address { Type = AddressType.Billing };
-                }
-
-                if (result.HasPhysicalProducts)
-                {
-                    var shippingAddress = result.Addresses.FirstOrDefault(a => a.Type == AddressType.Shipping);
-                    if (shippingAddress == null)
-                    {
-                        shippingAddress = new Address { Type = AddressType.Shipping };
-                    }
-                }
             }
 
             if (cartDto.Payments != null)
@@ -554,6 +537,7 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 result.TaxDetails = cartDto.TaxDetails.Select(td => ToTaxDetail(td, currency)).ToList();
             }
+
             result.DiscountAmount = new Money(cartDto.DiscountAmount ?? 0, currency);
             result.HandlingTotal = new Money(cartDto.HandlingTotal ?? 0, currency);
             result.HandlingTotalWithTax = new Money(cartDto.HandlingTotalWithTax ?? 0, currency);
@@ -572,7 +556,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             result.InjectFrom<NullableAndEnumValueInjecter>(cart);
 
-            if(cart.Language != null)
+            if (cart.Language != null)
             {
                 result.LanguageCode = cart.Language.CultureName;
             }
@@ -644,7 +628,7 @@ namespace VirtoCommerce.Storefront.Converters
                     TaxType = payment.TaxType,
                     Amount = payment.Total
                 };
-                result.Lines.Add(totalTaxLine);            
+                result.Lines.Add(totalTaxLine);
             }
             return result;
         }

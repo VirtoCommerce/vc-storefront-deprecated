@@ -24,6 +24,7 @@ using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.Stores;
 using VirtoCommerce.Storefront.Model.Tax.Services;
+using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Builders
 {
@@ -66,32 +67,17 @@ namespace VirtoCommerce.Storefront.Builders
         public virtual async Task LoadOrCreateNewTransientCartAsync(string cartName, Store store, CustomerInfo customer, Language language, Currency currency)
         {
             var cacheKey = GetCartCacheKey(store.Id, cartName, customer.Id, currency.Code);
-            bool needReevaluate = false;
+            var needReevaluate = false;
 
             Cart = await _cacheManager.GetAsync(cacheKey, _cartCacheRegion, async () =>
             {
                 needReevaluate = true;
-                var cartSearchCriteria = new AutoRestClients.CartModuleApi.Models.ShoppingCartSearchCriteria
-                {
-                    StoreId = store.Id,
-                    CustomerId = customer.Id,
-                    Name = cartName,
-                    Currency = currency.Code
-                };
 
-                var result = await _cartApi.CartModule.SearchAsync(cartSearchCriteria);
-                var cart = result.Results.Select(x => x.ToShoppingCart(currency, language, customer)).FirstOrDefault();
+                var cartSearchCriteria = CreateCartSearchCriteria(cartName, store, customer, language, currency);
+                var cartSearchResult = await _cartApi.CartModule.SearchAsync(cartSearchCriteria);
 
-                if (cart == null)
-                {
-                    cart = ServiceLocator.Current.GetInstance<CartFactory>().CreateCart(currency, language);
-                    cart.CustomerId = customer.Id;
-                    cart.Name = "Default";
-                    cart.StoreId = store.Id;
-                    cart.Language = language;
-                    cart.IsAnonymous = !customer.IsRegisteredUser;
-                    cart.CustomerName = customer.IsRegisteredUser ? customer.UserName : StorefrontConstants.AnonymousUsername;
-                }
+                var cartDto = cartSearchResult.Results.FirstOrDefault();
+                var cart = cartDto?.ToShoppingCart(currency, language, customer) ?? CreateCart(cartName, store, customer, language, currency);
 
                 cart.Customer = customer;
                 return cart;
@@ -332,7 +318,7 @@ namespace VirtoCommerce.Storefront.Builders
 
             //Request available shipping rates 
             var shippingRates = await _cartApi.CartModule.GetAvailableShippingRatesAsync(Cart.Id);
-            var retVal = shippingRates.Select(x => x.ToShippingMethod(Cart.Currency, workContext.AllCurrencies)).ToList();
+            var retVal = shippingRates.Select(x => x.ToShippingMethod(Cart.Currency, workContext.AllCurrencies)).OrderBy(x => x.Priority).ToList();
 
             //Evaluate promotions cart and apply rewards for available shipping methods
             var promoEvalContext = Cart.ToPromotionEvaluationContext();
@@ -351,7 +337,7 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureCartExists();
             var payments = await _cartApi.CartModule.GetAvailablePaymentMethodsAsync(Cart.Id);
-            var retVal =  payments.Select(x => x.ToPaymentMethod(Cart)).ToList();
+            var retVal = payments.Select(x => x.ToPaymentMethod(Cart)).OrderBy(x => x.Priority).ToList();
 
             //Evaluate promotions cart and apply rewards for available shipping methods
             var promoEvalContext = Cart.ToPromotionEvaluationContext();
@@ -438,6 +424,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         #endregion
 
+
         protected virtual void InvalidateCache()
         {
             //Invalidate cart in cache
@@ -449,9 +436,35 @@ namespace VirtoCommerce.Storefront.Builders
         {
             return "CartBuilder:" + cartId;
         }
+
         protected virtual string GetCartCacheKey(string storeId, string cartName, string customerId, string currency)
         {
             return "CartBuilder:" + string.Join(":", storeId, cartName, customerId, currency).ToLowerInvariant();
+        }
+
+        protected virtual cartModel.ShoppingCartSearchCriteria CreateCartSearchCriteria(string cartName, Store store, CustomerInfo customer, Language language, Currency currency)
+        {
+            return new cartModel.ShoppingCartSearchCriteria
+            {
+                StoreId = store.Id,
+                CustomerId = customer.Id,
+                Name = cartName,
+                Currency = currency.Code,
+            };
+        }
+
+        protected virtual ShoppingCart CreateCart(string cartName, Store store, CustomerInfo customer, Language language, Currency currency)
+        {
+            var cart = ServiceLocator.Current.GetInstance<CartFactory>().CreateCart(currency, language);
+
+            cart.CustomerId = customer.Id;
+            cart.Name = "Default";
+            cart.StoreId = store.Id;
+            cart.Language = language;
+            cart.IsAnonymous = !customer.IsRegisteredUser;
+            cart.CustomerName = customer.IsRegisteredUser ? customer.UserName : StorefrontConstants.AnonymousUsername;
+
+            return cart;
         }
 
         protected virtual async Task ValidateCartItemsAsync()
