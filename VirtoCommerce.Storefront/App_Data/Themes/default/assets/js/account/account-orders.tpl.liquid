@@ -1,4 +1,12 @@
-﻿<ng-outlet></ng-outlet>
+﻿<ng-outlet ng-init="$ctrl.orderHelper.statusLabels=[
+           { status: 'unpaid', label: '{{ 'customer.order.status.unpaid' | t }}'},
+           { status: 'pending', label: '{{ 'customer.order.status.pending' | t }}'},
+           { status: 'processing', label: '{{ 'customer.order.status.processing' | t }}'},
+           { status: 'readytosend', label: '{{ 'customer.order.status.ready' | t }}'},
+           { status: 'sent', label: '{{ 'customer.order.status.sent' | t }}'},
+           { status: 'partiallysent', label: '{{ 'customer.order.status.partially_sent' | t }}'},
+           { status: 'canceled', label: '{{ 'customer.order.status.canceled' | t }}'}
+           ]"></ng-outlet>
 
 <script id="account-orders-list.tpl" type="text/ng-template">
     <h4>{{ 'customer.orders.title' | t }}</h4>
@@ -39,8 +47,8 @@
         </a>
     </p>
 
-    <div class="grid">
-        <div class="grid-item two-thirds medium-down--one-whole">
+    <div class="cols">
+        <div class="col col-66 main">
             <h4>{{ 'customer.order.title' | t }} {% raw %}{{$ctrl.orderNumber}}{% endraw %}</h4>
             <p>
                 {{ 'customer.order.placed_on_date_html' | t }}
@@ -54,17 +62,23 @@
                 </h5>
                 <p>{{ 'customer.order.cancel_reason' | t }}: {% raw %}{{ $ctrl.order.cancelReason }}{% endraw %}</p>
             </div>
+            <div class="form-fieldset">
+                <vc-line-items items="$ctrl.order.items"></vc-line-items>
 
-            <vc-line-items items="$ctrl.order.items"></vc-line-items>
-            <hr class="hr--small" />
-
-            <div class="vc-section-header">
-                <div class="vc-t">Totals</div>
+                <hr class="hr--small" />
+                <div class="vc-section-header">
+                    <div class="vc-t">Order totals</div>
+                </div>
+                <div class="cols">
+                    <div class="col col-33">
+                    </div>
+                    <div class="col col-66">
+                        <vc-totals order="$ctrl.order"></vc-totals>
+                    </div>
+                </div>
             </div>
-            <vc-totals order="$ctrl.order"></vc-totals>
         </div>
-
-        <div class="grid-item one-third medium-down--one-whole">
+        <div class="col col-33" ng-if="!$ctrl.isShowPayment">
             <div class="vc-section-header">
                 <div class="vc-t">{{ 'customer.orders.status' | t }}</div>
                 <div class="vc-descr" ng-bind="$ctrl.order | orderToSummarizedStatusLabel"></div>
@@ -81,13 +95,13 @@
                 </div>
             </div>
 
-            <p ng-if="$ctrl.canAddPayment">
-                <a ng-link="['PayOrder', {number: $ctrl.order.number, pageNumber: $ctrl.pageNumber}]" class="vc-btn">
-                    {{ 'customer.order.new_payment' | t }}
-                    <span ng-bind="$ctrl.amountToPay"></span>
-                    <span ng-bind="$ctrl.order.total.currency.code"></span>
-                </a>
-            </p>
+            <button ng-click="showLoading=true && $ctrl.showPayment()" class="vc-btn" ng-class="{'loading': showLoading }" ng-if="$ctrl.amountToPay > 0">
+                <span class="btn-text">{{ 'customer.order.new_payment' | t }}</span>
+                <span class="btn-text" ng-bind="$ctrl.amountToPay"></span>
+                <span class="btn-text" ng-bind="$ctrl.order.total.currency.code"></span>
+                <span class="btn-loading"></span>
+            </button>
+
             <hr class="hr--small" />
             <div class="vc-section-header" ng-if="$ctrl.order.shipments[0].deliveryAddress">
                 <div class="vc-t">{{ 'customer.order.fulfillment_status' | t }}</div>
@@ -100,26 +114,29 @@
                 </div>
             </div>
         </div>
-    </div>
-</script>
 
-<script id="account-order-pay.tpl" type="text/ng-template">
-    <p>
-        <a ng-link="['OrderDetail', {number: $ctrl.orderNumber}]">
-            <span class="fa fa-arrow-left"></span> Return
-        </a>
-    </p>
-    <h4>{{ 'customer.order.title' | t }} {% raw %}{{$ctrl.orderNumber}}{% endraw %}</h4>
-
-    <div class="cols">
-        <div class="col col-50 main">
+        <div class="col col-33" ng-if="$ctrl.isShowPayment">
+            <div class="vc-section-header">
+                <div class="vc-t">Payment</div>
+                <ul class="vc-product-totals list">
+                    <li class="list-item total summary">
+                        <div class="list-name">Payment amount</div>
+                        <div class="list-price">
+                            <div class="list-currency" ng-bind="$ctrl.payment.currency.code"></div>
+                            <span ng-bind="$ctrl.payment.sum.amount"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <hr class="hr--small" />
+            
             <vc-payment-methods get-avail-payment-methods="$ctrl.getAvailPaymentMethods()" payment-method="$ctrl.paymentMethod" on-select-method="$ctrl.selectPaymentMethod(paymentMethod)" validation-container="$ctrl"></vc-payment-methods>
 
             <div class="vc-section-header">
                 <div class="vc-t">{{ 'checkout.payment_method.billing_address' | t }}</div>
             </div>
             <div class="form-box">
-                <div class="box-row">
+                <div class="box-row" ng-if="$ctrl.hasPhysicalProducts">
                     <label class="check-box">
                         <input ng-model="$ctrl.billingAddressEqualsShipping" ng-checked="$ctrl.billingAddressEqualsShipping" class="check" type="checkbox"/>
                         <div class="switch"></div>
@@ -131,7 +148,7 @@
                 </div>
             </div>
 
-            <button ng-click="$ctrl.cancel()" ng-if="$ctrl.canCancelPayment" class="vc-btn" ng-class="{'loading': $ctrl.loader.isLoading }">
+            <button ng-click="$ctrl.cancel()" ng-if="$ctrl.canCancelPayment" class="vc-btn secondary" ng-class="{'loading': $ctrl.loader.isLoading }">
                 <span class="btn-text">{{ 'customer.order_payment.cancel' | t }}</span>
                 <span class="btn-loading"></span>
             </button>
@@ -141,49 +158,5 @@
                 <span class="btn-loading"></span>
             </button>
         </div>
-
-        <div class="col col-50">
-            <div class="form-fieldset">
-                <div class="vc-section-header">
-                    <div class="vc-t">Payment</div>
-                    <ul class="vc-product-totals list">
-                        <li class="list-item total summary">
-                            <div class="list-name">Payment amount</div>
-                            <div class="list-price">
-                                <div class="list-currency" ng-bind="$ctrl.payment.currency.code"></div>
-                                <span ng-bind="$ctrl.payment.sum.amount"></span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <hr class="hr--small" />
-                <div class="vc-section-header">
-                    <div class="vc-t">Order details</div>
-                </div>
-
-                <vc-line-items items="$ctrl.order.items"></vc-line-items>
-
-                <hr class="hr--small" />
-                <div class="vc-section-header">
-                    <div class="vc-t">Order totals</div>
-                </div>
-                <vc-totals order="$ctrl.order"></vc-totals>
-            </div>
-        </div>
     </div>
-
-    <!--
-    <div>
-        <div class="step__sections">
-            <div class="section section--billing-address">
-                <div class="section__content">
-                    <div class="content-box">
-                        <div class="checkbox-wrapper content-box__row" ng-if="$ctrl.hasPhysicalProducts">                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
 </script>

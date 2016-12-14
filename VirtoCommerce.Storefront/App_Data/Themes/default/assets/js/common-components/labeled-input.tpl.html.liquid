@@ -6,8 +6,8 @@
            autofocus="{% raw %}{{ $ctrl.autofocus }}{% endraw %}"
            type="{% raw %}{{ $ctrl.type }}{% endraw %}"
            ng-required="$ctrl.required" class="form-input" />
-    <span class="form-error" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$error.required">{{ 'common.required' | t }}</span>
-    <span class="form-error" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && !$ctrl.form[$ctrl.name].$error.required && $ctrl.form[$ctrl.name].$invalid">{% raw %}{{ $ctrl.validationError || {% endraw %} {{ 'common.invalid' | t }} {% raw %} }} {% endraw %}</span>
+    <span class="form-error" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$error.required" ng-bind="$ctrl.requiredError || '{{ 'common.required' | t }}'"></span>
+    <span class="form-error" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && !$ctrl.form[$ctrl.name].$error.required && $ctrl.form[$ctrl.name].$invalid">{{ 'common.invalid' | t }}</span>
 </div>
 
 <!--<form accept-charset="UTF8" class="step" name="$ctrl.form" novalidate="novalidate">

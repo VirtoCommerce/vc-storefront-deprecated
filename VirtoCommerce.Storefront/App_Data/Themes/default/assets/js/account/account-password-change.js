@@ -7,32 +7,34 @@
     },
     controller: [function () {
         var ctrl = this;
-        ctrl.error = {};
-        ctrl.passwordChange = { changeData: {} };
+        ctrl.passwordChangeData = {};
 
         ctrl.submit = function () {
-            ctrl.passwordChange.errors = null;
             // validation
+            ctrl.errors = null;
+            ctrl.error = {};
             var hasError = false;
             var errorMsg;
 
-            errorMsg = ctrl.passwordChange.changeData.oldPassword === ctrl.passwordChange.changeData.newPassword;
+            errorMsg = ctrl.passwordChangeData.oldPassword === ctrl.passwordChangeData.newPassword;
             ctrl.error.newPassword = errorMsg
             hasError = hasError || errorMsg;
 
             if (!hasError) {
-                errorMsg = ctrl.passwordChange.changeData.newPassword !== ctrl.passwordChange.changeData.newPassword2;
+                errorMsg = ctrl.passwordChangeData.newPassword !== ctrl.passwordChangeData.newPassword2;
                 ctrl.error.newPassword2 = errorMsg;
                 hasError = hasError || errorMsg;
             }
 
             if (!hasError) {
-                ctrl.passwordChange.changeData = {
-                    oldPassword: ctrl.passwordChange.changeData.oldPassword,
-                    newPassword: ctrl.passwordChange.changeData.newPassword
-                };
-                ctrl.onPasswordChange()(ctrl.passwordChange);
+                ctrl.onPasswordChange()(ctrl.passwordChangeData).then(function (result) {
+                    angular.extend(ctrl, result);
+                    ctrl.passwordChangeData = {};
+                    ctrl.form.$setPristine();
+                });
             }
         };
+
+        ctrl.setForm = function (frm) { ctrl.form = frm; };
     }]
 });

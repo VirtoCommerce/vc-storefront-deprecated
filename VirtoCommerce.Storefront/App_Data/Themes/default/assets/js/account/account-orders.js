@@ -9,16 +9,13 @@
     },
     $routeConfig: [
      { path: '/', name: 'OrderList', component: 'vcAccountOrdersList', useAsDefault: true },
-     { path: '/:number', name: 'OrderDetail', component: 'vcAccountOrderDetail' },
-     { path: '/:number/pay', name: 'PayOrder', component: 'vcAccountOrderPay' },
-    //],
-    //controller: ['storefront.orderApi', 'loadingIndicatorService', function (orderApi, loader) {
-    //    var ctrl = this;
-        
-    //    this.$routerOnActivate = function (next) {
-    //        var a = next.params.pageNumber || ctrl.pageSettings.currentPage;
-    //    };
-    //}
+     { path: '/:number', name: 'OrderDetail', component: 'vcAccountOrderDetail' }
+    ],
+    controller: ['orderHelper', function (orderHelper) {
+        var $ctrl = this;
+        $ctrl.orderHelper = orderHelper;
+
+    }
     ]
 })
 
@@ -51,71 +48,54 @@
 .component('vcAccountOrderDetail', {
     templateUrl: "account-order-detail.tpl",
     bindings: { $router: '<' },
-    controller: ['storefront.orderApi', 'loadingIndicatorService', function (orderApi, loader) {
+    require: {
+        parentComponent: '^vcAccountOrders',
+    },
+    controller: ['storefront.orderApi', '$rootScope', '$window', 'loadingIndicatorService', 'confirmService', 'orderHelper', function (orderApi, $rootScope, $window, loader, confirmService, orderHelper) {
         var $ctrl = this;
+        $ctrl.loader = loader;
+        $ctrl.hasPhysicalProducts = true;
 
+        function refresh() {
+            loader.wrapLoading(function () {
+                $ctrl.order = orderApi.get({ number: $ctrl.orderNumber }, function (result) {
+                    $ctrl.isShowPayment = false;
+                    $ctrl.billingAddress = _.findWhere($ctrl.order.addresses, { type: 'billing' }) || _.first($ctrl.order.addresses);
+                    $ctrl.amountToPay = orderHelper.getNewPayment($ctrl.order).sum.amount;
+
+                    if ($ctrl.amountToPay > 0) {
+                        $ctrl.billingAddressEqualsShipping = true;
+                        loadPromise = orderApi.getNewPaymentData({ number: $ctrl.orderNumber }, function (result) {
+                            //$ctrl.order = result.order;
+                            configurePayment(result.paymentMethods, result.payment);                            
+                        }).$promise;
+                    }
+                });
+                return $ctrl.order.$promise;
+            });
+        }
         this.$routerOnActivate = function (next) {
             $ctrl.pageNumber = next.params.pageNumber || 1;
             $ctrl.orderNumber = next.params.number;
 
-            loader.wrapLoading(function () {
-                $ctrl.order = orderApi.get({ number: $ctrl.orderNumber }, function (result) {
-                    $ctrl.billingAddress = _.findWhere($ctrl.order.addresses, { type: 'billing' }) || _.first($ctrl.order.addresses);
-                    calculateBalance();
-
-
-                });
-                return $ctrl.order.$promise;
-            });
+            refresh();
         };
 
-        function calculateBalance() {
-            var paidPayments = _.filter($ctrl.order.inPayments, function (x) {
-                return x.status === 'Paid';
+        $ctrl.showPayment = function () {
+            loadPromise.then(function (result) {
+                $ctrl.isShowPayment = true;
             });
-            var paidAmount = _.reduce(paidPayments, function (memo, num) { return memo + num.sum.amount; }, 0);
-            $ctrl.amountToPay = $ctrl.order.total.amount - paidAmount
-            $ctrl.canAddPayment = $ctrl.amountToPay > 0;
-        }
-
-        //this.gotoPayment = function () {
-        //    this.$router.navigate(['PayOrder', { number: $ctrl.order.number, order: { asd: $ctrl.order }, pageNumber: $ctrl.pageNumber }]);
-        //};
-    }]
-})
-
-.component('vcAccountOrderPay', {
-    templateUrl: "account-order-pay.tpl",
-    bindings: { $router: '<' },
-    require: {
-        parentComponent: '^vcAccountOrders',
-    },
-    controller: ['storefront.orderApi', '$rootScope', '$window', 'loadingIndicatorService', 'confirmService', function (orderApi, $rootScope, $window, loader, confirmService) {
-        var $ctrl = this;
-        $ctrl.hasPhysicalProducts = true;
-        $ctrl.billingAddressEqualsShipping = true;
+        };
 
         var loadPromise;
         $ctrl.getAvailPaymentMethods = function () {
             return loadPromise.then(function (result) {
                 var preselectedMaymentMethod;
                 if ($ctrl.payment.gatewayCode) {
-                    preselectedMaymentMethod = _.find(result.paymentMethods, { code: $ctrl.payment.gatewayCode });
+                    preselectedMaymentMethod = _.findWhere(result.paymentMethods, { code: $ctrl.payment.gatewayCode });
                 }
 
                 return preselectedMaymentMethod ? [preselectedMaymentMethod] : result.paymentMethods;
-            });
-        };
-
-        this.$routerOnActivate = function (next) {
-            $ctrl.pageNumber = next.params.pageNumber || 1;
-            $ctrl.orderNumber = next.params.number;
-
-            loader.wrapLoading(function () {
-                return loadPromise = orderApi.getNewPaymentData({ number: $ctrl.orderNumber }, function (result) {
-                    $ctrl.order = result.order;
-                    configurePayment(result.paymentMethods, result.payment);
-                }).$promise;
             });
         };
 
@@ -142,6 +122,7 @@
         $ctrl.submit = function () {
             if ($ctrl.validate()) {
                 loader.wrapLoading(function () {
+                    $ctrl.payment.bankCardInfo = $ctrl.paymentMethod.card;
                     return orderApi.addOrUpdatePayment({ number: $ctrl.orderNumber }, $ctrl.payment, function (result) {
                         var orderProcessingResult = result.orderProcessingResult;
                         var paymentMethod = result.paymentMethod;
@@ -162,7 +143,7 @@
                             outerRedirect(orderProcessingResult.redirectUrl);
                         } else {
                             if ($ctrl.parentComponent.customer.isRegisteredUser) {
-                                $ctrl.$router.navigate(['OrderDetail', { number: $ctrl.orderNumber, pageNumber: $ctrl.pageNumber }]);
+                                refresh();
                             } else {
                                 outerRedirect($ctrl.parentComponent.baseUrl + 'cart/thanks/' + $ctrl.orderNumber);
                             }
@@ -176,15 +157,13 @@
             confirmService.confirm('Cancel this payment?').then(function (confirmed) {
                 if (confirmed) {
                     loader.wrapLoading(function () {
-                        $ctrl.payment.cancelReason = "Cancelled by customer";
-                        $ctrl.payment.cancelledDate = new Date();
-                        $ctrl.payment.isCancelled = true;
-                        $ctrl.payment.status = 'Cancelled';
-                        $ctrl.payment.paymentStatus = 'Cancelled';
+                        $ctrl.originalPayment.cancelReason = "Cancelled by customer";
+                        $ctrl.originalPayment.cancelledDate = new Date();
+                        $ctrl.originalPayment.isCancelled = true;
+                        $ctrl.originalPayment.status = 'Cancelled';
+                        $ctrl.originalPayment.paymentStatus = 'Cancelled';
 
-                        return orderApi.addOrUpdatePayment({ number: $ctrl.orderNumber }, $ctrl.payment, function (result) {
-                            $ctrl.$router.navigate(['OrderDetail', { number: $ctrl.orderNumber, pageNumber: $ctrl.pageNumber }]);
-                        }).$promise;
+                        return orderApi.addOrUpdatePayment({ number: $ctrl.orderNumber }, $ctrl.originalPayment, refresh).$promise;
                     });
                 }
             });
@@ -198,31 +177,21 @@
             components = _.without(components, component);
         };
 
-        function configurePayment(paymentMethods, newPayment) {
-            var paidPayments = _.filter($ctrl.order.inPayments, function (x) {
-                return x.status === 'Paid';
-            });
-            var paidAmount = _.reduce(paidPayments, function (memo, num) { return memo + num.sum.amount; }, 0);
-            var amountToPay = $ctrl.order.total.amount - paidAmount;
-
-            var pendingPayments = _.filter($ctrl.order.inPayments, function (x) {
-                return (x.status === 'New' || x.status === 'Pending') && x.sum.amount > 0; // && x.sum.amount === amountToPay;
-            });
-            var pendingPayment = _.last(_.sortBy(pendingPayments, 'createdDate'));
-            if (pendingPayment) {
-                var found = _.find(paymentMethods, { code: pendingPayment.gatewayCode });
-                if (found) {
-                    $ctrl.payment = pendingPayment;
-                    $ctrl.canCancelPayment = true;
-                    $ctrl.selectPaymentMethod(found);
-                }
-            }
-            if (!$ctrl.payment) {
-                $ctrl.payment = newPayment;
-                $ctrl.payment.sum.amount = amountToPay;
-            }
-
+        function configurePayment(paymentMethods, newPaymentTemplate) {
+            $ctrl.payment = orderHelper.getNewPayment($ctrl.order, paymentMethods, newPaymentTemplate);
+            $ctrl.originalPayment = angular.copy($ctrl.payment);
             $ctrl.payment.purpose = $ctrl.payment.purpose || 'Repeated payment';
+            $ctrl.amountToPay = $ctrl.payment.sum.amount;
+
+            $ctrl.canCancelPayment = $ctrl.payment.id !== newPaymentTemplate.id;
+            if ($ctrl.canCancelPayment) {                
+                $ctrl.selectPaymentMethod(_.findWhere(paymentMethods, { code: $ctrl.payment.gatewayCode }));
+            }
+
+            if (!_.some($ctrl.order.shipments)) {
+                $ctrl.hasPhysicalProducts = false;
+                $ctrl.billingAddressEqualsShipping = false;
+            }
         }
 
         function outerRedirect(absUrl) {
@@ -231,14 +200,46 @@
     }]
 })
 
-.filter('orderToSummarizedStatusLabel', function () {
+.factory('orderHelper', function () {
+    var retVal = {
+        getNewPayment: function (order, paymentMethods, newPaymentTemplate) {
+            var retVal;
+            var paidPayments = _.filter(order.inPayments, function (x) {
+                return x.status === 'Paid';
+            });
+            var paidAmount = _.reduce(paidPayments, function (memo, num) { return memo + num.sum.amount; }, 0);
+            var amountToPay = order.total.amount - paidAmount;
+
+            var pendingPayments = _.filter(order.inPayments, function (x) {
+                return (x.status === 'New' || x.status === 'Pending') && x.sum.amount > 0; // && x.sum.amount === amountToPay;
+            });
+            var pendingPayment = _.last(_.sortBy(pendingPayments, 'createdDate'));
+            if (pendingPayment && (!paymentMethods || _.findWhere(paymentMethods, { code: pendingPayment.gatewayCode }))) {
+                retVal = pendingPayment;
+            } else {
+                newPaymentTemplate = newPaymentTemplate || { sum: {} };
+                newPaymentTemplate.sum.amount = amountToPay;
+                retVal = newPaymentTemplate;
+            }
+
+            return retVal;
+        }
+    };
+
+    return retVal;
+})
+
+.filter('orderToSummarizedStatusLabel', ['orderHelper', function (orderHelper) {
     return function (order) {
         var retVal = order.status;
-        // TODO: add status 'state machine'
-        
+        var found = _.find(orderHelper.statusLabels, function (x) { return x.status.toLowerCase() === retVal; });
+        if (found) {
+            retVal = found.label;
+        }
+
         return retVal;
     };
-})
+}])
 
 .filter('orderToFinancialStatusLabel', function () {
     return function (order) {

@@ -41,11 +41,9 @@ function ($scope, accountApi, confirmService, loader) {
         return accountApi.getCountryRegions(country).$promise;
     };
 
-    $scope.changePassword = function (changePasswordRequest) {
-        loader.wrapLoading(function () {
-            return accountApi.changePassword(changePasswordRequest.changeData, function (result) {
-                changePasswordRequest.errors = result.errors;
-            }).$promise;
+    $scope.changePassword = function (changePasswordData) {
+        return loader.wrapLoading(function () {
+            return accountApi.changePassword(changePasswordData).$promise;
         });
     };
     

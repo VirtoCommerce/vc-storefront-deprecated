@@ -250,6 +250,11 @@ namespace VirtoCommerce.Storefront.Converters
 
             retVal.InjectFrom(paymentIn);
 
+            if (paymentIn.BillingAddress != null)
+            {
+                retVal.BillingAddress = paymentIn.BillingAddress.ToAddress();
+            }
+
             if (paymentIn.DynamicProperties != null)
             {
                 retVal.DynamicProperties = paymentIn.DynamicProperties.Select(ToDynamicProperty).ToList();
@@ -271,6 +276,11 @@ namespace VirtoCommerce.Storefront.Converters
             retVal.Sum = (double)payment.Sum.Amount;
             retVal.Currency = payment.Currency.Code;
             retVal.PaymentStatus = payment.Status;
+
+            if (payment.BillingAddress != null)
+            {
+                retVal.BillingAddress = payment.BillingAddress.ToOrderAddressDto();
+            }
 
             if (payment.DynamicProperties != null)
             {

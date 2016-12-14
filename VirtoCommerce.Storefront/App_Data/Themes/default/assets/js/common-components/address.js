@@ -32,7 +32,7 @@ storefrontApp.component('vcAddress', {
         function populateRegionalDataForAddress(address) {
             if (address) {
                 //Set country object for address
-                address.country = _.find(ctrl.countries, function (x) { return x.code3 === address.countryCode; });
+                address.country = _.findWhere(ctrl.countries, { code3: address.countryCode });
                 if (address.country != null) {
                     ctrl.address.countryName = ctrl.address.country.name;
                     ctrl.address.countryCode = ctrl.address.country.code3;
@@ -53,7 +53,7 @@ storefrontApp.component('vcAddress', {
         }
 
         function setAddressRegion(address, regions) {
-            address.region = _.find(regions, function (x) { return x.code === address.regionId; });
+            address.region = _.findWhere(regions, { code: address.regionId });
             if (address.region) {
                 ctrl.address.regionId = ctrl.address.region.code;
                 ctrl.address.regionName = ctrl.address.region.name;
@@ -64,9 +64,7 @@ storefrontApp.component('vcAddress', {
             }
         }
 
-        ctrl.setForm = function (frm) {
-            ctrl.form = frm;
-        };
+        ctrl.setForm = function (frm) { ctrl.form = frm; };
 
         ctrl.validate = function () {
             if (ctrl.form) {

@@ -137,6 +137,11 @@ select {
     transition: background-color .2s ease-in-out, color .2s ease-in-out;
 }
 
+    .vc-btn.secondary {
+        background: #dcdcdc;
+        color: #585858;
+    }
+
     .vc-btn.loading {
         pointer-events: none;
     }

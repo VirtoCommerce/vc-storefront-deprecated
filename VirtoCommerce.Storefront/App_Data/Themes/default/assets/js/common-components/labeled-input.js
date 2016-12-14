@@ -11,8 +11,8 @@ storefrontApp.component('vcLabeledInput', {
         name: '@',
         placeholder: '@',
         type: '@?',
-        validationError: '@?',
         required: '<',
+        requiredError: '@?',
         autofocus: '<'
     },
     controller: [function () {

@@ -95,6 +95,7 @@
             "invalid_cvv_message": "Please enter correct CVV"
         },
         "address": {
+            "selected_address": "Selected address",
             "first_name": "First name",
             "last_name": "Last name",
             "company": "Company (optional)",
@@ -330,7 +331,16 @@
             "quantity": "Quantity",
             "total": "Total",
             "fulfilled_on": "Fulfilled on {{ date }}",
-            "subtotal": "Subtotal"
+            "subtotal": "Subtotal",
+            "status": {
+                "unpaid": "Unpaid",
+                "pending": "Pending",
+                "processing": "Processing",
+                "ready": "Ready to send",
+                "sent": "Sent",
+                "partially_sent": "Partially sent",
+                "canceled": "Canceled"
+            }
         },
         "order_payment": {
             "cancel": "Cancel payment",
@@ -388,6 +398,7 @@
             "new_password": "New Password",
             "new_password_confirm": "Confirm New Password",
             "submit": "Change password",
+            "changed": "Password was changed successfully!",
             "validation": {
                 "current-password": "Required",
                 "new-password": "Old and new passwords are the same!",
