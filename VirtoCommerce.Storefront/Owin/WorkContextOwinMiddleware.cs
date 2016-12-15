@@ -225,6 +225,7 @@ namespace VirtoCommerce.Storefront.Owin
                         workContext.Aggregations = new MutablePagedList<Aggregation>(result.Aggregations);
                         return result.Products;
                     }, 1, ProductSearchCriteria.DefaultPageSize);
+
                     //This line make delay aggregation loading initialization (aggregation can be evaluated on view rendering time)
                     workContext.Aggregations = new MutablePagedList<Aggregation>((pageNumber, pageSize, sortInfos) =>
                     {
@@ -272,10 +273,7 @@ namespace VirtoCommerce.Storefront.Owin
 
         protected virtual async Task HandleNonAssetRequest(IOwinContext context, WorkContext workContext)
         {
-            //Shopping cart
-            var cartBuilder = Container.Resolve<ICartBuilder>();
-            await cartBuilder.LoadOrCreateNewTransientCartAsync("default", workContext.CurrentStore, workContext.CurrentCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
-            workContext.CurrentCart = cartBuilder.Cart;
+            await InitializeShoppingCart(context, workContext);
 
             if (workContext.CurrentStore.QuotesEnabled)
             {
@@ -287,6 +285,7 @@ namespace VirtoCommerce.Storefront.Owin
             var linkListService = Container.Resolve<IMenuLinkListService>();
             var linkLists = await CacheManager.GetAsync("GetAllStoreLinkLists-" + workContext.CurrentStore.Id, "ApiRegion", async () => await linkListService.LoadAllStoreLinkListsAsync(workContext.CurrentStore.Id));
             workContext.CurrentLinkLists = linkLists.GroupBy(x => x.Name).Select(x => x.FindWithLanguage(workContext.CurrentLanguage)).Where(x => x != null).ToList();
+
             // load all static content
             var staticContents = CacheManager.Get(string.Join(":", "AllStoreStaticContent", workContext.CurrentStore.Id), "ContentRegion", () =>
             {
@@ -348,6 +347,13 @@ namespace VirtoCommerce.Storefront.Owin
 
                 return vendors;
             }, 1, VendorSearchCriteria.DefaultPageSize);
+        }
+
+        protected virtual async Task InitializeShoppingCart(IOwinContext context, WorkContext workContext)
+        {
+            var cartBuilder = Container.Resolve<ICartBuilder>();
+            await cartBuilder.LoadOrCreateNewTransientCartAsync("default", workContext.CurrentStore, workContext.CurrentCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
+            workContext.CurrentCart = cartBuilder.Cart;
         }
 
         protected virtual async Task<Store[]> GetAllStoresAsync()
