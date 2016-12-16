@@ -246,9 +246,12 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Shipment ToCartShipment(ShippingMethod shippingMethod, Currency currency)
         {
             var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateShipment(currency);
+
             result.ShipmentMethodCode = shippingMethod.ShipmentMethodCode;
             result.Price = shippingMethod.Price;
+            result.DiscountAmount = shippingMethod.DiscountAmount;
             result.TaxType = shippingMethod.TaxType;
+
             return result;
         }
 
