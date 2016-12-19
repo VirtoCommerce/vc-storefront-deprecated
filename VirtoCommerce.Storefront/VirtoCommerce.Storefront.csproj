@@ -352,6 +352,7 @@
     <Content Include="App_Data\Themes\default\assets\informer-loader.gif" />
     <Content Include="App_Data\Themes\default\assets\jcb.svg" />
     <Content Include="App_Data\Themes\default\assets\jquery.zoom.min.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-subscriptions.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-quotes.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-orders.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-profile-update.js" />
@@ -455,6 +456,9 @@
     <Content Include="App_Data\Themes\default\assets\account.scss.liquid" />
     <Content Include="App_Data\Themes\default\assets\account-bootstrap.css" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\labeled-input.tpl.html.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-subscriptions.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

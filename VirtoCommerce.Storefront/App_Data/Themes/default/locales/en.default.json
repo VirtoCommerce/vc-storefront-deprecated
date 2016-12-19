@@ -346,6 +346,37 @@
             "cancel": "Cancel payment",
             "submit": "Confirm payment"
         },
+        "subscriptions": {
+            "title": "My subscriptions",
+            "return": "Return to list",
+            "subscription_number": "Subscription Number",
+            "status": "Status",
+            "period": "Period",
+            "date_created": "Start date",
+            "date_trial_end": "Trial end",
+            "total": "Total",
+            "date_ended": "End date",
+            "none": "You haven't placed any subscriptions yet."
+        },
+        "subscription": {
+            "title": "Subscription {{ name }}",
+            "placed_on_date_html": "Placed on {{ date }}",
+            "cancelled_on": "Subscription was canceled on {{ date }}",
+            "cancel_reason": "Reason",
+            "shipping_address": "Shipping Address",
+            "discount": "Discount",
+            "shipping": "Shipping",
+            "tax": "Tax",
+            "product": "Product",
+            "sku": "SKU",
+            "price": "Price",
+            "quantity": "Quantity",
+            "total": "Total",
+            "subtotal": "Subtotal",
+            "balance": "Balance",
+            "billing_address": "Billing address",
+            "cancel": "Cancel Subscription"
+        },
         "quotes": {
             "title": "Quote requests",
             "none": "You haven't submitted any quote requests yet.",

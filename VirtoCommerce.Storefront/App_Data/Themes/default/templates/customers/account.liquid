@@ -12,6 +12,9 @@
         <uib-tab heading="Orders">
             <vc-account-orders customer="customer" countries="availCountries" base-url="baseUrl" get-country-regions="getCountryRegions(country)"></vc-account-orders>
         </uib-tab>
+        <uib-tab heading="Subscriptions">
+            <vc-account-subscriptions get-quotes="getQuotes" loading="loader.isLoading"></vc-account-subscriptions>
+        </uib-tab>
         {% if shop.quotes_enabled %}
         <uib-tab heading="Quote requests">
             <div class="one-half">
