@@ -13,6 +13,13 @@
     return $resource('storefrontapi/orders/:number', null, {
         getOrders: {},
         getNewPaymentData: { url: 'storefrontapi/orders/:number/newpaymentdata' },
-        addOrUpdatePayment: { url: 'storefrontapi/orders/:number/payments', method: 'POST' },
+        addOrUpdatePayment: { url: 'storefrontapi/orders/:number/payments', method: 'POST' }
+    });
+}])
+.factory('storefront.subscriptionApi', ['$resource', function ($resource) {
+    //return $resource('storefrontapi/subscriptions/:number', null, {
+    return $resource('storefrontapi/orders/:number', null, {
+        getSubscriptions: {},
+        cancel: {}
     });
 }]);
