@@ -487,6 +487,7 @@
     <Compile Include="AutoRestClients\SearchApiModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
     <Compile Include="AutoRestClients\StoreModuleApi.cs" />
+    <Compile Include="AutoRestClients\SubscriptionModuleApi.cs" />
     <Compile Include="Binders\OrderTypesModelBinder.cs" />
     <Compile Include="Binders\CartTypesModelBinder.cs" />
     <Compile Include="Common\AppBuilderExtension.cs" />
@@ -503,6 +504,7 @@
     <Compile Include="Common\ObjectExtensions.cs" />
     <Compile Include="Common\RequireHttps.cs" />
     <Compile Include="Common\SeoExtensions.cs" />
+    <Compile Include="Controllers\Api\ApiSubscriptionController.cs" />
     <Compile Include="Controllers\Api\ApiOrderController.cs" />
     <Compile Include="Controllers\Api\ApiBlogController.cs" />
     <Compile Include="Controllers\Api\ApiQuoteRequestController.cs" />
@@ -515,6 +517,7 @@
     <Compile Include="Controllers\QuoteRequestController.cs" />
     <Compile Include="Converters\SettingConverter.cs" />
     <Compile Include="Converters\Pricing\PricingConverter.cs" />
+    <Compile Include="Converters\Subscriptions\SubscriptionConverter.cs" />
     <Compile Include="Converters\Tax\TaxConverter.cs" />
     <Compile Include="Converters\CurrencyConverter.cs" />
     <Compile Include="Converters\Quote\QuoteConverter.cs" />
