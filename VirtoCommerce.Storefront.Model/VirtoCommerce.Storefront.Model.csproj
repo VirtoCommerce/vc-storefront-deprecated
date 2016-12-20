@@ -113,7 +113,6 @@
     <Compile Include="IHasSettings.cs" />
     <Compile Include="LinkList\Factories\LinkListFactory.cs" />
     <Compile Include="Marketing\Factories\MarketingFactory.cs" />
-    <Compile Include="Order\CustomerOrderSearchCriteria.cs" />
     <Compile Include="Order\Factories\OrderFactory.cs" />
     <Compile Include="Pricing\Factories\PricingFactory.cs" />
     <Compile Include="Quote\Factories\QuoteFactory.cs" />

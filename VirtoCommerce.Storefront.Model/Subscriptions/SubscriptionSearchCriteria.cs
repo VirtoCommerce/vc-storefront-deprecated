@@ -8,7 +8,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Subscriptions
 {
-    public class SubscriptionSearchCriteria : PagedSearchCriteria
+    public partial class SubscriptionSearchCriteria : PagedSearchCriteria
     {
         private static int _defaultPageSize = 20;
 
@@ -26,7 +26,7 @@ namespace VirtoCommerce.Storefront.Model.Subscriptions
             : base(queryString, DefaultPageSize)
         {
         }
-
+        public string CustomerId { get; set; }
         public string Sort { get; set; }
     }   
 }

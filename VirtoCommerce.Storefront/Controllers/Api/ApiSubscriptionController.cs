@@ -37,6 +37,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             {
                 searchCriteria = new SubscriptionSearchCriteria();
             }
+            //Does not allow to see a other subscriptions
+            searchCriteria.CustomerId = WorkContext.CurrentCustomer.Id;
+
             var result = await _subscriptionApi.SubscriptionModule.SearchAsync(searchCriteria.ToSearchCriteriaDto());
         
             return Json(new

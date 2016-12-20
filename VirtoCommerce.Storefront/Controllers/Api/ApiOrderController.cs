@@ -27,33 +27,39 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             _storeApi = storeApi;
         }
 
-        // GET: storefrontapi/orders
-        [HttpGet]
-        public ActionResult GetCustomerOrders(int pageNumber, int pageSize, IEnumerable<SortInfo> sortInfos)
+        // POST: storefrontapi/orders/search
+        [HttpPost]
+        public async Task<ActionResult> SearchCustomerOrders(OrderSearchCriteria criteria)
         {
-            var orders = WorkContext.CurrentCustomer.Orders;
-            orders.Slice(pageNumber, pageSize, sortInfos);
+            if (criteria == null)
+            {
+                criteria = new OrderSearchCriteria();
+            }
+            //Does not allow to see a other customer orders
+            criteria.CustomerId = WorkContext.CurrentCustomer.Id;
+
+            var result = await _orderApi.OrderModule.SearchAsync(criteria.ToSearchCriteriaDto());
 
             return Json(new
             {
-                Results = orders.ToArray(),
-                TotalCount = orders.TotalItemCount
+                Results = result.CustomerOrders.ToArray(),
+                TotalCount = result.TotalCount
             });
         }
 
-        // GET: storefrontapi/orders:number
+        // GET: storefrontapi/orders/{orderNumber}
         [HttpGet]
-        public async Task<ActionResult> GetCustomerOrder(string number)
+        public async Task<ActionResult> GetCustomerOrder(string orderNumber)
         {
-            var retVal = await GetOrderByNumber(number);
+            var retVal = await GetOrderByNumber(orderNumber);
             return Json(retVal, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: storefrontapi/orders/{number}/newpaymentdata
+        // GET: storefrontapi/orders/{orderNumber}/newpaymentdata
         [HttpGet]
-        public async Task<ActionResult> GetNewPaymentData(string number)
+        public async Task<ActionResult> GetNewPaymentData(string orderNumber)
         {
-            var order = await GetOrderByNumber(number);
+            var order = await GetOrderByNumber(orderNumber);
 
             var storeDto = await _storeApi.StoreModule.GetStoreByIdAsync(order.StoreId);
             var paymentMethods = storeDto.PaymentMethods
@@ -71,45 +77,60 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             }, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: storefrontapi/orders/{number}/payments
+        // POST: storefrontapi/orders/{orderNumber}/payments/{paymentNumber}/cancel
         [HttpPost]
-        public async Task<ActionResult> AddOrUpdatePayment(PaymentIn payment)
+        public async Task<ActionResult> CancelPayment(string orderNumber, string paymentNumber)
         {
-            var number = (string)RouteData.Values["number"];
+            //Need lock to prevent concurrent access to same object
+            using (await AsyncLock.GetLockByKey(GetAsyncLockKey(orderNumber, WorkContext)).LockAsync())
+            {
+                var orderDto = await GetOrderDtoByNumber(orderNumber);
+                var payment = orderDto.InPayments.FirstOrDefault(x => x.Number.EqualsInvariant(paymentNumber));
+                if(payment != null)
+                {
+                    payment.IsCancelled = true;
+                    payment.CancelReason = "Canceled by customer";
+                    payment.Status = "Cancelled";
+                    await _orderApi.OrderModule.UpdateAsync(orderDto);
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        // POST: storefrontapi/orders/{orderNumber}/payments/process
+        [HttpPost]
+        public async Task<ActionResult> ProcessPayment(string orderNumber, PaymentIn payment)
+        { 
             orderModel.ProcessPaymentResult processingResult = null;
 
-            if (payment.Sum.Amount == decimal.Zero)
+            if (payment.Sum.Amount == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Valid payment amount is required");
             }
-            payment.CustomerId = WorkContext.CurrentCustomer.Id;
-            payment.CustomerName = WorkContext.CurrentCustomer.FullName;
+
             var paymentDto = payment.ToOrderPaymentInDto();
-
             //Need lock to prevent concurrent access to same object
-            using (await AsyncLock.GetLockByKey(GetAsyncLockKey(number, WorkContext)).LockAsync())
+            using (await AsyncLock.GetLockByKey(GetAsyncLockKey(orderNumber, WorkContext)).LockAsync())
             {
-                var orderDto = await GetOrderDtoByNumber(number);
-
-                var found = orderDto.InPayments.FirstOrDefault(x => x.Id == paymentDto.Id);
-                if (found != null)
+                var orderDto = await GetOrderDtoByNumber(orderNumber);
+                var existPayment = orderDto.InPayments.FirstOrDefault(x => x.Id.EqualsInvariant(payment.Id));
+                if (existPayment == null)
                 {
-                    orderDto.InPayments.Remove(found);
-                }
-                orderDto.InPayments.Add(paymentDto);
-                await _orderApi.OrderModule.UpdateAsync(orderDto);
+                    paymentDto.CustomerId = WorkContext.CurrentCustomer.Id;
+                    paymentDto.CustomerName = WorkContext.CurrentCustomer.FullName;
+                    paymentDto.Status = "New";
 
-                orderDto = await _orderApi.OrderModule.GetByIdAsync(orderDto.Id);
-                paymentDto = orderDto.InPayments.First(x => x.Id == paymentDto.Id);
-                if (!paymentDto.IsCancelled.HasValue || !paymentDto.IsCancelled.Value)
-                {
-                    processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(orderDto.Id, paymentDto.Id, payment.BankCardInfo.ToBankCardInfoDto());
+                    orderDto.InPayments.Add(paymentDto);
+                    await _orderApi.OrderModule.UpdateAsync(orderDto);
+                    orderDto = await _orderApi.OrderModule.GetByIdAsync(orderDto.Id);
+                    //Because we don't know the new payment id we need to get latest payment with same gateway code
+                    paymentDto = orderDto.InPayments.Where(x => x.GatewayCode.EqualsInvariant(payment.GatewayCode)).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                 }
+                processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(orderDto.Id, paymentDto.Id, payment.BankCardInfo.ToBankCardInfoDto());
             }
 
             return Json(new { orderProcessingResult = processingResult, paymentMethod = paymentDto.PaymentMethod });
-        }
-
+        }     
 
         private async Task<CustomerOrder> GetOrderByNumber(string number)
         {

@@ -63,10 +63,12 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.Account.UpdateAddresses", "storefrontapi/account/addresses", new { controller = "ApiAccount", action = "UpdateAddresses" }, new { httpMethod = new HttpMethodConstraint("POST") });
 
             // Order API
-            routes.AddStorefrontRoute("API.Orders", "storefrontapi/orders", new { controller = "ApiOrder", action = "GetCustomerOrders" });
-            routes.AddStorefrontRoute("API.OrderByNumber", "storefrontapi/orders/{number}", new { controller = "ApiOrder", action = "GetCustomerOrder" });
-            routes.AddStorefrontRoute("API.Orders.GetNewPaymentData", "storefrontapi/orders/{number}/newpaymentdata", new { controller = "ApiOrder", action = "GetNewPaymentData" });
-            routes.AddStorefrontRoute("API.Orders.AddOrUpdatePayment", "storefrontapi/orders/{number}/payments", new { controller = "ApiOrder", action = "AddOrUpdatePayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
+            routes.AddStorefrontRoute("API.Orders", "storefrontapi/orders/search", new { controller = "ApiOrder", action = "SearchCustomerOrders" });
+            routes.AddStorefrontRoute("API.OrderByNumber", "storefrontapi/orders/{orderNumber}", new { controller = "ApiOrder", action = "GetCustomerOrder" });
+            routes.AddStorefrontRoute("API.Orders.GetNewPaymentData", "storefrontapi/orders/{orderNumber}/newpaymentdata", new { controller = "ApiOrder", action = "GetNewPaymentData" });
+            routes.AddStorefrontRoute("API.Orders.CancelPayment", "storefrontapi/orders/{orderNumber}/payments/{paymentNumber}/cancel", new { controller = "ApiOrder", action = "CancelPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
+            routes.AddStorefrontRoute("API.Orders.ProcessPayment", "storefrontapi/orders/{orderNumber}/payments/process", new { controller = "ApiOrder", action = "ProcessPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
+
 
             // Quote requests API
             routes.AddStorefrontRoute("API.QuoteRequest.GetItemsCount", "storefrontapi/quoterequests/{number}/itemscount", defaults: new { controller = "ApiQuoteRequest", action = "GetItemsCount" });

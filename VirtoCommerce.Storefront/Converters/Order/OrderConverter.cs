@@ -99,10 +99,28 @@ namespace VirtoCommerce.Storefront.Converters
         {
             return OrderConverterInstance.ToOrderDynamicPropertyDto(property);
         }
+
+        public static orderDto.CustomerOrderSearchCriteria ToSearchCriteriaDto(this OrderSearchCriteria criteria)
+        {
+            return OrderConverterInstance.ToSearchCriteriaDto(criteria);
+        }
     }
 
     public class OrderConverter
     {
+        public virtual orderDto.CustomerOrderSearchCriteria ToSearchCriteriaDto(OrderSearchCriteria criteria)
+        {
+            var result = new orderDto.CustomerOrderSearchCriteria();
+
+            result.InjectFrom(criteria);
+
+            result.Skip = criteria.Start;
+            result.Take = criteria.PageSize;
+            result.Sort = criteria.Sort;
+
+            return result;
+        }
+
         public virtual DynamicProperty ToDynamicProperty(orderDto.DynamicObjectProperty propertyDto)
         {
             return propertyDto.JsonConvert<coreDto.DynamicObjectProperty>().ToDynamicProperty();
