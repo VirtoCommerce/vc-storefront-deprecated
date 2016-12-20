@@ -7,7 +7,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// Represents address object
     /// </summary>
     [DataContract]
-    public class Address : Drop
+    public partial class Address : Drop
     {
         /// <summary>
         /// Returns the values of the First Name and Last Name fields of the address.

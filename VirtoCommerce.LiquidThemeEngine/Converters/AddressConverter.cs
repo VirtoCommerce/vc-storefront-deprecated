@@ -1,7 +1,6 @@
 ﻿using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
@@ -23,8 +22,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (address != null)
             {
-                var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-                result = factory.CreateAddress();
+                result = new Address();
                 result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(address);
 
                 result.Address1 = address.Line1;

@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/collection
     /// </remarks>
     [DataContract]
-    public class Collection : Drop
+    public partial class Collection : Drop
     {
         /// <summary>
         /// Returns collection total products count

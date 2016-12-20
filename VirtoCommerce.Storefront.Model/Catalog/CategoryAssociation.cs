@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class CategoryAssociation : Association
+    public partial class CategoryAssociation : Association
     {
         public string CategoryId { get; set; }
         public Category Category { get; set; }

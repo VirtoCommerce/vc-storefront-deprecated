@@ -8,7 +8,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// <remarks>
     /// https://docs.shopify.com/themes/liquid-documentation/objects/fulfillment
     /// </remarks>
-    public class Fulfillment : Drop
+    public partial class Fulfillment : Drop
     {
         /// <summary>
         /// Returns the name of the fulfillment service.

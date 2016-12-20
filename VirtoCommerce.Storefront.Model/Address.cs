@@ -3,7 +3,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class Address : ValueObject<Address>
+    public partial class Address : ValueObject<Address>
     {
         public AddressType Type { get; set; }
         public string Name { get; set; }

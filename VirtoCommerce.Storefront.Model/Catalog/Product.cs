@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class Product : Entity, IDiscountable, ITaxable
+    public partial class Product : Entity, IDiscountable, ITaxable
     {
         public Product()
         {

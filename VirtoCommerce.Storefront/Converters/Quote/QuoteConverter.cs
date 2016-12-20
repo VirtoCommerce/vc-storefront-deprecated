@@ -4,12 +4,10 @@ using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Cart.Factories;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Quote;
-using VirtoCommerce.Storefront.Model.Quote.Factories;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using quoteDto = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
 
@@ -148,7 +146,7 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual QuoteRequest ToQuoteRequest(quoteDto.QuoteRequest quoteRequestDto, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(quoteRequestDto.Currency)) ?? new Currency(language, quoteRequestDto.Currency);
-            var result = ServiceLocator.Current.GetInstance<QuoteFactory>().CreateQuoteRequest(currency, language);
+            var result = new QuoteRequest(currency, language);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(quoteRequestDto);
 
@@ -233,7 +231,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual QuoteItem ToQuoteItem(quoteDto.QuoteItem quoteItemDto, Currency currency)
         {
-            var result = ServiceLocator.Current.GetInstance<QuoteFactory>().CreateQuoteItem();
+            var result = new QuoteItem();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(quoteItemDto);
 
@@ -275,7 +273,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual QuoteItem ToQuoteItem(Product product, long quantity)
         {
-            var retVal = ServiceLocator.Current.GetInstance<QuoteFactory>().CreateQuoteItem();
+            var retVal = new QuoteItem();
 
             retVal.InjectFrom<NullableAndEnumValueInjecter>(product);
 
@@ -292,7 +290,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual QuoteRequestTotals ToQuoteTotals(quoteDto.QuoteRequestTotals totalsDto, Currency currency)
         {
-            var result = ServiceLocator.Current.GetInstance<QuoteFactory>().CreateTotals(currency);
+            var result = new QuoteRequestTotals(currency);
 
             result.AdjustmentQuoteExlTax = new Money(totalsDto.AdjustmentQuoteExlTax ?? 0, currency);
             result.DiscountTotal = new Money(totalsDto.DiscountTotal ?? 0, currency);
@@ -324,7 +322,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual ShippingMethod ToShippingMethod(quoteDto.ShipmentMethod shippingMethodDto, Currency currency)
         {
-            var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateShippingMethod(currency);
+            var result = new ShippingMethod(currency);
             result.InjectFrom<NullableAndEnumValueInjecter>(shippingMethodDto);
             result.Price = new Money(shippingMethodDto.Price ?? 0, currency);
             return result;

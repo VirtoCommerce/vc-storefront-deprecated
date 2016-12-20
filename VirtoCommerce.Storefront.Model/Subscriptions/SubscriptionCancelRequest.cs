@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtoCommerce.Storefront.Model.Subscriptions
 {
-    public class SubscriptionCancelRequest
+    public partial class SubscriptionCancelRequest
     {
         public string Number { get; set; }
         public string CancelReason { get; set; }

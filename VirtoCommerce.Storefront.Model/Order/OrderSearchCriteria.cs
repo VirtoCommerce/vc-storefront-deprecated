@@ -3,7 +3,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Order
 {
-    public class OrderSearchCriteria : PagedSearchCriteria
+    public partial class OrderSearchCriteria : PagedSearchCriteria
     {
         private static int _defaultPageSize = 20;
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class DynamicPropertyDictionaryItem
+    public partial class DynamicPropertyDictionaryItem
     {
         public DynamicPropertyDictionaryItem()
         {

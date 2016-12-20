@@ -8,7 +8,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// <remarks>
     /// https://docs.shopify.com/themes/liquid-documentation/objects/link
     /// </remarks>
-    public class Link : Drop
+    public partial class Link : Drop
     {
         /// <summary>
         /// Returns true if the link is active, or false if the link is inactive

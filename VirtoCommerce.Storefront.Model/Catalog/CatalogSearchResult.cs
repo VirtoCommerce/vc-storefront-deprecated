@@ -4,7 +4,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class CatalogSearchResult
+    public partial class CatalogSearchResult
     {
         public IPagedList<Product> Products { get; set; }
         public Aggregation[] Aggregations { get; set; }

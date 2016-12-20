@@ -1,14 +1,12 @@
-﻿using Microsoft.Practices.ServiceLocation;
-using Omu.ValueInjecter;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
+using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
-using VirtoCommerce.Storefront.Model.Marketing.Factories;
 using VirtoCommerce.Storefront.Model.Order;
-using VirtoCommerce.Storefront.Model.Order.Factories;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using orderDto = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 using platformDto = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
@@ -143,7 +141,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual ShipmentPackage ToShipmentPackage(orderDto.ShipmentPackage shipmentPackageDto, IEnumerable<Currency> currencies, Language language)
         {
-            var webModel = ServiceLocator.Current.GetInstance<OrderFactory>().CreateShipmentPackage();
+            var webModel = new ShipmentPackage();
 
             webModel.InjectFrom<NullableAndEnumValueInjecter>(shipmentPackageDto);
 
@@ -157,7 +155,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual ShipmentItem ToShipmentItem(orderDto.ShipmentItem shipmentItemDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateShipmentItem();
+            var result = new ShipmentItem();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(shipmentItemDto);
 
@@ -172,7 +170,7 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Shipment ToOrderShipment(orderDto.Shipment shipmentDto, ICollection<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(shipmentDto.Currency)) ?? new Currency(language, shipmentDto.Currency);
-            var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateShipment(currency);
+            var result = new Shipment(currency);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(shipmentDto);
 
@@ -227,7 +225,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(lineItemDto.Currency)) ?? new Currency(language, lineItemDto.Currency);
 
-            var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateLineItem(currency);
+            var result = new LineItem(currency);
             result.InjectFrom<NullableAndEnumValueInjecter>(lineItemDto);
             result.ImageUrl = result.ImageUrl.RemoveLeadingUriScheme();
             result.Currency = currency;
@@ -264,7 +262,7 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual PaymentIn ToOrderInPayment(orderDto.PaymentIn paymentIn, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(paymentIn.Currency)) ?? new Currency(language, paymentIn.Currency);
-            var retVal = ServiceLocator.Current.GetInstance<OrderFactory>().CreatePaymentIn(currency);
+            var retVal = new PaymentIn(currency);
 
             retVal.InjectFrom(paymentIn);
 
@@ -327,7 +325,7 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Discount ToDiscount(orderDto.Discount discountDto, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(discountDto.Currency)) ?? new Currency(language, discountDto.Currency);
-            var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreateDiscount(currency);
+            var result = new Discount(currency);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(discountDto);
 
@@ -340,7 +338,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(order.Currency)) ?? new Currency(language, order.Currency);
 
-            var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateCustomerOrder(currency);
+            var result = new CustomerOrder(currency);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(order);
 
@@ -404,7 +402,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual PaymentMethod ToPaymentMethod(storeDto.PaymentMethod paymentMethodDto, CustomerOrder order)
         {
-            var retVal = ServiceLocator.Current.GetInstance<OrderFactory>().CreatePaymentMethod(order.Currency);
+            var retVal = new PaymentMethod(order.Currency);
 
             retVal.InjectFrom<NullableAndEnumValueInjecter>(paymentMethodDto);
             retVal.Priority = paymentMethodDto.Priority ?? 0;

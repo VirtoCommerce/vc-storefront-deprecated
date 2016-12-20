@@ -2,7 +2,6 @@
 using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using StorefrontModel = VirtoCommerce.Storefront.Model.Order;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
@@ -20,8 +19,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Transaction ToLiquidTransaction(StorefrontModel.PaymentIn payment)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateTransaction();
+            var result = new Transaction();
             result.Amount = payment.Sum.Amount * 100;
             result.CreatedAt = payment.CreatedDate ?? default(DateTime);
             result.Gateway = payment.GatewayCode;

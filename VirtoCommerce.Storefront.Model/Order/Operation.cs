@@ -7,7 +7,7 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// <summary>
     /// Represents operation
     /// </summary>
-    public class Operation
+    public partial class Operation
     {
         public Operation()
         {

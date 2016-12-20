@@ -9,7 +9,7 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// <summary>
     /// Represent customer order
     /// </summary>
-    public class CustomerOrder
+    public partial class CustomerOrder
     {
         public CustomerOrder(Currency currency)
         {

@@ -2,7 +2,7 @@
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class ContactUsForm
+    public partial class ContactUsForm
     {
         public ContactUsForm()
         {

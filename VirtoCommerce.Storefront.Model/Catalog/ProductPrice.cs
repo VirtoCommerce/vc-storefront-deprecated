@@ -9,7 +9,7 @@ using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class ProductPrice : ValueObject<ProductPrice>, IConvertible<ProductPrice>, ITaxable
+    public partial class ProductPrice : ValueObject<ProductPrice>, IConvertible<ProductPrice>, ITaxable
     {
         public ProductPrice(Currency currency)
         {

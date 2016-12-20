@@ -12,7 +12,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/paginate
     /// The paginate tag's navigation is built using the attributes of the paginate object. You can also use the default_pagination filter for a quicker alternative.
     /// </summary>
-    public class Paginate : Drop
+    public partial class Paginate : Drop
     {
         private readonly IPagedList _pagedList;
     

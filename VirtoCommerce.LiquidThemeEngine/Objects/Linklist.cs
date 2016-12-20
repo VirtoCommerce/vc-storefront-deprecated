@@ -9,7 +9,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// <remarks>
     /// https://docs.shopify.com/themes/liquid-documentation/objects/linklist
     /// </remarks>
-    public class Linklist : Drop
+    public partial class Linklist : Drop
     {
         /// <summary>
         /// Returns the handle of the linklist

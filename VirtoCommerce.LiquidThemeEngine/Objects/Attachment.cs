@@ -3,7 +3,7 @@ using System;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class Attachment : Drop
+    public partial class Attachment : Drop
     {
         public string Name { get; set; }
 

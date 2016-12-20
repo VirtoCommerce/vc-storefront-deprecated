@@ -2,7 +2,7 @@
 
 namespace VirtoCommerce.Storefront.Model.Quote
 {
-    public class QuoteItemFormModel
+    public partial class QuoteItemFormModel
     {
         public QuoteItemFormModel()
         {

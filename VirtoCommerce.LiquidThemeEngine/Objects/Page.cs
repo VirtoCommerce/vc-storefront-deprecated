@@ -10,7 +10,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// <summary>
     /// https://docs.shopify.com/themes/liquid-documentation/objects/page
     /// </summary>
-    public class Page : Drop
+    public partial class Page : Drop
     {
         /// <summary>
         /// Returns the author of a page.

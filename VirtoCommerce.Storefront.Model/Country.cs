@@ -1,6 +1,6 @@
 ﻿namespace VirtoCommerce.Storefront.Model
 {
-    public class Country
+    public partial class Country
     {
         public string Name { get; set; }
         public string Code2 { get; set; }

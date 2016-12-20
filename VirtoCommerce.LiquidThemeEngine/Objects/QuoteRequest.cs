@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class QuoteRequest : Drop
+    public partial class QuoteRequest : Drop
     {
         public string Id { get; set; }
 

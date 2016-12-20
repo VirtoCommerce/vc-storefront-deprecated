@@ -5,7 +5,7 @@ using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class ShippingMethod : ITaxable, IDiscountable
+    public partial class ShippingMethod : ITaxable, IDiscountable
     {
         public ShippingMethod()
         {

@@ -1,6 +1,6 @@
 ﻿namespace VirtoCommerce.Storefront.Model
 {
-    public class DynamicPropertyName
+    public partial class DynamicPropertyName
     {
         /// <summary>
         /// Gets or Sets Locale

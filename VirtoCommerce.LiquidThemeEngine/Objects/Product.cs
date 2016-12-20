@@ -12,7 +12,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/product
     /// </remarks>
     [DataContract]
-    public class Product : Drop
+    public partial class Product : Drop
     {
         public Product()
         {

@@ -4,7 +4,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class Vendor
+    public partial class Vendor
     {
         public Vendor()
         {

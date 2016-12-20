@@ -10,7 +10,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/variant
     /// </remarks>
     [DataContract]
-    public class Variant : Drop
+    public partial class Variant : Drop
     {
         public Variant()
         {

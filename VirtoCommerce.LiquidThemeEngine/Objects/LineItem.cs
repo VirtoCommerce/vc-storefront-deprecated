@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/line_item
     /// </remarks>
     [DataContract]
-    public class LineItem : Drop
+    public partial class LineItem : Drop
     {
         /// <summary>
         /// Gets line item fulfillment info

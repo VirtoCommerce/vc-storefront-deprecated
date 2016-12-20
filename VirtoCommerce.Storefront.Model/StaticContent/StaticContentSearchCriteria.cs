@@ -1,6 +1,6 @@
 ﻿namespace VirtoCommerce.Storefront.Model.StaticContent
 {
-    public class StaticContentSearchCriteria
+    public partial class StaticContentSearchCriteria
     {
         public string Keyword { get; set; }
 

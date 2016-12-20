@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class DynamicContentItem
+    public partial class DynamicContentItem
     {
         public DynamicContentItem()
         {

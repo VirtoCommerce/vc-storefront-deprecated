@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class Image : ValueObject<Image>
+    public partial class Image : ValueObject<Image>
     {
         /// <summary>
         /// Full url of image

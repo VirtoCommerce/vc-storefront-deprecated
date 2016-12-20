@@ -1,6 +1,6 @@
 ﻿namespace VirtoCommerce.Storefront.Model
 {
-    public class StorefrontNotification
+    public partial class StorefrontNotification
     {
         public string Title { get; set; }
 

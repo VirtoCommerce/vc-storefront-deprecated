@@ -1,6 +1,5 @@
 ﻿using Microsoft.Practices.ServiceLocation;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -17,8 +16,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual TierPrice ToLiquidTierPrice(Storefront.Model.TierPrice tierPrice)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateTierPrice();
+            var result = new TierPrice();
             result.Price = tierPrice.Price.Amount * 100;
             result.Quantity = tierPrice.Quantity;
             return result;

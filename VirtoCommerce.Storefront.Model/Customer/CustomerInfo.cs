@@ -11,7 +11,7 @@ namespace VirtoCommerce.Storefront.Model.Customer
     /// <summary>
     /// Represent customer information structure 
     /// </summary>
-    public class CustomerInfo : Entity
+    public partial class CustomerInfo : Entity
     {
         public CustomerInfo()
         {

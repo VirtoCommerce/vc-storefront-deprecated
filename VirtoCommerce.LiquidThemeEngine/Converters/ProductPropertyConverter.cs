@@ -3,7 +3,6 @@ using System.Linq;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 using Microsoft.Practices.ServiceLocation;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -20,8 +19,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual ProductProperty ToLiquidProductProperty(StorefrontModel.Catalog.CatalogProperty property)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateProductProperty();
+            var result = new ProductProperty();
             result.ValueType = property.ValueType;
             result.Value = property.Value;
             result.Name = property.Name;

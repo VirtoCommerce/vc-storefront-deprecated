@@ -7,7 +7,7 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// <summary>
     /// Represent incoming payment operation
     /// </summary>
-    public class PaymentIn
+    public partial class PaymentIn
     {
         public PaymentIn(Currency currency)
         {

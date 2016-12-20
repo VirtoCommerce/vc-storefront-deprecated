@@ -4,7 +4,6 @@ using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
@@ -24,8 +23,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Customer ToLiquidCustomer(CustomerInfo customer, StorefrontModel.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateCustomer();
+            var result = new Customer();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(customer);
             result.Name = customer.FullName;

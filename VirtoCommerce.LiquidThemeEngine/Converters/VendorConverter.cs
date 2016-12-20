@@ -5,7 +5,6 @@ using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 using PagedList;
 using Microsoft.Practices.ServiceLocation;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -22,8 +21,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Vendor ToLiquidVendor(Storefront.Model.Vendor vendor)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateVendor();
+            var result = new Vendor();
             result.InjectFrom<NullableAndEnumValueInjecter>(vendor);
             result.Handle = vendor.SeoInfo != null ? vendor.SeoInfo.Slug : vendor.Id;
 

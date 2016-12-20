@@ -8,7 +8,7 @@ namespace VirtoCommerce.Storefront.Model.Stores
     /// <summary>
     /// Represent store - main ecommerce aggregate unit
     /// </summary>
-    public class Store : Entity, IHasSettings
+    public partial class Store : Entity, IHasSettings
     {
         public Store()
         {

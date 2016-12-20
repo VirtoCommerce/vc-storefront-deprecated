@@ -3,7 +3,6 @@ using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
 using storefrontModel = VirtoCommerce.Storefront.Model;
@@ -23,8 +22,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Shop ToLiquidShop(Store store, storefrontModel.WorkContext workContext)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateShop();
+            var result = new Shop();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(store);
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 
@@ -19,8 +18,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Notification ToLiquidNotification(StorefrontNotification notification)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateNotification();
+            var result = new Notification();
             result.InjectFrom<NullableAndEnumValueInjecter>(notification);
             return result;
         }

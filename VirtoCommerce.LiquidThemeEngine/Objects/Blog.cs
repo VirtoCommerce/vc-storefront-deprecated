@@ -7,7 +7,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// <summary>
     /// https://docs.shopify.com/themes/liquid-documentation/objects/blog
     /// </summary>
-    public class Blog : Drop
+    public partial class Blog : Drop
     {
         public Blog()
         {

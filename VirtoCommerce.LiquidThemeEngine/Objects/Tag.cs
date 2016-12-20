@@ -3,7 +3,7 @@ using DotLiquid;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class Tag : Drop
+    public partial class Tag : Drop
     {
         public Tag(string groupName, string value)
         {

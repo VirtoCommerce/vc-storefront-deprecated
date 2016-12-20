@@ -2,7 +2,7 @@
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class TaxDetail 
+    public partial class TaxDetail 
     {
         public TaxDetail(Currency currency)
         {

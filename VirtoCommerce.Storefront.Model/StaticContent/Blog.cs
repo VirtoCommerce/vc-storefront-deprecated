@@ -3,7 +3,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.StaticContent
 {
-    public class Blog : ContentItem
+    public partial class Blog : ContentItem
     {
         public Blog()
         {

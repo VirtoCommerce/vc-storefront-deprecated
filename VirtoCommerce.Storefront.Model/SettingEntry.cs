@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class SettingEntry 
+    public partial class SettingEntry 
     {
         public SettingEntry()
         {

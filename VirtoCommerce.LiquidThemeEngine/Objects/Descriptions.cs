@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class Descriptions : ItemCollection<Description>
+    public partial class Descriptions : ItemCollection<Description>
     {
         public Descriptions(IEnumerable<Description> descriptions)
             : base(descriptions)

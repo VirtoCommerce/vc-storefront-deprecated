@@ -6,7 +6,7 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// <summary>
     /// Represents order shipment package
     /// </summary>
-    public class ShipmentPackage
+    public partial class ShipmentPackage
     {
         public ShipmentPackage()
         {

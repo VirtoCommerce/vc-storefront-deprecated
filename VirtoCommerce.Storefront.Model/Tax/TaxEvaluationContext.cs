@@ -8,7 +8,7 @@ using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Model.Tax
 {
-    public class TaxEvaluationContext
+    public partial class TaxEvaluationContext
     {
         public TaxEvaluationContext(string storeId)
         {

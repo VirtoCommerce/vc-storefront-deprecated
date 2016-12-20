@@ -6,15 +6,12 @@ using Microsoft.Practices.ServiceLocation;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
-using VirtoCommerce.Storefront.Model.Catalog.Factories;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Marketing;
-using VirtoCommerce.Storefront.Model.Marketing.Factories;
 using VirtoCommerce.Storefront.Model.Stores;
 using catalogDto = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
-using searchDto = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models;
 using marketingDto = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
+using searchDto = VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -120,7 +117,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Aggregation ToAggregation(searchDto.Aggregation aggregationDto, string currentLanguage)
         {
-            var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAggregation();
+            var result = new Aggregation();
             result.AggregationType = aggregationDto.AggregationType;
             result.Field = aggregationDto.Field;
 
@@ -149,7 +146,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual AggregationItem ToAggregationItem(searchDto.AggregationItem itemDto, string currentLanguage)
         {
-            var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAggregationItem();
+            var result = new AggregationItem();
             result.Value = itemDto.Value;
             result.IsApplied = itemDto.IsApplied ?? false;
             result.Count = itemDto.Count ?? 0;
@@ -172,7 +169,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual CatalogProperty ToProperty(catalogDto.Property propertyDto, Language currentLanguage)
         {
-            var retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProperty();
+            var retVal = new CatalogProperty();
 
             retVal.Id = propertyDto.Id;
             retVal.Name = propertyDto.Name;
@@ -276,11 +273,18 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (associationDto.AssociatedObjectType.EqualsInvariant("product"))
             {
-                retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProductAssociation(associationDto.AssociatedObjectId);
+                retVal = new ProductAssociation()
+                {
+                    ProductId = associationDto.AssociatedObjectId
+                };
+
             }
             else if (associationDto.AssociatedObjectType.EqualsInvariant("category"))
             {
-                retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateCategoryAssociation(associationDto.AssociatedObjectId);
+                retVal = new CategoryAssociation
+                {
+                    CategoryId = associationDto.AssociatedObjectId
+                };
             }
 
             if (retVal != null)
@@ -300,7 +304,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Category ToCategory(catalogDto.Category categoryDto, Language currentLanguage, Store store)
         {
-            var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateCategory();
+            var result = new Category();
             result.Id = categoryDto.Id;
             result.CatalogId = categoryDto.CatalogId;
             result.Code = categoryDto.Code;
@@ -352,14 +356,14 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Image ToImage(catalogDto.Image imageDto)
         {
-            var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateImage();
+            var result = new Image();
             result.Url = imageDto.Url.RemoveLeadingUriScheme();
             return result;
         }
 
         public virtual Asset ToAsset(catalogDto.Asset assetDto)
         {
-            var result = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateAsset();
+            var result = new Asset();
             result.Url = assetDto.Url.RemoveLeadingUriScheme();
             result.TypeId = assetDto.TypeId;
             result.Size = assetDto.Size;
@@ -376,7 +380,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Product ToProduct(catalogDto.Product productDto, Language currentLanguage, Currency currentCurrency, Store store)
         {
-            var retVal = ServiceLocator.Current.GetInstance<CatalogFactory>().CreateProduct(currentCurrency, currentLanguage);
+            var retVal = new Product(currentCurrency, currentLanguage);
             retVal.Id = productDto.Id;
             retVal.CatalogId = productDto.CatalogId;
             retVal.CategoryId = productDto.CategoryId;

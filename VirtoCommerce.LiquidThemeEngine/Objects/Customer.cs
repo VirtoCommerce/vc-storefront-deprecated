@@ -14,7 +14,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/customer
     /// </remarks>
     [DataContract]
-    public class Customer : Drop
+    public partial class Customer : Drop
     {
         /// <summary>
         /// Return customer username

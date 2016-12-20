@@ -6,7 +6,7 @@ namespace VirtoCommerce.Storefront.Model.Marketing
     /// <summary>
     /// Represents promotion object
     /// </summary>
-    public class Promotion
+    public partial class Promotion
     {
         public string Id { get; set; }
 

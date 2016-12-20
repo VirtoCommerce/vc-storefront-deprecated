@@ -9,7 +9,6 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
-using VirtoCommerce.Storefront.Model.Cart.Factories;
 using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
 using VirtoCommerce.Storefront.Model.Catalog;
@@ -455,7 +454,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         protected virtual ShoppingCart CreateCart(string cartName, Store store, CustomerInfo customer, Language language, Currency currency)
         {
-            var cart = ServiceLocator.Current.GetInstance<CartFactory>().CreateCart(currency, language);
+            var cart = new ShoppingCart(currency, language);
 
             cart.CustomerId = customer.Id;
             cart.Name = "Default";

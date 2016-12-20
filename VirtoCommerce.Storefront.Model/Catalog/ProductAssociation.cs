@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class ProductAssociation : Association
+    public partial class ProductAssociation : Association
     {        
         public string ProductId { get; set; }
         public Product Product { get; set; }     

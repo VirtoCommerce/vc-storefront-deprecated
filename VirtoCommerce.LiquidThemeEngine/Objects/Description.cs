@@ -2,7 +2,7 @@
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class Description : Drop
+    public partial class Description : Drop
     {
         public string Type { get; set; }
 

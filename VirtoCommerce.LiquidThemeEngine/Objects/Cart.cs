@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/cart
     /// </remarks>
     [DataContract]
-    public class Cart : Drop
+    public partial class Cart : Drop
     {
         /// <summary>
         /// Gets an additional shopping cart information

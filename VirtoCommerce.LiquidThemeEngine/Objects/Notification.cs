@@ -2,7 +2,7 @@
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class Notification : Drop
+    public partial class Notification : Drop
     {
         public string Type { get; set; }
 

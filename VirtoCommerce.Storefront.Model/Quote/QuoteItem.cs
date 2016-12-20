@@ -4,7 +4,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Quote
 {
-    public class QuoteItem
+    public partial class QuoteItem
     {
         public QuoteItem()
         {

@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents bank card information
     /// </summary>
-    public class BankCardInfo
+    public partial class BankCardInfo
     {
         /// <summary>
         /// Gets or sets bank card number

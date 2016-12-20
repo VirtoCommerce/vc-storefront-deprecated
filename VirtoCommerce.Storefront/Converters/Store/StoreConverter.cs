@@ -5,7 +5,6 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
-using VirtoCommerce.Storefront.Model.Stores.Factories;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using platformDto = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
 using storeDto = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
@@ -52,7 +51,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Store ToStore(storeDto.Store storeDto)
         {
-            var result = ServiceLocator.Current.GetInstance<StoreFactory>().CreateStore();
+            var result = new Store();
             result.InjectFrom<NullableAndEnumValueInjecter>(storeDto);
 
             if (!storeDto.SeoInfos.IsNullOrEmpty())

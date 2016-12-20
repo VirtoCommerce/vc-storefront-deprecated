@@ -16,7 +16,7 @@ namespace VirtoCommerce.Storefront.Model
     /// <summary>
     /// Main working context contains all data which could be used in presentation logic
     /// </summary>
-    public class WorkContext : IDisposable
+    public partial class WorkContext : IDisposable
     {
         public WorkContext()
         {

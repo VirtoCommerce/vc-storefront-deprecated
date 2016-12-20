@@ -6,7 +6,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class DynamicProperty : Entity
+    public partial class DynamicProperty : Entity
     {
         public DynamicProperty()
         {

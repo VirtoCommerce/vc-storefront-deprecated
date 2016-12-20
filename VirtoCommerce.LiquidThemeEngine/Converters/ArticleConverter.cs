@@ -1,12 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model.StaticContent;
-using System.Collections.Generic;
-using VirtoCommerce.LiquidThemeEngine.Filters;
-using Microsoft.Practices.ServiceLocation;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -23,8 +21,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
        public virtual Article ToLiquidArticle(StorefrontModel.BlogArticle article)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var retVal = factory.CreateArticle();
+            var retVal = new Article();
 
             retVal.InjectFrom<NullableAndEnumValueInjecter>(article);
             retVal.Handle = article.Url;

@@ -6,13 +6,10 @@ using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
-using VirtoCommerce.Storefront.Model.Cart.Factories;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
-using VirtoCommerce.Storefront.Model.Marketing.Factories;
 using VirtoCommerce.Storefront.Model.Tax;
-using VirtoCommerce.Storefront.Model.Tax.Factories;
 using cartDto = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using marketingDto = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
@@ -192,7 +189,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(discountDto.Currency)) ?? new Currency(language, discountDto.Currency);
 
-            var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreateDiscount(currency);
+            var result = new Discount(currency);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(discountDto);
             result.Amount = new Money(discountDto.DiscountAmount ?? 0, currency);
@@ -224,7 +221,7 @@ namespace VirtoCommerce.Storefront.Converters
                 rateDiscount = rateDiscount.ConvertTo(currency);
             }
 
-            var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateShippingMethod(currency);
+            var result = new ShippingMethod(currency);
             result.InjectFrom<NullableAndEnumValueInjecter>(shippingRate);
 
             result.Price = ratePrice;
@@ -245,7 +242,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Shipment ToCartShipment(ShippingMethod shippingMethod, Currency currency)
         {
-            var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateShipment(currency);
+            var result = new Shipment(currency);
 
             result.ShipmentMethodCode = shippingMethod.ShipmentMethodCode;
             result.Price = shippingMethod.Price;
@@ -287,7 +284,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual CartShipmentItem ToShipmentItem(cartDto.ShipmentItem shipmentItemDto, ShoppingCart cart)
         {
-            var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateShipmentItem();
+            var result = new CartShipmentItem();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(shipmentItemDto);
 
@@ -309,7 +306,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Shipment ToShipment(cartDto.Shipment shipmentDto, ShoppingCart cart)
         {
-            var retVal = ServiceLocator.Current.GetInstance<CartFactory>().CreateShipment(cart.Currency);
+            var retVal = new Shipment(cart.Currency);
 
             retVal.InjectFrom(shipmentDto);
             retVal.Currency = cart.Currency;
@@ -374,7 +371,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual PaymentMethod ToPaymentMethod(cartDto.PaymentMethod paymentMethodDto, ShoppingCart cart)
         {
-            var retVal = ServiceLocator.Current.GetInstance<CartFactory>().CreatePaymentMethod(cart.Currency);
+            var retVal = new PaymentMethod(cart.Currency);
 
             retVal.InjectFrom<NullableAndEnumValueInjecter>(paymentMethodDto);
             retVal.Priority = paymentMethodDto.Priority ?? 0;
@@ -413,7 +410,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Payment ToPayment(cartDto.Payment paymentDto, ShoppingCart cart)
         {
-            var result = ServiceLocator.Current.GetInstance<CartFactory>().CreatePayment(cart.Currency);
+            var result = new Payment(cart.Currency);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(paymentDto);
 
@@ -481,7 +478,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual PromotionEvaluationContext ToPromotionEvaluationContext(ShoppingCart cart)
         {
-            var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionEvaluationContext();
+            var result = new PromotionEvaluationContext();
             result.Cart = cart;
             result.Customer = cart.Customer;
             result.Currency = cart.Currency;
@@ -493,7 +490,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual ShoppingCart ToShoppingCart(cartDto.ShoppingCart cartDto, Currency currency, Language language, Model.Customer.CustomerInfo customer)
         {
-            var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateCart(currency, language);
+            var result = new ShoppingCart(currency, language);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(cartDto);
 
@@ -583,7 +580,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual TaxEvaluationContext ToTaxEvalContext(ShoppingCart cart)
         {
-            var result = ServiceLocator.Current.GetInstance<TaxFactory>().CreateTaxEvaluationContext(cart.StoreId);
+            var result = new TaxEvaluationContext(cart.StoreId);
 
             result.Id = cart.Id;
             result.Code = cart.Name;
@@ -652,7 +649,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual LineItem ToLineItem(Product product, Language language, int quantity)
         {
-            var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateLineItem(product.Price.Currency, language);
+            var result = new LineItem(product.Price.Currency, language);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(product);
             result.Id = null;
@@ -670,7 +667,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual LineItem ToLineItem(cartDto.LineItem lineItemDto, Currency currency, Language language)
         {
-            var result = ServiceLocator.Current.GetInstance<CartFactory>().CreateLineItem(currency, language);
+            var result = new LineItem(currency, language);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(lineItemDto);
 

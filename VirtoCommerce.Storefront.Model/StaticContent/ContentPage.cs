@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtoCommerce.Storefront.Model.StaticContent
 {
-    public class ContentPage : ContentItem
+    public partial class ContentPage : ContentItem
     {
     }
 }

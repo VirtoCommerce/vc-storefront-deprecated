@@ -3,7 +3,6 @@ using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.LinkList.Factories;
 using contentDto = VirtoCommerce.Storefront.AutoRestClients.ContentModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
@@ -33,7 +32,7 @@ namespace VirtoCommerce.Storefront.Converters
     {
         public virtual MenuLinkList ToMenuLinkList(contentDto.MenuLinkList menuLinkListDto)
         {
-            var result = ServiceLocator.Current.GetInstance<LinkListFactory>().CreateMenuLinkList();
+            var result = new MenuLinkList();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(menuLinkListDto);
 
@@ -49,7 +48,18 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual MenuLink ToMenuLink(contentDto.MenuLink menuLinkDto)
         {
-            var result = ServiceLocator.Current.GetInstance<LinkListFactory>().CreateMenuLink(menuLinkDto.AssociatedObjectType);
+            var result = new MenuLink();
+            if (menuLinkDto.AssociatedObjectType != null)
+            {
+                if ("product" == menuLinkDto.AssociatedObjectType.ToLowerInvariant())
+                {
+                    result = new ProductMenuLink();
+                }
+                else if ("category" == menuLinkDto.AssociatedObjectType.ToLowerInvariant())
+                {
+                    result = new CategoryMenuLink();
+                }
+            }         
             result.InjectFrom<NullableAndEnumValueInjecter>(menuLinkDto);
 
             return result;

@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
@@ -25,8 +24,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Order ToLiquidOrder(CustomerOrder order, Storefront.Model.Language language, IStorefrontUrlBuilder urlBuilder)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateOrder();
+            var result = new Order();
             result.InjectFrom<NullableAndEnumValueInjecter>(order);
 
             result.Cancelled = order.IsCancelled == true;
