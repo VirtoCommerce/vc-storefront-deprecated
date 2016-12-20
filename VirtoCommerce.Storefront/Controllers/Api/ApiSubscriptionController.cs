@@ -29,17 +29,20 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             _subscriptionApi = subscriptionApi;
         }
 
-        // GET: storefrontapi/subscriptions
-        [HttpGet]
-        public ActionResult GetCustomerSubscriptions(int pageNumber, int pageSize, IEnumerable<SortInfo> sortInfos)
+        // POST: storefrontapi/subscriptions/search
+        [HttpPost]
+        public async Task<ActionResult> SearchCustomerSubscriptions(SubscriptionSearchCriteria searchCriteria)
         {
-            var subscriptions = WorkContext.CurrentCustomer.Subscriptions;
-            subscriptions.Slice(pageNumber, pageSize, sortInfos);
-
+            if(searchCriteria == null)
+            {
+                searchCriteria = new SubscriptionSearchCriteria();
+            }
+            var result = await _subscriptionApi.SubscriptionModule.SearchAsync(searchCriteria.ToSearchCriteriaDto());
+        
             return Json(new
             {
-                Results = subscriptions.ToArray(),
-                TotalCount = subscriptions.TotalItemCount,                
+                Results = result.Subscriptions.Select(x=>x.ToSubscription(WorkContext.AllCurrencies, WorkContext.CurrentLanguage)).ToArray(),
+                TotalCount = result.TotalCount,                
             });
         }
 

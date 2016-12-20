@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Microsoft.Practices.ServiceLocation;
+using Omu.ValueInjecter;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Subscriptions;
-using subscriptionDto = VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi.Models;
 using orderDto = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
-using VirtoCommerce.Storefront.Common;
+using subscriptionDto = VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters.Subscriptions
 {
@@ -26,30 +26,96 @@ namespace VirtoCommerce.Storefront.Converters.Subscriptions
         {
             return SubscriptionConverterInstance.ToSubscription(subscriptionDto, availCurrencies, language);
         }
-
+        public static subscriptionDto.SubscriptionSearchCriteria ToSearchCriteriaDto(this SubscriptionSearchCriteria criteria)
+        {
+            return SubscriptionConverterInstance.ToSearchCriteriaDto(criteria);
+        }
     }
 
     public class SubscriptionConverter
     {
+        public virtual subscriptionDto.SubscriptionSearchCriteria ToSearchCriteriaDto(SubscriptionSearchCriteria criteria)
+        {
+            var result = new subscriptionDto.SubscriptionSearchCriteria();
+
+            result.InjectFrom(criteria);
+
+            result.Skip = criteria.Start;
+            result.Take = criteria.PageSize;
+            result.Sort = criteria.Sort;
+
+            return result;
+        }
+
         public virtual Subscription ToSubscription(subscriptionDto.Subscription subscriptionDto, ICollection<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(subscriptionDto.CustomerOrderPrototype.Currency)) ?? new Currency(language, subscriptionDto.CustomerOrderPrototype.Currency);
-            var retVal = subscriptionDto.CustomerOrderPrototype.JsonConvert<orderDto.CustomerOrder>()
-                                                                .ToCustomerOrder(availCurrencies, language)
-                                                                .JsonConvert<Subscription>();
-            retVal.Balance = new Money(subscriptionDto.Balance ?? 0, currency);
-            retVal.Interval = EnumUtility.SafeParse<PaymentInterval>(subscriptionDto.Interval, PaymentInterval.Months);
-            retVal.IntervalCount = subscriptionDto.IntervalCount ?? 0;
-            retVal.TrialPeriodDays = subscriptionDto.TrialPeriodDays ?? 0;
-            retVal.CustomerOrdersIds = subscriptionDto.CustomerOrdersIds;
-            retVal.StartDate = subscriptionDto.StartDate;
-            retVal.EndDate = subscriptionDto.EndDate;
-            retVal.TrialSart = subscriptionDto.TrialSart;
-            retVal.TrialEnd = subscriptionDto.TrialEnd;
-            retVal.CurrentPeriodStart = subscriptionDto.CurrentPeriodStart;
-            retVal.CurrentPeriodEnd = subscriptionDto.CurrentPeriodEnd;
+            var order = subscriptionDto.CustomerOrderPrototype.JsonConvert<orderDto.CustomerOrder>()
+                                                                .ToCustomerOrder(availCurrencies, language);
+            var result = new Subscription(currency);
+            result.Addresses = order.Addresses;
+            result.ChannelId = order.ChannelId;
+            result.Comment = order.Comment;
+            result.CreatedBy = order.CreatedBy;
+            result.CreatedDate = order.CreatedDate;
+            result.CustomerId = order.CustomerId;
+            result.CustomerName = order.CustomerName;
+            result.Discount = order.Discount;
+            result.DiscountAmount = order.DiscountAmount;
+            result.DiscountAmountWithTax = order.DiscountAmountWithTax;
+            result.Discounts = order.Discounts;
+            result.DiscountTotal = order.DiscountTotal;
+            result.DiscountTotalWithTax = order.DiscountTotalWithTax;
+            result.DynamicProperties = order.DynamicProperties;
+            result.EmployeeId = order.EmployeeId;
+            result.EmployeeName = order.EmployeeName;
+            result.InPayments = order.InPayments;
+            result.Items = order.Items;
+            result.ModifiedBy = order.ModifiedBy;
+            result.ModifiedDate = order.ModifiedDate;
+            result.OrganizationId = order.OrganizationId;
+            result.OrganizationName = order.OrganizationName;
+            result.Shipments = order.Shipments;
+            result.ShippingDiscountTotal = order.ShippingDiscountTotal;
+            result.ShippingDiscountTotalWithTax = order.ShippingDiscountTotalWithTax;
+            result.ShippingTaxTotal = order.ShippingTaxTotal;
+            result.ShippingTotal = order.ShippingTotal;
+            result.ShippingTotalWithTax = order.ShippingTotalWithTax;
+            result.StoreId = order.StoreId;
+            result.StoreName = order.StoreName;
+            result.SubTotal = order.SubTotal;
+            result.SubTotalDiscount = order.SubTotalDiscount;
+            result.SubTotalDiscountWithTax = order.SubTotalDiscountWithTax;
+            result.SubTotalTaxTotal = order.SubTotalTaxTotal;
+            result.SubTotalWithTax = order.SubTotalWithTax;
+            result.TaxDetails = order.TaxDetails;
+            result.TaxTotal = order.TaxTotal;
+            result.Total = order.Total;
+            
 
-            return retVal;
+            result.Balance = new Money(subscriptionDto.Balance ?? 0, currency);
+            result.Interval = EnumUtility.SafeParse<PaymentInterval>(subscriptionDto.Interval, PaymentInterval.Months);
+            result.IntervalCount = subscriptionDto.IntervalCount ?? 0;
+            result.TrialPeriodDays = subscriptionDto.TrialPeriodDays ?? 0;
+            result.StartDate = subscriptionDto.StartDate;
+            result.EndDate = subscriptionDto.EndDate;
+            result.TrialSart = subscriptionDto.TrialSart;
+            result.TrialEnd = subscriptionDto.TrialEnd;
+            result.CurrentPeriodStart = subscriptionDto.CurrentPeriodStart;
+            result.CurrentPeriodEnd = subscriptionDto.CurrentPeriodEnd;
+
+            foreach(var relatedOrderDto in subscriptionDto.CustomerOrders)
+            {
+                var relatedOrder = new CustomerOrder(currency);
+                relatedOrder.Id = relatedOrderDto.Id;
+                relatedOrder.Number = relatedOrderDto.Number;
+                relatedOrder.Total = new Money(relatedOrderDto.Total ?? 0, currency);
+                relatedOrder.CreatedDate = relatedOrderDto.CreatedDate;
+                relatedOrder.Status = relatedOrderDto.Status;
+                result.CustomerOrders.Add(relatedOrder);
+            }
+
+            return result;
         }
      
     }

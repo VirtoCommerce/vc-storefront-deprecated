@@ -17,7 +17,6 @@ namespace VirtoCommerce.Storefront.Model.Order
             InPayments = new List<PaymentIn>();
             Items = new List<LineItem>();
             TaxDetails = new List<TaxDetail>();
-            ChildrenOperations = new List<Operation>();
             DynamicProperties = new List<DynamicProperty>();
             Currency = currency;
             Total = new Money(currency);
@@ -35,6 +34,8 @@ namespace VirtoCommerce.Storefront.Model.Order
             SubTotalTaxTotal = new Money(currency);
             SubTotalDiscount = new Money(currency);
             SubTotalDiscountWithTax = new Money(currency);
+            DiscountAmount = new Money(currency);
+            DiscountAmountWithTax = new Money(currency);
 
         }
 
@@ -122,18 +123,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         public ICollection<TaxDetail> TaxDetails { get; set; }
 
         /// <summary>
-        /// Security permission scopes used for security check on UI
-        /// </summary>
-        /// <value>Security permission scopes used for security check on UI</value>
-        public ICollection<string> Scopes { get; set; }
-
-        /// <summary>
-        /// Operation type string representation (CustomerOrder, Shipment etc)
-        /// </summary>
-        /// <value>Operation type string representation (CustomerOrder, Shipment etc)</value>
-        public string OperationType { get; set; }
-
-        /// <summary>
         /// Unique user friendly document number (generate automatically based on special algorithm realization)
         /// </summary>
         /// <value>Unique user friendly document number (generate automatically based on special algorithm realization)</value>
@@ -161,12 +150,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// </summary>
         /// <value>Currecy code</value>
         public Currency Currency { get; set; }
-
-        /// <summary>
-        /// Gets or Sets TaxIncluded
-        /// </summary>
-        public bool? TaxIncluded { get; set; }
-
      
         /// <summary>
         /// Gets or Sets IsCancelled
@@ -182,23 +165,6 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets CancelReason
         /// </summary>
         public string CancelReason { get; set; }
-
-        /// <summary>
-        /// Used for construct hierarchy of operation and represent parent operation id
-        /// </summary>
-        /// <value>Used for construct hierarchy of operation and represent parent operation id</value>
-        public string ParentOperationId { get; set; }
-
-        /// <summary>
-        /// Gets or Sets ChildrenOperations
-        /// </summary>
-        public ICollection<Operation> ChildrenOperations { get; set; }
-
-        /// <summary>
-        /// Used for dynamic properties management, contains object type string
-        /// </summary>
-        /// <value>Used for dynamic properties management, contains object type string</value>
-        public string ObjectType { get; set; }
 
         /// <summary>
         /// Dynamic properties collections

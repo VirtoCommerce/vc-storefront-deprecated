@@ -13,7 +13,7 @@ namespace VirtoCommerce.Storefront.Model.Order
         {
             Currency = currency;
             Sum = new Money(currency);
-
+            Tax = new Money(currency);
             ChildrenOperations = new List<Operation>();
             DynamicProperties = new List<DynamicProperty>();
         }

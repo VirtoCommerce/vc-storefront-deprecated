@@ -235,7 +235,6 @@ namespace VirtoCommerce.Storefront.Services
 
             Func<int, int, IEnumerable<SortInfo>, IPagedList<Subscription>> subscriptionGetter = (pageNumber, pageSize, sortInfos) =>
             {
-                //TODO: add caching
                 subscriptionSearchcriteria.Skip = (pageNumber - 1) * pageSize;
                 subscriptionSearchcriteria.Take = pageSize;
                 var cacheKey = "GetSubscriptions-" + subscriptionSearchcriteria.GetHashCode();
@@ -243,7 +242,7 @@ namespace VirtoCommerce.Storefront.Services
                 {
                     var searchResult = _subscriptionApi.SubscriptionModule.Search(subscriptionSearchcriteria);
                     return new StaticPagedList<Subscription>(searchResult.Subscriptions.Select(x => x.ToSubscription(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,
-                                                              searchResult.TotalCount.Value);
+                                                             searchResult.TotalCount.Value);
                 });
                return retVal;
             };

@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtoCommerce.Storefront.Model.Common;
 
-namespace VirtoCommerce.Storefront.Model.Subscriptions
+namespace VirtoCommerce.Storefront.Model.Order
 {
-    public class SubscriptionSearchCriteria : PagedSearchCriteria
+    public class CustomerOrderSearchCriteria : PagedSearchCriteria
     {
         private static int _defaultPageSize = 20;
 
@@ -17,16 +17,16 @@ namespace VirtoCommerce.Storefront.Model.Subscriptions
             get { return _defaultPageSize; }
             set { _defaultPageSize = value; }
         }
-        public SubscriptionSearchCriteria()
+        public CustomerOrderSearchCriteria()
             :base(new NameValueCollection(), _defaultPageSize)
         {
         }
 
-        public SubscriptionSearchCriteria(NameValueCollection queryString)
+        public CustomerOrderSearchCriteria(NameValueCollection queryString)
             : base(queryString, DefaultPageSize)
         {
         }
 
-        public string Sort { get; set; }
-    }   
+        public SortInfo[] SortInfos { get; set; }
+    }
 }

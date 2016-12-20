@@ -81,7 +81,7 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.QuoteRequest.Confirm", "storefrontapi/quoterequests/{number}/confirm", defaults: new { controller = "ApiQuoteRequest", action = "Confirm" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
 
             // Subscriptions API
-            routes.AddStorefrontRoute("API.Subscriptions", "storefrontapi/subscriptions", defaults: new { controller = "ApiSubscription", action = "GetCustomerSubscriptions" });
+            routes.AddStorefrontRoute("API.Subscriptions", "storefrontapi/subscriptions/search", defaults: new { controller = "ApiSubscription", action = "SearchCustomerSubscriptions" });
             routes.AddStorefrontRoute("API.SubscriptionByNumber", "storefrontapi/subscriptions/{number}", defaults: new { controller = "ApiSubscription", action = "GetCustomerSubscription" });
             routes.AddStorefrontRoute("API.CancelSubscription", "storefrontapi/subscriptions/{number}/cancel", defaults: new { controller = "ApiSubscription", action = "CancelSubscription" });
 

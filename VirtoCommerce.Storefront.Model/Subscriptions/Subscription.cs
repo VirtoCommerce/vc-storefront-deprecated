@@ -10,10 +10,12 @@ namespace VirtoCommerce.Storefront.Model.Subscriptions
 {
     public partial class Subscription : CustomerOrder
     {
+      
         public Subscription(Currency currency)
             : base(currency)
         {
             Balance = new Money(currency);
+            CustomerOrders = new List<CustomerOrder>();
         }
 
         /// <summary>
@@ -35,13 +37,9 @@ namespace VirtoCommerce.Storefront.Model.Subscriptions
         public int TrialPeriodDays { get; set; }
 
         /// <summary>
-        /// List of all orders ids created on the basis of the subscription
-        /// </summary>
-        public IEnumerable<string> CustomerOrdersIds { get; set; }
-        /// <summary>
         /// List of all orders  created on the basis of the subscription
         /// </summary>
-        public IMutablePagedList<CustomerOrder> CustomerOrders { get; set; }
+        public ICollection<CustomerOrder> CustomerOrders{ get; set; }
 
         /// <summary>
         /// Date the most recent update to this subscription started.

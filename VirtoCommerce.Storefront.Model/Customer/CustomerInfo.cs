@@ -80,7 +80,6 @@ namespace VirtoCommerce.Storefront.Model.Customer
         [IgnoreDataMember]
         public IMutablePagedList<QuoteRequest> QuoteRequests { get; set; }
         [IgnoreDataMember]
-        //Current customer subscriptions
         public IMutablePagedList<Subscription> Subscriptions { get; set; }
 
         /// <summary>
