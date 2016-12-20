@@ -33,44 +33,43 @@ namespace VirtoCommerce.Storefront
 
             bundles.Add(
                 new StyleBundle("~/default-theme/css")
-                .Include("~/App_Data/Themes/default/assets/storefront.css", new CustomCssRewriteUrlTransform())
-                .Include("~/App_Data/Themes/default/assets/ideal-image-slider.css", new CustomCssRewriteUrlTransform())
-                .Include("~/App_Data/Themes/default/assets/ideal-image-slider-default-theme.css", new CustomCssRewriteUrlTransform()));
+                    .Include("~/App_Data/Themes/default/assets/storefront.css", new CustomCssRewriteUrlTransform())
+                    .Include("~/App_Data/Themes/default/assets/ideal-image-slider.css", new CustomCssRewriteUrlTransform())
+                    .Include("~/App_Data/Themes/default/assets/ideal-image-slider-default-theme.css", new CustomCssRewriteUrlTransform()));
 
             #endregion
         }
+    }
 
-
-        private class CustomCssRewriteUrlTransform : IItemTransform
+    public class CustomCssRewriteUrlTransform : IItemTransform
+    {
+        public string Process(string includedVirtualPath, string input)
         {
-            public string Process(string includedVirtualPath, string input)
+            return ConvertUrlsToAbsolute("~/themes/assets/", input);
+        }
+
+
+        private static string ConvertUrlsToAbsolute(string baseUrl, string content)
+        {
+            if (string.IsNullOrWhiteSpace(content))
             {
-                return ConvertUrlsToAbsolute("~/themes/assets/", input);
+                return content;
             }
 
+            // Replace all URLs with absolute URLs
+            var url = new Regex(@"url\(['""]?(?<url>[^)]+?)['""]?\)");
+            return url.Replace(content, match => "url(" + RebaseUrlToAbsolute(baseUrl, match.Groups["url"].Value) + ")");
+        }
 
-            private static string ConvertUrlsToAbsolute(string baseUrl, string content)
+        private static string RebaseUrlToAbsolute(string baseUrl, string url)
+        {
+            // Don't modify absolute URLs
+            if (string.IsNullOrWhiteSpace(url) || url.StartsWith("/", StringComparison.OrdinalIgnoreCase) || url.StartsWith("data:", StringComparison.OrdinalIgnoreCase))
             {
-                if (string.IsNullOrWhiteSpace(content))
-                {
-                    return content;
-                }
-
-                // Replace all URLs with absolute URLs
-                var url = new Regex(@"url\((['""]?)((?:(?!data:image).)+?)\1?\)");
-                return url.Replace(content, match => "url(" + RebaseUrlToAbsolute(baseUrl, match.Groups["url"].Value) + ")");
+                return url;
             }
 
-            private static string RebaseUrlToAbsolute(string baseUrl, string url)
-            {
-                // Don't modify absolute URLs
-                if (string.IsNullOrWhiteSpace(url) || url.StartsWith("/", StringComparison.OrdinalIgnoreCase))
-                {
-                    return url;
-                }
-
-                return VirtualPathUtility.ToAbsolute(baseUrl + url);
-            }
+            return VirtualPathUtility.ToAbsolute(baseUrl + url);
         }
     }
 }

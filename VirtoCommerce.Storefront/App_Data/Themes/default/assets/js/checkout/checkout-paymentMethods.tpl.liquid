@@ -18,7 +18,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="radio-wrapper content-box__row content-box__row--secondary" ng-if="paymentMethod == $ctrl.paymentMethod && $ctrl.paymentMethod.paymentMethodType == 'standard'">
+    <div class="radio-wrapper content-box__row content-box__row--secondary" ng-if="paymentMethod == $ctrl.paymentMethod && $ctrl.paymentMethod.paymentMethodType === 'Standard'">
         <vc-checkout-credit-card card="$ctrl.paymentMethod.card"></vc-checkout-credit-card>
     </div>
 </div>

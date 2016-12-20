@@ -1185,8 +1185,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductSearch class.
         /// </summary>
-        public ProductSearch(string responseGroup = default(string), string currency = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string locale = default(string), string outline = default(string), System.Collections.Generic.IList<string> priceLists = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        public ProductSearch(System.Collections.Generic.IList<string> productIds = default(System.Collections.Generic.IList<string>), string responseGroup = default(string), string currency = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string locale = default(string), string outline = default(string), System.Collections.Generic.IList<string> priceLists = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
         {
+            ProductIds = productIds;
             ResponseGroup = responseGroup;
             Currency = currency;
             Terms = terms;
@@ -1198,6 +1199,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
             Skip = skip;
             Take = take;
         }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "productIds")]
+        public System.Collections.Generic.IList<string> ProductIds { get; set; }
 
         /// <summary>
         /// </summary>
@@ -1761,10 +1767,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Property class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'shortText',
-        /// 'longText', 'number', 'dateTime', 'boolean'</param>
-        /// <param name="type">Possible values include: 'product',
-        /// 'variation', 'category', 'catalog'</param>
+        /// <param name="valueType">Possible values include: 'ShortText',
+        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
+        /// <param name="type">Possible values include: 'Product',
+        /// 'Variation', 'Category', 'Catalog'</param>
         public Property(bool? isReadOnly = default(bool?), bool? isManageable = default(bool?), bool? isNew = default(bool?), string id = default(string), string catalogId = default(string), string categoryId = default(string), string name = default(string), bool? required = default(bool?), bool? dictionary = default(bool?), bool? multivalue = default(bool?), bool? multilanguage = default(bool?), string valueType = default(string), string type = default(string), System.Collections.Generic.IList<PropertyValue> values = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<PropertyDictionaryValue> dictionaryValues = default(System.Collections.Generic.IList<PropertyDictionaryValue>), System.Collections.Generic.IList<PropertyAttribute> attributes = default(System.Collections.Generic.IList<PropertyAttribute>), System.Collections.Generic.IList<PropertyDisplayName> displayNames = default(System.Collections.Generic.IList<PropertyDisplayName>), bool? isInherited = default(bool?))
         {
             IsReadOnly = isReadOnly;
@@ -1843,15 +1849,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         public bool? Multilanguage { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'shortText', 'longText',
-        /// 'number', 'dateTime', 'boolean'
+        /// Gets or sets possible values include: 'ShortText', 'LongText',
+        /// 'Number', 'DateTime', 'Boolean'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'product', 'variation',
-        /// 'category', 'catalog'
+        /// Gets or sets possible values include: 'Product', 'Variation',
+        /// 'Category', 'Catalog'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
@@ -1901,8 +1907,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PropertyValue class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'shortText',
-        /// 'longText', 'number', 'dateTime', 'boolean'</param>
+        /// <param name="valueType">Possible values include: 'ShortText',
+        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
         public PropertyValue(string id = default(string), string propertyName = default(string), string propertyId = default(string), string languageCode = default(string), string alias = default(string), string valueType = default(string), string valueId = default(string), string value = default(string), bool? isInherited = default(bool?))
         {
             Id = id;
@@ -1942,8 +1948,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         public string Alias { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'shortText', 'longText',
-        /// 'number', 'dateTime', 'boolean'
+        /// Gets or sets possible values include: 'ShortText', 'LongText',
+        /// 'Number', 'DateTime', 'Boolean'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }

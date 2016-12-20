@@ -27,7 +27,7 @@ namespace VirtoCommerce.Storefront.Owin
             if (workContext.RequestUrl != null)
             {
                 var currentStoreId = workContext.CurrentStore != null ? workContext.CurrentStore.Id : "-";
-                var currentCultureName = workContext.CurrentStore != null ? workContext.CurrentLanguage.CultureName : "en-US";
+                var currentCultureName = workContext.CurrentLanguage != null ? workContext.CurrentLanguage.CultureName : "en-US";
 
                 var normalizedPath = new PathString();
                 //add store to path
