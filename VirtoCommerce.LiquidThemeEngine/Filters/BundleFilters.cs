@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Optimization;
 using Microsoft.Practices.ServiceLocation;
@@ -13,7 +10,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
 {
     public class BundleFilters
     {
-        private static readonly bool OptimizeStaticContent = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:OptimizeStaticContent", false);
+        private static readonly bool _optimizeStaticContent = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:OptimizeStaticContent", false);
 
         public static string ScriptBundleTag(string input)
         {
@@ -24,7 +21,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 var bundle = BundleTable.Bundles.GetBundleFor(input);
                 if (bundle != null)
                 {
-                    if (OptimizeStaticContent)
+                    if (_optimizeStaticContent)
                     {
                         var url = BundleTable.Bundles.ResolveBundleUrl(input);
                         result = HtmlFilters.ScriptTag(url);
@@ -32,7 +29,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                     else
                     {
                         var response = bundle.GenerateBundleResponse(new BundleContext(new HttpContextWrapper(HttpContext.Current), BundleTable.Bundles, string.Empty));
-                        result = string.Join("\r\n", response.Files.Select(f => HtmlFilters.ScriptTag(UrlFilters.AssetUrl(f.IncludedVirtualPath.Split('/').Last()))));
+                        result = string.Join("\r\n", response.Files.Select(f => HtmlFilters.ScriptTag(GetAssetUrl(f.IncludedVirtualPath))));
                     }
                 }
                 return result;
@@ -49,7 +46,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 var bundle = BundleTable.Bundles.GetBundleFor(input);
                 if (bundle != null)
                 {
-                    if (OptimizeStaticContent)
+                    if (_optimizeStaticContent)
                     {
                         var url = BundleTable.Bundles.ResolveBundleUrl(input);
                         result = HtmlFilters.StylesheetTag(url);
@@ -57,13 +54,26 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                     else
                     {
                         var response = bundle.GenerateBundleResponse(new BundleContext(new HttpContextWrapper(HttpContext.Current), BundleTable.Bundles, string.Empty));
-                        result = string.Join("\r\n", response.Files.Select(f => HtmlFilters.StylesheetTag(UrlFilters.AssetUrl(f.IncludedVirtualPath.Split('/').Last()))));
+                        result = string.Join("\r\n", response.Files.Select(f => HtmlFilters.StylesheetTag(GetAssetUrl(f.IncludedVirtualPath))));
                     }
                 }
                 return result;
             });
 
             return retVal;
+        }
+
+
+        private static string GetAssetUrl(string virtualPath)
+        {
+            var assetName = virtualPath.Split('/').Last();
+            var isStaticAsset = virtualPath.IndexOf("/static/", StringComparison.OrdinalIgnoreCase) >= 0;
+
+            var result = isStaticAsset
+                ? UrlFilters.StaticAssetUrl(assetName)
+                : UrlFilters.AssetUrl(assetName);
+
+            return result;
         }
     }
 }
