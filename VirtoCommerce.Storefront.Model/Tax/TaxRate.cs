@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
@@ -18,7 +14,7 @@ namespace VirtoCommerce.Storefront.Model
 
         public static decimal TaxPercentRound(decimal percent)
         {
-            return Math.Round(percent, 2, MidpointRounding.AwayFromZero);
+            return Math.Round(percent, 3, MidpointRounding.AwayFromZero);
         }
     }
 }
