@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Optimization;
+using DotLiquid;
 using Microsoft.Practices.ServiceLocation;
 using VirtoCommerce.Storefront.Model.Common;
 
@@ -14,55 +15,54 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
 
         public static string ScriptBundleTag(string input)
         {
-            var cacheManager = ServiceLocator.Current.GetInstance<ILocalCacheManager>();
-            var retVal = cacheManager.Get("ScriptBundleTag:" + input, "LiquidThemeRegion", () =>
-            {
-                var result = string.Empty;
-                var bundle = BundleTable.Bundles.GetBundleFor(input);
-                if (bundle != null)
-                {
-                    if (_optimizeStaticContent)
-                    {
-                        var url = BundleTable.Bundles.ResolveBundleUrl(input);
-                        result = HtmlFilters.ScriptTag(url);
-                    }
-                    else
-                    {
-                        var response = bundle.GenerateBundleResponse(new BundleContext(new HttpContextWrapper(HttpContext.Current), BundleTable.Bundles, string.Empty));
-                        result = string.Join("\r\n", response.Files.Select(f => HtmlFilters.ScriptTag(GetAssetUrl(f.IncludedVirtualPath))));
-                    }
-                }
-                return result;
-            });
-            return retVal;
+            return GetBundleTag(HtmlFilters.ScriptTag, input);
         }
 
         public static string StylesheetBundleTag(string input)
         {
+            return GetBundleTag(HtmlFilters.StylesheetTag, input);
+        }
+
+
+        private static string GetBundleTag(Func<string, string> tagFunc, string bundleName)
+        {
+            var storeId = GetCurrentStoreId();
+            var bundleType = tagFunc.Method.Name;
+            var cacheKey = string.Join(":", "Bundle", storeId, bundleType, bundleName);
             var cacheManager = ServiceLocator.Current.GetInstance<ILocalCacheManager>();
-            var retVal = cacheManager.Get("StylesheetBundleTag:" + input, "LiquidThemeRegion", () =>
+
+            var retVal = cacheManager.Get(cacheKey, "LiquidThemeRegion", () =>
             {
                 var result = string.Empty;
-                var bundle = BundleTable.Bundles.GetBundleFor(input);
+
+                var bundle = BundleTable.Bundles.GetBundleFor(bundleName);
+
                 if (bundle != null)
                 {
                     if (_optimizeStaticContent)
                     {
-                        var url = BundleTable.Bundles.ResolveBundleUrl(input);
-                        result = HtmlFilters.StylesheetTag(url);
+                        var url = BundleTable.Bundles.ResolveBundleUrl(bundleName);
+                        result = tagFunc(url);
                     }
                     else
                     {
                         var response = bundle.GenerateBundleResponse(new BundleContext(new HttpContextWrapper(HttpContext.Current), BundleTable.Bundles, string.Empty));
-                        result = string.Join("\r\n", response.Files.Select(f => HtmlFilters.StylesheetTag(GetAssetUrl(f.IncludedVirtualPath))));
+                        result = string.Join("\r\n", response.Files.Select(f => tagFunc(GetAssetUrl(f.IncludedVirtualPath))));
                     }
                 }
+
                 return result;
             });
 
             return retVal;
         }
 
+        private static string GetCurrentStoreId()
+        {
+            var themeEngine = (ShopifyLiquidThemeEngine)Template.FileSystem;
+            var workContext = themeEngine.WorkContext;
+            return workContext.CurrentStore.Id;
+        }
 
         private static string GetAssetUrl(string virtualPath)
         {
