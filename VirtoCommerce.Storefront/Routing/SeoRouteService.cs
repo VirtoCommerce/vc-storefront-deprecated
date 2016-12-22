@@ -62,7 +62,7 @@ namespace VirtoCommerce.Storefront.Routing
                     break;
                 case "Asset":
                     response.RouteData["controller"] = "Asset";
-                    response.RouteData["action"] = "HandleStaticFiles";
+                    response.RouteData["action"] = "GetThemeAssets";
                     break;
             }
 

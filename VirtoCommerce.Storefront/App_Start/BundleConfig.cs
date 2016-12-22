@@ -1,18 +1,18 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace VirtoCommerce.Storefront
 {
     public class BundleConfig
     {
-        public static void RegisterBundles(BundleCollection bundles)
+        public bool Minify { get; set; }
+        public IItemTransform[] CssItemTransforms { get; set; } = { new CssUrlTransform() };
+
+        public virtual void RegisterBundles(BundleCollection bundles)
         {
             #region JS
 
             bundles.Add(
-                new ScriptBundle("~/default-theme/scripts")
+                CreateScriptBundle("~/default-theme/scripts")
                     .Include("~/App_Data/Themes/default/assets/modernizr.min.js")
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider.min.js")
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider-bullet-nav.js")
@@ -20,7 +20,7 @@ namespace VirtoCommerce.Storefront
                     .IncludeDirectory("~/App_Data/Themes/default/assets/js/", "*.js"));
 
             bundles.Add(
-                new ScriptBundle("~/default-theme/checkout/scripts")
+                CreateScriptBundle("~/default-theme/checkout/scripts")
                     .Include("~/App_Data/Themes/default/assets/js/app.js")
                     .Include("~/App_Data/Themes/default/assets/js/services.js")
                     .Include("~/App_Data/Themes/default/assets/js/directives.js")
@@ -44,10 +44,10 @@ namespace VirtoCommerce.Storefront
             #region CSS
 
             bundles.Add(
-                new StyleBundle("~/default-theme/css")
-                    .Include("~/App_Data/Themes/default/assets/storefront.css", new CustomCssRewriteUrlTransform())
-                    .Include("~/App_Data/Themes/default/assets/ideal-image-slider.css", new CustomCssRewriteUrlTransform())
-                    .Include("~/App_Data/Themes/default/assets/ideal-image-slider-default-theme.css", new CustomCssRewriteUrlTransform()));
+                CreateStyleBundle("~/default-theme/css")
+                    .Include("~/App_Data/Themes/default/assets/storefront.css", CssItemTransforms)
+                    .Include("~/App_Data/Themes/default/assets/ideal-image-slider.css", CssItemTransforms)
+                    .Include("~/App_Data/Themes/default/assets/ideal-image-slider-default-theme.css", CssItemTransforms));
 
             bundles.Add(
                 new StyleBundle("~/default-theme/account/css")
@@ -56,37 +56,30 @@ namespace VirtoCommerce.Storefront
 
             #endregion
         }
-    }
 
-    public class CustomCssRewriteUrlTransform : IItemTransform
-    {
-        public string Process(string includedVirtualPath, string input)
+
+        protected virtual ScriptBundle CreateScriptBundle(string virtualPath)
         {
-            return ConvertUrlsToAbsolute("~/themes/assets/", input);
-        }
+            var bundle = new ScriptBundle(virtualPath);
 
-
-        private static string ConvertUrlsToAbsolute(string baseUrl, string content)
-        {
-            if (string.IsNullOrWhiteSpace(content))
+            if (!Minify)
             {
-                return content;
+                bundle.Transforms.Clear();
             }
 
-            // Replace all URLs with absolute URLs
-            var url = new Regex(@"url\(['""]?(?<url>[^)]+?)['""]?\)");
-            return url.Replace(content, match => "url(" + RebaseUrlToAbsolute(baseUrl, match.Groups["url"].Value) + ")");
+            return bundle;
         }
 
-        private static string RebaseUrlToAbsolute(string baseUrl, string url)
+        protected virtual StyleBundle CreateStyleBundle(string virtualPath)
         {
-            // Don't modify absolute URLs
-            if (string.IsNullOrWhiteSpace(url) || url.StartsWith("/", StringComparison.OrdinalIgnoreCase) || url.StartsWith("data:", StringComparison.OrdinalIgnoreCase))
+            var bundle = new StyleBundle(virtualPath);
+
+            if (!Minify)
             {
-                return url;
+                bundle.Transforms.Clear();
             }
 
-            return VirtualPathUtility.ToAbsolute(baseUrl + url);
+            return bundle;
         }
     }
 }

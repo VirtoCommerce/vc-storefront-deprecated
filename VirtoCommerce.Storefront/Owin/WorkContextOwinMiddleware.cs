@@ -24,6 +24,7 @@ using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Storefront.Model.Catalog.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Customer.Services;
@@ -151,10 +152,7 @@ namespace VirtoCommerce.Storefront.Owin
                     workContext.CurrentCurrency = GetCurrency(context, workContext.CurrentStore);
 
                     //Initialize catalog search criteria
-                    workContext.CurrentProductSearchCriteria = new ProductSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency, qs)
-                    {
-                        //CatalogId = workContext.CurrentStore.Catalog
-                    };
+                    workContext.CurrentProductSearchCriteria = Container.Resolve<CatalogFactory>().CreateProductSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency, qs);
 
                     //Initialize product response group. Exclude properties meta-information for performance reason (property values will be returned)
                     workContext.CurrentProductResponseGroup = EnumUtility.SafeParse(qs.Get("resp_group"), ItemResponseGroup.ItemLarge & ~ItemResponseGroup.ItemProperties);
@@ -428,7 +426,7 @@ namespace VirtoCommerce.Storefront.Owin
 
         protected virtual void MaintainAnonymousCustomerCookie(IOwinContext context, WorkContext workContext)
         {
-            string anonymousCustomerId = context.Request.Cookies[StorefrontConstants.AnonymousCustomerIdCookie];
+            var anonymousCustomerId = context.Request.Cookies[StorefrontConstants.AnonymousCustomerIdCookie];
 
             if (workContext.CurrentCustomer.IsRegisteredUser)
             {

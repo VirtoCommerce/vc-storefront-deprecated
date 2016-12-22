@@ -177,7 +177,7 @@ namespace VirtoCommerce.Storefront.Services
 
             var searchCriteria = criteria.ToProductSearchDto(workContext);
             var result = await _searchApi.SearchApiModule.SearchProductsAsync(workContext.CurrentStore.Id, searchCriteria);
-            var products = result.Products.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList();
+            var products = result.Products?.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList() ?? new List<Product>();
 
             if (products.Any())
             {
