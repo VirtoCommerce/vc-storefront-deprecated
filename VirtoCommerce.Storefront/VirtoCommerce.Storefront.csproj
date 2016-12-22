@@ -462,6 +462,7 @@
     <Compile Include="AutoRestClients\QuoteModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchApiModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
+    <Compile Include="AutoRestClients\SitemapsModuleApi.cs" />
     <Compile Include="AutoRestClients\StoreModuleApi.cs" />
     <Compile Include="Binders\CartTypesModelBinder.cs" />
     <Compile Include="Common\AppBuilderExtension.cs" />
@@ -484,6 +485,7 @@
     <Compile Include="Controllers\Api\ApiAccountController.cs" />
     <Compile Include="Controllers\Api\ApiPricingController.cs" />
     <Compile Include="Controllers\Api\ApiMarketingController.cs" />
+    <Compile Include="Controllers\SitemapController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Controllers\QuoteRequestController.cs" />
