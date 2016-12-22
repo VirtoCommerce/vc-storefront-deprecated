@@ -51,8 +51,8 @@ namespace VirtoCommerce.Storefront
 
             bundles.Add(
                 new StyleBundle("~/default-theme/account/css")
-                .Include("~/App_Data/Themes/default/assets/account-bootstrap.css", new CustomCssRewriteUrlTransform())
-                .Include("~/App_Data/Themes/default/assets/common-components.css", new CustomCssRewriteUrlTransform()));
+                .Include("~/App_Data/Themes/default/assets/account-bootstrap.css", CssItemTransforms)
+                .Include("~/App_Data/Themes/default/assets/common-components.css", CssItemTransforms));
 
             #endregion
         }
