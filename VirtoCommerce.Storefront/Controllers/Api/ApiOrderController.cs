@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -42,7 +41,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
             return Json(new
             {
-                Results = result.CustomerOrders.ToArray(),
+                Results = result.CustomerOrders.Select(x => x.ToCustomerOrder(WorkContext.AllCurrencies, WorkContext.CurrentLanguage)),
                 TotalCount = result.TotalCount
             });
         }
@@ -86,11 +85,12 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             {
                 var orderDto = await GetOrderDtoByNumber(orderNumber);
                 var payment = orderDto.InPayments.FirstOrDefault(x => x.Number.EqualsInvariant(paymentNumber));
-                if(payment != null)
+                if (payment != null)
                 {
                     payment.IsCancelled = true;
                     payment.CancelReason = "Canceled by customer";
-                    payment.Status = "Cancelled";
+                    //payment.CancelledDate = new DateTime();
+                    payment.PaymentStatus = "Cancelled";
                     await _orderApi.OrderModule.UpdateAsync(orderDto);
                 }
             }
@@ -100,22 +100,23 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         // POST: storefrontapi/orders/{orderNumber}/payments/process
         [HttpPost]
         public async Task<ActionResult> ProcessPayment(string orderNumber, PaymentIn payment)
-        { 
-            orderModel.ProcessPaymentResult processingResult = null;
+        {
+            orderModel.ProcessPaymentResult processingResult;
+            orderModel.PaymentIn paymentDto;
 
             if (payment.Sum.Amount == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Valid payment amount is required");
             }
 
-            var paymentDto = payment.ToOrderPaymentInDto();
-            //Need lock to prevent concurrent access to same object
+            //Need to lock to prevent concurrent access to same object
             using (await AsyncLock.GetLockByKey(GetAsyncLockKey(orderNumber, WorkContext)).LockAsync())
             {
                 var orderDto = await GetOrderDtoByNumber(orderNumber);
                 var existPayment = orderDto.InPayments.FirstOrDefault(x => x.Id.EqualsInvariant(payment.Id));
                 if (existPayment == null)
                 {
+                    paymentDto = payment.ToOrderPaymentInDto();
                     paymentDto.CustomerId = WorkContext.CurrentCustomer.Id;
                     paymentDto.CustomerName = WorkContext.CurrentCustomer.FullName;
                     paymentDto.Status = "New";
@@ -126,11 +127,15 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                     //Because we don't know the new payment id we need to get latest payment with same gateway code
                     paymentDto = orderDto.InPayments.Where(x => x.GatewayCode.EqualsInvariant(payment.GatewayCode)).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                 }
+                else
+                {
+                    paymentDto = existPayment;
+                }
                 processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(orderDto.Id, paymentDto.Id, payment.BankCardInfo.ToBankCardInfoDto());
             }
 
             return Json(new { orderProcessingResult = processingResult, paymentMethod = paymentDto.PaymentMethod });
-        }     
+        }
 
         private async Task<CustomerOrder> GetOrderByNumber(string number)
         {

@@ -69,10 +69,12 @@ namespace VirtoCommerce.Storefront.Converters.Subscriptions
             result.DynamicProperties = order.DynamicProperties;
             result.EmployeeId = order.EmployeeId;
             result.EmployeeName = order.EmployeeName;
+            result.Id = order.Id;
             result.InPayments = order.InPayments;
             result.Items = order.Items;
             result.ModifiedBy = order.ModifiedBy;
             result.ModifiedDate = order.ModifiedDate;
+            result.Number = order.Number;
             result.OrganizationId = order.OrganizationId;
             result.OrganizationName = order.OrganizationName;
             result.Shipments = order.Shipments;
@@ -91,20 +93,20 @@ namespace VirtoCommerce.Storefront.Converters.Subscriptions
             result.TaxDetails = order.TaxDetails;
             result.TaxTotal = order.TaxTotal;
             result.Total = order.Total;
-            
 
             result.Balance = new Money(subscriptionDto.Balance ?? 0, currency);
-            result.Interval = EnumUtility.SafeParse<PaymentInterval>(subscriptionDto.Interval, PaymentInterval.Months);
-            result.IntervalCount = subscriptionDto.IntervalCount ?? 0;
-            result.TrialPeriodDays = subscriptionDto.TrialPeriodDays ?? 0;
+            result.Interval = EnumUtility.SafeParse(subscriptionDto.Interval, PaymentInterval.Months);
+            result.IntervalCount = subscriptionDto.IntervalCount ?? 1;
             result.StartDate = subscriptionDto.StartDate;
             result.EndDate = subscriptionDto.EndDate;
+            result.Status = subscriptionDto.SubscriptionStatus;
             result.TrialSart = subscriptionDto.TrialSart;
             result.TrialEnd = subscriptionDto.TrialEnd;
+            result.TrialPeriodDays = subscriptionDto.TrialPeriodDays ?? 0;
             result.CurrentPeriodStart = subscriptionDto.CurrentPeriodStart;
             result.CurrentPeriodEnd = subscriptionDto.CurrentPeriodEnd;
 
-            foreach(var relatedOrderDto in subscriptionDto.CustomerOrders)
+            foreach (var relatedOrderDto in subscriptionDto.CustomerOrders)
             {
                 var relatedOrder = new CustomerOrder(currency);
                 relatedOrder.Id = relatedOrderDto.Id;
@@ -117,6 +119,6 @@ namespace VirtoCommerce.Storefront.Converters.Subscriptions
 
             return result;
         }
-     
+
     }
 }

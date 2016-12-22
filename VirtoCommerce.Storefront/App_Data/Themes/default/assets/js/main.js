@@ -1,8 +1,8 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'customerService',
-    function ($scope, $location, $window, customerService) {
-        
+storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'customerService', 'storefrontApp.mainContext',
+    function ($scope, $location, $window, customerService, mainContext) {
+
         //Base store url populated in layout and can be used for construction url inside controller
         $scope.baseUrl = {};
 
@@ -56,11 +56,15 @@ storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'c
             return size;
         }
 
-        $scope.getCustomer = function () {
+        mainContext.getCustomer = $scope.getCustomer = function () {
             customerService.getCurrentCustomer().then(function (response) {
-                $scope.customer = response.data;
+                mainContext.customer = $scope.customer = response.data;
             });
         };
 
         $scope.getCustomer();
-    }]);
+    }])
+
+.factory('storefrontApp.mainContext', function () {
+    return {};
+});

@@ -4,92 +4,70 @@ var moduleName = "storefront.account";
 if (storefrontAppDependencies !== undefined) {
     storefrontAppDependencies.push(moduleName);
 }
-angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards'])
+angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', 'pascalprecht.translate', 'ngSanitize'])
 
-.value('$routerRootComponent', 'vcAccountOrders')
+.config(['$translateProvider', function ($translateProvider) {
+    $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+    $translateProvider.useUrlLoader(BASE_URL + 'themes/localization.json');
+    $translateProvider.preferredLanguage('en');
+}])
 
 .run(['$templateCache', function ($templateCache) {
     // cache application level templates
     $templateCache.put('pagerTemplate.html', '<uib-pagination boundary-links="true" max-size="$ctrl.pageSettings.numPages" items-per-page="$ctrl.pageSettings.itemsPerPageCount" total-items="$ctrl.pageSettings.totalItems" ng-model="$ctrl.pageSettings.currentPage" ng-change="$ctrl.pageSettings.pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>');
 }])
 
-.controller('accountController', ['$scope', 'storefront.accountApi', 'confirmService', 'loadingIndicatorService',
-function ($scope, accountApi, confirmService, loader) {
-    $scope.loader = loader;
+.value('$routerRootComponent', 'vcAccountManager')
 
-    $scope.getQuotes = function (pageNumber, pageSize, sortInfos, callback) {
-        loader.wrapLoading(function () {
-            return accountApi.getQuotes({ pageNumber: pageNumber, pageSize: pageSize, sortInfos: sortInfos }, callback).$promise;
-        });
-    };
+.component('vcAccountManager', {
+    templateUrl: "themes/assets/js/account/account-manager.tpl.liquid",
+    bindings: {
+        baseUrl: '<',
+        customer: '<'
+    },
+    $routeConfig: [
+         { path: '/orders/...', name: 'Orders', component: 'vcAccountOrders', useAsDefault: true },
+         { path: '/subscriptions/...', name: 'Subscriptions', component: 'vcAccountSubscriptions' },
+         { path: '/quotes', name: 'Quotes', component: 'vcAccountQuotes' },
+         { path: '/profile', name: 'Profile', component: 'vcAccountProfileUpdate' },
+         { path: '/addresses', name: 'Addresses', component: 'vcAccountAddresses' },
+         { path: '/changePassword', name: 'PasswordChange', component: 'vcAccountPasswordChange' }
+    ],
+    controller: ['storefront.accountApi', 'storefrontApp.mainContext', 'loadingIndicatorService', function (accountApi, mainContext, loader) {
+        var $ctrl = this;
+        $ctrl.loader = loader;
 
-    $scope.updateProfile = function (updateRequest) {
-        loader.wrapLoading(function () {
-            return accountApi.updateAccount(updateRequest.changeData, $scope.getCustomer).$promise;
-        });
-    };
-
-    function updateAddresses(data) {
-        return loader.wrapLoading(function () {
-            return accountApi.updateAddresses(data, $scope.getCustomer).$promise;
-        });
-    }
-
-    $scope.availCountries = accountApi.getCountries();
-
-    $scope.getCountryRegions = function (country) {
-        return accountApi.getCountryRegions(country).$promise;
-    };
-
-    $scope.changePassword = function (changePasswordData) {
-        return loader.wrapLoading(function () {
-            return accountApi.changePassword(changePasswordData).$promise;
-        });
-    };
-    
-    // address management
-    var addr = $scope.addr = {};
-    addr.addNewAddress = function () {
-        if (_.last(components).validate()) {
-            $scope.customer.addresses.push(addr.newAddress);
-            updateAddresses($scope.customer.addresses).then(function () {
-                addr.newAddress = null;
+        $ctrl.getQuotes = function (pageNumber, pageSize, sortInfos, callback) {
+            loader.wrapLoading(function () {
+                return accountApi.getQuotes({ pageNumber: pageNumber, pageSize: pageSize, sortInfos: sortInfos }, callback).$promise;
             });
-        }
-    };
+        };
 
-    addr.submit = function ($index, addrCopy) {
-        if (components[$index].validate()) {
-            angular.copy(addrCopy, $scope.customer.addresses[$index]);
-            updateAddresses($scope.customer.addresses);
-        }
-    };
+        $ctrl.updateProfile = function (updateRequest) {
+            loader.wrapLoading(function () {
+                return accountApi.updateAccount(updateRequest, mainContext.getCustomer).$promise;
+            });
+        };
 
-    addr.cancel = function ($index, addrCopy) {
-        angular.copy($scope.customer.addresses[$index], addrCopy);
-    };
+        $ctrl.updateAddresses = function (data) {
+            return loader.wrapLoading(function () {
+                return accountApi.updateAddresses(data, mainContext.getCustomer).$promise;
+            });
+        };
 
-    $scope.clone = function (x) {
-        return angular.copy(x);
-    };
+        $ctrl.availCountries = accountApi.getCountries();
 
-    addr.delete = function ($index) {
-        confirmService.confirm('Delete this address?').then(function (confirmed) {
-            if (confirmed) {
-                $scope.customer.addresses.splice($index, 1);
-                updateAddresses($scope.customer.addresses);
-            }
-        });
-    };
+        $ctrl.getCountryRegions = function (country) {
+            return accountApi.getCountryRegions(country).$promise;
+        };
 
-    var components = [];
-    addr.addComponent = function (component) {
-        components.push(component);
-    };
-    addr.removeComponent = function (component) {
-        components = _.without(components, component);
-    };
-}])
+        $ctrl.changePassword = function (changePasswordData) {
+            return loader.wrapLoading(function () {
+                return accountApi.changePassword(changePasswordData).$promise;
+            });
+        };
+    }]
+})
 
 .service('confirmService', ['$q', function ($q) {
     this.confirm = function (message) {

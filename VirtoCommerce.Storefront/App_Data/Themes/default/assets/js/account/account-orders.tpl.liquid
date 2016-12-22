@@ -5,7 +5,7 @@
            { status: 'readytosend', label: '{{ 'customer.order.status.ready' | t }}'},
            { status: 'sent', label: '{{ 'customer.order.status.sent' | t }}'},
            { status: 'partiallysent', label: '{{ 'customer.order.status.partially_sent' | t }}'},
-           { status: 'canceled', label: '{{ 'customer.order.status.canceled' | t }}'}
+           { status: 'cancelled', label: '{{ 'customer.order.status.cancelled' | t }}'}
            ]"></ng-outlet>
 
 <script id="account-orders-list.tpl" type="text/ng-template">
@@ -144,7 +144,7 @@
                     </label>
                 </div>
                 <div class="box-row" ng-if="!$ctrl.billingAddressEqualsShipping">
-                    <vc-address address="$ctrl.payment.billingAddress" countries="$ctrl.parentComponent.countries" get-country-regions="$ctrl.parentComponent.getCountryRegions({country: country})" addresses="$ctrl.parentComponent.customer.addresses" validation-container="$ctrl" edit-mode="true"></vc-address>
+                    <vc-address address="$ctrl.payment.billingAddress" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)" addresses="$ctrl.parentComponent.customer.addresses" validation-container="$ctrl" edit-mode="true"></vc-address>
                 </div>
             </div>
 

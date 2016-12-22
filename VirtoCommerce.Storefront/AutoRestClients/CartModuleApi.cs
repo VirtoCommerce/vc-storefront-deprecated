@@ -3702,7 +3702,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShoppingCart class.
         /// </summary>
-        public ShoppingCart(string name = default(string), string storeId = default(string), string channelId = default(string), bool? isAnonymous = default(bool?), string customerId = default(string), string customerName = default(string), string organizationId = default(string), string currency = default(string), string languageCode = default(string), bool? taxIncluded = default(bool?), bool? isRecuring = default(bool?), string comment = default(string), string status = default(string), string weightUnit = default(string), double? weight = default(double?), string validationType = default(string), double? volumetricWeight = default(double?), double? total = default(double?), double? subTotal = default(double?), double? subTotalWithTax = default(double?), double? subTotalDiscount = default(double?), double? subTotalDiscountWithTax = default(double?), double? shippingTotal = default(double?), double? shippingTotalWithTax = default(double?), double? shippingSubTotal = default(double?), double? shippingSubTotalWithTax = default(double?), double? shippingDiscountTotal = default(double?), double? shippingDiscountTotalWithTax = default(double?), double? paymentTotal = default(double?), double? paymentTotalWithTax = default(double?), double? paymentSubTotal = default(double?), double? paymentSubTotalWithTax = default(double?), double? paymentDiscountTotal = default(double?), double? paymentDiscountTotalWithTax = default(double?), double? handlingTotal = default(double?), double? handlingTotalWithTax = default(double?), double? discountAmount = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Payment> payments = default(System.Collections.Generic.IList<Payment>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), Coupon coupon = default(Coupon), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public ShoppingCart(string name = default(string), string storeId = default(string), string channelId = default(string), bool? isAnonymous = default(bool?), string customerId = default(string), string customerName = default(string), string organizationId = default(string), string currency = default(string), string languageCode = default(string), bool? taxIncluded = default(bool?), bool? isRecuring = default(bool?), string comment = default(string), string status = default(string), string weightUnit = default(string), double? weight = default(double?), string validationType = default(string), double? volumetricWeight = default(double?), double? total = default(double?), double? subTotal = default(double?), double? subTotalWithTax = default(double?), double? subTotalDiscount = default(double?), double? subTotalDiscountWithTax = default(double?), double? shippingTotal = default(double?), double? shippingTotalWithTax = default(double?), double? shippingSubTotal = default(double?), double? shippingSubTotalWithTax = default(double?), double? shippingDiscountTotal = default(double?), double? shippingDiscountTotalWithTax = default(double?), double? paymentTotal = default(double?), double? paymentTotalWithTax = default(double?), double? paymentSubTotal = default(double?), double? paymentSubTotalWithTax = default(double?), double? paymentDiscountTotal = default(double?), double? paymentDiscountTotalWithTax = default(double?), double? handlingTotal = default(double?), double? handlingTotalWithTax = default(double?), double? discountAmount = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? fee = default(double?), double? feeWithTax = default(double?), double? feeTotal = default(double?), double? feeTotalWithTax = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Payment> payments = default(System.Collections.Generic.IList<Payment>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), Coupon coupon = default(Coupon), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
             StoreId = storeId;
@@ -3743,6 +3743,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             DiscountAmount = discountAmount;
             DiscountTotal = discountTotal;
             DiscountTotalWithTax = discountTotalWithTax;
+            Fee = fee;
+            FeeWithTax = feeWithTax;
+            FeeTotal = feeTotal;
+            FeeTotalWithTax = feeTotalWithTax;
             Addresses = addresses;
             Items = items;
             Payments = payments;
@@ -3956,6 +3960,26 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotalWithTax")]
         public double? DiscountTotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "fee")]
+        public double? Fee { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "feeWithTax")]
+        public double? FeeWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "feeTotal")]
+        public double? FeeTotal { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "feeTotalWithTax")]
+        public double? FeeTotalWithTax { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -4192,7 +4216,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the LineItem class.
         /// </summary>
-        public LineItem(string productId = default(string), CatalogProduct product = default(CatalogProduct), string catalogId = default(string), string categoryId = default(string), string sku = default(string), string productType = default(string), string name = default(string), int? quantity = default(int?), string fulfillmentLocationCode = default(string), string shipmentMethodCode = default(string), bool? requiredShipping = default(bool?), string thumbnailImageUrl = default(string), string imageUrl = default(string), bool? isGift = default(bool?), string currency = default(string), string languageCode = default(string), string note = default(string), bool? isReccuring = default(bool?), bool? taxIncluded = default(bool?), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string validationType = default(string), bool? isReadOnly = default(bool?), string priceId = default(string), Price price = default(Price), double? listPrice = default(double?), double? listPriceWithTax = default(double?), double? salePrice = default(double?), double? salePriceWithTax = default(double?), double? placedPrice = default(double?), double? placedPriceWithTax = default(double?), double? extendedPrice = default(double?), double? extendedPriceWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public LineItem(string productId = default(string), CatalogProduct product = default(CatalogProduct), string catalogId = default(string), string categoryId = default(string), string sku = default(string), string productType = default(string), string name = default(string), int? quantity = default(int?), string fulfillmentLocationCode = default(string), string shipmentMethodCode = default(string), bool? requiredShipping = default(bool?), string thumbnailImageUrl = default(string), string imageUrl = default(string), bool? isGift = default(bool?), string currency = default(string), string languageCode = default(string), string note = default(string), bool? isReccuring = default(bool?), bool? taxIncluded = default(bool?), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), string validationType = default(string), bool? isReadOnly = default(bool?), string priceId = default(string), Price price = default(Price), double? listPrice = default(double?), double? listPriceWithTax = default(double?), double? salePrice = default(double?), double? salePriceWithTax = default(double?), double? placedPrice = default(double?), double? placedPriceWithTax = default(double?), double? extendedPrice = default(double?), double? extendedPriceWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? fee = default(double?), double? feeWithTax = default(double?), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ProductId = productId;
             Product = product;
@@ -4236,6 +4260,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             DiscountAmountWithTax = discountAmountWithTax;
             DiscountTotal = discountTotal;
             DiscountTotalWithTax = discountTotalWithTax;
+            Fee = fee;
+            FeeWithTax = feeWithTax;
             Discounts = discounts;
             TaxType = taxType;
             TaxTotal = taxTotal;
@@ -4459,6 +4485,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountTotalWithTax")]
         public double? DiscountTotalWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "fee")]
+        public double? Fee { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "feeWithTax")]
+        public double? FeeWithTax { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -7171,7 +7207,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Shipment class.
         /// </summary>
-        public Shipment(string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), string warehouseLocation = default(string), string currency = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), double? price = default(double?), double? priceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), Address deliveryAddress = default(Address), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string id = default(string))
+        public Shipment(string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), string warehouseLocation = default(string), string currency = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), double? price = default(double?), double? priceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? fee = default(double?), double? feeWithTax = default(double?), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), Address deliveryAddress = default(Address), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string id = default(string))
         {
             ShipmentMethodCode = shipmentMethodCode;
             ShipmentMethodOption = shipmentMethodOption;
@@ -7190,6 +7226,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             TotalWithTax = totalWithTax;
             DiscountAmount = discountAmount;
             DiscountAmountWithTax = discountAmountWithTax;
+            Fee = fee;
+            FeeWithTax = feeWithTax;
             TaxType = taxType;
             TaxTotal = taxTotal;
             TaxPercentRate = taxPercentRate;
@@ -7284,6 +7322,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
         public double? DiscountAmountWithTax { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "fee")]
+        public double? Fee { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "feeWithTax")]
+        public double? FeeWithTax { get; private set; }
 
         /// <summary>
         /// </summary>

@@ -257,7 +257,15 @@
         "account": {
             "title": "My Account",
             "details": "Account Details",
-            "return": "Return to Account Details"
+            "return": "Return to Account Details",
+            "menu_label": {
+                "orders": "Orders",
+                "subscriptions": "Subscriptions",
+                "quotes": "Quote requests",
+                "profile": "Profile",
+                "addresses": "Addresses",
+                "change_password": "Change password"
+            }
         },
         "activate_account": {
             "title": "Activate Account",
@@ -339,7 +347,7 @@
                 "ready": "Ready to send",
                 "sent": "Sent",
                 "partially_sent": "Partially sent",
-                "canceled": "Canceled"
+                "cancelled": "Cancelled"
             }
         },
         "order_payment": {
@@ -356,13 +364,28 @@
             "date_trial_end": "Trial end",
             "total": "Total",
             "date_ended": "End date",
-            "none": "You haven't placed any subscriptions yet."
+            "none": "You haven't placed any subscriptions yet.",
+            "intervals": {
+                "_every": "every",
+                "days_1": "daily",
+                "days_plural": " days",
+                "weeks_1": "weekly",
+                "weeks_plural": " weeks",
+                "months_1": "monthly",
+                "month_plural": " months",
+                "years_1": "year",
+                "years_plural": " years"
+            }
         },
         "subscription": {
-            "title": "Subscription {{ name }}",
+            "title": "Subscription {{ number }}",
             "placed_on_date_html": "Placed on {{ date }}",
             "cancelled_on": "Subscription was canceled on {{ date }}",
             "cancel_reason": "Reason",
+            "details-sentence_": "Subscription shipping every {{intervalCount}} {{interval}} from {{createdDate | date }} until {{endDate | date }}. Next billing on {{currentPeriodEnd | date }}.",
+            "details-sentence": "Subscription shipping every {{intervalCount}} {{interval}} from {{createdDate | date }}. Next billing on {{currentPeriodEnd | date }}.",
+            "details-sentence1": "Subscription shipping every 20 days from Nov 22, 2016. Next billing on Dec 31, 2016.",
+            "details-sentence2": "Subscription shipping every 2 weeks from Nov 22, 2016 until Nov 21, 2017. Next billing on Dec 31, 2016.",
             "shipping_address": "Shipping Address",
             "discount": "Discount",
             "shipping": "Shipping",
@@ -374,8 +397,12 @@
             "total": "Total",
             "subtotal": "Subtotal",
             "balance": "Balance",
+            "orders": "Orders",
+            "order-sentence": "{{order | orderToSummarizedStatusLabel}} {{order.number}} from {{order.createdDate | date}}, {{order.total.formattedAmount}}",
             "billing_address": "Billing address",
-            "cancel": "Cancel Subscription"
+            "cancel": "Cancel Subscription",
+            "cancel_reason_lbl": "Describe the cancellation reason",
+            "cancel_submit": "Submit cancellation"
         },
         "quotes": {
             "title": "Quote requests",

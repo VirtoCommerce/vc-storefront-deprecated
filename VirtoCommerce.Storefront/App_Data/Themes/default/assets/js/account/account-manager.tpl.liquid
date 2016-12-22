@@ -1,0 +1,31 @@
+﻿<div class="vc-form">
+    <div class="ajax-informer" ng-class="{ 'fade': $ctrl.loader.isLoading }">
+        <div class="loader"></div>
+        <span>Working...</span>
+    </div>
+    <br />
+    <ul class="nav nav-tabs">
+        <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountOrders'}">
+            <a ng-link="['Orders']">{{ 'customer.account.menu_label.orders' | t }}</a>
+        </li>
+        <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountSubscriptions'}">
+            <a ng-link="['Subscriptions']">{{ 'customer.account.menu_label.subscriptions' | t }}</a>
+        </li>
+        {% if shop.quotes_enabled %}
+        <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountQuotes'}">
+            <a ng-link="['Quotes']">{{ 'customer.account.menu_label.quotes' | t }}</a>
+        </li>
+        {% endif %}
+        <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountProfileUpdate'}">
+            <a ng-link="['Profile']">{{ 'customer.account.menu_label.profile' | t }}</a>
+        </li>
+        <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountAddresses'}">
+            <a ng-link="['Addresses']">{{ 'customer.account.menu_label.addresses' | t }}</a>
+        </li>
+        <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountPasswordChange'}">
+            <a ng-link="['PasswordChange']">{{ 'customer.account.menu_label.change_password' | t }}</a>
+        </li>
+    </ul>
+
+    <ng-outlet></ng-outlet>
+</div>

@@ -1,12 +1,12 @@
 ﻿angular.module('storefront.account')
 .component('vcAccountPasswordChange', {
     templateUrl: "themes/assets/js/account/account-password-change.tpl.liquid",
-    bindings: {
-        loading: '<',
-        onPasswordChange: '&'
+    require: {
+        accountManager: '^vcAccountManager'
     },
-    controller: [function () {
+    controller: ['loadingIndicatorService', function (loader) {
         var ctrl = this;
+        ctrl.loader = loader;
         ctrl.passwordChangeData = {};
 
         ctrl.submit = function () {
@@ -27,7 +27,7 @@
             }
 
             if (!hasError) {
-                ctrl.onPasswordChange()(ctrl.passwordChangeData).then(function (result) {
+                ctrl.accountManager.changePassword(ctrl.passwordChangeData).then(function (result) {
                     angular.extend(ctrl, result);
                     ctrl.passwordChangeData = {};
                     ctrl.form.$setPristine();

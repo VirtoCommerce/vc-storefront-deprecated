@@ -36,10 +36,17 @@
     {{ '//unpkg.com/@angular/router@0.2.0/angular1/angular_1_router.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap-tpls.min.js' | script_tag }}
     {{ '//rawgit.com/bendrucker/angular-credit-cards/v3.0.1/release/angular-credit-cards.js' | script_tag }}
+    {{ '//cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.7/angular-sanitize.min.js' | script_tag }}
+    {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate.min.js' | script_tag }}
+    {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate-loader-url/angular-translate-loader-url.min.js' | script_tag }}
 
     {{ '~/default-theme/account/scripts' | script_bundle_tag }}
 
     {{ content_for_header }}
+
+    <script>
+        var BASE_URL = '{{ "/" | full_url }}';
+    </script>
 </head>
 <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-init="baseUrl='{{ '/' | absolute_url }}'">
     {% include 'notification' %}

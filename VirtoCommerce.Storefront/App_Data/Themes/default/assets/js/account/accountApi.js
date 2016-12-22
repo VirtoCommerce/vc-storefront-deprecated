@@ -11,15 +11,15 @@
 }])
 .factory('storefront.orderApi', ['$resource', function ($resource) {
     return $resource('storefrontapi/orders/:number', null, {
-        getOrders: {},
+        search: { url: 'storefrontapi/orders/search', method: 'POST' },
         getNewPaymentData: { url: 'storefrontapi/orders/:number/newpaymentdata' },
-        addOrUpdatePayment: { url: 'storefrontapi/orders/:number/payments', method: 'POST' }
+        addOrUpdatePayment: { url: 'storefrontapi/orders/:number/payments/process', method: 'POST' },
+        cancalPayment: { url: 'storefrontapi/orders/:number/payments/:paymentNumber/cancel', method: 'POST' }
     });
 }])
 .factory('storefront.subscriptionApi', ['$resource', function ($resource) {
-    //return $resource('storefrontapi/subscriptions/:number', null, {
-    return $resource('storefrontapi/orders/:number', null, {
-        getSubscriptions: {},
-        cancel: {}
+    return $resource('storefrontapi/subscriptions/:number', null, {
+        search: { url: 'storefrontapi/subscriptions/search', method: 'POST' },
+        cancel: { url: 'storefrontapi/subscriptions/:number/cancel', method: 'POST' }
     });
 }]);

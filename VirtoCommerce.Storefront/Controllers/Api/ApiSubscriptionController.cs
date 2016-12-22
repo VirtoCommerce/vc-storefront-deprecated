@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
-using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Converters.Subscriptions;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Subscriptions;
 using subscriptionDto = VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi.Models;
 
@@ -62,7 +57,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         public async Task<ActionResult> CancelSubscription(SubscriptionCancelRequest cancelRequest)
         {
             var subscription = await GetSubscriptionByNumberAsync(cancelRequest.Number);
-            var retVal = (await _subscriptionApi.SubscriptionModule.CancelSubscriptionAsync(new AutoRestClients.SubscriptionModuleApi.Models.SubscriptionCancelRequest
+            var retVal = (await _subscriptionApi.SubscriptionModule.CancelSubscriptionAsync(new subscriptionDto.SubscriptionCancelRequest
             {
                 CancelReason = cancelRequest.CancelReason,
                 SubscriptionId = subscription.Id
@@ -75,7 +70,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         {
             var criteria = new subscriptionDto.SubscriptionSearchCriteria
             {
-                Number = null,
+                Number = number,
                 ResponseGroup = SubscriptionResponseGroup.Full.ToString()
             };
             var retVal = (await _subscriptionApi.SubscriptionModule.SearchAsync(criteria))
