@@ -4,13 +4,13 @@ using Xunit;
 namespace VirtoCommerce.Storefront.Test
 {
     [Trait("Category", "CI")]
-    public class CustomCssRewriteUrlTransformTests
+    public class CssUrlTransformTests
     {
         private readonly IItemTransform _transformer;
 
-        public CustomCssRewriteUrlTransformTests()
+        public CssUrlTransformTests()
         {
-            _transformer = new CustomCssRewriteUrlTransform();
+            _transformer = new CssUrlTransform();
         }
 
         [Theory]
