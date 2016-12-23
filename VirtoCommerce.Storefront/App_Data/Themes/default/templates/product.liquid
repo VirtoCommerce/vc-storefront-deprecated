@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-   <!--angular block for display images for selected variation -->
+    <!--angular block for display images for selected variation -->
     <ng-include ng-if="selectedVariation.id" src="'storefront.product-images.tpl'"></ng-include>
 
     <div class="grid-item large--three-fifths">
@@ -45,55 +45,55 @@
             <ul class="inline-list product-meta">
                 <li ng-if="!selectedVariation.id">
                     {% if product.compare_at_price > product.price %}
-                         {% if settings.show_prices_with_taxes %}
-                            <span class="old">
-                                {% include 'price' with variant.compare_at_price_with_tax %}
-                            </span>
-                            <span id="comparePrice" class="sale-tag large">
-                                {% assign compare_price = variant.compare_at_price_with_tax %}
-                                {% assign product_price = variant.price_with_tax %}
-                                {% include 'price-sale' %}
-                            </span>
-                         {% else %}
-                            <span class="old">
-                                {% include 'price' with variant.compare_at_price %}
-                            </span>
-                            <span id="comparePrice" class="sale-tag large">
-                                {% assign compare_price = variant.compare_at_price %}
-                                {% assign product_price = variant.price %}
-                                {% include 'price-sale' %}
-                            </span>
-                         {% endif %}                        
+                    {% if settings.show_prices_with_taxes %}
+                    <span class="old">
+                        {% include 'price' with variant.compare_at_price_with_tax %}
+                    </span>
+                    <span id="comparePrice" class="sale-tag large">
+                        {% assign compare_price = variant.compare_at_price_with_tax %}
+                        {% assign product_price = variant.price_with_tax %}
+                        {% include 'price-sale' %}
+                    </span>
+                    {% else %}
+                    <span class="old">
+                        {% include 'price' with variant.compare_at_price %}
+                    </span>
+                    <span id="comparePrice" class="sale-tag large">
+                        {% assign compare_price = variant.compare_at_price %}
+                        {% assign product_price = variant.price %}
+                        {% include 'price-sale' %}
+                    </span>
+                    {% endif %}
                     {% endif %}
                     <span id="productPrice" class="h1">
                         {% if settings.show_prices_with_taxes %}
-                            {% include 'price' with variant.price_with_tax %}                           
+                        {% include 'price' with variant.price_with_tax %}
                         {% else %}
-                            {% include 'price' with variant.price %}
-                        {% endif %} 
+                        {% include 'price' with variant.price %}
+                        {% endif %}
                     </span>
                 </li>
-                 <!--For sku-selector variations switches-->
+                <!--For sku-selector variations switches-->
                 <li ng-if="selectedVariation.id">
                     {% if settings.show_prices_with_taxes %}
-                        <span ng-if="selectedVariation.price.discountAmountWithTax.amount > 0" class="old">
-                            <small ng-bind="selectedVariation.price.listPriceWithTax.formattedAmount"></small>                      
-                        </span>
-                        <span ng-if="selectedVariation.price.discountAmountWithTax.amount > 0" id="comparePrice" class="sale-tag large" ng-bind="'{{ 'products.general.save_html' | t }}' + selectedVariation.price.discountAmountWithTax.formattedAmount">
-                        </span>
-                        <span id="productPrice" class="h1">
-                            <small ng-bind="selectedVariation.price.actualPriceWithTax.formattedAmount"></small>                           
-                        </span>
-                        <span>Inc VAT</span>      
+                    <span ng-if="selectedVariation.price.discountAmountWithTax.amount > 0" class="old">
+                        <small ng-bind="selectedVariation.price.listPriceWithTax.formattedAmount"></small>
+                    </span>
+                    <span ng-if="selectedVariation.price.discountAmountWithTax.amount > 0" id="comparePrice" class="sale-tag large" ng-bind="'{{ 'products.general.save_html' | t }}' + selectedVariation.price.discountAmountWithTax.formattedAmount">
+                    </span>
+                    <span id="productPrice" class="h1">
+                        <small ng-bind="selectedVariation.price.actualPriceWithTax.formattedAmount"></small>
+                    </span>
+                    <span>Inc VAT</span>
                     {% else %}
-                        <span ng-if="selectedVariation.price.discountAmount.amount > 0" class="old">
-                            <small ng-bind="selectedVariation.price.listPrice.formattedAmount"></small>
-                        </span>
-                        <span ng-if="selectedVariation.price.discountAmount.amount > 0" id="comparePrice" class="sale-tag large" ng-bind="'{{ 'products.general.save_html' | t }}' + selectedVariation.price.discountAmount.formattedAmount">
-                        </span>
-                        <span id="productPrice" class="h1">
-                            <small ng-bind="selectedVariation.price.actualPrice.formattedAmount"></small>
-                        </span>
+                    <span ng-if="selectedVariation.price.discountAmount.amount > 0" class="old">
+                        <small ng-bind="selectedVariation.price.listPrice.formattedAmount"></small>
+                    </span>
+                    <span ng-if="selectedVariation.price.discountAmount.amount > 0" id="comparePrice" class="sale-tag large" ng-bind="'{{ 'products.general.save_html' | t }}' + selectedVariation.price.discountAmount.formattedAmount">
+                    </span>
+                    <span id="productPrice" class="h1">
+                        <small ng-bind="selectedVariation.price.actualPrice.formattedAmount"></small>
+                    </span>
                     {% endif %}
                 </li>
 
@@ -122,6 +122,29 @@
                     <h1 ng-bind="product.Id"></h1>
                 </div>
 
+                <div class="note">
+                    <span ng-bind="'Deliver every 2 weeks'"></span>
+                </div>
+
+                <!--<div class="vc-form form-group" ng-init="isSubscribe = false">
+                    <div class="form-box">
+                        <div class="box-row">
+                            <label class="radio-box">
+                                <input ng-model="isSubscribe" ng-value="false" required="required" class="radio" name="opt" type="radio">
+                                <div class="switch"></div>
+                                <div class="name">One-time purchase</div>
+                            </label>
+                        </div>
+                        <div class="box-row">
+                            <label class="radio-box">
+                                <input ng-model="isSubscribe" ng-value="true" class="radio" name="opt" type="radio">
+                                <div class="switch"></div>
+                                <div>Deliver every 2 weeks, get 11% off</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>-->
+
                 {% if settings.product_quantity_enable %}
                 <label for="quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
                 <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-selector">
@@ -132,10 +155,10 @@
                     <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
                 </button>
                 {% if shop.quotes_enabled %}
-                    <button class="btn" id="addToQuote" type="button" ng-if="selectedVariation.isQuotable" ng-disabled="!selectedVariation.id" ng-click="addProductToActualQuoteRequest(selectedVariation, 1)">
-                        <span class="fa fa-calculator"></span>
-                        {{ 'products.general.add_to_quote' | t }}
-                    </button>
+                <button class="btn" id="addToQuote" type="button" ng-if="selectedVariation.isQuotable" ng-disabled="!selectedVariation.id" ng-click="addProductToActualQuoteRequest(selectedVariation, 1)">
+                    <span class="fa fa-calculator"></span>
+                    {{ 'products.general.add_to_quote' | t }}
+                </button>
                 {% endif%}
                 <span id="variantQuantity" class="variant-quantity"></span>
             </form>
@@ -176,7 +199,7 @@
         id: "{{ product.id }}",
         catalogId: "{{ product.catalog_id }}",
         categoryId: "{{ product.category_id }}"
-    }); 
+    });
 </script>
 
 <!--Template for variation images-->
@@ -193,7 +216,7 @@
                 <ul ng-if="selectedVariation.images.length > 0" class="product-photo-thumbs grid-uniform" id="productThumbs">
                     <li class="grid-item medium--down-one-quarter large--one-quarter" ng-repeat="image in selectedVariation.images">
                         <a href="" ng-click="selectedVariation.primaryImage = image" class="product-photo-thumb">
-                            <img ng-src="{% raw %}{{ image.url }}{% endraw %}"  alt="{% raw %}{{ image.alt }}{% endraw %}">
+                            <img ng-src="{% raw %}{{ image.url }}{% endraw %}" alt="{% raw %}{{ image.alt }}{% endraw %}">
                         </a>
                     </li>
                 </ul>

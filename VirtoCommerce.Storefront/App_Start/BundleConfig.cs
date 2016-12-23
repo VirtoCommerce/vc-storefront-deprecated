@@ -46,6 +46,7 @@ namespace VirtoCommerce.Storefront
             bundles.Add(
                 CreateStyleBundle("~/default-theme/css")
                     .Include("~/App_Data/Themes/default/assets/storefront.css", CssItemTransforms)
+					.Include("~/App_Data/Themes/default/assets/common-components.css", CssItemTransforms)
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider.css", CssItemTransforms)
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider-default-theme.css", CssItemTransforms));
 
@@ -59,11 +60,11 @@ namespace VirtoCommerce.Storefront
 
 
         protected virtual ScriptBundle CreateScriptBundle(string virtualPath)
-        {
+    {
             var bundle = new ScriptBundle(virtualPath);
 
             if (!Minify)
-            {
+        {
                 bundle.Transforms.Clear();
             }
 
