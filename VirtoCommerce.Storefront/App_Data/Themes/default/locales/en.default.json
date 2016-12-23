@@ -120,6 +120,7 @@
         "adding_to_cart_title": "Adding product to cart..."
     },
     "general": {
+        "loading": "Working...",
         "meta": {
             "tags": "Tagged \"{{ tags }}\"",
             "page": "Page {{ page }}"

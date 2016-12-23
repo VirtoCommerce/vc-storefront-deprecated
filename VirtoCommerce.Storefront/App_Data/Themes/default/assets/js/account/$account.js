@@ -20,7 +20,7 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
 .value('$routerRootComponent', 'vcAccountManager')
 
 .component('vcAccountManager', {
-    templateUrl: "themes/assets/js/account/account-manager.tpl.liquid",
+    templateUrl: "account-manager.tpl",
     bindings: {
         baseUrl: '<',
         customer: '<'
