@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -68,7 +69,8 @@ namespace VirtoCommerce.Storefront.Controllers
             var stream = _liquidThemeEngine.GetAssetStream(filePath);          
             if(stream == null)
             {                
-                var storeUrl = UrlBuilder.ToAppAbsolute("~/", WorkContext.CurrentStore, WorkContext.CurrentLanguage);
+                var absUrl = UrlBuilder.ToAppAbsolute("~/", WorkContext.CurrentStore, WorkContext.CurrentLanguage);
+                var storeUrl = new Uri(WorkContext.RequestUrl, absUrl).ToString(); 
                 //remove language from base url SitemapAPI will add it automatically
                 storeUrl = storeUrl.Replace("/" + WorkContext.CurrentLanguage.CultureName + "/", "/");
                 stream = await _siteMapApiClient.SitemapsModuleApiOperations.GenerateSitemapAsync(WorkContext.CurrentStore.Id, storeUrl, filePath);

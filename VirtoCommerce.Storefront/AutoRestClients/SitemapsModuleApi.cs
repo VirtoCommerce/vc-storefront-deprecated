@@ -2340,10 +2340,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SitemapSearchCriteria class.
         /// </summary>
-        public SitemapSearchCriteria(string storeId = default(string), string filename = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public SitemapSearchCriteria(string storeId = default(string), string location = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
             StoreId = storeId;
-            Filename = filename;
+            Location = location;
             ResponseGroup = responseGroup;
             ObjectType = objectType;
             ObjectTypes = objectTypes;
@@ -2360,8 +2360,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "filename")]
-        public string Filename { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "location")]
+        public string Location { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2493,15 +2493,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Sitemap class.
         /// </summary>
-        public Sitemap(string filename = default(string), string storeId = default(string), Store store = default(Store), System.Collections.Generic.IList<SitemapItem> items = default(System.Collections.Generic.IList<SitemapItem>), string urlTemplate = default(string), string baseUrl = default(string), int? totalItemsCount = default(int?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public Sitemap(string location = default(string), string storeId = default(string), System.Collections.Generic.IList<SitemapItem> items = default(System.Collections.Generic.IList<SitemapItem>), string urlTemplate = default(string), int? totalItemsCount = default(int?), System.Collections.Generic.IList<string> pagedLocations = default(System.Collections.Generic.IList<string>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
-            Filename = filename;
+            Location = location;
             StoreId = storeId;
-            Store = store;
             Items = items;
             UrlTemplate = urlTemplate;
-            BaseUrl = baseUrl;
             TotalItemsCount = totalItemsCount;
+            PagedLocations = pagedLocations;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
@@ -2511,18 +2510,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "filename")]
-        public string Filename { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "location")]
+        public string Location { get; set; }
 
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
         public string StoreId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "store")]
-        public Store Store { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2536,245 +2530,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "baseUrl")]
-        public string BaseUrl { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "totalItemsCount")]
         public int? TotalItemsCount { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
-        public System.DateTime? CreatedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
-        public System.DateTime? ModifiedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
-        public string CreatedBy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
-        public string ModifiedBy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class Store
-    {
-        /// <summary>
-        /// Initializes a new instance of the Store class.
-        /// </summary>
-        public Store() { }
-
-        /// <summary>
-        /// Initializes a new instance of the Store class.
-        /// </summary>
-        /// <param name="storeState">Possible values include: 'Open',
-        /// 'Closed', 'RestrictedAccess'</param>
-        public Store(string name = default(string), string description = default(string), string storeState = default(string), string timeZone = default(string), string country = default(string), string region = default(string), string defaultLanguage = default(string), string defaultCurrency = default(string), string catalog = default(string), bool? creditCardSavePolicy = default(bool?), string url = default(string), string secureUrl = default(string), string email = default(string), string adminEmail = default(string), bool? displayOutOfStock = default(bool?), FulfillmentCenter fulfillmentCenter = default(FulfillmentCenter), FulfillmentCenter returnsFulfillmentCenter = default(FulfillmentCenter), System.Collections.Generic.IList<string> languages = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> currencies = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> trustedGroups = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<TaxProvider> taxProviders = default(System.Collections.Generic.IList<TaxProvider>), System.Collections.Generic.IList<PaymentMethod> paymentMethods = default(System.Collections.Generic.IList<PaymentMethod>), System.Collections.Generic.IList<ShippingMethod> shippingMethods = default(System.Collections.Generic.IList<ShippingMethod>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), System.Collections.Generic.IList<string> scopes = default(System.Collections.Generic.IList<string>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
-        {
-            Name = name;
-            Description = description;
-            StoreState = storeState;
-            TimeZone = timeZone;
-            Country = country;
-            Region = region;
-            DefaultLanguage = defaultLanguage;
-            DefaultCurrency = defaultCurrency;
-            Catalog = catalog;
-            CreditCardSavePolicy = creditCardSavePolicy;
-            Url = url;
-            SecureUrl = secureUrl;
-            Email = email;
-            AdminEmail = adminEmail;
-            DisplayOutOfStock = displayOutOfStock;
-            FulfillmentCenter = fulfillmentCenter;
-            ReturnsFulfillmentCenter = returnsFulfillmentCenter;
-            Languages = languages;
-            Currencies = currencies;
-            TrustedGroups = trustedGroups;
-            TaxProviders = taxProviders;
-            PaymentMethods = paymentMethods;
-            ShippingMethods = shippingMethods;
-            SeoObjectType = seoObjectType;
-            SeoInfos = seoInfos;
-            ObjectType = objectType;
-            DynamicProperties = dynamicProperties;
-            Settings = settings;
-            Scopes = scopes;
-            CreatedDate = createdDate;
-            ModifiedDate = modifiedDate;
-            CreatedBy = createdBy;
-            ModifiedBy = modifiedBy;
-            Id = id;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'Open', 'Closed',
-        /// 'RestrictedAccess'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "storeState")]
-        public string StoreState { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "timeZone")]
-        public string TimeZone { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "country")]
-        public string Country { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "region")]
-        public string Region { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "defaultLanguage")]
-        public string DefaultLanguage { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "defaultCurrency")]
-        public string DefaultCurrency { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
-        public string Catalog { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "creditCardSavePolicy")]
-        public bool? CreditCardSavePolicy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "url")]
-        public string Url { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "secureUrl")]
-        public string SecureUrl { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "email")]
-        public string Email { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "adminEmail")]
-        public string AdminEmail { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "displayOutOfStock")]
-        public bool? DisplayOutOfStock { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "fulfillmentCenter")]
-        public FulfillmentCenter FulfillmentCenter { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "returnsFulfillmentCenter")]
-        public FulfillmentCenter ReturnsFulfillmentCenter { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "languages")]
-        public System.Collections.Generic.IList<string> Languages { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "currencies")]
-        public System.Collections.Generic.IList<string> Currencies { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "trustedGroups")]
-        public System.Collections.Generic.IList<string> TrustedGroups { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxProviders")]
-        public System.Collections.Generic.IList<TaxProvider> TaxProviders { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethods")]
-        public System.Collections.Generic.IList<PaymentMethod> PaymentMethods { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "shippingMethods")]
-        public System.Collections.Generic.IList<ShippingMethod> ShippingMethods { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "seoObjectType")]
-        public string SeoObjectType { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "seoInfos")]
-        public System.Collections.Generic.IList<SeoInfo> SeoInfos { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
-        public string ObjectType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
-        public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
-        public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "scopes")]
-        public System.Collections.Generic.IList<string> Scopes { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pagedLocations")]
+        public System.Collections.Generic.IList<string> PagedLocations { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2800,888 +2562,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class FulfillmentCenter
-    {
-        /// <summary>
-        /// Initializes a new instance of the FulfillmentCenter class.
-        /// </summary>
-        public FulfillmentCenter() { }
-
-        /// <summary>
-        /// Initializes a new instance of the FulfillmentCenter class.
-        /// </summary>
-        public FulfillmentCenter(string name = default(string), string description = default(string), int? maxReleasesPerPickBatch = default(int?), int? pickDelay = default(int?), string daytimePhoneNumber = default(string), string line1 = default(string), string line2 = default(string), string city = default(string), string stateProvince = default(string), string countryCode = default(string), string countryName = default(string), string postalCode = default(string), string id = default(string))
-        {
-            Name = name;
-            Description = description;
-            MaxReleasesPerPickBatch = maxReleasesPerPickBatch;
-            PickDelay = pickDelay;
-            DaytimePhoneNumber = daytimePhoneNumber;
-            Line1 = line1;
-            Line2 = line2;
-            City = city;
-            StateProvince = stateProvince;
-            CountryCode = countryCode;
-            CountryName = countryName;
-            PostalCode = postalCode;
-            Id = id;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "maxReleasesPerPickBatch")]
-        public int? MaxReleasesPerPickBatch { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "pickDelay")]
-        public int? PickDelay { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "daytimePhoneNumber")]
-        public string DaytimePhoneNumber { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "line1")]
-        public string Line1 { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "line2")]
-        public string Line2 { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "city")]
-        public string City { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "stateProvince")]
-        public string StateProvince { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "countryCode")]
-        public string CountryCode { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "countryName")]
-        public string CountryName { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "postalCode")]
-        public string PostalCode { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class TaxProvider
-    {
-        /// <summary>
-        /// Initializes a new instance of the TaxProvider class.
-        /// </summary>
-        public TaxProvider() { }
-
-        /// <summary>
-        /// Initializes a new instance of the TaxProvider class.
-        /// </summary>
-        public TaxProvider(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string id = default(string))
-        {
-            Code = code;
-            Name = name;
-            Description = description;
-            LogoUrl = logoUrl;
-            IsActive = isActive;
-            Priority = priority;
-            Settings = settings;
-            Id = id;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
-        public string LogoUrl { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
-        public bool? IsActive { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
-        public int? Priority { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
-        public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class SettingEntry
-    {
-        /// <summary>
-        /// Initializes a new instance of the SettingEntry class.
-        /// </summary>
-        public SettingEntry() { }
-
-        /// <summary>
-        /// Initializes a new instance of the SettingEntry class.
-        /// </summary>
-        /// <param name="valueType">Possible values include: 'ShortText',
-        /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean',
-        /// 'SecureString'</param>
-        public SettingEntry(string moduleId = default(string), string objectId = default(string), string objectType = default(string), string groupName = default(string), string name = default(string), string value = default(string), string valueType = default(string), System.Collections.Generic.IList<string> allowedValues = default(System.Collections.Generic.IList<string>), string defaultValue = default(string), bool? isArray = default(bool?), System.Collections.Generic.IList<string> arrayValues = default(System.Collections.Generic.IList<string>), string title = default(string), string description = default(string))
-        {
-            ModuleId = moduleId;
-            ObjectId = objectId;
-            ObjectType = objectType;
-            GroupName = groupName;
-            Name = name;
-            Value = value;
-            ValueType = valueType;
-            AllowedValues = allowedValues;
-            DefaultValue = defaultValue;
-            IsArray = isArray;
-            ArrayValues = arrayValues;
-            Title = title;
-            Description = description;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "moduleId")]
-        public string ModuleId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectId")]
-        public string ObjectId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
-        public string ObjectType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "groupName")]
-        public string GroupName { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
-        public string Value { get; set; }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'ShortText', 'LongText',
-        /// 'Integer', 'Decimal', 'DateTime', 'Boolean', 'SecureString'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
-        public string ValueType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "allowedValues")]
-        public System.Collections.Generic.IList<string> AllowedValues { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "defaultValue")]
-        public string DefaultValue { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isArray")]
-        public bool? IsArray { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "arrayValues")]
-        public System.Collections.Generic.IList<string> ArrayValues { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "title")]
-        public string Title { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class PaymentMethod
-    {
-        /// <summary>
-        /// Initializes a new instance of the PaymentMethod class.
-        /// </summary>
-        public PaymentMethod() { }
-
-        /// <summary>
-        /// Initializes a new instance of the PaymentMethod class.
-        /// </summary>
-        /// <param name="paymentMethodType">Possible values include:
-        /// 'Unknown', 'Standard', 'Redirection', 'PreparedForm'</param>
-        /// <param name="paymentMethodGroupType">Possible values include:
-        /// 'Paypal', 'BankCard', 'Alternative', 'Manual'</param>
-        public PaymentMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), bool? isAvailableForPartial = default(bool?), string currency = default(string), double? price = default(double?), double? priceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string paymentMethodType = default(string), string paymentMethodGroupType = default(string), string id = default(string))
-        {
-            Code = code;
-            Name = name;
-            Description = description;
-            LogoUrl = logoUrl;
-            IsActive = isActive;
-            Priority = priority;
-            IsAvailableForPartial = isAvailableForPartial;
-            Currency = currency;
-            Price = price;
-            PriceWithTax = priceWithTax;
-            Total = total;
-            TotalWithTax = totalWithTax;
-            DiscountAmount = discountAmount;
-            DiscountAmountWithTax = discountAmountWithTax;
-            Settings = settings;
-            TaxType = taxType;
-            TaxTotal = taxTotal;
-            TaxPercentRate = taxPercentRate;
-            TaxDetails = taxDetails;
-            PaymentMethodType = paymentMethodType;
-            PaymentMethodGroupType = paymentMethodGroupType;
-            Id = id;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
-        public string LogoUrl { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
-        public bool? IsActive { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
-        public int? Priority { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isAvailableForPartial")]
-        public bool? IsAvailableForPartial { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
-        public string Currency { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "price")]
-        public double? Price { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "priceWithTax")]
-        public double? PriceWithTax { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "total")]
-        public double? Total { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "totalWithTax")]
-        public double? TotalWithTax { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmount")]
-        public double? DiscountAmount { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discountAmountWithTax")]
-        public double? DiscountAmountWithTax { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
-        public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
-        public string TaxType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxTotal")]
-        public double? TaxTotal { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxPercentRate")]
-        public double? TaxPercentRate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxDetails")]
-        public System.Collections.Generic.IList<TaxDetail> TaxDetails { get; set; }
-
-        /// <summary>
-        /// Gets possible values include: 'Unknown', 'Standard',
-        /// 'Redirection', 'PreparedForm'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodType")]
-        public string PaymentMethodType { get; private set; }
-
-        /// <summary>
-        /// Gets possible values include: 'Paypal', 'BankCard', 'Alternative',
-        /// 'Manual'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "paymentMethodGroupType")]
-        public string PaymentMethodGroupType { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class TaxDetail
-    {
-        /// <summary>
-        /// Initializes a new instance of the TaxDetail class.
-        /// </summary>
-        public TaxDetail() { }
-
-        /// <summary>
-        /// Initializes a new instance of the TaxDetail class.
-        /// </summary>
-        public TaxDetail(double? rate = default(double?), double? amount = default(double?), string name = default(string))
-        {
-            Rate = rate;
-            Amount = amount;
-            Name = name;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "rate")]
-        public double? Rate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "amount")]
-        public double? Amount { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class ShippingMethod
-    {
-        /// <summary>
-        /// Initializes a new instance of the ShippingMethod class.
-        /// </summary>
-        public ShippingMethod() { }
-
-        /// <summary>
-        /// Initializes a new instance of the ShippingMethod class.
-        /// </summary>
-        public ShippingMethod(string code = default(string), string name = default(string), string description = default(string), string logoUrl = default(string), bool? isActive = default(bool?), int? priority = default(int?), string taxType = default(string), System.Collections.Generic.IList<SettingEntry> settings = default(System.Collections.Generic.IList<SettingEntry>), string id = default(string))
-        {
-            Code = code;
-            Name = name;
-            Description = description;
-            LogoUrl = logoUrl;
-            IsActive = isActive;
-            Priority = priority;
-            TaxType = taxType;
-            Settings = settings;
-            Id = id;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "logoUrl")]
-        public string LogoUrl { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
-        public bool? IsActive { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
-        public int? Priority { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "taxType")]
-        public string TaxType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "settings")]
-        public System.Collections.Generic.IList<SettingEntry> Settings { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class SeoInfo
-    {
-        /// <summary>
-        /// Initializes a new instance of the SeoInfo class.
-        /// </summary>
-        public SeoInfo() { }
-
-        /// <summary>
-        /// Initializes a new instance of the SeoInfo class.
-        /// </summary>
-        public SeoInfo(string name = default(string), string semanticUrl = default(string), string pageTitle = default(string), string metaDescription = default(string), string imageAltDescription = default(string), string metaKeywords = default(string), string storeId = default(string), string objectId = default(string), string objectType = default(string), bool? isActive = default(bool?), string languageCode = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
-        {
-            Name = name;
-            SemanticUrl = semanticUrl;
-            PageTitle = pageTitle;
-            MetaDescription = metaDescription;
-            ImageAltDescription = imageAltDescription;
-            MetaKeywords = metaKeywords;
-            StoreId = storeId;
-            ObjectId = objectId;
-            ObjectType = objectType;
-            IsActive = isActive;
-            LanguageCode = languageCode;
-            CreatedDate = createdDate;
-            ModifiedDate = modifiedDate;
-            CreatedBy = createdBy;
-            ModifiedBy = modifiedBy;
-            Id = id;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "semanticUrl")]
-        public string SemanticUrl { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "pageTitle")]
-        public string PageTitle { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "metaDescription")]
-        public string MetaDescription { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "imageAltDescription")]
-        public string ImageAltDescription { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "metaKeywords")]
-        public string MetaKeywords { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
-        public string StoreId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectId")]
-        public string ObjectId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
-        public string ObjectType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
-        public bool? IsActive { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
-        public string LanguageCode { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
-        public System.DateTime? CreatedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
-        public System.DateTime? ModifiedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
-        public string CreatedBy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
-        public string ModifiedBy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class DynamicObjectProperty
-    {
-        /// <summary>
-        /// Initializes a new instance of the DynamicObjectProperty class.
-        /// </summary>
-        public DynamicObjectProperty() { }
-
-        /// <summary>
-        /// Initializes a new instance of the DynamicObjectProperty class.
-        /// </summary>
-        /// <param name="valueType">Possible values include: 'Undefined',
-        /// 'ShortText', 'LongText', 'Integer', 'Decimal', 'DateTime',
-        /// 'Boolean', 'Html'</param>
-        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
-        {
-            ObjectId = objectId;
-            Values = values;
-            Name = name;
-            Description = description;
-            ObjectType = objectType;
-            IsArray = isArray;
-            IsDictionary = isDictionary;
-            IsMultilingual = isMultilingual;
-            IsRequired = isRequired;
-            ValueType = valueType;
-            DisplayNames = displayNames;
-            CreatedDate = createdDate;
-            ModifiedDate = modifiedDate;
-            CreatedBy = createdBy;
-            ModifiedBy = modifiedBy;
-            Id = id;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectId")]
-        public string ObjectId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "values")]
-        public System.Collections.Generic.IList<DynamicPropertyObjectValue> Values { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
-        public string ObjectType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isArray")]
-        public bool? IsArray { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isDictionary")]
-        public bool? IsDictionary { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isMultilingual")]
-        public bool? IsMultilingual { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isRequired")]
-        public bool? IsRequired { get; set; }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'Undefined', 'ShortText',
-        /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean', 'Html'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
-        public string ValueType { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "displayNames")]
-        public System.Collections.Generic.IList<DynamicPropertyName> DisplayNames { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
-        public System.DateTime? CreatedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
-        public System.DateTime? ModifiedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
-        public string CreatedBy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
-        public string ModifiedBy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class DynamicPropertyObjectValue
-    {
-        /// <summary>
-        /// Initializes a new instance of the DynamicPropertyObjectValue class.
-        /// </summary>
-        public DynamicPropertyObjectValue() { }
-
-        /// <summary>
-        /// Initializes a new instance of the DynamicPropertyObjectValue class.
-        /// </summary>
-        public DynamicPropertyObjectValue(string locale = default(string), object value = default(object))
-        {
-            Locale = locale;
-            Value = value;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "locale")]
-        public string Locale { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
-        public object Value { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class DynamicPropertyName
-    {
-        /// <summary>
-        /// Initializes a new instance of the DynamicPropertyName class.
-        /// </summary>
-        public DynamicPropertyName() { }
-
-        /// <summary>
-        /// Initializes a new instance of the DynamicPropertyName class.
-        /// </summary>
-        public DynamicPropertyName(string locale = default(string), string name = default(string))
-        {
-            Locale = locale;
-            Name = name;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "locale")]
-        public string Locale { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
 
     }
 }
@@ -3703,7 +2583,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SitemapItem class.
         /// </summary>
-        public SitemapItem(string sitemapId = default(string), string title = default(string), string imageUrl = default(string), string objectId = default(string), string objectType = default(string), string urlTemplate = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public SitemapItem(string sitemapId = default(string), string title = default(string), string imageUrl = default(string), string objectId = default(string), string objectType = default(string), string urlTemplate = default(string), System.Collections.Generic.IList<SitemapItemRecord> itemsRecords = default(System.Collections.Generic.IList<SitemapItemRecord>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             SitemapId = sitemapId;
             Title = title;
@@ -3711,6 +2591,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
             ObjectId = objectId;
             ObjectType = objectType;
             UrlTemplate = urlTemplate;
+            ItemsRecords = itemsRecords;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
@@ -3750,6 +2631,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "itemsRecords")]
+        public System.Collections.Generic.IList<SitemapItemRecord> ItemsRecords { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
         public System.DateTime? CreatedDate { get; set; }
 
@@ -3772,6 +2658,54 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class SitemapItemRecord
+    {
+        /// <summary>
+        /// Initializes a new instance of the SitemapItemRecord class.
+        /// </summary>
+        public SitemapItemRecord() { }
+
+        /// <summary>
+        /// Initializes a new instance of the SitemapItemRecord class.
+        /// </summary>
+        public SitemapItemRecord(string url = default(string), System.DateTime? modifiedDate = default(System.DateTime?), string updateFrequency = default(string), double? priority = default(double?))
+        {
+            Url = url;
+            ModifiedDate = modifiedDate;
+            UpdateFrequency = updateFrequency;
+            Priority = priority;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "updateFrequency")]
+        public string UpdateFrequency { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public double? Priority { get; set; }
 
     }
 }
@@ -3882,78 +2816,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "results")]
         public System.Collections.Generic.IList<SitemapItem> Results { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class Stream
-    {
-        /// <summary>
-        /// Initializes a new instance of the Stream class.
-        /// </summary>
-        public Stream() { }
-
-        /// <summary>
-        /// Initializes a new instance of the Stream class.
-        /// </summary>
-        public Stream(bool? canRead = default(bool?), bool? canSeek = default(bool?), bool? canTimeout = default(bool?), bool? canWrite = default(bool?), long? length = default(long?), long? position = default(long?), int? readTimeout = default(int?), int? writeTimeout = default(int?))
-        {
-            CanRead = canRead;
-            CanSeek = canSeek;
-            CanTimeout = canTimeout;
-            CanWrite = canWrite;
-            Length = length;
-            Position = position;
-            ReadTimeout = readTimeout;
-            WriteTimeout = writeTimeout;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "canRead")]
-        public bool? CanRead { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "canSeek")]
-        public bool? CanSeek { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "canTimeout")]
-        public bool? CanTimeout { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "canWrite")]
-        public bool? CanWrite { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "length")]
-        public long? Length { get; private set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "position")]
-        public long? Position { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "readTimeout")]
-        public int? ReadTimeout { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "writeTimeout")]
-        public int? WriteTimeout { get; set; }
 
     }
 }

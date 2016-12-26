@@ -25,14 +25,15 @@ namespace VirtoCommerce.Storefront.BackgroundJobs
             _urlBuilder = urlBuilder;
         }
 
-        public void GenerateStoreSitemap(IEnumerable<Store> stores)
+        public void GenerateStoreSitemap(IEnumerable<Store> stores, Uri requestUri)
         {
             foreach (var store in stores)
             {
                 var storeThemeName = string.IsNullOrEmpty(store.ThemeName) ? "default" : store.ThemeName;
                 var storeThemePath = Path.Combine(store.Id, storeThemeName, "assets");
 
-                var storeUrl = _urlBuilder.ToAppAbsolute("~/", store, store.DefaultLanguage);
+                var absUrl = _urlBuilder.ToAppAbsolute("~/", store, store.DefaultLanguage);
+                var storeUrl = new Uri(requestUri, absUrl).ToString();
                 var sitemapLocations = _siteMapApiClient.SitemapsModuleApiOperations.GetSitemapsSchema(store.Id);
                 //remove language from base url SitemapAPI will add it automatically
                 storeUrl = storeUrl.Replace("/" + store.DefaultLanguage.CultureName + "/", "/");
