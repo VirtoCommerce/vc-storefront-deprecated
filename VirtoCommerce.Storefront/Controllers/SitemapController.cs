@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi;
+using VirtoCommerce.Storefront.BackgroundJobs;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Services;
@@ -13,14 +15,17 @@ namespace VirtoCommerce.Storefront.Controllers
 {
     public class SitemapController : StorefrontControllerBase
     {
-        private readonly ILiquidThemeEngine _themeEngine;
         private readonly ISitemapsModuleApiClient _siteMapApiClient;
+        private readonly ILiquidThemeEngine _liquidThemeEngine;
+        private readonly GenerateSitemapJob _sitemapJob;
 
-        public SitemapController(WorkContext context, IStorefrontUrlBuilder urlBuilder, ISitemapsModuleApiClient siteMapApiClient, ILiquidThemeEngine themeEngine)
+        public SitemapController(WorkContext context, IStorefrontUrlBuilder urlBuilder, ISitemapsModuleApiClient siteMapApiClient,
+                                 ILiquidThemeEngine themeEngine, GenerateSitemapJob sitemapJob)
             : base(context, urlBuilder)
         {
-            _themeEngine = themeEngine;
+            _liquidThemeEngine = themeEngine;
             _siteMapApiClient = siteMapApiClient;
+            _sitemapJob = sitemapJob;
         }
 
         /// <summary>
@@ -58,17 +63,11 @@ namespace VirtoCommerce.Storefront.Controllers
 
         private async Task<Stream> TryGetSitemapStream(string filePath)
         {
-            var stream = _themeEngine.GetAssetStream("sitemap.xml");
+            //If sitemap files have big size for generation on the fly you might place already generated xml files in the theme/assets folder or schedule 
+            // execution of GenerateSitemapJob.GenerateStoreSitemap method for pre-generation sitemaps  
+            var stream = _liquidThemeEngine.GetAssetStream(filePath);          
             if(stream == null)
-            {
-                var path = Server.MapPath("~/" + filePath);
-                if (System.IO.File.Exists(path))
-                {
-                    stream = System.IO.File.OpenRead(path);
-                }
-            }
-            if(stream == null)
-            {
+            {                
                 var storeUrl = UrlBuilder.ToAppAbsolute("~/", WorkContext.CurrentStore, WorkContext.CurrentLanguage);
                 //remove language from base url SitemapAPI will add it automatically
                 storeUrl = storeUrl.Replace("/" + WorkContext.CurrentLanguage.CultureName + "/", "/");

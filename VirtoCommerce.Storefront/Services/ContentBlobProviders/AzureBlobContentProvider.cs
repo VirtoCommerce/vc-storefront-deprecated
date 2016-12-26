@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using CacheManager.Core;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -64,6 +65,19 @@ namespace VirtoCommerce.Storefront.Services
             return _container.GetBlobReference(path).OpenRead();
         }
 
+        /// <summary>
+        /// Open blob for write by path
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns>blob stream</returns>
+        public virtual Stream OpenWrite(string path)
+        {
+            //Container name
+            path = NormalizePath(path);
+            var blob = _container.GetBlockBlobReference(path);
+            blob.Properties.ContentType = MimeMapping.GetMimeMapping(Path.GetFileName(path));
+            return blob.OpenWrite();
+        }
         /// <summary>
         /// Check that blob or folder with passed path exist
         /// </summary>

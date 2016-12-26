@@ -465,6 +465,7 @@
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
     <Compile Include="AutoRestClients\SitemapsModuleApi.cs" />
     <Compile Include="AutoRestClients\StoreModuleApi.cs" />
+    <Compile Include="BackgroundJobs\GenerateSitemapJob.cs" />
     <Compile Include="Binders\CartTypesModelBinder.cs" />
     <Compile Include="Common\AppBuilderExtension.cs" />
     <Compile Include="Common\FeedResult.cs" />

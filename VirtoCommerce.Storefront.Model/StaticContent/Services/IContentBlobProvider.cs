@@ -16,6 +16,7 @@ namespace VirtoCommerce.Storefront.Model.Services
         event RenamedEventHandler Renamed;
         bool PathExists(string path);
         Stream OpenRead(string path);
+        Stream OpenWrite(string path);
         IEnumerable<string> Search(string path, string searchPattern, bool recursive);
     }
 

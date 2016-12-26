@@ -36,6 +36,23 @@ namespace VirtoCommerce.Storefront.Services
         }
 
         /// <summary>
+        /// Open blob for write by path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>blob stream</returns>
+        public virtual Stream OpenWrite(string path)
+        {
+            path = NormalizePath(path);
+            var folderPath = Path.GetDirectoryName(path);
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            return File.Open(path, FileMode.Create);
+        }
+
+        /// <summary>
         /// Check that blob or folder with passed path exist
         /// </summary>
         /// <param name="path">relative path /folder/blob.md</param>
