@@ -40,6 +40,13 @@ namespace VirtoCommerce.Storefront.Test
         }
 
         [Fact]
+        public void When_VirtualPathIsNull_Expect_Null()
+        {
+            var result = _builder.ToAppAbsolute(null, null, null);
+            Assert.Null(result);
+        }
+
+        [Fact]
         public void When_StoreIsNullAndLanguageIsNull_Expect_VirtualRoot()
         {
             var result = _builder.ToAppRelative("/", null, null);

@@ -38,9 +38,11 @@ namespace VirtoCommerce.Storefront.Services
         {
             if (rewards != null)
             {
+                var rewardsMap = owners.Select(x => x.Currency).Distinct().ToDictionary(x => x, x => rewards.Select(r => r.ToPromotionReward(x)).ToArray());
+
                 foreach (var owner in owners)
                 {
-                    owner.ApplyRewards(rewards.Select(r => r.ToPromotionReward(owner.Currency)));
+                    owner.ApplyRewards(rewardsMap[owner.Currency]);
                 }
             }
         }

@@ -4907,10 +4907,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Property class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'shortText',
-        /// 'longText', 'number', 'dateTime', 'boolean'</param>
-        /// <param name="type">Possible values include: 'product',
-        /// 'variation', 'category', 'catalog'</param>
+        /// <param name="valueType">Possible values include: 'ShortText',
+        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
+        /// <param name="type">Possible values include: 'Product',
+        /// 'Variation', 'Category', 'Catalog'</param>
         public Property(bool? isReadOnly = default(bool?), bool? isManageable = default(bool?), bool? isNew = default(bool?), string id = default(string), string catalogId = default(string), string categoryId = default(string), string name = default(string), bool? required = default(bool?), bool? dictionary = default(bool?), bool? multivalue = default(bool?), bool? multilanguage = default(bool?), string valueType = default(string), string type = default(string), System.Collections.Generic.IList<PropertyValue> values = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<PropertyDictionaryValue> dictionaryValues = default(System.Collections.Generic.IList<PropertyDictionaryValue>), System.Collections.Generic.IList<PropertyAttribute> attributes = default(System.Collections.Generic.IList<PropertyAttribute>), System.Collections.Generic.IList<PropertyDisplayName> displayNames = default(System.Collections.Generic.IList<PropertyDisplayName>), bool? isInherited = default(bool?))
         {
             IsReadOnly = isReadOnly;
@@ -4989,15 +4989,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         public bool? Multilanguage { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'shortText', 'longText',
-        /// 'number', 'dateTime', 'boolean'
+        /// Gets or sets possible values include: 'ShortText', 'LongText',
+        /// 'Number', 'DateTime', 'Boolean'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'product', 'variation',
-        /// 'category', 'catalog'
+        /// Gets or sets possible values include: 'Product', 'Variation',
+        /// 'Category', 'Catalog'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
@@ -5047,8 +5047,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PropertyValue class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'shortText',
-        /// 'longText', 'number', 'dateTime', 'boolean'</param>
+        /// <param name="valueType">Possible values include: 'ShortText',
+        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
         public PropertyValue(string id = default(string), string propertyName = default(string), string propertyId = default(string), string languageCode = default(string), string alias = default(string), string valueType = default(string), string valueId = default(string), string value = default(string), bool? isInherited = default(bool?))
         {
             Id = id;
@@ -5088,8 +5088,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         public string Alias { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'shortText', 'longText',
-        /// 'number', 'dateTime', 'boolean'
+        /// Gets or sets possible values include: 'ShortText', 'LongText',
+        /// 'Number', 'DateTime', 'Boolean'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -5405,8 +5405,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SortInfo class.
         /// </summary>
-        /// <param name="sortDirection">Possible values include: 'ascending',
-        /// 'descending'</param>
+        /// <param name="sortDirection">Possible values include: 'Ascending',
+        /// 'Descending'</param>
         public SortInfo(string sortColumn = default(string), string sortDirection = default(string))
         {
             SortColumn = sortColumn;
@@ -5419,7 +5419,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         public string SortColumn { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'ascending', 'descending'
+        /// Gets or sets possible values include: 'Ascending', 'Descending'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sortDirection")]
         public string SortDirection { get; set; }

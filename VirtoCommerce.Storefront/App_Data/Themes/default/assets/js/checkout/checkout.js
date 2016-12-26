@@ -182,7 +182,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             } else if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'redirection' && orderProcessingResult.redirectUrl) {
                 $window.location.href = orderProcessingResult.redirectUrl;
             } else {
-                if (!$scope.customer.HasAccount) {
+                if (!$scope.customer.isRegisteredUser) {
                     $scope.outerRedirect($scope.baseUrl + 'cart/thanks/' + order.number);
                 } else {
                     $scope.outerRedirect($scope.baseUrl + 'account/order/' + order.number);

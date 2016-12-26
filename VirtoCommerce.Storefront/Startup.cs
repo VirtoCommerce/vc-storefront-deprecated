@@ -38,7 +38,9 @@ using VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
+using VirtoCommerce.Storefront.BackgroundJobs;
 using VirtoCommerce.Storefront.Binders;
 using VirtoCommerce.Storefront.Builders;
 using VirtoCommerce.Storefront.Common;
@@ -213,6 +215,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IQuoteModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new QuoteModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
             container.RegisterType<ISearchApiModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SearchApiModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
             container.RegisterType<IStoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new StoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
+            container.RegisterType<ISitemapsModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SitemapsModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
 
             container.RegisterType<IMarketingService, MarketingServiceImpl>();
             container.RegisterType<IPromotionEvaluator, PromotionEvaluator>();
@@ -269,11 +272,13 @@ namespace VirtoCommerce.Storefront
             //Static content service
             var staticContentService = new StaticContentServiceImpl(shopifyLiquidEngine, localCacheManager, workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>(), StaticContentItemFactory.GetContentItemFromPath, staticContentBlobProvider);
             container.RegisterInstance<IStaticContentService>(staticContentService);
+            //Register generate sitemap background job
+            container.RegisterType<GenerateSitemapJob>(new InjectionFactory(c => new GenerateSitemapJob(themesBlobProvider, c.Resolve<ISitemapsModuleApiClient>(), c.Resolve<IStorefrontUrlBuilder>())));
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters, workContextFactory, () => container.Resolve<CommonController>());
             RouteConfig.RegisterRoutes(RouteTable.Routes, container.Resolve<ISeoRouteService>(), workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>());
             AuthConfig.ConfigureAuth(app, () => container.Resolve<IStorefrontUrlBuilder>());
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            container.Resolve<BundleConfig>().RegisterBundles(BundleTable.Bundles);
 
             //This special binders need because all these types not contains default ctor and Money with Currency properties
             ModelBinders.Binders.Add(typeof(Model.Cart.Shipment), new CartModelBinder<Model.Cart.Shipment>(workContextFactory));

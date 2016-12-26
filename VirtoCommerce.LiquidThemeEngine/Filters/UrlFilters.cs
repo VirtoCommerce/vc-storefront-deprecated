@@ -156,6 +156,23 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
         }
 
         /// <summary>
+        /// Returns the URL of a file in the "assets/static" folder of a theme.
+        /// {{ 'shop.css' | static_asset_url }}
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string StaticAssetUrl(string input)
+        {
+            string retVal = null;
+            if (input != null)
+            {
+                var themeAdaptor = (ShopifyLiquidThemeEngine)Template.FileSystem;
+                retVal = themeAdaptor.GetAssetAbsoluteUrl("static/" + input.TrimStart('/'));
+            }
+            return retVal;
+        }
+
+        /// <summary>
         /// Returns the URL of a global assets that are found on Shopify's servers. 
         /// In virtocommerce is a same asset folder
         /// customer.css

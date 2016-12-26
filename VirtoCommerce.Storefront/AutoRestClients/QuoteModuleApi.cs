@@ -1875,8 +1875,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SortInfo class.
         /// </summary>
-        /// <param name="sortDirection">Possible values include: 'ascending',
-        /// 'descending'</param>
+        /// <param name="sortDirection">Possible values include: 'Ascending',
+        /// 'Descending'</param>
         public SortInfo(string sortColumn = default(string), string sortDirection = default(string))
         {
             SortColumn = sortColumn;
@@ -1889,7 +1889,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public string SortColumn { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'ascending', 'descending'
+        /// Gets or sets possible values include: 'Ascending', 'Descending'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sortDirection")]
         public string SortDirection { get; set; }
@@ -2421,8 +2421,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Address class.
         /// </summary>
-        /// <param name="addressType">Possible values include: 'billing',
-        /// 'shipping', 'billingAndShipping'</param>
+        /// <param name="addressType">Possible values include: 'Billing',
+        /// 'Shipping', 'BillingAndShipping'</param>
         public Address(string addressType = default(string), string organization = default(string), string countryCode = default(string), string countryName = default(string), string city = default(string), string postalCode = default(string), string zip = default(string), string line1 = default(string), string line2 = default(string), string regionId = default(string), string regionName = default(string), string firstName = default(string), string middleName = default(string), string lastName = default(string), string phone = default(string), string email = default(string))
         {
             AddressType = addressType;
@@ -2444,8 +2444,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets possible values include: 'billing', 'shipping',
-        /// 'billingAndShipping'
+        /// Gets or sets possible values include: 'Billing', 'Shipping',
+        /// 'BillingAndShipping'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "addressType")]
         public string AddressType { get; set; }
@@ -3154,10 +3154,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Property class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'shortText',
-        /// 'longText', 'number', 'dateTime', 'boolean'</param>
-        /// <param name="type">Possible values include: 'product',
-        /// 'variation', 'category', 'catalog'</param>
+        /// <param name="valueType">Possible values include: 'ShortText',
+        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
+        /// <param name="type">Possible values include: 'Product',
+        /// 'Variation', 'Category', 'Catalog'</param>
         public Property(string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category), string name = default(string), bool? required = default(bool?), bool? dictionary = default(bool?), bool? multivalue = default(bool?), bool? multilanguage = default(bool?), string valueType = default(string), string type = default(string), System.Collections.Generic.IList<PropertyAttribute> attributes = default(System.Collections.Generic.IList<PropertyAttribute>), System.Collections.Generic.IList<PropertyDictionaryValue> dictionaryValues = default(System.Collections.Generic.IList<PropertyDictionaryValue>), System.Collections.Generic.IList<PropertyDisplayName> displayNames = default(System.Collections.Generic.IList<PropertyDisplayName>), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             CatalogId = catalogId;
@@ -3228,15 +3228,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public bool? Multilanguage { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'shortText', 'longText',
-        /// 'number', 'dateTime', 'boolean'
+        /// Gets or sets possible values include: 'ShortText', 'LongText',
+        /// 'Number', 'DateTime', 'Boolean'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'product', 'variation',
-        /// 'category', 'catalog'
+        /// Gets or sets possible values include: 'Product', 'Variation',
+        /// 'Category', 'Catalog'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
@@ -3486,8 +3486,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PropertyValue class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'shortText',
-        /// 'longText', 'number', 'dateTime', 'boolean'</param>
+        /// <param name="valueType">Possible values include: 'ShortText',
+        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
         public PropertyValue(string propertyId = default(string), string propertyName = default(string), Property property = default(Property), string alias = default(string), string valueId = default(string), object value = default(object), string valueType = default(string), string languageCode = default(string), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             PropertyId = propertyId;
@@ -3537,8 +3537,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public object Value { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'shortText', 'longText',
-        /// 'number', 'dateTime', 'boolean'
+        /// Gets or sets possible values include: 'ShortText', 'LongText',
+        /// 'Number', 'DateTime', 'Boolean'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -4738,8 +4738,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the InventoryInfo class.
         /// </summary>
-        /// <param name="status">Possible values include: 'disabled',
-        /// 'enabled', 'ignored'</param>
+        /// <param name="status">Possible values include: 'Disabled',
+        /// 'Enabled', 'Ignored'</param>
         public InventoryInfo(System.DateTime? createdDate = default(System.DateTime?), string createdBy = default(string), System.DateTime? modifiedDate = default(System.DateTime?), string modifiedBy = default(string), string fulfillmentCenterId = default(string), string productId = default(string), long? inStockQuantity = default(long?), long? reservedQuantity = default(long?), long? reorderMinQuantity = default(long?), long? preorderQuantity = default(long?), long? backorderQuantity = default(long?), bool? allowBackorder = default(bool?), bool? allowPreorder = default(bool?), long? inTransit = default(long?), System.DateTime? preorderAvailabilityDate = default(System.DateTime?), System.DateTime? backorderAvailabilityDate = default(System.DateTime?), string status = default(string))
         {
             CreatedDate = createdDate;
@@ -4842,8 +4842,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public System.DateTime? BackorderAvailabilityDate { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'disabled', 'enabled',
-        /// 'ignored'
+        /// Gets or sets possible values include: 'Disabled', 'Enabled',
+        /// 'Ignored'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "status")]
         public string Status { get; set; }
@@ -5024,14 +5024,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the DynamicObjectProperty class.
         /// </summary>
-        /// <param name="valueType">Possible values include: 'undefined',
-        /// 'shortText', 'longText', 'integer', 'decimal', 'dateTime',
-        /// 'boolean', 'html'</param>
-        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        /// <param name="valueType">Possible values include: 'Undefined',
+        /// 'ShortText', 'LongText', 'Integer', 'Decimal', 'DateTime',
+        /// 'Boolean', 'Html'</param>
+        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ObjectId = objectId;
             Values = values;
             Name = name;
+            Description = description;
             ObjectType = objectType;
             IsArray = isArray;
             IsDictionary = isDictionary;
@@ -5063,6 +5064,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
@@ -5087,8 +5093,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public bool? IsRequired { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'undefined', 'shortText',
-        /// 'longText', 'integer', 'decimal', 'dateTime', 'boolean', 'html'
+        /// Gets or sets possible values include: 'Undefined', 'ShortText',
+        /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean', 'Html'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -5215,8 +5221,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the OperationLog class.
         /// </summary>
-        /// <param name="operationType">Possible values include: 'detached',
-        /// 'unchanged', 'added', 'deleted', 'modified'</param>
+        /// <param name="operationType">Possible values include: 'Detached',
+        /// 'Unchanged', 'Added', 'Deleted', 'Modified'</param>
         public OperationLog(string objectType = default(string), string objectId = default(string), string operationType = default(string), string detail = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ObjectType = objectType;
@@ -5241,8 +5247,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         public string ObjectId { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'detached', 'unchanged',
-        /// 'added', 'deleted', 'modified'
+        /// Gets or sets possible values include: 'Detached', 'Unchanged',
+        /// 'Added', 'Deleted', 'Modified'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "operationType")]
         public string OperationType { get; set; }

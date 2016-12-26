@@ -32,7 +32,7 @@
 					<a class="breadcrumb__link" ng-href="{{ 'cart' | absolute_url }}">{{ 'checkout.cart' | t }}</a>
 				</li>
 				<li class="breadcrumb__item" ng-repeat="step in checkout.wizard.steps" ng-if="!step.stepDisabled && !step.final" ng-class="{ 'breadcrumb__item--current': step.isActive, 'breadcrumb__item--completed': !step.isActive }">
-					<a class="breadcrumb__link" ng-href="javascript:;" ng-click="checkout.wizard.goToStep(step)" ng-if="!step.isActive" ng-bind="step.title"></a>
+					<a class="breadcrumb__link" ng-click="checkout.wizard.goToStep(step)" ng-if="!step.isActive" ng-bind="step.title"></a>
 					<span ng-class="current" ng-if="step.isActive" ng-bind="step.title"></span>
 				</li>
 			</ul>
