@@ -52,6 +52,9 @@ storefrontApp.service('catalogService', ['$http', function ($http) {
     return {
         getProduct: function (productIds) {
             return $http.get('storefrontapi/products?productIds=' + productIds + '&t=' + new Date().getTime());
+        },
+        search: function (criteria) {
+            return $http.post('storefrontapi/catalog/search', { searchCriteria: criteria });
         }
     }
 }]);

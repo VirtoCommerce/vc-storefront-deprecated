@@ -4,19 +4,22 @@
         <span>{{ 'cart.general.loading_cart_message' | t }}</span>
     </div>
 
+    <div class="ajax-informer" ng-if="cart" ng-class="{ 'fade': cartIsUpdating }">
+        <div class="loader"></div>
+        <span>{{ 'cart.general.updating_cart_message' | t }}</span>
+    </div>
+
+    <h1>{{ 'cart.general.title' | t }}</h1>
+    {% include 'quick-order-section' %}
+
     <span ng-if="cart.itemsCount == 0" ng-cloak="">
         <h2>{{ 'cart.general.empty' | t }}</h2>
         <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
     </span>
 
     <div ng-show="cart.itemsCount > 0" ng-cloak="">
+        <div ng-init="setCartForm(formCart)"></div>
         <form name="formCart" novalidate="novalidate">
-            <div ng-init="setCartForm(formCart)"></div>
-            <div class="ajax-informer" ng-class="{ 'fade': cartIsUpdating }">
-                <div class="loader"></div>
-                <span>{{ 'cart.general.updating_cart_message' | t }}</span>
-            </div>
-            <h1 class="h2">{{ 'cart.general.title' | t }}</h1>
             <div class="cart-row" ng-repeat="lineItem in cart.items">
                 <div class="grid">
                     <div class="grid-item large--seven-twelfths">

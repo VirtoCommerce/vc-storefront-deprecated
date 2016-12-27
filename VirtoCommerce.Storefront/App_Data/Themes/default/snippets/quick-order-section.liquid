@@ -1,0 +1,28 @@
+﻿<div class="grid">
+    <div class="grid-item large--one-half">
+        <p>{{ 'cart.general.quick_add_description' | t }}</p>
+        <form class="input-group" name="formQuickAdd" novalidate="novalidate">
+            <input class="input-group-field" id="productSkuOrName" name="productSkuOrName" placeholder="Start enter a SKU or product name to search..." required="required" type="text" ng-model="productSkuOrName" ng-change="searchProduct()" />
+            <button class="btn btn--small" type="button" ng-disabled="!formQuickAdd.$valid || !selectedSearchedProduct || cartIsUpdating" ng-click="addProductToCart(selectedSearchedProduct, 1)">{{ 'cart.general.add' | t }}</button>
+            <div class="loader" ng-show="productSearchProcessing"></div>
+            <div class="product-search-result" ng-show="productSearchResult">
+                <div class="item" ng-if="!productSearchResult.length">
+                    {{ 'cart.general.product_search_empty' | t }}
+                </div>
+                <div class="item" ng-repeat="product in productSearchResult" ng-if="productSearchResult.length" ng-click="selectSearchedProduct(product)">
+                    <div class="item-img">
+                        <div class="no-product-image" ng-if="!product.images || !product.images.length">
+                            <img src="{{ 'no-image.svg' | asset_url }}" />
+                        </div>
+                        <img ng-src="{{ product.images[0].url }}" ng-if="product.images && product.images.length" />
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name" ng-bind="product.name"></div>
+                        <div class="item-price" ng-bind="product.price.actualPrice.formattedAmount"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
