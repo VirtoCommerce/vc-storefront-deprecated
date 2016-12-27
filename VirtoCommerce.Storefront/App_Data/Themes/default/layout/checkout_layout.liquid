@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0" />
 
     <title>{{ shop.name }} - {{ 'checkout.title' | t }}</title>
+    {% include 'google-tag-manager-head' %}
 
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
     {{ 'checkout.css' | global_asset_url | stylesheet_tag }}
@@ -24,6 +25,7 @@
     {{ content_for_header }}
 </head>
 <body ng-controller="checkoutController" ng-init="baseUrl='{{ '/' | absolute_url }}'">
+    {% include 'google-tag-manager-body' %}
     <div class="banner">
         <div class="wrap">
             <a class="logo logo--left" href="{{ '/' | absolute_url }}">
