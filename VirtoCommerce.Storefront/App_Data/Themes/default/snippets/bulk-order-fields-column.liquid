@@ -1,0 +1,19 @@
+﻿{% assign rows_count = 10 %}
+{% assign tens = column_index | times: rows_count %}
+<div class="grid">
+    <div class="grid-item seven-twelfths"><strong>{{ 'bulk_order.general.sku_field_header' | t }}</strong></div>
+    <div class="grid-item five-twelfths"><strong>{{ 'bulk_order.general.quantity_field_header' | t }}</strong></div>
+</div>
+{% for i in (1..rows_count) %}
+    {% assign item_index = i | plus: tens | minus: 1 %}
+    <div class="grid">
+        <div class="cart-row">
+            <div class="grid-item seven-twelfths">
+                <input name="[{{ item_index }}].Sku" type="text" value="" />
+            </div>
+            <div class="grid-item five-twelfths">
+                <input name="[{{ item_index }}].Quantity" min="1" type="number" value="1" />
+            </div>
+        </div>
+    </div>
+{% endfor %}

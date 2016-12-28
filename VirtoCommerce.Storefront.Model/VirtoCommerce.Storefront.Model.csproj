@@ -63,6 +63,7 @@
     <Compile Include="AmountType.cs" />
     <Compile Include="Attachment.cs" />
     <Compile Include="BankCardInfo.cs" />
+    <Compile Include="BulkOrder\BulkOrderItem.cs" />
     <Compile Include="Cart\CartShipmentItem.cs" />
     <Compile Include="Cart\Factories\CartFactory.cs" />
     <Compile Include="Cart\Services\ICartBuilder.cs" />

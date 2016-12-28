@@ -108,11 +108,15 @@ namespace VirtoCommerce.Storefront
             //Collections  (Shopify compatible)
             routes.AddStorefrontRoute("Shopify.Collections", "collections", defaults: new { controller = "ShopifyCompatibility", action = "Collections" });
 
-
             // QuoteRequest
             routes.AddStorefrontRoute("QuoteRequest.CurrentQuoteRequest", "quoterequest", defaults: new { controller = "QuoteRequest", action = "CurrentQuoteRequest" });
             routes.AddStorefrontRoute("Account.QuoteRequests", "account/quoterequests", defaults: new { controller = "QuoteRequest", action = "QuoteRequests" });
             routes.AddStorefrontRoute("Account.QuoteRequestByNumber", "quoterequest/{number}", defaults: new { controller = "QuoteRequest", action = "QuoteRequestByNumber" });
+
+            // Bulk order
+            routes.AddStorefrontRoute("BulkOrder.Index", "bulkorder", defaults: new { controller = "BulkOrder", action = "Index" });
+            routes.AddStorefrontRoute("BulkOrder.AddFieldItems", "bulkorder/addfielditems", defaults: new { controller = "BulkOrder", action = "AddFieldItems" });
+            routes.AddStorefrontRoute("BulkOrder.AddCsvItems", "bulkorder/addcsvitems", defaults: new { controller = "BulkOrder", action = "AddCsvItems" });
 
             // CatalogSearch
             routes.AddStorefrontRoute("CatalogSearch.CategoryBrowsing", "search/{categoryId}", defaults: new { controller = "CatalogSearch", action = "CategoryBrowsing" });
