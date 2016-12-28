@@ -101,7 +101,8 @@ namespace VirtoCommerce.Storefront.Services
             var workContext = _workContextFactory();
 
             var retVal = (await _catalogModuleApi.CatalogModuleCategories.GetCategoriesByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
-
+            //Set  lazy loading for child categories 
+            SetChildCategoriesLazyLoading(retVal);
             return retVal;
         }
 
@@ -167,9 +168,11 @@ namespace VirtoCommerce.Storefront.Services
             var searchCriteria = criteria.ToCategorySearchDto(workContext);
             var result = await _searchApi.SearchApiModule.SearchCategoriesAsync(workContext.CurrentStore.Id, searchCriteria);
 
-            //API temporary does not support paginating request to categories (that's uses PagedList with superset instead StaticPagedList)
-            return new PagedList<Category>(result.Categories.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
-        }
+            var retVal = new PagedList<Category>(result.Categories.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
+            //Set  lazy loading for child categories 
+            SetChildCategoriesLazyLoading(retVal.ToArray());
+            return retVal;
+    }
 
         private async Task<CatalogSearchResult> InnerSearchProductsAsync(ProductSearchCriteria criteria, WorkContext workContext)
         {
@@ -309,5 +312,29 @@ namespace VirtoCommerce.Storefront.Services
                 item.Inventory = inventories.Where(x => x.ProductId == item.Id).Select(x => x.ToInventory()).FirstOrDefault();
             }
         }
+
+        protected virtual void SetChildCategoriesLazyLoading(Category[] categories)
+        {
+            foreach (var category in categories)
+            {
+                //Lazy loading for child categories
+                category.Categories = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos2) =>
+                {
+                    var categorySearchCriteria = new CategorySearchCriteria()
+                    {
+                        PageNumber = pageNumber,
+                        PageSize = pageSize,
+                        Outline = "/" + category.Outline
+                    };
+                    if (!sortInfos2.IsNullOrEmpty())
+                    {
+                        categorySearchCriteria.SortBy = SortInfo.ToString(sortInfos2);
+                    }
+                    var searchResult = SearchCategories(categorySearchCriteria);
+                    return searchResult;
+                }, 1, CategorySearchCriteria.DefaultPageSize);
+            }
+        }
+
     }
 }

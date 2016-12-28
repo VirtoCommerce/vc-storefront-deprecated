@@ -141,5 +141,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// Shop metafields
         /// </summary>
         public MetaFieldNamespacesCollection Metafields { get; set; }
+
+        /// <summary>
+        /// Child collections
+        /// </summary>
+        public IMutablePagedList<Collection> Collections { get; set; }
     }
 }

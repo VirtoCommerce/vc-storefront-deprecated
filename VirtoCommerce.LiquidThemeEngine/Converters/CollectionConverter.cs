@@ -47,6 +47,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 }, category.Products.PageNumber, category.Products.PageSize);
             }
 
+            if (category.Categories != null)
+            {
+                result.Collections = new MutablePagedList<Collection>((pageNumber, pageSize, sortInfos) =>
+                {
+                    category.Categories.Slice(pageNumber, pageSize, sortInfos);
+                    return new StaticPagedList<Collection>(category.Categories.Select(x => ToLiquidCollection(x, workContext)), category.Categories);
+                }, category.Categories.PageNumber, category.Categories.PageSize);
+            }
+
             if (workContext.Aggregations != null)
             {
                 result.Tags = new TagCollection(new MutablePagedList<Tag>((pageNumber, pageSize, sortInfos) =>
