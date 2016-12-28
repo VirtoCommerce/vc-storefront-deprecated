@@ -26,6 +26,8 @@
         </li>
     </ul>
 
+    <p ng-if="!$ctrl.addresses || !$ctrl.addresses.length">{{ 'customer.addresses.no_addresses_message' | t }}</p>
+
     <button ng-click="$ctrl.newAddress={}" ng-if="!$ctrl.newAddress" class="vc-btn">{{ 'customer.addresses.add_new' | t }}</button>
     <h2 ng-if="$ctrl.newAddress">{{ 'customer.addresses.add_new' | t }}</h2>
     <vc-address address="$ctrl.newAddress" edit-mode="true" validation-container="$ctrl" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)" ng-if="$ctrl.newAddress"></vc-address>
