@@ -315,7 +315,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         public virtual async Task FillFromBulkOrderItemsAsync(BulkOrderItem[] bulkOrderItems)
         {
-            var skus = bulkOrderItems.Where(i => !string.IsNullOrEmpty(i.Sku)).Select(i => i.Sku);
+            var skus = bulkOrderItems.Select(i => i.Sku);
             var productSearchResult = await _catalogSearchService.SearchProductsAsync(new ProductSearchCriteria
             {
                 PageSize = skus.Count(),

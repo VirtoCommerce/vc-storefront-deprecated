@@ -23,18 +23,24 @@ namespace VirtoCommerce.Storefront.Controllers
             _cartBuilder = cartBuilder;
         }
 
-        // GET: /bulk-order
+        // GET: /bulkorder
         [HttpGet]
         public ActionResult Index()
         {
             return View("bulk-order", WorkContext);
         }
 
-        // POST: /bulk-order/add-field-items
+        // POST: /bulkorder/addfielditems
         [HttpPost]
         public async Task<ActionResult> AddFieldItems(BulkOrderItem[] items)
         {
             await EnsureThatCartExistsAsync();
+
+            items = items.Where(i => !string.IsNullOrEmpty(i.Sku)).ToArray();
+            if (items.Length == 0)
+            {
+                return StoreFrontRedirect("~/bulkorder");
+            }
 
             await _cartBuilder.FillFromBulkOrderItemsAsync(items);
             await _cartBuilder.SaveAsync();
@@ -42,14 +48,24 @@ namespace VirtoCommerce.Storefront.Controllers
             return StoreFrontRedirect("~/cart");
         }
 
-        // POST: /bulk-order/add-csv-items
+        // POST: /bulkorder/addcsvitems
         [HttpPost]
         public async Task<ActionResult> AddCsvItems(string csv)
         {
+            if (string.IsNullOrEmpty(csv))
+            {
+                return StoreFrontRedirect("~/bulkorder");
+            }
+
             await EnsureThatCartExistsAsync();
 
             var items = csv.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
                            .Select(csvRecord => GetBulkOrderItemFromCsvRecord(csvRecord)).ToArray();
+            if (items.Length == 0)
+            {
+                return StoreFrontRedirect("~/bulkorder");
+            }
+
             await _cartBuilder.FillFromBulkOrderItemsAsync(items);
 
             return StoreFrontRedirect("~/cart");
