@@ -114,6 +114,7 @@
     <Compile Include="StaticContent\StaticContentSearchCriteria.cs" />
     <Compile Include="StaticContent\Services\IContentBlobProvider.cs" />
     <Compile Include="Subscriptions\PaymentInterval.cs" />
+    <Compile Include="Subscriptions\PaymentPlan.cs" />
     <Compile Include="Subscriptions\Subscription.cs" />
     <Compile Include="Subscriptions\SubscriptionCancelRequest.cs" />
     <Compile Include="Subscriptions\SubscriptionResponseGroup.cs" />

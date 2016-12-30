@@ -6,6 +6,7 @@ using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
+using VirtoCommerce.Storefront.Model.Subscriptions;
 
 namespace VirtoCommerce.Storefront.Model.Cart
 {
@@ -164,7 +165,12 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// Gets or sets the value of line item original price
         /// </summary>
         public Money ListPrice { get; set; }
-       
+
+        /// <summary>
+        /// if the product is sold by subscription only this property contains the recurrence plan
+        /// </summary>
+        public PaymentPlan PaymentPlan { get; set; }
+
         /// <summary>
         /// Gets or sets the value of line item original price including tax 
         /// </summary>

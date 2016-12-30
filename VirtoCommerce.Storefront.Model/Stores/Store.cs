@@ -108,6 +108,14 @@ namespace VirtoCommerce.Storefront.Model.Stores
             }
         }
 
+        public bool SubscriptionEnabled
+        {
+            get
+            {
+                return Settings.GetSettingValue("Subscription.EnableSubscriptions", false);
+            }
+        }
+
         #region IHasSettings Members
 
         public ICollection<SettingEntry> Settings { get; set; }

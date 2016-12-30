@@ -7,7 +7,9 @@ using PagedList;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
 using VirtoCommerce.Storefront.Converters;
+using VirtoCommerce.Storefront.Converters.Subscriptions;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
@@ -25,6 +27,7 @@ namespace VirtoCommerce.Storefront.Services
         private readonly ISearchApiModuleApiClient _searchApi;
         private readonly IPricingService _pricingService;
         private readonly ICustomerService _customerService;
+        private readonly ISubscriptionModuleApiClient _subscriptionApi;
 
         public CatalogSearchServiceImpl(
             Func<WorkContext> workContextFactory,
@@ -32,7 +35,8 @@ namespace VirtoCommerce.Storefront.Services
             IInventoryModuleApiClient inventoryModuleApi,
             ISearchApiModuleApiClient searchApi,
             IPricingService pricingService,
-            ICustomerService customerService)
+            ICustomerService customerService,
+            ISubscriptionModuleApiClient subscriptionApi)
         {
             _workContextFactory = workContextFactory;
             _catalogModuleApi = catalogModuleApi;
@@ -40,6 +44,7 @@ namespace VirtoCommerce.Storefront.Services
             _inventoryModuleApi = inventoryModuleApi;
             _searchApi = searchApi;
             _customerService = customerService;
+            _subscriptionApi = subscriptionApi;
         }
 
         #region ICatalogSearchService Members
@@ -88,6 +93,12 @@ namespace VirtoCommerce.Storefront.Services
                     {
                         taskList.Add(LoadProductVendorsAsync(allProducts, workContext));
                     }
+
+                    if (workContext.CurrentStore.SubscriptionEnabled && responseGroup.HasFlag(ItemResponseGroup.ItemWithPaymentPlan))
+                    {
+                        taskList.Add(LoadProductPaymentPlanAsync(allProducts, workContext));
+                    }
+
 
                     await Task.WhenAll(taskList.ToArray());
                 }
@@ -307,6 +318,15 @@ namespace VirtoCommerce.Storefront.Services
             foreach (var item in products)
             {
                 item.Inventory = inventories.Where(x => x.ProductId == item.Id).Select(x => x.ToInventory()).FirstOrDefault();
+            }
+        }
+
+        protected virtual async Task LoadProductPaymentPlanAsync(List<Product> products, WorkContext workContext)
+        {
+            var paymentPlans = await _subscriptionApi.SubscriptionModule.GetPaymentPlanByIdsAsync(products.Select(x => x.Id).ToArray());
+            foreach (var product in products)
+            {
+                product.PaymentPlan = paymentPlans.Where(x => x.Id == product.Id).Select(x => x.ToPaymentPlan()).FirstOrDefault();
             }
         }
     }

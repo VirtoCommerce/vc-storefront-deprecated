@@ -26,14 +26,43 @@ namespace VirtoCommerce.Storefront.Converters.Subscriptions
         {
             return SubscriptionConverterInstance.ToSubscription(subscriptionDto, availCurrencies, language);
         }
+        public static PaymentPlan ToPaymentPlan(this subscriptionDto.PaymentPlan paymentPlanDto)
+        {
+            return SubscriptionConverterInstance.ToPaymentPlan(paymentPlanDto);
+        }
+        public static subscriptionDto.PaymentPlan ToPaymentPlanDto(this PaymentPlan paymentPlan)
+        {
+            return SubscriptionConverterInstance.ToPaymentPlanDto(paymentPlan);
+        }
         public static subscriptionDto.SubscriptionSearchCriteria ToSearchCriteriaDto(this SubscriptionSearchCriteria criteria)
         {
             return SubscriptionConverterInstance.ToSearchCriteriaDto(criteria);
         }
+       
     }
 
     public class SubscriptionConverter
     {
+        public virtual subscriptionDto.PaymentPlan ToPaymentPlanDto(PaymentPlan paymentPlan)
+        {
+            var result = new subscriptionDto.PaymentPlan();
+            result.Id = paymentPlan.Id;
+            result.Interval = paymentPlan.Interval.ToString();
+            result.IntervalCount = paymentPlan.IntervalCount;
+            result.TrialPeriodDays = paymentPlan.TrialPeriodDays;
+            return result;
+        }
+
+        public virtual PaymentPlan ToPaymentPlan(subscriptionDto.PaymentPlan paymentPlanDto)
+        {
+            var result = new PaymentPlan();
+            result.Id = paymentPlanDto.Id;
+            result.Interval = EnumUtility.SafeParse(paymentPlanDto.Interval, PaymentInterval.Months);
+            result.IntervalCount = paymentPlanDto.IntervalCount ?? 0;
+            result.TrialPeriodDays = paymentPlanDto.TrialPeriodDays ?? 0;
+            return result;
+        }
+
         public virtual subscriptionDto.SubscriptionSearchCriteria ToSearchCriteriaDto(SubscriptionSearchCriteria criteria)
         {
             var result = new subscriptionDto.SubscriptionSearchCriteria();

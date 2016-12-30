@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Practices.ServiceLocation;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
+using VirtoCommerce.Storefront.Converters.Subscriptions;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Cart.Services;
@@ -35,6 +37,7 @@ namespace VirtoCommerce.Storefront.Builders
         private readonly ILocalCacheManager _cacheManager;
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ITaxEvaluator _taxEvaluator;
+        private readonly ISubscriptionModuleApiClient _subscriptionApi;
         private const string _cartCacheRegion = "CartRegion";
 
         public CartBuilder(
@@ -43,7 +46,7 @@ namespace VirtoCommerce.Storefront.Builders
             ICatalogSearchService catalogSearchService,
             ILocalCacheManager cacheManager,
             IPromotionEvaluator promotionEvaluator,
-            ITaxEvaluator taxEvaluator)
+            ITaxEvaluator taxEvaluator, ISubscriptionModuleApiClient subscriptionApi)
         {
             _cartApi = cartApi;
             _catalogSearchService = catalogSearchService;
@@ -51,6 +54,7 @@ namespace VirtoCommerce.Storefront.Builders
             _workContextFactory = workContextFactory;
             _promotionEvaluator = promotionEvaluator;
             _taxEvaluator = taxEvaluator;
+            _subscriptionApi = subscriptionApi;
         }
 
         #region ICartBuilder Members
@@ -77,6 +81,19 @@ namespace VirtoCommerce.Storefront.Builders
 
                 var cartDto = cartSearchResult.Results.FirstOrDefault();
                 var cart = cartDto?.ToShoppingCart(currency, language, customer) ?? CreateCart(cartName, store, customer, language, currency);
+
+                //Load cart payment plan with have same id
+                if (store.SubscriptionEnabled)
+                {
+                    var paymentPlanIds = new string[] { cart.Id }.Concat(cart.Items.Select(x => x.ProductId).Distinct()).ToArray();
+                    
+                    var paymentPlans = (await _subscriptionApi.SubscriptionModule.GetPaymentPlanByIdsAsync(paymentPlanIds)).Select(x=>x.ToPaymentPlan());
+                    cart.PaymentPlan = paymentPlans.FirstOrDefault(x => x.Id == cart.Id);
+                    foreach (var lineItem in cart.Items)
+                    {
+                        lineItem.PaymentPlan = paymentPlans.FirstOrDefault(x => x.Id == lineItem.Id);                        
+                    }
+                }
 
                 cart.Customer = customer;
                 return cart;

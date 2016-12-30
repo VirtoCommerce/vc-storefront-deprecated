@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
+using VirtoCommerce.Storefront.Model.Subscriptions;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
@@ -243,6 +244,11 @@ namespace VirtoCommerce.Storefront.Model.Catalog
                 return true;
             }
         }
+
+        /// <summary>
+        /// if the product is sold by subscription only this property contains the recurrence plan
+        /// </summary>
+        public PaymentPlan PaymentPlan { get; set; }
 
         /// <summary>
         /// Apply prices to product

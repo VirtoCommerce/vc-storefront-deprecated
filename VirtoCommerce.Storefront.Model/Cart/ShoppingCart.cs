@@ -6,6 +6,7 @@ using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Marketing;
+using VirtoCommerce.Storefront.Model.Subscriptions;
 
 namespace VirtoCommerce.Storefront.Model.Cart
 {
@@ -365,6 +366,11 @@ namespace VirtoCommerce.Storefront.Model.Cart
                 return Items.OrderByDescending(i => i.CreatedDate).FirstOrDefault();
             }
         }
+
+        /// <summary>
+        /// If the cart is issued as an order by subscription  this property contains the future subscription payment plan
+        /// </summary>
+        public PaymentPlan PaymentPlan { get; set; }
 
         #region IValidatable Members
         public bool IsValid { get; set; }
