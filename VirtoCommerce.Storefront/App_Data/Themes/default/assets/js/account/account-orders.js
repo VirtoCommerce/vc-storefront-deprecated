@@ -230,35 +230,4 @@
         return retVal;
     };
 }])
-
-.filter('orderToFinancialStatusLabel', function () {
-    return function (order) {
-        var retVal;
-        if (_.any(order.inPayments)) {
-            var inPayment = _.last(_.sortBy(order.inPayments, 'createdDate'));
-            if (inPayment.status) {
-                retVal = inPayment.status;
-            }
-            else {
-                retVal = inPayment.isApproved ? "Paid" : "Pending";
-            }
-        }
-        return retVal;
-    };
-})
-.filter('orderToFulfillmentStatusLabel', function () {
-    return function (order) {
-        var retVal;
-
-        var orderShipment = _.first(order.shipments);
-        if (orderShipment) {
-            if (orderShipment.status) {
-                retVal = orderShipment.status;
-            }
-            else {
-                retVal = orderShipment.isApproved ? "Sent" : "Not sent";
-            }
-        }
-        return retVal;
-    };
-});
+;

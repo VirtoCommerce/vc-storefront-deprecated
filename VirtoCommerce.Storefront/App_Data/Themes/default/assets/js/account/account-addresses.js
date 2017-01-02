@@ -4,8 +4,9 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', 'confirmService', '$translate', '$scope', function (mainContext, confirmService, $translate, $scope) {
+    controller: ['storefrontApp.mainContext', 'confirmService', '$translate', '$scope', 'loadingIndicatorService', function (mainContext, confirmService, $translate, $scope, loader) {
         var $ctrl = this;
+        $ctrl.loader = loader;
 
         $scope.$watch(
           function () { return mainContext.customer.addresses; },
@@ -17,25 +18,26 @@
         $ctrl.addNewAddress = function () {
             if (_.last(components).validate()) {
                 $ctrl.addresses.push($ctrl.newAddress);
-                $ctrl.accountManager.updateAddresses($ctrl.addresses).then(function () {
-                    $ctrl.newAddress = null;
-                });
-            }
-        };
-
-        $ctrl.submit = function ($index, addrCopy) {
-            if (components[$index].validate()) {
-                angular.copy(addrCopy, $ctrl.addresses[$index]);
+                $ctrl.newAddress = null;
                 $ctrl.accountManager.updateAddresses($ctrl.addresses);
             }
         };
 
-        $ctrl.cancel = function ($index, addrCopy) {
-            angular.copy($ctrl.addresses[$index], addrCopy);
+        $ctrl.submit = function () {
+            if (components[$ctrl.editIdx].validate()) {
+                angular.copy($ctrl.editItem, $ctrl.addresses[$ctrl.editIdx]);
+                $ctrl.accountManager.updateAddresses($ctrl.addresses).then($ctrl.cancel);
+            }
         };
 
-        $ctrl.clone = function (x) {
-            return angular.copy(x);
+        $ctrl.cancel = function () {
+            $ctrl.editIdx = -1;
+            $ctrl.editItem = null;
+        };
+
+        $ctrl.edit = function ($index) {
+            $ctrl.editIdx = $index;
+            $ctrl.editItem = angular.copy($ctrl.addresses[$ctrl.editIdx]);
         };
 
         $ctrl.delete = function ($index) {

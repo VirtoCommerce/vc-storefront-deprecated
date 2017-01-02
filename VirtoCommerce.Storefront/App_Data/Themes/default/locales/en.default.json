@@ -320,8 +320,6 @@
             "order_number": "Order Number",
             "date": "Date",
             "status": "Status",
-            "payment_status": "Payment Status",
-            "fulfillment_status": "Fulfillment Status",
             "total": "Total",
             "none": "You haven't placed any orders yet."
         },

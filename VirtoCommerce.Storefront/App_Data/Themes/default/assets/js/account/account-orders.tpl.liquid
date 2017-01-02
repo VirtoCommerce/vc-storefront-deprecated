@@ -16,8 +16,6 @@
                 <th>{{ 'customer.orders.order_number' | t }}</th>
                 <th>{{ 'customer.orders.date' | t }}</th>
                 <th>{{ 'customer.orders.status' | t }}</th>
-                <!--<th>{{ 'customer.orders.payment_status' | t }}</th>
-                <th>{{ 'customer.orders.fulfillment_status' | t }}</th>-->
                 <th>{{ 'customer.orders.total' | t }}</th>
             </tr>
         </thead>
@@ -28,8 +26,6 @@
                 </td>
                 <td ng-bind="order.createdDate | date"></td>
                 <td ng-bind="order | orderToSummarizedStatusLabel"></td>
-                <!--<td ng-bind="order | orderToFinancialStatusLabel"></td>
-                <td ng-bind="order | orderToFulfillmentStatusLabel"></td>-->
                 <td ng-bind="order.total.formattedAmount"></td>
             </tr>
         </tbody>
@@ -83,11 +79,7 @@
                 <div class="vc-t">{{ 'customer.orders.status' | t }}</div>
                 <div class="vc-descr" ng-bind="$ctrl.order | orderToSummarizedStatusLabel"></div>
             </div>
-            <div class="vc-section-header">
-                <div class="vc-t">{{ 'customer.order.payment_status' | t }}</div>
-                <div class="vc-descr" ng-bind="$ctrl.order | orderToFinancialStatusLabel"></div>
-            </div>
-
+            
             <div class="vc-section-header">
                 <div class="vc-t">{{ 'customer.order.billing_address' | t }}</div>
                 <div class="vc-descr">
@@ -103,10 +95,6 @@
             </button>
 
             <hr class="hr--small" />
-            <div class="vc-section-header" ng-if="$ctrl.order.shipments[0].deliveryAddress">
-                <div class="vc-t">{{ 'customer.order.fulfillment_status' | t }}</div>
-                <div class="vc-descr" ng-bind="$ctrl.order | orderToFulfillmentStatusLabel"></div>
-            </div>
             <div class="vc-section-header" ng-if="$ctrl.order.shipments[0].deliveryAddress">
                 <div class="vc-t">{{ 'customer.order.shipping_address' | t }}</div>
                 <div class="vc-descr">
