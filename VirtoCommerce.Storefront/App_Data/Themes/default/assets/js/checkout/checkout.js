@@ -49,10 +49,10 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     if (cart.shipments.length) {
                         $scope.checkout.shipment = cart.shipments[0];
                     }
-                    $scope.checkout.billingAddressEqualsShipping = !angular.isObject($scope.checkout.payment.billingAddress);
-                    if (!cart.hasPhysicalProducts) {
-                        $scope.checkout.billingAddressEqualsShipping = false;
-                    }
+                    $scope.checkout.billingAddressEqualsShipping = cart.hasPhysicalProducts && !angular.isObject($scope.checkout.payment.billingAddress);
+
+                    $scope.checkout.canSetCartRecurring = !cart.paymentPlan && _.all(cart.items, function (x) { return !x.isReccuring });
+                    $scope.paymentPlan = cart.paymentPlan || ($scope.checkout.canSetCartRecurring && { intervalCount: 1, interval: 'months' });
                 }
                 $scope.validateCheckout($scope.checkout);
                 return cart;
@@ -151,7 +151,19 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 var paymentMethod = response.data.paymentMethod;
                 handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
             });
-        }
+        };
+
+        $scope.savePaymentPlan = function () {
+            return wrapLoading(function () {
+                return cartService.addOrUpdatePaymentPlan($scope.paymentPlan).then($scope.reloadCart);
+            });
+        };
+
+        $scope.deletePaymentPlan = function () {
+            return wrapLoading(function () {
+                return cartService.removePaymentPlan().then($scope.reloadCart);
+            });
+        };
 
         function updatePayment(payment) {
             if ($scope.checkout.billingAddressEqualsShipping) {
@@ -185,7 +197,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 if (!$scope.customer.isRegisteredUser) {
                     $scope.outerRedirect($scope.baseUrl + 'cart/thanks/' + order.number);
                 } else {
-                    $scope.outerRedirect($scope.baseUrl + 'account#/' + order.number);
+                    $scope.outerRedirect($scope.baseUrl + 'account#/orders/' + order.number);
                 }
             }
         }

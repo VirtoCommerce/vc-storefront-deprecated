@@ -35,8 +35,8 @@
                             <div class="grid-item two-thirds large--three-quarters">
                                 <span ng-bind="lineItem.name"></span>
 
-                                <div class="note">
-                                    <span ng-bind="'Deliver every 2 weeks'"></span>
+                                <div class="note" ng-if="lineItem.paymentPlan">
+                                    <span ng-bind="'Subscription with a period: ' + lineItem.paymentPlan.intervalCount + ' ' + lineItem.paymentPlan.interval"></span>
                                 </div>
                                 <div class="note" ng-class="{ 'form-error' : !lineItem.isValid }" ng-repeat="error in lineItem.validationErrors">
                                     {% if settings.show_prices_with_taxes %}

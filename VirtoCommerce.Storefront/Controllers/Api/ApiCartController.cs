@@ -224,7 +224,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 paymentPlan.Id = _cartBuilder.Cart.Id;
                 var paymentPlanDto = paymentPlan.ToPaymentPlanDto();
 
-               await  _subscriptionApi.SubscriptionModule.UpdatePaymentPlanAsync(paymentPlanDto);
+                await _subscriptionApi.SubscriptionModule.UpdatePaymentPlanAsync(paymentPlanDto);
+                // await _cartBuilder.SaveAsync();
+                _cartBuilder.Cart.PaymentPlan = paymentPlan;
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -239,6 +241,8 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
                 await _subscriptionApi.SubscriptionModule.DeletePlansByIdsAsync(new[] { _cartBuilder.Cart.Id });
+                // await _cartBuilder.SaveAsync();
+                _cartBuilder.Cart.PaymentPlan = null;
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

@@ -10,8 +10,10 @@
             </div>
         </td>
         <td class="product-descr">
-            <!--<div class="name" ng-bind="lineItem.name"></div>-->
             <a ng-bind="lineItem.name" href="{% raw %}{{ 'product/' + lineItem.productId }}{% endraw %}"></a>
+            <div ng-if="lineItem.paymentPlan">
+                <span ng-bind="'Subscription with a period: ' + lineItem.paymentPlan.intervalCount + ' ' + lineItem.paymentPlan.interval"></span>
+            </div>
         </td>
         <td class="product-price">
             {% if settings.show_prices_with_taxes %}

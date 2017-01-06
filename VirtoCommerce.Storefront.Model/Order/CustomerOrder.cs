@@ -146,9 +146,9 @@ namespace VirtoCommerce.Storefront.Model.Order
         public string Comment { get; set; }
 
         /// <summary>
-        /// Currecy code
+        /// Currency code
         /// </summary>
-        /// <value>Currecy code</value>
+        /// <value>Currency code</value>
         public Currency Currency { get; set; }
      
         /// <summary>
@@ -217,6 +217,7 @@ namespace VirtoCommerce.Storefront.Model.Order
         public Money SubTotalTaxTotal { get; set; }
         public Money SubTotalDiscount { get; set; }
         public Money SubTotalDiscountWithTax { get; set; }
+        public string SubscriptionNumber { get; set; }
 
     }
 }

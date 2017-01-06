@@ -106,6 +106,12 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         getAvailablePaymentMethods: function () {
             return $http.get('storefrontapi/cart/paymentmethods?t=' + new Date().getTime());
         },
+        addOrUpdatePaymentPlan: function (plan) {
+            return $http.post('storefrontapi/cart/paymentPlan', plan);
+        },
+        removePaymentPlan: function () {
+            return $http.delete('storefrontapi/cart/paymentPlan');
+        },
         createOrder: function (bankCardInfo) {
             return $http.post('storefrontapi/cart/createorder', { bankCardInfo: bankCardInfo });
         }

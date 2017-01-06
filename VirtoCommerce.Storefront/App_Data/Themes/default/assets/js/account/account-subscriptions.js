@@ -59,9 +59,9 @@
             //    confirmService.confirm(text).then(function (confirmed) {
             //        if (confirmed) {
             loader.wrapLoading(function () {
-
                 return subscriptionApi.cancel({ number: $ctrl.entryNumber }, { number: $ctrl.entryNumber, cancelReason: $ctrl.cancelReason }, function (result) {
-                    $ctrl.subscription.isCancelled = true;
+                    $ctrl.subscription = angular.copy(result);
+                    $ctrl.isCancelFormVisible = false;
                 }).$promise;
             });
             //        }

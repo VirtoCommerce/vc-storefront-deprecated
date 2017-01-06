@@ -661,6 +661,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.ProductId = product.Id;
             result.Quantity = quantity;
             result.ThumbnailImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
+            result.IsReccuring = result.PaymentPlan != null;
 
             return result;
         }

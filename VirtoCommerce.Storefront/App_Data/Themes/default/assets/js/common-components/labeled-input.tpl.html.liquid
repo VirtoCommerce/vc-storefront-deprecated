@@ -1,7 +1,8 @@
-﻿<div class="form-group" ng-class="{'keyuped': $ctrl.value.length, 'error': ($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$invalid }">
-    <label for="#" class="form-label" ng-bind="$ctrl.placeholder"></label>
+﻿<div class="form-group" ng-class="{'keyuped': $ctrl.form[$ctrl.name].$viewValue.length, 'error': ($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$invalid }">
+    <label for="{% raw %}{{ $ctrl.name }}{% endraw %}" class="form-label" ng-bind="$ctrl.placeholder"></label>
     <input ng-model="$ctrl.value"
            name="{% raw %}{{ $ctrl.name }}{% endraw %}"
+           id="{% raw %}{{ $ctrl.name }}{% endraw %}"
            placeholder="{% raw %}{{ $ctrl.placeholder }}{% endraw %}"
            autofocus="{% raw %}{{ $ctrl.autofocus }}{% endraw %}"
            type="{% raw %}{{ $ctrl.type }}{% endraw %}"

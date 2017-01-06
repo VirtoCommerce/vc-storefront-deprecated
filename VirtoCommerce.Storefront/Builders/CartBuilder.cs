@@ -86,12 +86,12 @@ namespace VirtoCommerce.Storefront.Builders
                 if (store.SubscriptionEnabled)
                 {
                     var paymentPlanIds = new string[] { cart.Id }.Concat(cart.Items.Select(x => x.ProductId).Distinct()).ToArray();
-                    
-                    var paymentPlans = (await _subscriptionApi.SubscriptionModule.GetPaymentPlanByIdsAsync(paymentPlanIds)).Select(x=>x.ToPaymentPlan());
+
+                    var paymentPlans = (await _subscriptionApi.SubscriptionModule.GetPaymentPlanByIdsAsync(paymentPlanIds)).Select(x => x.ToPaymentPlan());
                     cart.PaymentPlan = paymentPlans.FirstOrDefault(x => x.Id == cart.Id);
                     foreach (var lineItem in cart.Items)
                     {
-                        lineItem.PaymentPlan = paymentPlans.FirstOrDefault(x => x.Id == lineItem.Id);                        
+                        lineItem.PaymentPlan = paymentPlans.FirstOrDefault(x => x.Id == lineItem.ProductId);
                     }
                 }
 

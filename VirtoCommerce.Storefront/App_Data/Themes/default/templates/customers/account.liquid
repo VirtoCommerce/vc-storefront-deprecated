@@ -15,9 +15,11 @@
             <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountOrders'}">
                 <a ng-link="['Orders']">{{ 'customer.account.menu_label.orders' | t }}</a>
             </li>
+            {% if shop.subscription_enabled %}
             <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountSubscriptions'}">
                 <a ng-link="['Subscriptions']">{{ 'customer.account.menu_label.subscriptions' | t }}</a>
             </li>
+            {% endif %}
             {% if shop.quotes_enabled %}
             <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountQuotes'}">
                 <a ng-link="['Quotes']">{{ 'customer.account.menu_label.quotes' | t }}</a>

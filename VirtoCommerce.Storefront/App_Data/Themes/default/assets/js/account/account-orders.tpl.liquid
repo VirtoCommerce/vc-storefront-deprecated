@@ -79,7 +79,7 @@
                 <div class="vc-t">{{ 'customer.orders.status' | t }}</div>
                 <div class="vc-descr" ng-bind="$ctrl.order | orderToSummarizedStatusLabel"></div>
             </div>
-            
+
             <div class="vc-section-header">
                 <div class="vc-t">{{ 'customer.order.billing_address' | t }}</div>
                 <div class="vc-descr">
@@ -94,11 +94,23 @@
                 <span class="btn-loading"></span>
             </button>
 
-            <hr class="hr--small" />
+            <hr class="hr--small" ng-if="$ctrl.order.shipments[0].deliveryAddress" />
             <div class="vc-section-header" ng-if="$ctrl.order.shipments[0].deliveryAddress">
                 <div class="vc-t">{{ 'customer.order.shipping_address' | t }}</div>
                 <div class="vc-descr">
                     <vc-address address="$ctrl.order.shipments[0].deliveryAddress"></vc-address>
+                </div>
+            </div>
+
+            <hr class="hr--small" ng-if="$ctrl.order.subscriptionNumber" />
+            <div class="vc-section-header" ng-if="$ctrl.order.subscriptionNumber">
+                <div class="vc-t">{{ 'customer.order.subscription' | t }}</div>
+                <div class="vc-descr">
+                    {{ 'customer.order.subscription_comment' | t }}
+                    <td ng-bind="'customer.order.subscription_link' | translate: $ctrl.order"></td>
+                </div>
+                <div class="vc-descr">
+                    <a ng-bind="$ctrl.order.subscriptionNumber" ng-link="['/Subscriptions/SubscriptionDetail', {number: $ctrl.order.subscriptionNumber}]"></a>
                 </div>
             </div>
         </div>
@@ -117,7 +129,7 @@
                 </ul>
             </div>
             <hr class="hr--small" />
-            
+
             <vc-payment-methods get-avail-payment-methods="$ctrl.getAvailPaymentMethods()" payment-method="$ctrl.paymentMethod" on-select-method="$ctrl.selectPaymentMethod(paymentMethod)" validation-container="$ctrl"></vc-payment-methods>
 
             <div class="vc-section-header">

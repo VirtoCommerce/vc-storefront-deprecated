@@ -122,28 +122,9 @@
                     <h1 ng-bind="product.Id"></h1>
                 </div>
 
-                <div class="note">
-                    <span ng-bind="'Deliver every 2 weeks'"></span>
+                <div class="note" ng-if="selectedVariation.paymentPlan">
+                    <span ng-bind="'Subscription with a period: ' + selectedVariation.paymentPlan.intervalCount + ' ' + selectedVariation.paymentPlan.interval"></span>
                 </div>
-
-                <!--<div class="vc-form form-group" ng-init="isSubscribe = false">
-                    <div class="form-box">
-                        <div class="box-row">
-                            <label class="radio-box">
-                                <input ng-model="isSubscribe" ng-value="false" required="required" class="radio" name="opt" type="radio">
-                                <div class="switch"></div>
-                                <div class="name">One-time purchase</div>
-                            </label>
-                        </div>
-                        <div class="box-row">
-                            <label class="radio-box">
-                                <input ng-model="isSubscribe" ng-value="true" class="radio" name="opt" type="radio">
-                                <div class="switch"></div>
-                                <div>Deliver every 2 weeks, get 11% off</div>
-                            </label>
-                        </div>
-                    </div>
-                </div>-->
 
                 {% if settings.product_quantity_enable %}
                 <label for="quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>

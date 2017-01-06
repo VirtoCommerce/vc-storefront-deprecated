@@ -49,10 +49,7 @@
             </p>
 
             <div ng-if="$ctrl.subscription.isCancelled" class="errors">
-                <h5>
-                    {{ 'customer.subscription.cancelled_on' | t }}
-                    <span ng-bind="$ctrl.subscription.modifiedDate | date: 'medium'"></span>
-                </h5>
+                <h5 ng-bind="'customer.subscription.cancelled_on' | translate: {date: $ctrl.subscription.cancelledDate}"></h5>
                 <p>{{ 'customer.subscription.cancel_reason' | t }}: {% raw %}{{ $ctrl.subscription.cancelReason }}{% endraw %}</p>
             </div>
             <div class="form-fieldset">
