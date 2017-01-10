@@ -62,15 +62,20 @@ namespace VirtoCommerce.Storefront.Common
                     }
                     else if (store.SeoLinksType == SeoLinksType.Collapsed)
                     {
-                        pathSegments.AddRange(outline.Items
-                            .Where(i => i.SeoObjectType != "Catalog" && i.HasVirtualParent != true)
-                            .Select(i => GetBestMatchingSeoKeyword(i.SeoInfos, store, language)));
-
-                        // Add product which is linked to a virtual category
                         var lastItem = outline.Items.Last();
-                        if (lastItem.SeoObjectType != "Catalog" && lastItem.SeoObjectType != "Category" && lastItem.HasVirtualParent == true)
+
+                        // If last item is a linked category, there is no SEO path
+                        if (lastItem.SeoObjectType != "Category" || lastItem.HasVirtualParent != true)
                         {
-                            pathSegments.Add(GetBestMatchingSeoKeyword(lastItem.SeoInfos, store, language));
+                            pathSegments.AddRange(outline.Items
+                                .Where(i => i.SeoObjectType != "Catalog" && i.HasVirtualParent != true)
+                                .Select(i => GetBestMatchingSeoKeyword(i.SeoInfos, store, language)));
+
+                            // Add product which is linked to a virtual category
+                            if (lastItem.SeoObjectType != "Catalog" && lastItem.SeoObjectType != "Category" && lastItem.HasVirtualParent == true)
+                            {
+                                pathSegments.Add(GetBestMatchingSeoKeyword(lastItem.SeoInfos, store, language));
+                            }
                         }
                     }
                     else

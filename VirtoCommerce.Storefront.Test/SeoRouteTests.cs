@@ -158,9 +158,9 @@ namespace VirtoCommerce.Storefront.Test
         [InlineData("c", SeoLinksType.Collapsed, "ig1", "ag1", null, null, null, null)]
         [InlineData("v1", SeoLinksType.Collapsed, "ac1", null, "Asset", "GetThemeAssets", null, null)]
         [InlineData("v1", SeoLinksType.Collapsed, "acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "v12")]
-        [InlineData("v1", SeoLinksType.Collapsed, "acd/acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c3")]
+        [InlineData("v1", SeoLinksType.Collapsed, "acd/acd", "acd", null, null, null, null)]
         [InlineData("v2", SeoLinksType.Collapsed, "acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "v22")]
-        [InlineData("v2", SeoLinksType.Collapsed, "acd/acd", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c3")]
+        [InlineData("v2", SeoLinksType.Collapsed, "acd/acd", "acd", null, null, null, null)]
         public void ValidateSeoRouteResponse(string catalogId, SeoLinksType linksType, string seoPath, string expectedRedirectLocation, string expectedController, string expectedAction, string expectedObjectIdName, string expectedObjectId)
         {
             // Don't use catalog API client for short SEO links
@@ -272,7 +272,7 @@ namespace VirtoCommerce.Storefront.Test
                 Items = new List<catalogDto.OutlineItem> { CreateOutlineItem("Catalog", catalog.Id) }
             };
 
-            result.Items.AddRange(categories.Select(c => CreateOutlineItem("Category", c.Id)));
+            result.Items.AddRange(categories.Select(c => CreateOutlineItem("Category", c.Id, c.CatalogId != catalog.Id)));
 
             if (product != null)
             {
@@ -282,12 +282,13 @@ namespace VirtoCommerce.Storefront.Test
             return result;
         }
 
-        private catalogDto.OutlineItem CreateOutlineItem(string objectType, string objectId)
+        private catalogDto.OutlineItem CreateOutlineItem(string objectType, string objectId, bool? hasVirtualParent = null)
         {
             return new catalogDto.OutlineItem
             {
                 SeoObjectType = objectType,
                 Id = objectId,
+                HasVirtualParent = hasVirtualParent,
                 SeoInfos = _catalogSeoRecords.Where(s => s.ObjectType == objectType && s.ObjectId == objectId).ToList(),
             };
         }
