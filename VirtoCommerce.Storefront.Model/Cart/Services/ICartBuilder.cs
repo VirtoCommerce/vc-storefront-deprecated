@@ -128,13 +128,6 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         Task FillFromQuoteRequestAsync(QuoteRequest quoteRequest);
 
         /// <summary>
-        /// Fills current captured cart from bulk order items
-        /// </summary>
-        /// <param name="items">Bulk order item collection</param>
-        /// <returns></returns>
-        Task FillFromBulkOrderItemsAsync(BulkOrderItem[] bulkOrderItems);
-
-        /// <summary>
         /// Returns all available shipment methods for current cart
         /// </summary>
         /// <returns></returns>
