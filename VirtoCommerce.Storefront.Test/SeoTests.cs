@@ -482,6 +482,58 @@ namespace VirtoCommerce.Storefront.Test
         }
 
         [Fact]
+        public void When_ProductHasParentCategoryWithVirtualParent_Expect_SkipLinkedPhysicalParent()
+        {
+            var category = new catalogModel.Category
+            {
+                Outlines = new List<catalogModel.Outline>
+                {
+                    new catalogModel.Outline
+                    {
+                        Items = new List<catalogModel.OutlineItem>
+                        {
+                            new catalogModel.OutlineItem
+                            {
+                                SeoObjectType = "Catalog",
+                            },
+                            new catalogModel.OutlineItem
+                            {
+                                SeoObjectType = "Category",
+                                SeoInfos = new List<catalogModel.SeoInfo>
+                                {
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "virtual-parent1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "virtual-parent2" },
+                                }
+                            },
+                            new catalogModel.OutlineItem
+                            {
+                                SeoObjectType = "Category",
+                                HasVirtualParent = true,
+                                SeoInfos = new List<catalogModel.SeoInfo>
+                                {
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "parent1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "parent2" },
+                                }
+                            },
+                            new catalogModel.OutlineItem
+                            {
+                                SeoObjectType = "CatalogProduct",
+                                SeoInfos = new List<catalogModel.SeoInfo>
+                                {
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "en-US", SemanticUrl = "product1" },
+                                    new catalogModel.SeoInfo { StoreId = "Store1", LanguageCode = "ru-RU", SemanticUrl = "product2" },
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+
+            var result = category.Outlines.GetSeoPath(_store, new Language("ru-RU"), null);
+            Assert.Equal("virtual-parent2/product2", result);
+        }
+
+        [Fact]
         public void When_ProductHasVirtualParent_Expect_KeepProduct()
         {
             var category = new catalogModel.Category
