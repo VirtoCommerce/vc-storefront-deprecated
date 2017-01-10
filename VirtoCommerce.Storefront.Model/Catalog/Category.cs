@@ -34,6 +34,11 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
         public IMutablePagedList<Product> Products { get; set; }
 
+        /// <summary>
+        /// Child categories
+        /// </summary>
+        public IMutablePagedList<Category> Categories { get; set; }
+
         #region IHasProperties Members
         public ICollection<CatalogProperty> Properties { get; set; }
         #endregion
