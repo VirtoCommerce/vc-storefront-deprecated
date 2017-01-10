@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -89,7 +90,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 {
                     payment.IsCancelled = true;
                     payment.CancelReason = "Canceled by customer";
-                    //payment.CancelledDate = new DateTime();
+                    payment.CancelledDate = DateTime.UtcNow;
                     payment.PaymentStatus = "Cancelled";
                     await _orderApi.OrderModule.UpdateAsync(orderDto);
                 }

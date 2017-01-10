@@ -17,71 +17,22 @@
                     <vc-totals order="checkout.cart"></vc-totals>
                 </div>
 
-                <div class="order-summary__section" ng-if="checkout.cart.paymentPlan">
-                    <div class="fieldset">
-                        <div class="field">
-                            <div class="field__input-btn-wrapper" ng-init="showDeletePaymentPlanButton = true">
-                                <div class="field__input-wrapper">
-                                    <div class="form-box" style="box-shadow: none">
-                                        <div class="box-row">
-                                            <label class="check-box">
-                                                <input ng-model="showDeletePaymentPlanButton" ng-checked="showDeletePaymentPlanButton" class="check" type="checkbox"/>
-                                                <div class="switch"></div>
-                                                <span ng-bind="'Reorder every ' + checkout.cart.paymentPlan.intervalCount + ' ' + checkout.cart.paymentPlan.interval"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="buttons" ng-if="!showDeletePaymentPlanButton">
-                                    <button ng-click="deletePaymentPlan()" class="btn" ng-class="{ 'btn--loading': checkout.loading }" type="button">
-                                        <span class="btn__content">Cancel recurring</span>
-                                        <i class="btn__spinner icon icon--button-spinner"></i>
-                                    </button>
+                <div class="form-group" ng-if="checkout.canCartBeRecurring">
+                    <div class="form-box">
+                        <label class="check-box" ng-init="isRecurring = !!checkout.paymentPlan">
+                            <input ng-model="isRecurring" ng-checked="isRecurring" ng-change="isRecurringChanged(isRecurring)" ng-disabled="checkout.loading" class="check" type="checkbox"/>
+                            <div class="switch"></div>
+                            <div class="name">I want this to be a recurring order</div>
+                        </label>
+                        <div class="form-fieldset" ng-if="isRecurring">
+                            <div class="form-group">
+                                <div class="form-group form-select" ng-class="{'keyuped': addrForm.Addresses.$modelValue }">
+                                    <label for="pplan" class="form-label">Auto-Reorder every</label>
+                                    <select ng-model="checkout.paymentPlan" ng-options="x as x.name for x in paymentPlans" ng-change="savePaymentPlan()" ng-disabled="checkout.loading" required="" id="pplan" name="pplan" class="form-input" size="1">
+                                        <option value="" ng-if="!checkout.paymentPlan">Select reordering interval</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="checkout.canSetCartRecurring">
-                    <div class="form-box">
-                        <div class="box-row">
-                            <label class="check-box" ng-init="isRecurring = !!paymentPlan.id">
-                                <input ng-model="isRecurring" ng-checked="isRecurring" class="check" type="checkbox"/>
-                                <div class="switch"></div>
-                                <div class="name">I want this to be a recurring order</div>
-                            </label>
-                        </div>
-                        <div class="box-row" ng-if="isRecurring">
-                            <form accept-charset="UTF8" name="RecurringForm" novalidate="novalidate">
-                                <div class="form-fieldset">
-                                    <div class="form-group">
-                                        <div class="vc-section-header">
-                                            <div class="vc-t">Reorder every</div>
-                                        </div>
-                                        <div class="cols">
-                                            <div class="col col-50">
-                                                <vc-labeled-input value="paymentPlan.intervalCount" name="IntervalCount" placeholder="Number of intervals" form="RecurringForm" required="true" autofocus="true" type="number"></vc-labeled-input>
-                                            </div>
-                                            <div class="col col-50">
-                                                <div class="form-group form-select keyuped">
-                                                    <label for="Interval" class="form-label">Interval</label>
-                                                    <select ng-model="paymentPlan.interval" id="Interval" name="Interval" class="form-input" size="1">
-                                                        <option value="days">days</option>
-                                                        <option value="weeks">weeks</option>
-                                                        <option value="months">months</option>
-                                                        <option value="years">years</option>
-                                                    </select>
-                                                </div>
-                                                <button ng-click="savePaymentPlan()" class="step__footer__continue-btn btn" ng-class="{ 'btn--loading': checkout.loading, 'btn--disabled': RecurringForm.$invalid }" ng-disabled="RecurringForm.$invalid" type="button">
-                                                    <span class="btn__content ng-binding">Confirm</span>
-                                                    <i class="btn__spinner icon icon--button-spinner"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -125,7 +76,9 @@
                                     <h2 class="section__title">{{ 'checkout.shipping_address' | t }}</h2>
                                 </div>
                                 <div class="section__content">
-                                    <vc-address address="checkout.shipment.deliveryAddress" countries="checkout.availCountries" get-country-regions="getCountryRegions(country)" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-address>
+                                    <div class="content-box">
+                                        <vc-address address="checkout.shipment.deliveryAddress" countries="checkout.availCountries" get-country-regions="getCountryRegions(country)" addresses="checkout.cart.customer.addresses" edit-mode="true"></vc-address>
+                                    </div>
                                 </div>
                             </div>
                         </div>
