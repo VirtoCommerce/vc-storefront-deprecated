@@ -86,9 +86,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             $scope.checkout.payment.amount = angular.copy($scope.checkout.cart.total);
             $scope.checkout.payment.amount.amount += paymentMethod.totalWithTax.amount;
 
-            updatePayment($scope.checkout.payment)
-
-            $scope.validateCheckout($scope.checkout);
+            updatePayment($scope.checkout.payment);
         };
 
         function getAvailCountries() {
@@ -143,13 +141,15 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             });
         };
 
-        $scope.createOrder = function () {
-            $scope.checkout.loading = true;
-            cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
-                var order = response.data.order;
-                var orderProcessingResult = response.data.orderProcessingResult;
-                var paymentMethod = response.data.paymentMethod;
-                handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
+        $scope.createOrder = function () {           
+            updatePayment($scope.checkout.payment).then(function () {
+                $scope.checkout.loading = true;
+                cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
+                    var order = response.data.order;
+                    var orderProcessingResult = response.data.orderProcessingResult;
+                    var paymentMethod = response.data.paymentMethod;
+                    handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
+                });
             });
         };
 
