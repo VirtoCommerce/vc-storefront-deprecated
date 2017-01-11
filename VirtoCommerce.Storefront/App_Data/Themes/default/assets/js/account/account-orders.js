@@ -118,30 +118,32 @@
             if ($ctrl.validate()) {
                 loader.wrapLoading(function () {
                     $ctrl.payment.bankCardInfo = $ctrl.paymentMethod.card;
-                    return orderApi.addOrUpdatePayment({ number: $ctrl.orderNumber }, $ctrl.payment, function (result) {
-                        var orderProcessingResult = result.orderProcessingResult;
-                        var paymentMethod = result.paymentMethod;
+                    return orderApi.addOrUpdatePayment({ number: $ctrl.orderNumber }, $ctrl.payment, function (payment) {
+                        orderApi.processPayment({ number: $ctrl.orderNumber, paymentNumber: payment.number }, $ctrl.paymentMethod.card, function (result) {
+                            var orderProcessingResult = result.orderProcessingResult;
+                            var paymentMethod = result.paymentMethod;
 
-                        if (!orderProcessingResult.isSuccess) {
-                            $rootScope.$broadcast('storefrontError', {
-                                type: 'error',
-                                title: ['Error in new payment processing: ', orderProcessingResult.error, 'New Payment status: ' + orderProcessingResult.newPaymentStatus].join(' '),
-                                message: orderProcessingResult.error,
-                            });
-                            return;
-                        }
-
-                        if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() === 'preparedform' && orderProcessingResult.htmlForm) {
-                            outerRedirect($ctrl.accountManager.baseUrl + 'cart/checkout/paymentform?orderNumber=' + $ctrl.orderNumber);
-                        } else if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() === 'redirection' && orderProcessingResult.redirectUrl) {
-                            outerRedirect(orderProcessingResult.redirectUrl);
-                        } else {
-                            if ($ctrl.accountManager.customer.isRegisteredUser) {
-                                refresh();
-                            } else {
-                                outerRedirect($ctrl.accountManager.baseUrl + 'cart/thanks/' + $ctrl.orderNumber);
+                            if (!orderProcessingResult.isSuccess) {
+                                $rootScope.$broadcast('storefrontError', {
+                                    type: 'error',
+                                    title: ['Error in new payment processing: ', orderProcessingResult.error, 'New Payment status: ' + orderProcessingResult.newPaymentStatus].join(' '),
+                                    message: orderProcessingResult.error,
+                                });
+                                return;
                             }
-                        }
+
+                            if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() === 'preparedform' && orderProcessingResult.htmlForm) {
+                                outerRedirect($ctrl.accountManager.baseUrl + 'cart/checkout/paymentform?orderNumber=' + $ctrl.orderNumber);
+                            } else if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() === 'redirection' && orderProcessingResult.redirectUrl) {
+                                outerRedirect(orderProcessingResult.redirectUrl);
+                            } else {
+                                if ($ctrl.accountManager.customer.isRegisteredUser) {
+                                    refresh();
+                                } else {
+                                    outerRedirect($ctrl.accountManager.baseUrl + 'cart/thanks/' + $ctrl.orderNumber);
+                                }
+                            }
+                        })
                     }).$promise;
                 });
             }
