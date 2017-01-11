@@ -153,7 +153,7 @@
             confirmService.confirm('Cancel this payment?').then(function (confirmed) {
                 if (confirmed) {
                     loader.wrapLoading(function () {
-                        return orderApi.cancalPayment({ number: $ctrl.orderNumber, paymentNumber: $ctrl.payment.number }, null, refresh).$promise;
+                        return orderApi.cancelPayment({ number: $ctrl.orderNumber, paymentNumber: $ctrl.payment.number }, null, refresh).$promise;
                     });
                 }
             });

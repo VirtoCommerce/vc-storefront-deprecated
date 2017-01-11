@@ -15,7 +15,7 @@
         getNewPaymentData: { url: 'storefrontapi/orders/:number/newpaymentdata' },
         addOrUpdatePayment: { url: 'storefrontapi/orders/:number/payments', method: 'POST' },
         processPayment: { url: 'storefrontapi/orders/:number/payments/:paymentNumber/process', method: 'POST' },
-        cancalPayment: { url: 'storefrontapi/orders/:number/payments/:paymentNumber/cancel', method: 'POST' }
+        cancelPayment: { url: 'storefrontapi/orders/:number/payments/:paymentNumber/cancel', method: 'POST' }
     });
 }])
 .factory('storefront.subscriptionApi', ['$resource', function ($resource) {
