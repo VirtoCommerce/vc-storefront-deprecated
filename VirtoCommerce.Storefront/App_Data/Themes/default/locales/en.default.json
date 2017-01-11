@@ -22,6 +22,8 @@
         "coupon_code": "Coupon code",
         "coupon_applied_sucessfuly": "Coupon is valid",
         "invalid_coupon_code": "This code did not match any active coupon. Was it entered correctly?",
+        "make_recurring_order": "I want this to be a recurring order",
+        "reorder_every": "Auto-Reorder every",
         "copyright_text": "All rights reserved",
         "optional_field_sign": "(optional)",
         "secure_field": "Secure field",

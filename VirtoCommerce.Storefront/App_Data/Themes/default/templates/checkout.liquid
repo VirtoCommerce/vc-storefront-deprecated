@@ -6,7 +6,7 @@
             </a>
         </div>
         <div class="sidebar__content">
-            <div class="order-summary">
+            <div class="order-summary" ng-init='checkout.availablePaymentPlans={{ settings.available_paymentPlans | json }}'>
                 <div class="order-summary__section order-summary__section--product-list">
                     <vc-line-items items="checkout.cart.items"></vc-line-items>
                 </div>
@@ -22,15 +22,13 @@
                         <label class="check-box" ng-init="isRecurring = !!checkout.paymentPlan">
                             <input ng-model="isRecurring" ng-checked="isRecurring" ng-change="isRecurringChanged(isRecurring)" ng-disabled="checkout.loading" class="check" type="checkbox"/>
                             <div class="switch"></div>
-                            <div class="name">I want this to be a recurring order</div>
+                            <div class="name">{{ 'checkout.make_recurring_order' | t }}</div>
                         </label>
                         <div class="form-fieldset" ng-if="isRecurring">
                             <div class="form-group">
-                                <div class="form-group form-select" ng-class="{'keyuped': addrForm.Addresses.$modelValue }">
-                                    <label for="pplan" class="form-label">Auto-Reorder every</label>
-                                    <select ng-model="checkout.paymentPlan" ng-options="x as x.name for x in paymentPlans" ng-change="savePaymentPlan()" ng-disabled="checkout.loading" required="" id="pplan" name="pplan" class="form-input" size="1">
-                                        <option value="" ng-if="!checkout.paymentPlan">Select reordering interval</option>
-                                    </select>
+                                <div class="form-group form-select" ng-class="{'keyuped': checkout.paymentPlan }">
+                                    <label for="pplan" class="form-label">{{ 'checkout.reorder_every' | t }}</label>
+                                    <select ng-model="checkout.paymentPlan" ng-options="x as x.name for x in checkout.availablePaymentPlans" ng-change="savePaymentPlan()" ng-disabled="checkout.loading" required="" id="pplan" name="pplan" class="form-input" size="1"></select>
                                 </div>
                             </div>
                         </div>

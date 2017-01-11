@@ -52,7 +52,8 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     $scope.checkout.billingAddressEqualsShipping = cart.hasPhysicalProducts && !angular.isObject($scope.checkout.payment.billingAddress);
 
                     $scope.checkout.canCartBeRecurring = _.all(cart.items, function (x) { return !x.isReccuring });
-                    $scope.checkout.paymentPlan = cart.paymentPlan && _.findWhere($scope.paymentPlans, { intervalCount: cart.paymentPlan.intervalCount, interval: cart.paymentPlan.interval });
+                    $scope.checkout.paymentPlan = cart.paymentPlan && _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: cart.paymentPlan.intervalCount, interval: cart.paymentPlan.interval }) ||
+                                                                      _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: 1, interval: 'months' });
                 }
                 $scope.validateCheckout($scope.checkout);
                 return cart;
@@ -141,7 +142,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             });
         };
 
-        $scope.createOrder = function () {           
+        $scope.createOrder = function () {
             updatePayment($scope.checkout.payment).then(function () {
                 $scope.checkout.loading = true;
                 cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
@@ -153,26 +154,21 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             });
         };
 
-        $scope.paymentPlans = [// { intervalCount: 1, interval: 'days' },
-                               { intervalCount: 1, interval: 'weeks', name: '1 week' },
-                               { intervalCount: 2, interval: 'weeks', name: '2 weeks' },
-                               { intervalCount: 1, interval: 'months', name: '1 month' },
-                               { intervalCount: 2, interval: 'months', name: '2 months' },
-                               { intervalCount: 3, interval: 'months', name: '3 months' },
-                               { intervalCount: 4, interval: 'months', name: '4 months' },
-                               { intervalCount: 6, interval: 'months', name: '6 months' }];
-
         $scope.savePaymentPlan = function () {
-            return wrapLoading(function () {
-                return cartService.addOrUpdatePaymentPlan($scope.checkout.paymentPlan).then($scope.reloadCart);
+            wrapLoading(function () {
+                return cartService.addOrUpdatePaymentPlan($scope.checkout.paymentPlan);
             });
         };
 
         $scope.isRecurringChanged = function (isRecurring) {
-            if (!isRecurring && $scope.checkout.paymentPlan) {
-                return wrapLoading(function () {
-                    return cartService.removePaymentPlan().then($scope.reloadCart);
-                });
+            if ($scope.checkout.paymentPlan) {
+                if (isRecurring) {
+                    $scope.savePaymentPlan();
+                } else {
+                    wrapLoading(function () {
+                        return cartService.removePaymentPlan();
+                    });
+                }
             }
         };
 
@@ -219,9 +215,9 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 $scope.checkout.loading = false;
                 return result;
             },
-				function () {
-				    $scope.checkout.loading = false;
-				});
+                function () {
+                    $scope.checkout.loading = false;
+                });
         }
 
         $scope.initialize = function () {
