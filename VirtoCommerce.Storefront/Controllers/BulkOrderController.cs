@@ -88,8 +88,6 @@ namespace VirtoCommerce.Storefront.Controllers
                     return StoreFrontRedirect("~/bulkorder");
                 }
 
-                await TryAddItemsToCartAsync(items);
-
                 var notFoundedSkus = await TryAddItemsToCartAsync(items);
                 foreach (var notFoundedSku in notFoundedSkus)
                 {
