@@ -12,6 +12,15 @@
         <h1 class="h2">{{ 'customer.account.title' | t }}</h1>
 
         <ul class="nav nav-tabs">
+            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountProfileUpdate'}">
+                <a ng-link="['Profile']">{{ 'customer.account.menu_label.profile' | t }}</a>
+            </li>
+            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountAddresses'}">
+                <a ng-link="['Addresses']">{{ 'customer.account.menu_label.addresses' | t }}</a>
+            </li>
+            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountPasswordChange'}">
+                <a ng-link="['PasswordChange']">{{ 'customer.account.menu_label.change_password' | t }}</a>
+            </li>
             <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountOrders'}">
                 <a ng-link="['Orders']">{{ 'customer.account.menu_label.orders' | t }}</a>
             </li>
@@ -24,16 +33,8 @@
             <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountQuotes'}">
                 <a ng-link="['Quotes']">{{ 'customer.account.menu_label.quotes' | t }}</a>
             </li>
-            {% endif %}
-            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountProfileUpdate'}">
-                <a ng-link="['Profile']">{{ 'customer.account.menu_label.profile' | t }}</a>
-            </li>
-            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountAddresses'}">
-                <a ng-link="['Addresses']">{{ 'customer.account.menu_label.addresses' | t }}</a>
-            </li>
-            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountPasswordChange'}">
-                <a ng-link="['PasswordChange']">{{ 'customer.account.menu_label.change_password' | t }}</a>
-            </li>
+            {% endif %}        
+          
         </ul>
 
         <div style="margin-top: 30px; min-height: 255px;">
