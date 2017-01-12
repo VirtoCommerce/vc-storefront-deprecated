@@ -2,6 +2,7 @@
     "current": "Blue",
     "presets": {
         "Blue": {
+            "bulk_order_enabled": true,
             "ajax_cart_enable": true,
             "ajax_cart_method": "Modal",
             "cart_notes_enable": false,
@@ -79,7 +80,7 @@
             "social_youtube_link": "",
             "twittercard_handle": "@",
             "type_accent_family": "Google_Dosis_600_sans",
-            "type_base_family": "'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+            "type_base_family": "HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif",
             "type_base_size": "15px",
             "type_button_size": "17px",
             "type_button_transform": false,
@@ -92,7 +93,7 @@
             "store_selector_enable": true,
             //Display all prices and totals with including tax
             "show_prices_with_taxes": false,
-             // possible interval: {days, weeks, months, years}
+            // possible interval: {days, weeks, months, years}
             "available_paymentPlans": [
                 {
                     "intervalCount": 1,
@@ -114,7 +115,7 @@
                     "interval": "years",
                     "name": "yearly"
                 }
-            ],             
+            ],
             "footer_content_text": "Some footer content text"
         },
         "Soft Green": {

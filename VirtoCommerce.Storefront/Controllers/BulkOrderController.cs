@@ -1,26 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.BulkOrder;
+using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Cart.Services;
+using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
+using VirtoCommerce.Storefront.Model.Services;
 
 namespace VirtoCommerce.Storefront.Controllers
 {
     public class BulkOrderController : StorefrontControllerBase
     {
         private readonly ICartBuilder _cartBuilder;
+        private readonly ICatalogSearchService _catalogSearchService;
 
         public BulkOrderController(
             WorkContext workContext,
             IStorefrontUrlBuilder urlBuilder,
-            ICartBuilder cartBuilder)
+            ICartBuilder cartBuilder,
+            ICatalogSearchService catalogSearchService)
             : base(workContext, urlBuilder)
         {
             _cartBuilder = cartBuilder;
+            _catalogSearchService = catalogSearchService;
         }
 
         // GET: /bulkorder
@@ -36,16 +43,24 @@ namespace VirtoCommerce.Storefront.Controllers
         {
             await EnsureThatCartExistsAsync();
 
-            items = items.Where(i => !string.IsNullOrEmpty(i.Sku)).ToArray();
-            if (items.Length == 0)
+            using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                return StoreFrontRedirect("~/bulkorder");
+                items = items.Where(i => !string.IsNullOrEmpty(i.Sku)).ToArray();
+                if (items.Length == 0)
+                {
+                    return StoreFrontRedirect("~/bulkorder");
+                }
+
+                await TryAddItemsToCartAsync(items);
+                if (ModelState.IsValid)
+                {
+                    return StoreFrontRedirect("~/cart");
+                }
+                else
+                {
+                    return View("bulk-order", WorkContext);
+                }
             }
-
-            await _cartBuilder.FillFromBulkOrderItemsAsync(items);
-            await _cartBuilder.SaveAsync();
-
-            return StoreFrontRedirect("~/cart");
         }
 
         // POST: /bulkorder/addcsvitems
@@ -59,16 +74,25 @@ namespace VirtoCommerce.Storefront.Controllers
 
             await EnsureThatCartExistsAsync();
 
-            var items = csv.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
-                           .Select(csvRecord => GetBulkOrderItemFromCsvRecord(csvRecord)).ToArray();
-            if (items.Length == 0)
+            using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                return StoreFrontRedirect("~/bulkorder");
+                var items = csv.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
+                               .Select(csvRecord => GetBulkOrderItemFromCsvRecord(csvRecord)).ToArray();
+                if (items.Length == 0)
+                {
+                    return StoreFrontRedirect("~/bulkorder");
+                }
+
+                await TryAddItemsToCartAsync(items);
+                if (ModelState.IsValid)
+                {
+                    return StoreFrontRedirect("~/cart");
+                }
+                else
+                {
+                    return View("bulk-order", WorkContext);
+                }
             }
-
-            await _cartBuilder.FillFromBulkOrderItemsAsync(items);
-
-            return StoreFrontRedirect("~/cart");
         }
 
         private async Task EnsureThatCartExistsAsync()
@@ -79,6 +103,38 @@ namespace VirtoCommerce.Storefront.Controllers
             }
 
             await _cartBuilder.TakeCartAsync(WorkContext.CurrentCart);
+        }
+
+        private static string GetAsyncLockCartKey(ShoppingCart cart)
+        {
+            return string.Join(":", "Cart", cart.Id, cart.Name, cart.CustomerId);
+        }
+
+        private async Task TryAddItemsToCartAsync(BulkOrderItem[] bulkOrderItems)
+        {
+            var skus = bulkOrderItems.Select(i => i.Sku);
+            var productSearchResult = await _catalogSearchService.SearchProductsAsync(new ProductSearchCriteria
+            {
+                PageSize = skus.Count(),
+                Terms = new[] { new Term { Name = "code", Value = string.Join(",", skus) } }
+            });
+            foreach (var product in productSearchResult.Products)
+            {
+                var bulkOrderItem = bulkOrderItems.FirstOrDefault(i => i.Sku == product.Sku);
+                if (bulkOrderItem != null)
+                {
+                    await _cartBuilder.AddItemAsync(product, bulkOrderItem.Quantity);
+                }
+            }
+
+            await _cartBuilder.SaveAsync();
+
+            var notFoundedItems = bulkOrderItems.Where(i => !productSearchResult.Products.Any(p => p.Sku == i.Sku));
+            foreach (var notFoundedItem in notFoundedItems)
+            {
+                ModelState.AddModelError(notFoundedItem.Sku, notFoundedItem.Sku);
+            }
+
         }
 
         private BulkOrderItem GetBulkOrderItemFromCsvRecord(string csvRecord)

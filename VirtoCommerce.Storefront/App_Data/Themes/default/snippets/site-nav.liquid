@@ -26,9 +26,11 @@
             </li>
         {% endif %}
     {% endfor %}
-    <li{% if link.active %} class="site-nav--active"{% endif %}>
-        <a href="{{ '/bulkorder' | absolute_url }}">{{ 'bulk_order.general.title' | t }}</a>
-    </li>
+    {% if settings.bulk_order_enabled %}
+        <li{% if link.active %} class="site-nav--active"{% endif %}>
+            <a href="{{ '/bulkorder' | absolute_url }}">{{ 'bulk_order.general.title' | t }}</a>
+        </li>
+    {% endif %}
     {% if shop.customer_accounts_enabled %}
         {% if customer %}
             <li class="customer-navlink large--hide"><a href="{{ '/account' | absolute_url }}">{{ 'layout.customer.view_account' | t }}</a></li>
