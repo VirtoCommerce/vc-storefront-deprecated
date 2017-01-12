@@ -53,8 +53,10 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
         ItemWithVendor = 1 << 12,
 
+        ItemWithPaymentPlan = 1 << 13,
+
         ItemSmall = ItemInfo | ItemAssets | ItemEditorialReviews | Seo | Outlines,
         ItemMedium = ItemSmall | ItemAssociations,
-        ItemLarge = ItemMedium | Variations | Links | Inventory |  ItemWithPrices | ItemWithDiscounts | ItemWithVendor | ItemProperties
+        ItemLarge = ItemMedium | Variations | Links | Inventory |  ItemWithPrices | ItemWithDiscounts | ItemWithVendor | ItemProperties | ItemWithPaymentPlan
     }
 }

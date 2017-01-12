@@ -3,7 +3,6 @@ using DotLiquid;
 using Microsoft.Practices.ServiceLocation;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.StaticContent;
 using storefrontModel = VirtoCommerce.Storefront.Model;
@@ -37,8 +36,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public virtual ShopifyThemeWorkContext ToLiquidContext(storefrontModel.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateContext();
+            var result = new ShopifyThemeWorkContext();
 
 
             result.CurrentPage = 1;

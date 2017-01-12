@@ -2,7 +2,6 @@
 using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 
@@ -28,8 +27,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Linklist ToLiquidLinklist(StorefrontModel.MenuLinkList linkList, Storefront.Model.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateLinklist();
+            var result = new Linklist();
             result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(linkList);
 
             result.Handle = linkList.Name;
@@ -41,8 +39,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public virtual Link ToLiquidLink(StorefrontModel.MenuLink link, Storefront.Model.WorkContext workContext, IStorefrontUrlBuilder urlBuilder)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateLink();
+            var result = new Link();
             result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(link);
 
             result.Object = "";

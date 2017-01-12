@@ -118,7 +118,6 @@
     "account": {
       "title": "Mi cuenta",
       "details": "Detalles de la cuenta",
-      "view_addresses": "Ver direcciones",
       "return": "Volver a detalles de la cuenta"
     },
     "activate_account": {

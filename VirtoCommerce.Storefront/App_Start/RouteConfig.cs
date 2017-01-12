@@ -35,6 +35,8 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.Cart.AddOrUpdateCartShipment", "storefrontapi/cart/shipments", defaults: new { controller = "ApiCart", action = "AddOrUpdateCartShipment" });
             routes.AddStorefrontRoute("API.Cart.AddOrUpdateCartPayment", "storefrontapi/cart/payments", defaults: new { controller = "ApiCart", action = "AddOrUpdateCartPayment" });
             routes.AddStorefrontRoute("API.Cart.CreateOrder", "storefrontapi/cart/createorder", defaults: new { controller = "ApiCart", action = "CreateOrder" });
+            routes.AddStorefrontRoute("API.Cart.UpdatePaymentPlan", "storefrontapi/cart/paymentPlan", new { controller = "ApiCart", action = "AddOrUpdateCartPaymentPlan" }, new { httpMethod = new HttpMethodConstraint("POST") });
+            routes.AddStorefrontRoute("API.Cart.DeletePaymentPlan", "storefrontapi/cart/paymentPlan", new { controller = "ApiCart", action = "DeleteCartPaymentPlan" }, new { httpMethod = new HttpMethodConstraint("DELETE") });
 
             // Catalog API
             routes.AddStorefrontRoute("API.Catalog.SearchProducts", "storefrontapi/catalog/search", defaults: new { controller = "ApiCatalog", action = "SearchProducts" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
@@ -54,7 +56,23 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.Marketing.GetDynamicContent", "storefrontapi/marketing/dynamiccontent/{placeName}", defaults: new { controller = "ApiMarketing", action = "GetDynamicContent" });
 
             // Account API
-            routes.AddStorefrontRoute("API.Account.GetCurrentCustomer", "storefrontapi/account", defaults: new { controller = "ApiAccount", action = "GetCurrentCustomer" });
+            routes.AddStorefrontRoute("API.Account.GetCurrentCustomer", "storefrontapi/account", new { controller = "ApiAccount", action = "GetCurrentCustomer" },
+              new { httpMethod = new HttpMethodConstraint("GET") });
+            routes.AddStorefrontRoute("API.Account.quotes", "storefrontapi/account/quotes", new { controller = "ApiAccount", action = "GetCustomerQuotes" },
+              new { httpMethod = new HttpMethodConstraint("GET") });
+            routes.AddStorefrontRoute("API.Account.UpdateAccount", "storefrontapi/account", new { controller = "ApiAccount", action = "UpdateAccount" }, new { httpMethod = new HttpMethodConstraint("POST") });
+            routes.AddStorefrontRoute("API.Account.ChangePassword", "storefrontapi/account/password", new { controller = "ApiAccount", action = "ChangePassword" }, new { httpMethod = new HttpMethodConstraint("POST") });
+            routes.AddStorefrontRoute("API.Account.UpdateAddresses", "storefrontapi/account/addresses", new { controller = "ApiAccount", action = "UpdateAddresses" }, new { httpMethod = new HttpMethodConstraint("POST") });
+
+            // Order API
+            routes.AddStorefrontRoute("API.Orders", "storefrontapi/orders/search", new { controller = "ApiOrder", action = "SearchCustomerOrders" });
+            routes.AddStorefrontRoute("API.OrderByNumber", "storefrontapi/orders/{orderNumber}", new { controller = "ApiOrder", action = "GetCustomerOrder" });
+            routes.AddStorefrontRoute("API.Orders.GetNewPaymentData", "storefrontapi/orders/{orderNumber}/newpaymentdata", new { controller = "ApiOrder", action = "GetNewPaymentData" });
+            routes.AddStorefrontRoute("API.Orders.CancelPayment", "storefrontapi/orders/{orderNumber}/payments/{paymentNumber}/cancel", new { controller = "ApiOrder", action = "CancelPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
+            routes.AddStorefrontRoute("API.Orders.ProcessPayment", "storefrontapi/orders/{orderNumber}/payments/{paymentNumber}/process", new { controller = "ApiOrder", action = "ProcessOrderPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
+            routes.AddStorefrontRoute("API.Orders.AddOrUpdateOrderPayment", "storefrontapi/orders/{orderNumber}/payments", new { controller = "ApiOrder", action = "AddOrUpdateOrderPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
+
+
 
             // Quote requests API
             routes.AddStorefrontRoute("API.QuoteRequest.GetItemsCount", "storefrontapi/quoterequests/{number}/itemscount", defaults: new { controller = "ApiQuoteRequest", action = "GetItemsCount" });
@@ -67,6 +85,13 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.QuoteRequest.Reject", "storefrontapi/quoterequests/{number}/reject", defaults: new { controller = "ApiQuoteRequest", action = "Reject" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.QuoteRequest.CalculateTotals", "storefrontapi/quoterequests/{number}/totals", defaults: new { controller = "ApiQuoteRequest", action = "CalculateTotals" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.QuoteRequest.Confirm", "storefrontapi/quoterequests/{number}/confirm", defaults: new { controller = "ApiQuoteRequest", action = "Confirm" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
+
+            // Subscriptions API
+            routes.AddStorefrontRoute("API.Subscriptions", "storefrontapi/subscriptions/search", defaults: new { controller = "ApiSubscription", action = "SearchCustomerSubscriptions" });
+            routes.AddStorefrontRoute("API.SubscriptionByNumber", "storefrontapi/subscriptions/{number}", defaults: new { controller = "ApiSubscription", action = "GetCustomerSubscription" });
+            routes.AddStorefrontRoute("API.CancelSubscription", "storefrontapi/subscriptions/{number}/cancel", defaults: new { controller = "ApiSubscription", action = "CancelSubscription" });
+
+
 
             // Blog API
             routes.AddStorefrontRoute("API.Blog.Search", "storefrontapi/blog/{blogName}/search", defaults: new { controller = "ApiBlog", action = "Search" });
@@ -139,6 +164,7 @@ namespace VirtoCommerce.Storefront
 
             // Vendor routes
             routes.AddStorefrontRoute("Vendor.GetVendor", "vendor/{vendorId}", defaults: new { controller = "Vendor", action = "VendorDetails" });
+
 
             // Assets
             routes.AddStorefrontRoute("ThemeLocalization", "themes/localization.json", defaults: new { controller = "Asset", action = "GetThemeLocalizationJson" });

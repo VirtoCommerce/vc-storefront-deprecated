@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/product#product-image
     /// </remarks>
     [DataContract]
-    public class Image : Drop
+    public partial class Image : Drop
     {
         /// <summary>
         /// Returns the alt tag of the image

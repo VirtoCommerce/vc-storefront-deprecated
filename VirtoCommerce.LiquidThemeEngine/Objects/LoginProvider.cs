@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class LoginProvider : Drop
+    public partial class LoginProvider : Drop
     {
         public string AuthenticationType { get; set; }
 

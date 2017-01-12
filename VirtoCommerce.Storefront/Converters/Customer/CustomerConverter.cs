@@ -5,7 +5,6 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
-using VirtoCommerce.Storefront.Model.Customer.Factories;
 using VirtoCommerce.Storefront.Model.Stores;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using customerDto = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
@@ -99,7 +98,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (vendorDto != null)
             {
-                result = ServiceLocator.Current.GetInstance<CustomerFactory>().CreateVendor();
+                result = new Vendor();
                 result.Id = vendorDto.Id;
                 result.Name = vendorDto.Name;
                 result.Description = vendorDto.Description;
@@ -144,7 +143,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual CustomerInfo ToCustomerInfo(Register formModel)
         {
-            var result = ServiceLocator.Current.GetInstance<CustomerFactory>().CreateCustomerInfo();
+            var result = new CustomerInfo();
             result.Email = formModel.Email;
             result.FullName = string.Join(" ", formModel.FirstName, formModel.LastName);
             result.FirstName = formModel.FirstName;
@@ -159,7 +158,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual CustomerInfo ToCustomerInfo(customerDto.Contact contactDto)
         {
-            var result = ServiceLocator.Current.GetInstance<CustomerFactory>().CreateCustomerInfo();
+            var result = new CustomerInfo();
             result.InjectFrom<NullableAndEnumValueInjecter>(contactDto);
             result.UserGroups = contactDto.Groups;
             result.IsRegisteredUser = true;

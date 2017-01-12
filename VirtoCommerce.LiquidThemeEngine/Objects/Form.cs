@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// <remarks>
     /// https://docs.shopify.com/themes/liquid-documentation/objects/form
     /// </remarks>
-    public class Form : Drop
+    public partial class Form : Drop
     {
         public Form()
         {

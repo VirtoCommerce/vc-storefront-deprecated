@@ -3,8 +3,10 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
+using VirtoCommerce.Storefront.Converters.Subscriptions;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Cart.Services;
@@ -13,6 +15,7 @@ using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
 using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Services;
+using VirtoCommerce.Storefront.Model.Subscriptions;
 using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Controllers.Api
@@ -24,16 +27,18 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         private readonly IOrdersModuleApiClient _orderApi;
         private readonly ICatalogSearchService _catalogSearchService;
         private readonly IEventPublisher<OrderPlacedEvent> _orderPlacedEventPublisher;
+        private readonly ISubscriptionModuleApiClient _subscriptionApi;
 
         public ApiCartController(WorkContext workContext, ICatalogSearchService catalogSearchService, ICartBuilder cartBuilder,
                                  IOrdersModuleApiClient orderApi, IStorefrontUrlBuilder urlBuilder,
-                                 IEventPublisher<OrderPlacedEvent> orderPlacedEventPublisher)
+                                 IEventPublisher<OrderPlacedEvent> orderPlacedEventPublisher, ISubscriptionModuleApiClient subscriptionApi)
             : base(workContext, urlBuilder)
         {
             _cartBuilder = cartBuilder;
             _orderApi = orderApi;
             _catalogSearchService = catalogSearchService;
             _orderPlacedEventPublisher = orderPlacedEventPublisher;
+            _subscriptionApi = subscriptionApi;
         }
 
         // Get current user shopping cart
@@ -205,6 +210,43 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+
+
+        // POST: storefrontapi/cart/paymentPlan    
+        [HttpPost]
+        public async Task<ActionResult> AddOrUpdateCartPaymentPlan(PaymentPlan paymentPlan)
+        {
+            await EnsureCartExistsAsync();
+
+            //Need lock to prevent concurrent access to same cart
+            using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
+            {
+                paymentPlan.Id = _cartBuilder.Cart.Id;
+                var paymentPlanDto = paymentPlan.ToPaymentPlanDto();
+
+                await _subscriptionApi.SubscriptionModule.UpdatePaymentPlanAsync(paymentPlanDto);
+                // await _cartBuilder.SaveAsync();
+                _cartBuilder.Cart.PaymentPlan = paymentPlan;
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        // DELETE: storefrontapi/cart/paymentPlan    
+        [HttpDelete]
+        public async Task<ActionResult> DeleteCartPaymentPlan()
+        {
+            await EnsureCartExistsAsync();
+
+            //Need lock to prevent concurrent access to same cart
+            using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
+            {
+                await _subscriptionApi.SubscriptionModule.DeletePlansByIdsAsync(new[] { _cartBuilder.Cart.Id });
+                // await _cartBuilder.SaveAsync();
+                _cartBuilder.Cart.PaymentPlan = null;
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
 
         // POST: storefrontapi/cart/shipments    
         [HttpPost]

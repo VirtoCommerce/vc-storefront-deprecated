@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class TreeNode : Drop
+    public partial class TreeNode : Drop
     {
         public TreeNode()
         {

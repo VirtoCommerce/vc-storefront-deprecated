@@ -11,7 +11,7 @@ namespace VirtoCommerce.Storefront.Model
     /// <summary>
     /// Represent language for specified culture
     /// </summary>
-    public class Language 
+    public partial class Language 
     {
         private Language()
             :this(CultureInfo.InvariantCulture.Name)

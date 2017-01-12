@@ -5,7 +5,7 @@ namespace VirtoCommerce.Storefront.Model.Marketing
     /// <summary>
     /// Represents promotion reward object
     /// </summary>
-    public class PromotionReward
+    public partial class PromotionReward
     {
         /// <summary>
         /// Gets or sets promotion reward amount

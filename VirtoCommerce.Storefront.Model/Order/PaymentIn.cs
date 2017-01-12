@@ -7,13 +7,13 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// <summary>
     /// Represent incoming payment operation
     /// </summary>
-    public class PaymentIn
+    public partial class PaymentIn
     {
         public PaymentIn(Currency currency)
         {
             Currency = currency;
             Sum = new Money(currency);
-
+            Tax = new Money(currency);
             ChildrenOperations = new List<Operation>();
             DynamicProperties = new List<DynamicProperty>();
         }
@@ -180,5 +180,9 @@ namespace VirtoCommerce.Storefront.Model.Order
         /// Gets or Sets Id
         /// </summary>
         public string Id { get; set; }
+
+        public BankCardInfo BankCardInfo { get; set; }
+
+        public Address BillingAddress { get; set; }
     }
 }

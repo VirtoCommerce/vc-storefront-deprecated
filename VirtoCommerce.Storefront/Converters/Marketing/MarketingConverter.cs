@@ -7,7 +7,6 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
-using VirtoCommerce.Storefront.Model.Marketing.Factories;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using marketingDto = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 namespace VirtoCommerce.Storefront.Converters
@@ -73,7 +72,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual DynamicContentItem ToDynamicContentItem(marketingDto.DynamicContentItem contentItemDto)
         {
-            var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreateDynamicContentItem();
+            var result = new DynamicContentItem();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(contentItemDto);
 
@@ -87,7 +86,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual PromotionReward ToPromotionReward(marketingDto.PromotionReward serviceModel, Currency currency)
         {
-            var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionReward();
+            var result = new PromotionReward();
 
             result.CategoryId = serviceModel.CategoryId;
             result.Coupon = serviceModel.Coupon;
@@ -114,8 +113,8 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual Promotion ToPromotion(marketingDto.Promotion promotionDto)
         {
-            var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotion();
-          
+            var result = new Promotion();
+
             result.Id = promotionDto.Id;      
             result.Name = promotionDto.Name;
             result.Description = promotionDto.Description;
@@ -126,7 +125,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual PromotionEvaluationContext ToPromotionEvaluationContext(WorkContext workContext, IEnumerable<Product> products = null)
         {
-            var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreatePromotionEvaluationContext();
+            var result = new PromotionEvaluationContext();
 
             result.Currency = workContext.CurrentCurrency;
             result.Customer = workContext.CurrentCustomer;

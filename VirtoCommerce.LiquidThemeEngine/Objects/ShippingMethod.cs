@@ -10,7 +10,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/shipping_method
     /// </remarks>
     [DataContract]
-    public class ShippingMethod : Drop
+    public partial class ShippingMethod : Drop
     {
         /// <summary>
         /// Returns the handle of the shipping method.

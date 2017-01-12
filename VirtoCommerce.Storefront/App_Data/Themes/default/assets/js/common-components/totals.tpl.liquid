@@ -1,0 +1,50 @@
+﻿<div class="vc-product-totals">
+    <ul class="list">
+        <li class="list-item">
+            {% if settings.show_prices_with_taxes %}
+            <div class="list-name">{{ 'checkout.subtotalWithTax' | t }}</div>
+            <div class="list-price" ng-bind="$ctrl.order.subTotalWithTax.formattedAmount"></div>
+            {% else %}
+            <div class="list-name">{{ 'checkout.subtotal' | t }}</div>
+            <div class="list-price" ng-bind="$ctrl.order.subTotal.formattedAmount"></div>
+            {% endif %}
+        </li>
+        <li class="list-item">
+            {% if settings.show_prices_with_taxes %}
+            <div class="list-name">{{ 'checkout.shippingWithTax' | t }}</div>
+            <div class="list-price" ng-bind="$ctrl.order.shippingPriceWithTax.formattedAmount || $ctrl.order.shippingTotalWithTax.formattedAmount"></div>
+            {% else %}
+            <div class="list-name">{{ 'checkout.shipping' | t }}</div>
+            <div class="list-price" ng-bind="$ctrl.order.shippingPrice.formattedAmount || $ctrl.order.shippingTotal.formattedAmount"></div>
+            {% endif %}
+        </li>
+        <li class="list-item" ng-if="$ctrl.order.paymentTotal.amount > 0">
+            {% if settings.show_prices_with_taxes %}
+            <div class="list-name">{{ 'checkout.paymentFeesWithTax' | t }}</div>
+            <div class="list-price" ng-bind="$ctrl.order.paymentPriceWithTax.formattedAmount"></div>
+            {% else %}
+            <div class="list-name">{{ 'checkout.paymentFees' | t }}</div>
+            <div class="list-price" ng-bind="$ctrl.order.paymentPrice.formattedAmount"></div>
+            {% endif %}
+        </li>
+        <li class="list-item">
+            <div class="list-name">{{ 'checkout.discount' | t }}</div>
+            {% if settings.show_prices_with_taxes %}
+            <div class="list-price" ng-bind="$ctrl.order.discountTotalWithTax.formattedAmount"></div>
+            {% else %}
+            <div class="list-price" ng-bind="$ctrl.order.discountTotal.formattedAmount"></div>
+            {% endif %}
+        </li>
+        <li class="list-item">
+            <div class="list-name">{{ 'checkout.taxes' | t }}</div>
+            <div class="list-price" ng-bind="$ctrl.order.taxTotal.formattedAmount"></div>
+        </li>
+        <li class="list-item total">
+            <div class="list-name">{{ 'checkout.total' | t }}</div>
+            <div class="list-price">
+                <div class="list-currency" ng-bind="$ctrl.order.total.currency.code"></div>
+                <span ng-bind="$ctrl.order.total.formattedAmount"></span>
+            </div>
+        </li>
+    </ul>
+</div>

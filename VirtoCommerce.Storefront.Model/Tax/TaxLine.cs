@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class TaxLine : Entity
+    public partial class TaxLine : Entity
     {
         public TaxLine(Currency currency)
         {

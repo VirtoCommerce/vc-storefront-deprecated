@@ -1,0 +1,48 @@
+﻿<h4>{{ 'customer.addresses.title' | t }}</h4>
+<div class="vc-product-address">
+    <ul class="list">
+        <li ng-repeat="item in $ctrl.addresses" ng-class="{ 'list-item': $ctrl.editIdx !== $index, 'one-half': $ctrl.editIdx === $index }">
+            <a ng-click="$ctrl.delete($index)" ng-if="$ctrl.editIdx !== $index" class="list-action">{{ 'customer.addresses.delete' | t }}</a>
+            <a ng-click="$ctrl.edit($index)" ng-if="$ctrl.editIdx !== $index" class="list-action">{{ 'customer.addresses.edit' | t }}</a>
+            <h3 ng-if="$ctrl.editIdx === $index">{{ 'customer.addresses.edit_old' | t }}</h3>
+            <vc-address address="$ctrl.editIdx === $index ? $ctrl.editItem : item" edit-mode="$ctrl.editIdx === $index" validation-container="$ctrl" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)"></vc-address>
+            <div ng-if="$ctrl.editIdx === $index" class="form-actions">
+                <!--<p>
+                        {{ form.set_as_default_checkbox }}
+                        <label for="address_default_address_new" class="inline">{{ 'customer.addresses.set_default' | t }}</label>
+                    </p>-->
+                <button ng-click="$ctrl.cancel()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+                    <span class="btn-text">{{ 'customer.addresses.cancel' | t }}</span>
+                    <span class="btn-loading"></span>
+                </button>
+                <span class="form-spacer"></span>
+                <button ng-click="$ctrl.submit()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+                    <span class="btn-text">{{ 'customer.addresses.update' | t }}</span>
+                    <span class="btn-loading"></span>
+                </button>
+            </div>
+        </li>
+    </ul>
+
+    <p ng-if="!$ctrl.addresses || !$ctrl.addresses.length">{{ 'customer.addresses.no_addresses_message' | t }}</p>
+
+    <button ng-click="$ctrl.newAddress={}" ng-if="!$ctrl.newAddress && !($ctrl.editIdx >= 0)" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+        <span class="btn-text">{{ 'customer.addresses.add_new' | t }}</span>
+        <span class="btn-loading"></span>
+    </button>
+    <div ng-if="$ctrl.newAddress" class="one-half">
+        <h2 ng-if="$ctrl.newAddress">{{ 'customer.addresses.add_new' | t }}</h2>
+        <vc-address address="$ctrl.newAddress" edit-mode="true" validation-container="$ctrl" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)" ng-if="$ctrl.newAddress"></vc-address>
+        <div>
+            <button ng-click="$ctrl.newAddress = null" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+                <span class="btn-text">{{ 'customer.addresses.cancel' | t }}</span>
+                <span class="btn-loading"></span>
+            </button>
+            <span class="form-spacer"></span>
+            <button ng-click="$ctrl.addNewAddress()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+                <span class="btn-text">{{ 'customer.addresses.add' | t }}</span>
+                <span class="btn-loading"></span>
+            </button>
+        </div>
+    </div>
+</div>

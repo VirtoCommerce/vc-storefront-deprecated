@@ -1,4 +1,8 @@
 {
+    "common": {
+        "required": "Required",
+        "invalid": "Invalid"
+    },
     "checkout": {
         "title": "Checkout",
         "description": "Description",
@@ -18,6 +22,8 @@
         "coupon_code": "Coupon code",
         "coupon_applied_sucessfuly": "Coupon is valid",
         "invalid_coupon_code": "This code did not match any active coupon. Was it entered correctly?",
+        "make_recurring_order": "I want this to be a recurring order",
+        "reorder_every": "Auto-Reorder every",
         "copyright_text": "All rights reserved",
         "optional_field_sign": "(optional)",
         "secure_field": "Secure field",
@@ -81,16 +87,17 @@
             "continue_text": "Complete order",
             "return_text": "Return to shipping method",
             "required_card_number_message": "Please enter your bank card number",
-            "invalid_card_number_message": "Please enter your bank card number",
+            "invalid_card_number_message": "Please enter valid card number",
             "required_cardholder_name_message": "Please enter card holder name",
             "required_expiration_month_message": "Please enter expiration month",
-            "invalid_expiration_month_message": "The month invalid",
+            "invalid_expiration_month_message": "Invalid month",
             "required_expiration_year_message": "Please enter expiration year",
-            "invalid_expiration_year_message": "The year invalid",
+            "invalid_expiration_year_message": "Invalid year",
             "required_cvv_message": "Please enter CVV",
             "invalid_cvv_message": "Please enter correct CVV"
         },
         "address": {
+            "selected_address": "Selected address",
             "first_name": "First name",
             "last_name": "Last name",
             "company": "Company (optional)",
@@ -115,6 +122,7 @@
         "adding_to_cart_title": "Adding product to cart..."
     },
     "general": {
+        "loading": "Working...",
         "meta": {
             "tags": "Tagged \"{{ tags }}\"",
             "page": "Page {{ page }}"
@@ -186,12 +194,15 @@
             "continue_browsing_html": "Continue browsing <a href=\"collections\">here</a>.",
             "or": "or",
             "view_cart": "View Cart",
-            "close_cart": "Close Cart"
+            "close_cart": "Close Cart",
+            "quick_add_description": "You can quickly add a product to cart by entering its SKU or name in the field below",
+            "add": "Add",
+            "product_search_empty": "No products found"
         }
     },
     "quotes": {
         "general": {
-            "empty": "You have no any quote requests.",
+            "empty": "You have no quote requests.",
             "continue_browsing_html": "Continue browsing <a href=\"collections/all\">here</a>.",
             "title": "Quotes",
             "email": "E-mail address",
@@ -252,8 +263,15 @@
         "account": {
             "title": "My Account",
             "details": "Account Details",
-            "view_addresses": "View Addresses",
-            "return": "Return to Account Details"
+            "return": "Return to Account Details",
+            "menu_label": {
+                "orders": "Orders",
+                "subscriptions": "Subscriptions",
+                "quotes": "Quote requests",
+                "profile": "Profile",
+                "addresses": "Addresses",
+                "change_password": "Change password"
+            }
         },
         "activate_account": {
             "title": "Activate Account",
@@ -266,7 +284,8 @@
         "addresses": {
             "title": "Your Addresses",
             "default": "Default",
-            "add_new": "Add a New Address",
+            "add_new": "Add new Address",
+            "edit_old": "Edit address",
             "first_name": "First Name",
             "last_name": "Last Name",
             "company": "Company",
@@ -283,7 +302,8 @@
             "cancel": "Cancel",
             "edit": "Edit",
             "delete": "Delete",
-            "delete_confirm": "Are you sure you wish to delete this address?"
+            "delete_confirm": "Are you sure you wish to delete this address?",
+            "no_addresses_message": "You have no addresses yet."
         },
         "login": {
             "title": "Login",
@@ -298,10 +318,10 @@
         },
         "orders": {
             "title": "Order History",
-            "order_number": "Order",
+            "return": "Return to list",
+            "order_number": "Order Number",
             "date": "Date",
-            "payment_status": "Payment Status",
-            "fulfillment_status": "Fulfillment Status",
+            "status": "Status",
             "total": "Total",
             "none": "You haven't placed any orders yet."
         },
@@ -312,7 +332,10 @@
             "cancel_reason": "Reason",
             "billing_address": "Billing Address",
             "payment_status": "Payment Status",
+            "new_payment": "Pay",
             "shipping_address": "Shipping Address",
+            "subscription": "Subscription",
+            "subscription_comment": "This order was generated by subscription",
             "fulfillment_status": "Fulfillment Status",
             "discount": "Discount",
             "shipping": "Shipping",
@@ -323,11 +346,74 @@
             "quantity": "Quantity",
             "total": "Total",
             "fulfilled_on": "Fulfilled on {{ date }}",
-            "subtotal": "Subtotal"
+            "subtotal": "Subtotal",
+            "status": {
+                "unpaid": "Unpaid",
+                "pending": "Pending",
+                "processing": "Processing",
+                "ready": "Ready to send",
+                "sent": "Sent",
+                "partially_sent": "Partially sent",
+                "cancelled": "Cancelled"
+            }
+        },
+        "order_payment": {
+            "cancel": "Cancel payment",
+            "submit": "Confirm payment"
+        },
+        "subscriptions": {
+            "title": "My subscriptions",
+            "return": "Return to list",
+            "subscription_number": "Subscription Number",
+            "status": "Status",
+            "period": "Period",
+            "date_created": "Start date",
+            "date_trial_end": "Trial end",
+            "total": "Total",
+            "date_ended": "End date",
+            "none": "You haven't placed any subscriptions yet.",
+            "intervals": {
+                "_every": "every",
+                "days_1": "daily",
+                "days_plural": " days",
+                "weeks_1": "weekly",
+                "weeks_plural": " weeks",
+                "months_1": "monthly",
+                "months_plural": " months",
+                "years_1": "year",
+                "years_plural": " years"
+            }
+        },
+        "subscription": {
+            "title": "Subscription {{ number }}",
+            "placed_on_date_html": "Placed on {{ date }}",
+            "cancelled_on": "Subscription was canceled on {{ date | date: 'medium'}}",
+            "cancel_reason": "Reason",
+            "details-sentence_": "Subscription shipping every {{intervalCount}} {{interval}} from {{createdDate | date }} until {{endDate | date }}. Next billing on {{currentPeriodEnd | date }}.",
+            "details-sentence": "Subscription shipping every {{intervalCount}} {{interval}} from {{createdDate | date }}. Next billing on {{currentPeriodEnd | date }}.",
+            "details-sentence1": "Subscription shipping every 20 days from Nov 22, 2016. Next billing on Dec 31, 2016.",
+            "details-sentence2": "Subscription shipping every 2 weeks from Nov 22, 2016 until Nov 21, 2017. Next billing on Dec 31, 2016.",
+            "shipping_address": "Shipping Address",
+            "discount": "Discount",
+            "shipping": "Shipping",
+            "tax": "Tax",
+            "product": "Product",
+            "sku": "SKU",
+            "price": "Price",
+            "quantity": "Quantity",
+            "total": "Total",
+            "subtotal": "Subtotal",
+            "balance": "Balance",
+            "orders": "Orders",
+            "order-sentence": "{{order | orderToSummarizedStatusLabel}} {{order.number}} from {{order.createdDate | date}}, {{order.total.formattedAmount}}",
+            "billing_address": "Billing address",
+            "cancel": "Cancel Subscription",
+            "cancel_reason_lbl": "Describe the cancellation reason",
+            "cancel_submit": "Submit cancellation"
         },
         "quotes": {
             "title": "Quote requests",
-            "none": "You haven't submit any quote requests yet.",
+            "none": "You haven't submitted any quote requests yet.",
             "quote_number": "Number",
             "date": "Date",
             "total": "Total",
@@ -368,7 +454,7 @@
             "first_name": "First Name",
             "last_name": "Last Name",
             "email": "Email",
-            "submit": "Save",
+            "submit": "Update",
             "cancel": "Cancel"
         },
         "change_password": {
@@ -376,8 +462,13 @@
             "old_password": "Old Password",
             "new_password": "New Password",
             "new_password_confirm": "Confirm New Password",
-            "submit": "Save",
-            "cancel": "Cancel"
+            "submit": "Change password",
+            "changed": "Password was changed successfully!",
+            "validation": {
+                "current-password": "Required",
+                "new-password": "Old and new passwords are the same!",
+                "repeat-password": "New passwords doesn't match!"
+            }
         }
     },
     "homepage": {
@@ -453,7 +544,7 @@
             "only_left": "Only {{ count }} left!",
             "quantity": "Quantity",
             "add_to_cart": "Add to Cart",
-            "details_tab" :  "Product details"
+            "details_tab": "Product details"
         }
     },
     "gift_cards": {

@@ -7,7 +7,7 @@ using DotLiquid;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class ProductProperty : Drop
+    public partial class ProductProperty : Drop
     {
         /// <summary>
         /// Property name

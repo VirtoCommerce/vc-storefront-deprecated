@@ -2,7 +2,7 @@
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class QuoteRequestTotals : Drop
+    public partial class QuoteRequestTotals : Drop
     {
         public decimal OriginalSubTotalExlTax { get; set; }
 

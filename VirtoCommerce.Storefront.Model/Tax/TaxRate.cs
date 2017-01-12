@@ -3,7 +3,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class TaxRate
+    public partial class TaxRate
     {
         public TaxRate(Currency currency)
         {

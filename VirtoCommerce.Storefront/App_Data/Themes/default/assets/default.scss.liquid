@@ -4736,3 +4736,81 @@ dd {
     height: 100%;
     width: 100%;
 }
+
+[name="formQuickAdd"] {
+    position: relative;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+}
+[name="formQuickAdd"] .input-group-field {
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+[name="formQuickAdd"] .product-search-result {
+    background: #fff;
+    border: 1px solid #ccc;
+    left: 0;
+    margin-top: -1px;
+    padding: 10px;
+    position: absolute;
+    right: 50px;
+    top: 100%;
+    z-index: 5;
+}
+[name="formQuickAdd"] .loader {
+    background: url(informer-loader.gif);
+    height: 16px;
+    position: absolute;
+    right: 65px;
+    top: 13px;
+    width: 16px;
+}
+[name="formQuickAdd"] .item {
+    cursor: pointer;
+    padding: 5px;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+}
+[name="formQuickAdd"] .item:hover {
+    background-color: #ececec;
+}
+[name="formQuickAdd"] .item-img {
+    box-sizing: border-box;
+    height: 64px;
+    min-width: 64px;
+    width: 64px;
+}
+[name="formQuickAdd"] .item-img .no-product-image img {
+    height: 64px;
+    width: 64px;
+}
+[name="formQuickAdd"] .item-info {
+    padding-left: 10px;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+}
+[name="formQuickAdd"] .item-name {
+    color: #000;
+    font-size: 15px;
+    padding-right: 80px;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+[name="formQuickAdd"] .item-price {
+    color: #000;
+    font-size: 16px;
+    font-weight: 700;
+}

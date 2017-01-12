@@ -1,6 +1,6 @@
 ﻿namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class Aggregation
+    public partial class Aggregation
     {
         public string AggregationType { get; set; }
         public string Field { get; set; }

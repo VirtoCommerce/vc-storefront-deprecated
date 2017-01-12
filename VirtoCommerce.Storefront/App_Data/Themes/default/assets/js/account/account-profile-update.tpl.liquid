@@ -1,0 +1,13 @@
+﻿<div class="one-half">
+    <h4>{{ 'customer.edit_profile.title' | t }}</h4>
+    <form ng-submit="$ctrl.submit()" name="detailForm">
+        <vc-labeled-input value="$ctrl.changeData.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm" required="true" autofocus="true"></vc-labeled-input>
+        <vc-labeled-input value="$ctrl.changeData.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" form="detailForm"></vc-labeled-input>
+        <vc-labeled-input value="$ctrl.changeData.email" name="email" placeholder="{{ 'customer.edit_profile.email' | t }}" form="detailForm" required="true" type="email"></vc-labeled-input>
+
+        <button class="vc-btn" ng-disabled="$ctrl.loader.isLoading" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+            <span class="btn-text">{{ 'customer.edit_profile.submit' | t }}</span>
+            <span class="btn-loading"></span>
+        </button>
+    </form>
+</div>

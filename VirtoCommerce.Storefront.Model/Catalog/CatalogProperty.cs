@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class CatalogProperty : Entity
+    public partial class CatalogProperty : Entity
     {
         public CatalogProperty()
         {

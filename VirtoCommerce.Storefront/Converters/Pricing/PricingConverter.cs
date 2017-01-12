@@ -7,7 +7,6 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Pricing;
-using VirtoCommerce.Storefront.Model.Pricing.Factories;
 using pricingDto = VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
@@ -60,7 +59,7 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Pricelist ToPricelist(pricingDto.Pricelist pricelistDto, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(pricelistDto.Currency)) ?? new Currency(language, pricelistDto.Currency);
-            var result = ServiceLocator.Current.GetInstance<PricingFactory>().CreatePricelist(currency);
+            var result = new Pricelist(currency);
             result.Id = pricelistDto.Id;
             return result;
         }
@@ -68,7 +67,7 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual ProductPrice ToProductPrice(pricingDto.Price priceDto, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(priceDto.Currency)) ?? new Currency(language, priceDto.Currency);
-            var result = ServiceLocator.Current.GetInstance<PricingFactory>().CreateProductPrice(currency);
+            var result = new ProductPrice(currency);
             result.ProductId = priceDto.ProductId;
             result.PricelistId = priceDto.PricelistId;
            

@@ -1,0 +1,29 @@
+﻿<div class="form-group" ng-class="{'keyuped': $ctrl.form[$ctrl.name].$viewValue.length, 'error': ($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$invalid }">
+    <label for="{% raw %}{{ $ctrl.name }}{% endraw %}" class="form-label" ng-bind="$ctrl.placeholder"></label>
+    <input ng-model="$ctrl.value"
+           name="{% raw %}{{ $ctrl.name }}{% endraw %}"
+           id="{% raw %}{{ $ctrl.name }}{% endraw %}"
+           placeholder="{% raw %}{{ $ctrl.placeholder }}{% endraw %}"
+           autofocus="{% raw %}{{ $ctrl.autofocus }}{% endraw %}"
+           type="{% raw %}{{ $ctrl.type }}{% endraw %}"
+           ng-required="$ctrl.required" class="form-input" />
+    <span class="form-error" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$error.required" ng-bind="$ctrl.requiredError || '{{ 'common.required' | t }}'"></span>
+    <span class="form-error" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && !$ctrl.form[$ctrl.name].$error.required && $ctrl.form[$ctrl.name].$invalid">{{ 'common.invalid' | t }}</span>
+</div>
+
+<!--<form accept-charset="UTF8" class="step" name="$ctrl.form" novalidate="novalidate">
+    <div class="fieldset">
+        <div class="field field--required" ng-class="{ 'field--show-floating-label': !$ctrl.form.Email.$error.required, 'field--error': ($ctrl.form.Email.$dirty || $ctrl.form.$submitted) && $ctrl.form.Email.$invalid }">
+            <div class="field__input-wrapper">
+                <label class="field__label" for="Email">{{ 'checkout.customer_information.email' | t }}</label>
+                <input class="field__input" id="Email" name="Email" placeholder="{{ 'checkout.customer_information.email' | t }}" required="required" size="30" type="email" ng-model="$ctrl.email" />
+            </div>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.Email.$dirty || $ctrl.form.$submitted) && $ctrl.form.Email.$error.required">
+                {{ 'checkout.email_required_message' | t }}
+            </p>
+            <p class="field__message field__message--error" ng-if="($ctrl.form.Email.$dirty || $ctrl.form.$submitted) && $ctrl.form.Email.$error.email">
+                
+            </p>
+        </div>
+    </div>
+</form>-->

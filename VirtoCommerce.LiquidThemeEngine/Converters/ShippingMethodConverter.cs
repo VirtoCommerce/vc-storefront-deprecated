@@ -1,6 +1,5 @@
 ﻿using Microsoft.Practices.ServiceLocation;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Order;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
@@ -24,8 +23,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual ShippingMethod ToLiquidShippingMethod(Shipment shipment)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateShippingMethod();
+            var result = new ShippingMethod();
             result.Price = shipment.Total.Amount * 100;
             result.PriceWithTax = shipment.TotalWithTax.Amount * 100;
             result.Title = shipment.ShipmentMethodCode;
@@ -36,8 +34,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public virtual ShippingMethod ToLiquidShippingMethod(Storefront.Model.ShippingMethod shippingMethod)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateShippingMethod();
+            var result = new ShippingMethod();
 
             result.Handle = shippingMethod.ShipmentMethodCode;
             result.Price = shippingMethod.Price.Amount;

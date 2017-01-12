@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using storefrontModel = VirtoCommerce.Storefront.Model.Catalog;
 
@@ -28,8 +27,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Product ToLiquidProduct(storefrontModel.Product product)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateProduct();
+            var result = new Product();
             result.Id = product.Id;
             result.CatalogId = product.CatalogId;
             result.CategoryId = product.CategoryId;
@@ -144,7 +142,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public virtual Variant ToLiquidVariant(storefrontModel.Product product)
         {
-            var result = ServiceLocator.Current.GetInstance<Variant>();
+            var result = new Variant();
 
             result.Available = true;
             result.Barcode = product.Gtin;

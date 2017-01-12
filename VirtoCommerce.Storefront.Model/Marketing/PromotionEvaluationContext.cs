@@ -8,7 +8,7 @@ namespace VirtoCommerce.Storefront.Model.Marketing
     /// <summary>
     /// Represents context object for promotion evaluation
     /// </summary>
-    public class PromotionEvaluationContext
+    public partial class PromotionEvaluationContext
     {
         public PromotionEvaluationContext()
         {     

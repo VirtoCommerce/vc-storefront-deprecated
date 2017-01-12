@@ -1,0 +1,126 @@
+﻿<ng-outlet></ng-outlet>
+
+<script id="account-subscriptions-list.tpl" type="text/ng-template">
+    <h4>{{ 'customer.subscriptions.title' | t }}</h4>
+    <table class="full" ng-if="$ctrl.entries.length">
+        <thead>
+            <tr>
+                <th>{{ 'customer.subscriptions.subscription_number' | t }}</th>
+                <th>{{ 'customer.subscriptions.status' | t }}</th>
+                <th>{{ 'customer.subscriptions.period' | t }}</th>
+                <th>{{ 'customer.subscriptions.date_created' | t }}</th>
+                <th>{{ 'customer.subscriptions.total' | t }}</th>
+                <th>{{ 'customer.subscriptions.date_ended' | t }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="data in $ctrl.entries">
+                <td>
+                    <a ng-bind="data.number" ng-link="['SubscriptionDetail', {number: data.number, pageNumber: $ctrl.pageSettings.currentPage}]"></a>
+                </td>
+                <td ng-bind="data.status"></td>
+                <td ng-bind="(data.intervalCount===1?'': data.intervalCount) + (data | toIntervalKey:data.intervalCount | translate)"></td>
+                <td ng-bind="data.createdDate | date"></td>
+                <td ng-bind="data.total.formattedAmount"></td>
+                <td ng-bind="data.endDate | date"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+
+    <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.subscriptions.none' | t }}</p>
+</script>
+
+<script id="account-subscription-detail.tpl" type="text/ng-template">
+    <p>
+        <a ng-link="['SubscriptionList', {pageNumber: $ctrl.pageNumber}]">
+            <span class="fa fa-arrow-left"></span> {{ 'customer.subscriptions.return' | t }}
+        </a>
+    </p>
+
+    <div class="cols">
+        <div class="col col-66 main">
+            <h4>{% raw %}{{ 'customer.subscription.title' | translate: $ctrl.subscription }}{% endraw %}</h4>
+            <p>
+                <!--{{ 'customer.subscription.placed_on_date_html' | t }}
+                    <strong ng-bind="$ctrl.subscription.createdDate | date: 'medium'"></strong>-->
+                <strong>{% raw %}{{ 'customer.subscription.details-sentence' | translate: $ctrl.subscription }}{% endraw %}</strong>
+            </p>
+
+            <div ng-if="$ctrl.subscription.isCancelled" class="errors">
+                <h5 ng-bind="'customer.subscription.cancelled_on' | translate: {date: $ctrl.subscription.cancelledDate}"></h5>
+                <p>{{ 'customer.subscription.cancel_reason' | t }}: {% raw %}{{ $ctrl.subscription.cancelReason }}{% endraw %}</p>
+            </div>
+            <div class="form-fieldset">
+                <vc-line-items items="$ctrl.subscription.items"></vc-line-items>
+
+                <hr class="hr--small" />
+                <div class="vc-section-header">
+                    <div class="vc-t">Subscription totals</div>
+                </div>
+                <div class="cols">
+                    <div class="col col-33">
+                    </div>
+                    <div class="col col-66">
+                        <vc-totals order="$ctrl.subscription"></vc-totals>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col col-33">
+            <div class="vc-section-header">
+                <div class="vc-t">{{ 'customer.subscriptions.status' | t }}</div>
+                <div class="vc-descr" ng-bind="$ctrl.subscription.status"></div>
+            </div>
+            <div class="vc-section-header">
+                <div class="vc-t">{{ 'customer.subscription.balance' | t }}</div>
+                <div class="vc-descr" ng-bind="$ctrl.subscription.balance.formattedAmount"></div>
+            </div>
+
+            <hr class="hr--small" />
+            <div class="vc-section-header">
+                <div class="vc-t">{{ 'customer.subscription.orders' | t }}</div>
+                <div class="vc-descr" ng-repeat="order in $ctrl.subscription.customerOrders">
+                    <a ng-link="['/Orders/OrderDetail', {number: order.number}]">
+                        {% raw %}{{ 'customer.subscription.order-sentence' | translate: {order:order} }}{% endraw %}
+                    </a>
+                </div>
+            </div>
+
+            <!--<div class="vc-section-header">
+                    <div class="vc-t">{{ 'customer.subscription.billing_address' | t }}</div>
+                    <div class="vc-descr">
+                        <vc-address address="$ctrl.billingAddress"></vc-address>
+                    </div>
+                </div>-->
+            <div class="vc-section-header" ng-if="$ctrl.subscription.shipments[0].deliveryAddress">
+                <div class="vc-t">{{ 'customer.subscription.shipping_address' | t }}</div>
+                <div class="vc-descr">
+                    <vc-address address="$ctrl.subscription.shipments[0].deliveryAddress"></vc-address>
+                </div>
+            </div>
+
+            <hr class="hr--small" />
+            <button ng-click="$ctrl.isCancelFormVisible=true" ng-if="!$ctrl.subscription.isCancelled && !$ctrl.isCancelFormVisible" class="vc-btn" ng-class="{'loading': $ctrl.loader.isLoading }">
+                <span class="btn-text">{{ 'customer.subscription.cancel' | t }}</span>
+                <span class="btn-loading"></span>
+            </button>
+            <form ng-submit="cancelForm.setSubmitted() || (cancelForm.$valid && $ctrl.cancel())" name="cancelForm" ng-if="$ctrl.isCancelFormVisible">
+                <div class="note form-error" ng-if="$ctrl.errors.length">
+                    <p>{{ 'general.forms.post_error' | t }}</p>
+                    <ul class="disc">
+                        <li ng-repeat="e in $ctrl.errors" ng-bind="e"></li>
+                    </ul>
+                </div>
+                <vc-labeled-input value="$ctrl.cancelReason" name="reason" placeholder="{{ 'customer.subscription.cancel_reason_lbl' | t }}" form="cancelForm" required="true" autofocus="true"></vc-labeled-input>
+
+                <button class="vc-btn" ng-disabled="$ctrl.loader.isLoading" ng-class="{ 'btn--disabled': cancelForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+                    <span class="btn-text">{{ 'customer.subscription.cancel_submit' | t }}</span>
+                    <span class="btn-loading"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+</script>

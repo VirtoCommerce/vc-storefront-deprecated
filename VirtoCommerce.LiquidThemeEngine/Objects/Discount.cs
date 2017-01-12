@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/discount
     /// </remarks>
     [DataContract]
-    public class Discount : Drop
+    public partial class Discount : Drop
     {
         /// <summary>
         /// Returns the amount of the discount. Use one of the money filters to return

@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/order
     /// </remarks>
     [DataContract]
-    public class Order : Drop
+    public partial class Order : Drop
     {
         /// <summary>
         /// Returns the billing address of the order.

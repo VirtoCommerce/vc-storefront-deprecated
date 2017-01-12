@@ -1,6 +1,6 @@
 ﻿namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class AggregationItem
+    public partial class AggregationItem
     {
         public int Count { get; set; }
         public bool IsApplied { get; set; }

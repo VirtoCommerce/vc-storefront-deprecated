@@ -5,7 +5,7 @@ using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class TierPrice : ValueObject<TierPrice>, ITaxable
+    public partial class TierPrice : ValueObject<TierPrice>, ITaxable
     {
         public TierPrice(Currency currency)
             :this (new Money(currency), 0)

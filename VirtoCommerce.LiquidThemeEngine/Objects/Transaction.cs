@@ -13,7 +13,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://help.shopify.com/themes/liquid/objects/transaction
     /// </summary>
     [DataContract]
-    public class Transaction : Drop
+    public partial class Transaction : Drop
     {
         /// <summary>
         /// Returns a unique numeric identifier for the transaction.

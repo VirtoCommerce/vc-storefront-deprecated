@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// <summary>
     /// Represent language for specified culture
     /// </summary>
-    public class Language : Drop
+    public partial class Language : Drop
     {
         /// <summary>
         /// culture name format (e.g. en-US)

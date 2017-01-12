@@ -6,7 +6,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class ProductSearchCriteria : PagedSearchCriteria
+    public partial class ProductSearchCriteria : PagedSearchCriteria
     {
         private static int _defaultPageSize = 20;
 

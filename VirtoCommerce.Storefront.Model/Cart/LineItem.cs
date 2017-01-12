@@ -6,10 +6,11 @@ using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
+using VirtoCommerce.Storefront.Model.Subscriptions;
 
 namespace VirtoCommerce.Storefront.Model.Cart
 {
-    public class LineItem : Entity, IDiscountable, IValidatable, ITaxable
+    public partial class LineItem : Entity, IDiscountable, IValidatable, ITaxable
     {
         public LineItem(Currency currency, Language language)
         {
@@ -164,7 +165,12 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// Gets or sets the value of line item original price
         /// </summary>
         public Money ListPrice { get; set; }
-       
+
+        /// <summary>
+        /// if the product is sold by subscription only this property contains the recurrence plan
+        /// </summary>
+        public PaymentPlan PaymentPlan { get; set; }
+
         /// <summary>
         /// Gets or sets the value of line item original price including tax 
         /// </summary>

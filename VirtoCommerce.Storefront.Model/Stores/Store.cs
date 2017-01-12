@@ -8,7 +8,7 @@ namespace VirtoCommerce.Storefront.Model.Stores
     /// <summary>
     /// Represent store - main ecommerce aggregate unit
     /// </summary>
-    public class Store : Entity, IHasSettings
+    public partial class Store : Entity, IHasSettings
     {
         public Store()
         {
@@ -105,6 +105,14 @@ namespace VirtoCommerce.Storefront.Model.Stores
             get
             {
                 return Settings.GetSettingValue("Quotes.EnableQuotes", false);
+            }
+        }
+
+        public bool SubscriptionEnabled
+        {
+            get
+            {
+                return Settings.GetSettingValue("Subscription.EnableSubscriptions", false);
             }
         }
 

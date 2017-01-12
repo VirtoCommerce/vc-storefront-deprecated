@@ -114,8 +114,8 @@ storefrontApp.controller('quoteRequestController', ['$rootScope', '$scope', '$wi
         stringifiedAddress += address.organization ? address.organization + ', ' : '';
         stringifiedAddress += address.countryName + ', ';
         stringifiedAddress += address.regionName ? address.regionName + ', ' : '';
-        stringifiedAddress += address.city;
-        stringifiedAddress += address.line1 + ', '
+        stringifiedAddress += address.city + ' ';
+        stringifiedAddress += address.line1 + ', ';
         stringifiedAddress += address.line2 ? address.line2 : '';
         stringifiedAddress += address.postalCode;
         return stringifiedAddress;

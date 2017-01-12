@@ -113,7 +113,6 @@
     "account": {
       "title": "Mon compte",
       "details": "Détails du compte",
-      "view_addresses": "Voir les adresses",
       "return": "Retourner aux détails du compte"
     },
     "activate_account": {

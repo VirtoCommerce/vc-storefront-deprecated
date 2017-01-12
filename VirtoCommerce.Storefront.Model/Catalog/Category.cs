@@ -3,7 +3,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class Category : Entity, IHasProperties
+    public partial class Category : Entity, IHasProperties
     {
         public Category()
         {

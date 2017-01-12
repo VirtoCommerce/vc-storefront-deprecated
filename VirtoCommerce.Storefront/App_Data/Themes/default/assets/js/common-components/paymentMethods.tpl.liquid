@@ -1,0 +1,31 @@
+﻿<div class="vc-section-header">
+    <div class="vc-t">{{ 'checkout.payment_method.title' | t }}</div>
+    <div class="vc-descr">{{ 'checkout.payment_method.subtitle' | t }}</div>
+</div>
+<div class="form-group">
+    <div class="form-box" ng-repeat="paymentMethod in $ctrl.availPaymentMethods | orderBy: 'priority'">
+        <div class="box-row">
+            <label class="radio-box">
+                <input ng-model="$ctrl.paymentMethod" ng-value="paymentMethod" ng-change="$ctrl.selectMethod(paymentMethod)" ng-required="true" type="radio" class="radio"/>
+                <div class="switch"></div>
+                <div ng-bind="paymentMethod.name" class="name"></div>
+                <div ng-if="paymentMethod.total.amount > 0" class="cost">
+                    {% if settings.show_prices_with_taxes %}
+                    <span ng-bind="paymentMethod.totalWithTax.formattedAmount"></span>
+                    <span ng-if="paymentMethod.discountAmountWithTax.amount > 0">
+                        <span class="old" ng-bind="paymentMethod.priceWithTax.formattedAmount"></span>
+                    </span>
+                    {% else %}
+                    <span ng-bind="paymentMethod.total.formattedAmount"></span>
+                    <span ng-if="paymentMethod.discountAmount.amount > 0">
+                        <span class="old" ng-bind="paymentMethod.price.formattedAmount"></span>
+                    </span>
+                    {% endif %}
+                </div>
+            </label>
+        </div>
+        <div class="box-row" ng-if="paymentMethod === $ctrl.paymentMethod && $ctrl.paymentMethod.paymentMethodType === 'Standard'">
+            <vc-credit-card card="$ctrl.paymentMethod.card" validation-container="$ctrl.validationContainer"></vc-credit-card>
+        </div>
+    </div>
+</div>

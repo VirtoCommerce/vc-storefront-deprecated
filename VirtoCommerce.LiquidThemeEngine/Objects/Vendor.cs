@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Common;
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
     [DataContract]
-    public class Vendor : Drop
+    public partial class Vendor : Drop
     {
         /// <summary>
         /// Returns the handle of a vendor.

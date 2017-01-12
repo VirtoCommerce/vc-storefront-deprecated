@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class Linklists : ItemCollection<Linklist>
+    public partial class Linklists : ItemCollection<Linklist>
     {
         public Linklists(IEnumerable<Linklist> linklists)
             : base(linklists)

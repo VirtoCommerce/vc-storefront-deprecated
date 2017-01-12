@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Pricing
 {
-    public class Pricelist
+    public partial class Pricelist
     {
         public Pricelist(Currency currency)
         {

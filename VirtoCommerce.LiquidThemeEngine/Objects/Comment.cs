@@ -7,7 +7,7 @@ using DotLiquid;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class Comment : Drop
+    public partial class Comment : Drop
     {
         #region Public Properties
         public string Author { get; set; }

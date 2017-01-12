@@ -7,8 +7,10 @@ using VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
+using VirtoCommerce.Storefront.Converters.Subscriptions;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
@@ -19,9 +21,11 @@ using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Quote.Events;
 using VirtoCommerce.Storefront.Model.Stores;
-using customerModel = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
-using orderModel = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
-using quoteModel = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
+using VirtoCommerce.Storefront.Model.Subscriptions;
+using customerDto = VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models;
+using orderDto = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
+using quoteDto = VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models;
+using subscriptionDto = VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Services
 {
@@ -32,13 +36,15 @@ namespace VirtoCommerce.Storefront.Services
         private readonly Func<WorkContext> _workContextFactory;
         private readonly IQuoteModuleApiClient _quoteApi;
         private readonly IStoreModuleApiClient _storeApi;
+        private readonly ISubscriptionModuleApiClient _subscriptionApi;
         private readonly ILocalCacheManager _cacheManager;
         private const string _customerOrdersCacheRegionFormat = "customer/{0}/orders/region";
         private const string _customerQuotesCacheRegionFormat = "customer/{0}/quotes/region";
+        private const string _customerSubscriptionCacheRegionFormat = "customer/{0}/subscriptions/region";
         private const string _customerCacheKeyFormat = "customer/{0}";
         private const string _customerCacheRegionFormat = "customer/{0}/region";
         public CustomerServiceImpl(Func<WorkContext> workContextFactory, ICustomerModuleApiClient customerApi, IOrdersModuleApiClient orderApi,
-            IQuoteModuleApiClient quoteApi, IStoreModuleApiClient storeApi, ILocalCacheManager cacheManager)
+            IQuoteModuleApiClient quoteApi, IStoreModuleApiClient storeApi, ISubscriptionModuleApiClient subscriptionApi, ILocalCacheManager cacheManager)
         {
             _workContextFactory = workContextFactory;
             _customerApi = customerApi;
@@ -46,6 +52,7 @@ namespace VirtoCommerce.Storefront.Services
             _quoteApi = quoteApi;
             _storeApi = storeApi;
             _cacheManager = cacheManager;
+            _subscriptionApi = subscriptionApi;
         }
 
         #region ICustomerService Members
@@ -73,6 +80,7 @@ namespace VirtoCommerce.Storefront.Services
                 {
                     retVal.QuoteRequests = GetCustomerQuotes(retVal);
                 }
+                retVal.Subscriptions = GetCustomerSubscriptions(retVal);
             }
 
             return retVal;
@@ -113,7 +121,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             // TODO: implement indexed search for vendors
             var workContext = _workContextFactory();
-            var criteria = new customerModel.MembersSearchCriteria
+            var criteria = new customerDto.MembersSearchCriteria
             {
                 Keyword = keyword,
                 DeepSearch = true,
@@ -137,6 +145,7 @@ namespace VirtoCommerce.Storefront.Services
             {
                 //Invalidate cache
                 _cacheManager.ClearRegion(string.Format(_customerOrdersCacheRegionFormat, eventArgs.Order.CustomerId));
+                _cacheManager.ClearRegion(string.Format(_customerSubscriptionCacheRegionFormat, eventArgs.Order.CustomerId));
 
                 var workContext = _workContextFactory();
                 //Add addresses to contact profile
@@ -172,12 +181,12 @@ namespace VirtoCommerce.Storefront.Services
 
         #endregion
 
-        protected IMutablePagedList<QuoteRequest> GetCustomerQuotes(CustomerInfo customer)
+        protected virtual IMutablePagedList<QuoteRequest> GetCustomerQuotes(CustomerInfo customer)
         {
             var workContext = _workContextFactory();
             Func<int, int, IEnumerable<SortInfo>, IPagedList<QuoteRequest>> quotesGetter = (pageNumber, pageSize, sortInfos) =>
             {
-                var quoteSearchCriteria = new quoteModel.QuoteRequestSearchCriteria
+                var quoteSearchCriteria = new quoteDto.QuoteRequestSearchCriteria
                 {
                     Take = pageSize,
                     CustomerId = customer.Id,
@@ -193,10 +202,10 @@ namespace VirtoCommerce.Storefront.Services
             return new MutablePagedList<QuoteRequest>(quotesGetter, 1, QuoteSearchCriteria.DefaultPageSize);
         }
 
-        protected IMutablePagedList<CustomerOrder> GetCustomerOrders(CustomerInfo customer)
+        protected virtual IMutablePagedList<CustomerOrder> GetCustomerOrders(CustomerInfo customer)
         {
             var workContext = _workContextFactory();
-            var orderSearchcriteria = new orderModel.CustomerOrderSearchCriteria
+            var orderSearchcriteria = new orderDto.CustomerOrderSearchCriteria
             {
                 CustomerId = customer.Id,
                 ResponseGroup = "full"
@@ -213,6 +222,31 @@ namespace VirtoCommerce.Storefront.Services
                                                           ordersResponse.TotalCount.Value);
             };
             return new MutablePagedList<CustomerOrder>(ordersGetter, 1, OrderSearchCriteria.DefaultPageSize);
+        }
+
+        protected virtual IMutablePagedList<Subscription> GetCustomerSubscriptions(CustomerInfo customer)
+        {
+            var workContext = _workContextFactory();
+            var  subscriptionSearchcriteria = new subscriptionDto.SubscriptionSearchCriteria
+            {
+                CustomerId = customer.Id,
+                ResponseGroup = SubscriptionResponseGroup.Full.ToString()               
+            };
+
+            Func<int, int, IEnumerable<SortInfo>, IPagedList<Subscription>> subscriptionGetter = (pageNumber, pageSize, sortInfos) =>
+            {
+                subscriptionSearchcriteria.Skip = (pageNumber - 1) * pageSize;
+                subscriptionSearchcriteria.Take = pageSize;
+                var cacheKey = "GetSubscriptions-" + subscriptionSearchcriteria.GetHashCode();
+                var retVal = _cacheManager.Get(cacheKey, string.Format(_customerSubscriptionCacheRegionFormat, customer.Id), () =>
+                {
+                    var searchResult = _subscriptionApi.SubscriptionModule.Search(subscriptionSearchcriteria);
+                    return new StaticPagedList<Subscription>(searchResult.Subscriptions.Select(x => x.ToSubscription(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,
+                                                             searchResult.TotalCount.Value);
+                });
+               return retVal;
+            };
+            return new MutablePagedList<Subscription>(subscriptionGetter, 1, SubscriptionSearchCriteria.DefaultPageSize);
         }
     }
 }

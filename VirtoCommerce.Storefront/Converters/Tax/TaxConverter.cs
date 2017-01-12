@@ -6,7 +6,6 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Tax;
-using VirtoCommerce.Storefront.Model.Tax.Factories;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
@@ -93,7 +92,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual TaxEvaluationContext ToTaxEvaluationContext(WorkContext workContext, IEnumerable<Product> products = null)
         {
-            var result = ServiceLocator.Current.GetInstance<TaxFactory>().CreateTaxEvaluationContext(workContext.CurrentStore.Id);
+            var result = new TaxEvaluationContext(workContext.CurrentStore.Id);
             result.Id = workContext.CurrentStore.Id;
             result.Currency = workContext.CurrentCurrency;
             result.Type = "";

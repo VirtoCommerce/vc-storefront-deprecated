@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public class Asset : ValueObject<Asset>
+    public partial class Asset : ValueObject<Asset>
     {
         /// <summary>
         /// Size of asset in bytes

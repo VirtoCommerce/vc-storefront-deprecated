@@ -5,7 +5,7 @@ using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class PaymentMethod : ITaxable, IDiscountable
+    public partial class PaymentMethod : ITaxable, IDiscountable
     {
       
         public PaymentMethod(Currency currency)

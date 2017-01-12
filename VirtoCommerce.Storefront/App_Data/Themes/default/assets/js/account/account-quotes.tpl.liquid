@@ -1,0 +1,25 @@
+﻿<div class="one-half">
+    <h4>{{ 'customer.quotes.title' | t }}</h4>
+    <table class="full" ng-if="$ctrl.entries.length">
+        <thead>
+            <tr>
+                <th>{{ 'customer.quotes.quote_number' | t }}</th>
+                <th>{{ 'customer.quotes.date' | t }}</th>
+                <th>{{ 'customer.quotes.status' | t }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="entry in $ctrl.entries">
+                <td>
+                    <a ng-bind="entry.number" href="quoterequest/#/{% raw %}{{ entry.number }}{% endraw %}"></a>
+                </td>
+                <td ng-bind="entry.createdDate | date"></td>
+                <td ng-bind="entry.status"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+
+    <p ng-if="!$ctrl.entries.length">{{ 'customer.quotes.none' | t }}</p>
+</div>

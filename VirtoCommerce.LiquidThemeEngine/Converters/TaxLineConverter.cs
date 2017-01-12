@@ -1,6 +1,5 @@
 ﻿using Microsoft.Practices.ServiceLocation;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -17,8 +16,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual TaxLine ToLiquidTaxLine(Storefront.Model.TaxDetail taxDetail)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateTaxLine();
+            var result = new TaxLine();
 
             result.Price = taxDetail.Amount.Amount * 100;
             result.Title = taxDetail.Name;

@@ -3,7 +3,6 @@ using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model.StaticContent;
 
@@ -23,8 +22,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Blog ToLiquidBlog(StorefrontModel.Blog blog, Storefront.Model.Language language)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var retVal = factory.CreateBlog();
+            var retVal = new Blog();
 
             retVal.InjectFrom<NullableAndEnumValueInjecter>(blog);
             retVal.Handle = blog.Name;

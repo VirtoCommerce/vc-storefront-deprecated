@@ -5,7 +5,7 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// <summary>
     /// Represents order shipment item
     /// </summary>
-    public class ShipmentItem
+    public partial class ShipmentItem
     {
         /// <summary>
         /// Gets or Sets LineItemId

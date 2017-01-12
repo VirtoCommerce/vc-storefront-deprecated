@@ -1,0 +1,28 @@
+﻿<table class="vc-product-table">
+    <tr class="product-row" ng-repeat="lineItem in $ctrl.items">
+        <td class="product-img">
+            <div class="img-inner">
+                <div class="product-qty" ng-bind="lineItem.quantity"></div>
+                <img alt="{% raw %}{{ lineItem.name }}{% endraw %}" ng-src="{% raw %}{{ lineItem.imageUrl }}{% endraw %}" ng-if="lineItem.imageUrl" />
+                <div class="no-product-image" ng-if="!lineItem.imageUrl">
+                    <img src="{{ 'no-image.svg' | asset_url }}" />
+                </div>
+            </div>
+        </td>
+        <td class="product-descr">
+            <a ng-bind="lineItem.name" href="{% raw %}{{ 'product/' + lineItem.productId }}{% endraw %}"></a>
+            <div ng-if="lineItem.paymentPlan">
+                <span ng-bind="'Subscription with a period: ' + lineItem.paymentPlan.intervalCount + ' ' + lineItem.paymentPlan.interval"></span>
+            </div>
+        </td>
+        <td class="product-price">
+            {% if settings.show_prices_with_taxes %}
+            <div class="span cost" ng-bind="lineItem.placedPriceWithTax.formattedAmount"></div>
+            <div class="cost old" ng-if="lineItem.listPriceWithTax.amount > lineItem.placedPriceWithTax.amount" ng-bind="lineItem.listPriceWithTax.formattedAmount"></div>
+            {% else %}
+            <div class="span cost" ng-bind="lineItem.placedPrice.formattedAmount"></div>
+            <div class="cost old" ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></div>
+            {% endif %}
+        </td>
+    </tr>
+</table>

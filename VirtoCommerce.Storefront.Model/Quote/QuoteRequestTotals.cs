@@ -2,7 +2,7 @@
 
 namespace VirtoCommerce.Storefront.Model.Quote
 {
-    public class QuoteRequestTotals
+    public partial class QuoteRequestTotals
     {
         public QuoteRequestTotals()
         {

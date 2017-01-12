@@ -1,6 +1,6 @@
 ﻿namespace VirtoCommerce.Storefront.Model.Catalog
 {
-    public abstract class Association
+    public  abstract class Association
     {
         /// <summary>
         /// Association type Related, Associations, Up-Sales etc.

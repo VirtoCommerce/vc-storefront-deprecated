@@ -9,7 +9,7 @@ using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model.Cart
 {
-    public class Shipment : Entity, IDiscountable, IValidatable, ITaxable
+    public partial class Shipment : Entity, IDiscountable, IValidatable, ITaxable
     {
         public Shipment()
         {

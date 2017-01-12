@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class Login : ValueObject<Login>
+    public partial class Login : ValueObject<Login>
     {
         
         public string Email { get; set; }

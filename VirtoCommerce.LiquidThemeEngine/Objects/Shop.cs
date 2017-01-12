@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/shop
     /// </remarks>
     [DataContract]
-    public class Shop : Drop
+    public partial class Shop : Drop
     {
         /// <summary>
         /// Shop id
@@ -95,6 +95,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
 
         [DataMember]
         public bool QuotesEnabled { get; set; }
+
+        [DataMember]
+        public bool SubscriptionEnabled { get; set; }
 
         /// <summary>
         /// Shop metafields

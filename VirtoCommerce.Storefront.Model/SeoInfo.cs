@@ -5,7 +5,7 @@ namespace VirtoCommerce.Storefront.Model
     /// <summary>
     /// Represent SEO information and contains common SEO fields  
     /// </summary>
-    public class SeoInfo : ValueObject<SeoInfo>, IHasLanguage
+    public partial class SeoInfo : ValueObject<SeoInfo>, IHasLanguage
     {
         public string MetaDescription { get; set; }
 

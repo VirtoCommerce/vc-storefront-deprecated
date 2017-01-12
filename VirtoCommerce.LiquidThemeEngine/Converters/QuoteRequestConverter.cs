@@ -3,7 +3,6 @@ using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -32,8 +31,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual QuoteRequest ToLiquidQuoteRequest(Storefront.Model.Quote.QuoteRequest quoteRequest)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateQuoteRequest();
+            var result = new QuoteRequest();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(quoteRequest);
 
@@ -88,9 +86,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public virtual QuoteItem ToLiquidQuoteItem(Storefront.Model.Quote.QuoteItem quoteItem)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateQuoteItem();
-
+            var result = new QuoteItem();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(quoteItem);
 
@@ -115,9 +111,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public virtual QuoteRequestTotals ToLiquidRequestTotal(Storefront.Model.Quote.QuoteRequestTotals requestTotal)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateQuoteRequestTotals();
-
+            var result = new QuoteRequestTotals();
 
             result.AdjustmentQuoteExlTax = requestTotal.AdjustmentQuoteExlTax.Amount * 100;
             result.DiscountTotal = requestTotal.DiscountTotal.Amount * 100;

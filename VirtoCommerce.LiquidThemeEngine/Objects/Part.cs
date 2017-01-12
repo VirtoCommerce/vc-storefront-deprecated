@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/part
     /// Each part returned by the paginate.parts array represents a link in the pagination's navigation.
     /// </summary>
-    public class Part : Drop
+    public partial class Part : Drop
     {
         /// <summary>
         /// Returns true if the part is a link, returns false if it is not.

@@ -11,7 +11,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// https://docs.shopify.com/themes/liquid-documentation/objects/tax_line
     /// </remarks>
     [DataContract]
-    public class TaxLine : Drop
+    public partial class TaxLine : Drop
     {
         /// <summary>
         /// Returns the title of the tax.

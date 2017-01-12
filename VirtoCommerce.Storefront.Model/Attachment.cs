@@ -2,7 +2,7 @@
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class Attachment
+    public partial class Attachment
     {
         public string Name { get; set; }
 

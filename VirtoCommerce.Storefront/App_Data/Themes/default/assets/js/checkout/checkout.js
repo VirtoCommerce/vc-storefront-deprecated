@@ -49,10 +49,11 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     if (cart.shipments.length) {
                         $scope.checkout.shipment = cart.shipments[0];
                     }
-                    $scope.checkout.billingAddressEqualsShipping = !angular.isObject($scope.checkout.payment.billingAddress);
-                    if (!cart.hasPhysicalProducts) {
-                        $scope.checkout.billingAddressEqualsShipping = false;
-                    }
+                    $scope.checkout.billingAddressEqualsShipping = cart.hasPhysicalProducts && !angular.isObject($scope.checkout.payment.billingAddress);
+
+                    $scope.checkout.canCartBeRecurring = _.all(cart.items, function (x) { return !x.isReccuring });
+                    $scope.checkout.paymentPlan = cart.paymentPlan && _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: cart.paymentPlan.intervalCount, interval: cart.paymentPlan.interval }) ||
+                                                                      _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: 1, interval: 'months' });
                 }
                 $scope.validateCheckout($scope.checkout);
                 return cart;
@@ -83,12 +84,10 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
         $scope.selectPaymentMethod = function (paymentMethod) {
             angular.extend($scope.checkout.payment, paymentMethod);
             $scope.checkout.payment.paymentGatewayCode = paymentMethod.code;
-            $scope.checkout.payment.amount = $scope.checkout.cart.total;
+            $scope.checkout.payment.amount = angular.copy($scope.checkout.cart.total);
             $scope.checkout.payment.amount.amount += paymentMethod.totalWithTax.amount;
 
-            updatePayment($scope.checkout.payment)
-
-            $scope.validateCheckout($scope.checkout);
+            updatePayment($scope.checkout.payment);
         };
 
         function getAvailCountries() {
@@ -144,14 +143,34 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
         };
 
         $scope.createOrder = function () {
-            $scope.checkout.loading = true;
-            cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
-                var order = response.data.order;
-                var orderProcessingResult = response.data.orderProcessingResult;
-                var paymentMethod = response.data.paymentMethod;
-                handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
+            updatePayment($scope.checkout.payment).then(function () {
+                $scope.checkout.loading = true;
+                cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
+                    var order = response.data.order;
+                    var orderProcessingResult = response.data.orderProcessingResult;
+                    var paymentMethod = response.data.paymentMethod;
+                    handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
+                });
             });
-        }
+        };
+
+        $scope.savePaymentPlan = function () {
+            wrapLoading(function () {
+                return cartService.addOrUpdatePaymentPlan($scope.checkout.paymentPlan);
+            });
+        };
+
+        $scope.isRecurringChanged = function (isRecurring) {
+            if ($scope.checkout.paymentPlan) {
+                if (isRecurring) {
+                    $scope.savePaymentPlan();
+                } else {
+                    wrapLoading(function () {
+                        return cartService.removePaymentPlan();
+                    });
+                }
+            }
+        };
 
         function updatePayment(payment) {
             if ($scope.checkout.billingAddressEqualsShipping) {
@@ -185,7 +204,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 if (!$scope.customer.isRegisteredUser) {
                     $scope.outerRedirect($scope.baseUrl + 'cart/thanks/' + order.number);
                 } else {
-                    $scope.outerRedirect($scope.baseUrl + 'account/order/' + order.number);
+                    $scope.outerRedirect($scope.baseUrl + 'account#/orders/' + order.number);
                 }
             }
         }
@@ -196,9 +215,9 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 $scope.checkout.loading = false;
                 return result;
             },
-				function () {
-				    $scope.checkout.loading = false;
-				});
+                function () {
+                    $scope.checkout.loading = false;
+                });
         }
 
         $scope.initialize = function () {

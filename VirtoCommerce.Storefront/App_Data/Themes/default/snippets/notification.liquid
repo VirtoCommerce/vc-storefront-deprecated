@@ -3,11 +3,11 @@
         <span aria-hidden="true">×</span>
     </button>
     <strong>Oops! An error was occured!</strong>
-    Please send a technical details to us.<br /><br />
+    Please send the technical details to us.<br /><br />
     <a style="color: #a94442; cursor: pointer; font-weight: 700;" ng-click="toggleNotificationDetails()">
         <i class="fa" ng-class="{ 'fa-angle-down': !storefrontNotification.detailsVisible, 'fa-angle-up': storefrontNotification.detailsVisible }"></i>
-        <span ng-if="!storefrontNotification.detailsVisible">Show me a technical details</span>
-        <span ng-if="storefrontNotification.detailsVisible">Hide a technical details</span>
+        <span ng-if="!storefrontNotification.detailsVisible">Show me technical details</span>
+        <span ng-if="storefrontNotification.detailsVisible">Hide the details</span>
     </a>
     <p ng-if="storefrontNotification.detailsVisible" ng-bind="storefrontNotification.title"></p>
     <p ng-if="storefrontNotification.detailsVisible" ng-bind="storefrontNotification.message"></p>

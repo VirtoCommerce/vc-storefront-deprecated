@@ -6,11 +6,11 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Marketing;
-using VirtoCommerce.Storefront.Model.Marketing.Factories;
 using VirtoCommerce.Storefront.Model.Order;
-using VirtoCommerce.Storefront.Model.Order.Factories;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using orderDto = VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models;
+using platformDto = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
+using storeDto = VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -39,9 +39,23 @@ namespace VirtoCommerce.Storefront.Converters
             return OrderConverterInstance.ToDiscount(discountDto, availCurrencies, language);
         }
 
+        public static PaymentMethod ToPaymentMethod(this storeDto.PaymentMethod dto, CustomerOrder order)
+        {
+            return OrderConverterInstance.ToPaymentMethod(dto, order);
+        }
+
         public static PaymentIn ToOrderInPayment(this orderDto.PaymentIn paymentInDto, IEnumerable<Currency> availCurrencies, Language language)
         {
             return OrderConverterInstance.ToOrderInPayment(paymentInDto, availCurrencies, language);
+        }
+
+        public static orderDto.PaymentIn ToOrderPaymentInDto(this PaymentIn paymentIn)
+        {
+            return OrderConverterInstance.ToOrderPaymentInDto(paymentIn);
+        }
+        public static orderDto.BankCardInfo ToBankCardInfoDto(this BankCardInfo model)
+        {
+            return OrderConverterInstance.ToBankCardInfoDto(model);
         }
 
         public static LineItem ToOrderLineItem(this orderDto.LineItem lineItemDto, IEnumerable<Currency> availCurrencies, Language language)
@@ -83,10 +97,28 @@ namespace VirtoCommerce.Storefront.Converters
         {
             return OrderConverterInstance.ToOrderDynamicPropertyDto(property);
         }
+
+        public static orderDto.CustomerOrderSearchCriteria ToSearchCriteriaDto(this OrderSearchCriteria criteria)
+        {
+            return OrderConverterInstance.ToSearchCriteriaDto(criteria);
+        }
     }
 
     public class OrderConverter
     {
+        public virtual orderDto.CustomerOrderSearchCriteria ToSearchCriteriaDto(OrderSearchCriteria criteria)
+        {
+            var result = new orderDto.CustomerOrderSearchCriteria();
+
+            result.InjectFrom(criteria);
+
+            result.Skip = criteria.Start;
+            result.Take = criteria.PageSize;
+            result.Sort = criteria.Sort;
+
+            return result;
+        }
+
         public virtual DynamicProperty ToDynamicProperty(orderDto.DynamicObjectProperty propertyDto)
         {
             return propertyDto.JsonConvert<coreDto.DynamicObjectProperty>().ToDynamicProperty();
@@ -109,7 +141,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual ShipmentPackage ToShipmentPackage(orderDto.ShipmentPackage shipmentPackageDto, IEnumerable<Currency> currencies, Language language)
         {
-            var webModel = ServiceLocator.Current.GetInstance<OrderFactory>().CreateShipmentPackage();
+            var webModel = new ShipmentPackage();
 
             webModel.InjectFrom<NullableAndEnumValueInjecter>(shipmentPackageDto);
 
@@ -123,7 +155,7 @@ namespace VirtoCommerce.Storefront.Converters
 
         public virtual ShipmentItem ToShipmentItem(orderDto.ShipmentItem shipmentItemDto, IEnumerable<Currency> availCurrencies, Language language)
         {
-            var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateShipmentItem();
+            var result = new ShipmentItem();
 
             result.InjectFrom<NullableAndEnumValueInjecter>(shipmentItemDto);
 
@@ -138,7 +170,7 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual Shipment ToOrderShipment(orderDto.Shipment shipmentDto, ICollection<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(shipmentDto.Currency)) ?? new Currency(language, shipmentDto.Currency);
-            var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateShipment(currency);
+            var result = new Shipment(currency);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(shipmentDto);
 
@@ -193,7 +225,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(lineItemDto.Currency)) ?? new Currency(language, lineItemDto.Currency);
 
-            var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateLineItem(currency);
+            var result = new LineItem(currency);
             result.InjectFrom<NullableAndEnumValueInjecter>(lineItemDto);
             result.ImageUrl = result.ImageUrl.RemoveLeadingUriScheme();
             result.Currency = currency;
@@ -230,9 +262,14 @@ namespace VirtoCommerce.Storefront.Converters
         public virtual PaymentIn ToOrderInPayment(orderDto.PaymentIn paymentIn, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(paymentIn.Currency)) ?? new Currency(language, paymentIn.Currency);
-            var retVal = ServiceLocator.Current.GetInstance<OrderFactory>().CreatePaymentIn(currency);
+            var retVal = new PaymentIn(currency);
 
             retVal.InjectFrom(paymentIn);
+
+            if (paymentIn.BillingAddress != null)
+            {
+                retVal.BillingAddress = paymentIn.BillingAddress.ToAddress();
+            }
 
             if (paymentIn.DynamicProperties != null)
             {
@@ -248,10 +285,47 @@ namespace VirtoCommerce.Storefront.Converters
             return retVal;
         }
 
+        public virtual orderDto.PaymentIn ToOrderPaymentInDto(PaymentIn payment)
+        {
+            var retVal = new orderDto.PaymentIn();
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(payment);
+            retVal.Sum = (double)payment.Sum.Amount;
+            retVal.Currency = payment.Currency.Code;
+            retVal.PaymentStatus = payment.Status;
+
+            if (payment.BillingAddress != null)
+            {
+                retVal.BillingAddress = payment.BillingAddress.ToOrderAddressDto();
+            }
+
+            if (payment.DynamicProperties != null)
+            {
+                retVal.DynamicProperties = payment.DynamicProperties.Select(ToOrderDynamicPropertyDto).ToList();
+            }
+
+            //if (payment.GatewayCode != null)
+            //{
+            //    var a = retVal.GatewayCode;
+            //}
+
+            return retVal;
+        }
+        public virtual orderDto.BankCardInfo ToBankCardInfoDto(BankCardInfo model)
+        {
+            orderDto.BankCardInfo retVal = null;
+            if (model != null)
+            {
+                retVal = new orderDto.BankCardInfo();
+                retVal.InjectFrom<NullableAndEnumValueInjecter>(model);
+            }
+
+            return retVal;
+        }
+
         public virtual Discount ToDiscount(orderDto.Discount discountDto, IEnumerable<Currency> availCurrencies, Language language)
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(discountDto.Currency)) ?? new Currency(language, discountDto.Currency);
-            var result = ServiceLocator.Current.GetInstance<MarketingFactory>().CreateDiscount(currency);
+            var result = new Discount(currency);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(discountDto);
 
@@ -264,7 +338,7 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var currency = availCurrencies.FirstOrDefault(x => x.Equals(order.Currency)) ?? new Currency(language, order.Currency);
 
-            var result = ServiceLocator.Current.GetInstance<OrderFactory>().CreateCustomerOrder(currency);
+            var result = new CustomerOrder(currency);
 
             result.InjectFrom<NullableAndEnumValueInjecter>(order);
 
@@ -323,6 +397,38 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = new TaxDetail(currency);
             result.InjectFrom(taxDetailDto);
+            return result;
+        }
+
+        public virtual PaymentMethod ToPaymentMethod(storeDto.PaymentMethod paymentMethodDto, CustomerOrder order)
+        {
+            var retVal = new PaymentMethod(order.Currency);
+
+            retVal.InjectFrom<NullableAndEnumValueInjecter>(paymentMethodDto);
+            retVal.Priority = paymentMethodDto.Priority ?? 0;
+
+            if (paymentMethodDto.Settings != null)
+            {
+                retVal.Settings = paymentMethodDto.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
+            }
+
+            retVal.Currency = order.Currency;
+            retVal.Price = new Money(paymentMethodDto.Price ?? 0, order.Currency);
+            retVal.DiscountAmount = new Money(paymentMethodDto.DiscountAmount ?? 0, order.Currency);
+            retVal.TaxPercentRate = (decimal?)paymentMethodDto.TaxPercentRate ?? 0m;
+
+            if (paymentMethodDto.TaxDetails != null)
+            {
+                retVal.TaxDetails = paymentMethodDto.TaxDetails.Select(td => ToTaxDetail(td, order.Currency)).ToList();
+            }
+
+            return retVal;
+        }
+
+        public virtual TaxDetail ToTaxDetail(storeDto.TaxDetail dto, Currency currency)
+        {
+            var result = new TaxDetail(currency);
+            result.InjectFrom(dto);
             return result;
         }
     }

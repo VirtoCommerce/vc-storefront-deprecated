@@ -8,7 +8,7 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// <summary>
     /// Represents order shipment
     /// </summary>
-    public class Shipment
+    public partial class Shipment
     {
         public Shipment(Currency currency)
         {

@@ -10,12 +10,12 @@
 
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
     {{ 'checkout.css' | global_asset_url | stylesheet_tag }}
+    {{ 'common-components.css' | asset_url | stylesheet_tag }}
 
     <base href="{{ '/' | absolute_url }}" />
 
     {{ '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js' | script_tag }}
     {{ '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js' | script_tag }}
-    {{ '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.min.js' | script_tag }}
     {{'//cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.8/angular-filter.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap-tpls.min.js' | script_tag }}
     {{ '//rawgit.com/bendrucker/angular-credit-cards/v3.0.1/release/angular-credit-cards.js' | script_tag }}
@@ -60,7 +60,7 @@
         </div>
     </button>
     <div class="content">
-        <div class="wrap">
+        <div class="wrap vc-form">
             {{ content_for_layout }}
         </div>
     </div>

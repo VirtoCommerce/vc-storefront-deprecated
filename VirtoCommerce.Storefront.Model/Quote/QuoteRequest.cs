@@ -7,7 +7,7 @@ using VirtoCommerce.Storefront.Model.Marketing;
 
 namespace VirtoCommerce.Storefront.Model.Quote
 {
-    public class QuoteRequest : Entity, IHasLanguage
+    public partial class QuoteRequest : Entity, IHasLanguage
     {
         public QuoteRequest()
         {

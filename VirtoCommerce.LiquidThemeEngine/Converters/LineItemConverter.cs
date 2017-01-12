@@ -1,7 +1,6 @@
 ﻿using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 
@@ -26,8 +25,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual LineItem ToLiquidLineItem(StorefrontModel.Cart.LineItem lineItem, StorefrontModel.Language language, IStorefrontUrlBuilder urlBuilder)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateLineItem();
+            var result = new LineItem();
 
             result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(lineItem);
 
@@ -55,8 +53,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public virtual LineItem ToLiquidLineItem(StorefrontModel.Order.LineItem lineItem, StorefrontModel.Language language, IStorefrontUrlBuilder urlBuilder)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateLineItem();
+            var result = new LineItem();
 
             result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(lineItem);
 

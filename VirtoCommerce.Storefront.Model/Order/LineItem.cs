@@ -8,7 +8,7 @@ namespace VirtoCommerce.Storefront.Model.Order
     /// <summary>
     /// Represents order line item
     /// </summary>
-    public class LineItem
+    public partial class LineItem
     {
         public LineItem(Currency currency)
         {

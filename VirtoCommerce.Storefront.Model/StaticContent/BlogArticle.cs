@@ -8,7 +8,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
     /// <summary>
     /// TODO: Comments and author user info
     /// </summary>
-    public class BlogArticle : ContentItem
+    public partial class BlogArticle : ContentItem
     {
         private static string _excerpToken = "<!--excerpt-->";
 

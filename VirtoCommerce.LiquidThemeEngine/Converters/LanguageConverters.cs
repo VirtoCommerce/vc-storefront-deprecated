@@ -3,7 +3,6 @@ using System.Linq;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 using Microsoft.Practices.ServiceLocation;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -20,8 +19,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Language ToLiquidLanguage(StorefrontModel.Language language)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateLanguage();
+            var result = new Language();
             result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(language);
 
             return result;

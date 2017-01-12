@@ -2,7 +2,7 @@
 
 namespace VirtoCommerce.Storefront.Model
 {
-    public class ForgotPassword : ValueObject<ForgotPassword>
+    public partial class ForgotPassword : ValueObject<ForgotPassword>
     {
         public string Email { get; set; }
     }

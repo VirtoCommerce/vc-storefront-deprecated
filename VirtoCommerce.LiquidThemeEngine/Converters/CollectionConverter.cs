@@ -2,7 +2,6 @@
 using Microsoft.Practices.ServiceLocation;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using storefrontModel = VirtoCommerce.Storefront.Model.Catalog;
@@ -23,8 +22,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
         public virtual Collection ToLiquidCollection(storefrontModel.Category category, WorkContext workContext)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateCollection();
+            var result = new Collection();
 
             result.Id = category.Id;
             result.Description = null;

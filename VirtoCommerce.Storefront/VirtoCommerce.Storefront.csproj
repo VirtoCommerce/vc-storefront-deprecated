@@ -320,6 +320,7 @@
     <Content Include="App_Data\Themes\default\assets\closed-box.svg" />
     <Content Include="App_Data\Themes\default\assets\collection-view-grid.svg" />
     <Content Include="App_Data\Themes\default\assets\collection-view-list.svg" />
+    <Content Include="App_Data\Themes\default\assets\common-components.css" />
     <Content Include="App_Data\Themes\default\assets\customer_area.js" />
     <Content Include="App_Data\Themes\default\assets\dankort.svg" />
     <Content Include="App_Data\Themes\default\assets\ideal-image-slider-default-theme.css" />
@@ -351,26 +352,39 @@
     <Content Include="App_Data\Themes\default\assets\informer-loader.gif" />
     <Content Include="App_Data\Themes\default\assets\jcb.svg" />
     <Content Include="App_Data\Themes\default\assets\jquery.zoom.min.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-addresses.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-subscriptions.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-quotes.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-orders.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-profile-update.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\accountApi.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\%24account.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-password-change.js" />
     <Content Include="App_Data\Themes\default\assets\js\cart.js" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-totals.js" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-totals.tpl.liquid" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-lineItems.js" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.js" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\totals.js" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\totals.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\lineItems.js" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\labeled-input.js" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\creditCard.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.js" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-lineItems.tpl.liquid" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.tpl.liquid" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.js" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-creditCard.tpl.html.liquid" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-paymentMethods.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\lineItems.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\js\common-components\paymentMethods.js" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\creditCard.tpl.html.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\paymentMethods.tpl.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.js" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-shippingMethods.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard-step.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard-step.tpl.html" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-wizard.tpl.html" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.tpl.html.liquid" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-address.tpl.html.liquid" />
-    <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-address.js" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\address.tpl.html.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\address.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout.js" />
     <Content Include="App_Data\Themes\default\assets\js\quote-request.js" />
@@ -431,6 +445,24 @@
     <Content Include="App_Data\x64\libsassnet.dll" />
     <Content Include="App_Data\x86\LibSass.x86.dll" />
     <Content Include="App_Data\x86\libsassnet.dll" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-password-change.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-profile-update.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-orders.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\js\account\account-quotes.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\Themes\default\layout\account_layout.liquid" />
+    <Content Include="App_Data\Themes\default\assets\account-bootstrap.css" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\labeled-input.tpl.html.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-subscriptions.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\js\account\account-addresses.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\Themes\default\snippets\quick-order-section.liquid" />
     <Content Include="App_Data\Themes\default\snippets\google-tag-manager-head.liquid" />
     <Content Include="App_Data\Themes\default\snippets\google-tag-manager-body.liquid" />
     <None Include="AutoRestClients\!readme.txt" />
@@ -467,6 +499,8 @@
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
     <Compile Include="AutoRestClients\SitemapsModuleApi.cs" />
     <Compile Include="AutoRestClients\StoreModuleApi.cs" />
+    <Compile Include="AutoRestClients\SubscriptionModuleApi.cs" />
+    <Compile Include="Binders\OrderTypesModelBinder.cs" />
     <Compile Include="BackgroundJobs\GenerateSitemapJob.cs" />
     <Compile Include="Binders\CartTypesModelBinder.cs" />
     <Compile Include="Common\AppBuilderExtension.cs" />
@@ -483,6 +517,8 @@
     <Compile Include="Common\ObjectExtensions.cs" />
     <Compile Include="Common\RequireHttps.cs" />
     <Compile Include="Common\SeoExtensions.cs" />
+    <Compile Include="Controllers\Api\ApiSubscriptionController.cs" />
+    <Compile Include="Controllers\Api\ApiOrderController.cs" />
     <Compile Include="Controllers\Api\ApiBlogController.cs" />
     <Compile Include="Controllers\Api\ApiQuoteRequestController.cs" />
     <Compile Include="Controllers\Api\ApiCommonController.cs" />
@@ -495,6 +531,7 @@
     <Compile Include="Controllers\QuoteRequestController.cs" />
     <Compile Include="Converters\SettingConverter.cs" />
     <Compile Include="Converters\Pricing\PricingConverter.cs" />
+    <Compile Include="Converters\Subscriptions\SubscriptionConverter.cs" />
     <Compile Include="Converters\Tax\TaxConverter.cs" />
     <Compile Include="Converters\CurrencyConverter.cs" />
     <Compile Include="Converters\Quote\QuoteConverter.cs" />
@@ -600,7 +637,9 @@
     <Content Include="App_Data\Themes\default\snippets\collection-views.liquid" />
     <Content Include="App_Data\Themes\default\snippets\comment.liquid" />
     <Content Include="App_Data\Themes\default\snippets\content_header.liquid" />
-    <Content Include="App_Data\Themes\default\snippets\customer-menu.liquid" />
+    <Content Include="App_Data\Themes\default\snippets\customer-menu.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\snippets\error_popup.liquid" />
     <Content Include="App_Data\Themes\default\snippets\featured-collection.liquid" />
     <Content Include="App_Data\Themes\default\snippets\featured-row.liquid" />
@@ -655,7 +694,9 @@
     <Content Include="App_Data\Themes\default\templates\customers\addresses.liquid" />
     <Content Include="App_Data\Themes\default\templates\customers\login.liquid" />
     <Content Include="App_Data\Themes\default\templates\customers\order.liquid" />
-    <Content Include="App_Data\Themes\default\templates\customers\quote-requests.liquid" />
+    <Content Include="App_Data\Themes\default\templates\customers\quote-requests.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\templates\customers\register.liquid" />
     <Content Include="App_Data\Themes\default\templates\customers\reset_password.liquid" />
     <Content Include="App_Data\Themes\default\templates\error.liquid" />
@@ -677,7 +718,9 @@
     <Content Include="App_Data\Themes\default\templates\checkout.liquid">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Themes\default\templates\cart.liquid" />
+    <Content Include="App_Data\Themes\default\templates\cart.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\templates\thanks.liquid" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

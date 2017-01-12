@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using VirtoCommerce.LiquidThemeEngine.Objects;
-using VirtoCommerce.LiquidThemeEngine.Objects.Factories;
 using VirtoCommerce.Storefront.Model.Common;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 
@@ -20,8 +19,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
     {
         public virtual Cart ToLiquidCart(StorefrontModel.Cart.ShoppingCart cart, StorefrontModel.Language language, IStorefrontUrlBuilder urlBuilder)
         {
-            var factory = ServiceLocator.Current.GetInstance<ShopifyModelFactory>();
-            var result = factory.CreateCart();
+            var result = new Cart();
 
             result.Items = cart.Items.Select(x => ToLiquidLineItem(x, language, urlBuilder)).ToList();
             result.ItemCount = cart.Items.Count();

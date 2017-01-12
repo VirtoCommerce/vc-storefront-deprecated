@@ -6,7 +6,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
     /// <summary>
     /// https://docs.shopify.com/themes/liquid/objects/search
     /// </summary>
-    public class Search : Drop
+    public partial class Search : Drop
     {
         /// <summary>
         /// Returns  true  if an HTML form with the attribute  action="/search"  was submitted successfully. This allows you to show content based on whether a search was performed or not.

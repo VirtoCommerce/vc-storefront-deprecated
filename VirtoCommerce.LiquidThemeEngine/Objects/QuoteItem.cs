@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public class QuoteItem : Drop
+    public partial class QuoteItem : Drop
     {
         public Currency Currency { get; set; }
 
