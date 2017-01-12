@@ -94,13 +94,27 @@
             "show_prices_with_taxes": false,
              // possible interval: {days, weeks, months, years}
             "available_paymentPlans": [
-                { intervalCount: 1, interval: "weeks", name: "1 week" },
-                { intervalCount: 2, interval: "weeks", name: "2 weeks" },
-                { intervalCount: 1, interval: "months", name: "1 month" },
-                { intervalCount: 2, interval: "months", name: "2 months" },
-                { intervalCount: 3, interval: "months", name: "3 months" },
-                { intervalCount: 4, interval: "months", name: "4 months" },
-                { intervalCount: 6, interval: "months", name: "6 months" }],
+                {
+                    "intervalCount": 1,
+                    "interval": "days",
+                    "name": "daily"
+                },
+                {
+                    "intervalCount": 1,
+                    "interval": "weeks",
+                    "name": "weekly"
+                },
+                {
+                    "intervalCount": 1,
+                    "interval": "months",
+                    "name": "monthly"
+                },
+                {
+                    "intervalCount": 1,
+                    "interval": "years",
+                    "name": "yearly"
+                }
+            ],             
             "footer_content_text": "Some footer content text"
         },
         "Soft Green": {
