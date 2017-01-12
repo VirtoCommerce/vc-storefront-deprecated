@@ -51,7 +51,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     }
                     $scope.checkout.billingAddressEqualsShipping = cart.hasPhysicalProducts && !angular.isObject($scope.checkout.payment.billingAddress);
 
-                    $scope.checkout.canCartBeRecurring = _.all(cart.items, function (x) { return !x.isReccuring });
+                    $scope.checkout.canCartBeRecurring = $scope.customer.isRegisteredUser && _.all(cart.items, function (x) { return !x.isReccuring });
                     $scope.checkout.paymentPlan = cart.paymentPlan && _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: cart.paymentPlan.intervalCount, interval: cart.paymentPlan.interval }) ||
                                                                       _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: 1, interval: 'months' });
                 }

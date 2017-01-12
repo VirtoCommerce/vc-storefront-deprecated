@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Form controls</title>
+	
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	<div id="layout">
+		<h2>Form controls</h2>
+		<div class="vc-form">
+			<div class="cols">
+				<div class="col col-50">
+					<div class="form-group error">
+						<label for="#" class="form-label">Email</label>
+						<input class="form-input" placeholder="Email" type="text">
+						<span class="form-error">Please enter your email address</span>
+					</div>
+					<div class="form-group">
+						<div class="cols">
+							<div class="col col-50">
+								<div class="form-group">
+									<label for="#" class="form-label">First name</label>
+									<input class="form-input" placeholder="First name" type="text">
+								</div>
+							</div>
+							<div class="col col-50">
+								<div class="form-group">
+									<label for="#" class="form-label">Last name</label>
+									<input class="form-input" placeholder="Last name" type="text">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="cols">
+							<div class="col col-66">
+								<div class="form-group">
+									<label for="#" class="form-label">Address</label>
+									<input class="form-input" placeholder="Address" type="text">
+								</div>
+							</div>
+							<div class="col col-33">
+								<div class="form-group">
+									<label for="#" class="form-label">Apt, suite, etc. (optional)</label>
+									<input class="form-input" placeholder="Apt, suite, etc. (optional)" type="text">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="cols">
+							<div class="col col-50">
+								<div class="form-group form-select">
+									<label for="#" class="form-label">Country</label>
+									<select class="form-input">
+										<option>Select country</option>
+										<option value="Russia">Russia</option>
+										<option value="China">China</option>
+									</select>
+								</div>
+							</div>
+							<div class="col col-50">
+								<div class="form-group">
+									<label for="#" class="form-label">Zip / Postal code</label>
+									<input class="form-input" placeholder="Zip / Postal code" type="text">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-box">
+							<div class="box-row">
+								<label class="radio-box">
+									<input class="radio" name="opt" type="radio">
+									<div class="switch"></div>
+									<div class="name">fixed rate Ground</div>
+									<div class="cost">$5.00</div>
+								</label>
+							</div>
+							<div class="box-row">
+								<label class="radio-box">
+									<input class="radio" name="opt" type="radio">
+									<div class="switch"></div>
+									<div class="name">fixed rate Ground</div>
+									<div class="cost">$5.00</div>
+								</label>
+							</div>
+						</div>
+						<div class="form-box">
+							<div class="box-row">
+								<label class="check-box">
+									<input class="check" type="checkbox">
+									<div class="switch"></div>
+									<div class="name">Same as shipping address</div>
+								</label>
+							</div>
+						</div>
+						<div class="form-box">
+							<div class="box-row">
+								<label class="radio-box">
+									<input class="radio" name="optt" type="radio">
+									<div class="switch"></div>
+									<div class="name">fixed rate Ground</div>
+									<div class="cost">$5.00</div>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-actions">
+						<button class="vc-btn">
+							<span class="btn-text">Payment method</span>
+							<span class="btn-loading"></span>
+						</button>
+					</div>
+				</div>
+				<div class="col col-50">
+					<div class="vc-shipping-address">
+						<div class="vc-t">Shipping address</div>
+						<div class="vc-descr">123123 123, 1213, Australia, test123123, 112100</div>
+					</div>
+					<table class="vc-product-table">
+						<tr class="product-row">
+							<td class="product-img">
+								<div class="img-inner">
+									<div class="product-qty">1</div>
+									<img src="http://virtocommercedemo1.blob.core.windows.net/catalog/1431971520000_1134360.jpg" alt="">
+								</div>
+							</td>
+							<td class="product-descr">
+								<div class="name">ASUS ZenFone 2 ZE551ML 16GB Smartphone</div>
+							</td>
+							<td class="product-price">
+								<div class="span cost">$94.99</div>
+								<div class="cost old">$99.99</div>
+							</td>
+						</tr>
+						<tr class="product-row">
+							<td class="product-img">
+								<div class="img-inner">
+									<div class="product-qty">2</div>
+									<img src="http://virtocommercedemo1.blob.core.windows.net/catalog/1431971520000_1134360.jpg" alt="">
+								</div>
+							</td>
+							<td class="product-descr">
+								<div class="name">ASUS ZenFone 2 ZE551ML 16GB Smartphone</div>
+							</td>
+							<td class="product-price">
+								<div class="span cost">$94.99</div>
+								<div class="cost old">$99.99</div>
+							</td>
+						</tr>
+					</table>
+					<div class="vc-product-totals">
+						<ul class="list">
+							<li class="list-item">
+								<div class="list-name">Subtotal</div>
+								<div class="list-price">$99.99</div>
+							</li>
+							<li class="list-item">
+								<div class="list-name">Shipping</div>
+								<div class="list-price">$5.00</div>
+							</li>
+							<li class="list-item">
+								<div class="list-name">Discount</div>
+								<div class="list-price">$5.00</div>
+							</li>
+							<li class="list-item">
+								<div class="list-name">Taxes</div>
+								<div class="list-price">$20.00</div>
+							</li>
+							<li class="list-item total">
+								<div class="list-name">Total</div>
+								<div class="list-price">
+									<div class="list-currency">Usd</div>
+									$119.99
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="vc-product-address">
+						<ul class="list">
+							<li class="list-item">
+								<div class="list-action">
+									<i class="list-ico fa fa-remove"></i>
+								</div>
+								<div class="list-t">123123 123, 1213, Australia, test123123, 112100</div>
+							</li>
+							<li class="list-item">
+								<div class="list-action">
+									<i class="list-ico fa fa-remove"></i>
+								</div>
+								<div class="list-t">123123 123, 1213, Australia, test123123, 112100</div>
+							</li>
+							<li class="list-item">
+								<div class="list-action">
+									<i class="list-ico fa fa-remove"></i>
+								</div>
+								<div class="list-t">123123 123, 1213, Australia, test123123, 112100</div>
+							</li>
+							<li class="list-item">
+								<div class="list-action">
+									<i class="list-ico fa fa-remove"></i>
+								</div>
+								<div class="list-t">123123 123, 1213, Australia, test123123, 112100</div>
+							</li>
+							<button class="vc-btn loading">
+								<span class="btn-text">Add new address</span>
+								<span class="btn-loading"></span>
+							</button>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>
+		$(function() {
+			$('.form-input').on('keyup', function() {
+				var self = $(this);
+				
+				if(self.val().length > 0) {
+					self.parent().addClass('keyuped');
+				}
+				else {
+					self.parent().removeClass('keyuped');
+				}
+			});
+
+			$('.form-input').each(function() {
+				var self = $(this);
+
+				if(self.val().length > 0) {
+					self.parent().addClass('keyuped')
+				}
+				else {
+					self.parent().removeClass('keyuped');
+				}
+			});
+
+		});
+	</script>
+</body>
+</html>
