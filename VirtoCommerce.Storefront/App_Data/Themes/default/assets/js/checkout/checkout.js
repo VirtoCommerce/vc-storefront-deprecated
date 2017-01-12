@@ -156,7 +156,9 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
 
         $scope.savePaymentPlan = function () {
             wrapLoading(function () {
-                return cartService.addOrUpdatePaymentPlan($scope.checkout.paymentPlan);
+                return cartService.addOrUpdatePaymentPlan($scope.checkout.paymentPlan).then(function () {
+                    $scope.checkout.cart.paymentPlan = $scope.checkout.paymentPlan;
+                });
             });
         };
 
@@ -166,7 +168,9 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     $scope.savePaymentPlan();
                 } else {
                     wrapLoading(function () {
-                        return cartService.removePaymentPlan();
+                        return cartService.removePaymentPlan().then(function () {
+                            $scope.checkout.cart.paymentPlan = undefined;
+                        });
                     });
                 }
             }

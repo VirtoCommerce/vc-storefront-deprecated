@@ -19,7 +19,7 @@
 
                 <div class="form-group" ng-if="checkout.canCartBeRecurring">
                     <div class="form-box">
-                        <label class="check-box" ng-init="isRecurring = !!checkout.paymentPlan">
+                        <label class="check-box" ng-init="isRecurring = !!checkout.cart.paymentPlan">
                             <input ng-model="isRecurring" ng-checked="isRecurring" ng-change="isRecurringChanged(isRecurring)" ng-disabled="checkout.loading" class="check" type="checkbox"/>
                             <div class="switch"></div>
                             <div class="name">{{ 'checkout.make_recurring_order' | t }}</div>
