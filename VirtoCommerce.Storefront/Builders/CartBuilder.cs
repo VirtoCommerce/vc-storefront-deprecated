@@ -26,6 +26,7 @@ using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.Stores;
 using VirtoCommerce.Storefront.Model.Tax.Services;
 using cartModel = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
+using VirtoCommerce.Storefront.Model.BulkOrder;
 
 namespace VirtoCommerce.Storefront.Builders
 {
@@ -326,6 +327,25 @@ namespace VirtoCommerce.Storefront.Builders
 
             Cart.Payments.Clear();
             Cart.Payments.Add(payment);
+        }
+
+        public virtual async Task FillFromBulkOrderItemsAsync(BulkOrderItem[] bulkOrderItems)
+        {
+            var skus = bulkOrderItems.Select(i => i.Sku);
+            var productSearchResult = await _catalogSearchService.SearchProductsAsync(new ProductSearchCriteria
+            {
+                PageSize = skus.Count(),
+                Terms = new[] { new Term { Name = "code", Value = string.Join(",", skus) } }
+            });
+            foreach (var product in productSearchResult.Products)
+            {
+                var bulkOrderItem = bulkOrderItems.FirstOrDefault(i => i.Sku == product.Sku);
+                if (bulkOrderItem != null)
+                {
+                    var lineItem = product.ToLineItem(Cart.Language, bulkOrderItem.Quantity);
+                    Cart.Items.Add(lineItem);
+                }
+            }
         }
 
         public virtual async Task<ICollection<ShippingMethod>> GetAvailableShippingMethodsAsync()

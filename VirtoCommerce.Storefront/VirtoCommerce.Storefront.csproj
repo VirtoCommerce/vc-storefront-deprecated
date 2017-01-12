@@ -465,6 +465,8 @@
     <Content Include="App_Data\Themes\default\snippets\quick-order-section.liquid" />
     <Content Include="App_Data\Themes\default\snippets\google-tag-manager-head.liquid" />
     <Content Include="App_Data\Themes\default\snippets\google-tag-manager-body.liquid" />
+    <Content Include="App_Data\Themes\default\snippets\bulk-order-fields-column.liquid" />
+    <Content Include="App_Data\Themes\default\templates\bulk-order.liquid" />
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -525,6 +527,7 @@
     <Compile Include="Controllers\Api\ApiAccountController.cs" />
     <Compile Include="Controllers\Api\ApiPricingController.cs" />
     <Compile Include="Controllers\Api\ApiMarketingController.cs" />
+    <Compile Include="Controllers\BulkOrderController.cs" />
     <Compile Include="Controllers\SitemapController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Controllers\VendorController.cs" />

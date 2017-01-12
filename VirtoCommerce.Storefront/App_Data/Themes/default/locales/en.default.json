@@ -220,6 +220,18 @@
             }
         }
     },
+    "bulk_order": {
+        "general": {
+            "title": "Bulk Order",
+            "description": "Quickly add items to your cart by entering item SKUs and quantities.",
+            "sku_field_header": "Product SKU",
+            "quantity_field_header": "Quantity",
+            "add_new_record": "Add a new record",
+            "add_to_cart": "Add to cart",
+            "csv_description": "Want to save time and order faster? Simply copy and paste item records from your CSV file into the field below using the following format: SKU,Quantity. Each record should starts from a new line.",
+            "csv_field_placeholder": "Formatting example: 6AF8SM0VPFV6,10"
+        }
+    },
     "collections": {
         "general": {
             "no_matches": "Sorry, there are no products matching your search.",

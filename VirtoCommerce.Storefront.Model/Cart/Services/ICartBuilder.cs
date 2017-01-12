@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using VirtoCommerce.Storefront.Model.BulkOrder;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
@@ -125,6 +126,13 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// <param name="quoteRequest"></param>
         /// <returns></returns>
         Task FillFromQuoteRequestAsync(QuoteRequest quoteRequest);
+
+        /// <summary>
+        /// Fills current captured cart from bulk order items
+        /// </summary>
+        /// <param name="items">Bulk order item collection</param>
+        /// <returns></returns>
+        Task FillFromBulkOrderItemsAsync(BulkOrderItem[] bulkOrderItems);
 
         /// <summary>
         /// Returns all available shipment methods for current cart
