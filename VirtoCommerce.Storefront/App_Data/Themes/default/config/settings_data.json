@@ -98,22 +98,22 @@
                 {
                     "intervalCount": 1,
                     "interval": "days",
-                    "name": "daily"
+                    "name": "day"
                 },
                 {
                     "intervalCount": 1,
                     "interval": "weeks",
-                    "name": "weekly"
+                    "name": "week"
                 },
                 {
                     "intervalCount": 1,
                     "interval": "months",
-                    "name": "monthly"
+                    "name": "month"
                 },
                 {
                     "intervalCount": 1,
                     "interval": "years",
-                    "name": "yearly"
+                    "name": "year"
                 }
             ],
             "footer_content_text": "Some footer content text"

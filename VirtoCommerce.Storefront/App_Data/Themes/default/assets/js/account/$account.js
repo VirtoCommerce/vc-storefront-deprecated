@@ -26,10 +26,10 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
         customer: '<'
     },
     $routeConfig: [
-         { path: '/orders/...', name: 'Orders', component: 'vcAccountOrders', useAsDefault: true },
+         { path: '/orders/...', name: 'Orders', component: 'vcAccountOrders'},
          { path: '/subscriptions/...', name: 'Subscriptions', component: 'vcAccountSubscriptions' },
          { path: '/quotes', name: 'Quotes', component: 'vcAccountQuotes' },
-         { path: '/profile', name: 'Profile', component: 'vcAccountProfileUpdate' },
+         { path: '/profile', name: 'Profile', component: 'vcAccountProfileUpdate', useAsDefault: true },
          { path: '/addresses', name: 'Addresses', component: 'vcAccountAddresses' },
          { path: '/changePassword', name: 'PasswordChange', component: 'vcAccountPasswordChange' }
     ],
