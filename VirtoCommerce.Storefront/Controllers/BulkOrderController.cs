@@ -51,7 +51,12 @@ namespace VirtoCommerce.Storefront.Controllers
                     return StoreFrontRedirect("~/bulkorder");
                 }
 
-                await TryAddItemsToCartAsync(items);
+                var notFoundedSkus = await TryAddItemsToCartAsync(items);
+                foreach (var notFoundedSku in notFoundedSkus)
+                {
+                    ModelState.AddModelError(notFoundedSku, notFoundedSku);
+                }
+
                 if (ModelState.IsValid)
                 {
                     return StoreFrontRedirect("~/cart");
@@ -84,6 +89,13 @@ namespace VirtoCommerce.Storefront.Controllers
                 }
 
                 await TryAddItemsToCartAsync(items);
+
+                var notFoundedSkus = await TryAddItemsToCartAsync(items);
+                foreach (var notFoundedSku in notFoundedSkus)
+                {
+                    ModelState.AddModelError(notFoundedSku, notFoundedSku);
+                }
+
                 if (ModelState.IsValid)
                 {
                     return StoreFrontRedirect("~/cart");
@@ -110,7 +122,7 @@ namespace VirtoCommerce.Storefront.Controllers
             return string.Join(":", "Cart", cart.Id, cart.Name, cart.CustomerId);
         }
 
-        private async Task TryAddItemsToCartAsync(BulkOrderItem[] bulkOrderItems)
+        private async Task<string[]> TryAddItemsToCartAsync(BulkOrderItem[] bulkOrderItems)
         {
             var skus = bulkOrderItems.Select(i => i.Sku);
             var productSearchResult = await _catalogSearchService.SearchProductsAsync(new ProductSearchCriteria
@@ -118,6 +130,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 PageSize = skus.Count(),
                 Terms = new[] { new Term { Name = "code", Value = string.Join(",", skus) } }
             });
+
             foreach (var product in productSearchResult.Products)
             {
                 var bulkOrderItem = bulkOrderItems.FirstOrDefault(i => i.Sku == product.Sku);
@@ -129,19 +142,16 @@ namespace VirtoCommerce.Storefront.Controllers
 
             await _cartBuilder.SaveAsync();
 
-            var notFoundedItems = bulkOrderItems.Where(i => !productSearchResult.Products.Any(p => p.Sku == i.Sku));
-            foreach (var notFoundedItem in notFoundedItems)
-            {
-                ModelState.AddModelError(notFoundedItem.Sku, notFoundedItem.Sku);
-            }
-
+            var notFoundedSkus = bulkOrderItems.Select(x => x.Sku).Except(productSearchResult.Products.Select(x => x.Sku))
+                                               .Distinct().ToArray();
+            return notFoundedSkus;
         }
 
         private BulkOrderItem GetBulkOrderItemFromCsvRecord(string csvRecord)
         {
             BulkOrderItem bulkOrderItem = null;
 
-            var splitted = csvRecord.Split(',');
+            var splitted = csvRecord.Split(',',';',' ','\t');
             if (splitted.Length == 2)
             {
                 int quantity = 0;

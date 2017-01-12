@@ -80,7 +80,7 @@
             "social_youtube_link": "",
             "twittercard_handle": "@",
             "type_accent_family": "Google_Dosis_600_sans",
-            "type_base_family": "HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+            "type_base_family": "'HelveticaNeue', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'",
             "type_base_size": "15px",
             "type_button_size": "17px",
             "type_button_transform": false,
