@@ -472,7 +472,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (productDto.Reviews != null)
             {
-                retVal.Descriptions = productDto.Reviews.Select(r => new EditorialReview
+                retVal.Descriptions = productDto.Reviews.Where(r => !string.IsNullOrEmpty(r.Content)).Select(r => new EditorialReview
                 {
                     Language = new Language(r.LanguageCode),
                     ReviewType = r.ReviewType,
