@@ -504,7 +504,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 throw new ArgumentNullException("user");
             }
 
-            var result = await _customerService.GetCustomerByIdAsync(user.Id);
+            var result = await _customerService.GetCustomerByIdAsync(user.MemberId);
 
             // User may not have contact record
             if (result == null)
