@@ -240,7 +240,7 @@ namespace VirtoCommerce.Storefront.Services
                 var cacheKey = "GetSubscriptions-" + subscriptionSearchcriteria.GetHashCode();
                 var retVal = _cacheManager.Get(cacheKey, string.Format(_customerSubscriptionCacheRegionFormat, customer.Id), () =>
                 {
-                    var searchResult = _subscriptionApi.SubscriptionModule.Search(subscriptionSearchcriteria);
+                    var searchResult = _subscriptionApi.SubscriptionModule.SearchSubscriptions(subscriptionSearchcriteria);
                     return new StaticPagedList<Subscription>(searchResult.Subscriptions.Select(x => x.ToSubscription(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,
                                                              searchResult.TotalCount.Value);
                 });

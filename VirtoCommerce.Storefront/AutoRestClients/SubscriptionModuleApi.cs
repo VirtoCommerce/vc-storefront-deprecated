@@ -364,7 +364,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SubscriptionSearchResult>> SearchWithHttpMessagesAsync(SubscriptionSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SubscriptionSearchResult>> SearchSubscriptionsWithHttpMessagesAsync(SubscriptionSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (criteria == null)
             {
@@ -379,7 +379,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
                 tracingParameters.Add("criteria", criteria);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "Search", tracingParameters);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "SearchSubscriptions", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
@@ -2191,9 +2191,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi
             /// </param>
             /// <param name='criteria'>
             /// </param>
-            public static SubscriptionSearchResult Search(this ISubscriptionModule operations, SubscriptionSearchCriteria criteria)
+            public static SubscriptionSearchResult SearchSubscriptions(this ISubscriptionModule operations, SubscriptionSearchCriteria criteria)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ISubscriptionModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ISubscriptionModule)s).SearchSubscriptionsAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <param name='operations'>
@@ -2204,9 +2204,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<SubscriptionSearchResult> SearchAsync(this ISubscriptionModule operations, SubscriptionSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<SubscriptionSearchResult> SearchSubscriptionsAsync(this ISubscriptionModule operations, SubscriptionSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.SearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.SearchSubscriptionsWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -2558,7 +2558,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SubscriptionSearchResult>> SearchWithHttpMessagesAsync(SubscriptionSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SubscriptionSearchResult>> SearchSubscriptionsWithHttpMessagesAsync(SubscriptionSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <param name='id'>
         /// </param>
         /// <param name='respGroup'>
@@ -2793,10 +2793,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SubscriptionSearchCriteria class.
         /// </summary>
-        public SubscriptionSearchCriteria(string storeId = default(string), string number = default(string), string customerOrderId = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string customerId = default(string), System.Collections.Generic.IList<string> statuses = default(System.Collections.Generic.IList<string>), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public SubscriptionSearchCriteria(string storeId = default(string), string number = default(string), string keyword = default(string), string customerOrderId = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string customerId = default(string), System.Collections.Generic.IList<string> statuses = default(System.Collections.Generic.IList<string>), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
             StoreId = storeId;
             Number = number;
+            Keyword = keyword;
             CustomerOrderId = customerOrderId;
             StartDate = startDate;
             EndDate = endDate;
@@ -2820,6 +2821,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "number")]
         public string Number { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "keyword")]
+        public string Keyword { get; set; }
 
         /// <summary>
         /// </summary>

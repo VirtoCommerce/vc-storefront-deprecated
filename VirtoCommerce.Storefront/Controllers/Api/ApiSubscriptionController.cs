@@ -35,7 +35,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             //Does not allow to see a other subscriptions
             searchCriteria.CustomerId = WorkContext.CurrentCustomer.Id;
 
-            var result = await _subscriptionApi.SubscriptionModule.SearchAsync(searchCriteria.ToSearchCriteriaDto());
+            var result = await _subscriptionApi.SubscriptionModule.SearchSubscriptionsAsync(searchCriteria.ToSearchCriteriaDto());
         
             return Json(new
             {
@@ -73,7 +73,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 Number = number,
                 ResponseGroup = SubscriptionResponseGroup.Full.ToString()
             };
-            var retVal = (await _subscriptionApi.SubscriptionModule.SearchAsync(criteria))
+            var retVal = (await _subscriptionApi.SubscriptionModule.SearchSubscriptionsAsync(criteria))
                                                 .Subscriptions
                                                 .Select(x=>x.ToSubscription(WorkContext.AllCurrencies, WorkContext.CurrentLanguage))
                                                 .FirstOrDefault();
