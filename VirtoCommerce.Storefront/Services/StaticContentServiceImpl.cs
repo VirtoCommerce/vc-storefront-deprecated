@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Markdig;
+using VirtoCommerce.ContentModule.Utils;
 using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.LiquidThemeEngine.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -144,7 +145,27 @@ namespace VirtoCommerce.Storefront.Services
                 content = Markdown.ToHtml(content, _markdownPipeline);
             }
 
-            contentItem.LoadContent(content, metaHeaders, themeSettings);
+            contentItem.LoadContent(content, metaHeaders);
+                        
+            //Try to get default permalink template from theme settings
+            if (string.IsNullOrEmpty(contentItem.Permalink))
+            {
+                contentItem.Permalink = (string)themeSettings["permalink"] ?? ":folder/:categories/:title";          
+            }
+            //Transform permalink template to url
+            contentItem.Url = GetContentItemUrl(contentItem, contentItem.Permalink);
+            //Transform aliases permalink templates to urls
+            contentItem.AliasesUrls = contentItem.Aliases.Select(x => GetContentItemUrl(contentItem, x)).ToList();
+        }
+
+        private static string GetContentItemUrl(ContentItem item, string permalink)
+        {
+            return new FrontMatterPermalink(permalink)
+            {
+                Categories = item.Categories,
+                Date = item.CreatedDate,
+                FilePath = item.StoragePath
+            }.ToUrl();
         }
 
         private static string RemoveYamlHeader(string text)

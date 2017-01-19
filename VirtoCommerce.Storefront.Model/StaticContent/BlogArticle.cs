@@ -24,7 +24,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
 
         public bool IsTrending { get; set; }
 
-        public override void LoadContent(string content, IDictionary<string, IEnumerable<string>> metaInfoMap, IDictionary themeSettings)
+        public override void LoadContent(string content, IDictionary<string, IEnumerable<string>> metaInfoMap)
         {
             var parts = content.Split(new[] { _excerpToken }, StringSplitOptions.None);
 
@@ -62,7 +62,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                 IsTrending = isTrending;
             }
 
-            base.LoadContent(content, metaInfoMap, themeSettings);
+            base.LoadContent(content, metaInfoMap);
         }
     }
 }
