@@ -150,7 +150,11 @@ namespace VirtoCommerce.Storefront.Services
             //Try to get default permalink template from theme settings
             if (string.IsNullOrEmpty(contentItem.Permalink))
             {
-                contentItem.Permalink = (string)themeSettings["permalink"] ?? ":folder/:categories/:title";          
+                contentItem.Permalink = ":folder/:categories/:title";
+                if (themeSettings != null)
+                {
+                    contentItem.Permalink = (string)themeSettings["permalink"] ?? contentItem.Permalink;
+                }     
             }
             //Transform permalink template to url
             contentItem.Url = GetContentItemUrl(contentItem, contentItem.Permalink);
