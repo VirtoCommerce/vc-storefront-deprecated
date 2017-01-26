@@ -107,9 +107,15 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             foreach (var ci in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
             {
-                var ri = new RegionInfo(ci.LCID);
-                if (ri.ISOCurrencySymbol == isoCode)
-                    return ri.CurrencySymbol;
+                try
+                {
+                    var ri = new RegionInfo(ci.LCID);
+                    if (ri.ISOCurrencySymbol == isoCode)
+                        return ri.CurrencySymbol;
+                }
+                catch(Exception)
+                {
+                }
             }
             return null;
         }
