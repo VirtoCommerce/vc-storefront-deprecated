@@ -57,7 +57,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         {
             await EnsureCartExistsAsync();
 
-            return Json(_cartBuilder.Cart.ItemsCount, JsonRequestBehavior.AllowGet);
+            return Json(_cartBuilder.Cart.ItemsQuantity, JsonRequestBehavior.AllowGet);
         }
 
         // POST: storefrontapi/cart/items?id=...&quantity=...
@@ -76,7 +76,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                     await _cartBuilder.SaveAsync();
                 }
             }
-            return Json(new { _cartBuilder.Cart.ItemsCount });
+            return Json(new { ItemsCount = _cartBuilder.Cart.ItemsQuantity });
         }
 
         // PUT: storefrontapi/cart/items/price?lineItemId=...&newPrice=...
@@ -141,7 +141,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 await _cartBuilder.SaveAsync();
             }
 
-            return Json(new { _cartBuilder.Cart.ItemsCount });
+            return Json(new { ItemsCount = _cartBuilder.Cart.ItemsQuantity });
         }
 
         // POST: storefrontapi/cart/clear

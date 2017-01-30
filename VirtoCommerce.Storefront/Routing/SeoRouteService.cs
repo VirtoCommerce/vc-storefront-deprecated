@@ -87,7 +87,7 @@ namespace VirtoCommerce.Storefront.Routing
 
             // Get all SEO records for requested slug and also all other SEO records with different slug and languages but related to the same object
             var allSeoRecords = GetAllSeoRecords(lastSlug);
-            var bestSeoRecords = allSeoRecords.GetBestMatchingSeoInfos(workContext.CurrentStore, workContext.CurrentLanguage, lastSlug);
+            var bestSeoRecords = GetBestMatchingSeoRecords(allSeoRecords, workContext.CurrentStore, workContext.CurrentLanguage, lastSlug);
 
             var seoEntityComparer = AnonymousComparer.Create((SeoEntity x) => string.Join(":", x.ObjectType, x.ObjectId, x.SeoPath));
             // Find distinct objects
@@ -176,6 +176,11 @@ namespace VirtoCommerce.Storefront.Routing
             }
 
             return result;
+        }
+
+        protected virtual IList<coreDto.SeoInfo> GetBestMatchingSeoRecords(IEnumerable<coreDto.SeoInfo> allSeoRecords, Store store, Language language, string slug)
+        {
+            return allSeoRecords.GetBestMatchingSeoInfos(store, language, slug);
         }
 
         protected virtual void LoadObjectsAndBuildFullSeoPaths(string objectType, IList<SeoEntity> objects, Store store, Language language)

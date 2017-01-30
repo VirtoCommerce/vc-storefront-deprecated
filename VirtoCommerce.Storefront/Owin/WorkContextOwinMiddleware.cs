@@ -245,7 +245,7 @@ namespace VirtoCommerce.Storefront.Owin
                     workContext.CurrentCustomer = await GetCustomerAsync(context);
                     //Validate that current customer has to store access
                     ValidateUserStoreLogin(context, workContext.CurrentCustomer, workContext.CurrentStore);
-                    MaintainAnonymousCustomerCookie(context, workContext);                
+                    MaintainAnonymousCustomerCookie(context, workContext);
 
                     // Gets the collection of external login providers
                     var externalAuthTypes = context.Authentication.GetExternalAuthenticationTypes();

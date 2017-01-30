@@ -54,7 +54,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         public Money(decimal amount, Currency currency)
         {
             if (currency == null)
-                throw new ArgumentNullException("currency");
+                throw new ArgumentNullException(nameof(currency));
 
             Currency = currency;
             InternalAmount = amount;
@@ -67,7 +67,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         /// Accesses the internal representation of the value of the Money
         /// </summary>
         /// <returns>A decimal with the internal amount stored for this Money.</returns>
-        public decimal InternalAmount { get; private set; }
+        public decimal InternalAmount { get; }
 
         /// <summary>
         /// Rounds the amount to the number of significant decimal digits
@@ -110,7 +110,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             get { return ToString(false, false); }
         }
 
-        public Currency Currency { get; private set; }
+        public Currency Currency { get; }
 
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         public static Money operator +(Money money, decimal value)
         {
             if (money == null)
-                throw new ArgumentNullException("money");
+                throw new ArgumentNullException(nameof(money));
 
             return new Money(money.Amount + value, money.Currency);
         }
@@ -285,7 +285,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         public static Money operator -(Money money, decimal value)
         {
             if (money == null)
-                throw new ArgumentNullException("money");
+                throw new ArgumentNullException(nameof(money));
 
             return new Money(money.Amount - value, money.Currency);
         }
@@ -301,7 +301,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         public static Money operator *(Money money, decimal value)
         {
             if (money == null)
-                throw new ArgumentNullException("money");
+                throw new ArgumentNullException(nameof(money));
 
             return new Money(money.Amount * value, money.Currency);
         }
@@ -318,7 +318,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         public static Money operator /(Money money, decimal value)
         {
             if (money == null)
-                throw new ArgumentNullException("money");
+                throw new ArgumentNullException(nameof(money));
 
             return new Money(money.Amount / value, money.Currency);
         }
@@ -338,7 +338,7 @@ namespace VirtoCommerce.Storefront.Model.Common
 
             if (Currency != null && !string.IsNullOrEmpty(Currency.CustomFormatting))
             {
-                result = Amount.ToString(Currency.CustomFormatting);
+                result = Amount.ToString(Currency.CustomFormatting, Currency.NumberFormat);
             }
 
             if (result == null)

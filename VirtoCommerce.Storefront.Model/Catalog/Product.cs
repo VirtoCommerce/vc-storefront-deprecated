@@ -274,6 +274,15 @@ namespace VirtoCommerce.Storefront.Model.Catalog
                 //Add nominal price to product prices list 
                 Prices.Add(nominalPrice);
             }
+
+            ApplyPricesWithExchangeRates(allCurrencies);
+
+            //Set current product price for current currency
+            Price = Prices.FirstOrDefault(x => x.Currency == currentCurrency);
+        }
+
+        private void ApplyPricesWithExchangeRates(IEnumerable<Currency> allCurrencies)
+        {
             //Need add product price for all currencies (even if not returned from API need make it by currency exchange conversation)
             foreach (var currency in allCurrencies)
             {
@@ -290,8 +299,6 @@ namespace VirtoCommerce.Storefront.Model.Catalog
                     Prices.Add(price);
                 }
             }
-            //Set current product price for current currency
-            Price = Prices.FirstOrDefault(x => x.Currency == currentCurrency);
         }
 
         #region IHasProperties Members
@@ -360,7 +367,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             {
                 //Initialize tier price discount amount by default values
                 var discount = reward.ToDiscountModel(Price.SalePrice);
-                foreach(var tierPrice in Price.TierPrices)
+                foreach (var tierPrice in Price.TierPrices)
                 {
                     tierPrice.DiscountAmount = new Money(Math.Max(0, (Price.ListPrice - tierPrice.Price).Amount), Currency);
                 }
