@@ -121,11 +121,11 @@
                     </div>
                     <h1 ng-bind="product.Id"></h1>
                 </div>
-
+                {% if shop.subscription_enabled %}
                 <div class="note" ng-if="selectedVariation.paymentPlan">
                     <span ng-bind="'Subscription with a period: ' + selectedVariation.paymentPlan.intervalCount + ' ' + selectedVariation.paymentPlan.interval"></span>
                 </div>
-
+                {% endif %}
                 {% if settings.product_quantity_enable %}
                 <label for="quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
                 <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-selector">

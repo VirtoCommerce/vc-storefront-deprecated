@@ -17,6 +17,7 @@
                     <vc-totals order="checkout.cart"></vc-totals>
                 </div>
 
+                {% if shop.subscription_enabled %}
                 <div class="form-group" ng-if="checkout.canCartBeRecurring">
                     <div class="form-box">
                         <label class="check-box" ng-init="isRecurring = !!checkout.cart.paymentPlan">
@@ -34,6 +35,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
