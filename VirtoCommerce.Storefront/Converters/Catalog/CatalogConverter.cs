@@ -273,7 +273,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (associationDto.AssociatedObjectType.EqualsInvariant("product"))
             {
-                retVal = new ProductAssociation()
+                retVal = new ProductAssociation
                 {
                     ProductId = associationDto.AssociatedObjectId
                 };
@@ -292,6 +292,7 @@ namespace VirtoCommerce.Storefront.Converters
                 retVal.Type = associationDto.Type;
                 retVal.Priority = associationDto.Priority ?? 0;
                 retVal.Image = new Image { Url = associationDto.AssociatedObjectImg };
+                retVal.Quantity = associationDto.Quantity;
             }
 
             return retVal;
@@ -339,7 +340,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (categoryDto.Images != null)
             {
-                result.Images = categoryDto.Images.Select(i => ToImage(i)).ToArray();
+                result.Images = categoryDto.Images.Select(ToImage).ToArray();
                 result.PrimaryImage = result.Images.FirstOrDefault();
             }
 
@@ -500,11 +501,11 @@ namespace VirtoCommerce.Storefront.Converters
 
             retVal.ProductId = product.Id;
             retVal.Quantity = 1;
-            retVal.Variations = product.Variations != null ? product.Variations.Select(ToProductPromoEntryDto).ToList() : null;
+            retVal.Variations = product.Variations?.Select(ToProductPromoEntryDto).ToList();
 
             return retVal;
         }
-      
+
 
         public virtual TaxLine[] ToTaxLines(Product product)
         {

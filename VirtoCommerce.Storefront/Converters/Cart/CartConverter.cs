@@ -653,14 +653,14 @@ namespace VirtoCommerce.Storefront.Converters
 
             result.InjectFrom<NullableAndEnumValueInjecter>(product);
             result.Id = null;
-            result.ImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
+            result.ImageUrl = product.PrimaryImage?.Url;
+            result.ThumbnailImageUrl = product.PrimaryImage?.Url;
             result.ListPrice = product.Price.ListPrice;
             result.SalePrice = product.Price.GetTierPrice(quantity).Price;
             result.TaxPercentRate = product.Price.TaxPercentRate;
             result.DiscountAmount = product.Price.DiscountAmount;
             result.ProductId = product.Id;
             result.Quantity = quantity;
-            result.ThumbnailImageUrl = product.PrimaryImage != null ? product.PrimaryImage.Url : null;
             result.IsReccuring = result.PaymentPlan != null;
 
             return result;

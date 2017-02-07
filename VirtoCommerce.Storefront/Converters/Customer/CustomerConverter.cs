@@ -13,13 +13,7 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class CustomerConverterExtension
     {
-        public static CustomerConverter CustomerConverterInstance
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<CustomerConverter>();
-            }
-        }
+        public static CustomerConverter CustomerConverterInstance => ServiceLocator.Current.GetInstance<CustomerConverter>();
 
         public static CustomerInfo ToCustomerInfo(this Register formModel)
         {
@@ -148,7 +142,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.FullName = string.Join(" ", formModel.FirstName, formModel.LastName);
             result.FirstName = formModel.FirstName;
             result.LastName = formModel.LastName;
-            
+
             if (string.IsNullOrEmpty(result.FullName) || string.IsNullOrWhiteSpace(result.FullName))
             {
                 result.FullName = formModel.Email;
@@ -189,7 +183,7 @@ namespace VirtoCommerce.Storefront.Converters
             if (contactDto.Emails != null)
             {
                 result.Email = contactDto.Emails.FirstOrDefault();
-            }         
+            }
             if (!contactDto.DynamicProperties.IsNullOrEmpty())
             {
                 result.DynamicProperties = contactDto.DynamicProperties.Select(ToDynamicProperty).ToList();

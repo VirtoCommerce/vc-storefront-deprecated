@@ -34,10 +34,11 @@
                             </div>
                             <div class="grid-item two-thirds large--three-quarters">
                                 <span ng-bind="lineItem.name"></span>
-
+                                {% if shop.subscription_enabled %}
                                 <div class="note" ng-if="lineItem.paymentPlan">
                                     <span ng-bind="'Subscription with a period: ' + lineItem.paymentPlan.intervalCount + ' ' + lineItem.paymentPlan.interval"></span>
                                 </div>
+                                {% endif %}
                                 <div class="note" ng-class="{ 'form-error' : !lineItem.isValid }" ng-repeat="error in lineItem.validationErrors">
                                     {% if settings.show_prices_with_taxes %}
                                     <span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPriceWithTax.formattedAmount"></span>

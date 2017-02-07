@@ -316,16 +316,13 @@ namespace VirtoCommerce.Storefront.Model.Cart
         /// </value>
         public ICollection<LineItem> Items { get; set; }
 
+        public int ItemsCount => Items.Count;
+
         /// <summary>
         /// Gets or sets shopping cart items quantity (sum of each line item quantity * items count)
         /// </summary>
-        public virtual int ItemsCount
-        {
-            get
-            {
-                return Items.Sum(i => i.Quantity);
-            }
-        }
+        public int ItemsQuantity => Items.Sum(i => i.Quantity);
+
         /// <summary>
         /// Gets or sets the collection of shopping cart payments
         /// </summary>
@@ -378,9 +375,9 @@ namespace VirtoCommerce.Storefront.Model.Cart
         #endregion
 
         #region IDiscountable Members
-        public ICollection<Discount> Discounts { get; private set; }
+        public ICollection<Discount> Discounts { get; }
 
-        public Currency Currency { get; private set; }
+        public Currency Currency { get; }
 
         public void ApplyRewards(IEnumerable<PromotionReward> rewards)
         {
@@ -489,7 +486,10 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public override string ToString()
         {
-            return string.Format("Cart #{0} Items({1}) {2}", Id ?? "undef", ItemsCount, Customer != null ? Customer.ToString() : "undef");
+            var cartId = Id ?? "undefined";
+            var customer = Customer != null ? Customer.ToString() : "undefined";
+
+            return $"Cart #{cartId} Items({ItemsQuantity}) {customer}";
         }
     }
 }
