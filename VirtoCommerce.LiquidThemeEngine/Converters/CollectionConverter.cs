@@ -47,11 +47,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             if (category.Categories != null)
             {
-                result.Collections = new MutablePagedList<Collection>((pageNumber, pageSize, sortInfos) =>
-                {
-                    category.Categories.Slice(pageNumber, pageSize, sortInfos);
-                    return new StaticPagedList<Collection>(category.Categories.Select(x => ToLiquidCollection(x, workContext)), category.Categories);
-                }, category.Categories.PageNumber, category.Categories.PageSize);
+                result.Collections = new Collections(new MutablePagedList<Collection>((pageNumber, pageSize, sortInfos) =>
+                 {
+                     category.Categories.Slice(pageNumber, pageSize, sortInfos);
+                     return new StaticPagedList<Collection>(category.Categories.Select(x => ToLiquidCollection(x, workContext)), category.Categories);
+                 }, category.Categories.PageNumber, category.Categories.PageSize));
             }
 
             if (workContext.Aggregations != null)

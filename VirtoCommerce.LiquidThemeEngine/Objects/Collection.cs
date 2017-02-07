@@ -145,6 +145,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// <summary>
         /// Child collections
         /// </summary>
-        public IMutablePagedList<Collection> Collections { get; set; }
+        public Collections Collections { get; set; }
     }
 }
