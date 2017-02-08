@@ -1,0 +1,49 @@
+﻿<div ng-controller="productCompareListController">
+    <div ng-if="!$localStorage['productCompareList'].length">
+        <h2>Your product compare list is currently empty</h2>
+        <p>Continue browsing <a href="{{ 'collections/all' | absolute_url }}">here</a>.</p>
+    </div>
+    <div ng-if="$localStorage['productCompareList'].length">
+        <div class="grid">
+            <div class="grid-item one-half">
+                <label>
+                    <input type="checkbox" ng-model="showShowOnlyDifferences" /> Show only differences
+                </label>
+            </div>
+            <div class="grid-item one-half text-right">
+                <button class="btn btn-secondary" ng-click="clearCompareList()">Clear product compare list</button>
+            </div>
+        </div>
+        <hr />
+        <div class="grid">
+            <div class="grid-item one-fifth">&nbsp;</div>
+            <div class="grid-item one-fifth text-center" ng-repeat="product in $localStorage['productCompareList']">
+                <div class="compare-list-inner">
+                    <a class="icon-fallback-text btn-secondary remove ajaxifyCart--remove" ng-click="removeProduct(product)">
+                        <span class="icon icon-x" aria-hidden="true"></span>
+                        <span class="fallback-text">Remove</span>
+                    </a>
+                    <img style="max-width: 150px;" ng-src="{% raw %}{{ product.primaryImage.url }}{% endraw %}" ng-if="product.primaryImage.url" />
+                    <div class="no-product-image" ng-if="!product.primaryImage.url">
+                        <img src="{{ 'no-image.svg' | asset_url }}" />
+                    </div>
+                    <div>
+                        <strong ng-bind="product.price.actualPrice.formattedAmount"></strong>
+                    </div>
+                    <div ng-bind="product.name"></div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="grid" style="height: 40px;" ng-repeat="(displayName, values) in properties" ng-show="hasValues(values, showShowOnlyDifferences)">
+            <div class="grid-item one-fifth">
+                <strong ng-bind="displayName"></strong>
+            </div>
+            <div class="grid-item one-fifth text-center" ng-repeat="value in values">
+                <span ng-if="value.valueType.toLowerCase() === 'shorttext'" ng-bind="value.value"></span>
+                <input disabled="bisabled" type="checkbox" ng-if="value.valueType.toLowerCase() === 'boolean'" ng-checked="value.value" />
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>

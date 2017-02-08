@@ -1,7 +1,7 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'customerService', 'storefrontApp.mainContext',
-    function ($scope, $location, $window, customerService, mainContext) {
+storefrontApp.controller('mainController', ['$scope', '$location', '$window', '$localStorage', 'customerService', 'storefrontApp.mainContext',
+    function ($scope, $location, $window, $localStorage, customerService, mainContext) {
 
         //Base store url populated in layout and can be used for construction url inside controller
         $scope.baseUrl = {};
@@ -63,6 +63,11 @@ storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'c
         };
 
         $scope.getCustomer();
+
+        $scope.$localStorage = $localStorage;
+        $scope.toggleProductCompareListModal = function (isVisible) {
+            $scope.productCompareListVisible = !isVisible;
+        }
     }])
 
 .factory('storefrontApp.mainContext', function () {

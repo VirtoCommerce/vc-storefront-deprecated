@@ -388,6 +388,7 @@
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout.js" />
     <Content Include="App_Data\Themes\default\assets\js\quote-request.js" />
+    <Content Include="App_Data\Themes\default\assets\js\product-compare.js" />
     <Content Include="App_Data\Themes\default\assets\klarna-big.png" />
     <Content Include="App_Data\Themes\default\assets\laser.svg" />
     <Content Include="App_Data\Themes\default\assets\litecoin.svg" />
@@ -467,6 +468,7 @@
     <Content Include="App_Data\Themes\default\snippets\google-tag-manager-body.liquid" />
     <Content Include="App_Data\Themes\default\snippets\bulk-order-fields-column.liquid" />
     <Content Include="App_Data\Themes\default\templates\bulk-order.liquid" />
+    <Content Include="App_Data\Themes\default\templates\product-compare.liquid" />
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

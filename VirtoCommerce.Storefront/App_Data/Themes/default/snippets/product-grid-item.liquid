@@ -91,6 +91,9 @@
         </div>
 
         <div class="product-item--other">
+            <label class="product-compare-checkbox">
+                <input type="checkbox" ng-click="addToProductCompareList('{{ product.id }}')" ng-checked="isInProductCompareList('{{ product.id }}')" /> {{ 'products.general.add_to_compare' | t }}
+            </label>
             {% comment %}
             {% if product.variants.size == 1 %}
                 <button class="btn" type="button">{{ 'products.general.add_to_cart' | t }}</button>

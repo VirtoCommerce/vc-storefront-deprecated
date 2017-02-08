@@ -549,7 +549,9 @@
             "related_products": "We Also Recommend",
             "save_html": "Save {{ saved_amount }}",
             "add_to_cart": "Add to cart",
-            "add_to_quote": "Add to quote"
+            "add_to_quote": "Add to quote",
+            "add_to_compare": "Add to compare",
+            "compare": "Compare"
         },
         "product": {
             "sold_out": "Sold Out",

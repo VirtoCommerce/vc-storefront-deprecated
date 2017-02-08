@@ -2281,7 +2281,8 @@ $shareBorderColor: #ececec;
 }
 
 #cartCount,
-#quoteRequestCount {
+#quoteRequestCount,
+#productCompareListCount {
   display: none;
   position: absolute;
   top: -5px;
@@ -2318,7 +2319,7 @@ $shareBorderColor: #ececec;
 
 .search-bar {
   position: relative;
-  max-width: 60%;
+  max-width: 40%;
   width: 100%;
   margin: 0 auto $gutter;
 
@@ -4813,4 +4814,17 @@ dd {
     color: #000;
     font-size: 16px;
     font-weight: 700;
+}
+.product-compare-checkbox {
+    margin-top: 10px;
+}
+.compare-list-inner {
+    height: 100%;
+    position: relative;
+}
+.compare-list-inner .remove {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
 }

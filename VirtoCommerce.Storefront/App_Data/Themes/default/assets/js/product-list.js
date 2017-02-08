@@ -1,8 +1,12 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('productListController', ['$scope', '$window', 'pricingService', function ($scope, $window, pricingService) {
+storefrontApp.controller('productListController', ['$scope', '$window', '$localStorage', 'pricingService', 'catalogService', function ($scope, $window, $localStorage, pricingService, catalogService) {
     $scope.productListPricesLoaded = false;
     $scope.productListPrices = [];
+    var productCompareList = $localStorage['productCompareList'];
+    if (!productCompareList) {
+        productCompareList = [];
+    }
 
     pricingService.getActualProductPrices($window.productList).then(function (response) {
         var prices = response.data;
@@ -14,4 +18,24 @@ storefrontApp.controller('productListController', ['$scope', '$window', 'pricing
         var productListPricesSize = $scope.getObjectSize($scope.productListPrices);
         $scope.productListPricesLoaded = productListPricesSize > 0;
     });
+
+    $scope.addToProductCompareList = function (productId) {
+        var product = _.find(productCompareList, function (p) { return p.id === productId });
+        if (product) {
+            productCompareList = _.without(productCompareList, product);
+        } else {
+            catalogService.getProduct([productId]).then(function (response) {
+                if (response.data.length) {
+                    var product = response.data[0];
+                    productCompareList.push(product);
+                    alert('Product "' + product.name + '" added to compare list');
+                }
+            });
+        }
+    }
+
+    $scope.isInProductCompareList = function (productId) {
+        var product = _.find(productCompareList, function (p) { return p.id === productId });
+        return product !== undefined && product !== null;
+    }
 }]);
