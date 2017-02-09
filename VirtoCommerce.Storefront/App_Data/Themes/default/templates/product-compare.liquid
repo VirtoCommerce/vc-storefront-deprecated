@@ -35,13 +35,16 @@
             </div>
         </div>
         <hr />
-        <div class="grid" style="height: 40px;" ng-repeat="(displayName, values) in properties" ng-show="hasValues(values, showShowOnlyDifferences)">
-            <div class="grid-item one-fifth">
+        <div class="grid" ng-repeat="(displayName, values) in properties" ng-show="hasValues(values, showShowOnlyDifferences)">
+            <div class="grid-item one-fifth compare-list-cell">
                 <strong ng-bind="displayName"></strong>
             </div>
-            <div class="grid-item one-fifth text-center" ng-repeat="value in values">
-                <span ng-if="value.valueType.toLowerCase() === 'shorttext'" ng-bind="value.value"></span>
-                <input disabled="bisabled" type="checkbox" ng-if="value.valueType.toLowerCase() === 'boolean'" ng-checked="value.value" />
+            <div class="grid-item one-fifth compare-list-cell" ng-repeat="value in values">
+                <div style="margin: 0 auto;" ng-if="value.valueType.toLowerCase() === 'shorttext' || value.valueType.toLowerCase() === 'number'">
+                    <span ng-if="value.value" ng-bind="value.value"></span>
+                    <span ng-if="!value.value">-</span>
+                </div>
+                <input disabled="bisabled" style="margin: 0 auto;" type="checkbox" ng-if="value.valueType.toLowerCase() === 'boolean'" ng-checked="value.value" />
             </div>
         </div>
         <hr />

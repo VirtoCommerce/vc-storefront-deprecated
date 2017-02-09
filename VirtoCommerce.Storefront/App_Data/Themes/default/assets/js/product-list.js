@@ -20,6 +20,10 @@ storefrontApp.controller('productListController', ['$scope', '$window', '$localS
     });
 
     $scope.addToProductCompareList = function (productId) {
+        if ($window.productCompareListCapacity <= productCompareList.length) {
+            alert('Product compare list capacity is ' + $window.productCompareListCapacity);
+            return;
+        }
         var product = _.find(productCompareList, function (p) { return p.id === productId });
         if (product) {
             productCompareList = _.without(productCompareList, product);
@@ -27,6 +31,7 @@ storefrontApp.controller('productListController', ['$scope', '$window', '$localS
             catalogService.getProduct([productId]).then(function (response) {
                 if (response.data.length) {
                     var product = response.data[0];
+                    _.each(product.properties, function (property) { property.productId = product.id });
                     productCompareList.push(product);
                     alert('Product "' + product.name + '" added to compare list');
                 }

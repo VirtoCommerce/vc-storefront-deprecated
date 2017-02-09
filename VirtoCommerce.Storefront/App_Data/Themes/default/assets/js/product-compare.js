@@ -16,9 +16,6 @@ storefrontApp.controller('productCompareListController', ['$scope', '$localStora
 
     $scope.hasValues = function (properties, onlyDifferences) {
         var uniqueValues = _.uniq(_.map(properties, function (p) { return p.value }));
-        if (uniqueValues.length == 1 && (_.isUndefined(uniqueValues[0]) || _.isNull(uniqueValues[0]))) {
-            return false;
-        }
         if (onlyDifferences && properties.length > 1 && uniqueValues.length == 1) {
             return false;
         }
@@ -26,7 +23,21 @@ storefrontApp.controller('productCompareListController', ['$scope', '$localStora
     }
 
     function getProductProperties() {
+        var grouped = {};
         var properties = _.flatten(_.map($localStorage['productCompareList'], function (product) { return product.properties; }));
-        $scope.properties = _.groupBy(properties, 'displayName');
+        var propertyDisplayNames = _.uniq(_.map(properties, function (property) { return property.displayName; }));
+        _.each(propertyDisplayNames, function (displayName) {
+            grouped[displayName] = [];
+            var props = _.where(properties, { displayName: displayName });
+            _.each($localStorage['productCompareList'], function (product) {
+                var productProperty = _.find(props, function (prop) { return prop.productId === product.id });
+                if (productProperty) {
+                    grouped[displayName].push(productProperty);
+                } else {
+                    grouped[displayName].push({ valueType: 'ShortText', value: '-' });
+                }
+            });
+        });
+        $scope.properties = grouped;
     }
 }]);

@@ -3,6 +3,7 @@
     "presets": {
         "Blue": {
             "bulk_order_enabled": true,
+            "product_compare_list_capacity": 4,
             "ajax_cart_enable": true,
             "ajax_cart_method": "Modal",
             "cart_notes_enable": false,
