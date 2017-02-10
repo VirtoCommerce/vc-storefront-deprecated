@@ -63,11 +63,6 @@ storefrontApp.controller('mainController', ['$scope', '$location', '$window', '$
         };
 
         $scope.getCustomer();
-
-        $scope.$localStorage = $localStorage;
-        $scope.toggleProductCompareListModal = function (isVisible) {
-            $scope.productCompareListVisible = !isVisible;
-        }
     }])
 
 .factory('storefrontApp.mainContext', function () {

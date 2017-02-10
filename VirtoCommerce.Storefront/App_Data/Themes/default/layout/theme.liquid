@@ -119,10 +119,12 @@
                     <br class="medium-down--hide" />
                     {% endif %}
                     {% include 'search-bar' %}
-                    <a class="header-cart-btn cart-toggle" href="{{ 'compare' | absolute_url }}">
-                        <span class="fa fa-bar-chart"></span>
-                        {{ 'products.general.compare' | t }} <span id="productCompareListCount" ng-class="{ 'visible-count': $localStorage['productCompareList'].length }" ng-bind="$localStorage['productCompareList'].length"></span>
-                    </a>
+                    {% if settings.product_compare_enabled %}
+                        <a class="header-cart-btn cart-toggle" href="{{ 'compare' | absolute_url }}" ng-controller="productCompareListBarController" ng-show="itemsCount > 0">
+                            <span class="fa fa-bar-chart"></span>
+                            {{ 'products.compare_list.compare' | t }} <span class="visible-count" id="productCompareListCount" ng-bind="itemsCount"></span>
+                        </a>
+                    {% endif %}
                     {% if shop.quotes_enabled %}
                     <a class="header-cart-btn cart-toggle" ng-controller="actualQuoteRequestBarController" ng-click="outerRedirect(baseUrl + 'quoterequest/#/' + actualQuoteRequest.number)">
                         <span class="fa fa-calculator"></span>
@@ -157,6 +159,9 @@
         <main class="wrapper main-content" role="main">
             {{ content_for_layout }}
         </main>
+        {% if settings.product_compare_enabled %}
+            {% include 'product-compare-list-dialog' %}
+        {% endif %}
         {% include 'footer' %}
     <script>
         window.quotesEnabled = {{ shop.quotes_enabled }};

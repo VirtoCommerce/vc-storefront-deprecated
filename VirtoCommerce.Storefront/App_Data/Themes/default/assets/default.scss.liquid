@@ -2773,6 +2773,17 @@ $shareBorderColor: #ececec;
   }
 }
 
+.comparable {
+    .product-compare-checkbox {
+        display: none;
+    }
+}
+.comparable:hover {
+    .product-compare-checkbox {
+        display: block;
+    }
+}
+
 .badge {
   display: none;
   position: absolute;
@@ -4830,6 +4841,19 @@ dd {
 }
 .compare-list-cell {
     align-items: center;
+    border-bottom: 1px solid #dcdcdc;
     display: flex;
     min-height: 50px;
+    padding: 10px;
+}
+.compare-list-cell.property-name strong {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.compare-list-cell.value {
+    border-left: 1px solid #dcdcdc;
+}
+.compare-list-cell:nth-child(even):not(.ng-hide) {
+    background-color: #f2f2f2;
 }
