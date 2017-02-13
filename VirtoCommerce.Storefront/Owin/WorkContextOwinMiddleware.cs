@@ -33,6 +33,7 @@ using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.StaticContent;
 using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Model.Stores;
+using VirtoCommerce.Storefront.Services;
 
 namespace VirtoCommerce.Storefront.Owin
 {
@@ -45,8 +46,8 @@ namespace VirtoCommerce.Storefront.Owin
         protected static readonly PathString[] OwinIgnorePathsStrings = GetOwinIgnorePathStrings();
         protected static readonly Country[] AllCountries = GetAllCounries();
 
-        protected readonly UnityContainer Container;
-        protected readonly ILocalCacheManager CacheManager;
+        protected UnityContainer Container { get; }
+        protected ILocalCacheManager CacheManager { get; }
 
         public WorkContextOwinMiddleware(OwinMiddleware next, UnityContainer container)
             : base(next)
@@ -67,6 +68,7 @@ namespace VirtoCommerce.Storefront.Owin
             {
                 if (IsStorefrontRequest(context.Request) && !IsBundleRequest(context.Request))
                 {
+                    await ClearCacheIfHasChanges();
                     await HandleStorefrontRequest(context);
                 }
 
@@ -116,6 +118,16 @@ namespace VirtoCommerce.Storefront.Owin
                 retVal = request.Uri.IsFile || request.Uri.AbsolutePath.Contains("/assets/");
             }
             return retVal;
+        }
+
+        protected virtual async Task ClearCacheIfHasChanges()
+        {
+            var changesTrackingService = Container.Resolve<IChangesTrackingService>();
+
+            if (await changesTrackingService.HasChanges())
+            {
+                CacheManager.Clear();
+            }
         }
 
         protected virtual async Task HandleStorefrontRequest(IOwinContext context)
