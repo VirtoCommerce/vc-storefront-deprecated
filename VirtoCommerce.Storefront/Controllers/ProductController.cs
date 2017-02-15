@@ -68,5 +68,11 @@ namespace VirtoCommerce.Storefront.Controllers
 
             return View("product", WorkContext);
         }
+
+        [HttpGet]
+        public ActionResult Compare()
+        {
+            return View("product-compare");
+        }
     }
 }

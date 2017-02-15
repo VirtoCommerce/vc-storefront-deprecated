@@ -1,5 +1,6 @@
 ﻿var storefrontAppDependencies = [
-'ui.bootstrap'
+'ui.bootstrap',
+'ngStorage'
 ]
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);
 

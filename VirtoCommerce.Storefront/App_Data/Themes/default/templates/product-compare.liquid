@@ -1,0 +1,60 @@
+﻿<div ng-init="getProductProperties()" ng-controller="productCompareListController">
+    <div ng-if="!products.length">
+        <h2>{{ 'products.compare_list.compare_list_empty_header' | t }}</h2>
+        {% assign url = 'collections/all' | absolute_url %}
+        <p>{{ 'products.compare_list.compare_list_empty_body' | t: url : url }}</p>
+    </div>
+    <div ng-if="products.length">
+        <div id="compare-toolbar">
+            <div class="grid">
+                <div class="grid-item one-half">
+                    <label>
+                        <input type="checkbox" ng-model="showShowOnlyDifferences" /> {{ 'products.compare_list.show_only_differences' | t }}
+                    </label>
+                </div>
+                <div class="grid-item one-half text-right">
+                    <button class="btn btn-secondary" ng-click="clearCompareList()">{{ 'products.compare_list.clear_compare_list' | t }}</button>
+                </div>
+            </div>
+            <hr />
+            <div class="grid">
+                <div class="grid-item one-fifth">&nbsp;</div>
+                <div class="grid-item one-fifth text-center" style="padding: 10px;" ng-repeat="product in products">
+                    <div class="compare-list-inner">
+                        <a class="icon-fallback-text btn-secondary remove ajaxifyCart--remove" ng-click="removeProduct(product)">
+                            <span class="icon icon-x" aria-hidden="true"></span>
+                            <span class="fallback-text">{{ 'products.compare_list.remove' | t }}</span>
+                        </a>
+                        <a ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
+                            <img style="max-width: 150px;" ng-src="{% raw %}{{ product.primaryImage.url }}{% endraw %}" ng-if="product.primaryImage.url" />
+                            <div class="no-product-image" ng-if="!product.primaryImage.url">
+                                <img src="{{ 'no-image.svg' | asset_url }}" />
+                            </div>
+                            <div ng-bind="product.name"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid" style="margin-top: 25px;">
+            <div class="grid-item one-fifth compare-list-cell" style="border-top: 1px solid #dcdcdc;">
+                <strong>Price</strong>
+            </div>
+            <div class="grid-item one-fifth compare-list-cell value" style="border-top: 1px solid #dcdcdc;" ng-repeat="product in products">
+                <strong style="margin: 0 auto;" ng-bind="product.price.actualPrice.formattedAmount"></strong>
+            </div>
+        </div>
+        <div class="grid compare-list-row" ng-repeat="(displayName, values) in properties" ng-if="hasValues(values, showShowOnlyDifferences)">
+            <div class="grid-item one-fifth compare-list-cell property-name" title="{% raw %}{{ displayName }}{% endraw %}">
+                <strong ng-bind="displayName"></strong>
+            </div>
+            <div class="grid-item one-fifth compare-list-cell value" ng-repeat="value in values">
+                <div style="margin: 0 auto;" ng-if="value.valueType.toLowerCase() === 'shorttext' || value.valueType.toLowerCase() === 'number'">
+                    <span ng-if="value.value" ng-bind="value.value"></span>
+                    <span ng-if="!value.value">-</span>
+                </div>
+                <i class="fa fa-check" aria-hidden="true" style="margin: 0 auto;" ng-if="value.valueType.toLowerCase() === 'boolean'"></i>
+            </div>
+        </div>
+    </div>
+</div>

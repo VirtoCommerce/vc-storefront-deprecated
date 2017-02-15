@@ -1,0 +1,67 @@
+﻿<script id="storefront.product-compare-list-dialog.tpl" type="text/ng-template">
+    <div class="ajaxify-modal is-visible" id="ajaxifyModal" style="opacity: 1;">
+        <button class="ajaxifyCart--close" title="{{ 'products.compare_list.close_dialog' | t }}" ng-click="close()">{{ 'products.compare_list.close_dialog' | t }}</button>
+        <div class="ajaxifyCart--content" id="ajaxifyCart" ng-if="dialogData.capacityExceeded">
+            <h1 class="h2">{{ 'products.compare_list.capacity_exceeded_header' | t: capacity: settings.product_compare_list_capacity }}</h1>
+            <div class="cart-row">
+                <div class="grid">
+                    <div class="grid-item">
+                        <p>{{ 'products.compare_list.capacity_exceeded_message' | t }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-row">
+                <div class="grid">
+                    <div class="grid-item text-right">
+                        <button class="btn btn-primary" ng-click="redirect('{{ 'compare' | absolute_url }}')">{{ 'products.compare_list.go_to_compare_list' | t }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ajaxifyCart--content" id="ajaxifyCart" ng-if="!dialogData.capacityExceeded">
+            <h1 class="h2">{{ 'products.compare_list.added_to_list_dialog_header' | t }}</h1>
+            <div class="cart-row">
+                <div class="grid">
+                    <div class="grid-item large--seven-twelfths">
+                        <div class="grid">
+                            <div class="grid-item one-third large--one-quarter">
+                                <span class="cart-image">
+                                    <img ng-src="{% raw %}{{ dialogData.primaryImage.url }}{% endraw %}" ng-if="dialogData.primaryImage" />
+                                    <div class="no-product-image" ng-if="!dialogData.primaryImage">
+                                        <img src="{{ 'no-image.svg' | asset_url }}" />
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="grid-item two-thirds large--three-quarters">
+                                <a ng-bind="dialogData.name"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-item large--five-twelfths medium--two-thirds push--medium--one-third">
+                        <div class="grid">
+                            <div class="grid-item one-half medium-down--one-third text-right">&nbsp;</div>
+                            <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
+                                {% if settings.show_prices_with_taxes %}
+                                    <span class="h2" ng-bind="dialogData.price.actualPriceWithTax.formattedAmount"></span>
+                                    <span style="text-decoration: line-through;" ng-if="dialogData.price.listPriceWithTax.amount != dialogData.price.actualPriceWithTax.amount" ng-bind="dialogData.price.listPriceWithTax.formattedAmount"></span>
+                                {% else %}
+                                    <span class="h2" ng-bind="dialogData.price.actualPrice.formattedAmount"></span>
+                                    <span style="text-decoration: line-through;" ng-if="dialogData.price.listPrice.amount != dialogData.price.actualPrice.amount" ng-bind="dialogData.price.listPrice.formattedAmount"></span>
+                                {% endif %}
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-row">
+                <div class="grid">
+                    <div class="grid-item text-right">
+                        <button class="btn btn-primary" ng-click="redirect('{{ 'compare' | absolute_url }}')">{{ 'products.compare_list.go_to_compare_list' | t }}</button>
+                        <button class="btn btn-secondary" style="margin-top: 0;" ng-click="close()">{{ 'products.compare_list.continue_shopping' | t }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ajaxifyCart-overlay"></div>
+</script>
