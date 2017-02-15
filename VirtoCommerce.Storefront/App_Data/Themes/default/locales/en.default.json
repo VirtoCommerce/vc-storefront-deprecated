@@ -569,7 +569,12 @@
         "go_to_compare_list": "Go to compare list",
         "continue_shopping": "Continue shopping",
         "capacity_exceeded_header": "You may compare up to {{ capacity }} items at a time.",
-        "capacity_exceeded_message": "Would you like to compare the first four items you selected?"
+        "capacity_exceeded_message": "Would you like to compare the first four items you selected?",
+        "compare_list_empty_header": "Your product compare list is currently empty",
+        "compare_list_empty_body": "Continue browsing <a href=\"{{ url }}\">here</a>.",
+        "show_only_differences": "Show only differences",
+        "clear_compare_list": "Clear product compare list",
+        "remove": "Remove"
       }
     },
     "gift_cards": {

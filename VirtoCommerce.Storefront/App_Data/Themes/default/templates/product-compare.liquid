@@ -1,35 +1,38 @@
 ﻿<div ng-init="getProductProperties()" ng-controller="productCompareListController">
     <div ng-if="!products.length">
-        <h2>Your product compare list is currently empty</h2>
-        <p>Continue browsing <a href="{{ 'collections/all' | absolute_url }}">here</a>.</p>
+        <h2>{{ 'products.compare_list.compare_list_empty_header' | t }}</h2>
+        {% assign url = 'collections/all' | absolute_url %}
+        <p>{{ 'products.compare_list.compare_list_empty_body' | t: url : url }}</p>
     </div>
     <div ng-if="products.length">
-        <div class="grid">
-            <div class="grid-item one-half">
-                <label>
-                    <input type="checkbox" ng-model="showShowOnlyDifferences" /> Show only differences
-                </label>
+        <div id="compare-toolbar">
+            <div class="grid">
+                <div class="grid-item one-half">
+                    <label>
+                        <input type="checkbox" ng-model="showShowOnlyDifferences" /> {{ 'products.compare_list.show_only_differences' | t }}
+                    </label>
+                </div>
+                <div class="grid-item one-half text-right">
+                    <button class="btn btn-secondary" ng-click="clearCompareList()">{{ 'products.compare_list.clear_compare_list' | t }}</button>
+                </div>
             </div>
-            <div class="grid-item one-half text-right">
-                <button class="btn btn-secondary" ng-click="clearCompareList()">Clear product compare list</button>
-            </div>
-        </div>
-        <hr />
-        <div class="grid">
-            <div class="grid-item one-fifth">&nbsp;</div>
-            <div class="grid-item one-fifth text-center" style="padding: 10px;" ng-repeat="product in products">
-                <div class="compare-list-inner">
-                    <a class="icon-fallback-text btn-secondary remove ajaxifyCart--remove" ng-click="removeProduct(product)">
-                        <span class="icon icon-x" aria-hidden="true"></span>
-                        <span class="fallback-text">Remove</span>
-                    </a>
-                    <a ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
-                        <img style="max-width: 150px;" ng-src="{% raw %}{{ product.primaryImage.url }}{% endraw %}" ng-if="product.primaryImage.url" />
-                        <div class="no-product-image" ng-if="!product.primaryImage.url">
-                            <img src="{{ 'no-image.svg' | asset_url }}" />
-                        </div>
-                        <div ng-bind="product.name"></div>
-                    </a>
+            <hr />
+            <div class="grid">
+                <div class="grid-item one-fifth">&nbsp;</div>
+                <div class="grid-item one-fifth text-center" style="padding: 10px;" ng-repeat="product in products">
+                    <div class="compare-list-inner">
+                        <a class="icon-fallback-text btn-secondary remove ajaxifyCart--remove" ng-click="removeProduct(product)">
+                            <span class="icon icon-x" aria-hidden="true"></span>
+                            <span class="fallback-text">{{ 'products.compare_list.remove' | t }}</span>
+                        </a>
+                        <a ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
+                            <img style="max-width: 150px;" ng-src="{% raw %}{{ product.primaryImage.url }}{% endraw %}" ng-if="product.primaryImage.url" />
+                            <div class="no-product-image" ng-if="!product.primaryImage.url">
+                                <img src="{{ 'no-image.svg' | asset_url }}" />
+                            </div>
+                            <div ng-bind="product.name"></div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
