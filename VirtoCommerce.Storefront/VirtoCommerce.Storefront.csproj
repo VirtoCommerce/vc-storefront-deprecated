@@ -493,6 +493,7 @@
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="AutoRestClients\CacheModuleApi.cs" />
     <Compile Include="AutoRestClients\CartModuleApi.cs" />
     <Compile Include="AutoRestClients\CatalogModuleApi.cs" />
     <Compile Include="AutoRestClients\ContentModuleApi.cs" />
@@ -552,9 +553,11 @@
     <Compile Include="Routing\SeoEntity.cs" />
     <Compile Include="Routing\SeoRouteResponse.cs" />
     <Compile Include="Routing\SeoRouteService.cs" />
+    <Compile Include="Services\ChangesTrackingService.cs" />
     <Compile Include="Services\ContentBlobProviders\AzureBlobContentProvider.cs" />
     <Compile Include="Services\ContentBlobProviders\FileSystemContentBlobProvider.cs" />
     <Compile Include="Services\CustomerServiceImpl.cs" />
+    <Compile Include="Services\IChangesTrackingService.cs" />
     <Compile Include="Services\LinkListServiceImpl.cs" />
     <Compile Include="Services\PricingServiceImpl.cs" />
     <Compile Include="Controllers\Api\ApiCartController.cs" />

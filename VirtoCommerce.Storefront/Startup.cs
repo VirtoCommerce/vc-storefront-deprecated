@@ -26,6 +26,7 @@ using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.LiquidThemeEngine.Binders;
 using VirtoCommerce.Storefront;
 using VirtoCommerce.Storefront.App_Start;
+using VirtoCommerce.Storefront.AutoRestClients.CacheModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.ContentModuleApi;
@@ -40,8 +41,8 @@ using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
-using VirtoCommerce.Storefront.BackgroundJobs;
 using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
+using VirtoCommerce.Storefront.BackgroundJobs;
 using VirtoCommerce.Storefront.Binders;
 using VirtoCommerce.Storefront.Builders;
 using VirtoCommerce.Storefront.Common;
@@ -110,7 +111,7 @@ namespace VirtoCommerce.Storefront
             UnityWebActivator.Start();
             var container = UnityConfig.GetConfiguredContainer();
 
-            UnityServiceLocator locator = new UnityServiceLocator(container);
+            var locator = new UnityServiceLocator(container);
             ServiceLocator.SetLocatorProvider(() => locator);
 
             //Cure for System.Runtime.Caching.MemoryCache freezing 
@@ -203,6 +204,7 @@ namespace VirtoCommerce.Storefront
             };
 
             var baseUri = new Uri(baseUrl);
+            container.RegisterType<ICacheModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CacheModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
             container.RegisterType<ICartModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CartModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
             container.RegisterType<ICatalogModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CatalogModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
             container.RegisterType<IContentModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new ContentModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
@@ -215,8 +217,8 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IPricingModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new PricingModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
             container.RegisterType<IQuoteModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new QuoteModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
             container.RegisterType<ISearchApiModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SearchApiModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<IStoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new StoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
             container.RegisterType<ISitemapsModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SitemapsModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
+            container.RegisterType<IStoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new StoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
             container.RegisterType<ISubscriptionModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SubscriptionModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
 
             container.RegisterType<IMarketingService, MarketingServiceImpl>();
@@ -260,7 +262,7 @@ namespace VirtoCommerce.Storefront
                 themesBlobProvider = new FileSystemContentBlobProvider(ResolveLocalPath(themesBasePath));
                 staticContentBlobProvider = new FileSystemContentBlobProvider(ResolveLocalPath(staticContentBasePath));
             }
-            container.RegisterInstance<IStaticContentBlobProvider>(staticContentBlobProvider);
+            container.RegisterInstance(staticContentBlobProvider);
 
             var shopifyLiquidEngine = new ShopifyLiquidThemeEngine(localCacheManager, workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>(), themesBlobProvider, globalThemesBlobProvider, "~/themes/assets", "~/themes/global/assets");
             container.RegisterInstance<ILiquidThemeEngine>(shopifyLiquidEngine);
@@ -276,6 +278,11 @@ namespace VirtoCommerce.Storefront
             container.RegisterInstance<IStaticContentService>(staticContentService);
             //Register generate sitemap background job
             container.RegisterType<GenerateSitemapJob>(new InjectionFactory(c => new GenerateSitemapJob(themesBlobProvider, c.Resolve<ISitemapsModuleApiClient>(), c.Resolve<IStorefrontUrlBuilder>())));
+
+            var changesTrackingEnabled = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:ChangesTracking:Enabled", true);
+            var changesTrackingInterval = TimeSpan.Parse(ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:ChangesTracking:Interval", "0:1:0"));
+            var changesTrackingService = new ChangesTrackingService(changesTrackingEnabled, changesTrackingInterval, container.Resolve<ICacheModuleApiClient>());
+            container.RegisterInstance<IChangesTrackingService>(changesTrackingService);
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters, workContextFactory, () => container.Resolve<CommonController>());
             RouteConfig.RegisterRoutes(RouteTable.Routes, container.Resolve<ISeoRouteService>(), workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>());
@@ -304,7 +311,7 @@ namespace VirtoCommerce.Storefront
                 {
                     var classInstance = Activator.CreateInstance(type, null);
                     var parameters = new object[] { app, virtualRoot, routPrefix };
-                    var result = methodInfo.Invoke(classInstance, parameters);
+                    methodInfo.Invoke(classInstance, parameters);
                 }
             }
         }
