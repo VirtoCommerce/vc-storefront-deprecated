@@ -20,7 +20,7 @@
     Select the product image size from settings.
 {% endcomment %}
 {% assign image_size = settings.collection_prod_image_sizes %}
-<div class="grid-item {{ grid_item_width }}{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}">
+<div class="grid-item {{ grid_item_width }}{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}{% if settings.product_compare_enabled %} comparable{% endif %}">
     <a href="{{ product.url | absolute_url }}" class="product-grid-item">
         <div class="product-grid-image">
             <div class="product-grid-image--centered">
@@ -91,6 +91,11 @@
         </div>
 
         <div class="product-item--other">
+            {% if settings.product_compare_enabled %}
+                <label class="product-compare-checkbox" ng-controller="productCompareListController">
+                    <input type="checkbox" ng-click="addProductToCompareList('{{ product.id }}')" ng-checked="isInProductCompareList('{{ product.id }}')" /> {{ 'products.compare_list.add_to_compare' | t }}
+                </label>
+            {% endif %}
             {% comment %}
             {% if product.variants.size == 1 %}
                 <button class="btn" type="button">{{ 'products.general.add_to_cart' | t }}</button>

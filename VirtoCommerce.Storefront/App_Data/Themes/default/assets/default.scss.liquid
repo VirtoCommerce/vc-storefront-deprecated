@@ -2281,7 +2281,8 @@ $shareBorderColor: #ececec;
 }
 
 #cartCount,
-#quoteRequestCount {
+#quoteRequestCount,
+#productCompareListCount {
   display: none;
   position: absolute;
   top: -5px;
@@ -2318,7 +2319,7 @@ $shareBorderColor: #ececec;
 
 .search-bar {
   position: relative;
-  max-width: 60%;
+  max-width: 40%;
   width: 100%;
   margin: 0 auto $gutter;
 
@@ -2770,6 +2771,17 @@ $shareBorderColor: #ececec;
       opacity: 0.7;
     }
   }
+}
+
+.comparable {
+    .product-compare-checkbox {
+        display: none;
+    }
+}
+.comparable:hover {
+    .product-compare-checkbox {
+        display: block;
+    }
 }
 
 .badge {
@@ -4813,4 +4825,35 @@ dd {
     color: #000;
     font-size: 16px;
     font-weight: 700;
+}
+.product-compare-checkbox {
+    margin-top: 10px;
+}
+.compare-list-inner {
+    height: 100%;
+    position: relative;
+}
+.compare-list-inner .remove {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+}
+.compare-list-cell {
+    align-items: center;
+    border-bottom: 1px solid #dcdcdc;
+    display: flex;
+    min-height: 50px;
+    padding: 10px;
+}
+.compare-list-cell.property-name strong {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.compare-list-cell.value {
+    border-left: 1px solid #dcdcdc;
+}
+.compare-list-cell:nth-child(even):not(.ng-hide) {
+    background-color: #f2f2f2;
 }
