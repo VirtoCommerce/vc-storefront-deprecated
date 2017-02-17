@@ -20,6 +20,16 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         });
     }
 
+    $scope.addProductToCartById = function (productId, quantity, event) {
+        event.preventDefault();
+        catalogService.getProduct([productId]).then(function (response) {
+            if (response.data && response.data.length) {
+                var product = response.data[0];
+                $scope.addProductToCart(product, quantity);
+            }
+        });
+    }
+
     $scope.addProductToActualQuoteRequest = function (product, quantity) {
         var dialogData = toDialogDataModel(product, quantity);
         dialogService.showDialog(dialogData, 'recentlyAddedActualQuoteRequestItemDialogController', 'storefront.recently-added-actual-quote-request-item-dialog.tpl');
@@ -42,11 +52,14 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     }
 
     function initialize() {
-            var productIds = _.map($window.products, function (product) { return product.id });
+        var productIds = _.map($window.products, function (product) { return product.id });
+        if (!productIds || !productIds.length) {
+            return;
+        }
         catalogService.getProduct(productIds).then(function (response) {
             var product = response.data[0];
                 //Current product is also a variation (titular)
-                allVariations = [product].concat(product.variations);
+                allVariations = [product].concat(product.variations || []);
                 $scope.allVariationPropsMap = getFlatternDistinctPropertiesMap(allVariations);
 
             //Auto select initial product as default variation  (its possible because all our products is variations)

@@ -91,10 +91,13 @@
         </div>
 
         <div class="product-item--other">
+            <button class="btn btn-secondary" title="{{ 'products.general.add_to_cart' | t }}" style="width: 50px;" ng-click="addProductToCartById('{{ product.id }}', 1, $event)" ng-controller="productController">
+                <span class="icon icon-cart"></span>
+            </button>
             {% if settings.product_compare_enabled %}
-                <label class="product-compare-checkbox" ng-controller="productCompareListController">
-                    <input type="checkbox" ng-click="addProductToCompareList('{{ product.id }}')" ng-checked="isInProductCompareList('{{ product.id }}')" /> {{ 'products.compare_list.add_to_compare' | t }}
-                </label>
+                <button class="btn btn-secondary" title="{{ 'products.compare_list.add_to_compare' | t }}" style="width: 50px;" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
+                    <span class="fa fa-bar-chart"></span>
+                </button>
             {% endif %}
             {% comment %}
             {% if product.variants.size == 1 %}

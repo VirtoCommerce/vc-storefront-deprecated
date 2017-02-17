@@ -12,31 +12,31 @@ function ($rootScope, $scope, $localStorage, $window, catalogService, dialogServ
         return _.some($localStorage['productCompareList'], function (p) { return p.id == productId });
     }
 
-    $scope.addProductToCompareList = function (productId) {
+    $scope.addProductToCompareList = function (productId, event) {
+        event.preventDefault();
         var existingProduct = _.find($localStorage['productCompareList'], function (p) { return p.id === productId });
         if (existingProduct) {
-            $localStorage['productCompareList'] = _.without($localStorage['productCompareList'], existingProduct);
-            $rootScope.$broadcast('productCompareListChanged');
-        } else {
-            if ($window.productCompareListCapacity <= $localStorage['productCompareList'].length) {
-                dialogService.showDialog({ capacityExceeded: true }, 'productCompareListDialogController', 'storefront.product-compare-list-dialog.tpl');
-                return;
-            }
-            catalogService.getProduct([productId]).then(function (response) {
-                if (response.data && response.data.length) {
-                    var product = response.data[0];
-                    _.each(product.properties, function (property) {
-                        property.productId = product.id;
-                        if (property.valueType.toLowerCase() === 'number') {
-                            property.value = formatNumber(property.value);
-                        }
-                    });
-                    $localStorage['productCompareList'].push(product);
-                    dialogService.showDialog(product, 'productCompareListDialogController', 'storefront.product-compare-list-dialog.tpl');
-                    $rootScope.$broadcast('productCompareListChanged');
-                }
-            });
+            dialogService.showDialog(existingProduct, 'productCompareListDialogController', 'storefront.product-compare-list-dialog.tpl');
+            return;
         }
+        if ($window.productCompareListCapacity <= $localStorage['productCompareList'].length) {
+            dialogService.showDialog({ capacityExceeded: true }, 'productCompareListDialogController', 'storefront.product-compare-list-dialog.tpl');
+            return;
+        }
+        catalogService.getProduct([productId]).then(function (response) {
+            if (response.data && response.data.length) {
+                var product = response.data[0];
+                _.each(product.properties, function (property) {
+                    property.productId = product.id;
+                    if (property.valueType.toLowerCase() === 'number') {
+                        property.value = formatNumber(property.value);
+                    }
+                });
+                $localStorage['productCompareList'].push(product);
+                dialogService.showDialog(product, 'productCompareListDialogController', 'storefront.product-compare-list-dialog.tpl');
+                $rootScope.$broadcast('productCompareListChanged');
+            }
+        });
     }
 
     $scope.getProductProperties = function () {
