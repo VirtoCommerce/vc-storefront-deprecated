@@ -38,6 +38,16 @@
                 {% endif %}
             </div>
         </div>
+        <div class="product-item--other" style="margin-bottom: 10px;">
+            <button class="btn btn-secondary" title="{{ 'products.general.add_to_cart' | t }}" style="width: 70%;" ng-click="addProductToCartById('{{ product.id }}', 1, $event)" ng-controller="productController">
+                <span class="icon icon-cart"></span>
+            </button>
+            {% if settings.product_compare_enabled %}
+                <button class="btn btn-secondary" title="{{ 'products.compare_list.add_to_compare' | t }}" style="width: 25%;" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
+                    <span class="fa fa-bar-chart"></span>
+                </button>
+            {% endif %}
+        </div>
         <p>{{ product.title }}</p>
         <div class="product-item--price" ng-if="!productListPricesLoaded">
             <span class="h1 medium--left">
@@ -91,14 +101,6 @@
         </div>
 
         <div class="product-item--other">
-            <button class="btn btn-secondary" title="{{ 'products.general.add_to_cart' | t }}" style="width: 50px;" ng-click="addProductToCartById('{{ product.id }}', 1, $event)" ng-controller="productController">
-                <span class="icon icon-cart"></span>
-            </button>
-            {% if settings.product_compare_enabled %}
-                <button class="btn btn-secondary" title="{{ 'products.compare_list.add_to_compare' | t }}" style="width: 50px;" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
-                    <span class="fa fa-bar-chart"></span>
-                </button>
-            {% endif %}
             {% comment %}
             {% if product.variants.size == 1 %}
                 <button class="btn" type="button">{{ 'products.general.add_to_cart' | t }}</button>
