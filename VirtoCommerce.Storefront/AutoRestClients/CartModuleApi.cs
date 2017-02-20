@@ -6304,12 +6304,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Price class.
         /// </summary>
-        public Price(string pricelistId = default(string), Pricelist pricelist = default(Pricelist), string currency = default(string), CatalogProduct product = default(CatalogProduct), string productId = default(string), double? sale = default(double?), double? list = default(double?), int? minQuantity = default(int?), double? effectiveValue = default(double?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public Price(string pricelistId = default(string), Pricelist pricelist = default(Pricelist), string currency = default(string), string productId = default(string), double? sale = default(double?), double? list = default(double?), int? minQuantity = default(int?), double? effectiveValue = default(double?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             PricelistId = pricelistId;
             Pricelist = pricelist;
             Currency = currency;
-            Product = product;
             ProductId = productId;
             Sale = sale;
             List = list;
@@ -6336,11 +6335,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "product")]
-        public CatalogProduct Product { get; set; }
 
         /// <summary>
         /// </summary>
@@ -6496,10 +6490,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the PricelistAssignment class.
         /// </summary>
-        public PricelistAssignment(string catalogId = default(string), Catalog catalog = default(Catalog), string pricelistId = default(string), Pricelist pricelist = default(Pricelist), string name = default(string), string description = default(string), int? priority = default(int?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string conditionExpression = default(string), string predicateVisualTreeSerialized = default(string), object condition = default(object), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public PricelistAssignment(string catalogId = default(string), string pricelistId = default(string), Pricelist pricelist = default(Pricelist), string name = default(string), string description = default(string), int? priority = default(int?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string conditionExpression = default(string), string predicateVisualTreeSerialized = default(string), object condition = default(object), ConditionExpressionTree dynamicExpression = default(ConditionExpressionTree), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             CatalogId = catalogId;
-            Catalog = catalog;
             PricelistId = pricelistId;
             Pricelist = pricelist;
             Name = name;
@@ -6510,6 +6503,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             ConditionExpression = conditionExpression;
             PredicateVisualTreeSerialized = predicateVisualTreeSerialized;
             Condition = condition;
+            DynamicExpression = dynamicExpression;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
@@ -6521,11 +6515,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
         public string CatalogId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
-        public Catalog Catalog { get; set; }
 
         /// <summary>
         /// </summary>
@@ -6579,6 +6568,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicExpression")]
+        public ConditionExpressionTree DynamicExpression { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
         public System.DateTime? CreatedDate { get; set; }
 
@@ -6601,6 +6595,90 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class ConditionExpressionTree
+    {
+        /// <summary>
+        /// Initializes a new instance of the ConditionExpressionTree class.
+        /// </summary>
+        public ConditionExpressionTree() { }
+
+        /// <summary>
+        /// Initializes a new instance of the ConditionExpressionTree class.
+        /// </summary>
+        public ConditionExpressionTree(string id = default(string), System.Collections.Generic.IList<DynamicExpression> availableChildren = default(System.Collections.Generic.IList<DynamicExpression>), System.Collections.Generic.IList<DynamicExpression> children = default(System.Collections.Generic.IList<DynamicExpression>))
+        {
+            Id = id;
+            AvailableChildren = availableChildren;
+            Children = children;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "availableChildren")]
+        public System.Collections.Generic.IList<DynamicExpression> AvailableChildren { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "children")]
+        public System.Collections.Generic.IList<DynamicExpression> Children { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class DynamicExpression
+    {
+        /// <summary>
+        /// Initializes a new instance of the DynamicExpression class.
+        /// </summary>
+        public DynamicExpression() { }
+
+        /// <summary>
+        /// Initializes a new instance of the DynamicExpression class.
+        /// </summary>
+        public DynamicExpression(string id = default(string), System.Collections.Generic.IList<DynamicExpression> availableChildren = default(System.Collections.Generic.IList<DynamicExpression>), System.Collections.Generic.IList<DynamicExpression> children = default(System.Collections.Generic.IList<DynamicExpression>))
+        {
+            Id = id;
+            AvailableChildren = availableChildren;
+            Children = children;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "availableChildren")]
+        public System.Collections.Generic.IList<DynamicExpression> AvailableChildren { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "children")]
+        public System.Collections.Generic.IList<DynamicExpression> Children { get; set; }
 
     }
 }
