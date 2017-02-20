@@ -142,10 +142,9 @@
                 </button>
                 {% endif%}
                 {% if settings.product_compare_enabled %}
-                    <button class="btn" type="button" ng-click="addProductToCompareList('{{ product.id }}')" ng-controller="productCompareListController">
+                    <button class="btn" type="button" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
                         <span class="fa fa-bar-chart"></span>
-                        <span ng-if="!isInProductCompareList('{{ product.id }}')">{{ 'products.compare_list.add_to_compare' | t }}</span>
-                        <span ng-if="isInProductCompareList('{{ product.id }}')">{{ 'products.compare_list.remove_from_compare' | t }}</span>
+                        <span>{{ 'products.compare_list.add_to_compare' | t }}</span>
                     </button>
                 {% endif %}
                 <span id="variantQuantity" class="variant-quantity"></span>
