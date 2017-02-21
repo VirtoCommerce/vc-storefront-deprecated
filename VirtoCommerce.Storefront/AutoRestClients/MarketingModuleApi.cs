@@ -30,11 +30,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         public Microsoft.Rest.ServiceClientCredentials Credentials { get; private set; }
 
         /// <summary>
-        /// Gets the IMarketingModule.
-        /// </summary>
-        public virtual IMarketingModule MarketingModule { get; private set; }
-
-        /// <summary>
         /// Gets the IMarketingModuleDynamicContent.
         /// </summary>
         public virtual IMarketingModuleDynamicContent MarketingModuleDynamicContent { get; private set; }
@@ -245,7 +240,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// </summary>
         private void Initialize()
         {
-            this.MarketingModule = new MarketingModule(this);
             this.MarketingModuleDynamicContent = new MarketingModuleDynamicContent(this);
             this.MarketingModulePromotion = new MarketingModulePromotion(this);
             this.BaseUri = new System.Uri("http://localhost/admin");
@@ -313,11 +307,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
 
 
         /// <summary>
-        /// Gets the IMarketingModule.
-        /// </summary>
-        IMarketingModule MarketingModule { get; }
-
-        /// <summary>
         /// Gets the IMarketingModuleDynamicContent.
         /// </summary>
         IMarketingModuleDynamicContent MarketingModuleDynamicContent { get; }
@@ -339,12 +328,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     using Models;
 
     /// <summary>
-    /// MarketingModule operations.
+    /// MarketingModuleDynamicContent operations.
     /// </summary>
-    public partial class MarketingModule : Microsoft.Rest.IServiceOperations<MarketingModuleApiClient>, IMarketingModule
+    public partial class MarketingModuleDynamicContent : Microsoft.Rest.IServiceOperations<MarketingModuleApiClient>, IMarketingModuleDynamicContent
     {
         /// <summary>
-        /// Initializes a new instance of the MarketingModule class.
+        /// Initializes a new instance of the MarketingModuleDynamicContent class.
         /// </summary>
         /// <param name='client'>
         /// Reference to the service client.
@@ -352,7 +341,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public MarketingModule(MarketingModuleApiClient client)
+        public MarketingModuleDynamicContent(MarketingModuleApiClient client)
         {
             if (client == null) 
             {
@@ -367,12 +356,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         public MarketingModuleApiClient Client { get; private set; }
 
         /// <summary>
-        /// Search marketing objects by given criteria
+        /// Search content places list entries by given criteria
         /// </summary>
-        /// <remarks>
-        /// Allow to find all marketing module objects (Promotions, Dynamic content
-        /// objects)
-        /// </remarks>
         /// <param name='criteria'>
         /// criteria
         /// </param>
@@ -394,7 +379,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<MarketingSearchResult>> SearchWithHttpMessagesAsync(MarketingSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentListEntry>> DynamicContentPlaceListEntriesSearchWithHttpMessagesAsync(DynamicContentPlaceSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (criteria == null)
             {
@@ -409,11 +394,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
                 tracingParameters.Add("criteria", criteria);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "Search", tracingParameters);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "DynamicContentPlaceListEntriesSearch", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/marketing/search").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/marketing/contentplaces/listentries/search").ToString();
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -485,7 +470,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<MarketingSearchResult>();
+            var _result = new Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentListEntry>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
@@ -494,7 +479,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<MarketingSearchResult>(_responseContent, this.Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<GenericSearchResultDynamicContentListEntry>(_responseContent, this.Client.DeserializationSettings);
                 }
                 catch (Newtonsoft.Json.JsonException ex)
                 {
@@ -513,91 +498,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
             return _result;
         }
 
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
-{
-    using System.Threading.Tasks;
-   using Models;
-
-    /// <summary>
-    /// Extension methods for MarketingModule.
-    /// </summary>
-    public static partial class MarketingModuleExtensions
-    {
-            /// <summary>
-            /// Search marketing objects by given criteria
-            /// </summary>
-            /// <remarks>
-            /// Allow to find all marketing module objects (Promotions, Dynamic content
-            /// objects)
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='criteria'>
-            /// criteria
-            /// </param>
-            public static MarketingSearchResult Search(this IMarketingModule operations, MarketingSearchCriteria criteria)
-            {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-            }
-
-            /// <summary>
-            /// Search marketing objects by given criteria
-            /// </summary>
-            /// <remarks>
-            /// Allow to find all marketing module objects (Promotions, Dynamic content
-            /// objects)
-            /// </remarks>
-            /// <param name='operations'>
-            /// The operations group for this extension method.
-            /// </param>
-            /// <param name='criteria'>
-            /// criteria
-            /// </param>
-            /// <param name='cancellationToken'>
-            /// The cancellation token.
-            /// </param>
-            public static async System.Threading.Tasks.Task<MarketingSearchResult> SearchAsync(this IMarketingModule operations, MarketingSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-            {
-                using (var _result = await operations.SearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
-            }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
-{
-    using Models;
-
-    /// <summary>
-    /// MarketingModule operations.
-    /// </summary>
-    public partial interface IMarketingModule
-    {
         /// <summary>
-        /// Search marketing objects by given criteria
+        /// Search dynamic content places by given criteria
         /// </summary>
-        /// <remarks>
-        /// Allow to find all marketing module objects (Promotions, Dynamic
-        /// content objects)
-        /// </remarks>
         /// <param name='criteria'>
         /// criteria
         /// </param>
         /// <param name='customHeaders'>
-        /// The headers that will be added to request.
+        /// Headers that will be added to request.
         /// </param>
         /// <param name='cancellationToken'>
         /// The cancellation token.
@@ -611,45 +519,556 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<MarketingSearchResult>> SearchWithHttpMessagesAsync(MarketingSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
-{
-    using Microsoft.Rest;
-    using Models;
-
-    /// <summary>
-    /// MarketingModuleDynamicContent operations.
-    /// </summary>
-    public partial class MarketingModuleDynamicContent : Microsoft.Rest.IServiceOperations<MarketingModuleApiClient>, IMarketingModuleDynamicContent
-    {
-        /// <summary>
-        /// Initializes a new instance of the MarketingModuleDynamicContent class.
-        /// </summary>
-        /// <param name='client'>
-        /// Reference to the service client.
-        /// </param>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        public MarketingModuleDynamicContent(MarketingModuleApiClient client)
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentPlace>> DynamicContentPlacesSearchWithHttpMessagesAsync(DynamicContentPlaceSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (client == null) 
+            if (criteria == null)
             {
-                throw new System.ArgumentNullException("client");
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
             }
-            this.Client = client;
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("criteria", criteria);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "DynamicContentPlacesSearch", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/marketing/contentplaces/search").ToString();
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(criteria != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(criteria, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if (!_httpResponse.IsSuccessStatusCode)
+            {
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentPlace>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<GenericSearchResultDynamicContentPlace>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
         }
 
         /// <summary>
-        /// Gets a reference to the MarketingModuleApiClient
+        /// Search content places list entries by given criteria
         /// </summary>
-        public MarketingModuleApiClient Client { get; private set; }
+        /// <param name='criteria'>
+        /// criteria
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentListEntry>> DynamicContentItemsEntriesSearchWithHttpMessagesAsync(DynamicContentItemSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (criteria == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("criteria", criteria);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "DynamicContentItemsEntriesSearch", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/marketing/contentitems/listentries/search").ToString();
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(criteria != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(criteria, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if (!_httpResponse.IsSuccessStatusCode)
+            {
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentListEntry>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<GenericSearchResultDynamicContentListEntry>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// Search dynamic content items by given criteria
+        /// </summary>
+        /// <param name='criteria'>
+        /// criteria
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentItem>> DynamicContentItemsSearchWithHttpMessagesAsync(DynamicContentItemSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (criteria == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("criteria", criteria);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "DynamicContentItemsSearch", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/marketing/contentitems/search").ToString();
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(criteria != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(criteria, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if (!_httpResponse.IsSuccessStatusCode)
+            {
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentItem>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<GenericSearchResultDynamicContentItem>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// Search dynamic content items by given criteria
+        /// </summary>
+        /// <param name='criteria'>
+        /// criteria
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentPublication>> DynamicContentPublicationsSearchWithHttpMessagesAsync(DynamicContentPublicationSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (criteria == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("criteria", criteria);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "DynamicContentPublicationsSearch", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/marketing/contentpublications/search").ToString();
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(criteria != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(criteria, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if (!_httpResponse.IsSuccessStatusCode)
+            {
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentPublication>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<GenericSearchResultDynamicContentPublication>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
 
         /// <summary>
         /// Get dynamic content for given placeholders
@@ -3105,6 +3524,176 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     public static partial class MarketingModuleDynamicContentExtensions
     {
             /// <summary>
+            /// Search content places list entries by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            public static GenericSearchResultDynamicContentListEntry DynamicContentPlaceListEntriesSearch(this IMarketingModuleDynamicContent operations, DynamicContentPlaceSearchCriteria criteria)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).DynamicContentPlaceListEntriesSearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Search content places list entries by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<GenericSearchResultDynamicContentListEntry> DynamicContentPlaceListEntriesSearchAsync(this IMarketingModuleDynamicContent operations, DynamicContentPlaceSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.DynamicContentPlaceListEntriesSearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Search dynamic content places by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            public static GenericSearchResultDynamicContentPlace DynamicContentPlacesSearch(this IMarketingModuleDynamicContent operations, DynamicContentPlaceSearchCriteria criteria)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).DynamicContentPlacesSearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Search dynamic content places by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<GenericSearchResultDynamicContentPlace> DynamicContentPlacesSearchAsync(this IMarketingModuleDynamicContent operations, DynamicContentPlaceSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.DynamicContentPlacesSearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Search content places list entries by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            public static GenericSearchResultDynamicContentListEntry DynamicContentItemsEntriesSearch(this IMarketingModuleDynamicContent operations, DynamicContentItemSearchCriteria criteria)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).DynamicContentItemsEntriesSearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Search content places list entries by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<GenericSearchResultDynamicContentListEntry> DynamicContentItemsEntriesSearchAsync(this IMarketingModuleDynamicContent operations, DynamicContentItemSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.DynamicContentItemsEntriesSearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Search dynamic content items by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            public static GenericSearchResultDynamicContentItem DynamicContentItemsSearch(this IMarketingModuleDynamicContent operations, DynamicContentItemSearchCriteria criteria)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).DynamicContentItemsSearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Search dynamic content items by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<GenericSearchResultDynamicContentItem> DynamicContentItemsSearchAsync(this IMarketingModuleDynamicContent operations, DynamicContentItemSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.DynamicContentItemsSearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Search dynamic content items by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            public static GenericSearchResultDynamicContentPublication DynamicContentPublicationsSearch(this IMarketingModuleDynamicContent operations, DynamicContentPublicationSearchCriteria criteria)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModuleDynamicContent)s).DynamicContentPublicationsSearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Search dynamic content items by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<GenericSearchResultDynamicContentPublication> DynamicContentPublicationsSearchAsync(this IMarketingModuleDynamicContent operations, DynamicContentPublicationSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.DynamicContentPublicationsSearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
             /// Get dynamic content for given placeholders
             /// </summary>
             /// <param name='operations'>
@@ -3734,6 +4323,116 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     public partial interface IMarketingModuleDynamicContent
     {
         /// <summary>
+        /// Search content places list entries by given criteria
+        /// </summary>
+        /// <param name='criteria'>
+        /// criteria
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentListEntry>> DynamicContentPlaceListEntriesSearchWithHttpMessagesAsync(DynamicContentPlaceSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Search dynamic content places by given criteria
+        /// </summary>
+        /// <param name='criteria'>
+        /// criteria
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentPlace>> DynamicContentPlacesSearchWithHttpMessagesAsync(DynamicContentPlaceSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Search content places list entries by given criteria
+        /// </summary>
+        /// <param name='criteria'>
+        /// criteria
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentListEntry>> DynamicContentItemsEntriesSearchWithHttpMessagesAsync(DynamicContentItemSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Search dynamic content items by given criteria
+        /// </summary>
+        /// <param name='criteria'>
+        /// criteria
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentItem>> DynamicContentItemsSearchWithHttpMessagesAsync(DynamicContentItemSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Search dynamic content items by given criteria
+        /// </summary>
+        /// <param name='criteria'>
+        /// criteria
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultDynamicContentPublication>> DynamicContentPublicationsSearchWithHttpMessagesAsync(DynamicContentPublicationSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
         /// Get dynamic content for given placeholders
         /// </summary>
         /// <param name='evalContext'>
@@ -4155,6 +4854,149 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
         /// Gets a reference to the MarketingModuleApiClient
         /// </summary>
         public MarketingModuleApiClient Client { get; private set; }
+
+        /// <summary>
+        /// Search dynamic content places by given criteria
+        /// </summary>
+        /// <param name='criteria'>
+        /// criteria
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultPromotion>> PromotionsSearchWithHttpMessagesAsync(PromotionSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (criteria == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("criteria", criteria);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "PromotionsSearch", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/marketing/promotions/search").ToString();
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(criteria != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(criteria, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if (!_httpResponse.IsSuccessStatusCode)
+            {
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<GenericSearchResultPromotion>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<GenericSearchResultPromotion>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
 
         /// <summary>
         /// Evaluate promotions
@@ -4988,6 +5830,40 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     public static partial class MarketingModulePromotionExtensions
     {
             /// <summary>
+            /// Search dynamic content places by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            public static GenericSearchResultPromotion PromotionsSearch(this IMarketingModulePromotion operations, PromotionSearchCriteria criteria)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IMarketingModulePromotion)s).PromotionsSearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Search dynamic content places by given criteria
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='criteria'>
+            /// criteria
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<GenericSearchResultPromotion> PromotionsSearchAsync(this IMarketingModulePromotion operations, PromotionSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.PromotionsSearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
             /// Evaluate promotions
             /// </summary>
             /// <param name='operations'>
@@ -5211,6 +6087,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi
     public partial interface IMarketingModulePromotion
     {
         /// <summary>
+        /// Search dynamic content places by given criteria
+        /// </summary>
+        /// <param name='criteria'>
+        /// criteria
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultPromotion>> PromotionsSearchWithHttpMessagesAsync(PromotionSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
         /// Evaluate promotions
         /// </summary>
         /// <param name='context'>
@@ -5349,26 +6247,29 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
-    public partial class MarketingSearchCriteria
+    public partial class DynamicContentPlaceSearchCriteria
     {
         /// <summary>
-        /// Initializes a new instance of the MarketingSearchCriteria class.
+        /// Initializes a new instance of the
+        /// DynamicContentPlaceSearchCriteria class.
         /// </summary>
-        public MarketingSearchCriteria() { }
+        public DynamicContentPlaceSearchCriteria() { }
 
         /// <summary>
-        /// Initializes a new instance of the MarketingSearchCriteria class.
+        /// Initializes a new instance of the
+        /// DynamicContentPlaceSearchCriteria class.
         /// </summary>
-        /// <param name="responseGroup">Possible values include:
-        /// 'WithPromotions', 'WithContentItems', 'WithContentPlaces',
-        /// 'WithContentPublications', 'WithFolders', 'Full'</param>
-        public MarketingSearchCriteria(string folderId = default(string), string responseGroup = default(string), string keyword = default(string), int? start = default(int?), int? count = default(int?))
+        public DynamicContentPlaceSearchCriteria(string folderId = default(string), string keyword = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
             FolderId = folderId;
-            ResponseGroup = responseGroup;
             Keyword = keyword;
-            Start = start;
-            Count = count;
+            ResponseGroup = responseGroup;
+            ObjectType = objectType;
+            ObjectTypes = objectTypes;
+            Sort = sort;
+            SortInfos = sortInfos;
+            Skip = skip;
+            Take = take;
         }
 
         /// <summary>
@@ -5377,27 +6278,44 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public string FolderId { get; set; }
 
         /// <summary>
-        /// Gets or sets possible values include: 'WithPromotions',
-        /// 'WithContentItems', 'WithContentPlaces',
-        /// 'WithContentPublications', 'WithFolders', 'Full'
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
-        public string ResponseGroup { get; set; }
-
-        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "keyword")]
         public string Keyword { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "start")]
-        public int? Start { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "count")]
-        public int? Count { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
+        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sort")]
+        public string Sort { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortInfos")]
+        public System.Collections.Generic.IList<SortInfo> SortInfos { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "skip")]
+        public int? Skip { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "take")]
+        public int? Take { get; set; }
 
     }
 }
@@ -5409,24 +6327,61 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
-    public partial class MarketingSearchResult
+    public partial class SortInfo
     {
         /// <summary>
-        /// Initializes a new instance of the MarketingSearchResult class.
+        /// Initializes a new instance of the SortInfo class.
         /// </summary>
-        public MarketingSearchResult() { }
+        public SortInfo() { }
 
         /// <summary>
-        /// Initializes a new instance of the MarketingSearchResult class.
+        /// Initializes a new instance of the SortInfo class.
         /// </summary>
-        public MarketingSearchResult(int? totalCount = default(int?), System.Collections.Generic.IList<Promotion> promotions = default(System.Collections.Generic.IList<Promotion>), System.Collections.Generic.IList<DynamicContentPlace> contentPlaces = default(System.Collections.Generic.IList<DynamicContentPlace>), System.Collections.Generic.IList<DynamicContentItem> contentItems = default(System.Collections.Generic.IList<DynamicContentItem>), System.Collections.Generic.IList<DynamicContentPublication> contentPublications = default(System.Collections.Generic.IList<DynamicContentPublication>), System.Collections.Generic.IList<DynamicContentFolder> contentFolders = default(System.Collections.Generic.IList<DynamicContentFolder>))
+        /// <param name="sortDirection">Possible values include: 'Ascending',
+        /// 'Descending'</param>
+        public SortInfo(string sortColumn = default(string), string sortDirection = default(string))
+        {
+            SortColumn = sortColumn;
+            SortDirection = sortDirection;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortColumn")]
+        public string SortColumn { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'Ascending', 'Descending'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortDirection")]
+        public string SortDirection { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class GenericSearchResultDynamicContentListEntry
+    {
+        /// <summary>
+        /// Initializes a new instance of the
+        /// GenericSearchResultDynamicContentListEntry class.
+        /// </summary>
+        public GenericSearchResultDynamicContentListEntry() { }
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// GenericSearchResultDynamicContentListEntry class.
+        /// </summary>
+        public GenericSearchResultDynamicContentListEntry(int? totalCount = default(int?), System.Collections.Generic.IList<DynamicContentListEntry> results = default(System.Collections.Generic.IList<DynamicContentListEntry>))
         {
             TotalCount = totalCount;
-            Promotions = promotions;
-            ContentPlaces = contentPlaces;
-            ContentItems = contentItems;
-            ContentPublications = contentPublications;
-            ContentFolders = contentFolders;
+            Results = results;
         }
 
         /// <summary>
@@ -5436,28 +6391,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "promotions")]
-        public System.Collections.Generic.IList<Promotion> Promotions { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "contentPlaces")]
-        public System.Collections.Generic.IList<DynamicContentPlace> ContentPlaces { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "contentItems")]
-        public System.Collections.Generic.IList<DynamicContentItem> ContentItems { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "contentPublications")]
-        public System.Collections.Generic.IList<DynamicContentPublication> ContentPublications { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "contentFolders")]
-        public System.Collections.Generic.IList<DynamicContentFolder> ContentFolders { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "results")]
+        public System.Collections.Generic.IList<DynamicContentListEntry> Results { get; set; }
 
     }
 }
@@ -5469,51 +6404,26 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent marketing promotion, define applicable rules and rewards
-    /// amount in marketing system
-    /// </summary>
-    public partial class Promotion
+    public partial class DynamicContentListEntry
     {
         /// <summary>
-        /// Initializes a new instance of the Promotion class.
+        /// Initializes a new instance of the DynamicContentListEntry class.
         /// </summary>
-        public Promotion() { }
+        public DynamicContentListEntry() { }
 
         /// <summary>
-        /// Initializes a new instance of the Promotion class.
+        /// Initializes a new instance of the DynamicContentListEntry class.
         /// </summary>
-        /// <param name="type">It contains the name of realizing this type
-        /// promotion.
-        /// DynamicPromotion is build in implementation allow to
-        /// construct promotion with dynamic conditions and rewards.
-        /// For complex custom scenarios user may define personal
-        /// 'hard-coded' promotion types</param>
-        /// <param name="store">Store id that is covered by this
-        /// promotion</param>
-        /// <param name="catalog">Catalog id that is covered by this
-        /// promotion</param>
-        /// <param name="maxUsageCount">Maximum promotion usage count</param>
-        /// <param name="coupons">List of coupons codes which may be used for
-        /// activate that promotion</param>
-        /// <param name="priority">Used for choosing in combination</param>
-        /// <param name="dynamicExpression">Dynamic conditions tree determine
-        /// the applicability of this promotion and reward definition</param>
-        public Promotion(string type = default(string), string name = default(string), string store = default(string), string catalog = default(string), string description = default(string), bool? isActive = default(bool?), int? maxUsageCount = default(int?), int? maxPersonalUsageCount = default(int?), System.Collections.Generic.IList<string> coupons = default(System.Collections.Generic.IList<string>), int? priority = default(int?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), PromoDynamicExpressionTree dynamicExpression = default(PromoDynamicExpressionTree), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        /// <param name="objectType">Gets or sets the type. E.g. "folder",
+        /// "content-item", "content-place"</param>
+        /// <param name="imageUrl">Gets or sets the image URL.</param>
+        /// <param name="name">Gets or sets the name.</param>
+        public DynamicContentListEntry(string objectType = default(string), string imageUrl = default(string), string name = default(string), string description = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
-            Type = type;
+            ObjectType = objectType;
+            ImageUrl = imageUrl;
             Name = name;
-            Store = store;
-            Catalog = catalog;
             Description = description;
-            IsActive = isActive;
-            MaxUsageCount = maxUsageCount;
-            MaxPersonalUsageCount = maxPersonalUsageCount;
-            Coupons = coupons;
-            Priority = priority;
-            StartDate = startDate;
-            EndDate = endDate;
-            DynamicExpression = dynamicExpression;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
@@ -5522,83 +6432,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         }
 
         /// <summary>
-        /// Gets or sets it contains the name of realizing this type
-        /// promotion.
-        /// DynamicPromotion is build in implementation allow to
-        /// construct promotion with dynamic conditions and rewards.
-        /// For complex custom scenarios user may define personal
-        /// 'hard-coded' promotion types
+        /// Gets or sets the type. E.g. "folder", "content-item",
+        /// "content-place"
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
 
         /// <summary>
+        /// Gets or sets the image URL.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
+        public string ImageUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets store id that is covered by this promotion
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "store")]
-        public string Store { get; set; }
-
-        /// <summary>
-        /// Gets or sets catalog id that is covered by this promotion
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
-        public string Catalog { get; set; }
-
-        /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
-        public bool? IsActive { get; set; }
-
-        /// <summary>
-        /// Gets or sets maximum promotion usage count
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "maxUsageCount")]
-        public int? MaxUsageCount { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "maxPersonalUsageCount")]
-        public int? MaxPersonalUsageCount { get; set; }
-
-        /// <summary>
-        /// Gets or sets list of coupons codes which may be used for activate
-        /// that promotion
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "coupons")]
-        public System.Collections.Generic.IList<string> Coupons { get; set; }
-
-        /// <summary>
-        /// Gets or sets used for choosing in combination
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
-        public int? Priority { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "startDate")]
-        public System.DateTime? StartDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "endDate")]
-        public System.DateTime? EndDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets dynamic conditions tree determine the applicability
-        /// of this promotion and reward definition
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicExpression")]
-        public PromoDynamicExpressionTree DynamicExpression { get; set; }
 
         /// <summary>
         /// </summary>
@@ -5635,79 +6490,33 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
-    public partial class PromoDynamicExpressionTree
+    public partial class GenericSearchResultDynamicContentPlace
     {
         /// <summary>
-        /// Initializes a new instance of the PromoDynamicExpressionTree class.
+        /// Initializes a new instance of the
+        /// GenericSearchResultDynamicContentPlace class.
         /// </summary>
-        public PromoDynamicExpressionTree() { }
+        public GenericSearchResultDynamicContentPlace() { }
 
         /// <summary>
-        /// Initializes a new instance of the PromoDynamicExpressionTree class.
+        /// Initializes a new instance of the
+        /// GenericSearchResultDynamicContentPlace class.
         /// </summary>
-        public PromoDynamicExpressionTree(string id = default(string), System.Collections.Generic.IList<DynamicExpression> availableChildren = default(System.Collections.Generic.IList<DynamicExpression>), System.Collections.Generic.IList<DynamicExpression> children = default(System.Collections.Generic.IList<DynamicExpression>))
+        public GenericSearchResultDynamicContentPlace(int? totalCount = default(int?), System.Collections.Generic.IList<DynamicContentPlace> results = default(System.Collections.Generic.IList<DynamicContentPlace>))
         {
-            Id = id;
-            AvailableChildren = availableChildren;
-            Children = children;
+            TotalCount = totalCount;
+            Results = results;
         }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
+        public int? TotalCount { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "availableChildren")]
-        public System.Collections.Generic.IList<DynamicExpression> AvailableChildren { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "children")]
-        public System.Collections.Generic.IList<DynamicExpression> Children { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class DynamicExpression
-    {
-        /// <summary>
-        /// Initializes a new instance of the DynamicExpression class.
-        /// </summary>
-        public DynamicExpression() { }
-
-        /// <summary>
-        /// Initializes a new instance of the DynamicExpression class.
-        /// </summary>
-        public DynamicExpression(string id = default(string), System.Collections.Generic.IList<DynamicExpression> availableChildren = default(System.Collections.Generic.IList<DynamicExpression>), System.Collections.Generic.IList<DynamicExpression> children = default(System.Collections.Generic.IList<DynamicExpression>))
-        {
-            Id = id;
-            AvailableChildren = availableChildren;
-            Children = children;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "availableChildren")]
-        public System.Collections.Generic.IList<DynamicExpression> AvailableChildren { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "children")]
-        public System.Collections.Generic.IList<DynamicExpression> Children { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "results")]
+        public System.Collections.Generic.IList<DynamicContentPlace> Results { get; set; }
 
     }
 }
@@ -5736,30 +6545,25 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// (1;21;344)</param>
         /// <param name="path">all parent folders names concatenated
         /// (Root\Child\Child2)</param>
-        public DynamicContentPlace(string name = default(string), string description = default(string), string folderId = default(string), string outline = default(string), string path = default(string), string imageUrl = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        /// <param name="objectType">Gets or sets the type. E.g. "folder",
+        /// "content-item", "content-place"</param>
+        /// <param name="imageUrl">Gets or sets the image URL.</param>
+        /// <param name="name">Gets or sets the name.</param>
+        public DynamicContentPlace(string folderId = default(string), string outline = default(string), string path = default(string), string objectType = default(string), string imageUrl = default(string), string name = default(string), string description = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
-            Name = name;
-            Description = description;
             FolderId = folderId;
             Outline = outline;
             Path = path;
+            ObjectType = objectType;
             ImageUrl = imageUrl;
+            Name = name;
+            Description = description;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
             ModifiedBy = modifiedBy;
             Id = id;
         }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
 
         /// <summary>
         /// </summary>
@@ -5780,9 +6584,28 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         public string Path { get; set; }
 
         /// <summary>
+        /// Gets or sets the type. E.g. "folder", "content-item",
+        /// "content-place"
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the image URL.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
         public string ImageUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// </summary>
@@ -5819,6 +6642,124 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
+    public partial class DynamicContentItemSearchCriteria
+    {
+        /// <summary>
+        /// Initializes a new instance of the DynamicContentItemSearchCriteria
+        /// class.
+        /// </summary>
+        public DynamicContentItemSearchCriteria() { }
+
+        /// <summary>
+        /// Initializes a new instance of the DynamicContentItemSearchCriteria
+        /// class.
+        /// </summary>
+        public DynamicContentItemSearchCriteria(string folderId = default(string), string keyword = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        {
+            FolderId = folderId;
+            Keyword = keyword;
+            ResponseGroup = responseGroup;
+            ObjectType = objectType;
+            ObjectTypes = objectTypes;
+            Sort = sort;
+            SortInfos = sortInfos;
+            Skip = skip;
+            Take = take;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "folderId")]
+        public string FolderId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "keyword")]
+        public string Keyword { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
+        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sort")]
+        public string Sort { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortInfos")]
+        public System.Collections.Generic.IList<SortInfo> SortInfos { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "skip")]
+        public int? Skip { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "take")]
+        public int? Take { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class GenericSearchResultDynamicContentItem
+    {
+        /// <summary>
+        /// Initializes a new instance of the
+        /// GenericSearchResultDynamicContentItem class.
+        /// </summary>
+        public GenericSearchResultDynamicContentItem() { }
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// GenericSearchResultDynamicContentItem class.
+        /// </summary>
+        public GenericSearchResultDynamicContentItem(int? totalCount = default(int?), System.Collections.Generic.IList<DynamicContentItem> results = default(System.Collections.Generic.IList<DynamicContentItem>))
+        {
+            TotalCount = totalCount;
+            Results = results;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
+        public int? TotalCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "results")]
+        public System.Collections.Generic.IList<DynamicContentItem> Results { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
+{
+    using System.Linq;
+
     /// <summary>
     /// Represent content entry for presentation (Images, Html, Banner etc)
     /// </summary>
@@ -5836,32 +6777,27 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// (1;21;344)</param>
         /// <param name="path">all parent folders names concatenated
         /// (Root\Child\Child2)</param>
-        public DynamicContentItem(string name = default(string), string description = default(string), string contentType = default(string), string folderId = default(string), string outline = default(string), string path = default(string), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        /// <param name="objectType">Gets or sets the type. E.g. "folder",
+        /// "content-item", "content-place"</param>
+        /// <param name="imageUrl">Gets or sets the image URL.</param>
+        /// <param name="name">Gets or sets the name.</param>
+        public DynamicContentItem(string contentType = default(string), string folderId = default(string), string outline = default(string), string path = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), string objectType = default(string), string imageUrl = default(string), string name = default(string), string description = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
-            Name = name;
-            Description = description;
             ContentType = contentType;
             FolderId = folderId;
             Outline = outline;
             Path = path;
-            ObjectType = objectType;
             DynamicProperties = dynamicProperties;
+            ObjectType = objectType;
+            ImageUrl = imageUrl;
+            Name = name;
+            Description = description;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
             ModifiedBy = modifiedBy;
             Id = id;
         }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
 
         /// <summary>
         /// </summary>
@@ -5888,13 +6824,32 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
+        public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type. E.g. "folder", "content-item",
+        /// "content-place"
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
         public string ObjectType { get; set; }
 
         /// <summary>
+        /// Gets or sets the image URL.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicProperties")]
-        public System.Collections.Generic.IList<DynamicObjectProperty> DynamicProperties { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
+        public string ImageUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// </summary>
@@ -6128,6 +7083,136 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
+    public partial class DynamicContentPublicationSearchCriteria
+    {
+        /// <summary>
+        /// Initializes a new instance of the
+        /// DynamicContentPublicationSearchCriteria class.
+        /// </summary>
+        public DynamicContentPublicationSearchCriteria() { }
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// DynamicContentPublicationSearchCriteria class.
+        /// </summary>
+        public DynamicContentPublicationSearchCriteria(bool? onlyActive = default(bool?), string store = default(string), string folderId = default(string), string keyword = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        {
+            OnlyActive = onlyActive;
+            Store = store;
+            FolderId = folderId;
+            Keyword = keyword;
+            ResponseGroup = responseGroup;
+            ObjectType = objectType;
+            ObjectTypes = objectTypes;
+            Sort = sort;
+            SortInfos = sortInfos;
+            Skip = skip;
+            Take = take;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "onlyActive")]
+        public bool? OnlyActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "store")]
+        public string Store { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "folderId")]
+        public string FolderId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "keyword")]
+        public string Keyword { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
+        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sort")]
+        public string Sort { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortInfos")]
+        public System.Collections.Generic.IList<SortInfo> SortInfos { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "skip")]
+        public int? Skip { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "take")]
+        public int? Take { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class GenericSearchResultDynamicContentPublication
+    {
+        /// <summary>
+        /// Initializes a new instance of the
+        /// GenericSearchResultDynamicContentPublication class.
+        /// </summary>
+        public GenericSearchResultDynamicContentPublication() { }
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// GenericSearchResultDynamicContentPublication class.
+        /// </summary>
+        public GenericSearchResultDynamicContentPublication(int? totalCount = default(int?), System.Collections.Generic.IList<DynamicContentPublication> results = default(System.Collections.Generic.IList<DynamicContentPublication>))
+        {
+            TotalCount = totalCount;
+            Results = results;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
+        public int? TotalCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "results")]
+        public System.Collections.Generic.IList<DynamicContentPublication> Results { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
+{
+    using System.Linq;
+
     /// <summary>
     /// Represent dynamic content publication and link content and places
     /// together
@@ -6145,13 +7230,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// </summary>
         /// <param name="priority">Priority used for chose publication in
         /// combination</param>
+        /// <param name="isActive">Gets or sets a value indicating whether
+        /// this entry is active.</param>
         /// <param name="storeId">Store where the publication is active</param>
         /// <param name="dynamicExpression">Dynamic conditions tree determine
         /// the applicability of this publication</param>
-        public DynamicContentPublication(string name = default(string), string description = default(string), int? priority = default(int?), bool? isActive = default(bool?), string storeId = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), System.Collections.Generic.IList<DynamicContentItem> contentItems = default(System.Collections.Generic.IList<DynamicContentItem>), System.Collections.Generic.IList<DynamicContentPlace> contentPlaces = default(System.Collections.Generic.IList<DynamicContentPlace>), ConditionExpressionTree dynamicExpression = default(ConditionExpressionTree), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        /// <param name="objectType">Gets or sets the type. E.g. "folder",
+        /// "content-item", "content-place"</param>
+        /// <param name="imageUrl">Gets or sets the image URL.</param>
+        /// <param name="name">Gets or sets the name.</param>
+        public DynamicContentPublication(int? priority = default(int?), bool? isActive = default(bool?), string storeId = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), System.Collections.Generic.IList<DynamicContentItem> contentItems = default(System.Collections.Generic.IList<DynamicContentItem>), System.Collections.Generic.IList<DynamicContentPlace> contentPlaces = default(System.Collections.Generic.IList<DynamicContentPlace>), ConditionExpressionTree dynamicExpression = default(ConditionExpressionTree), string objectType = default(string), string imageUrl = default(string), string name = default(string), string description = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
-            Name = name;
-            Description = description;
             Priority = priority;
             IsActive = isActive;
             StoreId = storeId;
@@ -6160,6 +7249,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
             ContentItems = contentItems;
             ContentPlaces = contentPlaces;
             DynamicExpression = dynamicExpression;
+            ObjectType = objectType;
+            ImageUrl = imageUrl;
+            Name = name;
+            Description = description;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
             CreatedBy = createdBy;
@@ -6168,22 +7261,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         }
 
         /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
         /// Gets or sets priority used for chose publication in combination
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
         public int? Priority { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this entry is active.
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
         public bool? IsActive { get; set; }
@@ -6220,6 +7304,30 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicExpression")]
         public ConditionExpressionTree DynamicExpression { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type. E.g. "folder", "content-item",
+        /// "content-place"
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the image URL.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
+        public string ImageUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// </summary>
@@ -6298,96 +7406,37 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
 {
     using System.Linq;
 
-    /// <summary>
-    /// Represent folder contains dynamic content system entries, used for
-    /// hierarchy storing and easy management
-    /// </summary>
-    public partial class DynamicContentFolder
+    public partial class DynamicExpression
     {
         /// <summary>
-        /// Initializes a new instance of the DynamicContentFolder class.
+        /// Initializes a new instance of the DynamicExpression class.
         /// </summary>
-        public DynamicContentFolder() { }
+        public DynamicExpression() { }
 
         /// <summary>
-        /// Initializes a new instance of the DynamicContentFolder class.
+        /// Initializes a new instance of the DynamicExpression class.
         /// </summary>
-        /// <param name="outline">Folder all parent ids concatenated
-        /// (1;21;344)</param>
-        /// <param name="path">Represent folder path with folder names in
-        /// hierarchy (Root\Child\Child2)</param>
-        public DynamicContentFolder(string name = default(string), string description = default(string), string outline = default(string), string path = default(string), string parentFolderId = default(string), string imageUrl = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public DynamicExpression(string id = default(string), System.Collections.Generic.IList<DynamicExpression> availableChildren = default(System.Collections.Generic.IList<DynamicExpression>), System.Collections.Generic.IList<DynamicExpression> children = default(System.Collections.Generic.IList<DynamicExpression>))
         {
-            Name = name;
-            Description = description;
-            Outline = outline;
-            Path = path;
-            ParentFolderId = parentFolderId;
-            ImageUrl = imageUrl;
-            CreatedDate = createdDate;
-            ModifiedDate = modifiedDate;
-            CreatedBy = createdBy;
-            ModifiedBy = modifiedBy;
             Id = id;
+            AvailableChildren = availableChildren;
+            Children = children;
         }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets folder all parent ids concatenated (1;21;344)
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
-        public string Outline { get; set; }
-
-        /// <summary>
-        /// Gets or sets represent folder path with folder names in hierarchy
-        /// (Root\Child\Child2)
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "path")]
-        public string Path { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "parentFolderId")]
-        public string ParentFolderId { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
-        public string ImageUrl { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
-        public System.DateTime? CreatedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
-        public System.DateTime? ModifiedDate { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
-        public string CreatedBy { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
-        public string ModifiedBy { get; set; }
 
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "availableChildren")]
+        public System.Collections.Generic.IList<DynamicExpression> AvailableChildren { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "children")]
+        public System.Collections.Generic.IList<DynamicExpression> Children { get; set; }
 
     }
 }
@@ -6552,6 +7601,451 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "referredUrl")]
         public string ReferredUrl { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
+{
+    using System.Linq;
+
+    /// <summary>
+    /// Represent folder contains dynamic content system entries, used for
+    /// hierarchy storing and easy management
+    /// </summary>
+    public partial class DynamicContentFolder
+    {
+        /// <summary>
+        /// Initializes a new instance of the DynamicContentFolder class.
+        /// </summary>
+        public DynamicContentFolder() { }
+
+        /// <summary>
+        /// Initializes a new instance of the DynamicContentFolder class.
+        /// </summary>
+        /// <param name="outline">Folder all parent ids concatenated
+        /// (1;21;344)</param>
+        /// <param name="path">Represent folder path with folder names in
+        /// hierarchy (Root\Child\Child2)</param>
+        /// <param name="objectType">Gets or sets the type. E.g. "folder",
+        /// "content-item", "content-place"</param>
+        /// <param name="imageUrl">Gets or sets the image URL.</param>
+        /// <param name="name">Gets or sets the name.</param>
+        public DynamicContentFolder(string outline = default(string), string path = default(string), string parentFolderId = default(string), string objectType = default(string), string imageUrl = default(string), string name = default(string), string description = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Outline = outline;
+            Path = path;
+            ParentFolderId = parentFolderId;
+            ObjectType = objectType;
+            ImageUrl = imageUrl;
+            Name = name;
+            Description = description;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// Gets or sets folder all parent ids concatenated (1;21;344)
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
+        public string Outline { get; set; }
+
+        /// <summary>
+        /// Gets or sets represent folder path with folder names in hierarchy
+        /// (Root\Child\Child2)
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "path")]
+        public string Path { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "parentFolderId")]
+        public string ParentFolderId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type. E.g. "folder", "content-item",
+        /// "content-place"
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the image URL.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "imageUrl")]
+        public string ImageUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PromotionSearchCriteria
+    {
+        /// <summary>
+        /// Initializes a new instance of the PromotionSearchCriteria class.
+        /// </summary>
+        public PromotionSearchCriteria() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PromotionSearchCriteria class.
+        /// </summary>
+        public PromotionSearchCriteria(string keyword = default(string), bool? onlyActive = default(bool?), string store = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        {
+            Keyword = keyword;
+            OnlyActive = onlyActive;
+            Store = store;
+            ResponseGroup = responseGroup;
+            ObjectType = objectType;
+            ObjectTypes = objectTypes;
+            Sort = sort;
+            SortInfos = sortInfos;
+            Skip = skip;
+            Take = take;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "keyword")]
+        public string Keyword { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "onlyActive")]
+        public bool? OnlyActive { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "store")]
+        public string Store { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
+        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sort")]
+        public string Sort { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortInfos")]
+        public System.Collections.Generic.IList<SortInfo> SortInfos { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "skip")]
+        public int? Skip { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "take")]
+        public int? Take { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class GenericSearchResultPromotion
+    {
+        /// <summary>
+        /// Initializes a new instance of the GenericSearchResultPromotion
+        /// class.
+        /// </summary>
+        public GenericSearchResultPromotion() { }
+
+        /// <summary>
+        /// Initializes a new instance of the GenericSearchResultPromotion
+        /// class.
+        /// </summary>
+        public GenericSearchResultPromotion(int? totalCount = default(int?), System.Collections.Generic.IList<Promotion> results = default(System.Collections.Generic.IList<Promotion>))
+        {
+            TotalCount = totalCount;
+            Results = results;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
+        public int? TotalCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "results")]
+        public System.Collections.Generic.IList<Promotion> Results { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
+{
+    using System.Linq;
+
+    /// <summary>
+    /// Represent marketing promotion, define applicable rules and rewards
+    /// amount in marketing system
+    /// </summary>
+    public partial class Promotion
+    {
+        /// <summary>
+        /// Initializes a new instance of the Promotion class.
+        /// </summary>
+        public Promotion() { }
+
+        /// <summary>
+        /// Initializes a new instance of the Promotion class.
+        /// </summary>
+        /// <param name="type">It contains the name of realizing this type
+        /// promotion.
+        /// DynamicPromotion is build in implementation allow to
+        /// construct promotion with dynamic conditions and rewards.
+        /// For complex custom scenarios user may define personal
+        /// 'hard-coded' promotion types</param>
+        /// <param name="store">Store id that is covered by this
+        /// promotion</param>
+        /// <param name="catalog">Catalog id that is covered by this
+        /// promotion</param>
+        /// <param name="maxUsageCount">Maximum promotion usage count</param>
+        /// <param name="coupons">List of coupons codes which may be used for
+        /// activate that promotion</param>
+        /// <param name="priority">Used for choosing in combination</param>
+        /// <param name="dynamicExpression">Dynamic conditions tree determine
+        /// the applicability of this promotion and reward definition</param>
+        public Promotion(string type = default(string), string name = default(string), string store = default(string), string catalog = default(string), string description = default(string), bool? isActive = default(bool?), int? maxUsageCount = default(int?), int? maxPersonalUsageCount = default(int?), System.Collections.Generic.IList<string> coupons = default(System.Collections.Generic.IList<string>), int? priority = default(int?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), PromoDynamicExpressionTree dynamicExpression = default(PromoDynamicExpressionTree), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            Type = type;
+            Name = name;
+            Store = store;
+            Catalog = catalog;
+            Description = description;
+            IsActive = isActive;
+            MaxUsageCount = maxUsageCount;
+            MaxPersonalUsageCount = maxPersonalUsageCount;
+            Coupons = coupons;
+            Priority = priority;
+            StartDate = startDate;
+            EndDate = endDate;
+            DynamicExpression = dynamicExpression;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// Gets or sets it contains the name of realizing this type
+        /// promotion.
+        /// DynamicPromotion is build in implementation allow to
+        /// construct promotion with dynamic conditions and rewards.
+        /// For complex custom scenarios user may define personal
+        /// 'hard-coded' promotion types
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets store id that is covered by this promotion
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "store")]
+        public string Store { get; set; }
+
+        /// <summary>
+        /// Gets or sets catalog id that is covered by this promotion
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalog")]
+        public string Catalog { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isActive")]
+        public bool? IsActive { get; set; }
+
+        /// <summary>
+        /// Gets or sets maximum promotion usage count
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "maxUsageCount")]
+        public int? MaxUsageCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "maxPersonalUsageCount")]
+        public int? MaxPersonalUsageCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets list of coupons codes which may be used for activate
+        /// that promotion
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "coupons")]
+        public System.Collections.Generic.IList<string> Coupons { get; set; }
+
+        /// <summary>
+        /// Gets or sets used for choosing in combination
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
+        public int? Priority { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "startDate")]
+        public System.DateTime? StartDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "endDate")]
+        public System.DateTime? EndDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets dynamic conditions tree determine the applicability
+        /// of this promotion and reward definition
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "dynamicExpression")]
+        public PromoDynamicExpressionTree DynamicExpression { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PromoDynamicExpressionTree
+    {
+        /// <summary>
+        /// Initializes a new instance of the PromoDynamicExpressionTree class.
+        /// </summary>
+        public PromoDynamicExpressionTree() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PromoDynamicExpressionTree class.
+        /// </summary>
+        public PromoDynamicExpressionTree(string id = default(string), System.Collections.Generic.IList<DynamicExpression> availableChildren = default(System.Collections.Generic.IList<DynamicExpression>), System.Collections.Generic.IList<DynamicExpression> children = default(System.Collections.Generic.IList<DynamicExpression>))
+        {
+            Id = id;
+            AvailableChildren = availableChildren;
+            Children = children;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "availableChildren")]
+        public System.Collections.Generic.IList<DynamicExpression> AvailableChildren { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "children")]
+        public System.Collections.Generic.IList<DynamicExpression> Children { get; set; }
 
     }
 }

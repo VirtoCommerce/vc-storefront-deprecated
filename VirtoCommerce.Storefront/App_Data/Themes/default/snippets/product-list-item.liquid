@@ -44,7 +44,9 @@
                     {% endif %}
                 {% endcomment %}
             </div>
+
             <div class="grid-item large--one-fifth medium--two-thirds">
+                {% if customer %}
                 <div class="product-item--price text-center" ng-if="!productPricesLoaded">
                     <p class="h1 medium-down--left">
                         {% include 'price' with product.price %}
@@ -84,7 +86,11 @@
                         <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
                     {% endif %}
                 </div>
-
+                {% else %}
+                    <button class="btn btn-secondary" ng-click="showCallForPricing($event)" ng-controller="productController">
+                        {{ 'products.call_for_pricing' | t }}
+                    </button>
+                {% endif %}
             </div>
         </div>
     </a>

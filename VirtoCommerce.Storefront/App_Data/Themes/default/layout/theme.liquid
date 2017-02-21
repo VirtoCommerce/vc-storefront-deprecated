@@ -38,6 +38,7 @@
 	
     {{ '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js' | script_tag }}
     {{ '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js' | script_tag }}
+    {{ '//cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap-tpls.min.js' | script_tag }}
 	{{ '~/default-theme/scripts' | script_bundle_tag }}
     
@@ -50,6 +51,7 @@
     {% include 'notification' %}
     {% include 'recently-added-cart-item-dialog' %}
     {% include 'recently-added-actual-quote-request-item-dialog' %}
+    {% include 'call-for-prices-dialog' %}
         {% if settings.store_selector_enable %}
         {% include 'top-header-selector' %}
         {% endif %}
@@ -118,16 +120,24 @@
                     <br class="medium-down--hide" />
                     {% endif %}
                     {% include 'search-bar' %}
+                    {% if settings.product_compare_enabled %}
+                        <a class="header-cart-btn cart-toggle" href="{{ 'compare' | absolute_url }}" ng-controller="productCompareListBarController" ng-show="itemsCount > 0">
+                            <span class="fa fa-bar-chart"></span>
+                            {{ 'products.compare_list.compare' | t }} <span class="visible-count" id="productCompareListCount" ng-bind="itemsCount"></span>
+                        </a>
+                    {% endif %}
                     {% if shop.quotes_enabled %}
                     <a class="header-cart-btn cart-toggle" ng-controller="actualQuoteRequestBarController" ng-click="outerRedirect(baseUrl + 'quoterequest/#/' + actualQuoteRequest.number)">
                         <span class="fa fa-calculator"></span>
                         Quote <span id="quoteRequestCount" ng-class="{ 'visible-count': actualQuoteRequest.itemsCount > 0 }" ng-bind="actualQuoteRequest.itemsCount" ng-cloak></span>
                     </a>
                     {% endif %}
-                <a class="header-cart-btn cart-toggle" href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
+                    {% if customer %}
+                    <a class="header-cart-btn cart-toggle" href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
                         <span class="icon icon-cart"></span>
-                    {{ 'layout.cart.cart' | t }} <span id="cartCount" ng-class="{ 'visible-count': cartItemsCount > 0 }" ng-bind="cartItemsCount" ng-cloak></span>
+                        {{ 'layout.cart.cart' | t }} <span id="cartCount" ng-class="{ 'visible-count': cartItemsCount > 0 }" ng-bind="cartItemsCount" ng-cloak></span>
                     </a>
+                    {% endif %}
                 </div>
             </div>
             </div>
@@ -152,9 +162,13 @@
         <main class="wrapper main-content" role="main">
             {{ content_for_layout }}
         </main>
+        {% if settings.product_compare_enabled %}
+            {% include 'product-compare-list-dialog' %}
+        {% endif %}
         {% include 'footer' %}
     <script>
         window.quotesEnabled = {{ shop.quotes_enabled }};
+        window.productCompareListCapacity = {{ settings.product_compare_list_capacity }};
     </script>
 </body>
 </html>

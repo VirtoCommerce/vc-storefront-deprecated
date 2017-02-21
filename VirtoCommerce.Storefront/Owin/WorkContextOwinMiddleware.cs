@@ -192,7 +192,7 @@ namespace VirtoCommerce.Storefront.Owin
                         {
                             category.Products = new MutablePagedList<Product>((pageNumber2, pageSize2, sortInfos2) =>
                             {
-                                var categoryProductCriteria = new ProductSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency)
+                                var productSearchCriteria = new ProductSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency)
                                 {
                                     PageNumber = pageNumber2,
                                     PageSize = pageSize2,
@@ -203,10 +203,10 @@ namespace VirtoCommerce.Storefront.Owin
                                 //criteria.CategoryId = category.Id;
                                 if (string.IsNullOrEmpty(criteria.SortBy) && !sortInfos2.IsNullOrEmpty())
                                 {
-                                    categoryProductCriteria.SortBy = SortInfo.ToString(sortInfos2);
+                                    productSearchCriteria.SortBy = SortInfo.ToString(sortInfos2);
                                 }
 
-                                var searchResult = catalogSearchService.SearchProducts(categoryProductCriteria);
+                                var searchResult = catalogSearchService.SearchProducts(productSearchCriteria);
 
                                 //Because catalog search products returns also aggregations we can use it to populate workContext using C# closure
                                 //now workContext.Aggregation will be contains preloaded aggregations for current category

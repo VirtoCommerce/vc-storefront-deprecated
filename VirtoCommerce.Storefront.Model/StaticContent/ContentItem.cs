@@ -76,6 +76,8 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
 
         public string Description { get; set; }
 
+        public IDictionary<string, IEnumerable<string>> MetaInfo { get; set; }
+
         public virtual void LoadContent(string content, IDictionary<string, IEnumerable<string>> metaInfoMap)
         {
             if (metaInfoMap != null)
@@ -141,7 +143,8 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                     }
                 }
             }
-       
+
+            MetaInfo = metaInfoMap;
             Content = content;
             if (Title == null)
             {

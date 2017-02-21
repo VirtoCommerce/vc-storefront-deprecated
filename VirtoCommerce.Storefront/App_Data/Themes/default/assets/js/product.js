@@ -1,5 +1,11 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
+storefrontApp.controller('callForPricingDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', function ($scope, $window, $uibModalInstance, dialogData) {
+    $scope.close = function () {
+        $uibModalInstance.close();
+    }
+}]);
+
 storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService',
     function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService) {
     //TODO: prevent add to cart not selected variation
@@ -12,11 +18,26 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     $scope.productPrice = null;
     $scope.productPriceLoaded = false;
 
+    $scope.showCallForPricing = function (event) {
+        event.preventDefault();
+        dialogService.showDialog({}, 'callForPricingDialogController', 'storefront.call-for-prices-dialog.tpl');
+    }
+
     $scope.addProductToCart = function (product, quantity) {
         var dialogData = toDialogDataModel(product, quantity);
         dialogService.showDialog(dialogData, 'recentlyAddedCartItemDialogController', 'storefront.recently-added-cart-item-dialog.tpl');
         cartService.addLineItem(product.id, quantity).then(function (response) {
             $rootScope.$broadcast('cartItemsChanged');
+        });
+    }
+
+    $scope.addProductToCartById = function (productId, quantity, event) {
+        event.preventDefault();
+        catalogService.getProduct([productId]).then(function (response) {
+            if (response.data && response.data.length) {
+                var product = response.data[0];
+                $scope.addProductToCart(product, quantity);
+            }
         });
     }
 
@@ -42,11 +63,14 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     }
 
     function initialize() {
-            var productIds = _.map($window.products, function (product) { return product.id });
+        var productIds = _.map($window.products, function (product) { return product.id });
+        if (!productIds || !productIds.length) {
+            return;
+        }
         catalogService.getProduct(productIds).then(function (response) {
             var product = response.data[0];
                 //Current product is also a variation (titular)
-                allVariations = [product].concat(product.variations);
+                allVariations = [product].concat(product.variations || []);
                 $scope.allVariationPropsMap = getFlatternDistinctPropertiesMap(allVariations);
 
             //Auto select initial product as default variation  (its possible because all our products is variations)
