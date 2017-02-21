@@ -540,43 +540,46 @@
             "newsletter_email_placeholder": "Email Address"
         }
     },
-    "products": {
-        "general": {
-            "share_on_facebook": "Share",
-            "share_on_twitter": "Tweet",
-            "share_on_pinterest": "Pin it",
-            "share_on_fancy": "Fancy",
-            "related_products": "We Also Recommend",
-            "save_html": "Save {{ saved_amount }}",
-            "add_to_cart": "Add to cart",
-            "add_to_quote": "Add to quote"
-        },
-        "product": {
-            "sold_out": "Sold Out",
-            "unavailable": "Unavailable",
-            "only_left": "Only {{ count }} left!",
-            "quantity": "Quantity",
-            "add_to_cart": "Add to Cart",
-            "details_tab": "Product details"
-        },
-      "compare_list": {
-        "add_to_compare": "Add to compare",
-        "remove_from_compare": "Remove from compare",
-        "compare": "Compare",
-        "close_dialog": "Close",
-        "added_to_list_dialog_header": "Product is added to compare list",
-        "removed_from_list_dialog_header": "Product is removed from compare list",
-        "go_to_compare_list": "Go to compare list",
-        "continue_shopping": "Continue shopping",
-        "capacity_exceeded_header": "You may compare up to {{ capacity }} items at a time.",
-        "capacity_exceeded_message": "Would you like to compare the first four items you selected?",
-        "compare_list_empty_header": "Your product compare list is currently empty",
-        "compare_list_empty_body": "Continue browsing <a href=\"{{ url }}\">here</a>.",
-        "show_only_differences": "Show only differences",
-        "clear_compare_list": "Clear product compare list",
-        "remove": "Remove"
-      }
+  "products": {
+    "call_for_pricing": "Call for pricing",
+    "call_for_pricing_message": "For specification of the cost of goods call 1-800-ELECTRONICS",
+    "call_for_pricing_ok": "Ok",
+    "general": {
+      "share_on_facebook": "Share",
+      "share_on_twitter": "Tweet",
+      "share_on_pinterest": "Pin it",
+      "share_on_fancy": "Fancy",
+      "related_products": "We Also Recommend",
+      "save_html": "Save {{ saved_amount }}",
+      "add_to_cart": "Add to cart",
+      "add_to_quote": "Add to quote"
     },
+    "product": {
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "only_left": "Only {{ count }} left!",
+      "quantity": "Quantity",
+      "add_to_cart": "Add to Cart",
+      "details_tab": "Product details"
+    },
+    "compare_list": {
+      "add_to_compare": "Add to compare",
+      "remove_from_compare": "Remove from compare",
+      "compare": "Compare",
+      "close_dialog": "Close",
+      "added_to_list_dialog_header": "Product is added to compare list",
+      "removed_from_list_dialog_header": "Product is removed from compare list",
+      "go_to_compare_list": "Go to compare list",
+      "continue_shopping": "Continue shopping",
+      "capacity_exceeded_header": "You may compare up to {{ capacity }} items at a time.",
+      "capacity_exceeded_message": "Would you like to compare the first four items you selected?",
+      "compare_list_empty_header": "Your product compare list is currently empty",
+      "compare_list_empty_body": "Continue browsing <a href=\"{{ url }}\">here</a>.",
+      "show_only_differences": "Show only differences",
+      "clear_compare_list": "Clear product compare list",
+      "remove": "Remove"
+    }
+  },
     "gift_cards": {
       "issued": {
         "title": "Here's your {{ value }} gift card for {{ shop }}!",

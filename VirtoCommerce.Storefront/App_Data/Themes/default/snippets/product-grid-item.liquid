@@ -39,16 +39,23 @@
             </div>
         </div>
         <div class="product-item--other" style="margin-bottom: 10px;">
-            <button class="btn btn-secondary" title="{{ 'products.general.add_to_cart' | t }}" style="width: 70%;" ng-click="addProductToCartById('{{ product.id }}', 1, $event)" ng-controller="productController">
-                <span class="icon icon-cart"></span>
-            </button>
-            {% if settings.product_compare_enabled %}
-                <button class="btn btn-secondary" title="{{ 'products.compare_list.add_to_compare' | t }}" style="width: 25%;" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
-                    <span class="fa fa-bar-chart"></span>
+            {% if customer %}
+                <button class="btn btn-secondary" title="{{ 'products.general.add_to_cart' | t }}" style="width: 70%;" ng-click="addProductToCartById('{{ product.id }}', 1, $event)" ng-controller="productController">
+                    <span class="icon icon-cart"></span>
+                </button>
+                {% if settings.product_compare_enabled %}
+                    <button class="btn btn-secondary" title="{{ 'products.compare_list.add_to_compare' | t }}" style="width: 25%;" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
+                        <span class="fa fa-bar-chart"></span>
+                    </button>
+                {% endif %}
+            {% else %}
+                <button class="btn btn-secondary" ng-click="showCallForPricing($event)" ng-controller="productController">
+                    {{ 'products.call_for_pricing' | t }}
                 </button>
             {% endif %}
         </div>
         <p>{{ product.title }}</p>
+        {% if customer %}
         <div class="product-item--price" ng-if="!productListPricesLoaded">
             <span class="h1 medium--left">
                 {% if on_sale %}
@@ -99,6 +106,7 @@
                 <span class="sale-tag medium--right" ng-if="productListPrices['{{ product.id }}'].discountAmount.amount > 0" ng-bind="'{{ 'products.general.save_html' | t }}'  + productListPrices['{{ product.id }}'].discountAmount.formattedAmount"></span>
             {% endif %}
         </div>
+        {% endif %}
 
         <div class="product-item--other">
             {% comment %}

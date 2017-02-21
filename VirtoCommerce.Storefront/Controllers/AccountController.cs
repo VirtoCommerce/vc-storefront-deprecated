@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -33,10 +32,12 @@ namespace VirtoCommerce.Storefront.Controllers
         private readonly ICustomerService _customerService;
         private readonly IOrdersModuleApiClient _orderApi;
         private readonly IEventPublisher<UserLoginEvent> _userLoginEventPublisher;
+        private readonly ILocalCacheManager _cacheManager;
 
         public AccountController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder, ICoreModuleApiClient commerceCoreApi,
             IAuthenticationManager authenticationManager, IPlatformModuleApiClient platformApi,
-            ICustomerService customerService, IOrdersModuleApiClient orderApi, IEventPublisher<UserLoginEvent> userLoginEventPublisher)
+            ICustomerService customerService, IOrdersModuleApiClient orderApi, IEventPublisher<UserLoginEvent> userLoginEventPublisher,
+            ILocalCacheManager cacheManager)
             : base(workContext, urlBuilder)
         {
             _commerceCoreApi = commerceCoreApi;
@@ -45,6 +46,7 @@ namespace VirtoCommerce.Storefront.Controllers
             _platformApi = platformApi;
             _orderApi = orderApi;
             _userLoginEventPublisher = userLoginEventPublisher;
+            _cacheManager = cacheManager;
         }
 
         //GET: /account
@@ -105,7 +107,7 @@ namespace VirtoCommerce.Storefront.Controllers
         {
             var contact = WorkContext.CurrentCustomer;
             var delete = string.Equals(formModel.Method, "delete");
-            if(id == null)
+            if (id == null)
             {
                 id = formModel.Id;
             }
@@ -257,6 +259,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
                     //Publish user login event 
                     await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, customer));
+                    _cacheManager.Clear();
                     return StoreFrontRedirect(returnUrl);
                 }
                 else
@@ -362,6 +365,7 @@ namespace VirtoCommerce.Storefront.Controllers
         public ActionResult Logout()
         {
             _authenticationManager.SignOut();
+            _cacheManager.Clear();
             return StoreFrontRedirect("~/");
         }
 

@@ -1,5 +1,11 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
+storefrontApp.controller('callForPricingDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', function ($scope, $window, $uibModalInstance, dialogData) {
+    $scope.close = function () {
+        $uibModalInstance.close();
+    }
+}]);
+
 storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService',
     function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService) {
     //TODO: prevent add to cart not selected variation
@@ -11,6 +17,11 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     $scope.allVariationPropsMap = {};
     $scope.productPrice = null;
     $scope.productPriceLoaded = false;
+
+    $scope.showCallForPricing = function (event) {
+        event.preventDefault();
+        dialogService.showDialog({}, 'callForPricingDialogController', 'storefront.call-for-prices-dialog.tpl');
+    }
 
     $scope.addProductToCart = function (product, quantity) {
         var dialogData = toDialogDataModel(product, quantity);

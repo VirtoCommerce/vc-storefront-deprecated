@@ -42,6 +42,7 @@
             <p class="product-meta" itemprop="brand">{{ product.vendor }}</p>
             {% endif %}
 
+            {% if customer %}
             <ul class="inline-list product-meta">
                 <li ng-if="!selectedVariation.id">
                     {% if product.compare_at_price > product.price %}
@@ -103,6 +104,7 @@
                 </li>
                 {% endif %}
             </ul>
+            {% endif %}
 
             <hr id="variantBreak" class="hr--clear hr--small">
 
@@ -131,22 +133,31 @@
                 <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-selector">
                 {% endif %}
 
+                {% if customer %}
                 <button type="button" name="add" id="addToCart" class="btn" ng-disabled="!selectedVariation.id" ng-click="addProductToCart(selectedVariation, 1)">
                     <span class="icon icon-cart"></span>
                     <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
                 </button>
+                {% else %}
+                    <button class="btn btn-secondary" ng-click="showCallForPricing($event)" ng-controller="productController">
+                        {{ 'products.call_for_pricing' | t }}
+                    </button>
+                {% endif %}
+
                 {% if shop.quotes_enabled %}
                 <button class="btn" id="addToQuote" type="button" ng-if="selectedVariation.isQuotable" ng-disabled="!selectedVariation.id" ng-click="addProductToActualQuoteRequest(selectedVariation, 1)">
                     <span class="fa fa-calculator"></span>
                     {{ 'products.general.add_to_quote' | t }}
                 </button>
                 {% endif%}
+                {% comment %}
                 {% if settings.product_compare_enabled %}
                     <button class="btn" type="button" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
                         <span class="fa fa-bar-chart"></span>
                         <span>{{ 'products.compare_list.add_to_compare' | t }}</span>
                     </button>
                 {% endif %}
+                {% endcomment %}
                 <span id="variantQuantity" class="variant-quantity"></span>
             </form>
             <hr>

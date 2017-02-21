@@ -51,6 +51,7 @@
     {% include 'notification' %}
     {% include 'recently-added-cart-item-dialog' %}
     {% include 'recently-added-actual-quote-request-item-dialog' %}
+    {% include 'call-for-prices-dialog' %}
         {% if settings.store_selector_enable %}
         {% include 'top-header-selector' %}
         {% endif %}
@@ -131,10 +132,12 @@
                         Quote <span id="quoteRequestCount" ng-class="{ 'visible-count': actualQuoteRequest.itemsCount > 0 }" ng-bind="actualQuoteRequest.itemsCount" ng-cloak></span>
                     </a>
                     {% endif %}
+                    {% if customer %}
                     <a class="header-cart-btn cart-toggle" href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
                         <span class="icon icon-cart"></span>
                         {{ 'layout.cart.cart' | t }} <span id="cartCount" ng-class="{ 'visible-count': cartItemsCount > 0 }" ng-bind="cartItemsCount" ng-cloak></span>
                     </a>
+                    {% endif %}
                 </div>
             </div>
             </div>
