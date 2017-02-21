@@ -2661,10 +2661,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the CategorySearch class.
         /// </summary>
-        public CategorySearch(string responseGroup = default(string), string outline = default(string), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        public CategorySearch(string responseGroup = default(string), string outline = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
         {
             ResponseGroup = responseGroup;
             Outline = outline;
+            Terms = terms;
             Sort = sort;
             Skip = skip;
             Take = take;
@@ -2679,6 +2680,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
         public string Outline { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "terms")]
+        public System.Collections.Generic.IList<string> Terms { get; set; }
 
         /// <summary>
         /// </summary>

@@ -240,12 +240,7 @@ namespace VirtoCommerce.Storefront.Converters
             }
 
             // Add customer user groups to terms
-            var userGroups = new List<string> { "__any__" };
-            if (workContext.CurrentCustomer.UserGroups != null)
-            {
-                userGroups.AddRange(workContext.CurrentCustomer.UserGroups);
-            }
-            result.Terms.AddRange(userGroups.Select(g => $"usergroups:{g}"));
+            result.Terms.AddRange(GetUserGroupsTerms(workContext));
 
             // Add vendor id to terms
             if (!string.IsNullOrEmpty(criteria.VendorId))
@@ -269,10 +264,23 @@ namespace VirtoCommerce.Storefront.Converters
                 ResponseGroup = ((int)criteria.ResponseGroup).ToString()
             };
 
+            // Add customer user groups to terms
+            result.Terms = GetUserGroupsTerms(workContext);
+
             if (criteria.SortBy != null)
                 result.Sort = new[] { criteria.SortBy };
 
             return result;
+        }
+
+        public virtual IList<string> GetUserGroupsTerms(WorkContext workContext)
+        {
+            var userGroups = new List<string> { "__any__" };
+            if (workContext.CurrentCustomer.UserGroups != null)
+            {
+                userGroups.AddRange(workContext.CurrentCustomer.UserGroups);
+            }
+            return userGroups.Select(g => $"usergroups:{g}").ToList();
         }
 
         public virtual Association ToAssociation(catalogDto.ProductAssociation associationDto)
