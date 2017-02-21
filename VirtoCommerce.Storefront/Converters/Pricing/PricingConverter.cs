@@ -95,7 +95,7 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 retVal.CustomerId = workContext.CurrentCustomer.Id;
                 retVal.GeoTimeZone = workContext.CurrentCustomer.TimeZone;
-                var address = workContext.CurrentCustomer.DefaultShippingAddress ?? workContext.CurrentCustomer.DefaultBillingAddress;
+                var address = workContext.CurrentCustomer.Addresses.FirstOrDefault();
                 if (address != null)
                 {
                     retVal.GeoCity = address.City;
