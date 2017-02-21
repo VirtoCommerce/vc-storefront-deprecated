@@ -234,14 +234,22 @@ namespace VirtoCommerce.Storefront.Converters
                 ResponseGroup = ((int)criteria.ResponseGroup).ToString()
             };
 
+            if (result.Terms == null)
+            {
+                result.Terms = new List<string>();
+            }
+
+            // Add customer user groups to terms
+            var userGroups = new List<string> { "__any__" };
+            if (workContext.CurrentCustomer.UserGroups != null)
+            {
+                userGroups.AddRange(workContext.CurrentCustomer.UserGroups);
+            }
+            result.Terms.AddRange(userGroups.Select(g => $"usergroups:{g}"));
+
             // Add vendor id to terms
             if (!string.IsNullOrEmpty(criteria.VendorId))
             {
-                if (result.Terms == null)
-                {
-                    result.Terms = new List<string>();
-                }
-
                 result.Terms.Add(string.Concat("vendor:", criteria.VendorId));
             }
 
