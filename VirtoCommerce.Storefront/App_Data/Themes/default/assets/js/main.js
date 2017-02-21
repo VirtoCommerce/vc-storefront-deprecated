@@ -1,7 +1,7 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('mainController', ['$scope', '$location', '$window', '$localStorage', 'customerService', 'storefrontApp.mainContext',
-    function ($scope, $location, $window, $localStorage, customerService, mainContext) {
+storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'customerService', 'storefrontApp.mainContext',
+    function ($scope, $location, $window, customerService, mainContext) {
 
         //Base store url populated in layout and can be used for construction url inside controller
         $scope.baseUrl = {};

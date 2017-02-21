@@ -94,6 +94,15 @@ namespace VirtoCommerce.Storefront.Converters
             if (workContext.CurrentCustomer != null)
             {
                 retVal.CustomerId = workContext.CurrentCustomer.Id;
+                retVal.GeoTimeZone = workContext.CurrentCustomer.TimeZone;
+                var address = workContext.CurrentCustomer.DefaultShippingAddress ?? workContext.CurrentCustomer.DefaultBillingAddress;
+                if (address != null)
+                {
+                    retVal.GeoCity = address.City;
+                    retVal.GeoCountry = address.CountryCode;
+                    retVal.GeoState = address.RegionName;
+                    retVal.GeoZipCode = address.PostalCode;
+                }
                 if (workContext.CurrentCustomer.UserGroups != null)
                 {
                     retVal.UserGroups = workContext.CurrentCustomer.UserGroups.ToList();

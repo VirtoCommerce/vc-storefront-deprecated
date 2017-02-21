@@ -31,8 +31,9 @@
     <base href="{{ '/' | absolute_url }}" />
 
     {{ '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js' | script_tag }}
-    {{ '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js' | script_tag }}
+    {{ '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js' | script_tag }}
     {{ '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-resource.min.js' | script_tag }}
+    {{ '//cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js' | script_tag }}
     {{ '//unpkg.com/@angular/router@0.2.0/angular1/angular_1_router.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap-tpls.min.js' | script_tag }}
     {{ '//rawgit.com/bendrucker/angular-credit-cards/v3.0.1/release/angular-credit-cards.js' | script_tag }}
@@ -120,6 +121,12 @@
                 <br class="medium-down--hide" />
                 {% endif %}
                 {% include 'search-bar' %}
+                {% if settings.product_compare_enabled %}
+                    <a class="header-cart-btn cart-toggle" href="{{ 'compare' | absolute_url }}" ng-controller="productCompareListBarController" ng-show="itemsCount > 0">
+                        <span class="fa fa-bar-chart"></span>
+                        {{ 'products.compare_list.compare' | t }} <span class="visible-count" id="productCompareListCount" ng-bind="itemsCount"></span>
+                    </a>
+                {% endif %}
                 {% if shop.quotes_enabled %}
                 <a class="header-cart-btn cart-toggle" ng-controller="actualQuoteRequestBarController" ng-click="outerRedirect(baseUrl + 'quoterequest/#/' + actualQuoteRequest.number)">
                     <span class="fa fa-calculator"></span>
