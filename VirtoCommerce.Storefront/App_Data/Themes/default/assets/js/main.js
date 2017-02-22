@@ -58,6 +58,11 @@ storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'c
 
         mainContext.getCustomer = $scope.getCustomer = function () {
             customerService.getCurrentCustomer().then(function (response) {
+                var addressId = 1;
+                _.each(response.data.addresses, function (address) {
+                    address.id = addressId;
+                    addressId++;
+                });
                 mainContext.customer = $scope.customer = response.data;
             });
         };
