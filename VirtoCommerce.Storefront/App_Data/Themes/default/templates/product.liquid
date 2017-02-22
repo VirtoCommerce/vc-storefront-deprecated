@@ -42,7 +42,7 @@
             <p class="product-meta" itemprop="brand">{{ product.vendor }}</p>
             {% endif %}
 
-            {% if customer %}
+            {% if settings.anonymous_cart_enabled or customer %}
             <ul class="inline-list product-meta">
                 <li ng-if="!selectedVariation.id">
                     {% if product.compare_at_price > product.price %}
@@ -133,7 +133,7 @@
                 <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-selector">
                 {% endif %}
 
-                {% if customer %}
+                {% if settings.anonymous_cart_enabled or customer %}
                 <button type="button" name="add" id="addToCart" class="btn" ng-disabled="!selectedVariation.id" ng-click="addProductToCart(selectedVariation, 1)">
                     <span class="icon icon-cart"></span>
                     <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>

@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="product-item--other" style="margin-bottom: 10px;">
-            {% if customer %}
+            {% if settings.anonymous_cart_enabled or customer %}
                 <button class="btn btn-secondary" title="{{ 'products.general.add_to_cart' | t }}" style="width: 70%;" ng-click="addProductToCartById('{{ product.id }}', 1, $event)" ng-controller="productController">
                     <span class="icon icon-cart"></span>
                 </button>
@@ -55,7 +55,7 @@
             {% endif %}
         </div>
         <p>{{ product.title }}</p>
-        {% if customer %}
+        {% if settings.anonymous_cart_enabled or customer %}
         <div class="product-item--price" ng-if="!productListPricesLoaded">
             <span class="h1 medium--left">
                 {% if on_sale %}

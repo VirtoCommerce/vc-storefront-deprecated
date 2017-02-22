@@ -133,10 +133,12 @@
                     Quote <span id="quoteRequestCount" ng-class="{ 'visible-count': actualQuoteRequest.itemsCount > 0 }" ng-bind="actualQuoteRequest.itemsCount" ng-cloak></span>
                 </a>
                 {% endif %}
+                {% if settings.anonymous_cart_enabled or customer %}
                 <a class="header-cart-btn cart-toggle" href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
                     <span class="icon icon-cart"></span>
                     {{ 'layout.cart.cart' | t }} <span id="cartCount" ng-class="{ 'visible-count': cartItemsCount > 0 }" ng-bind="cartItemsCount" ng-cloak></span>
                 </a>
+                {% endif %}
             </div>
         </div>
     </header>
