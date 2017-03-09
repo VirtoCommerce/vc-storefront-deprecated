@@ -35,9 +35,8 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CacheManager.Core, Version=0.9.1.0, Culture=neutral, PublicKeyToken=5b450b4fb65c4cdb, processorArchitecture=MSIL">
-      <HintPath>..\packages\CacheManager.Core.0.9.1\lib\net45\CacheManager.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CacheManager.Core, Version=0.9.3.0, Culture=neutral, PublicKeyToken=5b450b4fb65c4cdb, processorArchitecture=MSIL">
+      <HintPath>..\packages\CacheManager.Core.0.9.3\lib\net45\CacheManager.Core.dll</HintPath>
     </Reference>
     <Reference Include="DotLiquid, Version=1.0.0.0, Culture=neutral, PublicKeyToken=82e46016ecf9f07c, processorArchitecture=MSIL">
       <HintPath>..\packages\DotLiquid.VirtoCommerce.1.8.3\lib\NET45\DotLiquid.dll</HintPath>

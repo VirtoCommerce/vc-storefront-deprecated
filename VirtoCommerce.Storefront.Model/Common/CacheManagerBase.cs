@@ -49,7 +49,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             {
                 _cacheManager.Clear();
             }
-            catch(ObjectDisposedException)
+            catch (ObjectDisposedException)
             {
             }
         }
@@ -256,6 +256,26 @@ namespace VirtoCommerce.Storefront.Model.Common
             throw new NotImplementedException();
         }
 
+        public bool TryGetOrAdd(string key, Func<string, object> valueFactory, out object value)
+        {
+            return _cacheManager.TryGetOrAdd(key, valueFactory, out value);
+        }
+
+        public bool TryGetOrAdd(string key, string region, Func<string, string, object> valueFactory, out object value)
+        {
+            return _cacheManager.TryGetOrAdd(key, region, valueFactory, out value);
+        }
+
+        public bool Exists(string key)
+        {
+            return _cacheManager.Exists(key);
+        }
+
+        public bool Exists(string key, string region)
+        {
+            return _cacheManager.Exists(key, region);
+        }
+
         public IReadOnlyCacheManagerConfiguration Configuration
         {
             get { return _cacheManager.Configuration; }
@@ -307,7 +327,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             remove { _cacheManager.OnRemove -= value; }
         }
 
-        public event EventHandler<CacheUpdateEventArgs<object>> OnUpdate
+        public event EventHandler<CacheActionEventArgs> OnUpdate
         {
             add { _cacheManager.OnUpdate += value; }
             remove { _cacheManager.OnUpdate -= value; }
