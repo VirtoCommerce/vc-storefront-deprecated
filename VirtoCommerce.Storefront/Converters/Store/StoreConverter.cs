@@ -81,7 +81,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (!storeDto.Settings.IsNullOrEmpty())
             {
-                result.Settings = storeDto.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
+                result.Settings = storeDto.Settings.Where(x => !x.ValueType.EqualsInvariant("SecureString")).Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
             }
 
             result.TrustedGroups = storeDto.TrustedGroups;

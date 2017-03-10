@@ -517,7 +517,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = product.Sku,
                     Name = product.Name,
                     TaxType = product.TaxType,
-                    Amount =  product.Price.ActualPrice
+                    //Special case when product have 100% discount and need to calculate tax for old value
+                    Amount =  product.Price.ActualPrice.Amount > 0 ? product.Price.ActualPrice : product.Price.SalePrice
                 }
             };
 

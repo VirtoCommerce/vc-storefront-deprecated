@@ -409,7 +409,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (paymentMethodDto.Settings != null)
             {
-                retVal.Settings = paymentMethodDto.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
+                retVal.Settings = paymentMethodDto.Settings.Where(x => !x.ValueType.EqualsInvariant("SecureString")).Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
             }
 
             retVal.Currency = order.Currency;

@@ -233,7 +233,8 @@ namespace VirtoCommerce.Storefront.Converters
                 result.ShipmentMethodCode = shippingRate.ShippingMethod.Code;
                 if (shippingRate.ShippingMethod.Settings != null)
                 {
-                    result.Settings = shippingRate.ShippingMethod.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
+                    result.Settings = shippingRate.ShippingMethod.Settings.Where(x=> !x.ValueType.EqualsInvariant("SecureString"))
+                                                                          .Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
                 }
             }
 
@@ -261,7 +262,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Id = shipmentMethod.BuildTaxLineId(),
                     Code = shipmentMethod.ShipmentMethodCode,
                     TaxType = shipmentMethod.TaxType,
-                    Amount = shipmentMethod.Total
+                    //Special case when shipment method have 100% discount and need to calculate tax for old value
+                    Amount = shipmentMethod.Total.Amount > 0 ? shipmentMethod.Total : shipmentMethod.Price
                 }
             };
             return retVal.ToArray();
@@ -276,7 +278,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Id = paymentMethod.Code,
                     Code = paymentMethod.Code,
                     TaxType = paymentMethod.TaxType,
-                    Amount = paymentMethod.Total
+                     //Special case when payment method have 100% discount and need to calculate tax for old value
+                    Amount = paymentMethod.Total.Amount > 0 ? paymentMethod.Total : paymentMethod.Price
                 }
             };
             return retVal.ToArray();
@@ -378,7 +381,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (paymentMethodDto.Settings != null)
             {
-                retVal.Settings = paymentMethodDto.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
+                retVal.Settings = paymentMethodDto.Settings.Where(x => !x.ValueType.EqualsInvariant("SecureString")).Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
             }
 
             retVal.Currency = cart.Currency;
@@ -596,7 +599,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = lineItem.Sku,
                     Name = lineItem.Name,
                     TaxType = lineItem.TaxType,
-                    Amount = lineItem.ExtendedPrice
+                    //Special case when product have 100% discount and need to calculate tax for old value
+                    Amount = lineItem.ExtendedPrice.Amount > 0 ? lineItem.ExtendedPrice : lineItem.SalePrice
                 });
             }
 
@@ -608,7 +612,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = shipment.ShipmentMethodCode,
                     Name = shipment.ShipmentMethodOption,
                     TaxType = shipment.TaxType,
-                    Amount = shipment.Total
+                    //Special case when shipment have 100% discount and need to calculate tax for old value
+                    Amount = shipment.Total.Amount > 0 ? shipment.Total : shipment.Price
                 };
                 result.Lines.Add(totalTaxLine);
 
@@ -626,7 +631,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = payment.PaymentGatewayCode,
                     Name = payment.PaymentGatewayCode,
                     TaxType = payment.TaxType,
-                    Amount = payment.Total
+                    //Special case when shipment have 100% discount and need to calculate tax for old value
+                    Amount = payment.Total.Amount > 0 ? payment.Total : payment.Price
                 };
                 result.Lines.Add(totalTaxLine);
             }
