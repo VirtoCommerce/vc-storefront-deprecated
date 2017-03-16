@@ -235,8 +235,8 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 result.DynamicProperties = lineItemDto.DynamicProperties.Select(ToDynamicProperty).ToList();
             }
-            result.Price = new Money(lineItemDto.Price ?? 0, currency);
-            result.PriceWithTax = new Money(lineItemDto.PriceWithTax ?? 0, currency);
+            result.ListPrice = new Money(lineItemDto.Price ?? 0, currency);
+            result.ListPriceWithTax = new Money(lineItemDto.PriceWithTax ?? 0, currency);
             result.DiscountAmount = new Money(lineItemDto.DiscountAmount ?? 0, currency);
             result.DiscountAmountWithTax = new Money(lineItemDto.DiscountAmountWithTax ?? 0, currency);
             result.PlacedPrice = new Money(lineItemDto.PlacedPrice ?? 0, currency);
@@ -376,15 +376,29 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 result.TaxDetails = order.TaxDetails.Select(td => ToTaxDetail(td, currency)).ToList();
             }
-
             result.DiscountAmount = new Money(order.DiscountAmount ?? 0, currency);
+            result.DiscountTotal = new Money(order.DiscountTotal ?? 0, currency);
+            result.DiscountTotalWithTax = new Money(order.DiscountTotalWithTax ?? 0, currency);
+
+            result.PaymentTotal = new Money(order.PaymentTotal ?? 0, currency);
+            result.PaymentTotalWithTax = new Money(order.PaymentTotalWithTax ?? 0, currency);
+            result.PaymentDiscountTotal = new Money(order.PaymentDiscountTotal ?? 0, currency);
+            result.PaymentDiscountTotalWithTax = new Money(order.PaymentDiscountTotalWithTax ?? 0, currency);
+            result.PaymentTaxTotal = new Money(order.PaymentTaxTotal ?? 0, currency);
+            result.PaymentPrice = new Money(order.PaymentSubTotal ?? 0, currency);
+            result.PaymentPriceWithTax = new Money(order.PaymentSubTotalWithTax ?? 0, currency);
+
             result.Total = new Money(order.Total ?? 0, currency);
             result.SubTotal = new Money(order.SubTotal ?? 0, currency);
             result.SubTotalWithTax = new Money(order.SubTotalWithTax ?? 0, currency);
             result.TaxTotal = new Money(order.TaxTotal ?? 0, currency);
+
             result.ShippingTotal = new Money(order.ShippingTotal ?? 0, currency);
             result.ShippingTotalWithTax = new Money(order.ShippingTotalWithTax ?? 0, currency);
             result.ShippingTaxTotal = new Money(order.ShippingTaxTotal ?? 0, currency);
+            result.ShippingPrice = new Money(order.ShippingSubTotal ?? 0, currency);
+            result.ShippingPriceWithTax = new Money(order.ShippingSubTotalWithTax ?? 0, currency);
+
             result.SubTotalTaxTotal = new Money(order.SubTotalTaxTotal ?? 0, currency);
             result.SubTotalDiscount = new Money(order.SubTotalDiscount ?? 0, currency);
             result.SubTotalDiscountWithTax = new Money(order.SubTotalDiscountWithTax ?? 0, currency);
