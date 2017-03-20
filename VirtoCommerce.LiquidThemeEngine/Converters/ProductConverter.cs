@@ -103,6 +103,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.Type = product.ProductType;
             result.Url = product.Url;
 
+            result.PackageType = product.PackageType;
+            result.WeightUnit = product.WeightUnit;
+            result.Weight = product.Weight;
+            result.Height = product.Height;
+            result.MeasureUnit = product.MeasureUnit;
+            result.Width = product.Width;
+            result.Length = product.Length;
+
             if (!product.Associations.IsNullOrEmpty())
             {
                 result.RelatedProducts = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
@@ -163,6 +171,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.Weight = product.Weight ?? 0m;
             result.WeightUnit = product.WeightUnit;
             result.FeaturedImage = product.PrimaryImage != null ? product.PrimaryImage.ToShopifyModel() : null;
+
+            result.PackageType = product.PackageType;
+            result.Height = product.Height;
+            result.MeasureUnit = product.MeasureUnit;
+            result.Width = product.Width;
+            result.Length = product.Length;
+
+
 
             if (result.FeaturedImage != null)
             {

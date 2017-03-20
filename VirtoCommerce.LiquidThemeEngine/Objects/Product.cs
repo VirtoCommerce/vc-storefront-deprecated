@@ -243,5 +243,42 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// Gets or sets the collection of related products
         /// </summary>
         public IMutablePagedList<Product> RelatedProducts { get; set; }
+
+
+        /// <summary>
+        /// Weight unit (for physical product only)
+        /// </summary>
+        public string WeightUnit { get; set; }
+
+        /// <summary>
+        /// Weight of product (for physical product only)
+        /// </summary>
+        public decimal? Weight { get; set; }
+
+        /// <summary>
+        /// Package type
+        /// </summary>
+        public string PackageType { get; set; }
+        /// <summary>
+        /// Dimensions measure unit of size (for physical product only)
+        /// </summary>
+        public string MeasureUnit { get; set; }
+
+        /// <summary>
+        /// Height of product size (for physical product only)
+        /// </summary>
+        public decimal? Height { get; set; }
+
+        /// <summary>
+        /// Length of product size (for physical product only)
+        /// </summary>
+        public decimal? Length { get; set; }
+
+        /// <summary>
+        /// Width of product size (for physical product only)
+        /// </summary>
+        public decimal? Width { get; set; }
+
+        /// <summary>
     }
 }

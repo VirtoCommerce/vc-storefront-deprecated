@@ -183,5 +183,30 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// </summary>
         [DataMember]
         public string WeightInUnit { get; set; }
+        
+        /// <summary>
+        /// Package type
+        /// </summary>
+        public string PackageType { get; set; }
+        /// <summary>
+        /// Dimensions measure unit of size (for physical product only)
+        /// </summary>
+        public string MeasureUnit { get; set; }
+
+        /// <summary>
+        /// Height of product size (for physical product only)
+        /// </summary>
+        public decimal? Height { get; set; }
+
+        /// <summary>
+        /// Length of product size (for physical product only)
+        /// </summary>
+        public decimal? Length { get; set; }
+
+        /// <summary>
+        /// Width of product size (for physical product only)
+        /// </summary>
+        public decimal? Width { get; set; }
+
     }
 }
