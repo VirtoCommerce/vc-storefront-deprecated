@@ -64,6 +64,8 @@ using VirtoCommerce.Storefront.Model.Tax.Services;
 using VirtoCommerce.Storefront.Owin;
 using VirtoCommerce.Storefront.Routing;
 using VirtoCommerce.Storefront.Services;
+using VirtoCommerce.Storefront.Model.Recommendations;
+using VirtoCommerce.Storefront.Services.Recommendations;
 
 [assembly: OwinStartup(typeof(Startup))]
 [assembly: PreApplicationStartMethod(typeof(Startup), "PreApplicationStart")]
@@ -234,6 +236,22 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<ICatalogSearchService, CatalogSearchServiceImpl>();
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(context => HttpContext.Current.GetOwinContext().Authentication));
             container.RegisterType<IStorefrontUrlBuilder, StorefrontUrlBuilder>(new PerRequestLifetimeManager());
+
+            Func<string, IRecommendationsService> recommendationsFactory = provider =>
+            {
+                if (provider == "Cognitive")
+                {
+                    return new CognitiveRecommendationsService(workContextFactory, container.Resolve<ICatalogSearchService>());
+                }
+
+                if (provider == "Association")
+                {
+                    return new AssociationRecommendationsService(workContextFactory, container.Resolve<ICatalogSearchService>());
+                }
+
+                throw new InvalidOperationException(string.Format("Unknown recommedations provider: {0} ", provider));
+            };
+            container.RegisterInstance(recommendationsFactory);
 
             //Register domain events
             container.RegisterType<IEventPublisher<OrderPlacedEvent>, EventPublisher<OrderPlacedEvent>>();

@@ -1,0 +1,6 @@
+<hr />
+<span class="h1">{{ 'products.general.related_products' | t }} 2</span>
+<div class="grid-uniform" ng-controller="recommendationsController" ng-init="setType('{{ provider }}','{{ type }}','{{ product_ids }}')">
+    <p>Provider: <span ng-bind="provider"></span></p>
+    <p>ProductIds: <span ng-bind="productIds"></span></p>
+</div>

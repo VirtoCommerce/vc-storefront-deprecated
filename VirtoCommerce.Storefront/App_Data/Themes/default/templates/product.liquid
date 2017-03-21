@@ -216,6 +216,10 @@
     {% assign grid_item_width = 'large--one-fifth medium--one-third small--one-half' %}
     {% include 'related-products' %}
     {% endif %}
+    
+    <!--{% include 'recommendations', provider: 'Cognitive', type: 'Recommendations', product_ids: product.id, size: 5 %}
+    {% include 'recommendations', provider: 'Association', type: 'Upsale', size: 5 %}
+    {% include 'recommendations', provider: 'Association', type: 'CrossSale', size: 5 %}-->
 
     {% if settings.product_reviews_enable %}
 <hr>
