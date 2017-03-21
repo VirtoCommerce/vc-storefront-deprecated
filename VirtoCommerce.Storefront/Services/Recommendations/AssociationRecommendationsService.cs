@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
@@ -18,9 +19,15 @@ namespace VirtoCommerce.Storefront.Services.Recommendations
             _catalogSearchService = catalogSearchService;
         }
 
-        public Task<Product[]> GetRecommendationsAsync(RecommendationsContext context, string type, int skip, int take)
+        public async Task<Product[]> GetRecommendationsAsync(RecommendationsContext context, string type, int skip, int take)
         {
-            throw new NotImplementedException();
+            var searchCriteria = new ProductSearchCriteria()
+            {
+                ResponseGroup = ItemResponseGroup.ItemLarge
+            };
+            var searchResult = await _catalogSearchService.SearchProductsAsync(searchCriteria);
+
+            return searchResult.Products.ToArray();
         }
     }
 }
