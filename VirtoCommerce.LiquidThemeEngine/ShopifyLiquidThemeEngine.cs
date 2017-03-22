@@ -100,56 +100,28 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// <summary>
         /// Main work context
         /// </summary>
-        public WorkContext WorkContext
-        {
-            get
-            {
-                return _workContextFactory();
-            }
-        }
+        public WorkContext WorkContext => _workContextFactory();
 
         /// <summary>
         /// Store url builder
         /// </summary>
-        public IStorefrontUrlBuilder UrlBuilder
-        {
-            get
-            {
-                return _storeFrontUrlBuilderFactory();
-            }
-        }
+        public IStorefrontUrlBuilder UrlBuilder => _storeFrontUrlBuilderFactory();
+
         /// <summary>
         /// Default master view name
         /// </summary>
-        public string MasterViewName
-        {
-            get
-            {
-                return _defaultMasterView;
-            }
-        }
+        public string MasterViewName => _defaultMasterView;
+
         /// <summary>
         /// Current theme name
         /// </summary>
-        public string CurrentThemeName
-        {
-            get
-            {
-                return string.IsNullOrEmpty(WorkContext.CurrentStore.ThemeName) ? _globalThemeName : WorkContext.CurrentStore.ThemeName;
-            }
-        }
+        public string CurrentThemeName => string.IsNullOrEmpty(WorkContext.CurrentStore.ThemeName) ? _globalThemeName : WorkContext.CurrentStore.ThemeName;
 
 
         /// <summary>
         /// Current theme base path
         /// </summary>
-        private string CurrentThemePath
-        {
-            get
-            {
-                return Path.Combine(WorkContext.CurrentStore.Id, CurrentThemeName);
-            }
-        }
+        private string CurrentThemePath => Path.Combine(WorkContext.CurrentStore.Id, CurrentThemeName);
 
         #region IFileSystem members
         public string ReadTemplateFile(Context context, string templateName)
@@ -157,7 +129,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             var templatePath = ResolveTemplatePath(templateName);
             if (string.IsNullOrEmpty(templatePath))
             {
-                throw new FileSystemException(string.Format("Template not found: '{0}'. Searched paths: {1}", templateName, string.Join("<br>", DiscoveryPaths)));
+                throw new FileSystemException($"Template not found: '{templateName}'. Searched paths: {string.Join("<br>", DiscoveryPaths)}");
             }
             return ReadTemplateByPath(templatePath);
         }
@@ -176,10 +148,12 @@ namespace VirtoCommerce.LiquidThemeEngine
                 return retVal;
             }
         }
+
         /// <summary>
         /// Return stream for requested  asset file  (used for search current and base themes assets)
         /// </summary>
         /// <param name="filePath"></param>
+        /// <param name="searchInGlobalThemeOnly"></param>
         /// <returns></returns>
         public Stream GetAssetStream(string filePath, bool searchInGlobalThemeOnly = false)
         {
@@ -249,13 +223,14 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// resolve  template path by it name
         /// </summary>
         /// <param name="templateName"></param>
+        /// <param name="searchInGlobalThemeOnly"></param>
         /// <returns></returns>
         public string ResolveTemplatePath(string templateName, bool searchInGlobalThemeOnly = false)
         {
             if (WorkContext.CurrentStore == null)
                 return null;
 
-            var liquidTemplateFileName = String.Format(_liquidTemplateFormat, templateName);
+            var liquidTemplateFileName = string.Format(_liquidTemplateFormat, templateName);
             var curentThemediscoveryPaths = _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x, liquidTemplateFileName));
 
             //First try to find template in current theme folder
@@ -278,14 +253,14 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// <returns></returns>
         public string RenderTemplateByName(string templateName, Dictionary<string, object> parameters)
         {
-            if (String.IsNullOrEmpty(templateName))
+            if (string.IsNullOrEmpty(templateName))
             {
-                throw new ArgumentNullException("templateName");
+                throw new ArgumentNullException(nameof(templateName));
             }
             var templatePath = ResolveTemplatePath(templateName);
             if (string.IsNullOrEmpty(templatePath))
             {
-                throw new FileSystemException(string.Format("Template not found: '{0}'. Searched paths: {1}", templateName, string.Join("<br>", DiscoveryPaths)));
+                throw new FileSystemException($"Template not found: '{templateName}'. Searched paths: {string.Join("<br>", DiscoveryPaths)}");
             }
             var templateContent = ReadTemplateByPath(templatePath);
             var retVal = RenderTemplate(templateContent, parameters);
@@ -300,12 +275,12 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// <returns></returns>
         public string RenderTemplate(string templateContent, Dictionary<string, object> parameters)
         {
-            if (String.IsNullOrEmpty(templateContent))
+            if (string.IsNullOrEmpty(templateContent))
             {
                 return templateContent;
             }
 
-            Match isLiquidTemplate = _isLiquid.Match(templateContent);
+            var isLiquidTemplate = _isLiquid.Match(templateContent);
             if (!isLiquidTemplate.Success)
             {
                 return templateContent;
@@ -318,17 +293,17 @@ namespace VirtoCommerce.LiquidThemeEngine
 
             Template.FileSystem = this;
 
-            var renderParams = new RenderParameters()
+            var renderParams = new RenderParameters
             {
                 LocalVariables = Hash.FromDictionary(parameters)
             };
 
-            var parsedTemplate = _cacheManager.Get(GetCacheKey("ParseTemplate", templateContent.GetHashCode().ToString()), "LiquidTheme", () => { return Template.Parse(templateContent); });
+            var parsedTemplate = _cacheManager.Get(GetCacheKey("ParseTemplate", templateContent.GetHashCode().ToString()), "LiquidTheme", () => Template.Parse(templateContent));
 
             var retVal = parsedTemplate.RenderWithTracing(renderParams);
 
             //Copy key values which were generated in rendering to out parameters
-            if (parameters != null && parsedTemplate.Registers != null)
+            if (parsedTemplate.Registers != null)
             {
                 foreach (var registerPair in parsedTemplate.Registers)
                 {
@@ -348,7 +323,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         {
             return _cacheManager.Get(GetCacheKey("GetSettings", defaultValue), "LiquidThemeRegion", () =>
             {
-                DefaultableDictionary retVal = new DefaultableDictionary(defaultValue);
+                var retVal = new DefaultableDictionary(defaultValue);
                 //Read first settings from global theme
                 var resultSettings = InnerGetSettings(_globalThemeBlobProvider, "");
                 //Then load from current theme
@@ -470,12 +445,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 {
                     var settings = JsonConvert.DeserializeObject<JObject>(stream.ReadToString());
                     // now get settings for current theme and add it as a settings parameter
-                    retVal = settings["current"] as JObject;
-                    if (retVal == null)
-                    {
-                        //is setting preset name need return it as active
-                        retVal = settings["presets"][settings["current"].ToString()] as JObject;
-                    }
+                    retVal = settings["current"] as JObject ?? settings["presets"][settings["current"].ToString()] as JObject;
                 }
             }
             return retVal;
@@ -485,10 +455,10 @@ namespace VirtoCommerce.LiquidThemeEngine
         {
             var retVal = _cacheManager.Get(GetCacheKey("ReadTemplateByName", templatePath), "LiquidThemeRegion", () =>
             {
-                if (!String.IsNullOrEmpty(templatePath))
+                if (!string.IsNullOrEmpty(templatePath))
                 {
                     //First try find content in current store themer
-                    IContentBlobProvider blobProvider = _themeBlobProvider;
+                    var blobProvider = _themeBlobProvider;
                     if (!blobProvider.PathExists(templatePath))
                     {
                         //Else search in global theme
@@ -507,12 +477,12 @@ namespace VirtoCommerce.LiquidThemeEngine
 
         private string GetCacheKey(params string[] parts)
         {
-            var retVal = new string[] { CurrentThemePath, WorkContext.CurrentLanguage.CultureName, WorkContext.CurrentCurrency.Code };
+            var retVal = new[] { CurrentThemePath, WorkContext.CurrentLanguage.CultureName, WorkContext.CurrentCurrency.Code };
             if (parts != null)
             {
-                retVal = retVal.Concat(parts.Select(x => x == null ? String.Empty : x)).ToArray();
+                retVal = retVal.Concat(parts.Select(x => x ?? string.Empty)).ToArray();
             }
-            return String.Join(":", retVal).GetHashCode().ToString();
+            return string.Join(":", retVal).GetHashCode().ToString();
         }
 
     }
