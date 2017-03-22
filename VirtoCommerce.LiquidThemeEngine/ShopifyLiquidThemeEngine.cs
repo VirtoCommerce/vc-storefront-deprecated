@@ -217,7 +217,10 @@ namespace VirtoCommerce.LiquidThemeEngine
                 var parameters = shopifyContext.ToLiquid() as Dictionary<string, object>;
                 var settings = GetSettings("''");
                 parameters.Add("settings", settings);
+
                 var templateContent = retVal.ReadToString();
+                retVal.Dispose();
+
                 var template = RenderTemplate(templateContent, parameters);
                 retVal = new MemoryStream(Encoding.UTF8.GetBytes(template));
             }
@@ -225,6 +228,8 @@ namespace VirtoCommerce.LiquidThemeEngine
             if (retVal != null && (filePath.Contains(".scss.") || filePath.EndsWith(".scss")))
             {
                 var content = retVal.ReadToString();
+                retVal.Dispose();
+
                 try
                 {
                     //handle scss resources
