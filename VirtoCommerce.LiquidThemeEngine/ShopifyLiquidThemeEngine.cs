@@ -318,7 +318,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 LocalVariables = Hash.FromDictionary(parameters)
             };
 
-            var parsedTemplate = _cacheManager.Get(GetCacheKey("ParseTemplate", templateContent.GetHashCode().ToString()), "LiquidTheme", () => { return Template.Parse(templateContent); });
+            var parsedTemplate = Template.Parse(templateContent); 
 
             var retVal = parsedTemplate.RenderWithTracing(renderParams);
 
