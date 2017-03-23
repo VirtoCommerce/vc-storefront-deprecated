@@ -26,7 +26,6 @@ namespace VirtoCommerce.Storefront.Services
         private static readonly Regex _headerRegExp = new Regex(@"(?s:^---(.*?)---)");
         private static readonly string[] _extensions = { ".md", ".html" };
         private readonly ILiquidThemeEngine _liquidEngine;
-        private readonly ILocalCacheManager _cacheManager;
         private readonly Func<WorkContext> _workContextFactory;
         private readonly Func<IStorefrontUrlBuilder> _urlBuilderFactory;
         private readonly Func<string, ContentItem> _contentItemFactory;
@@ -41,7 +40,6 @@ namespace VirtoCommerce.Storefront.Services
         {
             _liquidEngine = liquidEngine;
 
-            _cacheManager = cacheManager;
             _workContextFactory = workContextFactory;
             _urlBuilderFactory = urlBuilderFactory;
             _contentItemFactory = contentItemFactory;
@@ -50,11 +48,11 @@ namespace VirtoCommerce.Storefront.Services
             //Observe content changes to invalidate cache if changes occur
             _contentBlobProvider.Changed += (sender, args) =>
             {
-                _cacheManager.Clear();
+                cacheManager.Clear();
             };
             _contentBlobProvider.Renamed += (sender, args) =>
             {
-                _cacheManager.Clear();
+                cacheManager.Clear();
             };
 
             _markdownPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
@@ -66,7 +64,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             var retVal = new List<ContentItem>();
             var baseStoreContentPath = "/" + store.Id;
-            var searchPattern = "*.*";
+            const string searchPattern = "*.*";
 
             if (_contentBlobProvider.PathExists(baseStoreContentPath))
             {
@@ -74,7 +72,7 @@ namespace VirtoCommerce.Storefront.Services
 
                 //Search files by requested search pattern
                 var contentBlobs = _contentBlobProvider.Search(baseStoreContentPath, searchPattern, true)
-                                             .Where(x => _extensions.Any(y => x.EndsWith(y)))
+                                             .Where(x => _extensions.Any(x.EndsWith))
                                              .Select(x => x.Replace("\\\\", "\\"));
 
                 //each content file  has a name pattern {name}.{language?}.{ext}
@@ -135,7 +133,7 @@ namespace VirtoCommerce.Storefront.Services
             if (workContext != null)
             {
                 var shopifyContext = workContext.ToShopifyModel(_urlBuilderFactory());
-                var parameters = shopifyContext.ToLiquid() as Dictionary<string, object>;
+                var parameters = (Dictionary<string, object>)shopifyContext.ToLiquid();
 
                 themeSettings = _liquidEngine.GetSettings();
                 parameters.Add("settings", themeSettings);
@@ -246,11 +244,13 @@ namespace VirtoCommerce.Storefront.Services
         {
             public LocalizedBlobInfo(string blobPath)
             {
-                Language = Language.InvariantLanguage;
                 Path = blobPath;
-                var parts = System.IO.Path.GetFileName(blobPath).Split('.');
-                Name = parts.FirstOrDefault();
-                if (parts.Count() == 3)
+                Language = Language.InvariantLanguage;
+
+                var parts = System.IO.Path.GetFileName(blobPath)?.Split('.');
+                Name = parts?.FirstOrDefault();
+
+                if (parts?.Length == 3)
                 {
                     try
                     {
@@ -262,9 +262,10 @@ namespace VirtoCommerce.Storefront.Services
                     }
                 }
             }
-            public string Name { get; private set; }
-            public Language Language { get; private set; }
-            public string Path { get; private set; }
+
+            public string Name { get; }
+            public Language Language { get; }
+            public string Path { get; }
         }
     }
 }

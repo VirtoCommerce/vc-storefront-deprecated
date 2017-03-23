@@ -66,14 +66,12 @@ namespace VirtoCommerce.Storefront.Test
             var language = new Model.Language("en-US");
             var service = GetStaticContentService();
 
-            var result = service.LoadStoreStaticContent(new Store { Id = "TestStore" });
+            var result = service.LoadStoreStaticContent(new Store { Id = "TestStore" }).ToList();
 
             var blog = result.OfType<Blog>().FirstOrDefault(x => x.Name == "news");
-
-            var page = result.Where(x => x.Url.Equals("blogs/news/post1") && (x.Language == language
-                        || x.Language.IsInvariant)).Single();
-
             Assert.NotNull(blog);
+
+            var page = result.Single(x => x.Url.Equals("blogs/news/post1") && (x.Language == language || x.Language.IsInvariant));
             Assert.IsType<BlogArticle>(page);
             Assert.NotEmpty(page.Content);
             Assert.Equal(page.Url, "blogs/news/post1");
