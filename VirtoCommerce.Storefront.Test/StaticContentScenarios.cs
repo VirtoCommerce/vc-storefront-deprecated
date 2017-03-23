@@ -80,7 +80,16 @@ namespace VirtoCommerce.Storefront.Test
             Assert.Equal(((BlogArticle)page).BlogName, "news");
         }
 
-        private IStaticContentService GetStaticContentService()
+        [Fact]
+        public void DontCrashOnInvalidYaml()
+        {
+            var service = GetStaticContentService();
+            var result = service.LoadStoreStaticContent(new Store { Id = "StoreWithInvalidPages" }).ToList();
+            Assert.Equal(2, result.Count);
+        }
+
+
+        private static IStaticContentService GetStaticContentService()
         {
             var cacheManager = new Mock<ILocalCacheManager>();
             cacheManager.Setup(cache => cache.Get<ContentItem[]>(It.IsAny<string>(), It.IsAny<string>())).Returns<ContentItem[]>(null);
