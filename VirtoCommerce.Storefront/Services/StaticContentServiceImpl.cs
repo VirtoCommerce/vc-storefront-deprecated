@@ -114,19 +114,23 @@ namespace VirtoCommerce.Storefront.Services
                 //Load raw content with metadata
                 content = stream.ReadToString();
             }
+
             IDictionary<string, IEnumerable<string>> metaHeaders;
-            IDictionary themeSettings = null;
+            string error = null;
+
             try
             {
                 metaHeaders = ReadYamlHeader(content);
             }
             catch (Exception ex)
             {
-                throw new ApplicationException(string.Format("Failed to read yaml header from \"{0}\"", contentItem.StoragePath), ex);
+                error = $"Failed to parse YAML header from \"{contentItem.StoragePath}\"<br/>{ex.Message}";
+                metaHeaders = new Dictionary<string, IEnumerable<string>>();
             }
 
             content = RemoveYamlHeader(content);
 
+            IDictionary themeSettings = null;
             var workContext = _workContextFactory();
             if (workContext != null)
             {
@@ -140,13 +144,18 @@ namespace VirtoCommerce.Storefront.Services
             }
 
             //Render markdown content
-            if (string.Equals(Path.GetExtension(contentItem.StoragePath), ".md", StringComparison.InvariantCultureIgnoreCase))
+            if (Path.GetExtension(contentItem.StoragePath).EqualsInvariant(".md"))
             {
                 content = Markdown.ToHtml(content, _markdownPipeline);
             }
 
+            if (!string.IsNullOrEmpty(error))
+            {
+                content = $"{error}<br/>{content}";
+            }
+
             contentItem.LoadContent(content, metaHeaders);
-                        
+
             //Try to get default permalink template from theme settings
             if (string.IsNullOrEmpty(contentItem.Permalink))
             {
@@ -154,7 +163,7 @@ namespace VirtoCommerce.Storefront.Services
                 if (themeSettings != null)
                 {
                     contentItem.Permalink = (string)themeSettings["permalink"] ?? contentItem.Permalink;
-                }     
+                }
             }
             //Transform permalink template to url
             contentItem.Url = GetContentItemUrl(contentItem, contentItem.Permalink);
