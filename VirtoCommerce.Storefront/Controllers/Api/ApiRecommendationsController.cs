@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using Antlr.Runtime.Misc;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
@@ -19,7 +19,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             _recommendationServiceFactory = recommendationsServiceFactory;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult> GetRecommendations(string provider, string type, int skip, int take, string[] productIds)
         {
             var recommendationService =_recommendationServiceFactory(provider);
@@ -32,7 +32,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
             var result = await recommendationService.GetRecommendationsAsync(context, type, skip, take);
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
     }
 }

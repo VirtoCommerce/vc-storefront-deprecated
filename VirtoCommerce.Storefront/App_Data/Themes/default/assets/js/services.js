@@ -152,3 +152,11 @@ storefrontApp.service('quoteRequestService', ['$http', function ($http) {
         }
     }
 }]);
+
+storefrontApp.service('recomendationService', ['$http', function ($http) {
+    return {
+        getRecomendedProducts: function (requestData) {
+            return $http.post('storefrontapi/recomendations', requestData );
+        }
+    }
+}]);

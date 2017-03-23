@@ -23,7 +23,8 @@ namespace VirtoCommerce.Storefront.Services.Recommendations
         {
             var searchCriteria = new ProductSearchCriteria()
             {
-                ResponseGroup = ItemResponseGroup.ItemLarge
+                ResponseGroup = ItemResponseGroup.ItemLarge,
+                PageSize = take
             };
             var searchResult = await _catalogSearchService.SearchProductsAsync(searchCriteria);
 

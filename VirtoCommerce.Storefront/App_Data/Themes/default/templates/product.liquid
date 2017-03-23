@@ -214,12 +214,14 @@
 
     {% if settings.related_products_enable %}
     {% assign grid_item_width = 'large--one-fifth medium--one-third small--one-half' %}
+
+    {% comment %}
     {% include 'related-products' %}
-    {% endif %}
+    {% endcomment %}
+
+    {% include 'recommendations', provider: 'Cognitive', type: 'Recommendations', product_ids: product.id, size: 5 %}
     
-    <!--{% include 'recommendations', provider: 'Cognitive', type: 'Recommendations', product_ids: product.id, size: 5 %}
-    {% include 'recommendations', provider: 'Association', type: 'Upsale', size: 5 %}
-    {% include 'recommendations', provider: 'Association', type: 'CrossSale', size: 5 %}-->
+    {% endif %}
 
     {% if settings.product_reviews_enable %}
 <hr>
