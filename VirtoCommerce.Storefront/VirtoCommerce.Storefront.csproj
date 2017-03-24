@@ -454,7 +454,9 @@
     <Content Include="App_Data\Themes\default\templates\bulk-order.liquid" />
     <Content Include="App_Data\Themes\default\templates\product-compare.liquid" />
     <Content Include="App_Data\Themes\default\snippets\product-compare-list-dialog.liquid" />
-    <Content Include="App_Data\Themes\default\snippets\recommendations.liquid" />
+    <Content Include="App_Data\Themes\default\snippets\recommendations.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -485,6 +487,7 @@
     <Compile Include="AutoRestClients\OrdersModuleApi.cs" />
     <Compile Include="AutoRestClients\PlatformModuleApi.cs" />
     <Compile Include="AutoRestClients\PricingModuleApi.cs" />
+    <Compile Include="AutoRestClients\ProductRecommendationsModuleApi.cs" />
     <Compile Include="AutoRestClients\QuoteModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchApiModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
