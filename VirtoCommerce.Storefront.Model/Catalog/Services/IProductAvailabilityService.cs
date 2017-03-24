@@ -1,9 +1,10 @@
-﻿namespace VirtoCommerce.Storefront.Model.Catalog.Services
+﻿using System.Threading.Tasks;
+
+namespace VirtoCommerce.Storefront.Model.Catalog.Services
 {
     public interface IProductAvailabilityService
     {
-        long? GetAvailableQuantity(Product product);
-
-        bool IsAvailable(Product product, long requestedQuantity);
+        Task<bool> IsAvailable(Product product, long requestedQuantity);
+        Task<long?> GetAvailableQuantity(Product product);
     }
 }

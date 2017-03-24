@@ -105,7 +105,7 @@ namespace VirtoCommerce.Storefront.Services
 
                     foreach (var product in allProducts)
                     {
-                        product.IsAvailable = _productAvailabilityService.IsAvailable(product, 1);
+                        product.IsAvailable = await _productAvailabilityService.IsAvailable(product, 1);
                     }
 
                     await Task.WhenAll(taskList.ToArray());
@@ -228,7 +228,7 @@ namespace VirtoCommerce.Storefront.Services
 
                 foreach (var product in productsWithVariations)
                 {
-                    product.IsAvailable = _productAvailabilityService.IsAvailable(product, 1);
+                    product.IsAvailable = await _productAvailabilityService.IsAvailable(product, 1);
                 }
 
                 await Task.WhenAll(taskList.ToArray());
@@ -358,7 +358,7 @@ namespace VirtoCommerce.Storefront.Services
                 //Lazy loading for child categories
                 category.Categories = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos2) =>
                 {
-                    var categorySearchCriteria = new CategorySearchCriteria()
+                    var categorySearchCriteria = new CategorySearchCriteria
                     {
                         PageNumber = pageNumber,
                         PageSize = pageSize,

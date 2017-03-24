@@ -89,9 +89,9 @@ namespace VirtoCommerce.Storefront.Builders
                 //Load cart payment plan with have same id
                 if (store.SubscriptionEnabled)
                 {
-                    var paymentPlanIds = new string[] { cart.Id }.Concat(cart.Items.Select(x => x.ProductId).Distinct()).ToArray();
+                    var paymentPlanIds = new[] { cart.Id }.Concat(cart.Items.Select(x => x.ProductId).Distinct()).ToArray();
 
-                    var paymentPlans = (await _subscriptionApi.SubscriptionModule.GetPaymentPlanByIdsAsync(paymentPlanIds)).Select(x => x.ToPaymentPlan());
+                    var paymentPlans = (await _subscriptionApi.SubscriptionModule.GetPaymentPlanByIdsAsync(paymentPlanIds)).Select(x => x.ToPaymentPlan()).ToList();
                     cart.PaymentPlan = paymentPlans.FirstOrDefault(x => x.Id == cart.Id);
                     foreach (var lineItem in cart.Items)
                     {
@@ -114,7 +114,7 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureCartExists();
 
-            var isProductAvailable = _productAvailabilityService.IsAvailable(product, quantity);
+            var isProductAvailable = await _productAvailabilityService.IsAvailable(product, quantity);
             if (isProductAvailable)
             {
                 var lineItem = product.ToLineItem(Cart.Language, quantity);
@@ -310,13 +310,11 @@ namespace VirtoCommerce.Storefront.Builders
                 if (quoteRequest.ShipmentMethod != null)
                 {
                     var availableShippingMethods = await GetAvailableShippingMethodsAsync();
-                    if (availableShippingMethods != null)
+                    var availableShippingMethod = availableShippingMethods?.FirstOrDefault(sm => sm.ShipmentMethodCode == quoteRequest.ShipmentMethod.ShipmentMethodCode);
+
+                    if (availableShippingMethod != null)
                     {
-                        var availableShippingMethod = availableShippingMethods.FirstOrDefault(sm => sm.ShipmentMethodCode == quoteRequest.ShipmentMethod.ShipmentMethodCode);
-                        if (availableShippingMethod != null)
-                        {
-                            shipment = quoteRequest.ShipmentMethod.ToCartShipment(Cart.Currency);
-                        }
+                        shipment = quoteRequest.ShipmentMethod.ToCartShipment(Cart.Currency);
                     }
                 }
                 Cart.Shipments.Add(shipment);
@@ -479,14 +477,15 @@ namespace VirtoCommerce.Storefront.Builders
 
         protected virtual ShoppingCart CreateCart(string cartName, Store store, CustomerInfo customer, Language language, Currency currency)
         {
-            var cart = new ShoppingCart(currency, language);
-
-            cart.CustomerId = customer.Id;
-            cart.Name = "Default";
-            cart.StoreId = store.Id;
-            cart.Language = language;
-            cart.IsAnonymous = !customer.IsRegisteredUser;
-            cart.CustomerName = customer.IsRegisteredUser ? customer.UserName : StorefrontConstants.AnonymousUsername;
+            var cart = new ShoppingCart(currency, language)
+            {
+                CustomerId = customer.Id,
+                Name = "Default",
+                StoreId = store.Id,
+                Language = language,
+                IsAnonymous = !customer.IsRegisteredUser,
+                CustomerName = customer.IsRegisteredUser ? customer.UserName : StorefrontConstants.AnonymousUsername
+            };
 
             return cart;
         }
@@ -509,8 +508,8 @@ namespace VirtoCommerce.Storefront.Builders
                 }
                 else
                 {
-                    var availableQuantity = _productAvailabilityService.GetAvailableQuantity(product);
-                    var isProductAvailable = _productAvailabilityService.IsAvailable(product, lineItem.Quantity);
+                    var availableQuantity = await _productAvailabilityService.GetAvailableQuantity(product);
+                    var isProductAvailable = await _productAvailabilityService.IsAvailable(product, lineItem.Quantity);
                     if (!isProductAvailable)
                     {
                         if (availableQuantity.HasValue)
