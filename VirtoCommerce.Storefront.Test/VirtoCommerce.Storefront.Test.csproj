@@ -140,6 +140,8 @@
     <Compile Include="ConcurrentAsyncLockTests.cs" />
     <Compile Include="CssUrlTransformTests.cs" />
     <Compile Include="MutablePagedListTests.cs" />
+    <None Include="Pages\StoreWithInvalidPages\valid.md" />
+    <None Include="Pages\StoreWithInvalidPages\invalid.md" />
     <None Include="Pages\TestStore\blogs\news\default.md" />
     <Compile Include="OutlineTests.cs" />
     <Compile Include="QuoteRequestTests.cs" />
