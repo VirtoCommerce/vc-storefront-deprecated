@@ -1,4 +1,4 @@
-{% unless grid_item_width %}
+﻿{% unless grid_item_width %}
     {% assign grid_item_width = 'large--one-quarter medium-down--one-half' %}
 {% endunless %}
 
@@ -39,11 +39,13 @@
             </div>
         </div>
         <div class="product-item--other" style="margin-bottom: 10px;">
-            <button class="btn btn-secondary" title="{{ 'products.general.add_to_cart' | t }}" style="width: 70%;" ng-click="addProductToCartById('{{ product.id }}', 1, $event)" ng-controller="productController">
-                <span class="icon icon-cart"></span>
-            </button>
+            {% if product.available %}
+                <button class="btn btn-secondary" title="{{ 'products.general.add_to_cart' | t }}" style="width: 70%;" ng-click="addProductToCartById('{{ product.id }}', 1, $event)" ng-controller="productController">
+                    <span class="icon icon-cart"></span>
+                </button>
+            {% endif %}
             {% if settings.product_compare_enabled %}
-                <button class="btn btn-secondary" title="{{ 'products.compare_list.add_to_compare' | t }}" style="width: 25%;" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
+                <button class="btn btn-secondary" title="{{ 'products.compare_list.add_to_compare' | t }}" style="width: {% if product.available %}25{% else %}100{% endif %}%;" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
                     <span class="fa fa-bar-chart"></span>
                 </button>
             {% endif %}
@@ -57,7 +59,7 @@
                             {% include 'price' with product.compare_at_price_with_tax %}
                         {% else %}
                             {% include 'price' with product.compare_at_price %}
-                        {% endif %}                           
+                        {% endif %}
                     </span>
                 {% endif %}
                 {% if settings.show_prices_with_taxes %}

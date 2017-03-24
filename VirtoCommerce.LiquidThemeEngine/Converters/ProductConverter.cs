@@ -37,12 +37,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             result.Variants.Add(ToLiquidVariant(product));
 
-            if (product.Variations != null)
+            if (product.Variations != null && product.Variations.Any())
             {
                 result.Variants.AddRange(product.Variations.Select(x => x.ToVariant()));
+                result.Available = product.Variations.Any(v => v.IsAvailable);
             }
-
-            result.Available = true; // product.IsActive && product.IsBuyable;
+            else
+            {
+                result.Available = product.IsAvailable;
+            }
 
             result.CatalogId = product.CatalogId;
             result.CategoryId = product.CategoryId;
@@ -152,7 +155,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
         {
             var result = new Variant();
 
-            result.Available = true;
+            result.Available = product.IsAvailable;
             result.Barcode = product.Gtin;
             result.CatalogId = product.CatalogId;
             result.CategoryId = product.CategoryId;

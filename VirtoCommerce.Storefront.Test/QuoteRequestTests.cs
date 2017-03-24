@@ -183,7 +183,7 @@ namespace VirtoCommerce.Storefront.Test
             var pricingService = new PricingServiceImpl(pricingApi, null, promotionEvaluator);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, null, cacheManager);
 
-            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService, null);
+            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService, null, null);
             return result;
         }
     }
