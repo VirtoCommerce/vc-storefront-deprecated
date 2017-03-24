@@ -508,20 +508,13 @@ namespace VirtoCommerce.Storefront.Builders
                 }
                 else
                 {
-                    var availableQuantity = await _productAvailabilityService.GetAvailableQuantity(product);
                     var isProductAvailable = await _productAvailabilityService.IsAvailable(product, lineItem.Quantity);
                     if (!isProductAvailable)
                     {
-                        if (availableQuantity.HasValue)
-                        {
-                            lineItem.ValidationErrors.Add(new QuantityError(availableQuantity.Value));
-                        }
-                        else
-                        {
-                            lineItem.ValidationErrors.Add(new UnavailableError());
-                        }
-
                         lineItem.IsValid = false;
+
+                        var availableQuantity = await _productAvailabilityService.GetAvailableQuantity(product);
+                        lineItem.ValidationErrors.Add(new QuantityError(availableQuantity));
                     }
 
                     var tierPrice = product.Price.GetTierPrice(lineItem.Quantity);
