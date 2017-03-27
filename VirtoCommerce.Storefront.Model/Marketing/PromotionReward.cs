@@ -103,6 +103,7 @@ namespace VirtoCommerce.Storefront.Model.Marketing
             var discount = new Discount(amount.Currency);
             discount.Amount = new Money(absoluteAmount, amount.Currency);
             discount.Description = Promotion.Description;
+            discount.Coupon = Coupon;
             discount.PromotionId = Promotion.Id;
 
             return discount;

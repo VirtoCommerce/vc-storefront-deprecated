@@ -414,8 +414,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
             if (Coupon != null && !string.IsNullOrEmpty(Coupon.Code))
             {
-                Coupon.AppliedSuccessfully = rewards.Any(x => x.IsValid && x.Promotion.Coupons != null
-                                                              && x.Promotion.Coupons.Contains(Coupon.Code, StringComparer.OrdinalIgnoreCase));
+                Coupon.AppliedSuccessfully = rewards.Any(x => x.IsValid && x.Coupon != null);
             }
 
         }
