@@ -76,6 +76,11 @@
             refresh();
         };
 
+        $ctrl.getInvoicePdf = function () {
+            var url = $window.BASE_URL + 'storefrontapi/orders/' + $ctrl.orderNumber + '/invoice';
+            $window.open(url, '_blank');
+        }
+
         $ctrl.showPayment = function () {
             loadPromise.then(function (result) {
                 $ctrl.isShowPayment = true;
