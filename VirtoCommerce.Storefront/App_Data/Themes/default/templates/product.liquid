@@ -215,7 +215,7 @@
     {% if settings.related_products_enable %}
     {% assign grid_item_width = 'large--one-fifth medium--one-third small--one-half' %}
 
-    {% include 'recommendations', provider: 'Association', type: 'Recommendations', product_ids: product.id, size: 5 %}
+    {% include 'recommendations', provider: 'Cognitive', type: 'Recommendations', product_ids: product.id, size: 5 %}
     
     {% comment %}
 

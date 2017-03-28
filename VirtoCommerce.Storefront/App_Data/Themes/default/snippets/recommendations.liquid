@@ -1,5 +1,5 @@
 <hr />
-<span class="h1">{{ 'products.general.related_products' | t }} 2</span>
+<span class="h1">{{ 'products.general.related_products' | t }}</span>
 <div class="grid-uniform" ng-controller="recommendationsController" ng-init="setType('{{ provider }}','{{ type }}','{{ product_ids }}','{{ size }}')">
     <div ng-repeat="product in productListRecomendations" class="grid-item large--one-fifth medium--one-third small--one-half" ng-class="[{ 'on-sale': (product.price.listPrice.amount > product.price.actualPrice.amount), 'comparable': {{ settings.product_compare_enabled }} }]">
         <a href="{% raw %}{{ product.url }}{% endraw %}" class="product-grid-item">
