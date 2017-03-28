@@ -24,16 +24,16 @@ namespace VirtoCommerce.Storefront.Services
             return isAvailable;
         }
 
-        public virtual Task<long?> GetAvailableQuantity(Product product)
+        public virtual Task<long> GetAvailableQuantity(Product product)
         {
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
 
-            long? availableQuantity = null;
+            long availableQuantity = 0;
 
             if (product.TrackInventory && product.Inventory != null)
             {
-                availableQuantity = product.Inventory.InStockQuantity - (product.Inventory.ReservedQuantity ?? 0L);
+                availableQuantity = Math.Max(0, (product.Inventory.InStockQuantity ?? 0L) - (product.Inventory.ReservedQuantity ?? 0L));
             }
 
             return Task.FromResult(availableQuantity);

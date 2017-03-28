@@ -103,12 +103,12 @@ namespace VirtoCommerce.Storefront.Services
                         taskList.Add(LoadProductPaymentPlanAsync(allProducts, workContext));
                     }
 
+                    await Task.WhenAll(taskList.ToArray());
+
                     foreach (var product in allProducts)
                     {
                         product.IsAvailable = await _productAvailabilityService.IsAvailable(product, 1);
                     }
-
-                    await Task.WhenAll(taskList.ToArray());
                 }
             }
 

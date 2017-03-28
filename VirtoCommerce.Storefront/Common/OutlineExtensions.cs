@@ -1,58 +1,41 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using catalogModel = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Tools;
+using catalogDto = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
+using toolsDto = VirtoCommerce.Tools.Models;
 
 namespace VirtoCommerce.Storefront.Common
 {
     public static class OutlineExtensions
     {
         /// <summary>
-        /// Returns best matched outline path CategoryId/CategoryId2.
+        /// Returns best matching outline path for the given catalog: CategoryId/CategoryId2.
         /// </summary>
         /// <param name="outlines"></param>
         /// <param name="catalogId"></param>
         /// <returns></returns>
-        public static string GetOutlinePath(this IEnumerable<catalogModel.Outline> outlines, string catalogId)
+        public static string GetOutlinePath(this IEnumerable<catalogDto.Outline> outlines, string catalogId)
         {
-            var result = string.Empty;
-
-            if (outlines != null)
-            {
-                // Find any outline for given catalog
-                var outline = outlines.GetOutlineForCatalog(catalogId);
-
-                if (outline != null)
-                {
-                    var pathSegments = new List<string>();
-
-                    pathSegments.AddRange(outline.Items
-                        .Where(i => i.SeoObjectType != "Catalog")
-                        .Select(i => i.Id));
-
-                    if (pathSegments.All(s => s != null))
-                    {
-                        result = string.Join("/", pathSegments);
-                    }
-                }
-            }
-
-            return result;
+            return outlines?.Select(o => o.JsonConvert<toolsDto.Outline>()).GetOutlinePath(catalogId);
         }
 
         /// <summary>
-        /// Returns first outline for given catalog (if any)
+        /// Returns product's category outline.
         /// </summary>
-        /// <param name="outlines"></param>
-        /// <param name="catalogId"></param>
+        /// <param name="product"></param>
         /// <returns></returns>
-        public static catalogModel.Outline GetOutlineForCatalog(this IEnumerable<catalogModel.Outline> outlines, string catalogId)
+        public static string GetCategoryOutline(this Product product)
         {
-            catalogModel.Outline result = null;
+            var result = string.Empty;
 
-            if (outlines != null)
+            if (product != null && !string.IsNullOrEmpty(product.Outline))
             {
-                // Find any outline for given catalog
-                result = outlines.FirstOrDefault(o => o.Items.Any(i => i.SeoObjectType == "Catalog" && i.Id == catalogId));
+                var i = product.Outline.LastIndexOf('/');
+                if (i >= 0)
+                {
+                    result = product.Outline.Substring(0, i);
+                }
             }
 
             return result;
