@@ -94,6 +94,7 @@
     <Compile Include="Common\EntryState.cs" />
     <Compile Include="Common\EnumerableExtension.cs" />
     <Compile Include="Common\IDistributedCacheManager.cs" />
+    <Compile Include="Common\IEntity.cs" />
     <Compile Include="Common\ILocalCacheManager.cs" />
     <Compile Include="Common\IMutablePagedList.cs" />
     <Compile Include="Common\IQueryableExtensions.cs" />

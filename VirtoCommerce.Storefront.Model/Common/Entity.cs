@@ -5,7 +5,7 @@ using System.Web;
 
 namespace VirtoCommerce.Storefront.Model.Common
 {
-    public abstract class Entity
+    public abstract class Entity : IEntity
     {
         private int? _requestedHashCode;
 

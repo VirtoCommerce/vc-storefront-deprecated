@@ -250,6 +250,14 @@ namespace VirtoCommerce.Storefront.Builders
         public virtual async Task MergeWithCartAsync(ShoppingCart cart)
         {
             EnsureCartExists();
+            
+            //Reset primary keys for all aggregated entities before merge
+            //To prevent insertions same Ids for target cart
+            var entities = cart.GetFlatObjectsListWithInterface<IEntity>();
+            foreach(var entity in entities)
+            {
+                entity.Id = null;
+            }
 
             foreach (var lineItem in cart.Items)
             {
