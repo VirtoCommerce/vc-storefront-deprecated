@@ -107,19 +107,19 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             {
                 var orderDto = await GetOrderDtoByNumber(orderNumber);
                 var paymentDto = orderDto.InPayments.FirstOrDefault(x => x.Number.EqualsInvariant(paymentNumber));
-                if(paymentDto == null)
+                if (paymentDto == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "payment " + paymentNumber + " not found");
                 }
                 var processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(orderDto.Id, paymentDto.Id, bankCardInfo);
-                return Json(new { orderProcessingResult = processingResult, paymentMethod =  paymentDto.PaymentMethod });
+                return Json(new { orderProcessingResult = processingResult, paymentMethod = paymentDto.PaymentMethod });
             }
         }
 
         // POST: storefrontapi/orders/{orderNumber}/payments
         [HttpPost]
         public async Task<ActionResult> AddOrUpdateOrderPayment(string orderNumber, PaymentIn payment)
-        {        
+        {
             if (payment.Sum.Amount == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Valid payment amount is required");
@@ -135,7 +135,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                     paymentDto.CustomerId = WorkContext.CurrentCustomer.Id;
                     paymentDto.CustomerName = WorkContext.CurrentCustomer.FullName;
                     paymentDto.Status = "New";
-                    orderDto.InPayments.Add((orderModel.PaymentIn)paymentDto);                  
+                    orderDto.InPayments.Add((orderModel.PaymentIn)paymentDto);
                 }
                 else
                 {
@@ -145,14 +145,23 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 await _orderApi.OrderModule.UpdateAsync(orderDto);
                 //Need to return payment with generated id
                 orderDto = await _orderApi.OrderModule.GetByIdAsync(orderDto.Id);
-                if(string.IsNullOrEmpty(paymentDto.Id))
+                if (string.IsNullOrEmpty(paymentDto.Id))
                 {
                     //Because we don't know the new payment id we need to get latest payment with same gateway code
                     paymentDto = orderDto.InPayments.Where(x => x.GatewayCode.EqualsInvariant(payment.GatewayCode)).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
                 }
                 return Json(paymentDto);
             }
-            
+
+        }
+
+        // GET: storefrontapi/orders/{orderNumber}/invoice
+        [HttpGet]
+        public async Task<ActionResult> GetInvoicePdf(string orderNumber)
+        {
+            var stream = await _orderApi.OrderModule.GetInvoicePdfAsync(orderNumber);
+
+            return File(stream, "application/pdf");
         }
 
         private async Task<CustomerOrder> GetOrderByNumber(string number)
