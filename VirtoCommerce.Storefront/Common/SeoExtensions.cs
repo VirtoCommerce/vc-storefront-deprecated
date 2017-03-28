@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Stores;
 using VirtoCommerce.Tools;
 using catalogDto = VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models;
@@ -23,11 +23,9 @@ namespace VirtoCommerce.Storefront.Common
         /// <returns></returns>
         public static string GetSeoPath(this IEnumerable<catalogDto.Outline> outlines, Store store, Language language, string defaultValue)
         {
-            var seoLinksType = EnumUtility.SafeParse(store.SeoLinksType.ToString(), toolsDto.SeoLinksType.None);
-
             return outlines
                 ?.Select(o => o.JsonConvert<toolsDto.Outline>())
-                .GetSeoPath(seoLinksType, store.Catalog, store.Id, store.DefaultLanguage.CultureName, language.CultureName, defaultValue);
+                .GetSeoPath(store.ToToolsStore(), language.CultureName, defaultValue);
         }
 
         /// <summary>
