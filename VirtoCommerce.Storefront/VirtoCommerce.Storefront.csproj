@@ -496,6 +496,7 @@
     <Compile Include="Common\HmacCredentials.cs" />
     <Compile Include="Common\HmacUtility.cs" />
     <Compile Include="Common\OutlineExtensions.cs" />
+    <Compile Include="Common\ServiceClientExtensions.cs" />
     <Compile Include="Common\VirtoCommerceApiRequestHandler.cs" />
     <Compile Include="Builders\CartBuilder.cs" />
     <Compile Include="Builders\QuoteRequestBuilder.cs" />
