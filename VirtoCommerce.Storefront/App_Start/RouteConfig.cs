@@ -55,8 +55,9 @@ namespace VirtoCommerce.Storefront
             // Marketing API
             routes.AddStorefrontRoute("API.Marketing.GetDynamicContent", "storefrontapi/marketing/dynamiccontent/{placeName}", defaults: new { controller = "ApiMarketing", action = "GetDynamicContent" });
 
-            // Recomendations API
-            routes.AddStorefrontRoute("API.Recomendations.GetRecommendations", "storefrontapi/recomendations", defaults: new { controller = "ApiRecommendations", action = "GetRecommendations" });
+            // Recommendations API
+            routes.AddStorefrontRoute("API.Recommendations.GetRecommendations", "storefrontapi/recommendations", defaults: new { controller = "ApiRecommendations", action = "GetRecommendations" });
+            routes.AddStorefrontRoute("API.Recommendations.SaveEventInfo", "storefrontapi/recommendations/eventinfo", new { controller = "ApiRecommendations", action = "SaveEventInfo" }, new { httpMethod = new HttpMethodConstraint("POST") });
 
             // Account API
             routes.AddStorefrontRoute("API.Account.GetCurrentCustomer", "storefrontapi/account", new { controller = "ApiAccount", action = "GetCurrentCustomer" },

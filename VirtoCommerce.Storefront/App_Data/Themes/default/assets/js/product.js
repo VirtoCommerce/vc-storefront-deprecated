@@ -17,7 +17,12 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         dialogService.showDialog(dialogData, 'recentlyAddedCartItemDialogController', 'storefront.recently-added-cart-item-dialog.tpl');
         cartService.addLineItem(product.id, quantity).then(function (response) {
             $rootScope.$broadcast('cartItemsChanged');
+            $rootScope.$broadcast('storefrontEvents', { productIds: product.id, eventType: 'AddShopCart' });
         });
+    }
+
+    $scope.clickProduct = function (productId) {
+        $rootScope.$broadcast('storefrontEvents', { productIds: productId, eventType: 'Click' });
     }
 
     $scope.addProductToCartById = function (productId, quantity, event) {

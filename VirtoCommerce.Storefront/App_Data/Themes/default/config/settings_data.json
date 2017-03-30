@@ -118,7 +118,8 @@
                     "name": "year"
                 }
             ],
-            "footer_content_text": "Some footer content text"
+            "footer_content_text": "Some footer content text",
+            "recommendations_enable": false
         },
         "Soft Green": {
             "ajax_cart_enable": true,
@@ -198,7 +199,8 @@
             "type_navigation_size": "15px",
             "type_navigation_transform": true,
             "remove_dollar_symbol": true,
-            "superscript_decimals": true
+            "superscript_decimals": true,
+            "recommendations_enable": false
         },
         "Dark": {
             "ajax_cart_enable": true,
@@ -286,7 +288,8 @@
             "type_navigation_transform": true,
             "remove_dollar_symbol": true,
             "superscript_decimals": true,
-            "store_selector_enable": true
+            "store_selector_enable": true,
+            "recommendations_enable": false
         }
     }
 }

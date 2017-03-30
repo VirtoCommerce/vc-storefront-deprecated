@@ -153,10 +153,13 @@ storefrontApp.service('quoteRequestService', ['$http', function ($http) {
     }
 }]);
 
-storefrontApp.service('recomendationService', ['$http', function ($http) {
+storefrontApp.service('recommendationService', ['$http', function ($http) {
     return {
-        getRecomendedProducts: function (requestData) {
-            return $http.post('storefrontapi/recomendations', requestData );
+        getRecommendedProducts: function (requestData) {
+            return $http.post('storefrontapi/recommendations', requestData );
+        },
+        saveEventInfo: function (eventInfo) {
+            return $http.post('storefrontapi/recommendations/eventinfo', eventInfo);
         }
     }
 }]);

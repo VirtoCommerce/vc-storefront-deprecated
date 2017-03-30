@@ -150,6 +150,12 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     var orderProcessingResult = response.data.orderProcessingResult;
                     var paymentMethod = response.data.paymentMethod;
                     handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
+
+                    var productIds = [];
+                    _.each($scope.checkout.cart.items, function (product) {
+                        productIds.push(product.id);
+                    });
+                    $rootScope.$broadcast('storefrontEvents', { productIds: productIds, eventType: 'Purchase' });
                 });
             });
         };
