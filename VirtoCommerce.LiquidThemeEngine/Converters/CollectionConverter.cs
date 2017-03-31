@@ -30,7 +30,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.Title = category.Name;
             result.Url = category.Url;
             result.DefaultSortBy = "manual";
-
+            result.Images = category.Images.Select(x => x.ToShopifyModel()).ToArray();
             if (category.PrimaryImage != null)
             {
                 result.Image = ToLiquidImage(category.PrimaryImage);
