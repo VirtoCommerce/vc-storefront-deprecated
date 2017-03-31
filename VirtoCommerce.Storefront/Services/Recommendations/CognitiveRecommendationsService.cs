@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleApi.Models;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
@@ -34,7 +35,15 @@ namespace VirtoCommerce.Storefront.Services.Recommendations
         {
             var result = new List<Product>();
 
-            var recommendedProductIds = await _productRecommendationsApi.Recommendations.GetCustomerRecommendationsAsync(context.StoreId, context.CustomerId, take);
+            var customerRecommendationsContext = new CustomerRecommendationsContext
+            {
+                StoreId = context.StoreId,
+                CustomerId = context.CustomerId,
+                ProductIds = context.ProductIds,
+                NumberOfResults = take
+            };
+
+            var recommendedProductIds = await _productRecommendationsApi.Recommendations.GetCustomerRecommendationsAsync(customerRecommendationsContext);
             if (recommendedProductIds != null)
             {
                 result.AddRange(await _catalogSearchService.GetProductsAsync(recommendedProductIds.ToArray(), ItemResponseGroup.ItemLarge));

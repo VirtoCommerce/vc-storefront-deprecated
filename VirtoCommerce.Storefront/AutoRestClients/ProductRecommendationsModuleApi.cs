@@ -344,11 +344,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// </summary>
         public ProductRecommendationsModuleApiClient Client { get; private set; }
 
-        /// <param name='storeId'>
-        /// </param>
-        /// <param name='customerId'>
-        /// </param>
-        /// <param name='numberOfResults'>
+        /// <param name='context'>
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -368,15 +364,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<string>>> GetCustomerRecommendationsWithHttpMessagesAsync(string storeId, string customerId, int numberOfResults, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<string>>> GetCustomerRecommendationsWithHttpMessagesAsync(CustomerRecommendationsContext context, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (storeId == null)
+            if (context == null)
             {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "storeId");
-            }
-            if (customerId == null)
-            {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "customerId");
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "context");
             }
             // Tracing
             bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
@@ -385,33 +377,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
             {
                 _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("storeId", storeId);
-                tracingParameters.Add("customerId", customerId);
-                tracingParameters.Add("numberOfResults", numberOfResults);
+                tracingParameters.Add("context", context);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetCustomerRecommendations", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/recommendations").ToString();
-            System.Collections.Generic.List<string> _queryParameters = new System.Collections.Generic.List<string>();
-            if (storeId != null)
-            {
-                _queryParameters.Add(string.Format("storeId={0}", System.Uri.EscapeDataString(storeId)));
-            }
-            if (customerId != null)
-            {
-                _queryParameters.Add(string.Format("customerId={0}", System.Uri.EscapeDataString(customerId)));
-            }
-            _queryParameters.Add(string.Format("numberOfResults={0}", System.Uri.EscapeDataString(Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(numberOfResults, this.Client.SerializationSettings).Trim('"'))));
-            if (_queryParameters.Count > 0)
-            {
-                _url += "?" + string.Join("&", _queryParameters);
-            }
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
-            _httpRequest.Method = new System.Net.Http.HttpMethod("GET");
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
             _httpRequest.RequestUri = new System.Uri(_url);
             // Set Headers
             if (customHeaders != null)
@@ -428,6 +404,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
 
             // Serialize Request
             string _requestContent = null;
+            if(context != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(context, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
             // Set Credentials
             if (this.Client.Credentials != null)
             {
@@ -914,32 +896,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='storeId'>
+            /// <param name='context'>
             /// </param>
-            /// <param name='customerId'>
-            /// </param>
-            /// <param name='numberOfResults'>
-            /// </param>
-            public static System.Collections.Generic.IList<string> GetCustomerRecommendations(this IRecommendations operations, string storeId, string customerId, int numberOfResults)
+            public static System.Collections.Generic.IList<string> GetCustomerRecommendations(this IRecommendations operations, CustomerRecommendationsContext context)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IRecommendations)s).GetCustomerRecommendationsAsync(storeId, customerId, numberOfResults), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IRecommendations)s).GetCustomerRecommendationsAsync(context), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='storeId'>
-            /// </param>
-            /// <param name='customerId'>
-            /// </param>
-            /// <param name='numberOfResults'>
+            /// <param name='context'>
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<string>> GetCustomerRecommendationsAsync(this IRecommendations operations, string storeId, string customerId, int numberOfResults, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<string>> GetCustomerRecommendationsAsync(this IRecommendations operations, CustomerRecommendationsContext context, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.GetCustomerRecommendationsWithHttpMessagesAsync(storeId, customerId, numberOfResults, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetCustomerRecommendationsWithHttpMessagesAsync(context, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -1035,11 +1009,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
     /// </summary>
     public partial interface IRecommendations
     {
-        /// <param name='storeId'>
-        /// </param>
-        /// <param name='customerId'>
-        /// </param>
-        /// <param name='numberOfResults'>
+        /// <param name='context'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -1056,7 +1026,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<string>>> GetCustomerRecommendationsWithHttpMessagesAsync(string storeId, string customerId, int numberOfResults, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<string>>> GetCustomerRecommendationsWithHttpMessagesAsync(CustomerRecommendationsContext context, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <param name='usageEvents'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1108,6 +1078,56 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ExportPushNotification>> UsageEventsExportWithHttpMessagesAsync(string storeId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class CustomerRecommendationsContext
+    {
+        /// <summary>
+        /// Initializes a new instance of the CustomerRecommendationsContext
+        /// class.
+        /// </summary>
+        public CustomerRecommendationsContext() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CustomerRecommendationsContext
+        /// class.
+        /// </summary>
+        public CustomerRecommendationsContext(string storeId = default(string), string customerId = default(string), System.Collections.Generic.IList<string> productIds = default(System.Collections.Generic.IList<string>), int? numberOfResults = default(int?))
+        {
+            StoreId = storeId;
+            CustomerId = customerId;
+            ProductIds = productIds;
+            NumberOfResults = numberOfResults;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
+        public string StoreId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "customerId")]
+        public string CustomerId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "productIds")]
+        public System.Collections.Generic.IList<string> ProductIds { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "numberOfResults")]
+        public int? NumberOfResults { get; set; }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
