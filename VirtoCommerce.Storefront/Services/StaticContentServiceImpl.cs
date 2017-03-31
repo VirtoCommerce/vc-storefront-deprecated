@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Markdig;
-using VirtoCommerce.ContentModule.Utils;
 using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.LiquidThemeEngine.Converters;
 using VirtoCommerce.Storefront.Model;
@@ -14,6 +13,7 @@ using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.StaticContent;
 using VirtoCommerce.Storefront.Model.StaticContent.Services;
 using VirtoCommerce.Storefront.Model.Stores;
+using VirtoCommerce.Tools;
 using YamlDotNet.RepresentationModel;
 
 namespace VirtoCommerce.Storefront.Services
@@ -171,8 +171,9 @@ namespace VirtoCommerce.Storefront.Services
 
         private static string GetContentItemUrl(ContentItem item, string permalink)
         {
-            return new FrontMatterPermalink(permalink)
+            return new FrontMatterPermalink
             {
+                UrlTemplate = permalink,
                 Categories = item.Categories,
                 Date = item.CreatedDate,
                 FilePath = item.StoragePath
