@@ -115,4 +115,11 @@
             </div>
         </form>
     </div>
+
+    {% assign product_ids = '' %}
+    {% for item in cart.items %}
+    {% assign product_ids = product_ids | append: item.product_id %}
+    {% assign product_ids = product_ids | append: ',' %}
+    {% endfor %}
+    {% include 'recommendations', provider: 'Cognitive', type: 'Recommendations', product_ids: product_ids, size: 5 %}
 </div>

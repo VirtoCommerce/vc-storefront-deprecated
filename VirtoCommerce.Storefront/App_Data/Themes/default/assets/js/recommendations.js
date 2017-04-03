@@ -5,6 +5,7 @@ storefrontApp.controller('recommendationsController', ['$rootScope', '$scope', '
     $scope.type = "";
     $scope.productIds = "";
     $scope.size = 0;
+    $scope.isBlockVisible = false;
 
     $scope.productListRecommendationsLoaded = false;
     $scope.productListRecommendations = [];
@@ -15,6 +16,15 @@ storefrontApp.controller('recommendationsController', ['$rootScope', '$scope', '
         $scope.productIds = productIds;
         $scope.size = size;
 
+        if(_.isString(productIds))
+        {
+            if(productIds.match(","))
+            {
+                var values = productIds.split(',');
+                $scope.productIds = values;
+            }
+        }
+        
         getRecommendations();
     }
 
@@ -33,7 +43,10 @@ storefrontApp.controller('recommendationsController', ['$rootScope', '$scope', '
                 for (var i = 0; i < products.length; i++) {
                     $scope.productListRecommendations.push(products[i]);
                 }
+
+                $scope.isBlockVisible = products.length > 0;
             }
+
             $scope.productListRecommendationsLoaded = true;
         });
     }

@@ -23,11 +23,11 @@ storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'c
             $scope.storefrontNotification = null;
         }
 
+        {% if settings.recommendations_enable == 'true' %}
         $scope.$on('storefrontEvents', function (event, data) {
-            if ({{ settings.recommendations_enable }}) {
-                recommendationService.saveEventInfo(data);
-            }
+            recommendationService.saveEventInfo(data);
         });
+		{% endif %}
 
         //For outside app redirect (To reload the page after changing the URL, use the lower-level API)
         $scope.outerRedirect = function (absUrl) {
