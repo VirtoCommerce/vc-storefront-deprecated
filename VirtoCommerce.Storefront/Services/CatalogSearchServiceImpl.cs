@@ -119,7 +119,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             var workContext = _workContextFactory();
 
-            var retVal = (await _catalogModuleApi.CatalogModuleCategories.GetCategoriesByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
+            var retVal = (await _catalogModuleApi.CatalogModuleCategories.GetCategoriesByPlentyIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
             //Set  lazy loading for child categories 
             SetChildCategoriesLazyLoading(retVal);
             return retVal;
@@ -174,7 +174,7 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual async Task<Product[]> GetProductsAsync(IList<string> ids, ItemResponseGroup responseGroup, WorkContext workContext)
         {
-            var productDtos = await _catalogModuleApi.CatalogModuleProducts.GetProductByIdsAsync(ids, ((int)responseGroup).ToString());
+            var productDtos = await _catalogModuleApi.CatalogModuleProducts.GetProductByPlentyIdsAsync(ids, ((int)responseGroup).ToString());
 
             var result = productDtos.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToArray();
             return result;

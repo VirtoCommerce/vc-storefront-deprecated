@@ -126,12 +126,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         #region IFileSystem members
         public string ReadTemplateFile(Context context, string templateName)
         {
-            var templatePath = ResolveTemplatePath(templateName);
-            if (string.IsNullOrEmpty(templatePath))
-            {
-                throw new FileSystemException($"Template not found: '{templateName}'. Searched paths: {string.Join("<br>", DiscoveryPaths)}");
-            }
-            return ReadTemplateByPath(templatePath);
+            return ReadTemplateByName(templateName);
         }
         #endregion
 
@@ -254,15 +249,9 @@ namespace VirtoCommerce.LiquidThemeEngine
         public string RenderTemplateByName(string templateName, Dictionary<string, object> parameters)
         {
             if (string.IsNullOrEmpty(templateName))
-            {
                 throw new ArgumentNullException(nameof(templateName));
-            }
-            var templatePath = ResolveTemplatePath(templateName);
-            if (string.IsNullOrEmpty(templatePath))
-            {
-                throw new FileSystemException($"Template not found: '{templateName}'. Searched paths: {string.Join("<br>", DiscoveryPaths)}");
-            }
-            var templateContent = ReadTemplateByPath(templatePath);
+
+            var templateContent = ReadTemplateByName(templateName);
             var retVal = RenderTemplate(templateContent, parameters);
             return retVal;
         }
@@ -298,7 +287,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 LocalVariables = Hash.FromDictionary(parameters)
             };
 
-            var parsedTemplate = Template.Parse(templateContent); 
+            var parsedTemplate = Template.Parse(templateContent);
 
             var retVal = parsedTemplate.RenderWithTracing(renderParams);
 
@@ -451,28 +440,29 @@ namespace VirtoCommerce.LiquidThemeEngine
             return retVal;
         }
 
-        private string ReadTemplateByPath(string templatePath)
+        private string ReadTemplateByName(string templateName)
         {
-            var retVal = _cacheManager.Get(GetCacheKey("ReadTemplateByName", templatePath), "LiquidThemeRegion", () =>
+            var templatePath = ResolveTemplatePath(templateName);
+            if (string.IsNullOrEmpty(templatePath))
             {
-                if (!string.IsNullOrEmpty(templatePath))
-                {
-                    //First try find content in current store themer
-                    var blobProvider = _themeBlobProvider;
-                    if (!blobProvider.PathExists(templatePath))
-                    {
-                        //Else search in global theme
-                        blobProvider = _globalThemeBlobProvider;
-                    }
-                    using (var stream = blobProvider.OpenRead(templatePath))
-                    {
-                        return stream.ReadToString();
-                    }
+                throw new FileSystemException($"The template '{templateName}' was not found. The following locations were searched:<br/>{string.Join("<br/>", DiscoveryPaths)}");
+            }
 
+            return _cacheManager.Get(GetCacheKey("ReadTemplateByName", templatePath), "LiquidThemeRegion", () =>
+            {
+                // At first, try to find content in current store theme
+                var blobProvider = _themeBlobProvider;
+                if (!blobProvider.PathExists(templatePath))
+                {
+                    // Then search in global theme
+                    blobProvider = _globalThemeBlobProvider;
                 }
-                throw new FileSystemException("Error - No such template {0}.", templatePath);
+
+                using (var stream = blobProvider.OpenRead(templatePath))
+                {
+                    return stream.ReadToString();
+                }
             });
-            return retVal;
         }
 
         private string GetCacheKey(params string[] parts)
