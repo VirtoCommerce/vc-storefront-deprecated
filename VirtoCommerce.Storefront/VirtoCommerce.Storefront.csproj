@@ -333,6 +333,7 @@
     <Content Include="App_Data\Themes\default\assets\ideal-image-slider-bullet-nav.js" />
     <Content Include="App_Data\Themes\default\assets\ideal-image-slider-captions.js" />
     <Content Include="App_Data\Themes\default\assets\informer-loader.gif" />
+    <Content Include="App_Data\Themes\default\assets\interactor.js" />
     <Content Include="App_Data\Themes\default\assets\jcb.svg" />
     <Content Include="App_Data\Themes\default\assets\jquery.zoom.min.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-addresses.js" />
@@ -370,6 +371,7 @@
     <Content Include="App_Data\Themes\default\assets\js\common-components\address.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout.js" />
+    <Content Include="App_Data\Themes\default\assets\interactor.min.js" />
     <Content Include="App_Data\Themes\default\assets\js\recommendations.js" />
     <Content Include="App_Data\Themes\default\assets\js\quote-request.js" />
     <Content Include="App_Data\Themes\default\assets\js\product-compare.js" />

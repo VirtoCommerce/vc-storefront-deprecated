@@ -21,7 +21,7 @@
 {% endcomment %}
 {% assign image_size = settings.collection_prod_image_sizes %}
 <div class="grid-item {{ grid_item_width }}{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}{% if settings.product_compare_enabled %} comparable{% endif %}">
-    <a href="{{ product.url | absolute_url }}" class="product-grid-item">
+    <a href="{{ product.url | absolute_url }}" class="product-grid-item productClick">
         <div class="product-grid-image">
             <div class="product-grid-image--centered">
                 {% if sold_out %}
