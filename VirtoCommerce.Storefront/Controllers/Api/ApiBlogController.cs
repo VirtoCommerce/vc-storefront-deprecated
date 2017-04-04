@@ -33,6 +33,10 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 {
                     query = query.Where(a => a.Tags != null && a.Tags.Select(t => t.Handelize()).Contains(criteria.Tag, StringComparer.OrdinalIgnoreCase));
                 }
+                if (criteria.ExcludedArticleHandles != null && criteria.ExcludedArticleHandles.Any())
+                {
+                    query = query.Where(a => !criteria.ExcludedArticleHandles.Contains(a.Url));
+                }
 
                 articles = query.OrderByDescending(a => a.CreatedDate).Skip((criteria.PageNumber - 1) * criteria.PageSize).Take(criteria.PageSize).ToList();
             }
