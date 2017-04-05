@@ -26,14 +26,14 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpPost]
         public async Task<ActionResult> SaveEventInfo(UserSession userSession)
         {
-            if (WorkContext.CurrentCustomer.IsRegisteredUser && userSession.Interactions != null)
+            if (userSession.Interactions != null)
             {
                 IList<UsageEvent> usageEvents = userSession.Interactions.Select(i => new UsageEvent
                 {
                     EventType = i.Type,
                     ItemId = i.Content,
                     CreatedDate = i.CreatedAt,
-                    CustomerId = WorkContext.CurrentCustomer.Id,
+                    CustomerId = WorkContext.CurrentCustomer.IsRegisteredUser ? WorkContext.CurrentCustomer.Id : "anonymous",
                     StoreId = WorkContext.CurrentStore.Id
                 }).ToList();
 
