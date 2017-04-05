@@ -57,7 +57,6 @@ namespace VirtoCommerce.Storefront
 
             // Recommendations API
             routes.AddStorefrontRoute("API.Recommendations.GetRecommendations", "storefrontapi/recommendations", defaults: new { controller = "ApiRecommendations", action = "GetRecommendations" });
-            routes.AddStorefrontRoute("API.Recommendations.SaveEventInfo", "storefrontapi/recommendations/eventinfo", new { controller = "ApiRecommendations", action = "SaveEventInfo" }, new { httpMethod = new HttpMethodConstraint("POST") });
 
             // User actions and events API
             routes.AddStorefrontRoute("API.UserActions.SaveEventInfo", "storefrontapi/useractions/eventinfo", new { controller = "ApiUserActions", action = "SaveEventInfo" }, new { httpMethod = new HttpMethodConstraint("POST") });

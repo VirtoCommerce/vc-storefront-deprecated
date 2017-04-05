@@ -157,9 +157,6 @@ storefrontApp.service('recommendationService', ['$http', function ($http) {
     return {
         getRecommendedProducts: function (requestData) {
             return $http.post('storefrontapi/recommendations', requestData );
-        },
-        saveEventInfo: function (eventInfo) {
-            return $http.post('storefrontapi/recommendations/eventinfo', eventInfo);
         }
     }
 }]);

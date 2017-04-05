@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -12,7 +8,6 @@ using VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleApi.M
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Recommendations;
 using VirtoCommerce.Storefront.Model.Interaction;
 
 namespace VirtoCommerce.Storefront.Controllers.Api
@@ -20,15 +15,32 @@ namespace VirtoCommerce.Storefront.Controllers.Api
     [HandleJsonError]
     public class ApiUserActionsController : StorefrontControllerBase
     {
+        private readonly IProductRecommendationsModuleApiClient _productRecommendationsApi;
 
-        public ApiUserActionsController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder) : base(workContext, urlBuilder)
+        public ApiUserActionsController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder,
+            IProductRecommendationsModuleApiClient productRecommendationsApi) : base(workContext, urlBuilder)
         {
+            _productRecommendationsApi = productRecommendationsApi;
         }
 
         [HttpPost]
-        public ActionResult SaveEventInfo(UserSession userSession)
+        public async Task<ActionResult> SaveEventInfo(UserSession userSession)
         {
-            throw new NotImplementedException();
+            if (WorkContext.CurrentCustomer.IsRegisteredUser && userSession.Interactions != null)
+            {
+                IList<UsageEvent> usageEvents = userSession.Interactions.Select(i => new UsageEvent
+                {
+                    EventType = i.Type,
+                    ItemId = i.Content,
+                    CreatedDate = i.CreatedAt,
+                    CustomerId = WorkContext.CurrentCustomer.Id,
+                    StoreId = WorkContext.CurrentStore.Id
+                }).ToList();
+
+                await _productRecommendationsApi.Recommendations.AddEventAsync(usageEvents);
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
     }
 }
