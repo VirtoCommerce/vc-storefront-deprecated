@@ -23,6 +23,12 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             _productRecommendationsApi = productRecommendationsApi;
         }
 
+        /// <summary>
+        /// POST /storefrontapi/useractions/eventinfo
+        /// Record user actions events in VC platform
+        /// </summary>
+        /// <param name="userSession"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> SaveEventInfo(UserSession userSession)
         {
