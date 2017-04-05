@@ -77,7 +77,7 @@
                                 {% endif %}
                             </div>
                             <div class="grid-item one-sixth medium-down--one-third text-right">
-                                <a class="icon-fallback-text btn-secondary remove RemoveShopCart" href="" ng-click="removeLineItem(lineItem.id)" interactor-arg="lineItem.id">
+                                <a class="icon-fallback-text btn-secondary remove RemoveShopCart" href="" ng-click="removeLineItem(lineItem.id)" interactor-arg="{% raw %}{{ lineItem.id }}{% endraw %}">
                                     <span class="icon icon-x" aria-hidden="true"></span>
                                     <span class="fallback-text">{{ 'cart.general.remove' | t }}</span>
                                 </a>

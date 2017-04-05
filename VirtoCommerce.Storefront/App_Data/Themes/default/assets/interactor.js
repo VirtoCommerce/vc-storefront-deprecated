@@ -40,7 +40,7 @@ Interactor.prototype = {
         
         // Argument Assignment          // Type Checks                                                                          // Default Values
         interactor.interactions = typeof (config.interactions) == "boolean" ? config.interactions : true,
-        interactor.interactionElement = typeof (config.interactionElement) == "string" ? config.interactionElement : 'interaction',
+        interactor.interactionElements = Array.isArray(config.interactionElements) === true ? config.interactionElements : ['interaction'],
         interactor.interactionEvents = Array.isArray(config.interactionEvents) === true ? config.interactionEvents : ['mouseup', 'touchend'],     
         interactor.endpoint = typeof (config.endpoint) == "string" ? config.endpoint : '/interactions',
         interactor.async = typeof (config.async) == "boolean" ? config.async : true,
@@ -65,21 +65,26 @@ Interactor.prototype = {
         // Set Interaction Capture
         if (interactor.interactions === true) {
             for (var i = 0; i < interactor.interactionEvents.length; i++) {
-                var ev = interactor.interactionEvents[i],
-                    targets = document.getElementsByClassName(interactor.interactionElement);
-               
-                for (var j = 0; j < targets.length; j++) {
-                    var targetElement = targets[j];
-                    var eventArg = "";
-                    var eventAttr = targetElement.getAttributeNode("interactor-arg")
-
-                    if (eventAttr)
-                        eventArg = eventAttr.value;
-                    
-                    targets[j].addEventListener(ev, function (e) {
-                        e.stopPropagation();
-                        interactor.__addInteraction__(e, interactor.interactionElement, eventArg);
-                    });
+                var ev = interactor.interactionEvents[i];
+                for (var elIndex = 0; elIndex < interactor.interactionElements.length; elIndex++) {
+                    var className = interactor.interactionElements[elIndex];
+                    var targets = document.getElementsByClassName(className);
+                    if (targets) {
+                        for (var j = 0; j < targets.length; j++) {
+                            var targetElement = targets[j];
+                            var interationArg = targetElement.getAttributeNode("interactor-arg");
+                            var eventListener =  {
+                                className: className,
+                                content:  interationArg ? interationArg.value : "",
+                                handleEvent : function(e) {
+                                    e.stopPropagation();
+                                    interactor.__addInteraction__(e, this.className, this.content);
+                                }
+                            };
+                            targets[j].removeEventListener(ev, eventListener);
+                            targets[j].addEventListener(ev, eventListener);
+                        }
+                    }
                 }
             }
         }
@@ -95,7 +100,6 @@ Interactor.prototype = {
     // Add Interaction Object Triggered By Events to Records Array
     __addInteraction__: function (e, type, arg) {
 
-        alert(type + ' - ' + arg);
 
         var interactor = this,
 

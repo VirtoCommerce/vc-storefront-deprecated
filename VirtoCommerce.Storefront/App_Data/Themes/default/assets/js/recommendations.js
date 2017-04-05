@@ -1,6 +1,6 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('recommendationsController', ['$rootScope', '$scope', '$window', '$http', 'recommendationService', function ($rootScope, $scope, $window, $http, recommendationService) {
+storefrontApp.controller('recommendationsController', ['$scope', '$timeout', 'recommendationService', function ($scope, $timeout, recommendationService) {
     $scope.provider = "";
     $scope.type = "";
     $scope.productIds = "";
@@ -47,7 +47,13 @@ storefrontApp.controller('recommendationsController', ['$rootScope', '$scope', '
                 $scope.isBlockVisible = products.length > 0;
             }
 
-            $scope.productListRecommendationsLoaded = true;
+            $scope.productListRecommendationsLoaded = true;            
+        });
+    }
+    $scope.startRecordInteraction = function () {
+        //Necessary condition for ensure what angularjs rendering process finished
+        $timeout(function () {
+           window.startRecordInteraction();
         });
     }
 }]);

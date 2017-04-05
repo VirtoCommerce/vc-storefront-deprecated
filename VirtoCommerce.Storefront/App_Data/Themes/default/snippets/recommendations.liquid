@@ -2,9 +2,9 @@
     <hr />
     <span class="h1">{{ 'products.general.related_products' | t }}</span>
     <div class="grid-uniform">
-        <div ng-repeat="product in productListRecommendations" class="grid-item large--one-fifth medium--one-third small--one-half" ng-class="[{ 'on-sale': (product.price.listPrice.amount > product.price.actualPrice.amount), 'comparable': {{ settings.product_compare_enabled }} }]">
-            <a href="{% raw %}{{ product.url }}{% endraw %}" class="product-grid-item">
-                <div class="product-grid-image">
+        <div ng-repeat="product in productListRecommendations" ng-init="$last && startRecordInteraction()" class="grid-item large--one-fifth medium--one-third small--one-half" ng-class="[{ 'on-sale': (product.price.listPrice.amount > product.price.actualPrice.amount), 'comparable': {{ settings.product_compare_enabled }} }]">
+            <a href="{% raw %}{{ product.url }}{% endraw %}" class="product-grid-item RecommendationClick" interactor-arg="{% raw %}{{ product.id }}{% endraw %}">
+                <div class="product-grid-image recommendationClick" >
                     <div class="product-grid-image--centered">
                         <span ng-if="!({{ product.available }})">
                             <div class="badge badge--sold-out">
@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="product-item--other" style="margin-bottom: 10px;">
-                    <button class="btn btn-secondary" title="{{ 'products.general.add_to_cart' | t }}" style="width: 70%;" ng-click="addProductToCartById(product.id, 1, $event)" ng-controller="productController">
+                    <button class="btn btn-secondary AddShopCart" title="{{ 'products.general.add_to_cart' | t }}" style="width: 70%;" ng-click="addProductToCartById(product.id, 1, $event)" ng-controller="productController">
                         <span class="icon icon-cart"></span>
                     </button>
                     <span ng-if="{{ settings.product_compare_enabled }}">
