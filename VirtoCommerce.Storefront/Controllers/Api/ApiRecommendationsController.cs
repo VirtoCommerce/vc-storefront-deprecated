@@ -27,7 +27,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             var context = new RecommendationsContext()
             {
                 StoreId = WorkContext.CurrentStore.Id,
-                CustomerId = WorkContext.CurrentCustomer.Id,
+                CustomerId = WorkContext.CurrentCustomer.IsRegisteredUser ? WorkContext.CurrentCustomer.Id : "anonymous",
                 ProductIds = productIds
             };
 
