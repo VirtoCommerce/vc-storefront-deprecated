@@ -166,15 +166,37 @@
         window.quotesEnabled = {{ shop.quotes_enabled }};
         window.productCompareListCapacity = {{ settings.product_compare_list_capacity }};
 
-			// An example instantiation with custom arguments
-			var interactions = new Interactor({
-				interactions            : true,
-				interactionElement      : "productClick",
-				interactionEvents       : ["mouseup", "touchend"],
-				endpoint                : '/usage/interactions',
-				async                   : true,
-				debug                   : false
-			});
+        var elementsToTrack = [
+            {
+                element: "Click",
+                events : ["mouseup"]
+            }, 
+            {
+                element: "AddShopCart",
+                events : ["mouseup"]
+            },
+            {
+                element: "RemoveShopCart",
+                events : ["mouseup"]
+            }
+            //,
+            //{
+            //    element: "RecommendationClick",
+            //    events : ["mouseup", "touchend"]
+            //}
+        ];
+
+        for (var i = 0; i < elementsToTrack.length; i++) {
+            var e = elementsToTrack[i];
+            new Interactor({
+                interactions            : true,
+                interactionElement      : e.element,
+                interactionEvents       : e.events,
+                endpoint                : '/storefrontapi/useractions/eventinfo',
+                async                   : true,
+                debug                   : false
+            });
+        }
     </script>
 </body>
 </html>

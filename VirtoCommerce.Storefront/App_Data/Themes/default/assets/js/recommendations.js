@@ -50,8 +50,4 @@ storefrontApp.controller('recommendationsController', ['$rootScope', '$scope', '
             $scope.productListRecommendationsLoaded = true;
         });
     }
-
-    $scope.recommendationClick = function (productId, eventType) {
-        $rootScope.$broadcast('storefrontEvents', { productIds: productId, eventType: 'RecommendationClick' });
-    }
 }]);

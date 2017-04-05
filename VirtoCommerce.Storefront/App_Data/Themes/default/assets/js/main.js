@@ -1,7 +1,7 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'customerService', 'storefrontApp.mainContext', 'recommendationService',
-    function ($scope, $location, $window, customerService, mainContext, recommendationService) {
+storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'customerService', 'storefrontApp.mainContext',
+    function ($scope, $location, $window, customerService, mainContext) {
 
         //Base store url populated in layout and can be used for construction url inside controller
         $scope.baseUrl = {};
@@ -22,12 +22,6 @@ storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'c
         $scope.closeNotification = function () {
             $scope.storefrontNotification = null;
         }
-
-        {% if settings.recommendations_enable == 'true' %}
-        $scope.$on('storefrontEvents', function (event, data) {
-            recommendationService.saveEventInfo(data);
-        });
-		{% endif %}
 
         //For outside app redirect (To reload the page after changing the URL, use the lower-level API)
         $scope.outerRedirect = function (absUrl) {

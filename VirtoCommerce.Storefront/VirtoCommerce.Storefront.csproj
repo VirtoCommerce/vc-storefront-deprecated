@@ -412,7 +412,7 @@
     <Content Include="App_Data\Themes\default\assets\js\app.js" />
     <Content Include="App_Data\Themes\default\assets\js\product-list.js" />
     <Content Include="App_Data\Themes\default\assets\js\directives.js" />
-    <Content Include="App_Data\Themes\default\assets\js\main.js.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\main.js" />
     <Content Include="App_Data\Themes\default\assets\js\product.js" />
     <Content Include="App_Data\Themes\default\assets\js\services.js" />
     <Content Include="App_Data\Themes\default\assets\thumbs-bar.gif" />

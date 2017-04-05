@@ -37,7 +37,7 @@ Interactor.prototype = {
     __init__: function (config) {
 
         var interactor = this;
-
+        
         // Argument Assignment          // Type Checks                                                                          // Default Values
         interactor.interactions = typeof (config.interactions) == "boolean" ? config.interactions : true,
         interactor.interactionElement = typeof (config.interactionElement) == "string" ? config.interactionElement : 'interaction',
@@ -67,10 +67,18 @@ Interactor.prototype = {
             for (var i = 0; i < interactor.interactionEvents.length; i++) {
                 var ev = interactor.interactionEvents[i],
                     targets = document.getElementsByClassName(interactor.interactionElement);
+               
                 for (var j = 0; j < targets.length; j++) {
+                    var targetElement = targets[j];
+                    var eventArg = "";
+                    var eventAttr = targetElement.getAttributeNode("interactor-arg")
+
+                    if (eventAttr)
+                        eventArg = eventAttr.value;
+                    
                     targets[j].addEventListener(ev, function (e) {
                         e.stopPropagation();
-                        interactor.__addInteraction__(e, interactor.interactionElement);
+                        interactor.__addInteraction__(e, interactor.interactionElement, eventArg);
                     });
                 }
             }
@@ -85,7 +93,9 @@ Interactor.prototype = {
     },
 
     // Add Interaction Object Triggered By Events to Records Array
-    __addInteraction__: function (e, type) {
+    __addInteraction__: function (e, type, arg) {
+
+        alert(type + ' - ' + arg);
 
         var interactor = this,
 
@@ -95,7 +105,7 @@ Interactor.prototype = {
                 event: e.type,
                 targetTag: e.target.nodeName,
                 targetClasses: e.target.className,
-                content: e.target.innerText,
+                content: arg,//e.target.innerText,
                 clientPosition: {
                     x: e.clientX,
                     y: e.clientY

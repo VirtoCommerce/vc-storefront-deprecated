@@ -55,7 +55,6 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
         cartService.removeLineItem(lineItemId).then(function (response) {
             getCart();
             $rootScope.$broadcast('cartItemsChanged');
-            $rootScope.$broadcast('storefrontEvents', { productIds: lineItemId, eventType: 'RemoveShopCart' });
         }, function (response) {
             $scope.cart.items = initialItems;
             $scope.cartIsUpdating = false;
@@ -108,7 +107,6 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
             $scope.productSkuOrName = null;
             $scope.selectedSearchedProduct = null;
             $rootScope.$broadcast('cartItemsChanged');
-            $rootScope.$broadcast('storefrontEvents', { productIds: product.id, eventType: 'AddShopCart' });
         });
     }
 
