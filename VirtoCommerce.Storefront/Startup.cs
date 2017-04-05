@@ -42,6 +42,7 @@ using VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleApi;
 using VirtoCommerce.Storefront.BackgroundJobs;
 using VirtoCommerce.Storefront.Binders;
 using VirtoCommerce.Storefront.Builders;
@@ -66,6 +67,8 @@ using VirtoCommerce.Storefront.Owin;
 using VirtoCommerce.Storefront.Routing;
 using VirtoCommerce.Storefront.Services;
 using VirtoCommerce.Tools;
+using VirtoCommerce.Storefront.Model.Recommendations;
+using VirtoCommerce.Storefront.Services.Recommendations;
 
 [assembly: OwinStartup(typeof(Startup))]
 [assembly: PreApplicationStartMethod(typeof(Startup), "PreApplicationStart")]
@@ -222,6 +225,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<ISitemapsModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SitemapsModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
             container.RegisterType<IStoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new StoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
             container.RegisterType<ISubscriptionModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SubscriptionModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<IProductRecommendationsModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new ProductRecommendationsModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
 
             container.RegisterType<IMarketingService, MarketingServiceImpl>();
             container.RegisterType<IPromotionEvaluator, PromotionEvaluator>();
@@ -238,6 +242,25 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(context => HttpContext.Current.GetOwinContext().Authentication));
             container.RegisterType<IUrlBuilder, UrlBuilder>();
             container.RegisterType<IStorefrontUrlBuilder, StorefrontUrlBuilder>(new PerRequestLifetimeManager());
+
+            Func<string, IRecommendationsService> recommendationsFactory = provider =>
+            {
+                if (provider == "Cognitive")
+                {
+                    return new CognitiveRecommendationsService(workContextFactory,
+                        container.Resolve<ICatalogSearchService>(),
+                        container.Resolve<IProductRecommendationsModuleApiClient>(),
+                        container.Resolve<ILocalCacheManager>());
+                }
+
+                if (provider == "Association")
+                {
+                    return new AssociationRecommendationsService(workContextFactory, container.Resolve<ICatalogSearchService>());
+                }
+
+                throw new InvalidOperationException(string.Format("Unknown recommedations provider: {0} ", provider));
+            };
+            container.RegisterInstance(recommendationsFactory);
 
             //Register domain events
             container.RegisterType<IEventPublisher<OrderPlacedEvent>, EventPublisher<OrderPlacedEvent>>();

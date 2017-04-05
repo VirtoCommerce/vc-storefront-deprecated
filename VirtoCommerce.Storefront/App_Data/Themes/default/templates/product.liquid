@@ -130,7 +130,7 @@
                 <label for="quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
                 <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-selector">
                 {% endif %}
-                <button type="button" name="add" id="addToCart" class="btn" ng-disabled="!selectedVariation.id || !selectedVariation.isAvailable" ng-click="addProductToCart(selectedVariation, 1)">
+                <button type="button" name="add" id="addToCart" class="btn AddShopCart" ng-disabled="!selectedVariation.id || !selectedVariation.isAvailable" ng-click="addProductToCart(selectedVariation, 1)" interactor-arg="{{ product.id }}">
                     <span class="icon icon-cart"></span>
                     <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
                 </button>
@@ -213,7 +213,15 @@
 
     {% if settings.related_products_enable %}
     {% assign grid_item_width = 'large--one-fifth medium--one-third small--one-half' %}
+
+    {% include 'recommendations', provider: 'Association', type: 'Recommendations', product_ids: product.id, size: 5 %}
+    
+    {% comment %}
+
     {% include 'related-products' %}
+
+    {% endcomment %}
+    
     {% endif %}
 
     {% if settings.product_reviews_enable %}

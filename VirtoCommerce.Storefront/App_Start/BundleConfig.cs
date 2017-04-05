@@ -14,6 +14,7 @@ namespace VirtoCommerce.Storefront
             bundles.Add(
                 CreateScriptBundle("~/default-theme/scripts")
                     .Include("~/App_Data/Themes/default/assets/modernizr.min.js")
+                    .Include("~/App_Data/Themes/default/assets/interactor.js")
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider.min.js")
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider-bullet-nav.js")
                     .Include("~/App_Data/Themes/default/assets/ideal-image-slider-captions.js")

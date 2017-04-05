@@ -137,7 +137,6 @@
                     </a>
                 </div>
             </div>
-            </div>
         </header>
         <nav class="nav-bar" role="navigation">
             <div class="wrapper">
@@ -166,6 +165,21 @@
     <script>
         window.quotesEnabled = {{ shop.quotes_enabled }};
         window.productCompareListCapacity = {{ settings.product_compare_list_capacity }};
+        window.startRecordInteraction = function()
+        {
+            {% if settings.collect_user_events_enabled %}
+			// An example instantiation with custom arguments
+			var interactions = new Interactor({
+				interactions            : true,
+				interactionElements     : ["Click", "AddShopCart", "RemoveShopCart", "RecommendationClick"],
+				interactionEvents       : ["mouseup", "touchend"],
+				endpoint                : "{{ '/storefrontapi/useractions/eventinfo' | absolute_url }}",
+				async                   : true,
+				debug                   : false
+			});
+            {% endif %}
+        }
+        window.startRecordInteraction();
     </script>
 </body>
 </html>

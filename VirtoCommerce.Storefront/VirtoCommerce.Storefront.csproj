@@ -332,6 +332,7 @@
     <Content Include="App_Data\Themes\default\assets\ideal-image-slider-bullet-nav.js" />
     <Content Include="App_Data\Themes\default\assets\ideal-image-slider-captions.js" />
     <Content Include="App_Data\Themes\default\assets\informer-loader.gif" />
+    <Content Include="App_Data\Themes\default\assets\interactor.js" />
     <Content Include="App_Data\Themes\default\assets\jcb.svg" />
     <Content Include="App_Data\Themes\default\assets\jquery.zoom.min.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-addresses.js" />
@@ -369,6 +370,7 @@
     <Content Include="App_Data\Themes\default\assets\js\common-components\address.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout.js" />
+    <Content Include="App_Data\Themes\default\assets\js\recommendations.js" />
     <Content Include="App_Data\Themes\default\assets\js\quote-request.js" />
     <Content Include="App_Data\Themes\default\assets\js\product-compare.js" />
     <Content Include="App_Data\Themes\default\assets\klarna-big.png" />
@@ -452,6 +454,9 @@
     <Content Include="App_Data\Themes\default\templates\bulk-order.liquid" />
     <Content Include="App_Data\Themes\default\templates\product-compare.liquid" />
     <Content Include="App_Data\Themes\default\snippets\product-compare-list-dialog.liquid" />
+    <Content Include="App_Data\Themes\default\snippets\recommendations.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -482,6 +487,7 @@
     <Compile Include="AutoRestClients\OrdersModuleApi.cs" />
     <Compile Include="AutoRestClients\PlatformModuleApi.cs" />
     <Compile Include="AutoRestClients\PricingModuleApi.cs" />
+    <Compile Include="AutoRestClients\ProductRecommendationsModuleApi.cs" />
     <Compile Include="AutoRestClients\QuoteModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchApiModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
@@ -506,6 +512,7 @@
     <Compile Include="Common\ObjectExtensions.cs" />
     <Compile Include="Common\RequireHttps.cs" />
     <Compile Include="Common\SeoExtensions.cs" />
+    <Compile Include="Controllers\Api\ApiRecommendationsController.cs" />
     <Compile Include="Controllers\Api\ApiSubscriptionController.cs" />
     <Compile Include="Controllers\Api\ApiOrderController.cs" />
     <Compile Include="Controllers\Api\ApiBlogController.cs" />
@@ -514,6 +521,7 @@
     <Compile Include="Controllers\Api\ApiAccountController.cs" />
     <Compile Include="Controllers\Api\ApiPricingController.cs" />
     <Compile Include="Controllers\Api\ApiMarketingController.cs" />
+    <Compile Include="Controllers\Api\ApiUserActionsController.cs" />
     <Compile Include="Controllers\BulkOrderController.cs" />
     <Compile Include="Controllers\SitemapController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
@@ -542,6 +550,8 @@
     <Compile Include="Services\PricingServiceImpl.cs" />
     <Compile Include="Controllers\Api\ApiCartController.cs" />
     <Compile Include="Controllers\Api\ApiCatalogController.cs" />
+    <Compile Include="Services\Recommendations\AssociationRecommendationsService.cs" />
+    <Compile Include="Services\Recommendations\CognitiveRecommendationsService.cs" />
     <Compile Include="Services\ProductAvailabilityService.cs" />
     <Compile Include="Services\TaxEvaluator.cs" />
     <Compile Include="Services\PromotionEvaluator.cs" />

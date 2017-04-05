@@ -118,7 +118,9 @@
                     "name": "year"
                 }
             ],
-            "footer_content_text": "Some footer content text"
+            "footer_content_text": "Some footer content text",
+            //Collect usage events for product recommendations 
+            "collect_user_events_enabled": false
         },
         "Soft Green": {
             "ajax_cart_enable": true,
@@ -198,7 +200,9 @@
             "type_navigation_size": "15px",
             "type_navigation_transform": true,
             "remove_dollar_symbol": true,
-            "superscript_decimals": true
+            "superscript_decimals": true,
+            //Collect usage events for product recommendations 
+            "collect_user_events_enabled": false
         },
         "Dark": {
             "ajax_cart_enable": true,
@@ -286,7 +290,9 @@
             "type_navigation_transform": true,
             "remove_dollar_symbol": true,
             "superscript_decimals": true,
-            "store_selector_enable": true
+            "store_selector_enable": true,
+            //Collect usage events for product recommendations 
+            "collect_user_events_enabled": false
         }
     }
 }
