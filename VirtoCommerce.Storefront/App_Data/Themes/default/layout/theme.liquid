@@ -173,7 +173,7 @@
 				interactions            : true,
 				interactionElements     : ["Click", "AddShopCart", "RemoveShopCart", "RecommendationClick"],
 				interactionEvents       : ["mouseup", "touchend"],
-				endpoint                : '/storefrontapi/useractions/eventinfo',
+				endpoint                : "{{ '/storefrontapi/useractions/eventinfo' | absolute_url }}",
 				async                   : true,
 				debug                   : false
 			});
