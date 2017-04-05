@@ -245,6 +245,8 @@ namespace VirtoCommerce.Storefront.Model.Catalog
             }
         }
 
+        public bool IsAvailable { get; set; }
+
         /// <summary>
         /// if the product is sold by subscription only this property contains the recurrence plan
         /// </summary>

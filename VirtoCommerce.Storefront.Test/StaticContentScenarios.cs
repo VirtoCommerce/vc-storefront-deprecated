@@ -66,21 +66,28 @@ namespace VirtoCommerce.Storefront.Test
             var language = new Model.Language("en-US");
             var service = GetStaticContentService();
 
-            var result = service.LoadStoreStaticContent(new Store { Id = "TestStore" });
+            var result = service.LoadStoreStaticContent(new Store { Id = "TestStore" }).ToList();
 
             var blog = result.OfType<Blog>().FirstOrDefault(x => x.Name == "news");
-
-            var page = result.Where(x => x.Url.Equals("blogs/news/post1") && (x.Language == language
-                        || x.Language.IsInvariant)).Single();
-
             Assert.NotNull(blog);
+
+            var page = result.Single(x => x.Url.Equals("blogs/news/post1") && (x.Language == language || x.Language.IsInvariant));
             Assert.IsType<BlogArticle>(page);
             Assert.NotEmpty(page.Content);
             Assert.Equal(page.Url, "blogs/news/post1");
             Assert.Equal(((BlogArticle)page).BlogName, "news");
         }
 
-        private IStaticContentService GetStaticContentService()
+        [Fact]
+        public void DontCrashOnInvalidYaml()
+        {
+            var service = GetStaticContentService();
+            var result = service.LoadStoreStaticContent(new Store { Id = "StoreWithInvalidPages" }).ToList();
+            Assert.Equal(2, result.Count);
+        }
+
+
+        private static IStaticContentService GetStaticContentService()
         {
             var cacheManager = new Mock<ILocalCacheManager>();
             cacheManager.Setup(cache => cache.Get<ContentItem[]>(It.IsAny<string>(), It.IsAny<string>())).Returns<ContentItem[]>(null);

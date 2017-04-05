@@ -50,6 +50,7 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Controllers;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart.Services;
+using VirtoCommerce.Storefront.Model.Catalog.Services;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Customer.Services;
@@ -65,6 +66,7 @@ using VirtoCommerce.Storefront.Model.Tax.Services;
 using VirtoCommerce.Storefront.Owin;
 using VirtoCommerce.Storefront.Routing;
 using VirtoCommerce.Storefront.Services;
+using VirtoCommerce.Tools;
 using VirtoCommerce.Storefront.Model.Recommendations;
 using VirtoCommerce.Storefront.Services.Recommendations;
 
@@ -207,22 +209,22 @@ namespace VirtoCommerce.Storefront
             };
 
             var baseUri = new Uri(baseUrl);
-            container.RegisterType<ICacheModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CacheModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<ICartModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CartModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<ICatalogModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CatalogModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<IContentModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new ContentModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<ICoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<ICustomerModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CustomerModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<IInventoryModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new InventoryModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<IMarketingModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new MarketingModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<IOrdersModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new OrdersModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<IPlatformModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new PlatformModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<IPricingModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new PricingModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<IQuoteModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new QuoteModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<ISearchApiModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SearchApiModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<ISitemapsModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SitemapsModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<IStoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new StoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
-            container.RegisterType<ISubscriptionModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SubscriptionModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
+            container.RegisterType<ICacheModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CacheModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<ICartModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CartModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<ICatalogModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CatalogModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<IContentModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new ContentModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<ICoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<ICustomerModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CustomerModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<IInventoryModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new InventoryModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<IMarketingModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new MarketingModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<IOrdersModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new OrdersModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<IPlatformModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new PlatformModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<IPricingModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new PricingModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<IQuoteModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new QuoteModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<ISearchApiModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SearchApiModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<ISitemapsModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SitemapsModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<IStoreModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new StoreModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
+            container.RegisterType<ISubscriptionModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new SubscriptionModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler).DisableRetries()));
             container.RegisterType<IProductRecommendationsModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new ProductRecommendationsModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), compressionHandler)));
 
             container.RegisterType<IMarketingService, MarketingServiceImpl>();
@@ -232,11 +234,13 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<ICustomerService, CustomerServiceImpl>();
             container.RegisterType<IMenuLinkListService, MenuLinkListServiceImpl>();
             container.RegisterType<ISeoRouteService, SeoRouteService>();
+            container.RegisterType<IProductAvailabilityService, ProductAvailabilityService>();
 
             container.RegisterType<ICartBuilder, CartBuilder>();
             container.RegisterType<IQuoteRequestBuilder, QuoteRequestBuilder>();
             container.RegisterType<ICatalogSearchService, CatalogSearchServiceImpl>();
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(context => HttpContext.Current.GetOwinContext().Authentication));
+            container.RegisterType<IUrlBuilder, UrlBuilder>();
             container.RegisterType<IStorefrontUrlBuilder, StorefrontUrlBuilder>(new PerRequestLifetimeManager());
 
             Func<string, IRecommendationsService> recommendationsFactory = provider =>
@@ -310,7 +314,9 @@ namespace VirtoCommerce.Storefront
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters, workContextFactory, () => container.Resolve<CommonController>());
             RouteConfig.RegisterRoutes(RouteTable.Routes, container.Resolve<ISeoRouteService>(), workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>());
             AuthConfig.ConfigureAuth(app, () => container.Resolve<IStorefrontUrlBuilder>());
-            container.Resolve<BundleConfig>().RegisterBundles(BundleTable.Bundles);
+            var bundleConfig = container.Resolve<BundleConfig>();
+            bundleConfig.Minify = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:OptimizeStaticContent", false);
+            bundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //This special binders need because all these types not contains default ctor and Money with Currency properties
             ModelBinders.Binders.Add(typeof(Model.Cart.Shipment), new CartModelBinder<Model.Cart.Shipment>(workContextFactory));

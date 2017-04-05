@@ -232,9 +232,8 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="VirtoCommerce.ContentModule.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.ContentModule.Utils.1.0.0\lib\net461\VirtoCommerce.ContentModule.Utils.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="VirtoCommerce.Tools, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Tools.1.2.0\lib\net461\VirtoCommerce.Tools.dll</HintPath>
     </Reference>
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
@@ -503,6 +502,7 @@
     <Compile Include="Common\HmacCredentials.cs" />
     <Compile Include="Common\HmacUtility.cs" />
     <Compile Include="Common\OutlineExtensions.cs" />
+    <Compile Include="Common\ServiceClientExtensions.cs" />
     <Compile Include="Common\VirtoCommerceApiRequestHandler.cs" />
     <Compile Include="Builders\CartBuilder.cs" />
     <Compile Include="Builders\QuoteRequestBuilder.cs" />
@@ -533,6 +533,7 @@
     <Compile Include="Converters\Tax\TaxConverter.cs" />
     <Compile Include="Converters\CurrencyConverter.cs" />
     <Compile Include="Converters\Quote\QuoteConverter.cs" />
+    <Compile Include="Converters\ToolsConverter.cs" />
     <Compile Include="JsonConverters\MoneyJsonConverter.cs" />
     <Compile Include="JsonConverters\CurrencyJsonConverter.cs" />
     <Compile Include="Owin\StorefrontUrlRewriterOwinMiddleware.cs" />
@@ -551,6 +552,7 @@
     <Compile Include="Controllers\Api\ApiCatalogController.cs" />
     <Compile Include="Services\Recommendations\AssociationRecommendationsService.cs" />
     <Compile Include="Services\Recommendations\CognitiveRecommendationsService.cs" />
+    <Compile Include="Services\ProductAvailabilityService.cs" />
     <Compile Include="Services\TaxEvaluator.cs" />
     <Compile Include="Services\PromotionEvaluator.cs" />
     <Compile Include="Common\StorefrontConstants.cs" />

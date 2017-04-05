@@ -112,6 +112,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="VirtoCommerce.Tools, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Tools.1.2.0\lib\net461\VirtoCommerce.Tools.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
@@ -140,8 +143,11 @@
     <Compile Include="ConcurrentAsyncLockTests.cs" />
     <Compile Include="CssUrlTransformTests.cs" />
     <Compile Include="MutablePagedListTests.cs" />
+    <None Include="Pages\StoreWithInvalidPages\valid.md" />
+    <None Include="Pages\StoreWithInvalidPages\invalid.md" />
     <None Include="Pages\TestStore\blogs\news\default.md" />
     <Compile Include="OutlineTests.cs" />
+    <Compile Include="ProductAvailabilityTests.cs" />
     <Compile Include="QuoteRequestTests.cs" />
     <Compile Include="SeoRouteTests.cs" />
     <Compile Include="SeoTests.cs" />

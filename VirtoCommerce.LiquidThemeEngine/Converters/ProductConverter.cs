@@ -37,12 +37,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 
             result.Variants.Add(ToLiquidVariant(product));
 
-            if (product.Variations != null)
+            if (product.Variations != null && product.Variations.Any())
             {
                 result.Variants.AddRange(product.Variations.Select(x => x.ToVariant()));
+                result.Available = product.Variations.Any(v => v.IsAvailable);
             }
-
-            result.Available = true; // product.IsActive && product.IsBuyable;
+            else
+            {
+                result.Available = product.IsAvailable;
+            }
 
             result.CatalogId = product.CatalogId;
             result.CategoryId = product.CategoryId;
@@ -103,6 +106,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.Type = product.ProductType;
             result.Url = product.Url;
 
+            result.PackageType = product.PackageType;
+            result.WeightUnit = product.WeightUnit;
+            result.Weight = product.Weight;
+            result.Height = product.Height;
+            result.MeasureUnit = product.MeasureUnit;
+            result.Width = product.Width;
+            result.Length = product.Length;
+
             if (!product.Associations.IsNullOrEmpty())
             {
                 result.RelatedProducts = new MutablePagedList<Product>((pageNumber, pageSize, sortInfos) =>
@@ -144,7 +155,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
         {
             var result = new Variant();
 
-            result.Available = true;
+            result.Available = product.IsAvailable;
             result.Barcode = product.Gtin;
             result.CatalogId = product.CatalogId;
             result.CategoryId = product.CategoryId;
@@ -163,6 +174,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.Weight = product.Weight ?? 0m;
             result.WeightUnit = product.WeightUnit;
             result.FeaturedImage = product.PrimaryImage != null ? product.PrimaryImage.ToShopifyModel() : null;
+
+            result.PackageType = product.PackageType;
+            result.Height = product.Height;
+            result.MeasureUnit = product.MeasureUnit;
+            result.Width = product.Width;
+            result.Length = product.Length;
+
+
 
             if (result.FeaturedImage != null)
             {

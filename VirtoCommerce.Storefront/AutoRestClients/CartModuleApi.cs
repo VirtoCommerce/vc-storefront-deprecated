@@ -1703,16 +1703,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Coupon>> AddCartCouponWithHttpMessagesAsync(string cartId, string couponCode, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> AddCartCouponWithHttpMessagesAsync(string cartId, string couponCode, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (cartId == null)
             {
@@ -1804,27 +1801,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<Coupon>();
+            var _result = new Microsoft.Rest.HttpOperationResponse();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
-            // Deserialize Response
-            if ((int)_statusCode == 200)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<Coupon>(_responseContent, this.Client.DeserializationSettings);
-                }
-                catch (Newtonsoft.Json.JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
             if (_shouldTrace)
             {
                 Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
@@ -3084,9 +3063,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             /// </param>
             /// <param name='couponCode'>
             /// </param>
-            public static Coupon AddCartCoupon(this ICartModule operations, string cartId, string couponCode)
+            public static void AddCartCoupon(this ICartModule operations, string cartId, string couponCode)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).AddCartCouponAsync(cartId, couponCode), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICartModule)s).AddCartCouponAsync(cartId, couponCode), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <param name='operations'>
@@ -3099,12 +3078,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<Coupon> AddCartCouponAsync(this ICartModule operations, string cartId, string couponCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task AddCartCouponAsync(this ICartModule operations, string cartId, string couponCode, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.AddCartCouponWithHttpMessagesAsync(cartId, couponCode, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
+                await operations.AddCartCouponWithHttpMessagesAsync(cartId, couponCode, null, cancellationToken).ConfigureAwait(false);
             }
 
             /// <param name='operations'>
@@ -3539,13 +3515,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi
         /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Coupon>> AddCartCouponWithHttpMessagesAsync(string cartId, string couponCode, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> AddCartCouponWithHttpMessagesAsync(string cartId, string couponCode, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <param name='cartId'>
         /// </param>
         /// <param name='couponCode'>
@@ -3702,7 +3675,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShoppingCart class.
         /// </summary>
-        public ShoppingCart(string name = default(string), string storeId = default(string), string channelId = default(string), bool? isAnonymous = default(bool?), string customerId = default(string), string customerName = default(string), string organizationId = default(string), string currency = default(string), string languageCode = default(string), bool? taxIncluded = default(bool?), bool? isRecuring = default(bool?), string comment = default(string), string status = default(string), string weightUnit = default(string), double? weight = default(double?), string validationType = default(string), double? volumetricWeight = default(double?), double? total = default(double?), double? subTotal = default(double?), double? subTotalWithTax = default(double?), double? subTotalDiscount = default(double?), double? subTotalDiscountWithTax = default(double?), double? shippingTotal = default(double?), double? shippingTotalWithTax = default(double?), double? shippingSubTotal = default(double?), double? shippingSubTotalWithTax = default(double?), double? shippingDiscountTotal = default(double?), double? shippingDiscountTotalWithTax = default(double?), double? paymentTotal = default(double?), double? paymentTotalWithTax = default(double?), double? paymentSubTotal = default(double?), double? paymentSubTotalWithTax = default(double?), double? paymentDiscountTotal = default(double?), double? paymentDiscountTotalWithTax = default(double?), double? handlingTotal = default(double?), double? handlingTotalWithTax = default(double?), double? discountAmount = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? fee = default(double?), double? feeWithTax = default(double?), double? feeTotal = default(double?), double? feeTotalWithTax = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Payment> payments = default(System.Collections.Generic.IList<Payment>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), Coupon coupon = default(Coupon), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public ShoppingCart(string name = default(string), string storeId = default(string), string channelId = default(string), bool? isAnonymous = default(bool?), string customerId = default(string), string customerName = default(string), string organizationId = default(string), string currency = default(string), string languageCode = default(string), bool? taxIncluded = default(bool?), bool? isRecuring = default(bool?), string comment = default(string), string status = default(string), string weightUnit = default(string), double? weight = default(double?), string validationType = default(string), double? volumetricWeight = default(double?), double? total = default(double?), double? subTotal = default(double?), double? subTotalWithTax = default(double?), double? subTotalDiscount = default(double?), double? subTotalDiscountWithTax = default(double?), double? shippingTotal = default(double?), double? shippingTotalWithTax = default(double?), double? shippingSubTotal = default(double?), double? shippingSubTotalWithTax = default(double?), double? shippingDiscountTotal = default(double?), double? shippingDiscountTotalWithTax = default(double?), double? paymentTotal = default(double?), double? paymentTotalWithTax = default(double?), double? paymentSubTotal = default(double?), double? paymentSubTotalWithTax = default(double?), double? paymentDiscountTotal = default(double?), double? paymentDiscountTotalWithTax = default(double?), double? handlingTotal = default(double?), double? handlingTotalWithTax = default(double?), double? discountAmount = default(double?), double? discountTotal = default(double?), double? discountTotalWithTax = default(double?), double? fee = default(double?), double? feeWithTax = default(double?), double? feeTotal = default(double?), double? feeTotalWithTax = default(double?), System.Collections.Generic.IList<Address> addresses = default(System.Collections.Generic.IList<Address>), System.Collections.Generic.IList<LineItem> items = default(System.Collections.Generic.IList<LineItem>), System.Collections.Generic.IList<Payment> payments = default(System.Collections.Generic.IList<Payment>), System.Collections.Generic.IList<Shipment> shipments = default(System.Collections.Generic.IList<Shipment>), string coupon = default(string), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string objectType = default(string), System.Collections.Generic.IList<DynamicObjectProperty> dynamicProperties = default(System.Collections.Generic.IList<DynamicObjectProperty>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Name = name;
             StoreId = storeId;
@@ -3751,8 +3724,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             Items = items;
             Payments = payments;
             Shipments = shipments;
-            Discounts = discounts;
             Coupon = coupon;
+            Discounts = discounts;
             TaxType = taxType;
             TaxTotal = taxTotal;
             TaxPercentRate = taxPercentRate;
@@ -4003,13 +3976,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
-        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
+        public string Coupon { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
-        public Coupon Coupon { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
+        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
 
         /// <summary>
         /// </summary>
@@ -7285,7 +7258,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Shipment class.
         /// </summary>
-        public Shipment(string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), string warehouseLocation = default(string), string currency = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), double? price = default(double?), double? priceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? fee = default(double?), double? feeWithTax = default(double?), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), Address deliveryAddress = default(Address), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string id = default(string))
+        public Shipment(string shipmentMethodCode = default(string), string shipmentMethodOption = default(string), string warehouseLocation = default(string), string currency = default(string), double? volumetricWeight = default(double?), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), double? price = default(double?), double? priceWithTax = default(double?), double? total = default(double?), double? totalWithTax = default(double?), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), double? fee = default(double?), double? feeWithTax = default(double?), string taxType = default(string), double? taxTotal = default(double?), double? taxPercentRate = default(double?), Address deliveryAddress = default(Address), System.Collections.Generic.IList<ShipmentItem> items = default(System.Collections.Generic.IList<ShipmentItem>), System.Collections.Generic.IList<Discount> discounts = default(System.Collections.Generic.IList<Discount>), System.Collections.Generic.IList<TaxDetail> taxDetails = default(System.Collections.Generic.IList<TaxDetail>), string id = default(string))
         {
             ShipmentMethodCode = shipmentMethodCode;
             ShipmentMethodOption = shipmentMethodOption;
@@ -7310,8 +7283,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             TaxTotal = taxTotal;
             TaxPercentRate = taxPercentRate;
             DeliveryAddress = deliveryAddress;
-            Discounts = discounts;
             Items = items;
+            Discounts = discounts;
             TaxDetails = taxDetails;
             Id = id;
         }
@@ -7433,13 +7406,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
-        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
+        public System.Collections.Generic.IList<ShipmentItem> Items { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
-        public System.Collections.Generic.IList<ShipmentItem> Items { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "discounts")]
+        public System.Collections.Generic.IList<Discount> Discounts { get; set; }
 
         /// <summary>
         /// </summary>
@@ -7528,48 +7501,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
-
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class Coupon
-    {
-        /// <summary>
-        /// Initializes a new instance of the Coupon class.
-        /// </summary>
-        public Coupon() { }
-
-        /// <summary>
-        /// Initializes a new instance of the Coupon class.
-        /// </summary>
-        public Coupon(string code = default(string), bool? isValid = default(bool?), string invalidDescription = default(string))
-        {
-            Code = code;
-            IsValid = isValid;
-            InvalidDescription = invalidDescription;
-        }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isValid")]
-        public bool? IsValid { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "invalidDescription")]
-        public string InvalidDescription { get; set; }
 
     }
 }
@@ -7743,7 +7674,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         /// <param name="valueType">Possible values include: 'ShortText',
         /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean',
-        /// 'SecureString'</param>
+        /// 'SecureString', 'Json'</param>
         public SettingEntry(string moduleId = default(string), string objectId = default(string), string objectType = default(string), string groupName = default(string), string name = default(string), string value = default(string), string valueType = default(string), System.Collections.Generic.IList<string> allowedValues = default(System.Collections.Generic.IList<string>), string defaultValue = default(string), bool? isArray = default(bool?), System.Collections.Generic.IList<string> arrayValues = default(System.Collections.Generic.IList<string>), string title = default(string), string description = default(string))
         {
             ModuleId = moduleId;
@@ -7793,7 +7724,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'ShortText', 'LongText',
-        /// 'Integer', 'Decimal', 'DateTime', 'Boolean', 'SecureString'
+        /// 'Integer', 'Decimal', 'DateTime', 'Boolean', 'SecureString',
+        /// 'Json'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }

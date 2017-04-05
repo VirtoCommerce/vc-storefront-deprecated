@@ -117,7 +117,9 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
     function getCart() {
         $scope.cartIsUpdating = true;
         cartService.getCart().then(function (response) {
-            $scope.cart = response.data;
+            var cart = response.data;
+            cart.hasValidationErrors = _.some(cart.validationErrors) || _.some(cart.items, function (item) { return _.some(item.validationErrors) });
+            $scope.cart = cart;
             $scope.cartIsUpdating = false;
         }, function (response) {
             $scope.cartIsUpdating = false;

@@ -503,8 +503,8 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 result.Coupon = new Coupon
                 {
-                    Code = cartDto.Coupon.Code,
-                    AppliedSuccessfully = cartDto.Coupon.IsValid ?? false
+                    Code = cartDto.Coupon,
+                    AppliedSuccessfully = !string.IsNullOrEmpty(cartDto.Coupon)
                 };
             }
 
@@ -564,7 +564,7 @@ namespace VirtoCommerce.Storefront.Converters
                 result.LanguageCode = cart.Language.CultureName;
             }
             result.Addresses = cart.Addresses.Select(ToCartAddressDto).ToList();
-            result.Coupon = cart.Coupon != null ? new cartDto.Coupon { Code = cart.Coupon.Code, IsValid = cart.Coupon.AppliedSuccessfully } : null;
+            result.Coupon = cart.Coupon != null ? cart.Coupon.Code : null;
             result.Currency = cart.Currency.Code;
             result.Discounts = cart.Discounts.Select(ToCartDiscountDto).ToList();
             result.HandlingTotal = (double)cart.HandlingTotal.Amount;

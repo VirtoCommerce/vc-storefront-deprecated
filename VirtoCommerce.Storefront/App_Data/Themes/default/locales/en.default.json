@@ -339,7 +339,8 @@
             "none": "You haven't placed any orders yet."
         },
         "order": {
-            "title": "Order {{ name }}",
+          "title": "Order {{ name }}",
+          "get_invoice": "Get invoice",
             "placed_on_date_html": "Placed on {{ date }}",
             "cancelled_on": "Order Cancelled on {{ date }}",
             "cancel_reason": "Reason",

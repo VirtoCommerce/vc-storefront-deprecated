@@ -77,8 +77,7 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.Orders.CancelPayment", "storefrontapi/orders/{orderNumber}/payments/{paymentNumber}/cancel", new { controller = "ApiOrder", action = "CancelPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Orders.ProcessPayment", "storefrontapi/orders/{orderNumber}/payments/{paymentNumber}/process", new { controller = "ApiOrder", action = "ProcessOrderPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Orders.AddOrUpdateOrderPayment", "storefrontapi/orders/{orderNumber}/payments", new { controller = "ApiOrder", action = "AddOrUpdateOrderPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
-
-
+            routes.AddStorefrontRoute("API.Orders.GetInvoicePdf", "storefrontapi/orders/{orderNumber}/invoice", new { controller = "ApiOrder", action = "GetInvoicePdf" });
 
             // Quote requests API
             routes.AddStorefrontRoute("API.QuoteRequest.GetItemsCount", "storefrontapi/quoterequests/{number}/itemscount", defaults: new { controller = "ApiQuoteRequest", action = "GetItemsCount" });

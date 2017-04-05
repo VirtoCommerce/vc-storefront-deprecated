@@ -22,6 +22,8 @@ namespace VirtoCommerce.Storefront.Model.Marketing
         /// </summary>
         public Money Amount { get; set; }
 
+        public string Coupon { get; set; }
+
         /// <summary>
         /// Gets or sets the value of discount description
         /// </summary>
@@ -33,6 +35,7 @@ namespace VirtoCommerce.Storefront.Model.Marketing
             var retVal = new Discount(currency);
             retVal.PromotionId = PromotionId;
             retVal.Description = Description;
+            retVal.Coupon = Coupon;
             retVal.Amount = Amount.ConvertTo(currency);
             return retVal;
         }

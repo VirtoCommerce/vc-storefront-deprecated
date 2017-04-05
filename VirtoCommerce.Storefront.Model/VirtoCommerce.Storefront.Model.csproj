@@ -85,6 +85,7 @@
     <Compile Include="Catalog\ProductAssociation.cs" />
     <Compile Include="Catalog\CategorySearchCriteria.cs" />
     <Compile Include="Catalog\ProductSearchCriteria.cs" />
+    <Compile Include="Catalog\Services\IProductAvailabilityService.cs" />
     <Compile Include="Catalog\Term.cs" />
     <Compile Include="Catalog\TermExtensions.cs" />
     <Compile Include="Common\AnonymousComparer.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Common\EntryState.cs" />
     <Compile Include="Common\EnumerableExtension.cs" />
     <Compile Include="Common\IDistributedCacheManager.cs" />
+    <Compile Include="Common\IEntity.cs" />
     <Compile Include="Common\ILocalCacheManager.cs" />
     <Compile Include="Common\IMutablePagedList.cs" />
     <Compile Include="Common\IQueryableExtensions.cs" />

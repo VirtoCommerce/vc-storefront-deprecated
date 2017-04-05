@@ -2627,7 +2627,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
         /// </summary>
         /// <param name="valueType">Possible values include: 'ShortText',
         /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean',
-        /// 'SecureString'</param>
+        /// 'SecureString', 'Json'</param>
         public SettingEntry(string moduleId = default(string), string objectId = default(string), string objectType = default(string), string groupName = default(string), string name = default(string), string value = default(string), string valueType = default(string), System.Collections.Generic.IList<string> allowedValues = default(System.Collections.Generic.IList<string>), string defaultValue = default(string), bool? isArray = default(bool?), System.Collections.Generic.IList<string> arrayValues = default(System.Collections.Generic.IList<string>), string title = default(string), string description = default(string))
         {
             ModuleId = moduleId;
@@ -2677,7 +2677,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'ShortText', 'LongText',
-        /// 'Integer', 'Decimal', 'DateTime', 'Boolean', 'SecureString'
+        /// 'Integer', 'Decimal', 'DateTime', 'Boolean', 'SecureString',
+        /// 'Json'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }

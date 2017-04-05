@@ -2188,6 +2188,127 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             return _result;
         }
 
+        /// <param name='orderNumber'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.IO.Stream>> GetInvoicePdfWithHttpMessagesAsync(string orderNumber, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (orderNumber == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "orderNumber");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("orderNumber", orderNumber);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetInvoicePdf", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/order/customerOrders/invoice/{orderNumber}").ToString();
+            _url = _url.Replace("{orderNumber}", System.Uri.EscapeDataString(orderNumber));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("GET");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if (!_httpResponse.IsSuccessStatusCode)
+            {
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<System.IO.Stream>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _result.Body = await _httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -2700,6 +2821,31 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 }
             }
 
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='orderNumber'>
+            /// </param>
+            public static System.IO.Stream GetInvoicePdf(this IOrderModule operations, string orderNumber)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).GetInvoicePdfAsync(orderNumber), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='orderNumber'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<System.IO.Stream> GetInvoicePdfAsync(this IOrderModule operations, string orderNumber, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                var _result = await operations.GetInvoicePdfWithHttpMessagesAsync(orderNumber, null, cancellationToken).ConfigureAwait(false);
+                _result.Request.Dispose();
+                return _result.Body;
+            }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -3025,6 +3171,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<PostProcessPaymentResult>> PostProcessPaymentWithHttpMessagesAsync(PaymentCallbackParameters callback, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='orderNumber'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.IO.Stream>> GetInvoicePdfWithHttpMessagesAsync(string orderNumber, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -4336,7 +4500,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         /// <param name="valueType">Possible values include: 'ShortText',
         /// 'LongText', 'Integer', 'Decimal', 'DateTime', 'Boolean',
-        /// 'SecureString'</param>
+        /// 'SecureString', 'Json'</param>
         public SettingEntry(string moduleId = default(string), string objectId = default(string), string objectType = default(string), string groupName = default(string), string name = default(string), string value = default(string), string valueType = default(string), System.Collections.Generic.IList<string> allowedValues = default(System.Collections.Generic.IList<string>), string defaultValue = default(string), bool? isArray = default(bool?), System.Collections.Generic.IList<string> arrayValues = default(System.Collections.Generic.IList<string>), string title = default(string), string description = default(string))
         {
             ModuleId = moduleId;
@@ -4386,7 +4550,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'ShortText', 'LongText',
-        /// 'Integer', 'Decimal', 'DateTime', 'Boolean', 'SecureString'
+        /// 'Integer', 'Decimal', 'DateTime', 'Boolean', 'SecureString',
+        /// 'Json'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -4555,7 +4720,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Discount class.
         /// </summary>
-        public Discount(string promotionId = default(string), string currency = default(string), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), Coupon coupon = default(Coupon), string description = default(string))
+        public Discount(string promotionId = default(string), string currency = default(string), double? discountAmount = default(double?), double? discountAmountWithTax = default(double?), string coupon = default(string), string description = default(string), string id = default(string))
         {
             PromotionId = promotionId;
             Currency = currency;
@@ -4563,6 +4728,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
             DiscountAmountWithTax = discountAmountWithTax;
             Coupon = coupon;
             Description = description;
+            Id = id;
         }
 
         /// <summary>
@@ -4588,54 +4754,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "coupon")]
-        public Coupon Coupon { get; set; }
+        public string Coupon { get; set; }
 
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
-    }
-}
-// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
-// Changes may cause incorrect behavior and will be lost if the code is
-// regenerated.
-
-namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
-{
-    using System.Linq;
-
-    public partial class Coupon
-    {
-        /// <summary>
-        /// Initializes a new instance of the Coupon class.
-        /// </summary>
-        public Coupon() { }
-
-        /// <summary>
-        /// Initializes a new instance of the Coupon class.
-        /// </summary>
-        public Coupon(string code = default(string), bool? isValid = default(bool?), string invalidDescription = default(string))
-        {
-            Code = code;
-            IsValid = isValid;
-            InvalidDescription = invalidDescription;
-        }
-
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "isValid")]
-        public bool? IsValid { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "invalidDescription")]
-        public string InvalidDescription { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
     }
 }

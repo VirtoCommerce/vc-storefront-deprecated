@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.Storefront.Model.StaticContent
 {
     public abstract class ContentItem : IHasLanguage
-    {    
+    {
         protected ContentItem()
         {
             Tags = new List<string>();
@@ -20,7 +15,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
             IsPublished = true;
         }
 
-        public virtual string Type { get { return "page"; } }
+        public virtual string Type => "page";
 
         public string Author { get; set; }
 
@@ -104,18 +99,13 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                             break;
 
                         case "published":
-                            var isPublished = true;
-                            bool.TryParse(settingValue, out isPublished);
-                            IsPublished = isPublished;
+                            bool isPublished;
+                            IsPublished = bool.TryParse(settingValue, out isPublished) ? isPublished : true;
                             break;
+
                         case "date":
-                            var createdDate = new DateTime();
-                            if (settingValue != null)
-                            {
-                                DateTime.TryParse(settingValue, out createdDate);
-                            }
-                            CreatedDate = createdDate;
-                            PublishedDate = createdDate;
+                            DateTime date;
+                            PublishedDate = CreatedDate = DateTime.TryParse(settingValue, out date) ? date : new DateTime();
                             break;
                         case "tags":
                             Tags = setting.Value.ToList();
@@ -132,11 +122,12 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                         case "layout":
                             Layout = settingValue;
                             break;
+
                         case "priority":
-                            int priority = 0;
-                            int.TryParse(settingValue, out priority);
-                            Priority = priority;
+                            int priority;
+                            Priority = int.TryParse(settingValue, out priority) ? priority : 0;
                             break;
+
                         case "description":
                             Description = settingValue;
                             break;
@@ -151,7 +142,6 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
                 Title = Name;
             }
         }
-
 
         public override string ToString()
         {

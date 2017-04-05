@@ -12,6 +12,7 @@ using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Converters.Subscriptions;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Storefront.Model.Catalog.Services;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer.Services;
 using VirtoCommerce.Storefront.Model.Pricing.Services;
@@ -28,6 +29,7 @@ namespace VirtoCommerce.Storefront.Services
         private readonly IPricingService _pricingService;
         private readonly ICustomerService _customerService;
         private readonly ISubscriptionModuleApiClient _subscriptionApi;
+        private readonly IProductAvailabilityService _productAvailabilityService;
 
         public CatalogSearchServiceImpl(
             Func<WorkContext> workContextFactory,
@@ -36,7 +38,8 @@ namespace VirtoCommerce.Storefront.Services
             ISearchApiModuleApiClient searchApi,
             IPricingService pricingService,
             ICustomerService customerService,
-            ISubscriptionModuleApiClient subscriptionApi)
+            ISubscriptionModuleApiClient subscriptionApi,
+            IProductAvailabilityService productAvailabilityService)
         {
             _workContextFactory = workContextFactory;
             _catalogModuleApi = catalogModuleApi;
@@ -45,6 +48,7 @@ namespace VirtoCommerce.Storefront.Services
             _searchApi = searchApi;
             _customerService = customerService;
             _subscriptionApi = subscriptionApi;
+            _productAvailabilityService = productAvailabilityService;
         }
 
         #region ICatalogSearchService Members
@@ -99,8 +103,12 @@ namespace VirtoCommerce.Storefront.Services
                         taskList.Add(LoadProductPaymentPlanAsync(allProducts, workContext));
                     }
 
-
                     await Task.WhenAll(taskList.ToArray());
+
+                    foreach (var product in allProducts)
+                    {
+                        product.IsAvailable = await _productAvailabilityService.IsAvailable(product, 1);
+                    }
                 }
             }
 
@@ -111,7 +119,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             var workContext = _workContextFactory();
 
-            var retVal = (await _catalogModuleApi.CatalogModuleCategories.GetCategoriesByIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
+            var retVal = (await _catalogModuleApi.CatalogModuleCategories.GetCategoriesByPlentyIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
             //Set  lazy loading for child categories 
             SetChildCategoriesLazyLoading(retVal);
             return retVal;
@@ -166,7 +174,7 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual async Task<Product[]> GetProductsAsync(IList<string> ids, ItemResponseGroup responseGroup, WorkContext workContext)
         {
-            var productDtos = await _catalogModuleApi.CatalogModuleProducts.GetProductByIdsAsync(ids, ((int)responseGroup).ToString());
+            var productDtos = await _catalogModuleApi.CatalogModuleProducts.GetProductByPlentyIdsAsync(ids, ((int)responseGroup).ToString());
 
             var result = productDtos.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToArray();
             return result;
@@ -183,7 +191,7 @@ namespace VirtoCommerce.Storefront.Services
             //Set  lazy loading for child categories 
             SetChildCategoriesLazyLoading(retVal.ToArray());
             return retVal;
-    }
+        }
 
         private async Task<CatalogSearchResult> InnerSearchProductsAsync(ProductSearchCriteria criteria, WorkContext workContext)
         {
@@ -216,6 +224,11 @@ namespace VirtoCommerce.Storefront.Services
                 if (criteria.ResponseGroup.HasFlag(ItemResponseGroup.ItemWithPrices))
                 {
                     taskList.Add(_pricingService.EvaluateProductPricesAsync(productsWithVariations, workContext));
+                }
+
+                foreach (var product in productsWithVariations)
+                {
+                    product.IsAvailable = await _productAvailabilityService.IsAvailable(product, 1);
                 }
 
                 await Task.WhenAll(taskList.ToArray());
@@ -345,7 +358,7 @@ namespace VirtoCommerce.Storefront.Services
                 //Lazy loading for child categories
                 category.Categories = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos2) =>
                 {
-                    var categorySearchCriteria = new CategorySearchCriteria()
+                    var categorySearchCriteria = new CategorySearchCriteria
                     {
                         PageNumber = pageNumber,
                         PageSize = pageSize,
