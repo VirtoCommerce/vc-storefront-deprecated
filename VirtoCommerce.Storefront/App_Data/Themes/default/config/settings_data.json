@@ -120,7 +120,7 @@
             ],
             "footer_content_text": "Some footer content text",
             //Collect usage events for product recommendations 
-            "collect_user_events_enabled": false
+            "collect_user_events_enabled": true
         },
         "Soft Green": {
             "ajax_cart_enable": true,
