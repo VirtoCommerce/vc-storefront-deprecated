@@ -167,6 +167,7 @@
         window.productCompareListCapacity = {{ settings.product_compare_list_capacity }};
         window.startRecordInteraction = function()
         {
+            {% if settings.collect_user_events_enabled %}
 			// An example instantiation with custom arguments
 			var interactions = new Interactor({
 				interactions            : true,
@@ -176,6 +177,7 @@
 				async                   : true,
 				debug                   : false
 			});
+            {% endif %}
         }
         window.startRecordInteraction();
     </script>
