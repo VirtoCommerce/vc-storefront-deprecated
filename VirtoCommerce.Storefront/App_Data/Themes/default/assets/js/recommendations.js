@@ -47,10 +47,14 @@ storefrontApp.controller('recommendationsController', ['$rootScope', '$scope', '
                 $scope.isBlockVisible = products.length > 0;
             }
 
-            $scope.productListRecommendationsLoaded = true;
+            $scope.productListRecommendationsLoaded = true;            
         });
     }
 
+    $scope.startRecordInteraction = function()
+    {
+        window.startRecordInteraction();
+    }
     $scope.recommendationClick = function (productId, eventType) {
         $rootScope.$broadcast('storefrontEvents', { productIds: productId, eventType: 'RecommendationClick' });
     }

@@ -2,9 +2,9 @@
     <hr />
     <span class="h1">{{ 'products.general.related_products' | t }}</span>
     <div class="grid-uniform">
-        <div ng-repeat="product in productListRecommendations" class="grid-item large--one-fifth medium--one-third small--one-half" ng-class="[{ 'on-sale': (product.price.listPrice.amount > product.price.actualPrice.amount), 'comparable': {{ settings.product_compare_enabled }} }]">
+        <div ng-repeat="product in productListRecommendations" ng-init="$last && startRecordInteraction()" class="grid-item large--one-fifth medium--one-third small--one-half" ng-class="[{ 'on-sale': (product.price.listPrice.amount > product.price.actualPrice.amount), 'comparable': {{ settings.product_compare_enabled }} }]">
             <a href="{% raw %}{{ product.url }}{% endraw %}" class="product-grid-item" ng-click="recommendationClick('{{ product.id }}', 'RecommendationClick')">
-                <div class="product-grid-image">
+                <div class="product-grid-image recommendationClick" >
                     <div class="product-grid-image--centered">
                         <span ng-if="!({{ product.available }})">
                             <div class="badge badge--sold-out">

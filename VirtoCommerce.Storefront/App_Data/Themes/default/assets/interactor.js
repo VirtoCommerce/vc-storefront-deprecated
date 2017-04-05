@@ -40,7 +40,7 @@ Interactor.prototype = {
 
         // Argument Assignment          // Type Checks                                                                          // Default Values
         interactor.interactions = typeof (config.interactions) == "boolean" ? config.interactions : true,
-        interactor.interactionElement = typeof (config.interactionElement) == "string" ? config.interactionElement : 'interaction',
+        interactor.interactionElements = Array.isArray(config.interactionElements) === true ? config.interactionElements : ['interaction'],
         interactor.interactionEvents = Array.isArray(config.interactionEvents) === true ? config.interactionEvents : ['mouseup', 'touchend'],     
         interactor.endpoint = typeof (config.endpoint) == "string" ? config.endpoint : '/interactions',
         interactor.async = typeof (config.async) == "boolean" ? config.async : true,
@@ -65,13 +65,18 @@ Interactor.prototype = {
         // Set Interaction Capture
         if (interactor.interactions === true) {
             for (var i = 0; i < interactor.interactionEvents.length; i++) {
-                var ev = interactor.interactionEvents[i],
-                    targets = document.getElementsByClassName(interactor.interactionElement);
-                for (var j = 0; j < targets.length; j++) {
-                    targets[j].addEventListener(ev, function (e) {
-                        e.stopPropagation();
-                        interactor.__addInteraction__(e, interactor.interactionElement);
-                    });
+                var ev = interactor.interactionEvents[i];
+                for (var elIndex = 0; elIndex < interactor.interactionElements.length; elIndex++) {
+                    var className = interactor.interactionElements[elIndex];
+                    targets = document.getElementsByClassName(className);
+                    for (var j = 0; j < targets.length; j++) {
+                        var eventListener = function (e) {
+                            e.stopPropagation();
+                            interactor.__addInteraction__(e, className);
+                        };
+                        targets[j].removeEventListener(ev, eventListener);
+                        targets[j].addEventListener(ev, eventListener);
+                    }
                 }
             }
         }

@@ -165,16 +165,19 @@
     <script>
         window.quotesEnabled = {{ shop.quotes_enabled }};
         window.productCompareListCapacity = {{ settings.product_compare_list_capacity }};
-
+        window.startRecordInteraction = function()
+        {
 			// An example instantiation with custom arguments
 			var interactions = new Interactor({
 				interactions            : true,
-				interactionElement      : "productClick",
+				interactionElements     : ["productClick", "recommendationClick"],
 				interactionEvents       : ["mouseup", "touchend"],
 				endpoint                : '/usage/interactions',
 				async                   : true,
 				debug                   : false
 			});
+        }
+        window.startRecordInteraction();
     </script>
 </body>
 </html>
