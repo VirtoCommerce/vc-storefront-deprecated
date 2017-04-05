@@ -170,9 +170,9 @@
 			// An example instantiation with custom arguments
 			var interactions = new Interactor({
 				interactions            : true,
-				interactionElements     : ["productClick", "recommendationClick"],
+				interactionElements     : ["Click", "AddShopCart", "RemoveShopCart", "RecommendationClick"],
 				interactionEvents       : ["mouseup", "touchend"],
-				endpoint                : '/usage/interactions',
+				endpoint                : '/storefrontapi/useractions/eventinfo',
 				async                   : true,
 				debug                   : false
 			});

@@ -371,7 +371,6 @@
     <Content Include="App_Data\Themes\default\assets\js\common-components\address.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout.js" />
-    <Content Include="App_Data\Themes\default\assets\interactor.min.js" />
     <Content Include="App_Data\Themes\default\assets\js\recommendations.js" />
     <Content Include="App_Data\Themes\default\assets\js\quote-request.js" />
     <Content Include="App_Data\Themes\default\assets\js\product-compare.js" />
@@ -412,7 +411,7 @@
     <Content Include="App_Data\Themes\default\assets\js\app.js" />
     <Content Include="App_Data\Themes\default\assets\js\product-list.js" />
     <Content Include="App_Data\Themes\default\assets\js\directives.js" />
-    <Content Include="App_Data\Themes\default\assets\js\main.js.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\main.js" />
     <Content Include="App_Data\Themes\default\assets\js\product.js" />
     <Content Include="App_Data\Themes\default\assets\js\services.js" />
     <Content Include="App_Data\Themes\default\assets\thumbs-bar.gif" />

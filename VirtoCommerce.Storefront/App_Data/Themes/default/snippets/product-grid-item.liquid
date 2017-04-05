@@ -21,7 +21,7 @@
 {% endcomment %}
 {% assign image_size = settings.collection_prod_image_sizes %}
 <div class="grid-item {{ grid_item_width }}{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}{% if settings.product_compare_enabled %} comparable{% endif %}">
-    <a href="{{ product.url | absolute_url }}" class="product-grid-item productClick">
+    <a href="{{ product.url | absolute_url }}" class="product-grid-item Click" interactor-arg="{{ product.id }}">
         <div class="product-grid-image">
             <div class="product-grid-image--centered">
                 {% if sold_out %}
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="product-item--other" style="margin-bottom: 10px;">
-            <button class="btn btn-secondary" title="{{ 'products.general.add_to_cart' | t }}" style="width: 70%;" ng-click="addProductToCartById('{{ product.id }}', 1, $event)" ng-controller="productController">
+            <button class="btn btn-secondary AddShopCart" title="{{ 'products.general.add_to_cart' | t }}" style="width: 70%;" ng-click="addProductToCartById('{{ product.id }}', 1, $event)" ng-controller="productController" interactor-arg="{{ product.id }}">
                 <span class="icon icon-cart"></span>
             </button>
             {% if settings.product_compare_enabled %}

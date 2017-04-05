@@ -37,7 +37,7 @@ Interactor.prototype = {
     __init__: function (config) {
 
         var interactor = this;
-
+        
         // Argument Assignment          // Type Checks                                                                          // Default Values
         interactor.interactions = typeof (config.interactions) == "boolean" ? config.interactions : true,
         interactor.interactionElements = Array.isArray(config.interactionElements) === true ? config.interactionElements : ['interaction'],
@@ -68,14 +68,22 @@ Interactor.prototype = {
                 var ev = interactor.interactionEvents[i];
                 for (var elIndex = 0; elIndex < interactor.interactionElements.length; elIndex++) {
                     var className = interactor.interactionElements[elIndex];
-                    targets = document.getElementsByClassName(className);
-                    for (var j = 0; j < targets.length; j++) {
-                        var eventListener = function (e) {
-                            e.stopPropagation();
-                            interactor.__addInteraction__(e, className);
-                        };
-                        targets[j].removeEventListener(ev, eventListener);
-                        targets[j].addEventListener(ev, eventListener);
+                    var targets = document.getElementsByClassName(className);
+                    if (targets) {
+                        for (var j = 0; j < targets.length; j++) {
+                            var targetElement = targets[j];
+                            var interationArg = targetElement.getAttributeNode("interactor-arg");
+                            var eventListener =  {
+                                className: className,
+                                content:  interationArg ? interationArg.value : "",
+                                handleEvent : function(e) {
+                                    e.stopPropagation();
+                                    interactor.__addInteraction__(e, this.className, this.content);
+                                }
+                            };
+                            targets[j].removeEventListener(ev, eventListener);
+                            targets[j].addEventListener(ev, eventListener);
+                        }
                     }
                 }
             }
@@ -90,7 +98,8 @@ Interactor.prototype = {
     },
 
     // Add Interaction Object Triggered By Events to Records Array
-    __addInteraction__: function (e, type) {
+    __addInteraction__: function (e, type, arg) {
+
 
         var interactor = this,
 
@@ -100,7 +109,7 @@ Interactor.prototype = {
                 event: e.type,
                 targetTag: e.target.nodeName,
                 targetClasses: e.target.className,
-                content: e.target.innerText,
+                content: arg,//e.target.innerText,
                 clientPosition: {
                     x: e.clientX,
                     y: e.clientY
