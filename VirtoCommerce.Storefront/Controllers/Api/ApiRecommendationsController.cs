@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.Common;
@@ -11,27 +12,24 @@ namespace VirtoCommerce.Storefront.Controllers.Api
     [HandleJsonError]
     public class ApiRecommendationsController : StorefrontControllerBase
     {
-        private readonly Func<string, IRecommendationsService> _recommendationServiceFactory;
-
+        private readonly IRecommendationsService[] _services;
         public ApiRecommendationsController(WorkContext workContext, IStorefrontUrlBuilder urlBuilder,
-            Func<string, IRecommendationsService> recommendationsServiceFactory) : base(workContext, urlBuilder)
+           IRecommendationsService[] services) : base(workContext, urlBuilder)
         {
-            _recommendationServiceFactory = recommendationsServiceFactory;
+            _services = services;
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetRecommendations(string provider, string type, int skip, int take, string[] productIds)
+        public async Task<ActionResult> GetRecommendations(RecommendationEvalContext evalContext)
         {
-            var recommendationService = _recommendationServiceFactory(provider);
-
-            var context = new RecommendationsContext()
+            var recommendationService = _services.FirstOrDefault(x => x.ProviderName.EqualsInvariant(evalContext.Provider));
+            if (recommendationService == null)
             {
-                StoreId = WorkContext.CurrentStore.Id,
-                CustomerId = WorkContext.CurrentCustomer.IsRegisteredUser ? WorkContext.CurrentCustomer.Id : "anonymous",
-                ProductIds = productIds
-            };
-
-            var result = await recommendationService.GetRecommendationsAsync(context, type, skip, take);
+                throw new NotSupportedException(evalContext.Provider);
+            }
+            evalContext.StoreId = WorkContext.CurrentStore.Id;
+            evalContext.UserId = WorkContext.CurrentCustomer.Id;
+            var result = await recommendationService.GetRecommendationsAsync(evalContext);
 
             return Json(result);
         }

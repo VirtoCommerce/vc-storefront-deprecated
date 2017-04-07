@@ -243,8 +243,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
                 DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc,
                 NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize,
-                ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
+                // ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
                 Converters = new  System.Collections.Generic.List<Newtonsoft.Json.JsonConverter>
                     {
                         new Microsoft.Rest.Serialization.Iso8601TimeSpanConverter()
@@ -255,8 +255,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
                 DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc,
                 NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize,
-                ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
+                // ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
                 Converters = new System.Collections.Generic.List<Newtonsoft.Json.JsonConverter>
                     {
                         new Microsoft.Rest.Serialization.Iso8601TimeSpanConverter()
@@ -352,7 +352,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -364,7 +364,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<string>>> GetCustomerRecommendationsWithHttpMessagesAsync(CustomerRecommendationsContext context, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<string>>> GetRecommendationsWithHttpMessagesAsync(RecommendationEvalContext context, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (context == null)
             {
@@ -379,7 +379,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
                 tracingParameters.Add("context", context);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetCustomerRecommendations", tracingParameters);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetRecommendations", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
@@ -430,17 +430,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200)
+            if (!_httpResponse.IsSuccessStatusCode)
             {
-                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 else {
                     _responseContent = string.Empty;
                 }
-                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
-                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
                 if (_shouldTrace)
                 {
                     Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
@@ -489,7 +491,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
@@ -564,17 +566,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 204)
+            if (!_httpResponse.IsSuccessStatusCode)
             {
-                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 else {
                     _responseContent = string.Empty;
                 }
-                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
-                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
                 if (_shouldTrace)
                 {
                     Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
@@ -605,7 +609,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -686,17 +690,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200)
+            if (!_httpResponse.IsSuccessStatusCode)
             {
-                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 else {
                     _responseContent = string.Empty;
                 }
-                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
-                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
                 if (_shouldTrace)
                 {
                     Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
@@ -745,7 +751,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -826,17 +832,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200)
+            if (!_httpResponse.IsSuccessStatusCode)
             {
-                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 else {
                     _responseContent = string.Empty;
                 }
-                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
-                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
                 if (_shouldTrace)
                 {
                     Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
@@ -898,9 +906,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
             /// </param>
             /// <param name='context'>
             /// </param>
-            public static System.Collections.Generic.IList<string> GetCustomerRecommendations(this IRecommendations operations, CustomerRecommendationsContext context)
+            public static System.Collections.Generic.IList<string> GetRecommendations(this IRecommendations operations, RecommendationEvalContext context)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IRecommendations)s).GetCustomerRecommendationsAsync(context), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IRecommendations)s).GetRecommendationsAsync(context), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <param name='operations'>
@@ -911,9 +919,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<string>> GetCustomerRecommendationsAsync(this IRecommendations operations, CustomerRecommendationsContext context, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<System.Collections.Generic.IList<string>> GetRecommendationsAsync(this IRecommendations operations, RecommendationEvalContext context, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.GetCustomerRecommendationsWithHttpMessagesAsync(context, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetRecommendationsWithHttpMessagesAsync(context, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -1017,7 +1025,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -1026,7 +1034,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<string>>> GetCustomerRecommendationsWithHttpMessagesAsync(CustomerRecommendationsContext context, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<string>>> GetRecommendationsWithHttpMessagesAsync(RecommendationEvalContext context, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <param name='usageEvents'>
         /// </param>
         /// <param name='customHeaders'>
@@ -1035,7 +1043,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
@@ -1050,7 +1058,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -1068,7 +1076,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Microsoft.Rest.HttpOperationException">
+        /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -1088,25 +1096,31 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
 {
     using System.Linq;
 
-    public partial class CustomerRecommendationsContext
+    public partial class RecommendationEvalContext
     {
         /// <summary>
-        /// Initializes a new instance of the CustomerRecommendationsContext
-        /// class.
+        /// Initializes a new instance of the RecommendationEvalContext class.
         /// </summary>
-        public CustomerRecommendationsContext() { }
+        public RecommendationEvalContext() { }
 
         /// <summary>
-        /// Initializes a new instance of the CustomerRecommendationsContext
-        /// class.
+        /// Initializes a new instance of the RecommendationEvalContext class.
         /// </summary>
-        public CustomerRecommendationsContext(string storeId = default(string), string customerId = default(string), System.Collections.Generic.IList<string> productIds = default(System.Collections.Generic.IList<string>), int? numberOfResults = default(int?))
+        public RecommendationEvalContext(string type = default(string), string storeId = default(string), string userId = default(string), System.Collections.Generic.IList<string> productIds = default(System.Collections.Generic.IList<string>), int? take = default(int?), string modelId = default(string), string buildId = default(string))
         {
+            Type = type;
             StoreId = storeId;
-            CustomerId = customerId;
+            UserId = userId;
             ProductIds = productIds;
-            NumberOfResults = numberOfResults;
+            Take = take;
+            ModelId = modelId;
+            BuildId = buildId;
         }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
 
         /// <summary>
         /// </summary>
@@ -1115,8 +1129,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "customerId")]
-        public string CustomerId { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "userId")]
+        public string UserId { get; set; }
 
         /// <summary>
         /// </summary>
@@ -1125,8 +1139,18 @@ namespace VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleA
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "numberOfResults")]
-        public int? NumberOfResults { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "take")]
+        public int? Take { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modelId")]
+        public string ModelId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "buildId")]
+        public string BuildId { get; set; }
 
     }
 }

@@ -243,24 +243,8 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IUrlBuilder, UrlBuilder>();
             container.RegisterType<IStorefrontUrlBuilder, StorefrontUrlBuilder>(new PerRequestLifetimeManager());
 
-            Func<string, IRecommendationsService> recommendationsFactory = provider =>
-            {
-                if (provider == "Cognitive")
-                {
-                    return new CognitiveRecommendationsService(workContextFactory,
-                        container.Resolve<ICatalogSearchService>(),
-                        container.Resolve<IProductRecommendationsModuleApiClient>(),
-                        container.Resolve<ILocalCacheManager>());
-                }
-
-                if (provider == "Association")
-                {
-                    return new AssociationRecommendationsService(workContextFactory, container.Resolve<ICatalogSearchService>());
-                }
-
-                throw new InvalidOperationException(string.Format("Unknown recommedations provider: {0} ", provider));
-            };
-            container.RegisterInstance(recommendationsFactory);
+            container.RegisterType<IRecommendationsService, CognitiveRecommendationsService>("Cognitive");
+            container.RegisterType<IRecommendationsService, AssociationRecommendationsService>("Association");
 
             //Register domain events
             container.RegisterType<IEventPublisher<OrderPlacedEvent>, EventPublisher<OrderPlacedEvent>>();
