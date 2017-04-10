@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace VirtoCommerce.Storefront.Model.Recommendations
 {
+    /// <summary>
+    /// Context used for evaluation recommendation for given  parameters 
+    /// </summary>
     public partial class RecommendationEvalContext
     {
         public RecommendationEvalContext()
@@ -13,9 +16,16 @@ namespace VirtoCommerce.Storefront.Model.Recommendations
             ProductIds = new List<string>();
             Take = 20;
         }
-        
-        public string Provider { get; set;}
 
+        /// <summary>
+        /// Recommendation data provider (Cognitive, Association etc)
+        /// </summary>
+        public string Provider { get; set;}
+        /// <summary>
+        /// Type of requested recommendations may be unique for each kind of provider
+        /// Coginitive - User2Item, Item2Item, FBT
+        /// Association - Recommendations, UpSale, CrossSale etc
+        /// </summary>
         public string Type { get; set; }
 
         public string StoreId { get; set; }
@@ -24,11 +34,7 @@ namespace VirtoCommerce.Storefront.Model.Recommendations
 
         public ICollection<string> ProductIds { get; set; }
 
-        public int Take { get; set; }    
-       
-        public string ModelId { get; set; }
-
-        public string BuildId { get; set; }
-
+        public int Take { get; set; }           
+      
     }
 }

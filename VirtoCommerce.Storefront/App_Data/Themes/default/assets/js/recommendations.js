@@ -11,7 +11,10 @@ storefrontApp.controller('recommendationsController', ['$scope', '$timeout', 're
         if (_.isString(evalContext.productIds)) {
             if (evalContext.productIds.match(",")) {
                 var values = evalContext.productIds.split(',');
-                $scope.productIds = values;
+                evalContext.productIds = values;
+            }
+            else {
+                evalContext.productIds = [evalContext.productIds];
             }
         }
         recommendationService.getRecommendedProducts(evalContext).then(function (response) {

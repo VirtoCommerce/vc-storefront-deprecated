@@ -497,6 +497,7 @@
     <Compile Include="Binders\OrderTypesModelBinder.cs" />
     <Compile Include="BackgroundJobs\GenerateSitemapJob.cs" />
     <Compile Include="Binders\CartTypesModelBinder.cs" />
+    <Compile Include="Binders\ReccomendationsModelBinder.cs" />
     <Compile Include="Common\AppBuilderExtension.cs" />
     <Compile Include="Common\FeedResult.cs" />
     <Compile Include="Common\HmacCredentials.cs" />
@@ -527,7 +528,7 @@
     <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Controllers\QuoteRequestController.cs" />
-    <Compile Include="Converters\Recommendations\RecommendationConverter.cs" />
+    <Compile Include="Converters\Recommendations\CognitiveRecommendationConverter.cs" />
     <Compile Include="Converters\SettingConverter.cs" />
     <Compile Include="Converters\Pricing\PricingConverter.cs" />
     <Compile Include="Converters\Subscriptions\SubscriptionConverter.cs" />

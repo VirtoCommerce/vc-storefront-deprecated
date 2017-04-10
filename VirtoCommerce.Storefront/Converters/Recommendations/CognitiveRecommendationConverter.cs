@@ -8,36 +8,37 @@ using dto = VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModul
 
 namespace VirtoCommerce.Storefront.Converters
 {
-    public static class RecommendationConverterExtension
+    public static class CognitiveRecommendationConverterExtension
     {
-        public static RecommendationConverter RecommendationConverterInstance
+        public static CognitiveRecommendationConverter RecommendationConverterInstance
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<RecommendationConverter>();
+                return ServiceLocator.Current.GetInstance<CognitiveRecommendationConverter>();
             }
         }
 
-        public static dto.RecommendationEvalContext ToContextDto(this RecommendationEvalContext context)
+        public static dto.RecommendationEvalContext ToContextDto(this CognitiveRecommendationEvalContext context)
         {
             return RecommendationConverterInstance.ToContextDto(context);
         }    
     }
 
-    public class RecommendationConverter
+    public class CognitiveRecommendationConverter
     {
-        public virtual dto.RecommendationEvalContext ToContextDto(RecommendationEvalContext context)
+        public virtual dto.RecommendationEvalContext ToContextDto(CognitiveRecommendationEvalContext context)
         {
             var retVal = new dto.RecommendationEvalContext
             {
-                ModelId = context.ModelId,
                 BuildId = context.BuildId,
+                ModelId = context.ModelId,
                 ProductIds = context.ProductIds.Where(x => !string.IsNullOrEmpty(x)).ToList(),
                 StoreId = context.StoreId,
                 Take = context.Take,
                 Type = context.Type,
                 UserId = context.UserId
             };
+
             return retVal;
         }
     }

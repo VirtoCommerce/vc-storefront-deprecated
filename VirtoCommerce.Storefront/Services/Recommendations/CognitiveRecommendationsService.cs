@@ -43,9 +43,15 @@ namespace VirtoCommerce.Storefront.Services.Recommendations
 
         public async Task<Product[]> GetRecommendationsAsync(Model.Recommendations.RecommendationEvalContext context)
         {
+            var cognitiveContext = context as CognitiveRecommendationEvalContext;
+            if(cognitiveContext == null)
+            {
+                throw new InvalidCastException(nameof(context));
+            }
+                
             var result = new List<Product>();
 
-            var recommendedProductIds = await _productRecommendationsApi.Recommendations.GetRecommendationsAsync(context.ToContextDto());
+            var recommendedProductIds = await _productRecommendationsApi.Recommendations.GetRecommendationsAsync(cognitiveContext.ToContextDto());
             if (recommendedProductIds != null)
             {
                 result.AddRange(await _catalogSearchService.GetProductsAsync(recommendedProductIds.ToArray(), ItemResponseGroup.Seo | ItemResponseGroup.Outlines | ItemResponseGroup.ItemWithPrices | ItemResponseGroup.ItemWithDiscounts | ItemResponseGroup.Inventory));

@@ -306,7 +306,7 @@ namespace VirtoCommerce.Storefront
             ModelBinders.Binders.Add(typeof(Model.Cart.Shipment), new CartModelBinder<Model.Cart.Shipment>(workContextFactory));
             ModelBinders.Binders.Add(typeof(Model.Cart.Payment), new CartModelBinder<Model.Cart.Payment>(workContextFactory));
             ModelBinders.Binders.Add(typeof(Model.Order.PaymentIn), new OrderModelBinder<Model.Order.PaymentIn>(workContextFactory));
-
+            ModelBinders.Binders.Add(typeof(Model.Recommendations.RecommendationEvalContext), new ReccomendationsModelBinder<Model.Recommendations.RecommendationEvalContext>());
             app.Use<WorkContextOwinMiddleware>(container);
             app.UseStageMarker(PipelineStage.PostAuthorize);
             app.Use<StorefrontUrlRewriterOwinMiddleware>(container);
