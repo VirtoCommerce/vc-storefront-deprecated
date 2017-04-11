@@ -32,6 +32,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpPost]
         public async Task<ActionResult> SaveEventInfo(UserSession userSession)
         {
+            //TODO: need to replace to other special detected VC API for usage
             if (userSession.Interactions != null)
             {
                 IList<UsageEvent> usageEvents = userSession.Interactions.Select(i => new UsageEvent
@@ -39,7 +40,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                     EventType = i.Type,
                     ItemId = i.Content,
                     CreatedDate = i.CreatedAt,
-                    CustomerId = WorkContext.CurrentCustomer.IsRegisteredUser ? WorkContext.CurrentCustomer.Id : "anonymous",
+                    CustomerId = WorkContext.CurrentCustomer.Id,
                     StoreId = WorkContext.CurrentStore.Id
                 }).ToList();
 

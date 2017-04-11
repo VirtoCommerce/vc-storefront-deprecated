@@ -212,16 +212,10 @@
 </script>
 
     {% if settings.related_products_enable %}
-    {% assign grid_item_width = 'large--one-fifth medium--one-third small--one-half' %}
-
-    {% include 'recommendations', provider: 'Association', type: 'Recommendations', product_ids: product.id, size: 5 %}
-    
-    {% comment %}
+    {% assign grid_item_width = 'large--one-fifth medium--one-third small--one-half' %}   
 
     {% include 'related-products' %}
-
-    {% endcomment %}
-    
+   
     {% endif %}
 
     {% if settings.product_reviews_enable %}

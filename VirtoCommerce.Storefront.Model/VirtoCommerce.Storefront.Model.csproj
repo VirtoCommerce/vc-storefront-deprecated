@@ -114,8 +114,9 @@
     <Compile Include="Interaction\Page.cs" />
     <Compile Include="Interaction\Client.cs" />
     <Compile Include="Interaction\UserSession.cs" />
+    <Compile Include="Recommendations\CognitiveRecommendationEvalContext.cs" />
     <Compile Include="Recommendations\IRecommendationsService.cs" />
-    <Compile Include="Recommendations\RecommendationsContext.cs" />
+    <Compile Include="Recommendations\RecommendationEvalContext.cs" />
     <Compile Include="SeoLinksType.cs" />
     <Compile Include="SettingEntry.cs" />
     <Compile Include="LoginProvider.cs" />

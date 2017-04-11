@@ -1,4 +1,4 @@
-<span ng-controller="recommendationsController" ng-show="isBlockVisible" ng-init="setType('{{ provider }}','{{ type }}','{{ product_ids }}','{{ size }}')">
+<span ng-controller="recommendationsController" ng-show="isBlockVisible" ng-init="getRecommendations({ provider : '{{ provider }}' , type : '{{ type }}', productIds : '{{ product_ids }}', modelId : '{{ modelId }}', buildId : '{{ buildId }}', take : '{{ take }}' })">
     <hr />
     <span class="h1">{{ 'products.general.related_products' | t }}</span>
     <div class="grid-uniform">

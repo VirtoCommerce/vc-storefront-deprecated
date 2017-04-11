@@ -5,6 +5,7 @@ namespace VirtoCommerce.Storefront.Model.Recommendations
 {
     public interface IRecommendationsService
     {
-        Task<Product[]> GetRecommendationsAsync(RecommendationsContext context, string type, int skip, int take);
+        string ProviderName { get; }
+        Task<Product[]> GetRecommendationsAsync(RecommendationEvalContext context);
     }
 }

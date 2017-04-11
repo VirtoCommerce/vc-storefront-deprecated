@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.ProductRecommendationsModuleApi.Models;
+using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
@@ -31,25 +32,33 @@ namespace VirtoCommerce.Storefront.Services.Recommendations
             _cacheManager = cacheManager;
         }
 
-        public async Task<Product[]> GetRecommendationsAsync(RecommendationsContext context, string type, int skip, int take)
+        #region IRecommendationsService members
+        public string ProviderName
         {
+            get
+            {
+                return "Cognitive";
+            }
+        }
+
+        public async Task<Product[]> GetRecommendationsAsync(Model.Recommendations.RecommendationEvalContext context)
+        {
+            var cognitiveContext = context as CognitiveRecommendationEvalContext;
+            if(cognitiveContext == null)
+            {
+                throw new InvalidCastException(nameof(context));
+            }
+                
             var result = new List<Product>();
 
-            var customerRecommendationsContext = new CustomerRecommendationsContext
-            {
-                StoreId = context.StoreId,
-                CustomerId = context.CustomerId,
-                ProductIds = context.ProductIds,
-                NumberOfResults = take
-            };
-
-            var recommendedProductIds = await _productRecommendationsApi.Recommendations.GetCustomerRecommendationsAsync(customerRecommendationsContext);
+            var recommendedProductIds = await _productRecommendationsApi.Recommendations.GetRecommendationsAsync(cognitiveContext.ToContextDto());
             if (recommendedProductIds != null)
             {
-                result.AddRange(await _catalogSearchService.GetProductsAsync(recommendedProductIds.ToArray(), ItemResponseGroup.ItemLarge));
+                result.AddRange(await _catalogSearchService.GetProductsAsync(recommendedProductIds.ToArray(), ItemResponseGroup.Seo | ItemResponseGroup.Outlines | ItemResponseGroup.ItemWithPrices | ItemResponseGroup.ItemWithDiscounts | ItemResponseGroup.Inventory));
             }
 
             return result.ToArray();
-        }
+        } 
+        #endregion
     }
 }
