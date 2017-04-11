@@ -111,12 +111,22 @@ namespace VirtoCommerce.Storefront.Model.Common
         /// </summary>
         /// <param name="originalFileUrl">File url</param>
         /// <param name="suffix">Suffix</param>
+        /// Example: "1428965138000_1133723.jpg".AddSuffixToFileUrl("grande") 
+        /// Result: 1428965138000_1133723_grande.jpg
         /// <returns></returns>
         public static string AddSuffixToFileUrl(this string originalFileUrl, string suffix)
         {
-            int dotIndex = originalFileUrl.LastIndexOf(".");
-            string result = originalFileUrl.Insert(dotIndex - 1, suffix);
-
+            if (originalFileUrl == null)
+            {
+                throw new ArgumentNullException(nameof(originalFileUrl));
+            }
+            var result = originalFileUrl;
+            var parts = originalFileUrl.Split('.');
+            if (parts.Length > 0)
+            {
+                parts[0] += suffix;
+                result = String.Join(".", parts);
+            }
             return result;
         }
     }

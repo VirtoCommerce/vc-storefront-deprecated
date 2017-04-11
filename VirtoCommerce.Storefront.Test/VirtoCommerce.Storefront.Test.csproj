@@ -142,6 +142,7 @@
     </Compile>
     <Compile Include="ConcurrentAsyncLockTests.cs" />
     <Compile Include="CssUrlTransformTests.cs" />
+    <Compile Include="CommonTests.cs" />
     <Compile Include="MutablePagedListTests.cs" />
     <None Include="Pages\StoreWithInvalidPages\valid.md" />
     <None Include="Pages\StoreWithInvalidPages\invalid.md" />
