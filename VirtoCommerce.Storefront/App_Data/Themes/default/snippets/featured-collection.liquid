@@ -14,9 +14,9 @@
     <div class="featured-box--inner">
       <div class="featured-box--image">
         {% if collections[featured].image %}
-          {{ collections[featured].image | img_url: featured_collection_size | img_tag: collection_title }}
+          {{ collections[featured].image | img_url | img_tag: collection_title }}
         {% else %}
-          {{ collections[featured].products.first.featured_image | img_url: featured_collection_size | img_tag: collection_title }}
+          {{ collections[featured].products.first.featured_image | img_url | img_tag: collection_title }}
         {% endif %}
       </div>
     </div>

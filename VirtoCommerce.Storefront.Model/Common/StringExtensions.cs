@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -103,6 +104,20 @@ namespace VirtoCommerce.Storefront.Model.Common
                 str = "//" + uri.Authority + uri.PathAndQuery;
             }
             return str;
+        }
+
+        /// <summary>
+        /// Add provided suffix to the end of file name
+        /// </summary>
+        /// <param name="originalFileUrl">File url</param>
+        /// <param name="suffix">Suffix</param>
+        /// <returns></returns>
+        public static string AddSuffixToFileUrl(this string originalFileUrl, string suffix)
+        {
+            int dotIndex = originalFileUrl.LastIndexOf(".");
+            string result = originalFileUrl.Insert(dotIndex - 1, suffix);
+
+            return result;
         }
     }
 }

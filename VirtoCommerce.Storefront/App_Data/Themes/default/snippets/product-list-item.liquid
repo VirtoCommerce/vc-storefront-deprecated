@@ -19,7 +19,7 @@
         <div class="grid">
             <div class="grid-item large--one-fifth medium--one-third">
                 {% if product.featured_image %}
-                    <img src="{{ product.featured_image.src | img_url: image_size }}" alt="{{ product.featured_image.alt | escape }}" />
+                    <img src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
                 {% else %}
                     <div class="no-product-image">
                         <img src="{{ 'no-image.svg' | asset_url }}" />

@@ -4,7 +4,7 @@
   <a href="{{ product.url }}" class="product-grid-item">
         <div class="product-grid-image" style="height: 160px;">
             <div class="product-grid-image--centered">
-                <img src="{{ product.featured_image.src | img_url: image_size }}" alt="{{ product.featured_image.alt | escape }}"/>
+                <img src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}"/>
             </div>
         </div>
         <p>{{ product.title }}</p>

@@ -34,7 +34,7 @@
   {% if template contains 'product' %}
 
     {% if settings.share_pinterest %}
-      <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media={{ product.featured_image | img_url: 'original' }}&amp;description={{ product.title | escape }}" class="share-pinterest">
+      <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media={{ product.featured_image | img_url }}&amp;description={{ product.title | escape }}" class="share-pinterest">
         <span class="icon icon-pinterest"></span>
         <span class="share-title">{{ 'products.general.share_on_pinterest' | t }}</span>
         {% if settings.social_sharing_count %}
@@ -44,7 +44,7 @@
     {% endif %}
 
     {% if settings.share_fancy %}
-      <a target="_blank" href="http://www.thefancy.com/fancyit?ItemURL={{ permalinkURL }}&amp;Title={{ product.title }}&amp;Category=Other&amp;ImageURL={{ product.featured_image | img_url: 'original' }}" class="share-fancy">
+      <a target="_blank" href="http://www.thefancy.com/fancyit?ItemURL={{ permalinkURL }}&amp;Title={{ product.title }}&amp;Category=Other&amp;ImageURL={{ product.featured_image | img_url }}" class="share-fancy">
         <span class="icon icon-fancy"></span>
         <span class="share-title">{{ 'products.general.share_on_fancy' | t }}</span>
       </a>

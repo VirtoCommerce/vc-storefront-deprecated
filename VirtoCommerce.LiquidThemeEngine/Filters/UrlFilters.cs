@@ -84,6 +84,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
 
             if (!string.IsNullOrEmpty(retVal))
             {
+                if (!string.IsNullOrEmpty(type))
+                {
+                    retVal = retVal.AddSuffixToFileUrl(string.Format("_{0}", type));
+                }
+
                 retVal = retVal.RemoveLeadingUriScheme();
             }
 
