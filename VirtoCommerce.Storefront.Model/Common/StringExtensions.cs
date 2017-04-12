@@ -106,6 +106,16 @@ namespace VirtoCommerce.Storefront.Model.Common
             return str;
         }
 
+        public static string ReplaceLastOccurrence(this string source, string find, string replace)
+        {
+            var place = source.LastIndexOf(find);
+            var result = source;
+            if (place >= 0)
+            {
+                result = source.Remove(place, find.Length).Insert(place, replace);
+            }
+            return result;
+        }
         /// <summary>
         /// Add provided suffix to the end of file name
         /// </summary>
@@ -121,13 +131,19 @@ namespace VirtoCommerce.Storefront.Model.Common
                 throw new ArgumentNullException(nameof(originalFileUrl));
             }
             var result = originalFileUrl;
-            var parts = originalFileUrl.Split('.');
-            if (parts.Length > 0)
+            var fileName = Path.GetFileName(originalFileUrl);
+            if(!string.IsNullOrEmpty(fileName))
             {
-                parts[0] += suffix;
-                result = String.Join(".", parts);
+                var newFileName = Path.GetFileNameWithoutExtension(fileName) + suffix;
+                var extension = Path.GetExtension(fileName);
+                if(!string.IsNullOrEmpty(extension))
+                {
+                    newFileName += extension;
+                }
+                result = result.ReplaceLastOccurrence(fileName, newFileName);
             }
             return result;
         }
+        
     }
 }
