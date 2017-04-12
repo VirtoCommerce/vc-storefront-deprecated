@@ -7,7 +7,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Binders
     {
         protected override void ComplementModel(Login model, HttpRequestBase request)
         {
-            model.Email = request["customer[email]"];
+            model.Username = request["customer[user_name]"];
             model.Password = request["customer[password]"];
         }
     }

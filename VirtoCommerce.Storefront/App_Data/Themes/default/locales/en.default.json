@@ -321,6 +321,7 @@
         "login": {
             "title": "Login",
             "email": "Email",
+            "user_name": "User Name",
             "password": "Password",
             "forgot_password": "Forgot your password?",
             "sign_in": "Sign In",
@@ -458,6 +459,7 @@
             "first_name": "First Name",
             "last_name": "Last Name",
             "email": "Email",
+            "user_name": "User Name",
             "password": "Password",
             "submit": "Create",
             "or": "or",
