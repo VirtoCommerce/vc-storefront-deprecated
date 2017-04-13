@@ -148,7 +148,7 @@ namespace VirtoCommerce.Storefront.Controllers
             {
                 Email = formModel.Email,
                 Password = formModel.Password,
-                UserName = formModel.Username,
+                UserName = formModel.UserName,
                 UserType = "Customer",
                 StoreId = WorkContext.CurrentStore.Id,
             };

@@ -10,7 +10,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Binders
             model.FirstName = request["customer[first_name]"];
             model.LastName = request["customer[last_name]"];
             model.Email = request["customer[email]"];
-            model.Username = request["customer[user_name]"];
+            model.UserName = request["customer[user_name]"];
             model.Password = request["customer[password]"];
         }
     }
