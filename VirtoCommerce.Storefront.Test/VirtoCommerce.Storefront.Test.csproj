@@ -148,7 +148,6 @@
     <None Include="Pages\StoreWithInvalidPages\invalid.md" />
     <None Include="Pages\TestStore\blogs\news\default.md" />
     <Compile Include="OutlineTests.cs" />
-    <Compile Include="PriceTests.cs" />
     <Compile Include="ProductAvailabilityTests.cs" />
     <Compile Include="QuoteRequestTests.cs" />
     <Compile Include="SeoRouteTests.cs" />
