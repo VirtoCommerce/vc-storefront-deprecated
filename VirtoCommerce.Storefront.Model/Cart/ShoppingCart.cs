@@ -279,11 +279,11 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                var itemDiscountTotal = Items.Sum(i => i.DiscountTotal.Amount);
-                var shipmentDiscountTotal = Shipments.Sum(s => s.DiscountAmount.Amount);
-                var paymentDiscountTotal = Payments.Sum(s => s.DiscountAmount.Amount);
+                var itemDiscountTotal = Items.Sum(i => i.DiscountTotal.InternalAmount);
+                var shipmentDiscountTotal = Shipments.Sum(s => s.DiscountAmount.InternalAmount);
+                var paymentDiscountTotal = Payments.Sum(s => s.DiscountAmount.InternalAmount);
 
-                return new Money(DiscountAmount.Amount + itemDiscountTotal + shipmentDiscountTotal + paymentDiscountTotal, Currency);
+                return new Money(DiscountAmount.InternalAmount + itemDiscountTotal + shipmentDiscountTotal + paymentDiscountTotal, Currency);
             }
         }
 
