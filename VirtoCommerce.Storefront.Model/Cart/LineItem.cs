@@ -290,7 +290,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return ExtendedPriceWithTax - ExtendedPrice;
+                return ExtendedPrice * TaxPercentRate;
             }
         }
 
