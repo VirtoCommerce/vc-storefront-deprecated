@@ -1,4 +1,5 @@
-﻿using Microsoft.Rest;
+﻿using System;
+using Microsoft.Rest;
 
 namespace VirtoCommerce.Storefront.Common
 {
@@ -8,6 +9,13 @@ namespace VirtoCommerce.Storefront.Common
             where T : ServiceClient<T>
         {
             client.SetRetryPolicy(null);
+            return client;
+        }
+
+        public static T WithTimeout<T>(this T client, TimeSpan timeout)
+            where T : ServiceClient<T>
+        {
+            client.HttpClient.Timeout = timeout;
             return client;
         }
     }
