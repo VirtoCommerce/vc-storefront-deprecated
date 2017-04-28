@@ -313,22 +313,27 @@ namespace VirtoCommerce.LiquidThemeEngine
             return _cacheManager.Get(GetCacheKey("GetSettings", defaultValue), "LiquidThemeRegion", () =>
             {
                 var retVal = new DefaultableDictionary(defaultValue);
-                //Read first settings from global theme
-                var resultSettings = InnerGetSettings(_globalThemeBlobProvider, "");
-                //Then load from current theme
-                var currentThemeSettings = InnerGetSettings(_themeBlobProvider, CurrentThemePath);
-                if (currentThemeSettings != null)
-                {
-                    if (resultSettings == null) // if there is no default settings, use just current theme
-                    {
-                        resultSettings = currentThemeSettings;
-                    }
-                    else
-                    {
-                        resultSettings.Merge(currentThemeSettings, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Merge });
-                    }
-                }
 
+                //Load all data from current theme config
+                JObject currentThemeSettings = InnerGetAllSettings(_themeBlobProvider, CurrentThemePath);
+
+                //Load all data from global theme config
+                JObject globalSettings = InnerGetAllSettings(_globalThemeBlobProvider, string.Empty);
+
+                //Merge two configs
+                globalSettings.Merge(currentThemeSettings, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Merge });
+
+                //Get actual preset from merged config
+                JValue currentPreset = globalSettings.GetValue("current") as JValue;
+                JObject presets = globalSettings.GetValue("presets") as JObject;
+                JObject resultSettings = null;
+
+                if (currentPreset != null && presets != null && presets.Children().Any())
+                {
+                    string currentPresetName = currentPreset.Value.ToString();
+                    IList<JProperty> allPresets = presets.Children().Cast<JProperty>().ToList();
+                    resultSettings = allPresets.FirstOrDefault(p => p.Name == currentPresetName).Value as JObject;
+                }
 
                 if (resultSettings != null)
                 {
@@ -422,9 +427,8 @@ namespace VirtoCommerce.LiquidThemeEngine
             }
             return retVal;
         }
-
-
-        private static JObject InnerGetSettings(IContentBlobProvider themeBlobProvider, string themePath)
+        
+        private static JObject InnerGetAllSettings(IContentBlobProvider themeBlobProvider, string themePath)
         {
             JObject retVal = null;
             var settingsPath = Path.Combine(themePath, "config\\settings_data.json");
@@ -432,9 +436,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             {
                 using (var stream = themeBlobProvider.OpenRead(settingsPath))
                 {
-                    var settings = JsonConvert.DeserializeObject<JObject>(stream.ReadToString());
-                    // now get settings for current theme and add it as a settings parameter
-                    retVal = settings["current"] as JObject ?? settings["presets"][settings["current"].ToString()] as JObject;
+                    retVal = JsonConvert.DeserializeObject<JObject>(stream.ReadToString());
                 }
             }
             return retVal;
