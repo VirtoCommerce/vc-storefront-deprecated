@@ -14,10 +14,14 @@ using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
+using VirtoCommerce.Storefront.Services;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Customer;
+using VirtoCommerce.Storefront.Model.Catalog.Services;
+using VirtoCommerce.Storefront.Model.Tax.Services;
 
 namespace VirtoCommerce.Storefront.Test
 {
@@ -107,6 +111,21 @@ namespace VirtoCommerce.Storefront.Test
         protected IOrdersModuleApiClient GetOrderApiClient()
         {
             return new OrdersModuleApiClient(GetApiBaseUri(), GetClientCredentials());
+        }
+
+        protected ISubscriptionModuleApiClient GetSubscriptionModuleApiClient()
+        {
+            return new SubscriptionModuleApiClient(GetApiBaseUri(), GetClientCredentials());
+        }
+
+        protected IProductAvailabilityService GetProductAvailabilityService()
+        {
+            return new ProductAvailabilityService();
+        }
+
+        protected ITaxEvaluator GetTaxEvaluator()
+        {
+            return new TaxEvaluator(GetCoreApiClient());
         }
 
 

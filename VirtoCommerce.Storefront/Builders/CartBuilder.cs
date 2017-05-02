@@ -299,6 +299,7 @@ namespace VirtoCommerce.Storefront.Builders
                     {
                         lineItem.ListPrice = lineItem.SalePrice;
                     }
+                    lineItem.DiscountAmount = lineItem.ListPrice - lineItem.SalePrice;
                     lineItem.IsReadOnly = true;
                     lineItem.Id = null;
                     Cart.Items.Add(lineItem);
@@ -392,9 +393,13 @@ namespace VirtoCommerce.Storefront.Builders
         public virtual async Task EvaluatePromotionsAsync()
         {
             EnsureCartExists();
-            var evalContext = Cart.ToPromotionEvaluationContext();
 
-            await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
+            bool isReadOnlyLineItems = Cart.Items.Any(i => i.IsReadOnly);
+            if (!isReadOnlyLineItems)
+            {
+                var evalContext = Cart.ToPromotionEvaluationContext();
+                await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
+            }
         }
 
         public async Task EvaluateTaxesAsync()
