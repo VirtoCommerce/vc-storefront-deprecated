@@ -55,7 +55,7 @@ namespace VirtoCommerce.Storefront.Services
             var newTicks = response.LastModifiedDate?.Ticks ?? 0;
             var oldTicks = Interlocked.Exchange(ref _lastModifiedDateTicks, newTicks);
 
-            return newTicks != oldTicks;
+            return newTicks > oldTicks;
         }
     }
 }
