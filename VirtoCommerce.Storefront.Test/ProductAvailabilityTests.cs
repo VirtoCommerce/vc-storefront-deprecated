@@ -1,6 +1,4 @@
 ﻿using VirtoCommerce.Storefront.Model.Catalog;
-using VirtoCommerce.Storefront.Model.Catalog.Services;
-using VirtoCommerce.Storefront.Services;
 using Xunit;
 
 namespace VirtoCommerce.Storefront.Test
@@ -74,11 +72,6 @@ namespace VirtoCommerce.Storefront.Test
             }
 
             return result;
-        }
-
-        private static IProductAvailabilityService GetProductAvailabilityService()
-        {
-            return new ProductAvailabilityService();
         }
     }
 }
