@@ -19,6 +19,7 @@ using VirtoCommerce.LiquidThemeEngine.Operators;
 using VirtoCommerce.LiquidThemeEngine.Tags;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Common.Exceptions;
 using VirtoCommerce.Storefront.Model.Services;
 
 namespace VirtoCommerce.LiquidThemeEngine
@@ -315,31 +316,42 @@ namespace VirtoCommerce.LiquidThemeEngine
                 var retVal = new DefaultableDictionary(defaultValue);
 
                 //Load all data from current theme config
-                JObject currentThemeSettings = InnerGetAllSettings(_themeBlobProvider, CurrentThemePath);
+                var currentThemeSettings = InnerGetAllSettings(_themeBlobProvider, CurrentThemePath);
 
                 //Load all data from global theme config
-                JObject globalSettings = InnerGetAllSettings(_globalThemeBlobProvider, string.Empty);
+                var resultSettings = InnerGetAllSettings(_globalThemeBlobProvider, string.Empty);
 
-                //Merge two configs
-                globalSettings.Merge(currentThemeSettings, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Merge });
+                if (currentThemeSettings != null)
+                {
+                    //Merge two configs
+                    resultSettings.Merge(currentThemeSettings, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Merge });
+                }
 
                 //Get actual preset from merged config
-                JValue currentPreset = globalSettings.GetValue("current") as JValue;
-                JObject presets = globalSettings.GetValue("presets") as JObject;
-                JObject resultSettings = null;
-
-                if (currentPreset != null && presets != null && presets.Children().Any())
+                var currentPreset = resultSettings.GetValue("current");
+                if(currentPreset is JValue)
                 {
-                    string currentPresetName = currentPreset.Value.ToString();
+                    string currentPresetName = ((JValue)currentPreset).Value.ToString();
+                    var presets = resultSettings.GetValue("presets") as JObject;
+                    if (presets == null || !presets.Children().Any())
+                    {
+                        throw new StorefrontException("Setting presets not defined");
+                    }
+
                     IList<JProperty> allPresets = presets.Children().Cast<JProperty>().ToList();
                     resultSettings = allPresets.FirstOrDefault(p => p.Name == currentPresetName).Value as JObject;
+                    if(resultSettings == null)
+                    {
+                        throw new StorefrontException($"Setting preset with name '{currentPresetName}' not found");
+                    }
+                }
+                if (currentPreset is JObject)
+                {
+                    resultSettings = (JObject)currentPreset;
                 }
 
-                if (resultSettings != null)
-                {
-                    var dict = resultSettings.ToObject<Dictionary<string, object>>().ToDictionary(x => x.Key, x => x.Value);
-                    retVal = new DefaultableDictionary(dict, defaultValue);
-                }
+                var dict = resultSettings.ToObject<Dictionary<string, object>>().ToDictionary(x => x.Key, x => x.Value);
+                retVal = new DefaultableDictionary(dict, defaultValue);
 
                 return retVal;
             });
