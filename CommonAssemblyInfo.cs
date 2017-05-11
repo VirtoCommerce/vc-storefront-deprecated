@@ -23,6 +23,5 @@ using System.Runtime.InteropServices;
 #else
 [assembly: AssemblyConfiguration("Release")]
 #endif
-
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]
