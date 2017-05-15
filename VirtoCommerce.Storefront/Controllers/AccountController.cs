@@ -365,12 +365,19 @@ namespace VirtoCommerce.Storefront.Controllers
             return StoreFrontRedirect("~/");
         }
 
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View("customers/forgot_password", WorkContext);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> ForgotPassword(ForgotPassword formModel)
         {
-            var user = await _commerceCoreApi.StorefrontSecurity.GetUserByNameAsync(formModel.Email);
-
+            var user = await _commerceCoreApi.StorefrontSecurity.GetUserByEmailAsync(formModel.Email);
             if (user != null)
             {
                 string callbackUrl = Url.Action("ResetPassword", "Account",
@@ -383,7 +390,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 ModelState.AddModelError("form", "User not found");
             }
 
-            return StoreFrontRedirect("~/account/login#recover");
+            return View("customers/forgot_password", WorkContext);
         }
 
         [HttpGet]
