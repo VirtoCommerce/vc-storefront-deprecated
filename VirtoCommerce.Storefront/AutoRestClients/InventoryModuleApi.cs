@@ -243,8 +243,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
                 DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc,
                 NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
-                // ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize,
+                ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
                 Converters = new  System.Collections.Generic.List<Newtonsoft.Json.JsonConverter>
                     {
                         new Microsoft.Rest.Serialization.Iso8601TimeSpanConverter()
@@ -255,8 +255,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
                 DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc,
                 NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
-                // ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize,
+                ContractResolver = new Microsoft.Rest.Serialization.ReadOnlyJsonContractResolver(),
                 Converters = new System.Collections.Generic.List<Newtonsoft.Json.JsonConverter>
                     {
                         new Microsoft.Rest.Serialization.Iso8601TimeSpanConverter()
@@ -359,7 +359,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="System.Exception">
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -391,29 +391,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/inventory/products").ToString();
-            System.Collections.Generic.List<string> _queryParameters = new System.Collections.Generic.List<string>();
-            if (ids != null)
-            {
-                if (ids.Count == 0)
-                {
-                    _queryParameters.Add(string.Format("ids={0}", System.Uri.EscapeDataString(string.Empty)));
-                }
-                else
-                {
-                    foreach (var _item in ids)
-                    {
-                        _queryParameters.Add(string.Format("ids={0}", System.Uri.EscapeDataString(_item ?? string.Empty)));
-                    }
-                }
-            }
-            if (_queryParameters.Count > 0)
-            {
-                _url += "?" + string.Join("&", _queryParameters);
-            }
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
-            _httpRequest.Method = new System.Net.Http.HttpMethod("GET");
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
             _httpRequest.RequestUri = new System.Uri(_url);
             // Set Headers
             if (customHeaders != null)
@@ -430,6 +411,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
 
             // Serialize Request
             string _requestContent = null;
+            if(ids != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(ids, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
             // Set Credentials
             if (this.Client.Credentials != null)
             {
@@ -450,19 +437,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if (!_httpResponse.IsSuccessStatusCode)
+            if ((int)_statusCode != 200)
             {
-                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 else {
                     _responseContent = string.Empty;
                 }
-                if (!string.IsNullOrEmpty(_responseContent)){
-                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
-                }
-                var aB = _requestContent;
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
                 if (_shouldTrace)
                 {
                     Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
@@ -518,7 +503,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="System.Exception">
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -591,19 +576,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if (!_httpResponse.IsSuccessStatusCode)
+            if ((int)_statusCode != 200)
             {
-                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 else {
                     _responseContent = string.Empty;
                 }
-                if (!string.IsNullOrEmpty(_responseContent)){
-                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
-                }
-                var aB = _requestContent;
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
                 if (_shouldTrace)
                 {
                     Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
@@ -661,7 +644,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="System.Exception">
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -745,19 +728,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
             System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if (!_httpResponse.IsSuccessStatusCode)
+            if ((int)_statusCode != 200)
             {
-                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new Microsoft.Rest.HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 if (_httpResponse.Content != null) {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
                 else {
                     _responseContent = string.Empty;
                 }
-                if (!string.IsNullOrEmpty(_responseContent)){
-                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
-                }
-                var aB = _requestContent;
+                ex.Request = new Microsoft.Rest.HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new Microsoft.Rest.HttpResponseMessageWrapper(_httpResponse, _responseContent);
                 if (_shouldTrace)
                 {
                     Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
@@ -968,7 +949,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="System.Exception">
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -993,7 +974,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="System.Exception">
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -1020,7 +1001,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="System.Exception">
+        /// <exception cref="Microsoft.Rest.HttpOperationException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
