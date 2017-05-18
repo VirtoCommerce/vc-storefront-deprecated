@@ -8,13 +8,12 @@
     <span class="breadcrumb--truncate">{{ vendor.name }}</span>
 
   {% elsif template contains 'product' %}
-
-    {% if collection %}
-      <span class="divider" aria-hidden="true">&rsaquo;</span>
-      {% if collection.handle %}
-        {% capture url %}{{ collection.handle | absolute_url }}{% endcapture %}
-        {{ collection.title | link_to: url }}
-      {% endif %}
+    {% if collection %}   
+      {% for parent in collection.parents %}
+         <span class="divider" aria-hidden="true">&rsaquo;</span>
+        {% capture url %}{{ parent.handle | absolute_url }}{% endcapture %}
+        {{ parent.title | link_to: url }}
+      {% endfor %}     
     {% endif %}
     <span class="divider" aria-hidden="true">&rsaquo;</span>
     <span class="breadcrumb--truncate">{{ product.title }}</span>

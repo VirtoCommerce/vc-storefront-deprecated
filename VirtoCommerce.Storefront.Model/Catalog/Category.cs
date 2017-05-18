@@ -13,7 +13,9 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
         public string CatalogId { get; set; }
 
-        public string ParentId { get; set; }
+        //All parents categories
+        public IMutablePagedList<Category> Parents { get; set; }
+        public string ParentId { get; set; }      
 
         public string Code { get; set; }
 
@@ -21,6 +23,9 @@ namespace VirtoCommerce.Storefront.Model.Catalog
 
         public string Name { get; set; }
 
+        /// <summary>
+        /// All parent categories ids concatenated with "/". E.g. (1/21/344)
+        /// </summary>
         public string Outline { get; set; }
 
         public SeoInfo SeoInfo { get; set; }

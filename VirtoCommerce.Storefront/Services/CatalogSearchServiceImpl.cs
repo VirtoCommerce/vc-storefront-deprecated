@@ -115,14 +115,16 @@ namespace VirtoCommerce.Storefront.Services
             return result;
         }
 
+        public virtual Category[] GetCategories(string[] ids, CategoryResponseGroup responseGroup = CategoryResponseGroup.Info)
+        {
+            var workContext = _workContextFactory();
+            return Task.Factory.StartNew(() => InnerGetCategoriesAsync(ids, workContext, responseGroup), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+        }
+
         public virtual async Task<Category[]> GetCategoriesAsync(string[] ids, CategoryResponseGroup responseGroup = CategoryResponseGroup.Info)
         {
             var workContext = _workContextFactory();
-
-            var retVal = (await _catalogModuleApi.CatalogModuleCategories.GetCategoriesByPlentyIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
-            //Set  lazy loading for child categories 
-            SetChildCategoriesLazyLoading(retVal);
-            return retVal;
+            return await InnerGetCategoriesAsync(ids, workContext, responseGroup);
         }
 
         /// <summary>
@@ -180,6 +182,13 @@ namespace VirtoCommerce.Storefront.Services
             return result;
         }
 
+        private async Task<Category[]> InnerGetCategoriesAsync(string[] ids, WorkContext workContext, CategoryResponseGroup responseGroup = CategoryResponseGroup.Info)
+        {
+            var retVal = (await _catalogModuleApi.CatalogModuleCategories.GetCategoriesByPlentyIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
+            //Set  lazy loading for child categories 
+            SetChildCategoriesLazyLoading(retVal);
+            return retVal;
+        }
 
         private async Task<IPagedList<Category>> InnerSearchCategoriesAsync(CategorySearchCriteria criteria, WorkContext workContext)
         {
@@ -355,8 +364,15 @@ namespace VirtoCommerce.Storefront.Services
         {
             foreach (var category in categories)
             {
+                //Lazy loading for parents categories
+                category.Parents = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos) =>
+                {
+                    var catIds = category.Outline.Split('/');
+                    return new StaticPagedList<Category>(GetCategories(catIds, CategoryResponseGroup.Small), pageNumber, pageSize, catIds.Count());
+                }, 1, CategorySearchCriteria.DefaultPageSize);
+
                 //Lazy loading for child categories
-                category.Categories = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos2) =>
+                category.Categories = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos) =>
                 {
                     var categorySearchCriteria = new CategorySearchCriteria
                     {
@@ -364,9 +380,9 @@ namespace VirtoCommerce.Storefront.Services
                         PageSize = pageSize,
                         Outline = "/" + category.Outline
                     };
-                    if (!sortInfos2.IsNullOrEmpty())
+                    if (!sortInfos.IsNullOrEmpty())
                     {
-                        categorySearchCriteria.SortBy = SortInfo.ToString(sortInfos2);
+                        categorySearchCriteria.SortBy = SortInfo.ToString(sortInfos);
                     }
                     var searchResult = SearchCategories(categorySearchCriteria);
                     return searchResult;
