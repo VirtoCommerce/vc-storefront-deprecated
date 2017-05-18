@@ -324,7 +324,7 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual async Task LoadProductInventoriesAsync(List<Product> products)
         {
-            var inventories = await _inventoryModuleApi.InventoryModule.GetProductsInventoriesAsync(products.Select(x => x.Id).ToList());
+            var inventories = await _inventoryModuleApi.InventoryModule.GetProductsInventoriesByPlentyIdsAsync(products.Select(x => x.Id).ToArray());
 
             foreach (var item in products)
             {
@@ -334,7 +334,7 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual void LoadProductInventories(List<Product> products)
         {
-            var inventories = _inventoryModuleApi.InventoryModule.GetProductsInventories(products.Select(x => x.Id).ToList());
+            var inventories = _inventoryModuleApi.InventoryModule.GetProductsInventoriesByPlentyIds(products.Select(x => x.Id).ToArray());
 
             foreach (var item in products)
             {
