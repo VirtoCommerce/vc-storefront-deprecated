@@ -235,12 +235,12 @@ namespace VirtoCommerce.Storefront.Services
                     taskList.Add(_pricingService.EvaluateProductPricesAsync(productsWithVariations, workContext));
                 }
 
+                await Task.WhenAll(taskList.ToArray());
+
                 foreach (var product in productsWithVariations)
                 {
                     product.IsAvailable = await _productAvailabilityService.IsAvailable(product, 1);
                 }
-
-                await Task.WhenAll(taskList.ToArray());
             }
 
             return new CatalogSearchResult
