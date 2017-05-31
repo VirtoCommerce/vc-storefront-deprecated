@@ -412,6 +412,12 @@ namespace VirtoCommerce.Storefront.Owin
                     retVal = customer ?? retVal;
                     retVal.Id = userId;
                     retVal.UserName = identity.Name;
+
+                    if (string.IsNullOrEmpty(retVal.FullName))
+                    {
+                        retVal.FullName = identity.Name;
+                    }
+
                     retVal.IsRegisteredUser = true;
                 }
 
