@@ -205,7 +205,7 @@ namespace VirtoCommerce.Storefront.Converters
                 if (propValue != null)
                 {
                     //Use only one prop value (reserve multi-values to other scenarios)
-                    retVal.Value = propValue.Value;
+                    retVal.Value = propValue.Value?.ToString();
                     retVal.ValueId = propValue.ValueId;
                 }
             }
