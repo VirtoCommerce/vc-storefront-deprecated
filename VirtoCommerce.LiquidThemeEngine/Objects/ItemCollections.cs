@@ -8,7 +8,7 @@ using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
 {
-    public abstract class ItemCollection<T> : Drop, ICollection, ILiquidContains, IMutablePagedList<T>
+    public abstract class ItemCollection<T> : Drop, ICollection, ILiquidContains, IEnumerable<T>, IMutablePagedList
         where T : class
     {
         private readonly IMutablePagedList<T> _mutablePagedList;
@@ -86,7 +86,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         }
         #endregion
 
-        #region MyRegion
+        #region IMutablePagedList Members
         public IEnumerable<SortInfo> SortInfos
         {
             get
@@ -172,14 +172,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
             get
             {
                 return _mutablePagedList.LastItemOnPage;
-            }
-        }
-
-        public T this[int index]
-        {
-            get
-            {
-                return _mutablePagedList[index];
             }
         }
 
