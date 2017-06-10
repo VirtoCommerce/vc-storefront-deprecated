@@ -1,8 +1,8 @@
-﻿using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
@@ -12,16 +12,15 @@ using VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi;
-using VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
-using VirtoCommerce.Storefront.Services;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Catalog.Services;
+using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Tax.Services;
+using VirtoCommerce.Storefront.Services;
 
 namespace VirtoCommerce.Storefront.Test
 {
@@ -91,11 +90,6 @@ namespace VirtoCommerce.Storefront.Test
         protected IQuoteModuleApiClient GetQuoteApiClient()
         {
             return new QuoteModuleApiClient(GetApiBaseUri(), GetClientCredentials());
-        }
-
-        protected ISearchApiModuleApiClient GetSearchApiClient()
-        {
-            return new SearchApiModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
         protected IStoreModuleApiClient GetStoreApiClient()
