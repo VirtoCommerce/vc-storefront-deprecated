@@ -192,7 +192,7 @@ namespace VirtoCommerce.Storefront.Services
             var searchCriteria = criteria.ToCategorySearchDto(workContext);
             var result = await _catalogModuleApi.CatalogModuleSearch.SearchCategoriesAsync(workContext.CurrentStore.Id, searchCriteria);
 
-            var retVal = new PagedList<Category>(result.Categories.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
+            var retVal = new PagedList<Category>(result.Items.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
             //Set  lazy loading for child categories 
             SetChildCategoriesLazyLoading(retVal.ToArray());
             return retVal;
@@ -204,7 +204,7 @@ namespace VirtoCommerce.Storefront.Services
 
             var searchCriteria = criteria.ToProductSearchDto(workContext);
             var result = await _catalogModuleApi.CatalogModuleSearch.SearchProductsAsync(workContext.CurrentStore.Id, searchCriteria);
-            var products = result.Products?.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList() ?? new List<Product>();
+            var products = result.Items?.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList() ?? new List<Product>();
 
             if (products.Any())
             {

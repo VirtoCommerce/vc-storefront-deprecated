@@ -11343,10 +11343,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductSearchResult class.
         /// </summary>
-        public ProductSearchResult(long? totalCount = default(long?), System.Collections.Generic.IList<Product> products = default(System.Collections.Generic.IList<Product>), System.Collections.Generic.IList<Aggregation> aggregations = default(System.Collections.Generic.IList<Aggregation>))
+        public ProductSearchResult(long? totalCount = default(long?), System.Collections.Generic.IList<Product> items = default(System.Collections.Generic.IList<Product>), System.Collections.Generic.IList<Aggregation> aggregations = default(System.Collections.Generic.IList<Aggregation>))
         {
             TotalCount = totalCount;
-            Products = products;
+            Items = items;
             Aggregations = aggregations;
         }
 
@@ -11357,8 +11357,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "products")]
-        public System.Collections.Generic.IList<Product> Products { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
+        public System.Collections.Generic.IList<Product> Items { get; set; }
 
         /// <summary>
         /// </summary>
@@ -11439,10 +11439,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the CategorySearchResult class.
         /// </summary>
-        public CategorySearchResult(long? totalCount = default(long?), System.Collections.Generic.IList<Category> categories = default(System.Collections.Generic.IList<Category>))
+        public CategorySearchResult(long? totalCount = default(long?), System.Collections.Generic.IList<Category> items = default(System.Collections.Generic.IList<Category>), System.Collections.Generic.IList<Aggregation> aggregations = default(System.Collections.Generic.IList<Aggregation>))
         {
             TotalCount = totalCount;
-            Categories = categories;
+            Items = items;
+            Aggregations = aggregations;
         }
 
         /// <summary>
@@ -11452,8 +11453,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "categories")]
-        public System.Collections.Generic.IList<Category> Categories { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
+        public System.Collections.Generic.IList<Category> Items { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "aggregations")]
+        public System.Collections.Generic.IList<Aggregation> Aggregations { get; set; }
 
     }
 }
