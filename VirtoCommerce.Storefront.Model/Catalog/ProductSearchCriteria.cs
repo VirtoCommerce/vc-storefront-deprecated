@@ -32,7 +32,6 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         {
             Language = language;
             Currency = currency;
-            Outline = "*";
 
             Parse(queryString);
         }

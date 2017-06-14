@@ -196,7 +196,7 @@ namespace VirtoCommerce.Storefront.Owin
                                 {
                                     PageNumber = pageNumber2,
                                     PageSize = pageSize2,
-                                    Outline = category.Outline + "*",
+                                    Outline = category.Outline,
                                     ResponseGroup = workContext.CurrentProductSearchCriteria.ResponseGroup
                                 };
 
