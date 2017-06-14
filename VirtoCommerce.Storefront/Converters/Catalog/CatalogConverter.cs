@@ -63,6 +63,11 @@ namespace VirtoCommerce.Storefront.Converters
             return CatalogConverterInstance.ToProductSearchDto(criteria, workContext);
         }
 
+        public static catalogDto.NumericRange ToNumericRangeDto(this NumericRange range)
+        {
+            return CatalogConverterInstance.ToNumericRangeDto(range);
+        }
+
         public static CatalogProperty ToProperty(this catalogDto.Property propertyDto, Language currentLanguage)
         {
             return CatalogConverterInstance.ToProperty(propertyDto, currentLanguage);
@@ -208,12 +213,13 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = new catalogDto.ProductSearch
             {
-                Locale = criteria.Language != null ? criteria.Language.CultureName : workContext.CurrentLanguage.CultureName,
+                Locale = criteria.Language?.CultureName ?? workContext.CurrentLanguage.CultureName,
                 SearchPhrase = criteria.Keyword,
                 Outline = criteria.Outline,
-                Currency = criteria.Currency == null ? workContext.CurrentCurrency.Code : criteria.Currency.Code,
-                Terms = criteria.Terms.ToStrings(),
+                Currency = criteria.Currency?.Code ?? workContext.CurrentCurrency.Code,
                 PriceLists = workContext.CurrentPricelists.Where(p => p.Currency.Equals(workContext.CurrentCurrency)).Select(p => p.Id).ToList(),
+                PriceRange = criteria.PriceRange?.ToNumericRangeDto(),
+                Terms = criteria.Terms.ToStrings(),
                 Skip = criteria.Start,
                 Take = criteria.PageSize,
                 ResponseGroup = ((int)criteria.ResponseGroup).ToString()
@@ -234,6 +240,17 @@ namespace VirtoCommerce.Storefront.Converters
                 result.Sort = new[] { criteria.SortBy };
 
             return result;
+        }
+
+        public virtual catalogDto.NumericRange ToNumericRangeDto(NumericRange range)
+        {
+            return new catalogDto.NumericRange
+            {
+                Lower = (double?)range.Lower,
+                Upper = (double?)range.Upper,
+                IncludeLower = range.IncludeLower,
+                IncludeUpper = range.IncludeUpper,
+            };
         }
 
         public virtual catalogDto.CategorySearch ToCategorySearchDto(CategorySearchCriteria criteria, WorkContext workContext)
