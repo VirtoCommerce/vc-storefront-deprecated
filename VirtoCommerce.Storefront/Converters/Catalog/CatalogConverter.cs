@@ -213,11 +213,11 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = new catalogDto.ProductSearch
             {
-                Locale = criteria.Language?.CultureName ?? workContext.CurrentLanguage.CultureName,
+                LanguageCode = criteria.Language?.CultureName ?? workContext.CurrentLanguage.CultureName,
                 SearchPhrase = criteria.Keyword,
                 Outline = criteria.Outline,
                 Currency = criteria.Currency?.Code ?? workContext.CurrentCurrency.Code,
-                PriceLists = workContext.CurrentPricelists.Where(p => p.Currency.Equals(workContext.CurrentCurrency)).Select(p => p.Id).ToList(),
+                Pricelists = workContext.CurrentPricelists.Where(p => p.Currency.Equals(workContext.CurrentCurrency)).Select(p => p.Id).ToList(),
                 PriceRange = criteria.PriceRange?.ToNumericRangeDto(),
                 Terms = criteria.Terms.ToStrings(),
                 Skip = criteria.Start,

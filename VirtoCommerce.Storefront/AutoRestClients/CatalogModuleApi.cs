@@ -11253,26 +11253,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductSearch class.
         /// </summary>
-        public ProductSearch(System.Collections.Generic.IList<string> productIds = default(System.Collections.Generic.IList<string>), string responseGroup = default(string), string currency = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string locale = default(string), string outline = default(string), System.Collections.Generic.IList<string> priceLists = default(System.Collections.Generic.IList<string>), NumericRange priceRange = default(NumericRange), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        public ProductSearch(string responseGroup = default(string), string currency = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> pricelists = default(System.Collections.Generic.IList<string>), NumericRange priceRange = default(NumericRange), System.Collections.Generic.IList<string> ids = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string outline = default(string), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
         {
-            ProductIds = productIds;
             ResponseGroup = responseGroup;
             Currency = currency;
             Terms = terms;
-            SearchPhrase = searchPhrase;
-            Locale = locale;
-            Outline = outline;
-            PriceLists = priceLists;
+            Pricelists = pricelists;
             PriceRange = priceRange;
+            Ids = ids;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
+            Outline = outline;
             Sort = sort;
             Skip = skip;
             Take = take;
         }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "productIds")]
-        public System.Collections.Generic.IList<string> ProductIds { get; set; }
 
         /// <summary>
         /// </summary>
@@ -11291,28 +11286,33 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
-        public string SearchPhrase { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "locale")]
-        public string Locale { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
-        public string Outline { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "priceLists")]
-        public System.Collections.Generic.IList<string> PriceLists { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pricelists")]
+        public System.Collections.Generic.IList<string> Pricelists { get; set; }
 
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priceRange")]
         public NumericRange PriceRange { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "ids")]
+        public System.Collections.Generic.IList<string> Ids { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
+        public string Outline { get; set; }
 
         /// <summary>
         /// </summary>
@@ -11439,9 +11439,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the CategorySearch class.
         /// </summary>
-        public CategorySearch(string responseGroup = default(string), string outline = default(string), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        public CategorySearch(string responseGroup = default(string), System.Collections.Generic.IList<string> ids = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string outline = default(string), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
         {
             ResponseGroup = responseGroup;
+            Ids = ids;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
             Outline = outline;
             Sort = sort;
             Skip = skip;
@@ -11452,6 +11455,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
         public string ResponseGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "ids")]
+        public System.Collections.Generic.IList<string> Ids { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
 
         /// <summary>
         /// </summary>
