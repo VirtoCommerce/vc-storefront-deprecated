@@ -213,8 +213,8 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = new catalogDto.ProductSearch
             {
-                LanguageCode = criteria.Language?.CultureName ?? workContext.CurrentLanguage.CultureName,
                 SearchPhrase = criteria.Keyword,
+                LanguageCode = criteria.Language?.CultureName ?? workContext.CurrentLanguage.CultureName,
                 Outline = criteria.Outline,
                 Currency = criteria.Currency?.Code ?? workContext.CurrentCurrency.Code,
                 Pricelists = workContext.CurrentPricelists.Where(p => p.Currency.Equals(workContext.CurrentCurrency)).Select(p => p.Id).ToList(),
@@ -257,9 +257,11 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = new catalogDto.CategorySearch
             {
+                SearchPhrase = criteria.Keyword,
+                LanguageCode = criteria.Language?.CultureName ?? workContext.CurrentLanguage.CultureName,
+                Outline = criteria.Outline,
                 Skip = criteria.Start,
                 Take = criteria.PageSize,
-                Outline = criteria.Outline,
                 ResponseGroup = ((int)criteria.ResponseGroup).ToString()
             };
 
