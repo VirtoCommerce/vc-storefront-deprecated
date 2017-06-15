@@ -198,7 +198,9 @@
             "quick_add_description": "You can quickly add a product to cart by entering its SKU or name in the field below",
             "add": "Add",
             "product_search_empty": "No products found",
-            "product_search_progress": "Searching..."
+            "product_search_progress": "Searching...",
+            "categories": "Categories",
+            "products": "Products"
         }
     },
     "quotes": {

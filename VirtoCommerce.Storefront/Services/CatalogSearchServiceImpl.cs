@@ -192,7 +192,12 @@ namespace VirtoCommerce.Storefront.Services
             var searchCriteria = criteria.ToCategorySearchDto(workContext);
             var result = await _catalogModuleApi.CatalogModuleSearch.SearchCategoriesAsync(workContext.CurrentStore.Id, searchCriteria);
 
-            var retVal = new PagedList<Category>(result.Items.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
+            var retVal = new PagedList<Category>(new List<Category>(), 1, 1);
+            if (result.Items != null)
+            {
+                retVal = new PagedList<Category>(result.Items.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
+            }
+
             //Set  lazy loading for child categories 
             SetChildCategoriesLazyLoading(retVal.ToArray());
             return retVal;

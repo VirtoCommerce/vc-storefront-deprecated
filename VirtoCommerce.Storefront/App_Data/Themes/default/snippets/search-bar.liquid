@@ -5,20 +5,35 @@
         <span class="icon icon-search" aria-hidden="true"></span>
         <span class="fallback-text">{{ 'layout.search_bar.submit' | t }}</span>
     </button>
-    <div class="product-search-result" ng-if="suggestions && query">
-        <div class="item" ng-if="searching">
+    <div class="product-search-result" ng-if="(categorySuggestions || productSuggestions) && query">
+        <div class="item static" ng-if="searching">
             <div class="item-info">
               <div class="item-name">{{ 'cart.general.product_search_progress' | t }}</div>
             </div>
         </div>
-        <div class="item" ng-if="!searching && !suggestions.length">
+        <div class="item static" ng-if="!searching && categorySuggestions.length > 0">
             <div class="item-info">
-                <div class="item-name">{{ 'cart.general.product_search_empty' | t }}</div>
+                <div class="item-name"><strong>{{ 'cart.general.categories' | t }}</strong></div>
             </div>
         </div>
-        <div class="item" ng-repeat="suggestion in suggestions" ng-click="outerRedirect(suggestion.url)" ng-if="!searching && suggestions.length">
-            <div class="item-info">
+        <div class="item" ng-repeat="suggestion in categorySuggestions" ng-click="outerRedirect(suggestion.url)" ng-if="!searching && categorySuggestions.length">
+          <div class="item-info">
                 <div class="item-name" ng-bind="suggestion.name"></div>
+            </div>
+        </div>
+        <div class="item static" ng-if="!searching && productSuggestions.length > 0">
+            <div class="item-info">
+                <div class="item-name"><strong>{{ 'cart.general.products' | t }}</strong></div>
+            </div>
+        </div>
+        <div class="item" ng-repeat="suggestion in productSuggestions" ng-click="outerRedirect(suggestion.url)" ng-if="!searching && productSuggestions.length">
+          <div class="item-info">
+                <div class="item-name" ng-bind="suggestion.name"></div>
+            </div>
+        </div>
+        <div class="item static" ng-if="!searching && !categorySuggestions.length && !productSuggestions.length">
+            <div class="item-info">
+                <div class="item-name">{{ 'cart.general.product_search_empty' | t }}</div>
             </div>
         </div>
     </div>
