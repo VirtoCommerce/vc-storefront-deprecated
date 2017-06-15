@@ -2362,11 +2362,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Get categories by plenty ids
+        /// </summary>
         /// <param name='ids'>
+        /// Categories ids
         /// </param>
         /// <param name='respGroup'>
-        /// Possible values include: 'None', 'Info', 'WithImages', 'WithProperties',
-        /// 'WithLinks', 'WithSeo', 'WithParents', 'WithOutlines', 'Full'
+        /// Response group. Possible values include: 'None', 'Info', 'WithImages',
+        /// 'WithProperties', 'WithLinks', 'WithSeo', 'WithParents', 'WithOutlines',
+        /// 'Full'
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -2828,28 +2833,38 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.DeleteWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Get categories by plenty ids
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// Categories ids
             /// </param>
             /// <param name='respGroup'>
-            /// Possible values include: 'None', 'Info', 'WithImages', 'WithProperties',
-            /// 'WithLinks', 'WithSeo', 'WithParents', 'WithOutlines', 'Full'
+            /// Response group. Possible values include: 'None', 'Info', 'WithImages',
+            /// 'WithProperties', 'WithLinks', 'WithSeo', 'WithParents', 'WithOutlines',
+            /// 'Full'
             /// </param>
             public static System.Collections.Generic.IList<Category> GetCategoriesByPlentyIds(this ICatalogModuleCategories operations, System.Collections.Generic.IList<string> ids, string respGroup = default(string))
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleCategories)s).GetCategoriesByPlentyIdsAsync(ids, respGroup), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Get categories by plenty ids
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// Categories ids
             /// </param>
             /// <param name='respGroup'>
-            /// Possible values include: 'None', 'Info', 'WithImages', 'WithProperties',
-            /// 'WithLinks', 'WithSeo', 'WithParents', 'WithOutlines', 'Full'
+            /// Response group. Possible values include: 'None', 'Info', 'WithImages',
+            /// 'WithProperties', 'WithLinks', 'WithSeo', 'WithParents', 'WithOutlines',
+            /// 'Full'
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -3008,12 +3023,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Get categories by plenty ids
+        /// </summary>
         /// <param name='ids'>
+        /// Categories ids
         /// </param>
         /// <param name='respGroup'>
-        /// Possible values include: 'None', 'Info', 'WithImages',
-        /// 'WithProperties', 'WithLinks', 'WithSeo', 'WithParents',
-        /// 'WithOutlines', 'Full'
+        /// Response group. Possible values include: 'None', 'Info',
+        /// 'WithImages', 'WithProperties', 'WithLinks', 'WithSeo',
+        /// 'WithParents', 'WithOutlines', 'Full'
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -4939,7 +4958,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         }
 
         /// <summary>
-        /// Updates the specified product.
+        /// Create/Update the specified product.
         /// </summary>
         /// <param name='product'>
         /// The product.
@@ -4953,13 +4972,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateWithHttpMessagesAsync(Product product, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Product>> SaveProductWithHttpMessagesAsync(Product product, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (product == null)
             {
@@ -4974,7 +4996,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
                 tracingParameters.Add("product", product);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "Update", tracingParameters);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "SaveProduct", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
@@ -5050,9 +5072,27 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse();
+            var _result = new Microsoft.Rest.HttpOperationResponse<Product>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<Product>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
             if (_shouldTrace)
             {
                 Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
@@ -5195,10 +5235,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Gets products by plenty ids
+        /// </summary>
         /// <param name='ids'>
+        /// Item ids
         /// </param>
         /// <param name='respGroup'>
-        /// Possible values include: 'None', 'ItemInfo', 'ItemAssets',
+        /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
         /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
         /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
         /// 'ItemMedium', 'ItemLarge'
@@ -5913,6 +5957,128 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
+        /// <summary>
+        /// Create/Update the specified products.
+        /// </summary>
+        /// <param name='products'>
+        /// The products.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> SaveProductsWithHttpMessagesAsync(System.Collections.Generic.IList<Product> products, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (products == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "products");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("products", products);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "SaveProducts", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/catalog/products/batch").ToString();
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(products != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(products, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if (!_httpResponse.IsSuccessStatusCode)
+            {
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -6022,7 +6188,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             }
 
             /// <summary>
-            /// Updates the specified product.
+            /// Create/Update the specified product.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -6030,13 +6196,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             /// <param name='product'>
             /// The product.
             /// </param>
-            public static void Update(this ICatalogModuleProducts operations, Product product)
+            public static Product SaveProduct(this ICatalogModuleProducts operations, Product product)
             {
-                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).UpdateAsync(product), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).SaveProductAsync(product), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// Updates the specified product.
+            /// Create/Update the specified product.
             /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -6047,9 +6213,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task UpdateAsync(this ICatalogModuleProducts operations, Product product, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<Product> SaveProductAsync(this ICatalogModuleProducts operations, Product product, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                await operations.UpdateWithHttpMessagesAsync(product, null, cancellationToken).ConfigureAwait(false);
+                using (var _result = await operations.SaveProductWithHttpMessagesAsync(product, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
             }
 
             /// <summary>
@@ -6083,13 +6252,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 await operations.DeleteWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false);
             }
 
+            /// <summary>
+            /// Gets products by plenty ids
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// Item ids
             /// </param>
             /// <param name='respGroup'>
-            /// Possible values include: 'None', 'ItemInfo', 'ItemAssets',
+            /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
             /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
             /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
             /// 'ItemMedium', 'ItemLarge'
@@ -6099,13 +6272,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).GetProductByPlentyIdsAsync(ids, respGroup), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Gets products by plenty ids
+            /// </summary>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='ids'>
+            /// Item ids
             /// </param>
             /// <param name='respGroup'>
-            /// Possible values include: 'None', 'ItemInfo', 'ItemAssets',
+            /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
             /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
             /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
             /// 'ItemMedium', 'ItemLarge'
@@ -6267,6 +6444,37 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
+            /// <summary>
+            /// Create/Update the specified products.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='products'>
+            /// The products.
+            /// </param>
+            public static void SaveProducts(this ICatalogModuleProducts operations, System.Collections.Generic.IList<Product> products)
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleProducts)s).SaveProductsAsync(products), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Create/Update the specified products.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='products'>
+            /// The products.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task SaveProductsAsync(this ICatalogModuleProducts operations, System.Collections.Generic.IList<Product> products, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                await operations.SaveProductsWithHttpMessagesAsync(products, null, cancellationToken).ConfigureAwait(false);
+            }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -6339,7 +6547,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<Product>>> GetProductByIdsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, string respGroup = default(string), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
-        /// Updates the specified product.
+        /// Create/Update the specified product.
         /// </summary>
         /// <param name='product'>
         /// The product.
@@ -6353,10 +6561,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// <exception cref="System.Exception">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateWithHttpMessagesAsync(Product product, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Product>> SaveProductWithHttpMessagesAsync(Product product, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Deletes the specified items by id.
         /// </summary>
@@ -6376,13 +6587,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Gets products by plenty ids
+        /// </summary>
         /// <param name='ids'>
+        /// Item ids
         /// </param>
         /// <param name='respGroup'>
-        /// Possible values include: 'None', 'ItemInfo', 'ItemAssets',
-        /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
-        /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines',
-        /// 'ItemSmall', 'ItemMedium', 'ItemLarge'
+        /// Response group. Possible values include: 'None', 'ItemInfo',
+        /// 'ItemAssets', 'ItemProperties', 'ItemAssociations',
+        /// 'ItemEditorialReviews', 'Variations', 'Seo', 'Links',
+        /// 'Inventory', 'Outlines', 'ItemSmall', 'ItemMedium', 'ItemLarge'
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -6493,6 +6708,25 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Product>> CloneProductWithHttpMessagesAsync(string productId, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <summary>
+        /// Create/Update the specified products.
+        /// </summary>
+        /// <param name='products'>
+        /// The products.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> SaveProductsWithHttpMessagesAsync(System.Collections.Generic.IList<Product> products, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -7906,6 +8140,300 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
+        /// <param name='storeId'>
+        /// </param>
+        /// <param name='criteria'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProductSearchResult>> SearchProductsWithHttpMessagesAsync(string storeId, ProductSearch criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (storeId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "storeId");
+            }
+            if (criteria == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("storeId", storeId);
+                tracingParameters.Add("criteria", criteria);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "SearchProducts", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/catalog/search/{storeId}/products").ToString();
+            _url = _url.Replace("{storeId}", System.Uri.EscapeDataString(storeId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(criteria != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(criteria, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if (!_httpResponse.IsSuccessStatusCode)
+            {
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<ProductSearchResult>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ProductSearchResult>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <param name='storeId'>
+        /// </param>
+        /// <param name='criteria'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CategorySearchResult>> SearchCategoriesWithHttpMessagesAsync(string storeId, CategorySearch criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (storeId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "storeId");
+            }
+            if (criteria == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("storeId", storeId);
+                tracingParameters.Add("criteria", criteria);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "SearchCategories", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/catalog/search/{storeId}/categories").ToString();
+            _url = _url.Replace("{storeId}", System.Uri.EscapeDataString(storeId));
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("POST");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(criteria != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(criteria, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if (!_httpResponse.IsSuccessStatusCode)
+            {
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse<CategorySearchResult>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<CategorySearchResult>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -7956,6 +8484,66 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
                 }
             }
 
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='storeId'>
+            /// </param>
+            /// <param name='criteria'>
+            /// </param>
+            public static ProductSearchResult SearchProducts(this ICatalogModuleSearch operations, string storeId, ProductSearch criteria)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleSearch)s).SearchProductsAsync(storeId, criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='storeId'>
+            /// </param>
+            /// <param name='criteria'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<ProductSearchResult> SearchProductsAsync(this ICatalogModuleSearch operations, string storeId, ProductSearch criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.SearchProductsWithHttpMessagesAsync(storeId, criteria, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='storeId'>
+            /// </param>
+            /// <param name='criteria'>
+            /// </param>
+            public static CategorySearchResult SearchCategories(this ICatalogModuleSearch operations, string storeId, CategorySearch criteria)
+            {
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleSearch)s).SearchCategoriesAsync(storeId, criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='storeId'>
+            /// </param>
+            /// <param name='criteria'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task<CategorySearchResult> SearchCategoriesAsync(this ICatalogModuleSearch operations, string storeId, CategorySearch criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                using (var _result = await operations.SearchCategoriesWithHttpMessagesAsync(storeId, criteria, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -7993,6 +8581,46 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CatalogSearchResult>> SearchWithHttpMessagesAsync(SearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='storeId'>
+        /// </param>
+        /// <param name='criteria'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProductSearchResult>> SearchProductsWithHttpMessagesAsync(string storeId, ProductSearch criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='storeId'>
+        /// </param>
+        /// <param name='criteria'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CategorySearchResult>> SearchCategoriesWithHttpMessagesAsync(string storeId, CategorySearch criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -8128,7 +8756,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// Initializes a new instance of the Property class.
         /// </summary>
         /// <param name="valueType">Possible values include: 'ShortText',
-        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
+        /// 'LongText', 'Number', 'DateTime', 'Boolean', 'Integer'</param>
         /// <param name="type">Possible values include: 'Product',
         /// 'Variation', 'Category', 'Catalog'</param>
         public Property(bool? isReadOnly = default(bool?), bool? isManageable = default(bool?), bool? isNew = default(bool?), string id = default(string), string catalogId = default(string), string categoryId = default(string), string name = default(string), bool? required = default(bool?), bool? dictionary = default(bool?), bool? multivalue = default(bool?), bool? multilanguage = default(bool?), string valueType = default(string), string type = default(string), System.Collections.Generic.IList<PropertyValue> values = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<PropertyDictionaryValue> dictionaryValues = default(System.Collections.Generic.IList<PropertyDictionaryValue>), System.Collections.Generic.IList<PropertyAttribute> attributes = default(System.Collections.Generic.IList<PropertyAttribute>), System.Collections.Generic.IList<PropertyDisplayName> displayNames = default(System.Collections.Generic.IList<PropertyDisplayName>), bool? isInherited = default(bool?))
@@ -8210,7 +8838,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'ShortText', 'LongText',
-        /// 'Number', 'DateTime', 'Boolean'
+        /// 'Number', 'DateTime', 'Boolean', 'Integer'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -8268,8 +8896,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// Initializes a new instance of the PropertyValue class.
         /// </summary>
         /// <param name="valueType">Possible values include: 'ShortText',
-        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
-        public PropertyValue(string id = default(string), string propertyName = default(string), string propertyId = default(string), string languageCode = default(string), string alias = default(string), string valueType = default(string), string valueId = default(string), string value = default(string), bool? isInherited = default(bool?))
+        /// 'LongText', 'Number', 'DateTime', 'Boolean', 'Integer'</param>
+        public PropertyValue(string id = default(string), string propertyName = default(string), string propertyId = default(string), string languageCode = default(string), string alias = default(string), string valueType = default(string), string valueId = default(string), object value = default(object), bool? isInherited = default(bool?))
         {
             Id = id;
             PropertyName = propertyName;
@@ -8309,7 +8937,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'ShortText', 'LongText',
-        /// 'Number', 'DateTime', 'Boolean'
+        /// 'Number', 'DateTime', 'Boolean', 'Integer'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -8322,7 +8950,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
-        public string Value { get; set; }
+        public object Value { get; set; }
 
         /// <summary>
         /// </summary>
@@ -10604,6 +11232,306 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "labels")]
         public System.Collections.Generic.IList<AggregationLabel> Labels { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class ProductSearch
+    {
+        /// <summary>
+        /// Initializes a new instance of the ProductSearch class.
+        /// </summary>
+        public ProductSearch() { }
+
+        /// <summary>
+        /// Initializes a new instance of the ProductSearch class.
+        /// </summary>
+        public ProductSearch(string responseGroup = default(string), string currency = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> pricelists = default(System.Collections.Generic.IList<string>), NumericRange priceRange = default(NumericRange), System.Collections.Generic.IList<string> ids = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string outline = default(string), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        {
+            ResponseGroup = responseGroup;
+            Currency = currency;
+            Terms = terms;
+            Pricelists = pricelists;
+            PriceRange = priceRange;
+            Ids = ids;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
+            Outline = outline;
+            Sort = sort;
+            Skip = skip;
+            Take = take;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
+        public string Currency { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "terms")]
+        public System.Collections.Generic.IList<string> Terms { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "pricelists")]
+        public System.Collections.Generic.IList<string> Pricelists { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "priceRange")]
+        public NumericRange PriceRange { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "ids")]
+        public System.Collections.Generic.IList<string> Ids { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
+        public string Outline { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sort")]
+        public System.Collections.Generic.IList<string> Sort { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "skip")]
+        public int? Skip { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "take")]
+        public int? Take { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class NumericRange
+    {
+        /// <summary>
+        /// Initializes a new instance of the NumericRange class.
+        /// </summary>
+        public NumericRange() { }
+
+        /// <summary>
+        /// Initializes a new instance of the NumericRange class.
+        /// </summary>
+        public NumericRange(double? lower = default(double?), double? upper = default(double?), bool? includeLower = default(bool?), bool? includeUpper = default(bool?))
+        {
+            Lower = lower;
+            Upper = upper;
+            IncludeLower = includeLower;
+            IncludeUpper = includeUpper;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "lower")]
+        public double? Lower { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "upper")]
+        public double? Upper { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "includeLower")]
+        public bool? IncludeLower { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "includeUpper")]
+        public bool? IncludeUpper { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class ProductSearchResult
+    {
+        /// <summary>
+        /// Initializes a new instance of the ProductSearchResult class.
+        /// </summary>
+        public ProductSearchResult() { }
+
+        /// <summary>
+        /// Initializes a new instance of the ProductSearchResult class.
+        /// </summary>
+        public ProductSearchResult(long? totalCount = default(long?), System.Collections.Generic.IList<Product> items = default(System.Collections.Generic.IList<Product>), System.Collections.Generic.IList<Aggregation> aggregations = default(System.Collections.Generic.IList<Aggregation>))
+        {
+            TotalCount = totalCount;
+            Items = items;
+            Aggregations = aggregations;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
+        public long? TotalCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
+        public System.Collections.Generic.IList<Product> Items { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "aggregations")]
+        public System.Collections.Generic.IList<Aggregation> Aggregations { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class CategorySearch
+    {
+        /// <summary>
+        /// Initializes a new instance of the CategorySearch class.
+        /// </summary>
+        public CategorySearch() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CategorySearch class.
+        /// </summary>
+        public CategorySearch(string responseGroup = default(string), System.Collections.Generic.IList<string> ids = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string outline = default(string), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        {
+            ResponseGroup = responseGroup;
+            Ids = ids;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
+            Outline = outline;
+            Sort = sort;
+            Skip = skip;
+            Take = take;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "ids")]
+        public System.Collections.Generic.IList<string> Ids { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
+        public string Outline { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sort")]
+        public System.Collections.Generic.IList<string> Sort { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "skip")]
+        public int? Skip { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "take")]
+        public int? Take { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class CategorySearchResult
+    {
+        /// <summary>
+        /// Initializes a new instance of the CategorySearchResult class.
+        /// </summary>
+        public CategorySearchResult() { }
+
+        /// <summary>
+        /// Initializes a new instance of the CategorySearchResult class.
+        /// </summary>
+        public CategorySearchResult(long? totalCount = default(long?), System.Collections.Generic.IList<Category> items = default(System.Collections.Generic.IList<Category>), System.Collections.Generic.IList<Aggregation> aggregations = default(System.Collections.Generic.IList<Aggregation>))
+        {
+            TotalCount = totalCount;
+            Items = items;
+            Aggregations = aggregations;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
+        public long? TotalCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "items")]
+        public System.Collections.Generic.IList<Category> Items { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "aggregations")]
+        public System.Collections.Generic.IList<Aggregation> Aggregations { get; set; }
 
     }
 }

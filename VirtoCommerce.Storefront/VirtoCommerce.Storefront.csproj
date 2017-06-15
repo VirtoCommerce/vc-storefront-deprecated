@@ -491,7 +491,6 @@
     <Compile Include="AutoRestClients\PricingModuleApi.cs" />
     <Compile Include="AutoRestClients\ProductRecommendationsModuleApi.cs" />
     <Compile Include="AutoRestClients\QuoteModuleApi.cs" />
-    <Compile Include="AutoRestClients\SearchApiModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
     <Compile Include="AutoRestClients\SitemapsModuleApi.cs" />
     <Compile Include="AutoRestClients\StoreModuleApi.cs" />
