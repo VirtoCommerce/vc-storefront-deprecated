@@ -426,10 +426,6 @@
     <Content Include="App_Data\Themes\default\templates\quote-request.liquid">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\x64\LibSass.x64.dll" />
-    <Content Include="App_Data\x64\libsassnet.dll" />
-    <Content Include="App_Data\x86\LibSass.x86.dll" />
-    <Content Include="App_Data\x86\libsassnet.dll" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-password-change.tpl.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-profile-update.tpl.liquid" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-orders.tpl.liquid">
@@ -458,6 +454,10 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="AutoRestClients\!readme.txt" />
+    <Resource Include="App_Data\x86\LibSass.x86.dll" />
+    <Resource Include="App_Data\x86\libsassnet.dll" />
+    <Resource Include="App_Data\x64\LibSass.x64.dll" />
+    <Resource Include="App_Data\x64\libsassnet.dll" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
@@ -769,13 +769,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="DeleteLibSassFilesFromBin" AfterTargets="Build">
-    <ItemGroup>
-      <LibSassFiles Include="$(WebProjectOutputDir)\bin\libsassnet.dll" />
-      <LibSassFiles Include="$(WebProjectOutputDir)\bin\LibSass.x64.dll" />
-    </ItemGroup>
-    <Delete Files="@(LibSassFiles)" />
-  </Target>
   <!-- Transform Web.config -->
   <UsingTask TaskName="TransformXml" AssemblyFile="$(VSToolsPath)\Web\Microsoft.Web.Publishing.Tasks.dll" Condition="Exists('$(VSToolsPath)\Web\Microsoft.Web.Publishing.Tasks.dll')" />
   <PropertyGroup>
