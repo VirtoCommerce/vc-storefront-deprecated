@@ -769,13 +769,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="DeleteLibSassFilesFromBin" AfterTargets="Build">
-    <ItemGroup>
-      <LibSassFiles Include="$(WebProjectOutputDir)\bin\libsassnet.dll" />
-      <LibSassFiles Include="$(WebProjectOutputDir)\bin\LibSass.x64.dll" />
-    </ItemGroup>
-    <Delete Files="@(LibSassFiles)" />
-  </Target>
   <!-- Transform Web.config -->
   <UsingTask TaskName="TransformXml" AssemblyFile="$(VSToolsPath)\Web\Microsoft.Web.Publishing.Tasks.dll" Condition="Exists('$(VSToolsPath)\Web\Microsoft.Web.Publishing.Tasks.dll')" />
   <PropertyGroup>
