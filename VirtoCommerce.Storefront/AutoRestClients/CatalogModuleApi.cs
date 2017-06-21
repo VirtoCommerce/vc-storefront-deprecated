@@ -8140,8 +8140,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <param name='storeId'>
-        /// </param>
         /// <param name='criteria'>
         /// </param>
         /// <param name='customHeaders'>
@@ -8162,12 +8160,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProductSearchResult>> SearchProductsWithHttpMessagesAsync(string storeId, ProductSearch criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProductSearchResult>> SearchProductsWithHttpMessagesAsync(ProductSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (storeId == null)
-            {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "storeId");
-            }
             if (criteria == null)
             {
                 throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
@@ -8179,15 +8173,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             {
                 _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("storeId", storeId);
                 tracingParameters.Add("criteria", criteria);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "SearchProducts", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/catalog/search/{storeId}/products").ToString();
-            _url = _url.Replace("{storeId}", System.Uri.EscapeDataString(storeId));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/catalog/search/products").ToString();
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -8287,8 +8279,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             return _result;
         }
 
-        /// <param name='storeId'>
-        /// </param>
         /// <param name='criteria'>
         /// </param>
         /// <param name='customHeaders'>
@@ -8309,12 +8299,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CategorySearchResult>> SearchCategoriesWithHttpMessagesAsync(string storeId, CategorySearch criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CategorySearchResult>> SearchCategoriesWithHttpMessagesAsync(CategorySearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (storeId == null)
-            {
-                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "storeId");
-            }
             if (criteria == null)
             {
                 throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "criteria");
@@ -8326,15 +8312,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             {
                 _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
-                tracingParameters.Add("storeId", storeId);
                 tracingParameters.Add("criteria", criteria);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "SearchCategories", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/catalog/search/{storeId}/categories").ToString();
-            _url = _url.Replace("{storeId}", System.Uri.EscapeDataString(storeId));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/catalog/search/categories").ToString();
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -8487,28 +8471,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='storeId'>
-            /// </param>
             /// <param name='criteria'>
             /// </param>
-            public static ProductSearchResult SearchProducts(this ICatalogModuleSearch operations, string storeId, ProductSearch criteria)
+            public static ProductSearchResult SearchProducts(this ICatalogModuleSearch operations, ProductSearchCriteria criteria)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleSearch)s).SearchProductsAsync(storeId, criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleSearch)s).SearchProductsAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <param name='operations'>
             /// The operations group for this extension method.
-            /// </param>
-            /// <param name='storeId'>
             /// </param>
             /// <param name='criteria'>
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<ProductSearchResult> SearchProductsAsync(this ICatalogModuleSearch operations, string storeId, ProductSearch criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<ProductSearchResult> SearchProductsAsync(this ICatalogModuleSearch operations, ProductSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.SearchProductsWithHttpMessagesAsync(storeId, criteria, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.SearchProductsWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -8517,28 +8497,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
-            /// <param name='storeId'>
-            /// </param>
             /// <param name='criteria'>
             /// </param>
-            public static CategorySearchResult SearchCategories(this ICatalogModuleSearch operations, string storeId, CategorySearch criteria)
+            public static CategorySearchResult SearchCategories(this ICatalogModuleSearch operations, CategorySearchCriteria criteria)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleSearch)s).SearchCategoriesAsync(storeId, criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICatalogModuleSearch)s).SearchCategoriesAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <param name='operations'>
             /// The operations group for this extension method.
-            /// </param>
-            /// <param name='storeId'>
             /// </param>
             /// <param name='criteria'>
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<CategorySearchResult> SearchCategoriesAsync(this ICatalogModuleSearch operations, string storeId, CategorySearch criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<CategorySearchResult> SearchCategoriesAsync(this ICatalogModuleSearch operations, CategorySearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.SearchCategoriesWithHttpMessagesAsync(storeId, criteria, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.SearchCategoriesWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -8581,8 +8557,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CatalogSearchResult>> SearchWithHttpMessagesAsync(SearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <param name='storeId'>
-        /// </param>
         /// <param name='criteria'>
         /// </param>
         /// <param name='customHeaders'>
@@ -8600,9 +8574,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProductSearchResult>> SearchProductsWithHttpMessagesAsync(string storeId, ProductSearch criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-        /// <param name='storeId'>
-        /// </param>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProductSearchResult>> SearchProductsWithHttpMessagesAsync(ProductSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <param name='criteria'>
         /// </param>
         /// <param name='customHeaders'>
@@ -8620,7 +8592,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CategorySearchResult>> SearchCategoriesWithHttpMessagesAsync(string storeId, CategorySearch criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<CategorySearchResult>> SearchCategoriesWithHttpMessagesAsync(CategorySearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -11243,46 +11215,51 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 {
     using System.Linq;
 
-    public partial class ProductSearch
+    public partial class ProductSearchCriteria
     {
         /// <summary>
-        /// Initializes a new instance of the ProductSearch class.
+        /// Initializes a new instance of the ProductSearchCriteria class.
         /// </summary>
-        public ProductSearch() { }
+        public ProductSearchCriteria() { }
 
         /// <summary>
-        /// Initializes a new instance of the ProductSearch class.
+        /// Initializes a new instance of the ProductSearchCriteria class.
         /// </summary>
-        public ProductSearch(string responseGroup = default(string), string currency = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> pricelists = default(System.Collections.Generic.IList<string>), NumericRange priceRange = default(NumericRange), System.Collections.Generic.IList<string> ids = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string outline = default(string), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        public ProductSearchCriteria(System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string currency = default(string), System.Collections.Generic.IList<string> pricelists = default(System.Collections.Generic.IList<string>), NumericRange priceRange = default(NumericRange), System.Collections.Generic.IList<string> classTypes = default(System.Collections.Generic.IList<string>), bool? withHidden = default(bool?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? startDateFrom = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), System.Collections.Generic.IList<string> ids = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string storeId = default(string), string catalogId = default(string), string outline = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
-            ResponseGroup = responseGroup;
-            Currency = currency;
             Terms = terms;
+            Currency = currency;
             Pricelists = pricelists;
             PriceRange = priceRange;
+            ClassTypes = classTypes;
+            WithHidden = withHidden;
+            StartDate = startDate;
+            StartDateFrom = startDateFrom;
+            EndDate = endDate;
             Ids = ids;
             SearchPhrase = searchPhrase;
             LanguageCode = languageCode;
+            StoreId = storeId;
+            CatalogId = catalogId;
             Outline = outline;
+            ResponseGroup = responseGroup;
+            ObjectType = objectType;
+            ObjectTypes = objectTypes;
             Sort = sort;
+            SortInfos = sortInfos;
             Skip = skip;
             Take = take;
         }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
-        public string ResponseGroup { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "terms")]
+        public System.Collections.Generic.IList<string> Terms { get; set; }
 
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "currency")]
         public string Currency { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "terms")]
-        public System.Collections.Generic.IList<string> Terms { get; set; }
 
         /// <summary>
         /// </summary>
@@ -11293,6 +11270,31 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "priceRange")]
         public NumericRange PriceRange { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "classTypes")]
+        public System.Collections.Generic.IList<string> ClassTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "withHidden")]
+        public bool? WithHidden { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "startDate")]
+        public System.DateTime? StartDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "startDateFrom")]
+        public System.DateTime? StartDateFrom { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "endDate")]
+        public System.DateTime? EndDate { get; set; }
 
         /// <summary>
         /// </summary>
@@ -11311,13 +11313,43 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
+        public string StoreId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
         public string Outline { get; set; }
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
+        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sort")]
-        public System.Collections.Generic.IList<string> Sort { get; set; }
+        public string Sort { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortInfos")]
+        public System.Collections.Generic.IList<SortInfo> SortInfos { get; private set; }
 
         /// <summary>
         /// </summary>
@@ -11387,6 +11419,45 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 {
     using System.Linq;
 
+    public partial class SortInfo
+    {
+        /// <summary>
+        /// Initializes a new instance of the SortInfo class.
+        /// </summary>
+        public SortInfo() { }
+
+        /// <summary>
+        /// Initializes a new instance of the SortInfo class.
+        /// </summary>
+        /// <param name="sortDirection">Possible values include: 'Ascending',
+        /// 'Descending'</param>
+        public SortInfo(string sortColumn = default(string), string sortDirection = default(string))
+        {
+            SortColumn = sortColumn;
+            SortDirection = sortDirection;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortColumn")]
+        public string SortColumn { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'Ascending', 'Descending'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortDirection")]
+        public string SortDirection { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
+{
+    using System.Linq;
+
     public partial class ProductSearchResult
     {
         /// <summary>
@@ -11429,32 +11500,32 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 {
     using System.Linq;
 
-    public partial class CategorySearch
+    public partial class CategorySearchCriteria
     {
         /// <summary>
-        /// Initializes a new instance of the CategorySearch class.
+        /// Initializes a new instance of the CategorySearchCriteria class.
         /// </summary>
-        public CategorySearch() { }
+        public CategorySearchCriteria() { }
 
         /// <summary>
-        /// Initializes a new instance of the CategorySearch class.
+        /// Initializes a new instance of the CategorySearchCriteria class.
         /// </summary>
-        public CategorySearch(string responseGroup = default(string), System.Collections.Generic.IList<string> ids = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string outline = default(string), System.Collections.Generic.IList<string> sort = default(System.Collections.Generic.IList<string>), int? skip = default(int?), int? take = default(int?))
+        public CategorySearchCriteria(System.Collections.Generic.IList<string> ids = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string storeId = default(string), string catalogId = default(string), string outline = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
-            ResponseGroup = responseGroup;
             Ids = ids;
             SearchPhrase = searchPhrase;
             LanguageCode = languageCode;
+            StoreId = storeId;
+            CatalogId = catalogId;
             Outline = outline;
+            ResponseGroup = responseGroup;
+            ObjectType = objectType;
+            ObjectTypes = objectTypes;
             Sort = sort;
+            SortInfos = sortInfos;
             Skip = skip;
             Take = take;
         }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
-        public string ResponseGroup { get; set; }
 
         /// <summary>
         /// </summary>
@@ -11473,13 +11544,43 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
+        public string StoreId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "catalogId")]
+        public string CatalogId { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "outline")]
         public string Outline { get; set; }
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "responseGroup")]
+        public string ResponseGroup { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
+        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "sort")]
-        public System.Collections.Generic.IList<string> Sort { get; set; }
+        public string Sort { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortInfos")]
+        public System.Collections.Generic.IList<SortInfo> SortInfos { get; private set; }
 
         /// <summary>
         /// </summary>

@@ -189,8 +189,8 @@ namespace VirtoCommerce.Storefront.Services
         private async Task<IPagedList<Category>> InnerSearchCategoriesAsync(CategorySearchCriteria criteria, WorkContext workContext)
         {
             criteria = criteria.Clone();
-            var searchCriteria = criteria.ToCategorySearchDto(workContext);
-            var result = await _catalogModuleApi.CatalogModuleSearch.SearchCategoriesAsync(workContext.CurrentStore.Id, searchCriteria);
+            var searchCriteria = criteria.ToCategorySearchCriteriaDto(workContext);
+            var result = await _catalogModuleApi.CatalogModuleSearch.SearchCategoriesAsync(searchCriteria);
 
             var retVal = new PagedList<Category>(result.Items.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
             //Set  lazy loading for child categories 
@@ -202,8 +202,8 @@ namespace VirtoCommerce.Storefront.Services
         {
             criteria = criteria.Clone();
 
-            var searchCriteria = criteria.ToProductSearchDto(workContext);
-            var result = await _catalogModuleApi.CatalogModuleSearch.SearchProductsAsync(workContext.CurrentStore.Id, searchCriteria);
+            var searchCriteria = criteria.ToProductSearchCriteriaDto(workContext);
+            var result = await _catalogModuleApi.CatalogModuleSearch.SearchProductsAsync(searchCriteria);
             var products = result.Items?.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList() ?? new List<Product>();
 
             if (products.Any())

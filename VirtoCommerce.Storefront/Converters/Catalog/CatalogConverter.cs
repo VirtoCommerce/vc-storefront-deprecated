@@ -53,14 +53,14 @@ namespace VirtoCommerce.Storefront.Converters
             return CatalogConverterInstance.ToAssociation(associationDto);
         }
 
-        public static catalogDto.CategorySearch ToCategorySearchDto(this CategorySearchCriteria criteria, WorkContext workContext)
+        public static catalogDto.CategorySearchCriteria ToCategorySearchCriteriaDto(this CategorySearchCriteria criteria, WorkContext workContext)
         {
-            return CatalogConverterInstance.ToCategorySearchDto(criteria, workContext);
+            return CatalogConverterInstance.ToCategorySearchCriteriaDto(criteria, workContext);
         }
 
-        public static catalogDto.ProductSearch ToProductSearchDto(this ProductSearchCriteria criteria, WorkContext workContext)
+        public static catalogDto.ProductSearchCriteria ToProductSearchCriteriaDto(this ProductSearchCriteria criteria, WorkContext workContext)
         {
-            return CatalogConverterInstance.ToProductSearchDto(criteria, workContext);
+            return CatalogConverterInstance.ToProductSearchCriteriaDto(criteria, workContext);
         }
 
         public static catalogDto.NumericRange ToNumericRangeDto(this NumericRange range)
@@ -209,20 +209,23 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual catalogDto.ProductSearch ToProductSearchDto(ProductSearchCriteria criteria, WorkContext workContext)
+        public virtual catalogDto.ProductSearchCriteria ToProductSearchCriteriaDto(ProductSearchCriteria criteria, WorkContext workContext)
         {
-            var result = new catalogDto.ProductSearch
+            var result = new catalogDto.ProductSearchCriteria
             {
                 SearchPhrase = criteria.Keyword,
                 LanguageCode = criteria.Language?.CultureName ?? workContext.CurrentLanguage.CultureName,
+                StoreId = workContext.CurrentStore.Id,
+                CatalogId = workContext.CurrentStore.Catalog,
                 Outline = criteria.Outline,
                 Currency = criteria.Currency?.Code ?? workContext.CurrentCurrency.Code,
                 Pricelists = workContext.CurrentPricelists.Where(p => p.Currency.Equals(workContext.CurrentCurrency)).Select(p => p.Id).ToList(),
                 PriceRange = criteria.PriceRange?.ToNumericRangeDto(),
                 Terms = criteria.Terms.ToStrings(),
+                Sort = criteria.SortBy,
                 Skip = criteria.Start,
                 Take = criteria.PageSize,
-                ResponseGroup = ((int)criteria.ResponseGroup).ToString()
+                ResponseGroup = ((int)criteria.ResponseGroup).ToString(),
             };
 
             // Add vendor id to terms
@@ -235,9 +238,6 @@ namespace VirtoCommerce.Storefront.Converters
 
                 result.Terms.Add(string.Concat("vendor:", criteria.VendorId));
             }
-
-            if (criteria.SortBy != null)
-                result.Sort = new[] { criteria.SortBy };
 
             return result;
         }
@@ -253,20 +253,20 @@ namespace VirtoCommerce.Storefront.Converters
             };
         }
 
-        public virtual catalogDto.CategorySearch ToCategorySearchDto(CategorySearchCriteria criteria, WorkContext workContext)
+        public virtual catalogDto.CategorySearchCriteria ToCategorySearchCriteriaDto(CategorySearchCriteria criteria, WorkContext workContext)
         {
-            var result = new catalogDto.CategorySearch
+            var result = new catalogDto.CategorySearchCriteria
             {
                 SearchPhrase = criteria.Keyword,
                 LanguageCode = criteria.Language?.CultureName ?? workContext.CurrentLanguage.CultureName,
+                StoreId = workContext.CurrentStore.Id,
+                CatalogId = workContext.CurrentStore.Catalog,
                 Outline = criteria.Outline,
+                Sort = criteria.SortBy,
                 Skip = criteria.Start,
                 Take = criteria.PageSize,
-                ResponseGroup = ((int)criteria.ResponseGroup).ToString()
+                ResponseGroup = ((int)criteria.ResponseGroup).ToString(),
             };
-
-            if (criteria.SortBy != null)
-                result.Sort = new[] { criteria.SortBy };
 
             return result;
         }
