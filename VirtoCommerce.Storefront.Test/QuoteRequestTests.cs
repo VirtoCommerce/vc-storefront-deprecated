@@ -169,7 +169,7 @@ namespace VirtoCommerce.Storefront.Test
                 IsRegisteredUser = false
             };
             workContext.CurrentCustomer = customer;
-            
+
             QuoteRequest quoteRequest = quoteRequestBuilder.GetOrCreateNewTransientQuoteRequestAsync(workContext.CurrentStore, customer, workContext.CurrentLanguage, workContext.CurrentCurrency).Result.QuoteRequest;
 
             ICatalogSearchService catalogSearchService = GetCatalogSearchService();
@@ -220,7 +220,6 @@ namespace VirtoCommerce.Storefront.Test
             var inventoryApi = GetInventoryApiClient();
             var marketingApi = GetMarketingApiClient();
             var pricingApi = GetPricingApiClient();
-            var searchApi = GetSearchApiClient();
             var customerApi = GetCustomerApiClient();
             var orderApi = GetOrderApiClient();
             var quoteApi = GetQuoteApiClient();
@@ -232,7 +231,7 @@ namespace VirtoCommerce.Storefront.Test
             var pricingService = new PricingServiceImpl(pricingApi, GetTaxEvaluator(), promotionEvaluator);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, GetSubscriptionModuleApiClient(), cacheManager);
 
-            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService, GetSubscriptionModuleApiClient(), GetProductAvailabilityService());
+            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, pricingService, customerService, GetSubscriptionModuleApiClient(), GetProductAvailabilityService());
             return result;
         }
 
@@ -243,7 +242,6 @@ namespace VirtoCommerce.Storefront.Test
             var marketingApi = GetMarketingApiClient();
             var inventoryApi = GetInventoryApiClient();
             var pricingApi = GetPricingApiClient();
-            var searchApi = GetSearchApiClient();
             var customerApi = GetCustomerApiClient();
             var orderApi = GetOrderApiClient();
             var quoteApi = GetQuoteApiClient();
@@ -255,7 +253,7 @@ namespace VirtoCommerce.Storefront.Test
 
             var pricingService = new PricingServiceImpl(pricingApi, GetTaxEvaluator(), promotionEvaluator);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, GetSubscriptionModuleApiClient(), cacheManager);
-            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService, GetSubscriptionModuleApiClient(), GetProductAvailabilityService());
+            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, pricingService, customerService, GetSubscriptionModuleApiClient(), GetProductAvailabilityService());
 
             var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, GetTaxEvaluator(), GetSubscriptionModuleApiClient(), GetProductAvailabilityService());
             return retVal;

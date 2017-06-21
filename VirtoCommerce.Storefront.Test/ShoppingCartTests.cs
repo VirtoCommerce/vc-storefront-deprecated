@@ -62,7 +62,6 @@ namespace VirtoCommerce.Storefront.Test
             var marketingApi = GetMarketingApiClient();
             var inventoryApi = GetInventoryApiClient();
             var pricingApi = GetPricingApiClient();
-            var searchApi = GetSearchApiClient();
             var customerApi = GetCustomerApiClient();
             var orderApi = GetOrderApiClient();
             var quoteApi = GetQuoteApiClient();
@@ -74,7 +73,7 @@ namespace VirtoCommerce.Storefront.Test
 
             var pricingService = new PricingServiceImpl(pricingApi, null, promotionEvaluator);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, null, cacheManager);
-            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService, null, null);
+            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, pricingService, customerService, null, null);
 
             var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, null, null, null);
             return retVal;

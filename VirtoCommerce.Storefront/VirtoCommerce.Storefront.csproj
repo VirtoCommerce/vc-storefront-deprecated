@@ -373,6 +373,7 @@
     <Content Include="App_Data\Themes\default\assets\js\recommendations.js" />
     <Content Include="App_Data\Themes\default\assets\js\quote-request.js" />
     <Content Include="App_Data\Themes\default\assets\js\product-compare.js" />
+    <Content Include="App_Data\Themes\default\assets\js\searchBar.js" />
     <Content Include="App_Data\Themes\default\assets\klarna-big.png" />
     <Content Include="App_Data\Themes\default\assets\laser.svg" />
     <Content Include="App_Data\Themes\default\assets\litecoin.svg" />
@@ -490,7 +491,6 @@
     <Compile Include="AutoRestClients\PricingModuleApi.cs" />
     <Compile Include="AutoRestClients\ProductRecommendationsModuleApi.cs" />
     <Compile Include="AutoRestClients\QuoteModuleApi.cs" />
-    <Compile Include="AutoRestClients\SearchApiModuleApi.cs" />
     <Compile Include="AutoRestClients\SearchModuleApi.cs" />
     <Compile Include="AutoRestClients\SitemapsModuleApi.cs" />
     <Compile Include="AutoRestClients\StoreModuleApi.cs" />
@@ -666,7 +666,9 @@
     <Content Include="App_Data\Themes\default\snippets\quote-totals.liquid" />
     <Content Include="App_Data\Themes\default\snippets\related-products.liquid" />
     <Content Include="App_Data\Themes\default\snippets\respond.liquid" />
-    <Content Include="App_Data\Themes\default\snippets\search-bar.liquid" />
+    <Content Include="App_Data\Themes\default\snippets\search-bar.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\snippets\search-result-grid.liquid" />
     <Content Include="App_Data\Themes\default\snippets\search-result.liquid" />
     <Content Include="App_Data\Themes\default\snippets\site-nav.liquid" />
