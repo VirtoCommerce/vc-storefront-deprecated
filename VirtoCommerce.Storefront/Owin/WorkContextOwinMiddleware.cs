@@ -196,7 +196,7 @@ namespace VirtoCommerce.Storefront.Owin
                                 {
                                     PageNumber = pageNumber2,
                                     PageSize = pageSize2,
-                                    Outline = category.Outline + "*",
+                                    Outline = category.Outline,
                                     ResponseGroup = workContext.CurrentProductSearchCriteria.ResponseGroup
                                 };
 
@@ -412,6 +412,12 @@ namespace VirtoCommerce.Storefront.Owin
                     retVal = customer ?? retVal;
                     retVal.Id = userId;
                     retVal.UserName = identity.Name;
+
+                    if (string.IsNullOrEmpty(retVal.FullName))
+                    {
+                        retVal.FullName = identity.Name;
+                    }
+
                     retVal.IsRegisteredUser = true;
                 }
 

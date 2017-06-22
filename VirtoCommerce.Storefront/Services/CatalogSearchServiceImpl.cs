@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using PagedList;
 using VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.InventoryModuleApi;
-using VirtoCommerce.Storefront.AutoRestClients.SearchApiModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Converters.Subscriptions;
@@ -25,7 +24,6 @@ namespace VirtoCommerce.Storefront.Services
         private readonly Func<WorkContext> _workContextFactory;
         private readonly ICatalogModuleApiClient _catalogModuleApi;
         private readonly IInventoryModuleApiClient _inventoryModuleApi;
-        private readonly ISearchApiModuleApiClient _searchApi;
         private readonly IPricingService _pricingService;
         private readonly ICustomerService _customerService;
         private readonly ISubscriptionModuleApiClient _subscriptionApi;
@@ -35,7 +33,6 @@ namespace VirtoCommerce.Storefront.Services
             Func<WorkContext> workContextFactory,
             ICatalogModuleApiClient catalogModuleApi,
             IInventoryModuleApiClient inventoryModuleApi,
-            ISearchApiModuleApiClient searchApi,
             IPricingService pricingService,
             ICustomerService customerService,
             ISubscriptionModuleApiClient subscriptionApi,
@@ -45,7 +42,6 @@ namespace VirtoCommerce.Storefront.Services
             _catalogModuleApi = catalogModuleApi;
             _pricingService = pricingService;
             _inventoryModuleApi = inventoryModuleApi;
-            _searchApi = searchApi;
             _customerService = customerService;
             _subscriptionApi = subscriptionApi;
             _productAvailabilityService = productAvailabilityService;
@@ -115,14 +111,16 @@ namespace VirtoCommerce.Storefront.Services
             return result;
         }
 
+        public virtual Category[] GetCategories(string[] ids, CategoryResponseGroup responseGroup = CategoryResponseGroup.Info)
+        {
+            var workContext = _workContextFactory();
+            return Task.Factory.StartNew(() => InnerGetCategoriesAsync(ids, workContext, responseGroup), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+        }
+
         public virtual async Task<Category[]> GetCategoriesAsync(string[] ids, CategoryResponseGroup responseGroup = CategoryResponseGroup.Info)
         {
             var workContext = _workContextFactory();
-
-            var retVal = (await _catalogModuleApi.CatalogModuleCategories.GetCategoriesByPlentyIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
-            //Set  lazy loading for child categories 
-            SetChildCategoriesLazyLoading(retVal);
-            return retVal;
+            return await InnerGetCategoriesAsync(ids, workContext, responseGroup);
         }
 
         /// <summary>
@@ -180,14 +178,26 @@ namespace VirtoCommerce.Storefront.Services
             return result;
         }
 
+        private async Task<Category[]> InnerGetCategoriesAsync(string[] ids, WorkContext workContext, CategoryResponseGroup responseGroup = CategoryResponseGroup.Info)
+        {
+            var retVal = (await _catalogModuleApi.CatalogModuleCategories.GetCategoriesByPlentyIdsAsync(ids.ToList(), ((int)responseGroup).ToString())).Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)).ToArray();
+            //Set  lazy loading for child categories 
+            SetChildCategoriesLazyLoading(retVal);
+            return retVal;
+        }
 
         private async Task<IPagedList<Category>> InnerSearchCategoriesAsync(CategorySearchCriteria criteria, WorkContext workContext)
         {
             criteria = criteria.Clone();
-            var searchCriteria = criteria.ToCategorySearchDto(workContext);
-            var result = await _searchApi.SearchApiModule.SearchCategoriesAsync(workContext.CurrentStore.Id, searchCriteria);
+            var searchCriteria = criteria.ToCategorySearchCriteriaDto(workContext);
+            var result = await _catalogModuleApi.CatalogModuleSearch.SearchCategoriesAsync(searchCriteria);
 
-            var retVal = new PagedList<Category>(result.Categories.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
+            var retVal = new PagedList<Category>(new List<Category>(), 1, 1);
+            if (result.Items != null)
+            {
+                retVal = new PagedList<Category>(result.Items.Select(x => x.ToCategory(workContext.CurrentLanguage, workContext.CurrentStore)), criteria.PageNumber, criteria.PageSize);
+            }
+
             //Set  lazy loading for child categories 
             SetChildCategoriesLazyLoading(retVal.ToArray());
             return retVal;
@@ -197,9 +207,9 @@ namespace VirtoCommerce.Storefront.Services
         {
             criteria = criteria.Clone();
 
-            var searchCriteria = criteria.ToProductSearchDto(workContext);
-            var result = await _searchApi.SearchApiModule.SearchProductsAsync(workContext.CurrentStore.Id, searchCriteria);
-            var products = result.Products?.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList() ?? new List<Product>();
+            var searchCriteria = criteria.ToProductSearchCriteriaDto(workContext);
+            var result = await _catalogModuleApi.CatalogModuleSearch.SearchProductsAsync(searchCriteria);
+            var products = result.Items?.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToList() ?? new List<Product>();
 
             if (products.Any())
             {
@@ -226,12 +236,12 @@ namespace VirtoCommerce.Storefront.Services
                     taskList.Add(_pricingService.EvaluateProductPricesAsync(productsWithVariations, workContext));
                 }
 
+                await Task.WhenAll(taskList.ToArray());
+
                 foreach (var product in productsWithVariations)
                 {
                     product.IsAvailable = await _productAvailabilityService.IsAvailable(product, 1);
                 }
-
-                await Task.WhenAll(taskList.ToArray());
             }
 
             return new CatalogSearchResult
@@ -324,7 +334,7 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual async Task LoadProductInventoriesAsync(List<Product> products)
         {
-            var inventories = await _inventoryModuleApi.InventoryModule.GetProductsInventoriesAsync(products.Select(x => x.Id).ToList());
+            var inventories = await _inventoryModuleApi.InventoryModule.GetProductsInventoriesByPlentyIdsAsync(products.Select(x => x.Id).ToArray());
 
             foreach (var item in products)
             {
@@ -334,7 +344,7 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual void LoadProductInventories(List<Product> products)
         {
-            var inventories = _inventoryModuleApi.InventoryModule.GetProductsInventories(products.Select(x => x.Id).ToList());
+            var inventories = _inventoryModuleApi.InventoryModule.GetProductsInventoriesByPlentyIds(products.Select(x => x.Id).ToArray());
 
             foreach (var item in products)
             {
@@ -355,8 +365,15 @@ namespace VirtoCommerce.Storefront.Services
         {
             foreach (var category in categories)
             {
+                //Lazy loading for parents categories
+                category.Parents = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos) =>
+                {
+                    var catIds = category.Outline.Split('/');
+                    return new StaticPagedList<Category>(GetCategories(catIds, CategoryResponseGroup.Small), pageNumber, pageSize, catIds.Length);
+                }, 1, CategorySearchCriteria.DefaultPageSize);
+
                 //Lazy loading for child categories
-                category.Categories = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos2) =>
+                category.Categories = new MutablePagedList<Category>((pageNumber, pageSize, sortInfos) =>
                 {
                     var categorySearchCriteria = new CategorySearchCriteria
                     {
@@ -364,9 +381,9 @@ namespace VirtoCommerce.Storefront.Services
                         PageSize = pageSize,
                         Outline = "/" + category.Outline
                     };
-                    if (!sortInfos2.IsNullOrEmpty())
+                    if (!sortInfos.IsNullOrEmpty())
                     {
-                        categorySearchCriteria.SortBy = SortInfo.ToString(sortInfos2);
+                        categorySearchCriteria.SortBy = SortInfo.ToString(sortInfos);
                     }
                     var searchResult = SearchCategories(categorySearchCriteria);
                     return searchResult;

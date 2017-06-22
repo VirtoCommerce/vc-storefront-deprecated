@@ -109,6 +109,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public string PreviousProduct { get; set; }
 
         /// <summary>
+        /// Returns paged collection of all parents collections
+        /// </summary>
+        public Collections Parents { get; set; }
+
+        /// <summary>
         /// Returns paged collection of products
         /// </summary>
         public IMutablePagedList<Product> Products { get; set; }

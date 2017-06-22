@@ -1,4 +1,4 @@
-{
+﻿{
     "common": {
         "required": "Required",
         "invalid": "Invalid"
@@ -197,7 +197,10 @@
             "close_cart": "Close Cart",
             "quick_add_description": "You can quickly add a product to cart by entering its SKU or name in the field below",
             "add": "Add",
-            "product_search_empty": "No products found"
+            "product_search_empty": "No products found",
+            "product_search_progress": "Searching...",
+            "categories": "Categories",
+            "products": "Products"
         }
     },
     "quotes": {
@@ -324,6 +327,7 @@
             "user_name": "User Name",
             "password": "Password",
             "forgot_password": "Forgot your password?",
+            "reset_password_success": "We've sent you an email with a link to update your password.",
             "sign_in": "Sign In",
             "or": "or",
             "cancel": "Return to Store",
