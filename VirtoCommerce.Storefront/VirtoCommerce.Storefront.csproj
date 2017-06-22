@@ -538,6 +538,7 @@
     <Compile Include="Converters\ToolsConverter.cs" />
     <Compile Include="JsonConverters\MoneyJsonConverter.cs" />
     <Compile Include="JsonConverters\CurrencyJsonConverter.cs" />
+    <Compile Include="Owin\OriginalHostRewriterOwinMiddleware.cs" />
     <Compile Include="Owin\StorefrontUrlRewriterOwinMiddleware.cs" />
     <Compile Include="Routing\ISeoRouteService.cs" />
     <Compile Include="Routing\SeoEntity.cs" />

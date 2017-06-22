@@ -298,6 +298,8 @@ namespace VirtoCommerce.Storefront
             var changesTrackingService = new ChangesTrackingService(changesTrackingEnabled, changesTrackingInterval, container.Resolve<ICacheModuleApiClient>());
             container.RegisterInstance<IChangesTrackingService>(changesTrackingService);
 
+            app.Use<OriginalHostRewriterOwinMiddleware>(container);
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters, workContextFactory, () => container.Resolve<CommonController>());
             RouteConfig.RegisterRoutes(RouteTable.Routes, container.Resolve<ISeoRouteService>(), workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>());
             AuthConfig.ConfigureAuth(app, () => container.Resolve<IStorefrontUrlBuilder>());
@@ -310,6 +312,7 @@ namespace VirtoCommerce.Storefront
             ModelBinders.Binders.Add(typeof(Model.Cart.Payment), new CartModelBinder<Model.Cart.Payment>(workContextFactory));
             ModelBinders.Binders.Add(typeof(Model.Order.PaymentIn), new OrderModelBinder<Model.Order.PaymentIn>(workContextFactory));
             ModelBinders.Binders.Add(typeof(Model.Recommendations.RecommendationEvalContext), new ReccomendationsModelBinder<Model.Recommendations.RecommendationEvalContext>());
+			
             app.Use<WorkContextOwinMiddleware>(container);
             app.UseStageMarker(PipelineStage.PostAuthorize);
             app.Use<StorefrontUrlRewriterOwinMiddleware>(container);
