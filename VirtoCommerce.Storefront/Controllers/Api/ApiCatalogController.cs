@@ -26,7 +26,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             var retVal = await _catalogSearchService.SearchProductsAsync(searchCriteria);
             foreach (var product in retVal.Products)
             {
-                product.Url = UrlFilters.FullUrl(product.Url, WorkContext.CurrentStore.Id, WorkContext.CurrentLanguage.CultureName);
+                product.Url = base.UrlBuilder.ToAppAbsolute(product.Url);
             }
             return Json(new
             {
@@ -51,7 +51,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             var retVal = await _catalogSearchService.SearchCategoriesAsync(searchCriteria);
             foreach (var category in retVal)
             {
-                category.Url = UrlFilters.FullUrl(category.Url, WorkContext.CurrentStore.Id, WorkContext.CurrentLanguage.CultureName);
+                category.Url = base.UrlBuilder.ToAppAbsolute(category.Url);
             }
             return Json(new
             {
