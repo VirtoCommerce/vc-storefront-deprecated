@@ -11225,8 +11225,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductSearchCriteria class.
         /// </summary>
-        public ProductSearchCriteria(System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string currency = default(string), System.Collections.Generic.IList<string> pricelists = default(System.Collections.Generic.IList<string>), NumericRange priceRange = default(NumericRange), System.Collections.Generic.IList<string> classTypes = default(System.Collections.Generic.IList<string>), bool? withHidden = default(bool?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? startDateFrom = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), System.Collections.Generic.IList<string> ids = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string storeId = default(string), string catalogId = default(string), string outline = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public ProductSearchCriteria(string objectType = default(string), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string currency = default(string), System.Collections.Generic.IList<string> pricelists = default(System.Collections.Generic.IList<string>), NumericRange priceRange = default(NumericRange), System.Collections.Generic.IList<string> classTypes = default(System.Collections.Generic.IList<string>), bool? withHidden = default(bool?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? startDateFrom = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string storeId = default(string), string catalogId = default(string), string outline = default(string), string responseGroup = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
+            ObjectType = objectType;
             Terms = terms;
             Currency = currency;
             Pricelists = pricelists;
@@ -11236,20 +11237,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
             StartDate = startDate;
             StartDateFrom = startDateFrom;
             EndDate = endDate;
-            Ids = ids;
-            SearchPhrase = searchPhrase;
-            LanguageCode = languageCode;
             StoreId = storeId;
             CatalogId = catalogId;
             Outline = outline;
             ResponseGroup = responseGroup;
-            ObjectType = objectType;
             ObjectTypes = objectTypes;
+            ObjectIds = objectIds;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
             Sort = sort;
             SortInfos = sortInfos;
             Skip = skip;
             Take = take;
         }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
 
         /// <summary>
         /// </summary>
@@ -11298,21 +11303,6 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "ids")]
-        public System.Collections.Generic.IList<string> Ids { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
-        public string SearchPhrase { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
-        public string LanguageCode { get; set; }
-
-        /// <summary>
-        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "storeId")]
         public string StoreId { get; set; }
 
@@ -11333,13 +11323,23 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
-        public string ObjectType { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
+        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
-        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectIds")]
+        public System.Collections.Generic.IList<string> ObjectIds { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
 
         /// <summary>
         /// </summary>
@@ -11510,17 +11510,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the CategorySearchCriteria class.
         /// </summary>
-        public CategorySearchCriteria(System.Collections.Generic.IList<string> ids = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string storeId = default(string), string catalogId = default(string), string outline = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public CategorySearchCriteria(string objectType = default(string), string storeId = default(string), string catalogId = default(string), string outline = default(string), string responseGroup = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
-            Ids = ids;
-            SearchPhrase = searchPhrase;
-            LanguageCode = languageCode;
+            ObjectType = objectType;
             StoreId = storeId;
             CatalogId = catalogId;
             Outline = outline;
             ResponseGroup = responseGroup;
-            ObjectType = objectType;
             ObjectTypes = objectTypes;
+            ObjectIds = objectIds;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
             Sort = sort;
             SortInfos = sortInfos;
             Skip = skip;
@@ -11529,18 +11529,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "ids")]
-        public System.Collections.Generic.IList<string> Ids { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
-        public string SearchPhrase { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
-        public string LanguageCode { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
 
         /// <summary>
         /// </summary>
@@ -11564,13 +11554,23 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
-        public string ObjectType { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
+        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
 
         /// <summary>
         /// </summary>
-        [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
-        public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectIds")]
+        public System.Collections.Generic.IList<string> ObjectIds { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
 
         /// <summary>
         /// </summary>

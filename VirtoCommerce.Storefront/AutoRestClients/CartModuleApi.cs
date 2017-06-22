@@ -7944,7 +7944,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ShoppingCartSearchCriteria class.
         /// </summary>
-        public ShoppingCartSearchCriteria(string name = default(string), string keyword = default(string), string customerId = default(string), string storeId = default(string), string currency = default(string), string status = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public ShoppingCartSearchCriteria(string name = default(string), string keyword = default(string), string customerId = default(string), string storeId = default(string), string currency = default(string), string status = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
             Name = name;
             Keyword = keyword;
@@ -7955,6 +7955,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
             ResponseGroup = responseGroup;
             ObjectType = objectType;
             ObjectTypes = objectTypes;
+            ObjectIds = objectIds;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
             Sort = sort;
             SortInfos = sortInfos;
             Skip = skip;
@@ -8005,6 +8008,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
         public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectIds")]
+        public System.Collections.Generic.IList<string> ObjectIds { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
 
         /// <summary>
         /// </summary>

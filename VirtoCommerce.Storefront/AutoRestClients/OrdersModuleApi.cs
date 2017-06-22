@@ -3211,7 +3211,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// Initializes a new instance of the CustomerOrderSearchCriteria
         /// class.
         /// </summary>
-        public CustomerOrderSearchCriteria(string keyword = default(string), string number = default(string), System.Collections.Generic.IList<string> numbers = default(System.Collections.Generic.IList<string>), bool? withPrototypes = default(bool?), bool? onlyRecurring = default(bool?), string subscriptionId = default(string), System.Collections.Generic.IList<string> subscriptionIds = default(System.Collections.Generic.IList<string>), string status = default(string), System.Collections.Generic.IList<string> statuses = default(System.Collections.Generic.IList<string>), string operationId = default(string), string customerId = default(string), string employeeId = default(string), System.Collections.Generic.IList<string> storeIds = default(System.Collections.Generic.IList<string>), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public CustomerOrderSearchCriteria(string keyword = default(string), string number = default(string), System.Collections.Generic.IList<string> numbers = default(System.Collections.Generic.IList<string>), bool? withPrototypes = default(bool?), bool? onlyRecurring = default(bool?), string subscriptionId = default(string), System.Collections.Generic.IList<string> subscriptionIds = default(System.Collections.Generic.IList<string>), string status = default(string), System.Collections.Generic.IList<string> statuses = default(System.Collections.Generic.IList<string>), string operationId = default(string), string customerId = default(string), string employeeId = default(string), System.Collections.Generic.IList<string> storeIds = default(System.Collections.Generic.IList<string>), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
             Keyword = keyword;
             Number = number;
@@ -3231,6 +3231,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
             ResponseGroup = responseGroup;
             ObjectType = objectType;
             ObjectTypes = objectTypes;
+            ObjectIds = objectIds;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
             Sort = sort;
             SortInfos = sortInfos;
             Skip = skip;
@@ -3326,6 +3329,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
         public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectIds")]
+        public System.Collections.Generic.IList<string> ObjectIds { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
 
         /// <summary>
         /// </summary>
