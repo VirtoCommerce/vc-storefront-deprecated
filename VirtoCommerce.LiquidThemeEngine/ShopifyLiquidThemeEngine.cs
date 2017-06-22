@@ -401,26 +401,31 @@ namespace VirtoCommerce.LiquidThemeEngine
         }
         #endregion
 
-
         private static JObject InnerReadLocalization(IContentBlobProvider themeBlobProvider, string themePath, Language language)
         {
             JObject retVal = null;
             var localeFolderPath = Path.Combine(themePath, "locales");
+
             if (themeBlobProvider.PathExists(localeFolderPath))
             {
-                var currentLocalePath = Path.Combine(localeFolderPath, string.Concat(language.TwoLetterLanguageName, ".json"));
-                var localeDefaultPath = themeBlobProvider.Search(localeFolderPath, "*.default.json", false).FirstOrDefault();
-
                 JObject localeJson = null;
                 JObject defaultJson = null;
 
-                if (themeBlobProvider.PathExists(currentLocalePath))
+                foreach (string languageName in new [] { language.CultureName, language.TwoLetterLanguageName })
                 {
-                    using (var stream = themeBlobProvider.OpenRead(currentLocalePath))
+                    var currentLocalePath = Path.Combine(localeFolderPath, string.Concat(languageName, ".json"));
+
+                    if (themeBlobProvider.PathExists(currentLocalePath))
                     {
-                        localeJson = JsonConvert.DeserializeObject<dynamic>(stream.ReadToString());
+                        using (var stream = themeBlobProvider.OpenRead(currentLocalePath))
+                        {
+                            localeJson = JsonConvert.DeserializeObject<dynamic>(stream.ReadToString());
+                        }
+                        break;
                     }
                 }
+
+                var localeDefaultPath = themeBlobProvider.Search(localeFolderPath, "*.default.json", false).FirstOrDefault();
 
                 if (localeDefaultPath != null && themeBlobProvider.PathExists(localeDefaultPath))
                 {
@@ -432,6 +437,7 @@ namespace VirtoCommerce.LiquidThemeEngine
 
                 //Need merge default and requested localization json to resulting object
                 retVal = defaultJson ?? localeJson;
+
                 if (defaultJson != null && localeJson != null)
                 {
                     retVal.Merge(localeJson, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Merge });
