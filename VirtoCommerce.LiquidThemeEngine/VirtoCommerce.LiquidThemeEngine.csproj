@@ -155,6 +155,7 @@
     <Compile Include="DotLiquidThemedView.cs" />
     <Compile Include="DotLiquidThemedViewEngine.cs" />
     <Compile Include="Exceptions\SaasCompileException.cs" />
+    <Compile Include="Extensions\ConfigurationExtentions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TemplateExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />

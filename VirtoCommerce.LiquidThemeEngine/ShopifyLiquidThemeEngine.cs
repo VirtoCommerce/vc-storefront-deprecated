@@ -21,7 +21,6 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
 using VirtoCommerce.Storefront.Model.Services;
-using System.Configuration;
 
 namespace VirtoCommerce.LiquidThemeEngine
 {
@@ -287,7 +286,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             var renderParams = new RenderParameters
             {
                 LocalVariables = Hash.FromDictionary(parameters),
-                RethrowErrors = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:LiquidThemeEngine:RethrowErrors", false)
+                RethrowErrors = ConfigurationExtentions.CustomErrorsEnabled()
             };
 
             var parsedTemplate = Template.Parse(templateContent);
