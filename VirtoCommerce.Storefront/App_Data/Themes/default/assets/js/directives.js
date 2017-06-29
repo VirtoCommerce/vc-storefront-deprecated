@@ -12,7 +12,7 @@ storefrontApp.directive('vcContentPlace', ['marketingService', function (marketi
     }
 }]);
 
-storefrontApp.directive('vcFallbackImage', function () {
+storefrontApp.directive('fallbackSrc', function () {
     return {
         link: function (scope, element, attrs) {
             element.on('error', function () {
