@@ -121,7 +121,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             // TODO: implement indexed search for vendors
             var workContext = _workContextFactory();
-            var criteria = new customerDto.MemberSearchCriteria
+            var criteria = new customerDto.MembersSearchCriteria
             {
                 SearchPhrase = keyword,
                 DeepSearch = true,

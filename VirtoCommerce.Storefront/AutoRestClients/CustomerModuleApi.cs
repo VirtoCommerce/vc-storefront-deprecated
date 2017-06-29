@@ -501,7 +501,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultMember>> SearchWithHttpMessagesAsync(MemberSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultMember>> SearchWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (criteria == null)
             {
@@ -2871,7 +2871,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<VendorSearchResult>> SearchVendorsWithHttpMessagesAsync(MemberSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<VendorSearchResult>> SearchVendorsWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (criteria == null)
             {
@@ -3053,7 +3053,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             /// concrete instance of SearchCriteria type type will be created by using
             /// PolymorphicMemberSearchCriteriaJsonConverter
             /// </param>
-            public static GenericSearchResultMember Search(this ICustomerModule operations, MemberSearchCriteria criteria)
+            public static GenericSearchResultMember Search(this ICustomerModule operations, MembersSearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).SearchAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -3074,7 +3074,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<GenericSearchResultMember> SearchAsync(this ICustomerModule operations, MemberSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<GenericSearchResultMember> SearchAsync(this ICustomerModule operations, MembersSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
                 using (var _result = await operations.SearchWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -3627,7 +3627,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             /// concrete instance of SearchCriteria type type will be created by using
             /// PolymorphicMemberSearchCriteriaJsonConverter
             /// </param>
-            public static VendorSearchResult SearchVendors(this ICustomerModule operations, MemberSearchCriteria criteria)
+            public static VendorSearchResult SearchVendors(this ICustomerModule operations, MembersSearchCriteria criteria)
             {
                 return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).SearchVendorsAsync(criteria), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
@@ -3648,7 +3648,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<VendorSearchResult> SearchVendorsAsync(this ICustomerModule operations, MemberSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<VendorSearchResult> SearchVendorsAsync(this ICustomerModule operations, MembersSearchCriteria criteria, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
                 using (var _result = await operations.SearchVendorsWithHttpMessagesAsync(criteria, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -3715,7 +3715,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultMember>> SearchWithHttpMessagesAsync(MemberSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<GenericSearchResultMember>> SearchWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Get member
         /// </summary>
@@ -4078,7 +4078,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<VendorSearchResult>> SearchVendorsWithHttpMessagesAsync(MemberSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<VendorSearchResult>> SearchVendorsWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -4614,17 +4614,17 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
 {
     using System.Linq;
 
-    public partial class MemberSearchCriteria
+    public partial class MembersSearchCriteria
     {
         /// <summary>
-        /// Initializes a new instance of the MemberSearchCriteria class.
+        /// Initializes a new instance of the MembersSearchCriteria class.
         /// </summary>
-        public MemberSearchCriteria() { }
+        public MembersSearchCriteria() { }
 
         /// <summary>
-        /// Initializes a new instance of the MemberSearchCriteria class.
+        /// Initializes a new instance of the MembersSearchCriteria class.
         /// </summary>
-        public MemberSearchCriteria(string objectType = default(string), string memberType = default(string), System.Collections.Generic.IList<string> memberTypes = default(System.Collections.Generic.IList<string>), string group = default(string), System.Collections.Generic.IList<string> groups = default(System.Collections.Generic.IList<string>), string memberId = default(string), bool? deepSearch = default(bool?), string responseGroup = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public MembersSearchCriteria(string objectType = default(string), string memberType = default(string), System.Collections.Generic.IList<string> memberTypes = default(System.Collections.Generic.IList<string>), string group = default(string), System.Collections.Generic.IList<string> groups = default(System.Collections.Generic.IList<string>), string memberId = default(string), bool? deepSearch = default(bool?), string responseGroup = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
             ObjectType = objectType;
             MemberType = memberType;
