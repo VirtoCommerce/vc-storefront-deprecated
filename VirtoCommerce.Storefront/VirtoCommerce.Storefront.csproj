@@ -460,6 +460,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Themes\default\templates\customers\forgot_password.liquid" />
+    <Content Include="app.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
