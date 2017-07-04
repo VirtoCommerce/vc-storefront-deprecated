@@ -18,6 +18,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             return GetBundleTag(HtmlFilters.ScriptTag, input);
         }
 
+        public static string ScriptBundleTagAsync(string input)
+        {
+            return GetBundleTag(HtmlFilters.ScriptTagAsync, input);
+        }
+
         public static string StylesheetBundleTag(string input)
         {
             return GetBundleTag(HtmlFilters.StylesheetTag, input);

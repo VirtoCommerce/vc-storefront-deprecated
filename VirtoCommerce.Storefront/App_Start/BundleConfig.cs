@@ -42,6 +42,11 @@ namespace VirtoCommerce.Storefront
                     .IncludeDirectory("~/App_Data/Themes/default/assets/js/common-components/", "*.js")
                     .IncludeDirectory("~/App_Data/Themes/default/assets/js/account/", "*.js"));
 
+            bundles.Add(
+                new ScriptBundle("~/default-theme/shopify/scripts")
+                    .Include("~/App_Data/Themes/default/assets/shopify_common.js")
+                    .Include("~/App_Data/Themes/default/assets/customer_area.js"));
+
             #endregion
 
             #region CSS
