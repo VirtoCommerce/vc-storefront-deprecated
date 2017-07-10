@@ -99,10 +99,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         }
         private async Task<ICartBuilder> LoadOrCreateWishlistAsync()
         {
-            var wishlist = WorkContext.CurrentCart;
-            //Need to try load fresh cart from cache or service to prevent parallel update conflict
-            //because WorkContext.CurrentCart may contains old cart
-            await _wishlistBuilder.LoadOrCreateNewTransientCartAsync(wishlist.Name, WorkContext.CurrentStore, wishlist.Customer, wishlist.Language, wishlist.Currency);
+            await _wishlistBuilder.LoadOrCreateNewTransientCartAsync("whishlist", WorkContext.CurrentStore, WorkContext.CurrentCustomer, WorkContext.CurrentLanguage, WorkContext.CurrentCurrency);
             return _wishlistBuilder;
         }
     }
