@@ -524,6 +524,7 @@
     <Compile Include="Controllers\Api\ApiPricingController.cs" />
     <Compile Include="Controllers\Api\ApiMarketingController.cs" />
     <Compile Include="Controllers\Api\ApiUserActionsController.cs" />
+    <Compile Include="Controllers\Api\ApiWishlistController.cs" />
     <Compile Include="Controllers\BulkOrderController.cs" />
     <Compile Include="Controllers\SitemapController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
@@ -745,6 +746,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Pages\" />
+    <Folder Include="Views\ApiWishlist\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.LiquidThemeEngine\VirtoCommerce.LiquidThemeEngine.csproj">
