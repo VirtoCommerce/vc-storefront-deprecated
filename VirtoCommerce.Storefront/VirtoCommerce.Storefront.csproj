@@ -370,6 +370,7 @@
     <Content Include="App_Data\Themes\default\assets\js\common-components\address.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout.js" />
+    <Content Include="App_Data\Themes\default\assets\js\filtres.js" />
     <Content Include="App_Data\Themes\default\assets\js\recommendations.js" />
     <Content Include="App_Data\Themes\default\assets\js\quote-request.js" />
     <Content Include="App_Data\Themes\default\assets\js\product-compare.js" />
@@ -459,6 +460,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Themes\default\templates\customers\forgot_password.liquid" />
+    <Content Include="app.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -539,6 +543,7 @@
     <Compile Include="Converters\ToolsConverter.cs" />
     <Compile Include="JsonConverters\MoneyJsonConverter.cs" />
     <Compile Include="JsonConverters\CurrencyJsonConverter.cs" />
+    <Compile Include="Owin\OriginalHostRewriterOwinMiddleware.cs" />
     <Compile Include="Owin\StorefrontUrlRewriterOwinMiddleware.cs" />
     <Compile Include="Routing\ISeoRouteService.cs" />
     <Compile Include="Routing\SeoEntity.cs" />

@@ -28,7 +28,7 @@
           {% if sold_out %}
             <div class="badge badge--sold-out"><span class="badge-label">{{ 'products.product.sold_out' | t }}</span></div>
           {% endif %}
-          <img src="{{ item.featured_image.src | img_url }}" alt="{{ item.featured_image.alt | escape }}">
+          <img ng-src="{{ item.featured_image.src | img_url: "168x168" }}" fallback-src="{{ item.featured_image.src | img_url }}" alt="{{ item.featured_image.alt | escape }}">
         </div>
       </div>
 

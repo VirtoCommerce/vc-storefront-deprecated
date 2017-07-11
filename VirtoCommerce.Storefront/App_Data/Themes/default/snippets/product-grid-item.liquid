@@ -30,7 +30,7 @@
                     </div>
                 {% endif %}
                 {% if product.featured_image %}
-                    <img src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
+                    <img ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
                 {% else %}
                     <div class="no-product-image">
                         <img src="{{ 'no-image.svg' | asset_url }}" />

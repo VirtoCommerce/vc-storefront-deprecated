@@ -25,6 +25,7 @@ namespace VirtoCommerce.Storefront
                     .Include("~/App_Data/Themes/default/assets/js/app.js")
                     .Include("~/App_Data/Themes/default/assets/js/services.js")
                     .Include("~/App_Data/Themes/default/assets/js/directives.js")
+                    .Include("~/App_Data/Themes/default/assets/js/filters.js")
                     .Include("~/App_Data/Themes/default/assets/js/main.js")
                     .IncludeDirectory("~/App_Data/Themes/default/assets/js/common-components/", "*.js")
                     .IncludeDirectory("~/App_Data/Themes/default/assets/js/checkout/", "*.js"));
@@ -38,6 +39,7 @@ namespace VirtoCommerce.Storefront
                     .Include("~/App_Data/Themes/default/assets/js/cart.js")
                     .Include("~/App_Data/Themes/default/assets/js/quote-request.js")
                     .Include("~/App_Data/Themes/default/assets/js/product-compare.js")
+                    .Include("~/App_Data/Themes/default/assets/js/searchBar.js")
                     .IncludeDirectory("~/App_Data/Themes/default/assets/js/common-components/", "*.js")
                     .IncludeDirectory("~/App_Data/Themes/default/assets/js/account/", "*.js"));
 

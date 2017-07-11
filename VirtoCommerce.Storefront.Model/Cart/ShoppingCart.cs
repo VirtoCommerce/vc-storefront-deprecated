@@ -412,6 +412,12 @@ namespace VirtoCommerce.Storefront.Model.Cart
                 shipment.ApplyRewards(shipmentRewards);
             }
 
+            var paymentRewards = rewards.Where(x => x.RewardType == PromotionRewardType.PaymentReward);
+            foreach (var payment in Payments)
+            {
+                payment.ApplyRewards(paymentRewards);
+            }
+
             if (Coupon != null && !string.IsNullOrEmpty(Coupon.Code))
             {
                 Coupon.AppliedSuccessfully = rewards.Any(x => x.IsValid && x.Coupon != null);
