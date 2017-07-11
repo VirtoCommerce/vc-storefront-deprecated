@@ -1,4 +1,4 @@
-﻿<form action="{{ '/search' | absolute_url }}" method="get" class="search-bar" role="search" name="formSearch" ng-controller="searchBarController">
+﻿<form action="{{ '/search' | absolute_url }}" autocomplete="off" method="get" class="search-bar" role="search" name="formSearch" ng-controller="searchBarController">
     <input type="hidden" name="type" value="product" />
     <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'layout.search_bar.placeholder' | t }}" aria-label="{{ 'layout.search_bar.placeholder' | t }}" ng-change="getSuggestions()" ng-model="query" />
         <button type="submit" class="search-bar--submit icon-fallback-text">
