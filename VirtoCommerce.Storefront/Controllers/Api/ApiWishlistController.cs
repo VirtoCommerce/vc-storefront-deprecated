@@ -2,16 +2,11 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
-using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
-using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
-using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Services;
 
 
@@ -41,33 +36,60 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             return Json(wishlistBuilder.Cart, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: storefrontapi/wishlist/items?id=...
-        [HttpPost]
-        public async Task<ActionResult> AddItemToWishlist(string id, int quantity = 1)
+        // GET: storefrontapi/whishlst/contains
+        [HttpGet]
+        public async Task<ActionResult> Contains(string productId)
         {
             var wishlistBuilder = await LoadOrCreateWishlistAsync();
-            var products = await _catalogSearchService.GetProductsAsync(new[] { id }, Model.Catalog.ItemResponseGroup.ItemLarge);
-            if (products != null && products.Any())
-            {
-                await wishlistBuilder.AddItemAsync(products.First(), quantity);
-                await wishlistBuilder.SaveAsync();
-            }
-            return Json(new { ItemsCount = wishlistBuilder.Cart.ItemsQuantity });
-            
+            await wishlistBuilder.ValidateAsync();
+            var hasProduct = wishlistBuilder.Cart.Items.Any(x => x.ProductId == productId);
+            return Json(new { Contains = hasProduct }, JsonRequestBehavior.AllowGet);
         }
-        
+
+        // POST: storefrontapi/wishlist/items?id=...
+        [HttpPost]
+        public async Task<ActionResult> AddItemToWishlist(string productId)
+        {
+            //Need lock to prevent concurrent access to same cart
+            using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext)).LockAsync())
+            {
+                var wishlistBuilder = await LoadOrCreateWishlistAsync();
+
+                var products = await _catalogSearchService.GetProductsAsync(new[] { productId }, Model.Catalog.ItemResponseGroup.ItemLarge);
+                if (products != null && products.Any())
+                {
+                    await wishlistBuilder.AddItemAsync(products.First(), 1);
+                    await wishlistBuilder.SaveAsync();
+                }
+                return Json(new { ItemsCount = wishlistBuilder.Cart.ItemsQuantity });
+            }
+        }
+
         // DELETE: storefrontapi/wishlist/items?id=...
         [HttpDelete]
         public async Task<ActionResult> RemoveWishlistItem(string lineItemId)
         {
-            var wishlistBuilder = await LoadOrCreateWishlistAsync();
-            await wishlistBuilder.RemoveItemAsync(lineItemId);
-            await wishlistBuilder.SaveAsync();
-            return Json(new { ItemsCount = wishlistBuilder.Cart.ItemsQuantity });
+            //Need lock to prevent concurrent access to same cart
+            using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext)).LockAsync())
+            {
+                var wishlistBuilder = await LoadOrCreateWishlistAsync();
+                await wishlistBuilder.RemoveItemAsync(lineItemId);
+                await wishlistBuilder.SaveAsync();
+                return Json(new { ItemsCount = wishlistBuilder.Cart.ItemsQuantity });
+            }
+
         }
-        private static string GetAsyncLockCartKey(ShoppingCart cart)
+        private static string GetAsyncLockCartKey(WorkContext context)
         {
-            return string.Join(":", "wishlist", cart.Id, cart.Name, cart.CustomerId);
+            return string.Join(":", "wishlist", context.CurrentCustomer.Id, context.CurrentStore.Id);
+        }
+
+        private void EnsureCartExists()
+        {
+            if (WorkContext.CurrentCart == null)
+            {
+                throw new StorefrontException("Whishlist not found");
+            }
         }
 
         private async Task<ICartBuilder> LoadOrCreateWishlistAsync()

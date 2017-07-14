@@ -1,7 +1,7 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService',
-    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService) {
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'wishlistService', 'quoteRequestService',
+    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, wishlistService, quoteRequestService) {
     //TODO: prevent add to cart not selected variation
     // display validator please select property
     // display price range
@@ -28,6 +28,15 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
                 $scope.addProductToCart(product, quantity);
             }
         });
+    }
+
+    $scope.addProductToWishlist = function (product) {
+        $scope.addingToWishlist = true;
+        wishlistService.addLineItem(product.id).then(function (response) {
+            if (response.data) {
+                $scope.wishlistContains = response.data.itemsCount > 0;
+            }
+        })
     }
 
     $scope.addProductToActualQuoteRequest = function (product, quantity) {
@@ -67,6 +76,9 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             _.each(_.keys(propertyMap), function (x) {
                 $scope.checkProperty(propertyMap[x][0])
             });
+
+            wishlistContains(product.id);
+            
             $scope.selectedVariation = product;
         });
     };
@@ -125,6 +137,14 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
 
             //try to find the best variation match for selected properties
             $scope.selectedVariation = findVariationBySelectedProps(allVariations, getSelectedPropsMap($scope.allVariationPropsMap));
+    };
+
+    function wishlistContains(productId) {
+        wishlistService.contains(productId).then(function (result) {
+            if (result) {
+                $scope.wishlistContains = result.data.contains;
+            }
+        });
     };
 
     initialize();

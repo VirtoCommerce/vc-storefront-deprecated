@@ -121,6 +121,23 @@ storefrontApp.service('cartService', ['$http', function ($http) {
     }
 }]);
 
+storefrontApp.service('wishlistService', ['$http', function ($http) {
+    return {
+        getWishlist: function () {
+            return $http.get('storefrontapi/wishlist?t=' + new Date().getTime());
+        },
+        contains: function (productId) {
+            return $http.get('storefrontapi/wishlist/contains?productId=' + productId + '&t=' + new Date().getTime());
+        },
+        addLineItem: function (productId) {
+            return $http.post('storefrontapi/wishlist/items', { productId: productId});
+        },
+        removeLineItem: function (lineItemId) {
+            return $http.delete('storefrontapi/wishlist/items?lineItemId=' + lineItemId);
+        }
+    }
+}]);
+
 storefrontApp.service('quoteRequestService', ['$http', function ($http) {
     return {
         getCurrentQuoteRequest: function () {

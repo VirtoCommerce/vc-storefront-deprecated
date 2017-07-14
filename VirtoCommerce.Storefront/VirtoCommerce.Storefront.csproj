@@ -343,6 +343,10 @@
     <Content Include="App_Data\Themes\default\assets\js\account\accountApi.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\%24account.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-password-change.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-wishlist.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\js\account\account-wishlist.js" />
     <Content Include="App_Data\Themes\default\assets\js\cart.js" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\totals.js" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\totals.tpl.liquid" />
@@ -350,7 +354,9 @@
     <Content Include="App_Data\Themes\default\assets\js\common-components\labeled-input.js" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\creditCard.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.js" />
-    <Content Include="App_Data\Themes\default\assets\js\common-components\lineItems.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\lineItems.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.tpl.liquid">
       <SubType>Designer</SubType>
     </Content>

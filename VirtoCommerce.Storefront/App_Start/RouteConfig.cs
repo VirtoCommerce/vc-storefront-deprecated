@@ -38,6 +38,12 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.Cart.UpdatePaymentPlan", "storefrontapi/cart/paymentPlan", new { controller = "ApiCart", action = "AddOrUpdateCartPaymentPlan" }, new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Cart.DeletePaymentPlan", "storefrontapi/cart/paymentPlan", new { controller = "ApiCart", action = "DeleteCartPaymentPlan" }, new { httpMethod = new HttpMethodConstraint("DELETE") });
 
+            // API wishlist
+            routes.AddStorefrontRoute("API.GetWishlist", "storefrontapi/wishlist", defaults: new { controller = "ApiWishlist", action = "GetWishlist" });
+            routes.AddStorefrontRoute("API.Wishlist.Contains", "storefrontapi/wishlist/contains", defaults: new { controller = "ApiWishlist", action = "Contains" });
+            routes.AddStorefrontRoute("API.Wishlist.AddItemToWishlist", "storefrontapi/wishlist/items", defaults: new { controller = "ApiWishlist", action = "AddItemToWishlist" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
+            routes.AddStorefrontRoute("API.Wishlist.RemoveWishlistItem", "storefrontapi/wishlist/items", defaults: new { controller = "ApiWishlist", action = "RemoveWishlistItem" }, constraints: new { httpMethod = new HttpMethodConstraint("DELETE") });
+            
             // Catalog API
             routes.AddStorefrontRoute("API.Catalog.SearchProducts", "storefrontapi/catalog/search", defaults: new { controller = "ApiCatalog", action = "SearchProducts" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Catalog.GetProductsByIds", "storefrontapi/products", defaults: new { controller = "ApiCatalog", action = "GetProductsByIds" });
