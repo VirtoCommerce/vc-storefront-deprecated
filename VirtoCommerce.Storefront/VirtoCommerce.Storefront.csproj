@@ -410,6 +410,8 @@
     <Content Include="App_Data\Themes\default\assets\shipping-location-pin.svg" />
     <Content Include="App_Data\Themes\default\assets\sofort.svg" />
     <Content Include="App_Data\Themes\default\assets\spr.js" />
+    <Content Include="App_Data\Themes\default\assets\star_favorite_add.png" />
+    <Content Include="App_Data\Themes\default\assets\star_favorite_remove.png" />
     <Content Include="App_Data\Themes\default\assets\status-reduced.svg" />
     <Content Include="App_Data\Themes\default\assets\status-sold-out.svg" />
     <Content Include="App_Data\Themes\default\assets\shopify_common.js" />
