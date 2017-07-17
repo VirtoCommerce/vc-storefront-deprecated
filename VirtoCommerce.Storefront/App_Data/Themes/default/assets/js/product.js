@@ -1,12 +1,15 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'wishlistService', 'quoteRequestService',
-    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, wishlistService, quoteRequestService) {
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'wishlistService', 'quoteRequestService', 'customerService',
+    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, wishlistService, quoteRequestService, customerService) {
     //TODO: prevent add to cart not selected variation
     // display validator please select property
     // display price range
+    var allVariations = [];
+    customerService.getCurrentCustomer().then(function (response) {
+        $scope.isRegisteredUser = response.data.isRegisteredUser;
+    });
 
-        var allVariations = [];
     $scope.selectedVariation = {};
     $scope.allVariationPropsMap = {};
     $scope.productPrice = null;
