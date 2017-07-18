@@ -8,10 +8,6 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
 
     var allVariations = [];
     var listName = "whishlist";
-    
-    //customerService.getCurrentCustomer().then(function (response) {
-    //    $scope.isRegisteredUser = response.data.isRegisteredUser;
-    //});
 
     $scope.selectedVariation = {};
     $scope.allVariationPropsMap = {};

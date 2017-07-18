@@ -147,7 +147,7 @@
                     </button>
                 {% endif %}
                 {% if customer %}
-                <span ng-show="customer.isRegisteredUser"
+                <span
                     ng-click="wishlistContains || addProductToWishlist(selectedVariation)" 
                     ng-disabled="wishlistContains"
                     ng-class="{'flicker-animation':addingToWishlist,'remove-from-favorite-icon':wishlistContains,'add-to-favorite-icon':!wishlistContains}">
