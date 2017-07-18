@@ -123,17 +123,17 @@ storefrontApp.service('cartService', ['$http', function ($http) {
 
 storefrontApp.service('wishlistService', ['$http', function ($http) {
     return {
-        getWishlist: function () {
-            return $http.get('storefrontapi/wishlist?t=' + new Date().getTime());
+        getWishlist: function (listName) {
+            return $http.get('storefrontapi/wishlist?listName=' + listName + '&t' + new Date().getTime());
         },
-        contains: function (productId) {
-            return $http.get('storefrontapi/wishlist/contains?productId=' + productId + '&t=' + new Date().getTime());
+        contains: function (productId, listName) {
+            return $http.get('storefrontapi/wishlist/contains?productId=' + productId + '&listName=' + listName + '&t=' + new Date().getTime());
         },
-        addLineItem: function (productId) {
-            return $http.post('storefrontapi/wishlist/items', { productId: productId});
+        addLineItem: function (productId, listName) {
+            return $http.post('storefrontapi/wishlist/items', { productId: productId, listName: listName });
         },
-        removeLineItem: function (lineItemId) {
-            return $http.delete('storefrontapi/wishlist/items?lineItemId=' + lineItemId);
+        removeLineItem: function (lineItemId, listName) {
+            return $http.delete('storefrontapi/wishlist/items?lineItemId=' + lineItemId + '&listName=' + listName);
         }
     }
 }]);

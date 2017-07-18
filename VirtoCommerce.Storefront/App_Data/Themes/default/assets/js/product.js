@@ -5,7 +5,10 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     //TODO: prevent add to cart not selected variation
     // display validator please select property
     // display price range
+
     var allVariations = [];
+    var listName = "whishlist";
+    
     customerService.getCurrentCustomer().then(function (response) {
         $scope.isRegisteredUser = response.data.isRegisteredUser;
     });
@@ -35,7 +38,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
 
     $scope.addProductToWishlist = function (product) {
         $scope.addingToWishlist = true;
-        wishlistService.addLineItem(product.id).then(function (response) {
+        wishlistService.addLineItem(product.id, listName).then(function (response) {
             if (response.data) {
                 $scope.wishlistContains = response.data.itemsCount > 0;
             }
@@ -143,7 +146,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     };
 
     function wishlistContains(productId) {
-        wishlistService.contains(productId).then(function (result) {
+        wishlistService.contains(productId, listName).then(function (result) {
             if (result) {
                 $scope.wishlistContains = result.data.contains;
             }

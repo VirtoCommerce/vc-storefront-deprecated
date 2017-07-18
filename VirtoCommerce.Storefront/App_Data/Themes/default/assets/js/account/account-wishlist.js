@@ -6,9 +6,10 @@
         ],
         controller: ['wishlistService','$rootScope', function (wishlistService, $rootScope) {
             var $ctrl = this;
-            $ctrl.getWishlist = function() {
+            var listName = "whishlist";
 
-                wishlistService.getWishlist().then(function (response) {
+            $ctrl.getWishlist = function() {
+                wishlistService.getWishlist(listName).then(function (response) {
                     var wishlist = response.data;
                     $ctrl.wishlist = wishlist;
 
@@ -25,7 +26,7 @@
                 $ctrl.recentCartItemModalVisible = false;
                 $ctrl.wishlist.items = _.without($ctrl.wishlist.items, lineItem);
                 $ctrl.wishlistIsUpdating = true;
-                wishlistService.removeLineItem(lineItem.id).then(function (response) {
+                wishlistService.removeLineItem(lineItem.id, listName).then(function (response) {
                     $ctrl.getWishlist();
                     $rootScope.$broadcast('wishlistItemsChanged');
                     $ctrl.wishlistIsUpdating = false;
@@ -33,13 +34,10 @@
                     $ctrl.wishlistIsUpdating = false;
                     $ctrl.wishlist.items = initialItems;
                 });
-            }
-
+            };
             $ctrl.getWishlist();
         }]
-    })
-
-
+    });
 storefrontApp.controller('recentlyAddedWishlistItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', function ($scope, $window, $uibModalInstance, dialogData) {
     $scope.$on('wishlistItemsChanged', function (event, data) {
         dialogData.updated = true;
@@ -49,9 +47,8 @@ storefrontApp.controller('recentlyAddedWishlistItemDialogController', ['$scope',
 
     $scope.close = function () {
         $uibModalInstance.close();
-    }
-
+    };
     $scope.redirect = function (url) {
         $window.location = url;
-    }
+    };
 }]);
