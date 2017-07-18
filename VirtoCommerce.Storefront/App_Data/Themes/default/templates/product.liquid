@@ -146,6 +146,13 @@
                         <span>{{ 'products.compare_list.add_to_compare' | t }}</span>
                     </button>
                 {% endif %}
+                {% if customer %}
+                <span
+                    ng-click="wishlistContains || addProductToWishlist(selectedVariation)" 
+                    ng-disabled="wishlistContains"
+                    ng-class="{'flicker-animation':addingToWishlist,'remove-from-favorite-icon':wishlistContains,'add-to-favorite-icon':!wishlistContains}">
+                </span>
+                {% endif%}
                 <span id="variantQuantity" class="variant-quantity"></span>
             </form>
             <hr>

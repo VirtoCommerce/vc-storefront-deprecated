@@ -343,6 +343,10 @@
     <Content Include="App_Data\Themes\default\assets\js\account\accountApi.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\%24account.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-password-change.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-wishlist.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\js\account\account-wishlist.js" />
     <Content Include="App_Data\Themes\default\assets\js\cart.js" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\totals.js" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\totals.tpl.liquid" />
@@ -350,7 +354,9 @@
     <Content Include="App_Data\Themes\default\assets\js\common-components\labeled-input.js" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\creditCard.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.js" />
-    <Content Include="App_Data\Themes\default\assets\js\common-components\lineItems.tpl.liquid" />
+    <Content Include="App_Data\Themes\default\assets\js\common-components\lineItems.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-coupon.tpl.liquid">
       <SubType>Designer</SubType>
     </Content>
@@ -405,6 +411,8 @@
     <Content Include="App_Data\Themes\default\assets\shipping-location-pin.svg" />
     <Content Include="App_Data\Themes\default\assets\sofort.svg" />
     <Content Include="App_Data\Themes\default\assets\spr.js" />
+    <Content Include="App_Data\Themes\default\assets\star_favorite_add.png" />
+    <Content Include="App_Data\Themes\default\assets\star_favorite_remove.png" />
     <Content Include="App_Data\Themes\default\assets\status-reduced.svg" />
     <Content Include="App_Data\Themes\default\assets\status-sold-out.svg" />
     <Content Include="App_Data\Themes\default\assets\shopify_common.js" />
@@ -528,6 +536,7 @@
     <Compile Include="Controllers\Api\ApiPricingController.cs" />
     <Compile Include="Controllers\Api\ApiMarketingController.cs" />
     <Compile Include="Controllers\Api\ApiUserActionsController.cs" />
+    <Compile Include="Controllers\Api\ApiWishlistController.cs" />
     <Compile Include="Controllers\BulkOrderController.cs" />
     <Compile Include="Controllers\SitemapController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
@@ -750,6 +759,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Pages\" />
+    <Folder Include="Views\ApiWishlist\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.LiquidThemeEngine\VirtoCommerce.LiquidThemeEngine.csproj">

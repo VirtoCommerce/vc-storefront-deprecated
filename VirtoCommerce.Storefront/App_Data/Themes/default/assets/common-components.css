@@ -1,4 +1,4 @@
-.cols {
+﻿.cols {
     display: -webkit-flex;
     display: -moz-flex;
     display: -ms-flex;
@@ -36,6 +36,24 @@ input,
 select {
     font-family: inherit;
     font-size: inherit;
+}
+
+.add-to-favorite-icon {
+    background-image: url(../assets/star_favorite_add.png);
+    width: 32px;
+    height: 32px;
+    display: block;
+    float: right;
+    position: relative;
+    cursor:pointer;
+}
+.remove-from-favorite-icon {
+    background-image: url(../assets/star_favorite_remove.png);
+    width: 32px;
+    height: 32px;
+    display: block;
+    float: right;
+    position: relative;
 }
 
 .vc-form select {
@@ -302,6 +320,18 @@ select {
     padding: 0;
     width: 100%;
 }
+    .vc-product-table .wishlist-item-remove {
+        font-size: 13px;
+        font-weight: 500;
+        min-width: 10px;
+        padding: 4px 7px;
+        line-height: 1;
+        position: absolute;
+        right: -19px;
+        text-align: center;
+        top: -20px;
+        z-index: 2;
+    }
 
     .vc-product-table td {
         border: none;
@@ -309,6 +339,7 @@ select {
         font-size: 14px;
         padding: 0;
     }
+
 
     .vc-product-table .product-img {
         height: 64px;
@@ -714,5 +745,85 @@ select {
         opacity: 1;
         -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
         filter: alpha(opacity=100);
+    }
+}
+.flicker-animation {
+    -webkit-animation: flicker 2s linear 2;
+    animation: flicker 2s linear 2;
+}
+
+@-webkit-keyframes flicker {
+    0% {
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.25;
+    }
+
+    25% {
+        opacity: 0.5;
+    }
+
+    40% {
+        opacity: 0.75;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    60% {
+        opacity: 0.75;
+    }
+
+    75% {
+        opacity: 0.5;
+    }
+
+    85% {
+        opacity: 0.25;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes flicker {
+    0% {
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.25;
+    }
+
+    25% {
+        opacity: 0.5;
+    }
+
+    40% {
+        opacity: 0.75;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    60% {
+        opacity: 0.75;
+    }
+
+    75% {
+        opacity: 0.5;
+    }
+
+    85% {
+        opacity: 0.25;
+    }
+
+    100% {
+        opacity: 0;
     }
 }

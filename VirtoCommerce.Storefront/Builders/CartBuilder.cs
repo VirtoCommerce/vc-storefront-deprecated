@@ -493,7 +493,7 @@ namespace VirtoCommerce.Storefront.Builders
             var cart = new ShoppingCart(currency, language)
             {
                 CustomerId = customer.Id,
-                Name = "Default",
+                Name = cartName,
                 StoreId = store.Id,
                 Language = language,
                 IsAnonymous = !customer.IsRegisteredUser,
