@@ -4,7 +4,7 @@
     <div class="ajaxifyCart--content" id="ajaxifyCart">
       <h1 class="h2">Add to your list</h1>
       <div ng-if="!productAdded" class="product-list-modal-wrapper">
-        <div ng-repeat="typeOfList in availableLists">
+        <div ng-disabled="dialogData.availibleList" ng-repeat="typeOfList in availableLists">
           <div ng-class="{'activeList': typeOfList.active}" class="cart-row selectedTypeOfList">
             <div  class="grid">
               <div class="grid-item large--seven-twelfths">

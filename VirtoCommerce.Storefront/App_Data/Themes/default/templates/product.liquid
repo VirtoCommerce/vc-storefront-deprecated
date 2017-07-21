@@ -147,12 +147,13 @@
                     </button>
                 {% endif %}
                 {% if customer %}
-                <span id="addToWishlist" interactor-arg="{{ product.id }}""
-                    ng-click="wishlistContains || addProductToWishlist(selectedVariation)" 
-                    ng-disabled="wishlistContains"
-                    ng-class="{'flicker-animation':addingToWishlist,'remove-from-favorite-icon':wishlistContains,'add-to-favorite-icon':!wishlistContains}"
-                   >
-                </span>
+                 <button style="top: 4px; position: relative;id="addToWishlist" class="btn" type="button" 
+                         ng-disabled="buttonValid"
+                         ng-click="addProductToWishlist(selectedVariation,$scope.listContains)">
+                      <span class="fa fa-file-text"></span>
+                      <span>{{ 'products.list.add_to_myList' | t }}</span>
+                      
+                 </button>
                 {% endif%}
                 <span id="variantQuantity" class="variant-quantity"></span>
             </form>

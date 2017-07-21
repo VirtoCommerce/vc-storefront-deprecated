@@ -7,6 +7,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     // display price range
 
     var allVariations = [];
+    var listNames = [{title: "Shopping List"}, {title: "Wish List"}];
 
     $scope.selectedVariation = {};
     $scope.allVariationPropsMap = {};
@@ -32,6 +33,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     }
 
     $scope.addProductToWishlist = function (product) {
+        _.extend(product, $scope.listContains);
         $scope.addingToWishlist = true;
         var dialogData = toDialogDataModel(product, 1);
         dialogService.showDialog(dialogData, 'recentlyAddedWishlistItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
@@ -47,6 +49,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
 
     function toDialogDataModel(product, quantity) {
         return {
+            availibleList: product.containsList ? product.containsList: null,
             imageUrl: product.primaryImage ? product.primaryImage.url : null,
             listPrice: product.price.listPrice,
             id:product.id,
@@ -139,11 +142,20 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     };
 
     function wishlistContains(productId) {
-        wishlistService.contains(productId, listName).then(function (result) {
-            if (result) {
-                $scope.wishlistContains = result.data.contains;
-            }
-        });
+        $scope.listContains = [];
+        $scope.buttonValid = false;
+        angular.forEach(listNames, function (listName) {
+            wishlistService.contains(productId, listName.title).then(function (result) {
+                if (result && (result.data.contains = false)) {
+                        $scope.buttonValid = true;
+                        var x = _.invert(listName);
+                        _.extend($scope.listContains, x);
+                        $scope.listContains[listName.title] = {};
+                        _.extend($scope.listContains[listName.title], { contains: result.data.contains });
+                }
+                   
+            });
+        })
     };
 
     initialize();
