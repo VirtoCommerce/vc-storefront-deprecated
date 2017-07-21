@@ -34,11 +34,8 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
 
     $scope.addProductToWishlist = function (product) {
         $scope.addingToWishlist = true;
-        wishlistService.addLineItem(product.id, listName).then(function (response) {
-            if (response.data) {
-                $scope.wishlistContains = response.data.itemsCount > 0;
-            }
-        })
+        var dialogData = toDialogDataModel(product, 1);
+        dialogService.showDialog(dialogData, 'recentlyAddedWishlistItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
     }
 
     $scope.addProductToActualQuoteRequest = function (product, quantity) {
@@ -53,6 +50,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         return {
             imageUrl: product.primaryImage ? product.primaryImage.url : null,
             listPrice: product.price.listPrice,
+            id:product.id,
 			listPriceWithTax: product.price.listPriceWithTax,
             name: product.name,
             placedPrice: product.price.actualPrice,

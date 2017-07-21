@@ -1,50 +1,105 @@
-﻿<script id="storefront.recently-added-actual-quote-request-item-dialog.tpl" type="text/ng-template">
-    <div class="ajaxify-modal is-visible" id="ajaxifyModal" style="opacity: 1;">
-        <button class="ajaxifyCart--close" title="{{ 'cart.general.close_cart' | t }}" ng-click="close()">{{ 'cart.general.close_cart' | t }}</button>
-        <div class="ajaxifyCart--content" id="ajaxifyCart">
-            <h1 class="h2">Product is added to quote request</h1>
-            <div class="cart-row">
-                <div class="grid">
-                    <div class="grid-item large--seven-twelfths">
-                        <div class="grid">
-                            <div class="grid-item one-third large--one-quarter">
-                                <span class="cart-image">
-                                    <img ng-src="{% raw %}{{ dialogData.imageUrl }}{% endraw %}" ng-if="dialogData.imageUrl" />
-                                    <div class="no-product-image" ng-if="!dialogData.imageUrl">
-                                        <img src="{{ 'no-image.svg' | asset_url }}" />
-                                    </div>
-                                </span>
-                            </div>
-                            <div class="grid-item two-thirds large--three-quarters">
-                                <a ng-bind="dialogData.name"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid-item large--five-twelfths medium--two-thirds push--medium--one-third">
-                        <div class="grid">
-                            <div class="grid-item one-half medium-down--one-third text-right">
-                                <div class="ajaxifyCart--qty" ng-bind="dialogData.quantity"></div>
-                            </div>
-                            <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
-                                <span class="h2" ng-bind="dialogData.placedPrice.formattedAmount"></span>
-                                <span style="text-decoration: line-through;" ng-if="dialogData.listPrice.amount != dialogData.placedPrice.amount" ng-bind="dialogData.listPrice.formattedAmount"></span>
-                            </div>
-                        </div>
-                    </div>
+﻿<script id="storefront.recently-added-list-item-dialog.tpl" type="text/ng-template">
+  <div class="ajaxify-modal is-visible" id="ajaxifyModal" style="opacity: 1;">
+    <button class="ajaxifyCart--close" title="{{ 'cart.general.close_cart' | t }}" ng-click="close()">{{ 'cart.general.close_cart' | t }}</button>
+    <div class="ajaxifyCart--content" id="ajaxifyCart">
+      <h1 class="h2">Add to your list</h1>
+      <div ng-if="!productAdded" class="product-list-modal-wrapper">
+        <div ng-repeat="typeOfList in availableLists">
+          <div ng-class="{'activeList': typeOfList.active}" class="cart-row selectedTypeOfList">
+            <div  class="grid">
+              <div class="grid-item large--seven-twelfths">
+                <div class="grid product-list-modal-titleShift">
+                  <div class="grid-item one-third large--one-quarter">
+                    <span class="cart-image">
+                      <span class="add-to-favorite-icon"></span>
+                    </span>
+                  </div>
+                  <div ng-click="select(typeOfList)" class="list-container">
+                    <span  class="list-text-title" ng-bind="typeOfList.title"></span>
+                    <span class="list-text-descr" ng-bind="typeOfList.description"></span>
+                  </div>
                 </div>
+              </div>
             </div>
-            <div class="cart-row">
-                <div class="grid">
-                    <div class="grid-item text-right">
-                        <button class="btn" ng-class="{ 'btn-secondary': !dialogData.updated }" ng-disabled="!dialogData.updated" ng-click="redirect('{{ 'quoterequest' | absolute_url }}')">
-                            <span ng-if="dialogData.updated">Go to quote request</span>
-                            <span ng-if="!dialogData.updated">Updating quote request...</span>
-                        </button>
-                        <button class="btn" ng-click="close()">Continue shopping</button>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+        <div class="cart-row product-list-modal-borders">
+          <div class="grid">
+            <div class="grid-item text-right">
+              <button class="btn" >
+                <span ng-click="close()">Cancel</span>
+              </button>
+              <button ng-disabled="!dialogData.listName" class="btn" ng-click="addProductToList()">
+                <span>Add to list</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div ng-if="productAdded" class="product-list-modal-wrapper">
+        <div class="cart-row">
+          <div class="grid">
+
+            <div class="grid-item large--seven-twelfths">
+              <div class="grid">
+                <div class="grid-item one-third large--one-quarter">
+                 
+                </div>
+                <div class="product-list-modal-added-toList grid-item two-thirds large--three-quarters">
+                   <a ng-bind="'1 Item added to ' + dialogData.listName"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-item large--seven-twelfths">
+              <div class="grid">
+                <div class="grid-item one-third large--one-quarter">
+                  <span class="cart-image">
+                    <img ng-src="{% raw %}{{ dialogData.imageUrl }}{% endraw %}" ng-if="dialogData.imageUrl" />
+                    <div class="no-product-image" ng-if="!dialogData.imageUrl">
+                      <img src="{{ 'no-image.svg' | asset_url }}" />
+                    </div>
+                  </span>
+                </div>
+                <div class="grid-item two-thirds large--three-quarters">
+                  <a ng-bind="dialogData.name"></a>
+                </div>
+              </div>
+            </div>
+            <div class="grid-item large--five-twelfths medium--two-thirds push--medium--one-third">
+              <div class="grid">
+                <div class="grid-item one-half medium-down--one-third text-right">
+                  <div class="ajaxifyCart--qty" ng-bind="dialogData.quantity"></div>
+                </div>
+                <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
+                  {% if settings.show_prices_with_taxes %}
+                  <span class="h2" ng-bind="dialogData.placedPriceWithTax.formattedAmount"></span>
+                  <span style="text-decoration: line-through;" ng-if="dialogData.listPriceWithTax.amount != dialogData.placedPriceWithTax.amount" ng-bind="dialogData.listPriceWithTax.formattedAmount"></span>
+                  {% else %}
+                  <span class="h2" ng-bind="dialogData.placedPrice.formattedAmount"></span>
+                  <span style="text-decoration: line-through;" ng-if="dialogData.listPrice.amount != dialogData.placedPrice.amount" ng-bind="dialogData.listPrice.formattedAmount"></span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cart-row">
+          <div class="grid">
+            <div class="grid-item text-right">
+              <button ng-click="redirect('{{ 'account#/wishlist' | absolute_url }}')" class="btn" >
+                <span ng-show="productAdded" >View Your List</span>
+              </button>
+              <button ng-click="close()" class="btn" >
+                <span>Continue Shopping</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div id="ajaxifyCart-overlay"></div>
+  </div>
+  <div id="ajaxifyCart-overlay"></div>
 </script>

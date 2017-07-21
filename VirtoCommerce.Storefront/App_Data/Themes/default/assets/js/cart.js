@@ -156,3 +156,48 @@ storefrontApp.controller('recentlyAddedCartItemDialogController', ['$scope', '$w
         $window.location = url;
     }
 }]);
+
+storefrontApp.controller('recentlyAddedWishlistItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData','wishlistService', function ($scope, $window, $uibModalInstance, dialogData, wishlistService) {
+    $scope.addProductToList = function () {
+        wishlistService.addLineItem(dialogData.id, dialogData.listName).then(function (response) {
+            if (response.data) {
+                $scope.productAdded = true
+                $scope.wishlistContains = response.data.itemsCount > 0;
+            }
+        })
+    } 
+
+    $scope.select = function (selectedTab) {
+        angular.forEach($scope.availableLists, function (tab) {
+            if (tab.active && tab !== selectedTab) {
+                tab.active = false;
+            }
+        });
+        selectedTab.active = true;
+        dialogData.listName = selectedTab.title;
+    };
+
+    $scope.availableLists = [
+        {
+            title: 'Shopping List',
+            description: 'Add items you want to shop for'
+        },
+        {
+            title: 'Wish List',
+            description: 'Add items you like'
+        }
+    ];
+
+    $scope.$on('wishlistItemsChanged', function (event, data) {
+        dialogData.updated = true;
+    });
+
+    $scope.dialogData = dialogData;
+
+    $scope.close = function () {
+        $uibModalInstance.close();
+    };
+    $scope.redirect = function (url) {
+        $window.location = url;
+    }
+}]);

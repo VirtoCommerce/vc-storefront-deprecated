@@ -55,6 +55,7 @@
 <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-init="baseUrl='{{ '/' | absolute_url }}'">
     {% include 'notification' %}
     {% include 'recently-added-cart-item-dialog' %}
+    {% include 'recently-added-list-item-dialog' %}
     {% include 'recently-added-actual-quote-request-item-dialog' %}
     {% if settings.store_selector_enable %}
     {% include 'top-header-selector' %}

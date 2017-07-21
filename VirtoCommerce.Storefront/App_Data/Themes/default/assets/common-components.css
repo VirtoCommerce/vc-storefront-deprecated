@@ -54,6 +54,7 @@ select {
     display: block;
     float: right;
     position: relative;
+    cursor: pointer;
 }
 
 .vc-form select {
@@ -826,4 +827,68 @@ select {
     100% {
         opacity: 0;
     }
+}
+
+.selectedTypeOfList:hover {
+    background: #ecf7fc;
+    cursor:pointer;
+}
+.selectedList {
+    background: #d9effa;
+}
+
+.activeList {
+    background: #d9effa;
+    cursor: default !important;
+}
+
+.list-container {
+    display: grid;
+    position: relative;
+}
+.list-text-title {
+    margin-left:30px;
+    font-size: 22px;
+    font-weight: 500;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+.list-text-descr {
+    color: #999;
+    margin-left: -30px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.product-list-container {
+    margin-top: -40px;
+}
+.product-list-name {
+    cursor: pointer;
+    height: 50px;
+    padding-top: 6px;
+    padding-left: 5px;
+    font-size: x-large;
+    margin-right: 10px;
+    line-height: 1.6;
+    font-family: 'HelveticaNeue','Helvetica Neue','Helvetica','Arial','sans-serif';
+    color: #585858;
+    border-bottom: 1px solid #ececec;
+}
+.product-list-modal-wrapper {
+    padding-top: 10px;
+    border-top: 1px solid #ececec;
+}
+    .product-list-modal-wrapper .product-list-modal-borders {
+        margin-top: 10px !important;
+        padding-top: 30px;
+    }
+    .product-list-modal-wrapper .product-list-modal-titleShift {
+        margin-top: 15px;
+    }
+.product-list-modal-added-toList {
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 10px;
 }

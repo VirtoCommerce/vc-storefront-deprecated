@@ -6,14 +6,33 @@
         ],
         controller: ['wishlistService','$rootScope', function (wishlistService, $rootScope) {
             var $ctrl = this;
-            var listName = "whishlist";
+            $ctrl.listNames = [
+                {
+                    title: 'Shopping List'
+                },
+                {
+                    title: 'Wish List'
+                }
+            ];
 
-            $ctrl.getWishlist = function() {
+            $ctrl.getWishlist = function (listName) {
                 wishlistService.getWishlist(listName).then(function (response) {
                     var wishlist = response.data;
                     $ctrl.wishlist = wishlist;
-
+                    $ctrl.wishlistIsUpdating = false;
                 });
+            };
+
+            $ctrl.select = function (selectedTab) {
+                $ctrl.cartIsUpdating = true;
+                angular.forEach($ctrl.listNames, function (tab) {
+                    if (tab.active && tab !== selectedTab) {
+                        tab.active = false;
+                    }
+                });
+                selectedTab.active = true;
+                $ctrl.selectedTab = selectedTab;
+                $ctrl.getWishlist(selectedTab.title);
             };
 
             $ctrl.removeLineItem = function (lineItem) {
@@ -26,29 +45,15 @@
                 $ctrl.recentCartItemModalVisible = false;
                 $ctrl.wishlist.items = _.without($ctrl.wishlist.items, lineItem);
                 $ctrl.wishlistIsUpdating = true;
-                wishlistService.removeLineItem(lineItem.id, listName).then(function (response) {
-                    $ctrl.getWishlist();
+
+                wishlistService.removeLineItem(lineItem.id, $ctrl.selectedTab.title).then(function (response) {
+                    $ctrl.getWishlist($ctrl.selectedTab.title);
                     $rootScope.$broadcast('wishlistItemsChanged');
-                    $ctrl.wishlistIsUpdating = false;
                 }, function (response) {
                     $ctrl.wishlistIsUpdating = false;
                     $ctrl.wishlist.items = initialItems;
                 });
             };
-            $ctrl.getWishlist();
+            
         }]
     });
-storefrontApp.controller('recentlyAddedWishlistItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', function ($scope, $window, $uibModalInstance, dialogData) {
-    $scope.$on('wishlistItemsChanged', function (event, data) {
-        dialogData.updated = true;
-    });
-
-    $scope.dialogData = dialogData;
-
-    $scope.close = function () {
-        $uibModalInstance.close();
-    };
-    $scope.redirect = function (url) {
-        $window.location = url;
-    };
-}]);
