@@ -223,6 +223,11 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public Inventory Inventory { get; set; }
 
         /// <summary>
+        /// Inventory of all fulfillment centers.
+        /// </summary>
+        public ICollection<Inventory> InventoryAll { get; set; }
+
+        /// <summary>
         /// product seo info
         /// </summary>
         public SeoInfo SeoInfo { get; set; }

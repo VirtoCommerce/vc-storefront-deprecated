@@ -339,6 +339,7 @@ namespace VirtoCommerce.Storefront.Services
             foreach (var item in products)
             {
                 item.Inventory = inventories.Where(x => x.ProductId == item.Id).Select(x => x.ToInventory()).FirstOrDefault();
+                item.InventoryAll = inventories.Where(x => x.ProductId == item.Id).Select(x => x.ToInventory()).ToList();
             }
         }
 
