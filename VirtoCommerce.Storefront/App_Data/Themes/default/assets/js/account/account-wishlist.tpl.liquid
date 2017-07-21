@@ -11,25 +11,21 @@
       </ul>
     </div>
     <div class ="grid-item large--four-fifths grid-border--left" ng-cloak="">
-      <span style="margin-top: -32px;
-                   margin-bottom: 40px;
-                   font-size: 25px;
-                   border-bottom: 1px solid #ececec;"
-            class="grid-item"
+      <span class="list-item-header grid-item" ng-if="!$ctrl.selectedTab.title">{{'wishlist.general.list_not_selected' |t}}</span>
+      <span ng-if="$ctrl.selectedTab.title" class="list-item-header grid-item"
             ng-bind="$ctrl.selectedTab.title">
       </span>
-      <span ng-if="!$ctrl.selectedTab">
-        <h2>{{ 'wishlist.general.list_not_selected' | t}}</h2>
-      </span>
+     
+
       <span ng-if="$ctrl.wishlist.itemsCount == 0 || !$ctrl.wishlist && $ctrl.selectedTab" ng-cloak="">
         <h2>{{ 'wishlist.general.empty' | t }}</h2>
         <p>{{ 'wishlist.general.continue_browsing_html' | t }}</p>
       </span>
-      <table ng-show="$ctrl.wishlist.itemsCount > 0" class="vc-product-table">
-        <div class="ajax-informer fade" ng-if="$ctrl.wishlistIsUpdating">
+       <div class="ajax-informer fade" ng-if="$ctrl.wishlistIsUpdating">
           <div class="loader"></div>
           <span>{{ 'wishlist.general.loading_wishlist_message' | t }}</span>
         </div>
+      <table ng-show="$ctrl.wishlist.itemsCount > 0" class="vc-product-table">
         <tr class="product-row" ng-repeat="lineItem in $ctrl.wishlist.items">
           <td class="product-img">
             <div class="img-inner">
@@ -46,7 +42,18 @@
             </div>
           </td>
           <td class="product-descr">
-            <a ng-bind="lineItem.name" href="{% raw %}{{ 'product/' + lineItem.productId }}{% endraw %}"></a>
+            <a class="product-list-advanced" ng-bind="lineItem.name" href="{% raw %}{{ 'product/' + lineItem.productId }}{% endraw %}"></a>
+            <div ng-bind="'Added ' + (lineItem.createdDate | date:'MMMM d, y')" 
+                 class="product-list-createdDate">
+            </div>
+            <button type="button" name="add" id="addToCart" class="btn list-item-addToCartBtn AddShopCart"
+                    ng-disabled="!$ctrl.wishlist.id || !$ctrl.wishlist.isValid" 
+                    ng-click="$ctrl.addToCart(lineItem, 1)" 
+                    interactor-arg="{{ $ctrl.wishlist.id }}">
+              
+                    <span class="icon icon-cart"></span>
+                    <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+            </button>
           </td>
         </tr>
       </table>

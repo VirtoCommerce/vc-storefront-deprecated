@@ -866,10 +866,11 @@ select {
 }
 .product-list-name {
     cursor: pointer;
+    width: 160px;
     height: 50px;
-    padding-top: 6px;
+    padding-top: 8px;
     padding-left: 5px;
-    font-size: x-large;
+    font-size: 22px;
     margin-right: 10px;
     line-height: 1.6;
     font-family: 'HelveticaNeue','Helvetica Neue','Helvetica','Arial','sans-serif';
@@ -891,4 +892,28 @@ select {
     font-weight: bold;
     margin-bottom: 20px;
     margin-top: 10px;
+}
+.product-list-createdDate {
+    font-style: oblique;
+    position: relative;
+    top: 55px;
+    font-weight: bold;
+    left: -78px;
+}
+.product-list-advanced {
+    position: relative;
+    top: 33px;
+    font-size: larger;
+}
+
+.list-item-header {
+    margin-top: -36px;
+    margin-bottom: 20px;
+    font-size: 25px;
+    border-bottom: 1px solid #ececec;
+}
+.list-item-addToCartBtn {
+    left: 50%;
+    position: relative;
+    top: 20px;
 }

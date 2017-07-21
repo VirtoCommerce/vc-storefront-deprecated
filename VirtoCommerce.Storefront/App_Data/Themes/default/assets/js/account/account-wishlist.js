@@ -4,7 +4,7 @@
         $routeConfig: [
             { path: '/', name: 'WishList', component: 'vcAccountWishlist', useAsDefault: true }
         ],
-        controller: ['wishlistService','$rootScope', function (wishlistService, $rootScope) {
+        controller: ['wishlistService', '$rootScope', 'cartService', function (wishlistService, $rootScope, cartService) {
             var $ctrl = this;
             $ctrl.listNames = [
                 {
@@ -54,6 +54,12 @@
                     $ctrl.wishlist.items = initialItems;
                 });
             };
-            
+
+            $ctrl.addToCart = function (lineItem) {
+                $ctrl.wishlistIsUpdating = true;
+                cartService.addLineItem(lineItem.productId, 1).then(function (response) {
+                    $ctrl.wishlistIsUpdating = false;
+                });
+            }
         }]
     });

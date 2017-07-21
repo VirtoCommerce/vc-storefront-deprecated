@@ -7,7 +7,6 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     // display price range
 
     var allVariations = [];
-    var listName = "whishlist";
 
     $scope.selectedVariation = {};
     $scope.allVariationPropsMap = {};
