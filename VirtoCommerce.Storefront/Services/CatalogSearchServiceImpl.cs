@@ -81,7 +81,7 @@ namespace VirtoCommerce.Storefront.Services
 
                     if (responseGroup.HasFlag(ItemResponseGroup.Inventory))
                     {
-                        taskList.Add(LoadProductInventoriesAsync(allProducts));
+                        taskList.Add(LoadProductInventoriesAsync(allProducts, workContext));
                     }
 
                     if (responseGroup.HasFlag(ItemResponseGroup.ItemWithPrices))
@@ -223,7 +223,7 @@ namespace VirtoCommerce.Storefront.Services
 
                 if (criteria.ResponseGroup.HasFlag(ItemResponseGroup.Inventory))
                 {
-                    taskList.Add(LoadProductInventoriesAsync(productsWithVariations));
+                    taskList.Add(LoadProductInventoriesAsync(productsWithVariations, workContext));
                 }
 
                 if (criteria.ResponseGroup.HasFlag(ItemResponseGroup.ItemWithVendor))
@@ -332,14 +332,18 @@ namespace VirtoCommerce.Storefront.Services
             }
         }
 
-        protected virtual async Task LoadProductInventoriesAsync(List<Product> products)
+        protected virtual async Task LoadProductInventoriesAsync(List<Product> products, WorkContext workContext)
         {
             var inventories = await _inventoryModuleApi.InventoryModule.GetProductsInventoriesByPlentyIdsAsync(products.Select(x => x.Id).ToArray());
-
+            var availFullfilmentCentersIds = workContext.CurrentStore.FulfilmentCenters.Select(x => x.Id).ToArray();
             foreach (var item in products)
             {
-                item.Inventory = inventories.Where(x => x.ProductId == item.Id).Select(x => x.ToInventory()).FirstOrDefault();
-                item.InventoryAll = inventories.Where(x => x.ProductId == item.Id).Select(x => x.ToInventory()).ToList();
+                item.InventoryAll = inventories.Where(x => x.ProductId == item.Id).Select(x => x.ToInventory()).Where(x => availFullfilmentCentersIds.Contains(x.FulfillmentCenterId)).ToList();
+                item.Inventory = item.InventoryAll.OrderByDescending(x => Math.Max(0, (x.InStockQuantity ?? 0L) - (x.ReservedQuantity ?? 0L))).FirstOrDefault();
+                if (workContext.CurrentStore.PrimaryFullfilmentCenter != null)
+                {
+                    item.Inventory = item.InventoryAll.FirstOrDefault(x => x.FulfillmentCenterId == workContext.CurrentStore.PrimaryFullfilmentCenter.Id);
+                }
             }
         }
 

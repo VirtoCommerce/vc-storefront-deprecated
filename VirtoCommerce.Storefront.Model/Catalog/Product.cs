@@ -218,7 +218,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public ICollection<ProductPrice> Prices { get; set; }
 
         /// <summary>
-        /// Inventory info
+        /// Inventory for default fulfilment center
         /// </summary>
         public Inventory Inventory { get; set; }
 
