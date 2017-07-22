@@ -205,14 +205,19 @@
     },
     "wishlist": {
         "general": {
-            "title": "Wish list",
+            "title": "Your lists",
             "remove": "Remove",
-            "update": "Update wishlist",
+            "update": "Update list",
             "add": "Add",
-            "updating_wishlist_message": "Updating wishlist...",
-            "loading_wishlist_message": "Loading wishlist...",
-            "empty": "Your wishlist is currently empty.",
-            "continue_browsing_html": "Continue browsing <a href=\"collections\">here</a>."
+            "updating_wishlist_message": "Updating list...",
+            "loading_wishlist_message": "Loading list...",
+            "empty": "Your list is currently empty.",
+            "continue_browsing_html": "Continue browsing <a href=\"collections\">here</a>.",
+            "list_not_selected": "Please select a list",
+            "wish_list_title": "Wish List",
+            "wish_list_description": "Add items you like",
+            "shopping_list_title": "Shopping List",
+            "shopping_list_description": "Add items you want to shop for"
         }
     },
     "quotes": {
@@ -299,7 +304,7 @@
                 "profile": "Profile",
                 "addresses": "Addresses",
                 "change_password": "Change password",
-                "wishlist": "Wish list"
+                "wishlist": "Your List"
             }
         },
         "activate_account": {
@@ -595,7 +600,10 @@
             "show_only_differences": "Show only differences",
             "clear_compare_list": "Clear product compare list",
             "remove": "Remove"
-        }
+        },
+        "list": {
+            "add_to_myList": " Add to list"
+        } 
     },
     "gift_cards": {
         "issued": {

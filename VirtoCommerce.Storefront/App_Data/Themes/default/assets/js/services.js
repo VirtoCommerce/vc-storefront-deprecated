@@ -121,19 +121,19 @@ storefrontApp.service('cartService', ['$http', function ($http) {
     }
 }]);
 
-storefrontApp.service('wishlistService', ['$http', function ($http) {
+storefrontApp.service('listService', ['$http', function ($http) {
     return {
         getWishlist: function (listName) {
-            return $http.get('storefrontapi/wishlist?listName=' + listName + '&t' + new Date().getTime());
+            return $http.get('storefrontapi/lists/' + listName + '?t=' + new Date().getTime());
         },
         contains: function (productId, listName) {
-            return $http.get('storefrontapi/wishlist/contains?productId=' + productId + '&listName=' + listName + '&t=' + new Date().getTime());
+            return $http.get('storefrontapi/lists/' + listName +'/items/'+ productId + '/contains?t=' + new Date().getTime());
         },
         addLineItem: function (productId, listName) {
-            return $http.post('storefrontapi/wishlist/items', { productId: productId, listName: listName });
+            return $http.post('storefrontapi/lists/' + listName + '/items', { productId: productId });
         },
         removeLineItem: function (lineItemId, listName) {
-            return $http.delete('storefrontapi/wishlist/items?lineItemId=' + lineItemId + '&listName=' + listName);
+            return $http.delete('storefrontapi/lists/' + listName + '/items/' + lineItemId);
         }
     }
 }]);

@@ -1,5 +1,6 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
+
 storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'customerService', 'storefrontApp.mainContext',
     function ($scope, $location, $window, customerService, mainContext) {
 

@@ -343,10 +343,11 @@
     <Content Include="App_Data\Themes\default\assets\js\account\accountApi.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\%24account.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-password-change.js" />
-    <Content Include="App_Data\Themes\default\assets\js\account\account-wishlist.tpl.liquid">
+    <Content Include="App_Data\Themes\default\assets\js\account\account-lists.tpl.liquid">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Themes\default\assets\js\account\account-wishlist.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-lists.js" />
+    <Content Include="App_Data\Themes\default\assets\js\list.js" />
     <Content Include="App_Data\Themes\default\assets\js\cart.js" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\totals.js" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\totals.tpl.liquid" />
@@ -430,6 +431,9 @@
     <Content Include="App_Data\Themes\default\assets\warning.svg" />
     <Content Include="App_Data\Themes\default\assets\slide_1.jpg" />
     <Content Include="App_Data\Themes\default\assets\slide_2.jpg" />
+    <Content Include="App_Data\Themes\default\snippets\recently-added-list-item-dialog.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\social\shopify-social.svg" />
     <Content Include="App_Data\Themes\default\social\social-icons.css" />
     <Content Include="App_Data\Themes\default\snippets\notification.liquid" />
@@ -536,7 +540,7 @@
     <Compile Include="Controllers\Api\ApiPricingController.cs" />
     <Compile Include="Controllers\Api\ApiMarketingController.cs" />
     <Compile Include="Controllers\Api\ApiUserActionsController.cs" />
-    <Compile Include="Controllers\Api\ApiWishlistController.cs" />
+    <Compile Include="Controllers\Api\ApiListsController.cs" />
     <Compile Include="Controllers\BulkOrderController.cs" />
     <Compile Include="Controllers\SitemapController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />

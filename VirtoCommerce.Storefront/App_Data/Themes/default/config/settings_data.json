@@ -2,7 +2,7 @@
     "current": "Blue",
     "presets": {
         "Blue": {
-            "suggestions_limit":  10,
+            "suggestions_limit": 10,
             "bulk_order_enabled": true,
             "product_compare_enabled": true,
             "product_compare_list_capacity": 4,
@@ -121,7 +121,11 @@
             ],
             "footer_content_text": "Some footer content text",
             //Collect usage events for product recommendations
-            "collect_user_events_enabled": false
+            "collect_user_events_enabled": false,
+            "available_lists": [
+                { "name": "shopping" },
+                { "name": "wish" }
+            ] 
         },
         "Soft Green": {
             "ajax_cart_enable": true,

@@ -11,12 +11,12 @@ using VirtoCommerce.Storefront.Model.Services;
 namespace VirtoCommerce.Storefront.Controllers.Api
 {
     [HandleJsonError]
-    public class ApiWishlistController : StorefrontControllerBase
+    public class ApiListsController : StorefrontControllerBase
     {
         private readonly ICartBuilder _wishlistBuilder;
         private readonly ICatalogSearchService _catalogSearchService;
 
-        public ApiWishlistController(WorkContext workContext, ICatalogSearchService catalogSearchService, ICartBuilder cartBuilder,
+        public ApiListsController(WorkContext workContext, ICatalogSearchService catalogSearchService, ICartBuilder cartBuilder,
                                      IStorefrontUrlBuilder urlBuilder)
             : base(workContext, urlBuilder)
         {
@@ -24,19 +24,18 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             _catalogSearchService = catalogSearchService;
         }
 
-        // GET: ApiWishlist
-        // GET: storefrontapi/wishlist
+        // GET: storefrontapi/lists
         [HttpGet]
-        public async Task<ActionResult> GetWishlist(string listName)
+        public async Task<ActionResult> GetListByName(string listName)
         {
             var wishlistBuilder = await LoadOrCreateWishlistAsync(listName);
             await wishlistBuilder.ValidateAsync();
             return Json(wishlistBuilder.Cart, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: storefrontapi/whishlst/contains
+        // GET: storefrontapi/lists/contains
         [HttpGet]
-        public async Task<ActionResult> Contains(string productId, string listName)
+        public async Task<ActionResult> IsItemContainsInList(string productId, string listName)
         {
             var wishlistBuilder = await LoadOrCreateWishlistAsync(listName);
             await wishlistBuilder.ValidateAsync();
@@ -44,9 +43,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             return Json(new { Contains = hasProduct }, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: storefrontapi/wishlist/items?id=...
+        // POST: storefrontapi/lists/items?id=...
         [HttpPost]
-        public async Task<ActionResult> AddItemToWishlist(string productId, string listName)
+        public async Task<ActionResult> AddItemToList(string productId, string listName)
         {
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext, listName)).LockAsync())
@@ -63,9 +62,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             }
         }
 
-        // DELETE: storefrontapi/wishlist/items?id=...
+        // DELETE: storefrontapi/lists/items?id=...
         [HttpDelete]
-        public async Task<ActionResult> RemoveWishlistItem(string lineItemId, string listName)
+        public async Task<ActionResult> RemoveItemFromList(string lineItemId, string listName)
         {
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext, listName)).LockAsync())

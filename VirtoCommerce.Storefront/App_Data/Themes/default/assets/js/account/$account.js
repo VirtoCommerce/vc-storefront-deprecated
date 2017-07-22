@@ -32,7 +32,7 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
          { path: '/profile', name: 'Profile', component: 'vcAccountProfileUpdate', useAsDefault: true },
          { path: '/addresses', name: 'Addresses', component: 'vcAccountAddresses' },
          { path: '/changePassword', name: 'PasswordChange', component: 'vcAccountPasswordChange' },
-         { path: '/wishlist', name: 'WishList', component: 'vcAccountWishlist' }
+         { path: '/wishlist', name: 'WishList', component: 'vcAccountLists' }
     ],
     controller: ['storefront.accountApi', 'storefrontApp.mainContext', 'loadingIndicatorService', function (accountApi, mainContext, loader) {
         var $ctrl = this;

@@ -24,7 +24,7 @@
             <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountOrders'}">
                 <a ng-link="['Orders']">{{ 'customer.account.menu_label.orders' | t }}</a>
             </li>
-            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountWishlist'}">
+            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountLists'}">
                 <a ng-link="['WishList']">{{ 'customer.account.menu_label.wishlist' | t }}</a>
             </li>
             {% if shop.subscription_enabled %}

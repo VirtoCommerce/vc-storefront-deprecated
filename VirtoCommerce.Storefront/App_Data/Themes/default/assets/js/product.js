@@ -1,14 +1,13 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'wishlistService', 'quoteRequestService', 'customerService',
-    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, wishlistService, quoteRequestService, customerService) {
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService',
+    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService, customerService) {
     //TODO: prevent add to cart not selected variation
     // display validator please select property
     // display price range
 
     var allVariations = [];
-    var listName = "whishlist";
-
+  
     $scope.selectedVariation = {};
     $scope.allVariationPropsMap = {};
     $scope.productPrice = null;
@@ -33,12 +32,8 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     }
 
     $scope.addProductToWishlist = function (product) {
-        $scope.addingToWishlist = true;
-        wishlistService.addLineItem(product.id, listName).then(function (response) {
-            if (response.data) {
-                $scope.wishlistContains = response.data.itemsCount > 0;
-            }
-        })
+        var dialogData = toDialogDataModel(product, 1);
+        dialogService.showDialog(dialogData, 'recentlyAddedListItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
     }
 
     $scope.addProductToActualQuoteRequest = function (product, quantity) {
@@ -53,6 +48,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         return {
             imageUrl: product.primaryImage ? product.primaryImage.url : null,
             listPrice: product.price.listPrice,
+            id:product.id,
 			listPriceWithTax: product.price.listPriceWithTax,
             name: product.name,
             placedPrice: product.price.actualPrice,
@@ -79,8 +75,6 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
                 $scope.checkProperty(propertyMap[x][0])
             });
 
-            wishlistContains(product.id);
-            
             $scope.selectedVariation = product;
         });
     };
@@ -139,15 +133,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
 
             //try to find the best variation match for selected properties
             $scope.selectedVariation = findVariationBySelectedProps(allVariations, getSelectedPropsMap($scope.allVariationPropsMap));
-    };
-
-    function wishlistContains(productId) {
-        wishlistService.contains(productId, listName).then(function (result) {
-            if (result) {
-                $scope.wishlistContains = result.data.contains;
-            }
-        });
-    };
+    };  
 
     initialize();
 }]);
