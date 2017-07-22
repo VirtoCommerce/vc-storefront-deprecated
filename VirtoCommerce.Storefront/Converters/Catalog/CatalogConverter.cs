@@ -238,6 +238,16 @@ namespace VirtoCommerce.Storefront.Converters
 
                 result.Terms.Add(string.Concat("vendor:", criteria.VendorId));
             }
+            // Add user groups to terms
+            if (!workContext.CurrentCustomer.UserGroups.IsNullOrEmpty())
+            {
+                if (result.Terms == null)
+                {
+                    result.Terms = new List<string>();
+                }
+
+                result.Terms.AddRange(workContext.CurrentCustomer.UserGroups.Select(x=> string.Concat("user_groups:", x)));
+            }
 
             return result;
         }
@@ -267,6 +277,7 @@ namespace VirtoCommerce.Storefront.Converters
                 Take = criteria.PageSize,
                 ResponseGroup = ((int)criteria.ResponseGroup).ToString(),
             };
+
 
             return result;
         }

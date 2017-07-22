@@ -336,6 +336,10 @@
     <Content Include="App_Data\Themes\default\assets\jcb.svg" />
     <Content Include="App_Data\Themes\default\assets\jquery.zoom.min.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-addresses.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-lists.js" />
+    <Content Include="App_Data\Themes\default\assets\js\account\account-lists.tpl.liquid">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Themes\default\assets\js\account\account-subscriptions.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-quotes.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-orders.js" />
@@ -343,11 +347,6 @@
     <Content Include="App_Data\Themes\default\assets\js\account\accountApi.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\%24account.js" />
     <Content Include="App_Data\Themes\default\assets\js\account\account-password-change.js" />
-    <Content Include="App_Data\Themes\default\assets\js\account\account-lists.tpl.liquid">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_Data\Themes\default\assets\js\account\account-lists.js" />
-    <Content Include="App_Data\Themes\default\assets\js\list.js" />
     <Content Include="App_Data\Themes\default\assets\js\cart.js" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\totals.js" />
     <Content Include="App_Data\Themes\default\assets\js\common-components\totals.tpl.liquid" />
@@ -378,6 +377,7 @@
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout-email.js" />
     <Content Include="App_Data\Themes\default\assets\js\checkout\checkout.js" />
     <Content Include="App_Data\Themes\default\assets\js\filtres.js" />
+    <Content Include="App_Data\Themes\default\assets\js\list.js" />
     <Content Include="App_Data\Themes\default\assets\js\recommendations.js" />
     <Content Include="App_Data\Themes\default\assets\js\quote-request.js" />
     <Content Include="App_Data\Themes\default\assets\js\product-compare.js" />
