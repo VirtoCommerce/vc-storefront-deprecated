@@ -18,7 +18,7 @@
         <h2>{{ 'wishlist.general.empty' | t }}</h2>
         <p>{{ 'wishlist.general.continue_browsing_html' | t }}</p>
       </span>
-      <div class="note" ng-if="$ctrl.productAdded">Product is added to cart</div>
+      <div class="ajax-informer text-center" ng-class="{ 'fade': $ctrl.productAdded }">{{ 'wishlist.general.added_to_cart' | t}}</div>
       <table ng-show="$ctrl.selectedList.items.length > 0" class="vc-product-table">
         <tr class="product-row" ng-repeat="lineItem in $ctrl.selectedList.items">
           <td class="product-img">
