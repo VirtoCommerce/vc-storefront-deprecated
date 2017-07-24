@@ -976,3 +976,8 @@ select {
         display:none;
     }
 }
+.list-item-oldPrice {
+    color: #969696;
+    font-size: 12px;
+    text-decoration: line-through;
+}

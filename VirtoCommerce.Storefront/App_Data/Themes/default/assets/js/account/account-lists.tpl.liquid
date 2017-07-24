@@ -43,7 +43,7 @@
           </td>
           <td class="list-item-price">
             <div class="span cost ng-binding" ng-bind="lineItem.placedPrice.formattedAmount"></div>
-            <div class="cost old ng-binding ng-scope" ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></div>
+            <div class="cost list-item-oldPrice ng-binding ng-scope" ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></div>
           </td>
           <td class="list-item-price">
             <button type="button" name="add" id="addToCart" class="btn list-item-addToCartBtn AddShopCart"
