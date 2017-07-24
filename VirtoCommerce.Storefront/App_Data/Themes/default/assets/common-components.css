@@ -916,13 +916,13 @@ select {
 .product-list-createdDate {
     font-style: oblique;
     position: relative;
-    top: 55px;
+    top: 30px;
     font-weight: bold;
     left: -78px;
 }
 .product-list-advanced {
     position: relative;
-    top: 33px;
+    top: 10px;
     font-size: larger;
 }
 
@@ -933,10 +933,16 @@ select {
     border-bottom: 1px solid #ececec;
 }
 .list-item-addToCartBtn {
-    left: 50%;
-    position: relative;
-    top: 20px;
+    padding: 7px !important;
 }
+.product-row td.list-item-price {
+    font-size: 14px;
+    padding: 0px 0 15px 15px;
+    text-align: right;
+    position: relative;
+    bottom: 5px;
+}
+
 .btn-clearfix {
     margin:3px 1px;
 }

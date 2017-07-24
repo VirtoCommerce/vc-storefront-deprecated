@@ -20,7 +20,7 @@
       </span>
       <div class="note" ng-if="$ctrl.productAdded">Product is added to cart</div>
       <table ng-show="$ctrl.selectedList.items.length > 0" class="vc-product-table">
-        <tr class="product-row" ng-repeat="lineItem in $ctrl.selectedList.items">
+        <tr  style="height:120px;" class="product-row" ng-repeat="lineItem in $ctrl.selectedList.items">
           <td class="product-img">
             <div class="img-inner">
               <div class="wishlist-item-remove">
@@ -35,22 +35,22 @@
               </div>
             </div>
           </td>
-          <td class="product-descr">
+          <td  class="product-descr">
             <a class="product-list-advanced" ng-bind="lineItem.name" href="{% raw %}{{ 'product/' + lineItem.productId }}{% endraw %}"></a>
-            <div ng-bind="'Added ' + (lineItem.createdDate | date:'MMMM d, y')" 
+            <div ng-bind="'Added ' + (lineItem.createdDate | date:'MMMM d, y')"
                  class="product-list-createdDate">
             </div>
-            <button type="button" name="add" id="addToCart" class="btn list-item-addToCartBtn AddShopCart"
-                    ng-click="$ctrl.addToCart(lineItem)">              
-                    <span class="icon icon-cart"></span>
-                    <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
-            </button>
           </td>
-          <td class="product-price">
+          <td class="list-item-price">
             <div class="span cost ng-binding" ng-bind="lineItem.placedPrice.formattedAmount"></div>
-            <!-- ngIf: lineItem.listPrice.amount > lineItem.placedPrice.amount -->
             <div class="cost old ng-binding ng-scope" ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></div>
-            <!-- end ngIf: lineItem.listPrice.amount > lineItem.placedPrice.amount -->
+          </td>
+          <td class="list-item-price">
+            <button type="button" name="add" id="addToCart" class="btn list-item-addToCartBtn AddShopCart"
+              ng-click="$ctrl.addToCart(lineItem)">
+              <span class="icon icon-cart"></span>
+              <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+            </button>
           </td>
         </tr>
       </table>
