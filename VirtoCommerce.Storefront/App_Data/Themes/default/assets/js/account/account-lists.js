@@ -4,7 +4,7 @@
         $routeConfig: [
             { path: '/', name: 'WishList', component: 'vcAccountLists', useAsDefault: true }
         ],
-        controller: ['listService', '$rootScope', 'cartService', '$translate', 'loadingIndicatorService', '$interval', function (listService, $rootScope, cartService, $translate, loader, $interval) {
+        controller: ['listService', '$rootScope', 'cartService', '$translate', 'loadingIndicatorService', '$timeout', function (listService, $rootScope, cartService, $translate, loader, $timeout) {
             var $ctrl = this;
             $ctrl.loader = loader;
             $ctrl.selectedList = {};
@@ -49,7 +49,7 @@
                 loader.wrapLoading(function () {
                     return cartService.addLineItem(lineItem.productId, 1).then(function (response) {
                         $ctrl.productAdded = true;
-                        $interval(function () {
+                        $timeout(function () {
                             $ctrl.productAdded = false;
                         }, 2000);
                     });

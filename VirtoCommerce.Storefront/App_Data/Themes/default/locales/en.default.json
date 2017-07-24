@@ -217,7 +217,15 @@
             "wish_list_title": "Wish List",
             "wish_list_description": "Add items you like",
             "shopping_list_title": "Shopping List",
-            "shopping_list_description": "Add items you want to shop for"
+            "shopping_list_description": "Add items you want to shop for",
+            "continue_shopping": "Continue shopping",
+            "view_your_list": "View Your List",
+            "list_contains": "Item already in the list",
+            "cancel": "Cancel",
+            "add_to_list": "Add to list",
+            "adding_to_list": "Adding to list...",
+            "added_to_list": "1 Item added to",
+            "added_to_cart": "Product is added to cart"
         }
     },
     "quotes": {
