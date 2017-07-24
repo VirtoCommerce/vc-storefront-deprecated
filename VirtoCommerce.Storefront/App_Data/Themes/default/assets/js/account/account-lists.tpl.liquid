@@ -2,8 +2,8 @@
   <h4>Your Lists</h4>
   <p ng-if="!$ctrl.lists">No lists defined</p>
   <div ng-if="$ctrl.lists" class="grid grid-border">
-    <div class="sidebar grid-item large--one-fifth collection-filters" id="collectionFilters">
-      <ul class="product-list-container list __items">
+    <div class="grid-item large--one-fifth">
+      <ul class="sidebar product-list-container list __items">
         <li ng-repeat="list in $ctrl.lists"
             ng-class="{'activeList': $ctrl.selectedList.name == list.name}"
             ng-click="$ctrl.selectList(list)"
@@ -13,7 +13,7 @@
       </ul>
     </div>
     <div class ="grid-item large--four-fifths grid-border--left" ng-cloak="">
-      <span class="list-item-header grid-item" ng-bind="$ctrl.selectedList.title"></span>
+      <span class="hide-if-lowWidth list-item-header grid-item" ng-bind="$ctrl.selectedList.title"></span>
       <span ng-if="$ctrl.selectedList.items.length == 0" ng-cloak="">
         <h2>{{ 'wishlist.general.empty' | t }}</h2>
         <p>{{ 'wishlist.general.continue_browsing_html' | t }}</p>
@@ -45,6 +45,12 @@
                     <span class="icon icon-cart"></span>
                     <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
             </button>
+          </td>
+          <td class="product-price">
+            <div class="span cost ng-binding" ng-bind="lineItem.placedPrice.formattedAmount"></div>
+            <!-- ngIf: lineItem.listPrice.amount > lineItem.placedPrice.amount -->
+            <div class="cost old ng-binding ng-scope" ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></div>
+            <!-- end ngIf: lineItem.listPrice.amount > lineItem.placedPrice.amount -->
           </td>
         </tr>
       </table>
