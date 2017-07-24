@@ -46,6 +46,12 @@
                     <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
             </button>
           </td>
+          <td class="product-price">
+            <div class="span cost ng-binding" ng-bind="lineItem.placedPrice.formattedAmount"></div>
+            <!-- ngIf: lineItem.listPrice.amount > lineItem.placedPrice.amount -->
+            <div class="cost old ng-binding ng-scope" ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></div>
+            <!-- end ngIf: lineItem.listPrice.amount > lineItem.placedPrice.amount -->
+          </td>
         </tr>
       </table>
     </div>
