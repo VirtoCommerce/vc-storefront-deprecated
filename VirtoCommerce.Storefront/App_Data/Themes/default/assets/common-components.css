@@ -831,10 +831,13 @@ select {
 
 .selectedTypeOfList:hover {
     background: #ecf7fc;
-    cursor:pointer;
+    cursor: pointer;
 }
 .selectedList {
     background: #d9effa;
+    height: 90px;
+    padding-top: 15px;
+    position: relative;
 }
 
 .activeList {
@@ -855,12 +858,28 @@ select {
     text-overflow: ellipsis;
     vertical-align: middle;
 }
+
+.list-modal-row-fix {
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
 .list-text-descr {
     color: #999;
     margin-left: -30px;
     font-size: 14px;
     margin-bottom: 10px;
 }
+.list-text-descr-inList {
+    margin-left: 450px;
+    width: 180px;
+    position: relative;
+    top: -30px;
+    color: black;
+    font-weight: bold;
+    opacity: 1;
+}
+
 .product-list-container {
     margin-top: -40px;
 }
@@ -878,15 +897,16 @@ select {
     border-bottom: 1px solid #ececec;
 }
 .product-list-modal-wrapper {
-    padding-top: 10px;
-    border-top: 1px solid #ececec;
+    position: relative;
+    margin-top: -20px;
 }
     .product-list-modal-wrapper .product-list-modal-borders {
-        margin-top: 10px !important;
-        padding-top: 30px;
+        margin-top: 0px !important;
     }
     .product-list-modal-wrapper .product-list-modal-titleShift {
-        margin-top: 15px;
+        height: 90px;
+        padding-top: 15px;
+        position: relative;
     }
 .product-list-modal-added-toList {
     font-weight: bold;
@@ -916,4 +936,23 @@ select {
     left: 50%;
     position: relative;
     top: 20px;
+}
+.btn-clearfix {
+    margin:3px 1px;
+}
+.list-icon-clearfix {
+    width: 30px;
+    margin-left: -6px;
+}
+.disabled {
+    opacity: .6;
+    pointer-events: none;
+}
+.btn-secondary-clearfix {
+    margin: 0 !important;
+}
+
+.list-btn-alignment {
+    width: 152.2px;
+    position: relative;
 }
