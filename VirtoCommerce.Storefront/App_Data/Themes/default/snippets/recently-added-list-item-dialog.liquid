@@ -6,7 +6,7 @@
                 <h1 style="margin-top:35px;" ng-bind="selectedList.title"></h1>
                 <h1 ng-if="!selectedList.title">Please select list</h1>
                 <div class="cart-row list-modal-row-fix" ng-repeat="list in lists">
-                    <div ng-class="{'activeList': list.name == selectedList.name, 'disabled' : list.contains }" class=" selectedTypeOfList">
+                    <div ng-class="{'activeList': list.name == selectedList.name, 'disabled' : list.contains }" class="selectedTypeOfList" ng-click="selectList(list)">
                         <div  class="grid">
                             <div class="grid-item large--seven-twelfths">
                                 <div class="grid product-list-modal-titleShift">
@@ -15,7 +15,7 @@
                                             <span class="add-to-favorite-icon"></span>
                                         </span>
                                     </div>
-                                    <div ng-click="selectList(list)" class="list-container">
+                                    <div class="list-container">
                                         <span  class="list-text-title" ng-bind="list.title"></span>
                                         <span class="list-text-descr" ng-bind="list.description"></span>
                                         <span ng-if="list.contains" class="list-text-descr-inList">
