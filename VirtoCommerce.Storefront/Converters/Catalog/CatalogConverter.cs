@@ -245,8 +245,8 @@ namespace VirtoCommerce.Storefront.Converters
                 {
                     result.Terms = new List<string>();
                 }
-
-                result.Terms.AddRange(workContext.CurrentCustomer.UserGroups.Select(x=> string.Concat("user_groups:", x)));
+                //search products with user_groups defined in customer
+                result.Terms.Add("user_groups:" + string.Join(",", workContext.CurrentCustomer.UserGroups));
             }
 
             return result;
