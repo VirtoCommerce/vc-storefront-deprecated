@@ -34,7 +34,7 @@
                             <button class="btn" >
                                 <span ng-click="close()">{{ 'wishlist.general.cancel' | t }}</span>
                             </button>
-                            <button ng-class="{ 'btn-secondary','btn-secondary-clearfix': inProgress }" ng-disabled="selectedList.contains || inProgress || !selectedList.name" class="btn " ng-click="addProductToList()">
+                            <button ng-class="{ 'btn-secondary btn-secondary-clearfix' : inProgress }" ng-disabled="selectedList.contains || inProgress || !selectedList.name" class="btn " ng-click="addProductToList()">
                                 <span ng-if="!inProgress">{{ 'wishlist.general.add_to_list' | t }}</span>
                                 <span ng-if="inProgress">{{ 'wishlist.general.adding_to_list' | t }}</span>
                             </button>
