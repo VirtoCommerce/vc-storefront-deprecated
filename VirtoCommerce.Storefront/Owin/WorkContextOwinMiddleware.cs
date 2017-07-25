@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -379,6 +380,10 @@ namespace VirtoCommerce.Storefront.Owin
             if (customer.IsRegisteredUser && !customer.AllowedStores.IsNullOrEmpty()
                 && !customer.AllowedStores.Any(x => string.Equals(x, currentStore.Id, StringComparison.InvariantCultureIgnoreCase)))
             {
+                if (IsAssetRequest(context.Request))
+                {
+                    throw new HttpException((int)HttpStatusCode.Forbidden, "User cannot login to this store.");
+                }
                 context.Authentication.SignOut();
                 context.Authentication.User = new GenericPrincipal(new GenericIdentity(string.Empty), null);
             }
