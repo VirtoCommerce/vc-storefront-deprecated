@@ -123,7 +123,7 @@ namespace VirtoCommerce.Storefront.Services
             var workContext = _workContextFactory();
             var criteria = new customerDto.MembersSearchCriteria
             {
-                Keyword = keyword,
+                SearchPhrase = keyword,
                 DeepSearch = true,
                 Skip = (pageNumber - 1) * pageSize,
                 Take = pageSize
@@ -227,10 +227,10 @@ namespace VirtoCommerce.Storefront.Services
         protected virtual IMutablePagedList<Subscription> GetCustomerSubscriptions(CustomerInfo customer)
         {
             var workContext = _workContextFactory();
-            var  subscriptionSearchcriteria = new subscriptionDto.SubscriptionSearchCriteria
+            var subscriptionSearchcriteria = new subscriptionDto.SubscriptionSearchCriteria
             {
                 CustomerId = customer.Id,
-                ResponseGroup = SubscriptionResponseGroup.Full.ToString()               
+                ResponseGroup = SubscriptionResponseGroup.Full.ToString()
             };
 
             Func<int, int, IEnumerable<SortInfo>, IPagedList<Subscription>> subscriptionGetter = (pageNumber, pageSize, sortInfos) =>
@@ -244,7 +244,7 @@ namespace VirtoCommerce.Storefront.Services
                     return new StaticPagedList<Subscription>(searchResult.Subscriptions.Select(x => x.ToSubscription(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,
                                                              searchResult.TotalCount.Value);
                 });
-               return retVal;
+                return retVal;
             };
             return new MutablePagedList<Subscription>(subscriptionGetter, 1, SubscriptionSearchCriteria.DefaultPageSize);
         }
