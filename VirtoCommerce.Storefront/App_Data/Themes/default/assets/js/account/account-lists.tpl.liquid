@@ -1,0 +1,59 @@
+﻿<div id="account-lists.tpl.liquid" type="text/ng-template" ng-init='$ctrl.initialize({{ settings.available_lists | json }})'>
+  <h4>Your Lists</h4>
+  <p ng-if="!$ctrl.lists">No lists defined</p>
+  <div ng-if="$ctrl.lists" class="grid grid-border">
+    <div class="grid-item large--one-fifth">
+      <ul class="sidebar product-list-container list __items">
+        <li ng-repeat="list in $ctrl.lists"
+            ng-class="{'activeList': $ctrl.selectedList.name == list.name}"
+            ng-click="$ctrl.selectList(list)"
+            style="cursor:pointer" class="product-list-name selectedTypeOfList list-item">
+          <a ng-bind="list.title"></a>
+        </li>
+      </ul>
+    </div>
+    <div class ="grid-item large--four-fifths grid-border--left" ng-cloak="">
+      <span class="hide-if-lowWidth list-item-header grid-item" ng-bind="$ctrl.selectedList.title"></span>
+      <span ng-if="$ctrl.selectedList.items.length == 0" ng-cloak="">
+        <h2>{{ 'wishlist.general.empty' | t }}</h2>
+        <p>{{ 'wishlist.general.continue_browsing_html' | t }}</p>
+      </span>
+      <div class="ajax-informer text-center" ng-class="{ 'fade': $ctrl.productAdded }">{{ 'wishlist.general.added_to_cart' | t}}</div>
+      <table ng-show="$ctrl.selectedList.items.length > 0" class="vc-product-table">
+        <tr  style="height:120px;" class="product-row" ng-repeat="lineItem in $ctrl.selectedList.items">
+          <td class="product-img">
+            <div class="img-inner">
+              <div class="wishlist-item-remove">
+                <a class="icon-fallback-text btn-secondary remove ajaxifyCart--remove" ng-click="$ctrl.removeLineItem(lineItem, $ctrl.selectedList)">
+                  <span class="icon icon-x" aria-hidden="true"></span>
+                  <span class="fallback-text">{{ 'products.compare_list.remove' | t }}</span>
+                </a>
+              </div>
+              <img alt="{% raw %}{{ lineItem.name }}{% endraw %}" ng-src="{% raw %}{{ lineItem.imageUrl }}{% endraw %}" ng-if="lineItem.imageUrl" />
+              <div class="no-product-image" ng-if="!lineItem.imageUrl">
+                <img src="{{ 'no-image.svg' | asset_url }}" />
+              </div>
+            </div>
+          </td>
+          <td  class="product-descr">
+            <a class="product-list-advanced" ng-bind="lineItem.name" href="{% raw %}{{ 'product/' + lineItem.productId }}{% endraw %}"></a>
+            <div ng-bind="'Added ' + (lineItem.createdDate | date:'MMMM d, y')"
+                 class="product-list-createdDate">
+            </div>
+          </td>
+          <td class="list-item-price">
+            <div class="span cost ng-binding" ng-bind="lineItem.placedPrice.formattedAmount"></div>
+            <div class="cost list-item-oldPrice ng-binding ng-scope" ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></div>
+          </td>
+          <td class="list-item-price">
+            <button type="button" name="add" id="addToCart" class="btn list-item-addToCartBtn AddShopCart"
+              ng-click="$ctrl.addToCart(lineItem)">
+              <span class="icon icon-cart"></span>
+              <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

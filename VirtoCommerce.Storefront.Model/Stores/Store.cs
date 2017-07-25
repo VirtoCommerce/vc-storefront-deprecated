@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Inventory;
 
 namespace VirtoCommerce.Storefront.Model.Stores
 {
@@ -17,6 +18,7 @@ namespace VirtoCommerce.Storefront.Model.Stores
             SeoInfos = new List<SeoInfo>();
             DynamicProperties = new List<DynamicProperty>();
             Settings = new List<SettingEntry>();
+            FulfilmentCenters = new List<FulfillmentCenter>();
         }
 
         public string Name { get; set; }
@@ -99,6 +101,16 @@ namespace VirtoCommerce.Storefront.Model.Stores
         /// All linked stores (their accounts can be reused here)
         /// </summary>
         public ICollection<string> TrustedGroups { get; set; }
+
+        /// <summary>
+        /// Primary  fullfilment center
+        /// </summary>
+        public FulfillmentCenter PrimaryFullfilmentCenter { get; set; }
+
+        /// <summary>
+        /// All fullfilment centeres
+        /// </summary>
+        public ICollection<FulfillmentCenter> FulfilmentCenters { get; set; }
 
         public bool QuotesEnabled
         {

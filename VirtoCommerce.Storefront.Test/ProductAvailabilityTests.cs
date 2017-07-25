@@ -1,4 +1,6 @@
-﻿using VirtoCommerce.Storefront.Model.Catalog;
+﻿using System;
+using System.Collections.Generic;
+using VirtoCommerce.Storefront.Model.Catalog;
 using Xunit;
 
 namespace VirtoCommerce.Storefront.Test
@@ -22,7 +24,7 @@ namespace VirtoCommerce.Storefront.Test
         public void TestIsAvailable(bool isActive, bool isBuyable, bool trackInventory, bool? allowPreorder, bool? allowBackorder, long? inStockQuantity, long? reservedQuantity, long requestedQuantity, bool expectedResult)
         {
             var service = GetProductAvailabilityService();
-            var product = CreateProduct(isActive, isBuyable, trackInventory, allowPreorder, allowBackorder, inStockQuantity, reservedQuantity);
+            var product = CreateProduct(isActive, isBuyable, trackInventory, allowPreorder, allowBackorder, new List<Tuple<long?, long?>> { new Tuple<long?, long?>(inStockQuantity, reservedQuantity) });
 
             var isAvailable = service.IsAvailable(product, requestedQuantity).Result;
             Assert.Equal(expectedResult, isAvailable);
@@ -44,14 +46,26 @@ namespace VirtoCommerce.Storefront.Test
         public void TestAvailableQuantity(bool isActive, bool isBuyable, bool trackInventory, bool? allowPreorder, bool? allowBackorder, long? inStockQuantity, long? reservedQuantity, long? expectedResult)
         {
             var service = GetProductAvailabilityService();
-            var product = CreateProduct(isActive, isBuyable, trackInventory, allowPreorder, allowBackorder, inStockQuantity, reservedQuantity);
+            var product = CreateProduct(isActive, isBuyable, trackInventory, allowPreorder, allowBackorder, new List<Tuple<long?, long?>> { new Tuple<long?, long?>(inStockQuantity, reservedQuantity) });
 
             var availableQuantity = service.GetAvailableQuantity(product).Result;
             Assert.Equal(expectedResult, availableQuantity);
         }
 
+        [Theory]
+        [InlineData(true, true, true, false, false, 0L, 0L, 0L, 0L, 0L)]
+        [InlineData(true, true, true, false, false, 1L, 0L, 1L, 0L, 2L)]
+        [InlineData(true, true, true, false, false, 1L, 0L, 0L, 0L, 1L)]
+        public void TestAvailableQuantityWithMultipleFulfillmentCenters(bool isActive, bool isBuyable, bool trackInventory, bool? allowPreorder, bool? allowBackorder, long? inStockQuantity1, long? reservedQuantity1, long? inStockQuantity2, long? reservedQuantity2, long? expectedResult)
+        {
+            var service = GetProductAvailabilityService();
+            var product = CreateProduct(isActive, isBuyable, trackInventory, allowPreorder, allowBackorder, new List<Tuple<long?, long?>>{new Tuple<long?, long?>(inStockQuantity1, reservedQuantity1), new Tuple<long?, long?>(inStockQuantity2, reservedQuantity2) });
+            var availableQuantity = service.GetAvailableQuantity(product).Result;
+            Assert.Equal(expectedResult, availableQuantity);
+        }
 
-        private static Product CreateProduct(bool isActive, bool isBuyable, bool trackInventory, bool? allowPreorder, bool? allowBackorder, long? inStockQuantity, long? reservedQuantity)
+
+        private static Product CreateProduct(bool isActive, bool isBuyable, bool trackInventory, bool? allowPreorder, bool? allowBackorder, List<Tuple<long?, long?>> inventoriesList)
         {
             var result = new Product
             {
@@ -59,17 +73,29 @@ namespace VirtoCommerce.Storefront.Test
                 IsBuyable = isBuyable,
                 TrackInventory = trackInventory,
             };
-
-            if (allowPreorder != null || allowBackorder != null || inStockQuantity != null || reservedQuantity != null)
-            {
-                result.Inventory = new Inventory
+            
+                foreach (var tuple in inventoriesList)
                 {
-                    AllowPreorder = allowPreorder,
-                    AllowBackorder = allowBackorder,
-                    InStockQuantity = inStockQuantity,
-                    ReservedQuantity = reservedQuantity,
-                };
-            }
+                    if (allowPreorder != null || allowBackorder != null ||tuple.Item1 != null || tuple.Item2 != null)
+                    {
+                        if (result.InventoryAll == null)
+                        {
+                            result.InventoryAll = new List<Inventory>();
+                        }
+
+                        var inventory = new Inventory
+                        {
+                            AllowPreorder = allowPreorder,
+                            AllowBackorder = allowBackorder,
+                            InStockQuantity = tuple.Item1,
+                            ReservedQuantity = tuple.Item2
+                        };
+
+                        result.Inventory = inventory;
+                        result.InventoryAll.Add(inventory);
+                    }
+                }   
+            
 
             return result;
         }

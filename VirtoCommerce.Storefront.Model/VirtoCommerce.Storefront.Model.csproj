@@ -117,6 +117,7 @@
     <Compile Include="Interaction\Page.cs" />
     <Compile Include="Interaction\Client.cs" />
     <Compile Include="Interaction\UserSession.cs" />
+    <Compile Include="Inventory\FulfilmentCenter.cs" />
     <Compile Include="Recommendations\CognitiveRecommendationEvalContext.cs" />
     <Compile Include="Recommendations\IRecommendationsService.cs" />
     <Compile Include="Recommendations\RecommendationEvalContext.cs" />

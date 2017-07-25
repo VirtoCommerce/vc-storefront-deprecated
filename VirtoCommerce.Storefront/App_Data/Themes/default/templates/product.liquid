@@ -130,22 +130,31 @@
                 <label for="quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
                 <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-selector">
                 {% endif %}
-                <button type="button" name="add" id="addToCart" class="btn AddShopCart" ng-disabled="!selectedVariation.id || !selectedVariation.isAvailable" ng-click="addProductToCart(selectedVariation, 1)" interactor-arg="{{ product.id }}">
+                <button type="button" name="add" id="addToCart" class="btn btn-clearfix AddShopCart" ng-disabled="!selectedVariation.id || !selectedVariation.isAvailable" ng-click="addProductToCart(selectedVariation, 1)" interactor-arg="{{ product.id }}">
                     <span class="icon icon-cart"></span>
                     <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
                 </button>
                 {% if shop.quotes_enabled %}
-                <button class="btn" id="addToQuote" type="button" ng-if="selectedVariation.isQuotable" ng-disabled="!selectedVariation.id" ng-click="addProductToActualQuoteRequest(selectedVariation, 1)">
+                <button class="btn btn-clearfix" id="addToQuote" type="button" ng-if="selectedVariation.isQuotable" ng-disabled="!selectedVariation.id" ng-click="addProductToActualQuoteRequest(selectedVariation, 1)">
                     <span class="fa fa-calculator"></span>
                     {{ 'products.general.add_to_quote' | t }}
                 </button>
                 {% endif%}
                 {% if settings.product_compare_enabled %}
-                    <button class="btn" type="button" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
+                    <button class="btn btn-clearfix" type="button" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
                         <span class="fa fa-bar-chart"></span>
                         <span>{{ 'products.compare_list.add_to_compare' | t }}</span>
                     </button>
                 {% endif %}
+                {% if customer %}
+                 <button id="addToWishlist" class="btn btn-clearfix list-btn-alignment" type="button" 
+                         ng-disabled="buttonValid"
+                         ng-click="addProductToWishlist(selectedVariation,$scope.listContains)">
+                      <span class="fa fa-file-text list-icon-clearfix"></span>
+                      <span>{{ 'products.list.add_to_myList' | t }}</span>
+                      
+                 </button>
+                {% endif%}
                 <span id="variantQuantity" class="variant-quantity"></span>
             </form>
             <hr>
