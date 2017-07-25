@@ -99,6 +99,10 @@ namespace VirtoCommerce.Storefront.Converters
                 result.PrimaryFullfilmentCenter =  ToFulfillmentCenter(storeDto.FulfillmentCenter);
                 result.FulfilmentCenters.Add(result.PrimaryFullfilmentCenter);
             }
+            if(!storeDto.FulfillmentCenters.IsNullOrEmpty())
+            {
+                result.FulfilmentCenters.AddRange(storeDto.FulfillmentCenters.Select(x => ToFulfillmentCenter(x)));
+            }
 
             result.TrustedGroups = storeDto.TrustedGroups;
             result.StoreState = EnumUtility.SafeParse(storeDto.StoreState, StoreStatus.Open);
