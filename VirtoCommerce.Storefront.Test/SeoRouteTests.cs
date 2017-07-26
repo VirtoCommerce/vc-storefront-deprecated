@@ -39,6 +39,7 @@ namespace VirtoCommerce.Storefront.Test
         //     g = page
         //     d = duplicate
         //
+        // cc
         // c
         // L- c1            ac1, ic1
         //     |- c2        ac2
@@ -112,11 +113,14 @@ namespace VirtoCommerce.Storefront.Test
         }
 
         [Theory]
+        [InlineData("cc", SeoLinksType.Short, "ap1", null, "Asset", "GetThemeAssets", null, null)] // ap1 does not belong to cc catalog
+        [InlineData("cc", SeoLinksType.Collapsed, "ap1", null, "Asset", "GetThemeAssets", null, null)] // ap1 does not belong to cc catalog
+        [InlineData("cc", SeoLinksType.Collapsed, "ac1/acd/ap1", null, "Asset", "GetThemeAssets", null, null)] // ap1 does not belong to cc catalog
         [InlineData("c", SeoLinksType.Short, "ac1", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c1")]
         [InlineData("c", SeoLinksType.Short, "ic1", "ac1", null, null, null, null)]
-        [InlineData("c", SeoLinksType.Short, "ac1/ac2", null, "Asset", "GetThemeAssets", null, null)]
-        [InlineData("c", SeoLinksType.Short, "ic1/ac2", null, "Asset", "GetThemeAssets", null, null)]
-        [InlineData("c", SeoLinksType.Short, "ac2", null, "Asset", "GetThemeAssets", null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac1/ac2", "ac2", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Short, "ic1/ac2", "ac2", null, null, null, null)]
+        [InlineData("c", SeoLinksType.Short, "ac2", null, "CatalogSearch", "CategoryBrowsing", "categoryId", "c2")]
         [InlineData("c", SeoLinksType.Short, "ac1/acd", null, "Asset", "GetThemeAssets", null, null)]
         [InlineData("c", SeoLinksType.Short, "ac1/ic3", "acd", null, null, null, null)]
         [InlineData("c", SeoLinksType.Short, "acd", null, "Asset", "GetThemeAssets", null, null)]
@@ -163,8 +167,8 @@ namespace VirtoCommerce.Storefront.Test
         [InlineData("v2", SeoLinksType.Collapsed, "acd/acd", "acd", null, null, null, null)]
         public void ValidateSeoRouteResponse(string catalogId, SeoLinksType linksType, string seoPath, string expectedRedirectLocation, string expectedController, string expectedAction, string expectedObjectIdName, string expectedObjectId)
         {
-            // Don't use catalog API client for short SEO links
-            var shortLinks = linksType == SeoLinksType.None || linksType == SeoLinksType.Short;
+            // Don't use catalog API client for non-SEO links
+            var shortLinks = linksType == SeoLinksType.None;
             var catalogApi = shortLinks ? null : CreateCatalogApiClient();
             var service = CreateSeoRouteService(catalogApi);
 

@@ -96,8 +96,8 @@ namespace VirtoCommerce.Storefront.Routing
                 .Distinct(seoEntityComparer)
                 .ToList();
 
-            // Don't load objects for short SEO links
-            if (workContext.CurrentStore.SeoLinksType != SeoLinksType.None && workContext.CurrentStore.SeoLinksType != SeoLinksType.Short)
+            // Don't load objects for non-SEO links
+            if (workContext.CurrentStore.SeoLinksType != SeoLinksType.None)
             {
                 foreach (var group in entities.GroupBy(e => e.ObjectType))
                 {
