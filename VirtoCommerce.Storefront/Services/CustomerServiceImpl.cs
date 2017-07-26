@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Omu.ValueInjecter;
 using PagedList;
 using VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi;
@@ -63,7 +64,7 @@ namespace VirtoCommerce.Storefront.Services
             var retVal = await _cacheManager.GetAsync(string.Format(_customerCacheKeyFormat, customerId), string.Format(_customerCacheRegionFormat, customerId), async () =>
             {
                 //TODO: Make parallels call
-                var contact = await _customerApi.CustomerModule.GetContactByIdAsync(customerId);
+                var contact = await _customerApi.CustomerModule.GetMemberByIdAsync(customerId);
                 CustomerInfo result = null;
                 if (contact != null)
                 {
@@ -85,13 +86,13 @@ namespace VirtoCommerce.Storefront.Services
 
             return retVal;
         }
-
+        
         public virtual async Task CreateCustomerAsync(CustomerInfo customer)
         {
             var contact = customer.ToCustomerContactDto();
             await _customerApi.CustomerModule.CreateContactAsync(contact);
         }
-
+        
         public virtual async Task UpdateCustomerAsync(CustomerInfo customer)
         {
             var contact = customer.ToCustomerContactDto();
@@ -158,10 +159,12 @@ namespace VirtoCommerce.Storefront.Services
                     {
                         address.Name = address.ToString();
                     }
-
-                    await UpdateCustomerAsync(workContext.CurrentCustomer);
+                    
+                    var customer = workContext.CurrentCustomer.ToCustomerContactDto();
+                    await _customerApi.CustomerModule.UpdateAddessesAsync(customer.Id, customer.Addresses);
+                    //Invalidate cache
+                    _cacheManager.ClearRegion(string.Format(_customerCacheRegionFormat, customer.Id));
                 }
-
             }
         }
         #endregion
@@ -250,3 +253,4 @@ namespace VirtoCommerce.Storefront.Services
         }
     }
 }
+
