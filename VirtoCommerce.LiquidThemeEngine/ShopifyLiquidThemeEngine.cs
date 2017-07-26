@@ -285,7 +285,8 @@ namespace VirtoCommerce.LiquidThemeEngine
 
             var renderParams = new RenderParameters
             {
-                LocalVariables = Hash.FromDictionary(parameters)
+                LocalVariables = Hash.FromDictionary(parameters),
+                RethrowErrors = ConfigurationExtentions.CustomErrorsEnabled()
             };
 
             var parsedTemplate = Template.Parse(templateContent);

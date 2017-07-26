@@ -27,6 +27,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Extensions
             catch(Exception ex)
             {
                 Trace.TraceError(FlattenException(ex));
+                if (parameters.RethrowErrors)
+                    throw;
             }
             finally
             {
@@ -51,7 +53,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Extensions
             }
             catch (Exception ex)
             {
-                Trace.TraceError(FlattenException(ex));
+                Trace.TraceError(FlattenException(ex));                
+                if (parameters.RethrowErrors)
+                    throw;
             }
             finally
             {
