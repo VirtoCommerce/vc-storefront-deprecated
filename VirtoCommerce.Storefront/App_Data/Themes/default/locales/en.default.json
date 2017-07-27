@@ -97,6 +97,7 @@
             "invalid_cvv_message": "Please enter correct CVV"
         },
         "address": {
+            "type": "Selected address",
             "selected_address": "Selected address",
             "first_name": "First name",
             "last_name": "Last name",
