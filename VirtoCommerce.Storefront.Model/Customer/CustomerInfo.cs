@@ -101,6 +101,11 @@ namespace VirtoCommerce.Storefront.Model.Customer
         /// </summary>
         public IEnumerable<string> UserGroups { get; set; }
 
+        /// <summary>
+        /// Entity type of customer
+        /// </summary>
+        public string MemberType { get; set; }
+
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "user#{0} {1} {2}", Id ?? "undef", UserName ?? "undef", IsRegisteredUser ? "registered" : "anonymous");

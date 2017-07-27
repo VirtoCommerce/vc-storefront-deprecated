@@ -12,7 +12,7 @@
         <h1 class="h2">{{ 'customer.account.title' | t }}</h1>
 
         <ul class="nav nav-tabs">
-            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountProfileUpdate'}">
+            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountProfileUpdate'}" ng-if="customer.memberType === 'Contact'">
                 <a ng-link="['Profile']">{{ 'customer.account.menu_label.profile' | t }}</a>
             </li>
             <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountAddresses'}">
