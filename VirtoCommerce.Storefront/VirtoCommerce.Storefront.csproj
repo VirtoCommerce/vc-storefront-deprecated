@@ -584,7 +584,6 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\StorefrontHomeController.cs" />
-    <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ShopifyCompatibilityController.cs" />
     <Compile Include="Controllers\StorefrontControllerBase.cs" />

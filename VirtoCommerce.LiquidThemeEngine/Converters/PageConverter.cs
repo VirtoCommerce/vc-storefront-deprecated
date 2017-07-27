@@ -4,6 +4,7 @@ using VirtoCommerce.LiquidThemeEngine.Objects;
 using StorefrontModel = VirtoCommerce.Storefront.Model;
 using Microsoft.Practices.ServiceLocation;
 using System.Collections.Generic;
+using VirtoCommerce.Storefront.Model.Common;
 
 namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
@@ -21,7 +22,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
         public virtual Page ToLiquidPage(StorefrontModel.StaticContent.ContentItem contentItem)
         {
             var result = new Page();
-            result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(contentItem);
+            result.InjectFrom<NullableAndEnumValueInjecter>(contentItem);
             result.Handle = contentItem.Url;
 
             result.MetaInfo = new MetafieldsCollection("meta_fields", new Dictionary<string, object>());

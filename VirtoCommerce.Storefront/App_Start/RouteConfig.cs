@@ -160,8 +160,7 @@ namespace VirtoCommerce.Storefront
 
             // Common
             routes.AddStorefrontRoute("Common.SetCurrency", "common/setcurrency/{currency}", defaults: new { controller = "Common", action = "SetCurrency" });
-            routes.AddStorefrontRoute("Common.ContactUsPost", "contact/{viewName}", defaults: new { controller = "Common", action = "СontactUs", viewName = UrlParameter.Optional }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
-            routes.AddStorefrontRoute("Common.ContactUs", "contact/{viewName}", defaults: new { controller = "Common", action = "СontactUs", viewName = UrlParameter.Optional }, constraints: new { httpMethod = new HttpMethodConstraint("GET") });
+            routes.AddStorefrontRoute("Common.ContactUsPost", "contact/{viewName}", defaults: new { controller = "Common", action = "СontactForm", viewName = UrlParameter.Optional }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("Common.NoStore", "common/nostore", defaults: new { controller = "Common", action = "NoStore" });
             routes.AddStorefrontRoute("Common.Maintenance", "maintenance", defaults: new { controller = "Common", action = "Maintenance" });
             routes.AddStorefrontRoute("Common.ResetCache", "common/resetcache", defaults: new { controller = "Common", action = "ResetCache" });
