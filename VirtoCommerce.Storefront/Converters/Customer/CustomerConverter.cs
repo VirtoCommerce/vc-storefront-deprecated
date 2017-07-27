@@ -161,8 +161,9 @@ namespace VirtoCommerce.Storefront.Converters
         {
             var result = new CustomerInfo();
             result.InjectFrom<NullableAndEnumValueInjecter>(memberDto);
-            result.UserGroups = memberDto.Groups;
             result.IsRegisteredUser = true;
+            result.MemberType = memberDto.MemberType;
+            result.UserGroups = memberDto.Groups;
             if (memberDto.Addresses != null)
             {
                 result.Addresses = memberDto.Addresses.Select(ToAddress).ToList();

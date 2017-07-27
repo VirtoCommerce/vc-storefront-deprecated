@@ -67,6 +67,7 @@ namespace VirtoCommerce.Storefront.Converters
             if (taxContext.Customer != null)
             {
                 retVal.Customer = taxContext.Customer.ToCoreContactDto();
+                retVal.Customer.MemberType = "Contact";
             }
             if (taxContext.Currency != null)
             {
