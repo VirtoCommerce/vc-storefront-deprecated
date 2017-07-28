@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -285,7 +286,8 @@ namespace VirtoCommerce.LiquidThemeEngine
 
             var renderParams = new RenderParameters
             {
-                LocalVariables = Hash.FromDictionary(parameters)
+                LocalVariables = Hash.FromDictionary(parameters),
+                RethrowErrors = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:LiquidThemeEngine:RethrowErrors", false)
             };
 
             var parsedTemplate = Template.Parse(templateContent);
@@ -329,7 +331,7 @@ namespace VirtoCommerce.LiquidThemeEngine
 
                 //Get actual preset from merged config
                 var currentPreset = resultSettings.GetValue("current");
-                if(currentPreset is JValue)
+                if (currentPreset is JValue)
                 {
                     string currentPresetName = ((JValue)currentPreset).Value.ToString();
                     var presets = resultSettings.GetValue("presets") as JObject;
@@ -340,7 +342,7 @@ namespace VirtoCommerce.LiquidThemeEngine
 
                     IList<JProperty> allPresets = presets.Children().Cast<JProperty>().ToList();
                     resultSettings = allPresets.FirstOrDefault(p => p.Name == currentPresetName).Value as JObject;
-                    if(resultSettings == null)
+                    if (resultSettings == null)
                     {
                         throw new StorefrontException($"Setting preset with name '{currentPresetName}' not found");
                     }
@@ -411,7 +413,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 JObject localeJson = null;
                 JObject defaultJson = null;
 
-                foreach (string languageName in new [] { language.CultureName, language.TwoLetterLanguageName })
+                foreach (string languageName in new[] { language.CultureName, language.TwoLetterLanguageName })
                 {
                     var currentLocalePath = Path.Combine(localeFolderPath, string.Concat(languageName, ".json"));
 
@@ -445,7 +447,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             }
             return retVal;
         }
-        
+
         private static JObject InnerGetAllSettings(IContentBlobProvider themeBlobProvider, string themePath)
         {
             JObject retVal = null;

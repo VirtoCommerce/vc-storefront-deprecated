@@ -128,6 +128,14 @@ namespace VirtoCommerce.Storefront.Model.Stores
             }
         }
 
+        public bool TaxCalculationEnabled
+        {
+            get
+            {
+                return Settings.GetSettingValue("Stores.TaxCalculationEnabled", true);
+            }
+        }
+
         #region IHasSettings Members
 
         public ICollection<SettingEntry> Settings { get; set; }

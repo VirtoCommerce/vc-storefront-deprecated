@@ -6,7 +6,7 @@ namespace VirtoCommerce.Storefront.Converters
 {
     public static class ContactUsFormConverter
     {
-        public static SendDynamicNotificationRequest ToServiceModel(this ContactUsForm contactUsForm, WorkContext workContext)
+        public static SendDynamicNotificationRequest ToServiceModel(this ContactForm contactUsForm, WorkContext workContext)
         {
             var retVal = new SendDynamicNotificationRequest
             {

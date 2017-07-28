@@ -166,7 +166,8 @@ namespace VirtoCommerce.Storefront.Converters
                 Id = propertyDto.Id,
                 Name = propertyDto.Name,
                 Type = propertyDto.Type,
-                ValueType = propertyDto.ValueType
+                ValueType = propertyDto.ValueType,
+                IsMultivalue = propertyDto.Multivalue ?? false
             };
 
             //Set display names and set current display name for requested language
@@ -204,6 +205,19 @@ namespace VirtoCommerce.Storefront.Converters
             if (result.LocalizedValues.Any())
             {
                 result.Value = result.LocalizedValues.FindWithLanguage(currentLanguage, x => x.Value, result.Value);
+            }
+
+            //Set multivalues
+            if (result.IsMultivalue && propertyDto.Values != null)
+            {
+                if (result.LocalizedValues.Any())
+                {
+                    result.Values = result.LocalizedValues.GetLocalizedStringsForLanguage(currentLanguage).Select(x => x.Value).ToList();
+                }
+                else
+                {
+                    result.Values = propertyDto.Values.Where(x => x != null).Select(x => x.Value.ToString()).ToList();
+                }
             }
 
             return result;

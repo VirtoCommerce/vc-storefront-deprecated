@@ -1,7 +1,7 @@
 ﻿<div id="account-lists.tpl.liquid" type="text/ng-template" ng-init='$ctrl.initialize({{ settings.available_lists | json }})'>
   <h4>Your Lists</h4>
   <p ng-if="!$ctrl.lists">No lists defined</p>
-  <div ng-if="$ctrl.lists" class="grid grid-border">
+  <div style="margin-top: 25px;" ng-if="$ctrl.lists" class="grid grid-border">
     <div class="grid-item large--one-fifth">
       <ul class="sidebar product-list-container list __items">
         <li ng-repeat="list in $ctrl.lists"
@@ -19,7 +19,7 @@
         <p>{{ 'wishlist.general.continue_browsing_html' | t }}</p>
       </span>
       <div class="ajax-informer text-center" ng-class="{ 'fade': $ctrl.productAdded }">{{ 'wishlist.general.added_to_cart' | t}}</div>
-      <table ng-show="$ctrl.selectedList.items.length > 0" class="vc-product-table">
+      <table ng-show="$ctrl.selectedList.items.length > 0" class="vc-product-table list-table">
         <tr  style="height:120px;" class="product-row" ng-repeat="lineItem in $ctrl.selectedList.items">
           <td class="product-img">
             <div class="img-inner">

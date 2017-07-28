@@ -6,7 +6,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
 {
     public static class ContactUsFormConverter
     {
-        public static Form ToShopifyModel(this StorefrontModel.ContactUsForm contactUsForm)
+        public static Form ToShopifyModel(this StorefrontModel.ContactForm contactUsForm)
         {
             var retVal = new Form();
             if (contactUsForm.Contact != null)

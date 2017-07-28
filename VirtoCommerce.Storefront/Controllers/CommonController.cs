@@ -51,18 +51,6 @@ namespace VirtoCommerce.Storefront.Controllers
         }
 
         /// <summary>
-        /// GET : /contact
-        /// </summary>
-        /// <param name="viewName"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult СontactUs(string viewName = "page.contact")
-        {
-            return View(viewName, WorkContext);
-        }
-
-        /// <summary>
         /// POST : /contact
         /// </summary>
         /// <param name="model"></param>
@@ -71,7 +59,7 @@ namespace VirtoCommerce.Storefront.Controllers
         [HttpPost]
         [AllowAnonymous]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
-        public async Task<ActionResult> СontactUs(ContactUsForm model, string viewName = "page.contact")
+        public async Task<ActionResult> СontactForm(ContactForm model, string viewName = "page.contact")
         {
             await _storeModuleApi.StoreModule.SendDynamicNotificationAnStoreEmailAsync(model.ToServiceModel(WorkContext));
             WorkContext.ContactUsForm = model;
