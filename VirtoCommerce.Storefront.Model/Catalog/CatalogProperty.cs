@@ -13,6 +13,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         {
             LocalizedValues = new List<LocalizedString>();
             DisplayNames = new List<LocalizedString>();
+            Values = new List<string>();
         }
         /// <summary>
         /// Property name
@@ -43,6 +44,11 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public string Value { get; set; }
 
         public string DisplayName { get; set; }
+
         public ICollection<LocalizedString> DisplayNames { get; set; }
+
+        public bool IsMultivalue { get; set; }
+
+        public ICollection<string> Values { get; set; }
     }
 }
