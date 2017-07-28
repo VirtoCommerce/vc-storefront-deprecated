@@ -1,4 +1,4 @@
-﻿<div class="one-half">
+﻿ <div class="one-half" ng-show="$ctrl.customer.isContact">
     <h4>{{ 'customer.edit_profile.title' | t }}</h4>
     <form ng-submit="$ctrl.submit()" name="detailForm">
         <vc-labeled-input value="$ctrl.changeData.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm" required="true" autofocus="true"></vc-labeled-input>
