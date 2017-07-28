@@ -881,7 +881,7 @@ select {
 }
 
 .product-list-container {
-    margin-top: -40px;
+    margin-top: -45px;
 }
 .product-list-name {
     cursor: pointer;
@@ -891,6 +891,7 @@ select {
     padding-left: 5px;
     font-size: 22px;
     margin-right: 10px;
+    margin-bottom:0px;
     line-height: 1.6;
     font-family: 'HelveticaNeue','Helvetica Neue','Helvetica','Arial','sans-serif';
     color: #585858;
@@ -980,4 +981,9 @@ select {
     color: #969696;
     font-size: 12px;
     text-decoration: line-through;
+}
+
+.list-table {
+    position: relative;
+    top: -40px;
 }
