@@ -14,6 +14,7 @@ namespace VirtoCommerce.Storefront.Model.Tax
         {
             StoreId = storeId;
             Lines = new List<TaxLine>();
+            StoreTaxCalculationEnabled = true;
         }
         public string StoreId { get; set; }
 
@@ -30,5 +31,7 @@ namespace VirtoCommerce.Storefront.Model.Tax
         public ICollection<TaxLine> Lines { get; set; }
 
         public string Id { get; set; }
+
+        public bool StoreTaxCalculationEnabled { get; set; }
     }
 }
