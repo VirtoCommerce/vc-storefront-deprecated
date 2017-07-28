@@ -14,6 +14,7 @@ using cartDto = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using marketingDto = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 using platformDto = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -42,9 +43,9 @@ namespace VirtoCommerce.Storefront.Converters
             return CartConverterInstance.ToPromotionEvaluationContext(cart);
         }
 
-        public static TaxEvaluationContext ToTaxEvalContext(this ShoppingCart cart)
+        public static TaxEvaluationContext ToTaxEvalContext(this ShoppingCart cart, Store store)
         {
-            return CartConverterInstance.ToTaxEvalContext(cart);
+            return CartConverterInstance.ToTaxEvalContext(cart, store);
         }
 
         public static TaxDetail ToTaxDetail(this cartDto.TaxDetail taxDetail, Currency currency)
@@ -581,7 +582,7 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual TaxEvaluationContext ToTaxEvalContext(ShoppingCart cart)
+        public virtual TaxEvaluationContext ToTaxEvalContext(ShoppingCart cart, Store store)
         {
             var result = new TaxEvaluationContext(cart.StoreId);
 
@@ -590,6 +591,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.Currency = cart.Currency;
             result.Type = "Cart";
             result.Customer = cart.Customer;
+            result.StoreTaxCalculationEnabled = store.TaxCalculationEnabled;
 
             foreach (var lineItem in cart.Items)
             {

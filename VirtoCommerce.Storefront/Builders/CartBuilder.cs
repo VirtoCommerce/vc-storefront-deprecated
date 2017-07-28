@@ -356,7 +356,7 @@ namespace VirtoCommerce.Storefront.Builders
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
 
             //Evaluate taxes for available shipping rates
-            var taxEvalContext = Cart.ToTaxEvalContext();
+            var taxEvalContext = Cart.ToTaxEvalContext(workContext.CurrentStore);
             taxEvalContext.Lines.Clear();
             taxEvalContext.Lines.AddRange(retVal.SelectMany(x => x.ToTaxLines()));
             await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
@@ -375,7 +375,8 @@ namespace VirtoCommerce.Storefront.Builders
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
 
             //Evaluate taxes for available payments 
-            var taxEvalContext = Cart.ToTaxEvalContext();
+            var workContext = _workContextFactory();
+            var taxEvalContext = Cart.ToTaxEvalContext(workContext.CurrentStore);
             taxEvalContext.Lines.Clear();
             taxEvalContext.Lines.AddRange(retVal.SelectMany(x => x.ToTaxLines()));
             await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
@@ -404,7 +405,8 @@ namespace VirtoCommerce.Storefront.Builders
 
         public async Task EvaluateTaxesAsync()
         {
-            await _taxEvaluator.EvaluateTaxesAsync(Cart.ToTaxEvalContext(), new[] { Cart });
+            var workContext = _workContextFactory();
+            await _taxEvaluator.EvaluateTaxesAsync(Cart.ToTaxEvalContext(workContext.CurrentStore), new[] { Cart });
         }
 
         public virtual async Task SaveAsync()
