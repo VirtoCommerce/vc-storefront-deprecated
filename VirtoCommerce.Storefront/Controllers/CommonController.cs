@@ -58,6 +58,7 @@ namespace VirtoCommerce.Storefront.Controllers
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public async Task<ActionResult> СontactForm(ContactForm model, string viewName = "page.contact")
         {

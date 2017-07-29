@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -142,6 +141,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(Register formModel)
         {
             var user = new coreModel.ApplicationUserExtended
