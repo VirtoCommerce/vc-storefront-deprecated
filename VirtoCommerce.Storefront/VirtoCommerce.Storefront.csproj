@@ -402,6 +402,7 @@
     <Content Include="App_Data\Themes\default\assets\order-status-calendar.svg" />
     <Content Include="App_Data\Themes\default\assets\order-status-question.svg" />
     <Content Include="App_Data\Themes\default\assets\order-status-re-order.svg" />
+    <Content Include="App_Data\Themes\default\assets\js\order.js" />
     <Content Include="App_Data\Themes\default\assets\paypal-big.png" />
     <Content Include="App_Data\Themes\default\assets\paypal.svg" />
     <Content Include="App_Data\Themes\default\assets\question-dark.svg" />
