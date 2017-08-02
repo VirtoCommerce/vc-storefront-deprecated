@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using CacheManager.Core;
 using Microsoft.WindowsAzure.Storage;
@@ -11,7 +15,7 @@ using VirtoCommerce.Storefront.Model.Services;
 
 namespace VirtoCommerce.Storefront.Services
 {
-    public class AzureBlobContentProvider : IContentBlobProvider, IStaticContentBlobProvider
+    public class AzureBlobContentProvider : IContentBlobProvider, IStaticContentBlobProvider, IDisposable
     {
         private readonly CloudBlobClient _cloudBlobClient;
         private readonly CloudStorageAccount _cloudStorageAccount;
@@ -20,6 +24,7 @@ namespace VirtoCommerce.Storefront.Services
         private readonly string _containerName;
         private readonly string _baseDirectoryPath;
         private readonly ICacheManager<object> _cacheManager;
+        private readonly CancellationTokenSource _cancelSource;
 
         public AzureBlobContentProvider(string connectionString, string basePath, ICacheManager<object> cacheManager)
         {
@@ -39,6 +44,61 @@ namespace VirtoCommerce.Storefront.Services
             {
                 _directory = _container.GetDirectoryReference(_baseDirectoryPath);
             }
+
+            _cancelSource = new CancellationTokenSource();
+
+            var enabledTrackChanges = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:AzureBlobStorage:TrackChanges", true);
+            if (enabledTrackChanges)
+            {
+                Task.Run(() => MonitorFileSystemChanges(_cancelSource.Token), _cancelSource.Token);
+            }
+        }
+
+        private void MonitorFileSystemChanges(CancellationToken cancellationToken)
+        {
+            var intetval = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:AzureBlobStorage:TrackChangesInterval", 5000);
+
+            DateTimeOffset latestModifiedDate = DateTimeOffset.UtcNow;
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    var maxModifiedDate = DateTimeOffset.MinValue;
+
+                    foreach (var file in EnumBlobFiles())
+                    {
+                        if (cancellationToken.IsCancellationRequested)
+                            break;
+
+                        if (file.Properties.LastModified.HasValue)
+                        {
+                            if (maxModifiedDate < file.Properties.LastModified)
+                                maxModifiedDate = (DateTimeOffset)file.Properties.LastModified;
+
+                            if (file.Properties.LastModified > latestModifiedDate)
+                            {
+                                RaiseChangedEvent(new FileSystemEventArgs(WatcherChangeTypes.Changed, Path.GetDirectoryName(file.Name), Path.GetFileName(file.Name)));
+                            }
+                        }
+                    }
+
+                    latestModifiedDate = maxModifiedDate;
+                }
+                catch (Exception ex)
+                {
+                    Trace.TraceError(ex.ToString());
+                }
+
+                Thread.Sleep(intetval);
+            }
+        }
+
+        private IEnumerable<CloudBlob> EnumBlobFiles()
+        {
+            if(_directory!=null)
+                return _directory.ListBlobs(useFlatBlobListing: true).OfType<CloudBlob>();
+            return _container.ListBlobs(useFlatBlobListing: true).OfType<CloudBlob>();
         }
 
         #region IContentBlobProvider Members
@@ -198,5 +258,41 @@ namespace VirtoCommerce.Storefront.Services
                 renamedEvent(this, args);
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                    _cancelSource.Cancel();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~AzureBlobContentProvider() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
