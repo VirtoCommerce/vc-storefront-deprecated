@@ -567,6 +567,7 @@
     <Compile Include="Services\ContentBlobProviders\FileSystemContentBlobProvider.cs" />
     <Compile Include="Services\CustomerServiceImpl.cs" />
     <Compile Include="Services\IChangesTrackingService.cs" />
+    <Compile Include="Services\InventoryServiceImpl.cs" />
     <Compile Include="Services\LinkListServiceImpl.cs" />
     <Compile Include="Services\PricingServiceImpl.cs" />
     <Compile Include="Controllers\Api\ApiCartController.cs" />

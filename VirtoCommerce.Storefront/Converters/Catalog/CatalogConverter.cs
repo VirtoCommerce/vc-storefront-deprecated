@@ -522,6 +522,7 @@ namespace VirtoCommerce.Storefront.Converters
                 Outline = product.Outline,
                 ProductId = product.Id,
                 Quantity = 1,
+                InStockQuantity = product.Inventory != null && product.Inventory.InStockQuantity.HasValue ? (int)product.Inventory.InStockQuantity.Value : 0,
                 Variations = product.Variations?.Select(ToProductPromoEntryDto).ToList()
             };
 

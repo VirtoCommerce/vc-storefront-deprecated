@@ -398,6 +398,16 @@ namespace VirtoCommerce.Storefront.Builders
             bool isReadOnlyLineItems = Cart.Items.Any(i => i.IsReadOnly);
             if (!isReadOnlyLineItems)
             {
+                //Get product inventory to fill InStockQuantoty parameter of LineItem
+                var productIds = Cart.Items.Select(i => i.ProductId);
+                var products = await _catalogSearchService.GetProductsAsync(productIds.ToArray(), ItemResponseGroup.ItemLarge);
+
+                foreach (var lineItem in Cart.Items) {
+                    var product = products.FirstOrDefault(p => p.Id == lineItem.ProductId);
+                    if (product != null && product.Inventory != null)
+                        lineItem.InStockQuantity = product.Inventory.InStockQuantity.HasValue ? (int)product.Inventory.InStockQuantity.Value : 0;
+                }
+
                 var evalContext = Cart.ToPromotionEvaluationContext();
                 await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
             }

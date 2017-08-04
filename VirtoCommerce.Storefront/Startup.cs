@@ -53,6 +53,7 @@ using VirtoCommerce.Storefront.Model.Catalog.Services;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Customer.Services;
+using VirtoCommerce.Storefront.Model.Inventory.Services;
 using VirtoCommerce.Storefront.Model.LinkList.Services;
 using VirtoCommerce.Storefront.Model.Marketing.Services;
 using VirtoCommerce.Storefront.Model.Order.Events;
@@ -236,6 +237,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IMenuLinkListService, MenuLinkListServiceImpl>();
             container.RegisterType<ISeoRouteService, SeoRouteService>();
             container.RegisterType<IProductAvailabilityService, ProductAvailabilityService>();
+            container.RegisterType<IInventoryService, InventoryServiceImpl>();
 
             container.RegisterType<ICartBuilder, CartBuilder>();
             container.RegisterType<IQuoteRequestBuilder, QuoteRequestBuilder>();

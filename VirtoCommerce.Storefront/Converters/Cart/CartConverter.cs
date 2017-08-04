@@ -669,6 +669,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.DiscountAmount = product.Price.DiscountAmount;
             result.ProductId = product.Id;
             result.Quantity = quantity;
+            result.InStockQuantity = product.Inventory != null && product.Inventory.InStockQuantity.HasValue ? (int)product.Inventory.InStockQuantity.Value : 0;
             result.IsReccuring = result.PaymentPlan != null;
 
             return result;
@@ -758,6 +759,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.Discount = (double)lineItem.DiscountTotal.Amount;
             result.Price = (double)lineItem.PlacedPrice.Amount;
             result.Quantity = lineItem.Quantity;
+            result.InStockQuantity = lineItem.InStockQuantity;
             result.Variations = null; // TODO
 
             return result;
