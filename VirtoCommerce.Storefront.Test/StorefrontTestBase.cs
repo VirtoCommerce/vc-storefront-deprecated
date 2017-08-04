@@ -125,7 +125,7 @@ namespace VirtoCommerce.Storefront.Test
 
         protected Uri GetApiBaseUri()
         {
-            return new Uri(ConfigurationManager.ConnectionStrings["VirtoCommerceBaseUrl"].ConnectionString);
+            return new Uri(ConnectionStringHelper.GetConnectionString("VirtoCommerceBaseUrl"));
         }
 
         protected VirtoCommerceApiRequestHandler GetClientCredentials()

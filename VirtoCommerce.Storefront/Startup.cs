@@ -161,7 +161,7 @@ namespace VirtoCommerce.Storefront
           if (redisCacheEnabled)
           {
               var redisCacheConnectionStringName = appSettings.GetValue("VirtoCommerce:Storefront:RedisCache:ConnectionStringName", "RedisCache");
-              var redisConnectionString = ConfigurationManager.ConnectionStrings[redisCacheConnectionStringName].ConnectionString;
+              var redisConnectionString = ConnectionStringHelper.GetConnectionString(redisCacheConnectionStringName);
 
               memoryHandlePart
                   .And
@@ -185,7 +185,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterInstance(workContextFactory);
 
             // Workaround for old storefront base URL: remove /api/ suffix since it is already included in every resource address in VirtoCommerce.Client library.
-            var baseUrl = ConfigurationManager.ConnectionStrings["VirtoCommerceBaseUrl"].ConnectionString;
+            var baseUrl = ConnectionStringHelper.GetConnectionString("VirtoCommerceBaseUrl");
             if (baseUrl != null && baseUrl.EndsWith("/api/", StringComparison.OrdinalIgnoreCase))
             {
                 var apiPosition = baseUrl.LastIndexOf("/api/", StringComparison.OrdinalIgnoreCase);
@@ -259,7 +259,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IAsyncObserver<UserLoginEvent>, CartBuilder>("Merge anonymous cart with loggined user cart");
             container.RegisterType<IAsyncObserver<UserLoginEvent>, QuoteRequestBuilder>("Merge anonymous quote request with loggined user quote");
 
-            var cmsContentConnectionString = BlobConnectionString.Parse(ConfigurationManager.ConnectionStrings["ContentConnectionString"].ConnectionString);
+            var cmsContentConnectionString = BlobConnectionString.Parse(ConnectionStringHelper.GetConnectionString("ContentConnectionString"));
             var themesBasePath = cmsContentConnectionString.RootPath.TrimEnd('/') + "/" + "Themes";
             var staticContentBasePath = cmsContentConnectionString.RootPath.TrimEnd('/') + "/" + "Pages";
             //Use always file system provider for global theme
@@ -312,7 +312,7 @@ namespace VirtoCommerce.Storefront
             ModelBinders.Binders.Add(typeof(Model.Cart.Payment), new CartModelBinder<Model.Cart.Payment>(workContextFactory));
             ModelBinders.Binders.Add(typeof(Model.Order.PaymentIn), new OrderModelBinder<Model.Order.PaymentIn>(workContextFactory));
             ModelBinders.Binders.Add(typeof(Model.Recommendations.RecommendationEvalContext), new ReccomendationsModelBinder<Model.Recommendations.RecommendationEvalContext>());
-			
+
             app.Use<WorkContextOwinMiddleware>(container);
             app.UseStageMarker(PipelineStage.PostAuthorize);
             app.Use<StorefrontUrlRewriterOwinMiddleware>(container);

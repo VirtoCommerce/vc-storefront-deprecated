@@ -511,6 +511,7 @@
     <Compile Include="Binders\CartTypesModelBinder.cs" />
     <Compile Include="Binders\ReccomendationsModelBinder.cs" />
     <Compile Include="Common\AppBuilderExtension.cs" />
+    <Compile Include="Common\ConnectionStringHelper.cs" />
     <Compile Include="Common\FeedResult.cs" />
     <Compile Include="Common\HmacCredentials.cs" />
     <Compile Include="Common\HmacUtility.cs" />
