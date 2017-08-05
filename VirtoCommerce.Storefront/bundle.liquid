@@ -1,9 +1,7 @@
-﻿{%- if application_settings['VirtoCommerce:Storefront:OptimizeStaticContent'] == 'true' -%}
-        <!-- injectMin:js -->
+{%- if application_settings['VirtoCommerce:Storefront:OptimizeStaticContent'] == 'true' -%}
+        <!-- inject:Release -->
         <!-- endinject -->
 {%- else -%}
-        <!-- injectDebug:js -->
+        <!-- inject:Debug -->
         <!-- endinject -->
 {%- endif -%}
-
-

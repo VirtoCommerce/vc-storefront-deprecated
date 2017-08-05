@@ -26,7 +26,7 @@
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
     {{ 'ajaxify.scss.css' | asset_url | stylesheet_tag }}
     {{ 'default.scss.css' | asset_url | stylesheet_tag }}
-    {{ 'build/styles.css' | static_asset_url | stylesheet_tag }}
+    {% include 'bundle/styles' %}
     
     {% include 'google-fonts' %}
 
@@ -43,7 +43,7 @@
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.7/angular-sanitize.min.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate.min.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate-loader-url/angular-translate-loader-url.min.js' | script_tag }}
-	{{ 'build/scripts.js' | static_asset_url | script_tag }}
+    {% include 'bundle/scripts' %}
     
     {{ 'shop.js' | asset_url | script_tag }}
     {{ 'shopify_common.js' | shopify_asset_url | script_tag }}

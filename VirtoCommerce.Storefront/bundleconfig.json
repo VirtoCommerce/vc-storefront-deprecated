@@ -1,6 +1,6 @@
 ﻿[
     {
-        "outputFileName": "App_Data/Themes/default/assets/static/build/scripts.js",
+        "outputFileName": "App_Data/Themes/default/assets/static/bundle/scripts.js",
         "inputFiles": [
             "App_Data/Themes/default/assets/modernizr.min.js",
             "App_Data/Themes/default/assets/interactor.js",
@@ -11,7 +11,7 @@
         ]
     },
     {
-        "outputFileName": "App_Data/Themes/default/assets/static/build/checkout-scripts.js",
+        "outputFileName": "App_Data/Themes/default/assets/static/bundle/checkout-scripts.js",
         "inputFiles": [
             "App_Data/Themes/default/assets/js/app.js",
             "App_Data/Themes/default/assets/js/services.js",
@@ -23,7 +23,7 @@
         ]
     },
     {
-        "outputFileName": "App_Data/Themes/default/assets/static/build/account-scripts.js",
+        "outputFileName": "App_Data/Themes/default/assets/static/bundle/account-scripts.js",
         "inputFiles": [
             "App_Data/Themes/default/assets/modernizr.min.js",
             "App_Data/Themes/default/assets/js/app.js",
@@ -38,7 +38,7 @@
         ]
     },
     {
-        "outputFileName": "App_Data/Themes/default/assets/static/build/styles.css",
+        "outputFileName": "App_Data/Themes/default/assets/static/bundle/styles.css",
         "inputFiles": [
             "App_Data/Themes/default/assets/storefront.css",
             "App_Data/Themes/default/assets/common-components.css",
@@ -47,7 +47,7 @@
         ]
     },
     {
-        "outputFileName": "App_Data/Themes/default/assets/static/build/account-styles.css",
+        "outputFileName": "App_Data/Themes/default/assets/static/bundle/account-styles.css",
         "inputFiles": [
             "App_Data/Themes/default/assets/account-bootstrap.css",
             "App_Data/Themes/default/assets/common-components.css"

@@ -410,28 +410,44 @@
     <Content Include="App_Data\Themes\default\assets\spr.js" />
     <Content Include="App_Data\Themes\default\assets\star_favorite_add.png" />
     <Content Include="App_Data\Themes\default\assets\star_favorite_remove.png" />
-    <Content Include="App_Data\Themes\default\assets\static\build\account-scripts.js" />
-    <Content Include="App_Data\Themes\default\assets\static\build\account-scripts.min.js">
+    <Content Include="App_Data\Themes\default\assets\static\bundle\account-scripts.js" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\account-scripts.min.js">
       <DependentUpon>account-scripts.js</DependentUpon>
     </Content>
-    <Content Include="App_Data\Themes\default\assets\static\build\account-styles.css" />
-    <Content Include="App_Data\Themes\default\assets\static\build\account-styles.min.css">
+    <Content Include="App_Data\Themes\default\assets\static\bundle\account-styles.css" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\account-styles.min.css">
       <DependentUpon>account-styles.css</DependentUpon>
     </Content>
-    <Content Include="App_Data\Themes\default\assets\static\build\checkout-scripts.js" />
-    <Content Include="App_Data\Themes\default\assets\static\build\checkout-scripts.min.js">
+    <Content Include="App_Data\Themes\default\assets\static\bundle\bundle-account-scripts.js" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\bundle-account-scripts.min.js">
+      <DependentUpon>bundle-account-scripts.js</DependentUpon>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\static\bundle\bundle-account-styles.css" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\bundle-account-styles.min.css">
+      <DependentUpon>bundle-account-styles.css</DependentUpon>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\static\bundle\bundle-checkout-scripts.js" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\bundle-checkout-scripts.min.js">
+      <DependentUpon>bundle-checkout-scripts.js</DependentUpon>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\static\bundle\bundle-scripts.js" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\bundle-scripts.min.js">
+      <DependentUpon>bundle-scripts.js</DependentUpon>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\static\bundle\bundle-styles.css" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\bundle-styles.min.css">
+      <DependentUpon>bundle-styles.css</DependentUpon>
+    </Content>
+    <Content Include="App_Data\Themes\default\assets\static\bundle\checkout-scripts.js" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\checkout-scripts.min.js">
       <DependentUpon>checkout-scripts.js</DependentUpon>
     </Content>
-    <Content Include="App_Data\Themes\default\assets\static\build\checkoutscripts.js" />
-    <Content Include="App_Data\Themes\default\assets\static\build\checkoutscripts.min.js">
-      <DependentUpon>checkoutscripts.js</DependentUpon>
-    </Content>
-    <Content Include="App_Data\Themes\default\assets\static\build\scripts.js" />
-    <Content Include="App_Data\Themes\default\assets\static\build\scripts.min.js">
+    <Content Include="App_Data\Themes\default\assets\static\bundle\scripts.js" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\scripts.min.js">
       <DependentUpon>scripts.js</DependentUpon>
     </Content>
-    <Content Include="App_Data\Themes\default\assets\static\build\styles.css" />
-    <Content Include="App_Data\Themes\default\assets\static\build\styles.min.css">
+    <Content Include="App_Data\Themes\default\assets\static\bundle\styles.css" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\styles.min.css">
       <DependentUpon>styles.css</DependentUpon>
     </Content>
     <Content Include="App_Data\Themes\default\assets\status-reduced.svg" />
@@ -495,9 +511,10 @@
     <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Themes\default\assets\static\build\account-scripts.min.js.map" />
-    <Content Include="App_Data\Themes\default\assets\static\build\checkout-scripts.min.js.map" />
-    <Content Include="App_Data\Themes\default\assets\static\build\scripts.min.js.map" />
+    <Content Include=".eslintrc.json" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\account-scripts.min.js.map" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\checkout-scripts.min.js.map" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\scripts.min.js.map" />
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -652,6 +669,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="bundleconfig.json" />
+    <Content Include="bundle.liquid" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
