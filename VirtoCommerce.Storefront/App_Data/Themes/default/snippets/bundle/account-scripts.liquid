@@ -1,0 +1,5 @@
+{%- if application_settings['VirtoCommerce:Storefront:OptimizeStaticContent'] == 'true' -%}
+        {{ 'bundle/account-scripts.min.js?ver=f524cc38f40e' | static_asset_url | script_tag }}
+{%- else -%}
+        {{ 'bundle/account-scripts.js?ver=f524cc38f40e' | static_asset_url | script_tag }}
+{%- endif -%}
