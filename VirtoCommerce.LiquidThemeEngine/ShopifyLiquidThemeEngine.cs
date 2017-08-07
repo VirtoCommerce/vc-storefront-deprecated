@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -287,7 +286,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             var renderParams = new RenderParameters
             {
                 LocalVariables = Hash.FromDictionary(parameters),
-                RethrowErrors = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:LiquidThemeEngine:RethrowErrors", false)
+                RethrowErrors = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:LiquidThemeEngine:RethrowErrors", false)
             };
 
             var parsedTemplate = Template.Parse(templateContent);
@@ -333,7 +332,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 var currentPreset = resultSettings.GetValue("current");
                 if (currentPreset is JValue)
                 {
-                    string currentPresetName = ((JValue)currentPreset).Value.ToString();
+                    var currentPresetName = ((JValue)currentPreset).Value.ToString();
                     var presets = resultSettings.GetValue("presets") as JObject;
                     if (presets == null || !presets.Children().Any())
                     {
@@ -413,7 +412,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 JObject localeJson = null;
                 JObject defaultJson = null;
 
-                foreach (string languageName in new[] { language.CultureName, language.TwoLetterLanguageName })
+                foreach (var languageName in new[] { language.CultureName, language.TwoLetterLanguageName })
                 {
                     var currentLocalePath = Path.Combine(localeFolderPath, string.Concat(languageName, ".json"));
 

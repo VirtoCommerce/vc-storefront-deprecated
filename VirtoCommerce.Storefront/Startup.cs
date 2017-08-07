@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -111,8 +110,6 @@ namespace VirtoCommerce.Storefront
                 CallChildConfigure(app, _managerAssembly, "VirtoCommerce.Platform.Web.Startup", "Configuration", "~/areas/admin", "admin/");
             }
 
-            var appSettings = ConfigurationManager.AppSettings;
-
             UnityWebActivator.Start();
             var container = UnityConfig.GetConfiguredContainer();
 
@@ -148,31 +145,31 @@ namespace VirtoCommerce.Storefront
             };
 
             var distributedCache = CacheFactory.Build("distributedCache", settings =>
-      {
-          var jsonSerializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
-          var redisCacheEnabled = appSettings.GetValue("VirtoCommerce:Storefront:RedisCache:Enabled", false);
+            {
+                var jsonSerializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+                var redisCacheEnabled = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:RedisCache:Enabled", false);
 
-          var memoryHandlePart = settings
-              .WithJsonSerializer(jsonSerializerSettings, jsonSerializerSettings)
-              .WithUpdateMode(CacheUpdateMode.Up)
-              .WithSystemRuntimeCacheHandle("memory")
-              .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromHours(1));
+                var memoryHandlePart = settings
+                    .WithJsonSerializer(jsonSerializerSettings, jsonSerializerSettings)
+                    .WithUpdateMode(CacheUpdateMode.Up)
+                    .WithSystemRuntimeCacheHandle("memory")
+                    .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromHours(1));
 
-          if (redisCacheEnabled)
-          {
-              var redisCacheConnectionStringName = appSettings.GetValue("VirtoCommerce:Storefront:RedisCache:ConnectionStringName", "RedisCache");
-              var redisConnectionString = ConnectionStringHelper.GetConnectionString(redisCacheConnectionStringName);
+                if (redisCacheEnabled)
+                {
+                    var redisCacheConnectionStringName = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:RedisCache:ConnectionStringName", "RedisCache");
+                    var redisConnectionString = ConfigurationHelper.GetConnectionStringValue(redisCacheConnectionStringName);
 
-              memoryHandlePart
-                  .And
-                  .WithRedisConfiguration("redis", redisConnectionString)
-                  .WithRetryTimeout(100)
-                  .WithMaxRetries(1000)
-                  .WithRedisBackplane("redis")
-                  .WithRedisCacheHandle("redis", true)
-                  .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromHours(1));
-          }
-      });
+                    memoryHandlePart
+                        .And
+                        .WithRedisConfiguration("redis", redisConnectionString)
+                        .WithRetryTimeout(100)
+                        .WithMaxRetries(1000)
+                        .WithRedisBackplane("redis")
+                        .WithRedisCacheHandle("redis", true)
+                        .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromHours(1));
+                }
+            });
             var distributedCacheManager = new DistributedCacheManager(distributedCache);
             container.RegisterInstance<IDistributedCacheManager>(distributedCacheManager);
 
@@ -185,7 +182,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterInstance(workContextFactory);
 
             // Workaround for old storefront base URL: remove /api/ suffix since it is already included in every resource address in VirtoCommerce.Client library.
-            var baseUrl = ConnectionStringHelper.GetConnectionString("VirtoCommerceBaseUrl");
+            var baseUrl = ConfigurationHelper.GetConnectionStringValue("VirtoCommerceBaseUrl");
             if (baseUrl != null && baseUrl.EndsWith("/api/", StringComparison.OrdinalIgnoreCase))
             {
                 var apiPosition = baseUrl.LastIndexOf("/api/", StringComparison.OrdinalIgnoreCase);
@@ -195,8 +192,8 @@ namespace VirtoCommerce.Storefront
                 }
             }
 
-            var apiAppId = appSettings["vc-public-ApiAppId"];
-            var apiSecretKey = appSettings["vc-public-ApiSecretKey"];
+            var apiAppId = ConfigurationHelper.GetAppSettingsValue("vc-public-ApiAppId");
+            var apiSecretKey = ConfigurationHelper.GetAppSettingsValue("vc-public-ApiSecretKey");
             container.RegisterInstance(new HmacCredentials(apiAppId, apiSecretKey));
 
             container.RegisterType<VirtoCommerceApiRequestHandler>(new PerRequestLifetimeManager());
@@ -209,7 +206,7 @@ namespace VirtoCommerce.Storefront
             }));
 
             //Timeout for all API requests. Should be small on production to prevent platform API flood.
-            var apiRequestTimeout = TimeSpan.Parse(appSettings.GetValue("VirtoCommerce:Storefront:ApiRequest:Timeout", "0:0:30"));
+            var apiRequestTimeout = TimeSpan.Parse(ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:ApiRequest:Timeout", "0:0:30"));
 
             var baseUri = new Uri(baseUrl);
             container.RegisterType<ICacheModuleApiClient>(new PerRequestLifetimeManager(), new InjectionFactory(c => new CacheModuleApiClient(baseUri, c.Resolve<VirtoCommerceApiRequestHandler>(), c.Resolve<System.Net.Http.HttpClientHandler>()).DisableRetries().WithTimeout(apiRequestTimeout)));
@@ -259,7 +256,7 @@ namespace VirtoCommerce.Storefront
             container.RegisterType<IAsyncObserver<UserLoginEvent>, CartBuilder>("Merge anonymous cart with loggined user cart");
             container.RegisterType<IAsyncObserver<UserLoginEvent>, QuoteRequestBuilder>("Merge anonymous quote request with loggined user quote");
 
-            var cmsContentConnectionString = BlobConnectionString.Parse(ConnectionStringHelper.GetConnectionString("ContentConnectionString"));
+            var cmsContentConnectionString = BlobConnectionString.Parse(ConfigurationHelper.GetConnectionStringValue("ContentConnectionString"));
             var themesBasePath = cmsContentConnectionString.RootPath.TrimEnd('/') + "/" + "Themes";
             var staticContentBasePath = cmsContentConnectionString.RootPath.TrimEnd('/') + "/" + "Pages";
             //Use always file system provider for global theme
@@ -293,8 +290,8 @@ namespace VirtoCommerce.Storefront
             //Register generate sitemap background job
             container.RegisterType<GenerateSitemapJob>(new InjectionFactory(c => new GenerateSitemapJob(themesBlobProvider, c.Resolve<ISitemapsModuleApiClient>(), c.Resolve<IStorefrontUrlBuilder>())));
 
-            var changesTrackingEnabled = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:ChangesTracking:Enabled", true);
-            var changesTrackingInterval = TimeSpan.Parse(ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:ChangesTracking:Interval", "0:1:0"));
+            var changesTrackingEnabled = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:ChangesTracking:Enabled", true);
+            var changesTrackingInterval = TimeSpan.Parse(ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:ChangesTracking:Interval", "0:1:0"));
             var changesTrackingService = new ChangesTrackingService(changesTrackingEnabled, changesTrackingInterval, container.Resolve<ICacheModuleApiClient>());
             container.RegisterInstance<IChangesTrackingService>(changesTrackingService);
 
@@ -304,7 +301,7 @@ namespace VirtoCommerce.Storefront
             RouteConfig.RegisterRoutes(RouteTable.Routes, container.Resolve<ISeoRouteService>(), workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>());
             AuthConfig.ConfigureAuth(app, () => container.Resolve<IStorefrontUrlBuilder>());
             var bundleConfig = container.Resolve<BundleConfig>();
-            bundleConfig.Minify = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:OptimizeStaticContent", false);
+            bundleConfig.Minify = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:OptimizeStaticContent", false);
             bundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //This special binders need because all these types not contains default ctor and Money with Currency properties

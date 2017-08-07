@@ -92,6 +92,7 @@
     <Compile Include="Catalog\TermExtensions.cs" />
     <Compile Include="Common\AnonymousComparer.cs" />
     <Compile Include="Common\CacheManagerBase.cs" />
+    <Compile Include="Common\ConfigurationHelper.cs" />
     <Compile Include="Common\DistributedCacheManager.cs" />
     <Compile Include="Common\EntryState.cs" />
     <Compile Include="Common\EnumerableExtension.cs" />

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Optimization;
@@ -11,7 +10,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
 {
     public class BundleFilters
     {
-        private static readonly bool _optimizeStaticContent = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:OptimizeStaticContent", false);
+        private static readonly bool _optimizeStaticContent = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:OptimizeStaticContent", false);
 
         public static string ScriptBundleTag(string input)
         {
