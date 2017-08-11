@@ -15,9 +15,20 @@ storefrontApp.directive('vcContentPlace', ['marketingService', function (marketi
 storefrontApp.directive('fallbackSrc', function () {
     return {
         link: function (scope, element, attrs) {
-            element.on('error', function () {
-                element.attr('src', attrs.fallbackSrc);
+            element.on('error', errorHandler);
+
+            scope.$on('$destroy', () => {
+                element.off('error', errorHandler);
             });
+
+            function errorHandler(event) {
+                if (element.attr('src') !== attrs.fallbackSrc) {
+                    element.attr('src', attrs.fallbackSrc);
+                }
+                else {
+                    element.off(event);
+                }
+            };
         }
-    };
+    }
 });
