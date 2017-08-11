@@ -626,6 +626,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <param name='id'>
         /// member id
         /// </param>
+        /// <param name='responseGroup'>
+        /// response group
+        /// </param>
+        /// <param name='memberType'>
+        /// member type
+        /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -644,7 +650,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Member>> GetMemberByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Member>> GetMemberByIdWithHttpMessagesAsync(string id, string responseGroup = default(string), string memberType = default(string), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
             {
@@ -658,6 +664,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
                 tracingParameters.Add("id", id);
+                tracingParameters.Add("responseGroup", responseGroup);
+                tracingParameters.Add("memberType", memberType);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetMemberById", tracingParameters);
             }
@@ -665,6 +673,19 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/members/{id}").ToString();
             _url = _url.Replace("{id}", System.Uri.EscapeDataString(id));
+            System.Collections.Generic.List<string> _queryParameters = new System.Collections.Generic.List<string>();
+            if (responseGroup != null)
+            {
+                _queryParameters.Add(string.Format("responseGroup={0}", System.Uri.EscapeDataString(responseGroup)));
+            }
+            if (memberType != null)
+            {
+                _queryParameters.Add(string.Format("memberType={0}", System.Uri.EscapeDataString(memberType)));
+            }
+            if (_queryParameters.Count > 0)
+            {
+                _url += "?" + string.Join("&", _queryParameters);
+            }
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -760,6 +781,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
 
         /// <param name='ids'>
         /// </param>
+        /// <param name='responseGroup'>
+        /// </param>
+        /// <param name='memberTypes'>
+        /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -778,7 +803,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Member>> GetMembersByIdsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Member>> GetMembersByIdsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, string responseGroup = default(string), System.Collections.Generic.IList<string> memberTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (ids == null)
             {
@@ -792,6 +817,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
                 System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
                 tracingParameters.Add("ids", ids);
+                tracingParameters.Add("responseGroup", responseGroup);
+                tracingParameters.Add("memberTypes", memberTypes);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "GetMembersByIds", tracingParameters);
             }
@@ -810,6 +837,24 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                     foreach (var _item in ids)
                     {
                         _queryParameters.Add(string.Format("ids={0}", System.Uri.EscapeDataString(_item ?? string.Empty)));
+                    }
+                }
+            }
+            if (responseGroup != null)
+            {
+                _queryParameters.Add(string.Format("responseGroup={0}", System.Uri.EscapeDataString(responseGroup)));
+            }
+            if (memberTypes != null)
+            {
+                if (memberTypes.Count == 0)
+                {
+                    _queryParameters.Add(string.Format("memberTypes={0}", System.Uri.EscapeDataString(string.Empty)));
+                }
+                else
+                {
+                    foreach (var _item in memberTypes)
+                    {
+                        _queryParameters.Add(string.Format("memberTypes={0}", System.Uri.EscapeDataString(_item ?? string.Empty)));
                     }
                 }
             }
@@ -2990,6 +3035,140 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             return _result;
         }
 
+        /// <param name='memberId'>
+        /// </param>
+        /// <param name='addresses'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateAddessesWithHttpMessagesAsync(string memberId, System.Collections.Generic.IList<Address> addresses, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (memberId == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "memberId");
+            }
+            if (addresses == null)
+            {
+                throw new Microsoft.Rest.ValidationException(Microsoft.Rest.ValidationRules.CannotBeNull, "addresses");
+            }
+            // Tracing
+            bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = Microsoft.Rest.ServiceClientTracing.NextInvocationId.ToString();
+                System.Collections.Generic.Dictionary<string, object> tracingParameters = new System.Collections.Generic.Dictionary<string, object>();
+                tracingParameters.Add("memberId", memberId);
+                tracingParameters.Add("addresses", addresses);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "UpdateAddesses", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = this.Client.BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/addresses").ToString();
+            System.Collections.Generic.List<string> _queryParameters = new System.Collections.Generic.List<string>();
+            if (memberId != null)
+            {
+                _queryParameters.Add(string.Format("memberId={0}", System.Uri.EscapeDataString(memberId)));
+            }
+            if (_queryParameters.Count > 0)
+            {
+                _url += "?" + string.Join("&", _queryParameters);
+            }
+            // Create HTTP transport objects
+            System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
+            System.Net.Http.HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new System.Net.Http.HttpMethod("PUT");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            if(addresses != null)
+            {
+                _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(addresses, this.Client.SerializationSettings);
+                _httpRequest.Content = new System.Net.Http.StringContent(_requestContent, System.Text.Encoding.UTF8);
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+            }
+            // Set Credentials
+            if (this.Client.Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.Client.Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            System.Net.HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if (!_httpResponse.IsSuccessStatusCode)
+            {
+                var ex = new System.Exception(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                if (!string.IsNullOrEmpty(_responseContent)){
+                    ex = new System.Exception(ex.Message +"\r\n"+ _responseContent);
+                }
+                var aB = _requestContent;
+                if (_shouldTrace)
+                {
+                    Microsoft.Rest.ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new Microsoft.Rest.HttpOperationResponse();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            if (_shouldTrace)
+            {
+                Microsoft.Rest.ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -3091,9 +3270,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             /// <param name='id'>
             /// member id
             /// </param>
-            public static Member GetMemberById(this ICustomerModule operations, string id)
+            /// <param name='responseGroup'>
+            /// response group
+            /// </param>
+            /// <param name='memberType'>
+            /// member type
+            /// </param>
+            public static Member GetMemberById(this ICustomerModule operations, string id, string responseGroup = default(string), string memberType = default(string))
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).GetMemberByIdAsync(id), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).GetMemberByIdAsync(id, responseGroup, memberType), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -3105,12 +3290,18 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             /// <param name='id'>
             /// member id
             /// </param>
+            /// <param name='responseGroup'>
+            /// response group
+            /// </param>
+            /// <param name='memberType'>
+            /// member type
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<Member> GetMemberByIdAsync(this ICustomerModule operations, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<Member> GetMemberByIdAsync(this ICustomerModule operations, string id, string responseGroup = default(string), string memberType = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.GetMemberByIdWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetMemberByIdWithHttpMessagesAsync(id, responseGroup, memberType, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -3121,9 +3312,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             /// </param>
             /// <param name='ids'>
             /// </param>
-            public static Member GetMembersByIds(this ICustomerModule operations, System.Collections.Generic.IList<string> ids)
+            /// <param name='responseGroup'>
+            /// </param>
+            /// <param name='memberTypes'>
+            /// </param>
+            public static Member GetMembersByIds(this ICustomerModule operations, System.Collections.Generic.IList<string> ids, string responseGroup = default(string), System.Collections.Generic.IList<string> memberTypes = default(System.Collections.Generic.IList<string>))
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).GetMembersByIdsAsync(ids), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).GetMembersByIdsAsync(ids, responseGroup, memberTypes), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <param name='operations'>
@@ -3131,12 +3326,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
             /// </param>
             /// <param name='ids'>
             /// </param>
+            /// <param name='responseGroup'>
+            /// </param>
+            /// <param name='memberTypes'>
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<Member> GetMembersByIdsAsync(this ICustomerModule operations, System.Collections.Generic.IList<string> ids, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<Member> GetMembersByIdsAsync(this ICustomerModule operations, System.Collections.Generic.IList<string> ids, string responseGroup = default(string), System.Collections.Generic.IList<string> memberTypes = default(System.Collections.Generic.IList<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.GetMembersByIdsWithHttpMessagesAsync(ids, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.GetMembersByIdsWithHttpMessagesAsync(ids, responseGroup, memberTypes, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -3656,6 +3855,33 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
                 }
             }
 
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='memberId'>
+            /// </param>
+            /// <param name='addresses'>
+            /// </param>
+            public static void UpdateAddesses(this ICustomerModule operations, string memberId, System.Collections.Generic.IList<Address> addresses)
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(s => ((ICustomerModule)s).UpdateAddessesAsync(memberId, addresses), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None,  System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='memberId'>
+            /// </param>
+            /// <param name='addresses'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async System.Threading.Tasks.Task UpdateAddessesAsync(this ICustomerModule operations, string memberId, System.Collections.Generic.IList<Address> addresses, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            {
+                await operations.UpdateAddessesWithHttpMessagesAsync(memberId, addresses, null, cancellationToken).ConfigureAwait(false);
+            }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -3722,6 +3948,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <param name='id'>
         /// member id
         /// </param>
+        /// <param name='responseGroup'>
+        /// response group
+        /// </param>
+        /// <param name='memberType'>
+        /// member type
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -3737,9 +3969,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Member>> GetMemberByIdWithHttpMessagesAsync(string id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Member>> GetMemberByIdWithHttpMessagesAsync(string id, string responseGroup = default(string), string memberType = default(string), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <param name='ids'>
         /// </param>
+        /// <param name='responseGroup'>
+        /// </param>
+        /// <param name='memberTypes'>
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -3755,7 +3991,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Member>> GetMembersByIdsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<Member>> GetMembersByIdsWithHttpMessagesAsync(System.Collections.Generic.IList<string> ids, string responseGroup = default(string), System.Collections.Generic.IList<string> memberTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Update member
         /// </summary>
@@ -4079,6 +4315,23 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi
         /// Thrown when a required parameter is null
         /// </exception>
         System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<VendorSearchResult>> SearchVendorsWithHttpMessagesAsync(MembersSearchCriteria criteria, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <param name='memberId'>
+        /// </param>
+        /// <param name='addresses'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="System.Exception">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> UpdateAddessesWithHttpMessagesAsync(string memberId, System.Collections.Generic.IList<Address> addresses, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -4430,7 +4683,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// <param name="valueType">Possible values include: 'Undefined',
         /// 'ShortText', 'LongText', 'Integer', 'Decimal', 'DateTime',
         /// 'Boolean', 'Html'</param>
-        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), int? displayOrder = default(int?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ObjectId = objectId;
             Values = values;
@@ -4441,6 +4694,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
             IsDictionary = isDictionary;
             IsMultilingual = isMultilingual;
             IsRequired = isRequired;
+            DisplayOrder = displayOrder;
             ValueType = valueType;
             DisplayNames = displayNames;
             CreatedDate = createdDate;
@@ -4494,6 +4748,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isRequired")]
         public bool? IsRequired { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "displayOrder")]
+        public int? DisplayOrder { get; set; }
 
         /// <summary>
         /// Gets or sets possible values include: 'Undefined', 'ShortText',
@@ -5115,7 +5374,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// </summary>
         /// <param name="userState">Possible values include:
         /// 'PendingApproval', 'Approved', 'Rejected'</param>
-        public ApplicationUserExtended(string id = default(string), string userName = default(string), string email = default(string), string phoneNumber = default(string), string storeId = default(string), string memberId = default(string), string icon = default(string), bool? isAdministrator = default(bool?), string userType = default(string), string userState = default(string), string password = default(string), string passwordHash = default(string), string securityStamp = default(string), System.Collections.Generic.IList<ApplicationUserLogin> logins = default(System.Collections.Generic.IList<ApplicationUserLogin>), System.Collections.Generic.IList<Role> roles = default(System.Collections.Generic.IList<Role>), System.Collections.Generic.IList<string> permissions = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<ApiAccount> apiAccounts = default(System.Collections.Generic.IList<ApiAccount>))
+        public ApplicationUserExtended(string id = default(string), string userName = default(string), string email = default(string), string phoneNumber = default(string), string storeId = default(string), string memberId = default(string), string icon = default(string), bool? isAdministrator = default(bool?), string userType = default(string), string userState = default(string), string password = default(string), string passwordHash = default(string), string securityStamp = default(string), System.Collections.Generic.IList<ApplicationUserLogin> logins = default(System.Collections.Generic.IList<ApplicationUserLogin>), System.Collections.Generic.IList<Role> roles = default(System.Collections.Generic.IList<Role>), System.Collections.Generic.IList<string> permissions = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<ApiAccount> apiAccounts = default(System.Collections.Generic.IList<ApiAccount>), System.Collections.Generic.IList<OperationLog> operationsLog = default(System.Collections.Generic.IList<OperationLog>))
         {
             Id = id;
             UserName = userName;
@@ -5134,6 +5393,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
             Roles = roles;
             Permissions = permissions;
             ApiAccounts = apiAccounts;
+            OperationsLog = operationsLog;
         }
 
         /// <summary>
@@ -5222,6 +5482,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "apiAccounts")]
         public System.Collections.Generic.IList<ApiAccount> ApiAccounts { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "operationsLog")]
+        public System.Collections.Generic.IList<OperationLog> OperationsLog { get; set; }
 
     }
 }
@@ -5477,6 +5742,88 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "secretKey")]
         public string SecretKey { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class OperationLog
+    {
+        /// <summary>
+        /// Initializes a new instance of the OperationLog class.
+        /// </summary>
+        public OperationLog() { }
+
+        /// <summary>
+        /// Initializes a new instance of the OperationLog class.
+        /// </summary>
+        /// <param name="operationType">Possible values include: 'Detached',
+        /// 'Unchanged', 'Added', 'Deleted', 'Modified'</param>
+        public OperationLog(string objectType = default(string), string objectId = default(string), string operationType = default(string), string detail = default(string), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        {
+            ObjectType = objectType;
+            ObjectId = objectId;
+            OperationType = operationType;
+            Detail = detail;
+            CreatedDate = createdDate;
+            ModifiedDate = modifiedDate;
+            CreatedBy = createdBy;
+            ModifiedBy = modifiedBy;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectType")]
+        public string ObjectType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectId")]
+        public string ObjectId { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'Detached', 'Unchanged',
+        /// 'Added', 'Deleted', 'Modified'
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "operationType")]
+        public string OperationType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "detail")]
+        public string Detail { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdDate")]
+        public System.DateTime? CreatedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedDate")]
+        public System.DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "createdBy")]
+        public string CreatedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "modifiedBy")]
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
     }
 }

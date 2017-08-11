@@ -7804,7 +7804,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <param name="valueType">Possible values include: 'Undefined',
         /// 'ShortText', 'LongText', 'Integer', 'Decimal', 'DateTime',
         /// 'Boolean', 'Html'</param>
-        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), int? displayOrder = default(int?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ObjectId = objectId;
             Values = values;
@@ -7815,6 +7815,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
             IsDictionary = isDictionary;
             IsMultilingual = isMultilingual;
             IsRequired = isRequired;
+            DisplayOrder = displayOrder;
             ValueType = valueType;
             DisplayNames = displayNames;
             CreatedDate = createdDate;
@@ -7868,6 +7869,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isRequired")]
         public bool? IsRequired { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "displayOrder")]
+        public int? DisplayOrder { get; set; }
 
         /// <summary>
         /// Gets or sets possible values include: 'Undefined', 'ShortText',
@@ -9260,10 +9266,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductPromoEntry class.
         /// </summary>
-        public ProductPromoEntry(string code = default(string), int? quantity = default(int?), double? price = default(double?), double? discount = default(double?), string catalogId = default(string), string categoryId = default(string), string productId = default(string), object owner = default(object), string outline = default(string), System.Collections.Generic.IList<ProductPromoEntry> variations = default(System.Collections.Generic.IList<ProductPromoEntry>), System.Collections.Generic.IDictionary<string, string> attributes = default(System.Collections.Generic.IDictionary<string, string>))
+        public ProductPromoEntry(string code = default(string), int? quantity = default(int?), int? inStockQuantity = default(int?), double? price = default(double?), double? discount = default(double?), string catalogId = default(string), string categoryId = default(string), string productId = default(string), object owner = default(object), string outline = default(string), System.Collections.Generic.IList<ProductPromoEntry> variations = default(System.Collections.Generic.IList<ProductPromoEntry>), System.Collections.Generic.IDictionary<string, string> attributes = default(System.Collections.Generic.IDictionary<string, string>))
         {
             Code = code;
             Quantity = quantity;
+            InStockQuantity = inStockQuantity;
             Price = price;
             Discount = discount;
             CatalogId = catalogId;
@@ -9284,6 +9291,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "quantity")]
         public int? Quantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "inStockQuantity")]
+        public int? InStockQuantity { get; set; }
 
         /// <summary>
         /// </summary>

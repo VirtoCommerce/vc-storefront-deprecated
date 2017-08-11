@@ -1,41 +1,116 @@
-﻿<h1>Thank you!</h1>
-<h4>{{ 'customer.order.title' | t: name: order.name }}</h4>
-<table class="full">
-    <thead>
-        <tr>
-            <th>{{ 'customer.order.product' | t }}</th>
-            <th>{{ 'customer.order.sku' | t }}</th>
-            <th>{{ 'customer.order.price' | t }}</th>
-            <th class="text-center">{{ 'customer.order.quantity' | t }}</th>
-            <th class="text-right">{{ 'customer.order.total' | t }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for line_item in order.line_items %}
-        <tr id="{{ line_item.id }}">
-            <td>
-                {{ line_item.title | link_to: line_item.product.url }}
-                {% if line_item.fulfillment %}
-                <div class="note">
-                    {% assign date = line_item.fulfillment.created_at | date: format: 'month_day_year' %}
-                    {{ 'customer.order.fulfilled_on' | t: date: date }}
-                    {% if line_item.fulfillment.tracking_number %}
-                    <a href="{{ line_item.fulfillment.tracking_url }}">{{ line_item.fulfillment.tracking_company }} #{{ line_item.fulfillment.tracking_number}}</a>
-                    {% endif %}
-                </div>
+﻿<div ng-controller="orderController">
+    <h4>{{ 'customer.order.title' | t: name: order.name }}</h4>
+    <table class="full">
+        <thead>
+            <tr>
+                <th>{{ 'customer.order.product' | t }}</th>
+                <th>{{ 'customer.order.sku' | t }}</th>
+                <th>{{ 'customer.order.price' | t }}</th>
+                <th class="text-center">{{ 'customer.order.quantity' | t }}</th>
+                <th class="text-right">{{ 'customer.order.total' | t }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="lineItem in order.items">
+                <td>
+                    <a ng-href="{% raw %}{{ 'product/' + lineItem.productId }}{% endraw %}" ng-bind="lineItem.name"></a>
+                    <div class="note" ng-if="lineItem.fulfillment" ng-cloak>
+                        {% assign date = line_item.fulfillment.created_at | date: format: 'month_day_year' %}
+                        {{ 'customer.order.fulfilled_on' | t: date: date }}
+                        {% if line_item.fulfillment.tracking_number %}
+                            <a href="{{ line_item.fulfillment.tracking_url }}">{{ line_item.fulfillment.tracking_company }} #{{ line_item.fulfillment.tracking_number}}</a>
+                        {% endif %}
+                    </div>
+                </td>
+                <td ng-bind="lineItem.sku"></td>
+                {% if settings.show_prices_with_taxes %}
+                    <td class="text-center">
+                        <span ng-bind="lineItem.placedPriceWithTax.formattedAmount"></span><br />
+                        <span style="color: #ccc; text-decoration: line-through;" ng-bind="lineItem.listPriceWithTax.formattedAmount"></span>
+                    </td>
+                    <td class="text-center" ng-bind="lineItem.quantity"></td>
+                    <td class="text-center">
+                        <span ng-bind="lineItem.extendedPriceWithTax.formattedAmount"></span>
+                    </td>
+                {% else %}
+                    <td class="text-center">
+                        <span ng-bind="lineItem.placedPrice.formattedAmount"></span><br />
+                        <span style="color: #ccc; text-decoration: line-through;" ng-bind="lineItem.listPrice.formattedAmount"></span>
+                    </td>
+                    <td class="text-center" ng-bind="lineItem.quantity"></td>
+                    <td class="text-center">
+                        <span ng-bind="lineItem.extendedPrice.formattedAmount"></span>
+                    </td>
                 {% endif %}
-            </td>
-            <td>{{ line_item.sku }}</td>
-            {% if settings.show_prices_with_taxes %}
-                <td>{{ line_item.price_with_tax | money }}</td>
-                <td class="text-center">{{ line_item.quantity }}</td>
-                <td class="text-right">{{ line_item.line_price_with_tax | money }}</td>
-            {% else %}
-                <td>{{ line_item.price | money }}</td>
-                <td class="text-center">{{ line_item.quantity }}</td>
-                <td class="text-right">{{ line_item.line_price | money }}</td>
-            {% endif %}            
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <div class="grid">
+        {% if settings.show_prices_with_taxes %}
+            <div class="grid-item large--two-thirds">&nbsp;</div>
+            <div class="grid-item large--one-third text-right">
+                {{ 'checkout.subtotalWithTax' | t }}
+                <span class="h1 cart-subtotal--price">
+                    <small ng-bind="order.subTotalWithTax.formattedAmount"></small>
+                </span>
+            </div>
+            <div class="grid-item large--two-thirds">&nbsp;</div>
+            <div class="grid-item large--one-third text-right">
+                {{ 'checkout.shippingWithTax' | t }}
+                <span class="h1 cart-subtotal--price">
+                    <small ng-bind="order.shippingTotalWithTax.formattedAmount"></small>
+                </span>
+            </div>
+            <div class="grid-item large--two-thirds">&nbsp;</div>
+            <div class="grid-item large--one-third text-right">
+                {{ 'checkout.discount' | t }}
+                <span class="h1 cart-subtotal--price">
+                    <small ng-bind="order.discountTotalWithTax.formattedAmount"></small>
+                </span>
+            </div>
+        {% else %}
+            <div class="grid-item large--two-thirds">&nbsp;</div>
+            <div class="grid-item large--one-third text-right">
+                {{ 'checkout.subtotal' | t }}
+                <span class="h1 cart-subtotal--price">
+                    <small ng-bind="order.subTotal.formattedAmount"></small>
+                </span>
+            </div>
+            <div class="grid-item large--two-thirds">&nbsp;</div>
+            <div class="grid-item large--one-third text-right">
+                {{ 'checkout.shipping' | t }}
+                <span class="h1 cart-subtotal--price">
+                    <small ng-bind="order.shippingTotal.formattedAmount"></small>
+                </span>
+            </div>
+            <div class="grid-item large--two-thirds">&nbsp;</div>
+            <div class="grid-item large--one-third text-right">
+                {{ 'checkout.discount' | t }}
+                <span class="h1 cart-subtotal--price">
+                    <small ng-bind="order.discountTotal.formattedAmount"></small>
+                </span>
+            </div>
+        {% endif %}
+        <div class="grid-item large--two-thirds">&nbsp;</div>
+        <div class="grid-item large--one-third text-right">
+            Tax total
+            <span class="h1 cart-subtotal--price">
+                <small ng-bind="order.taxTotal.formattedAmount"></small>
+            </span>
+        </div>
+    </div>
+    <hr />
+    <div class="grid">
+        <div class="grid-item text-right">
+            <strong>Total</strong>
+            <span class="h1 cart-subtotal--price">
+                <small ng-bind="order.total.formattedAmount"></small>
+            </span>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.orderNumber = '{{ order.name }}';
+</script>

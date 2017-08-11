@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Web;
-using System.Web.Hosting;
 using System.Web.Mvc;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
@@ -44,7 +43,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
             var contentPage = page as ContentPage;
             SetCurrentPage(contentPage);
-            return View("page", page.Layout, WorkContext);
+            return View(contentPage.Template, page.Layout, WorkContext);
         }
 
         // GET: /pages/{page}
@@ -58,7 +57,7 @@ namespace VirtoCommerce.Storefront.Controllers
             if (contentPage != null)
             {
                 SetCurrentPage(contentPage);
-                return View("page", WorkContext);
+                return View(contentPage.Template, WorkContext);
             }
 
             throw new HttpException(404, "Page not found. Page URL: '" + page + "'.");

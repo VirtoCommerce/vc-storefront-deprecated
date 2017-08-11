@@ -8,6 +8,7 @@ using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Customer;
+using VirtoCommerce.Storefront.Model.Inventory.Services;
 using VirtoCommerce.Storefront.Model.Quote;
 using VirtoCommerce.Storefront.Model.Quote.Events;
 using VirtoCommerce.Storefront.Model.Quote.Services;
@@ -226,12 +227,13 @@ namespace VirtoCommerce.Storefront.Test
             var storeApi = GetStoreApiClient();
 
             var cacheManager = new Mock<ILocalCacheManager>().Object;
+            var inventoryService = new Mock<IInventoryService>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
-            var pricingService = new PricingServiceImpl(pricingApi, GetTaxEvaluator(), promotionEvaluator);
+            var pricingService = new PricingServiceImpl(pricingApi, GetTaxEvaluator(), promotionEvaluator, inventoryService);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, GetSubscriptionModuleApiClient(), cacheManager);
 
-            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, pricingService, customerService, GetSubscriptionModuleApiClient(), GetProductAvailabilityService());
+            var result = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, pricingService, customerService, GetSubscriptionModuleApiClient(), GetProductAvailabilityService(), inventoryService);
             return result;
         }
 
@@ -250,10 +252,11 @@ namespace VirtoCommerce.Storefront.Test
             var cacheManager = new Mock<ILocalCacheManager>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
+            var inventoryService = new Mock<IInventoryService>().Object;
 
-            var pricingService = new PricingServiceImpl(pricingApi, GetTaxEvaluator(), promotionEvaluator);
+            var pricingService = new PricingServiceImpl(pricingApi, GetTaxEvaluator(), promotionEvaluator, inventoryService);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, GetSubscriptionModuleApiClient(), cacheManager);
-            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, pricingService, customerService, GetSubscriptionModuleApiClient(), GetProductAvailabilityService());
+            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, pricingService, customerService, GetSubscriptionModuleApiClient(), GetProductAvailabilityService(), inventoryService);
 
             var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, GetTaxEvaluator(), GetSubscriptionModuleApiClient(), GetProductAvailabilityService());
             return retVal;

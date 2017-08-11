@@ -166,7 +166,8 @@ namespace VirtoCommerce.Storefront.Converters
                 Id = propertyDto.Id,
                 Name = propertyDto.Name,
                 Type = propertyDto.Type,
-                ValueType = propertyDto.ValueType
+                ValueType = propertyDto.ValueType,
+                IsMultivalue = propertyDto.Multivalue ?? false
             };
 
             //Set display names and set current display name for requested language
@@ -206,6 +207,19 @@ namespace VirtoCommerce.Storefront.Converters
                 result.Value = result.LocalizedValues.FindWithLanguage(currentLanguage, x => x.Value, result.Value);
             }
 
+            //Set multivalues
+            if (result.IsMultivalue && propertyDto.Values != null)
+            {
+                if (result.LocalizedValues.Any())
+                {
+                    result.Values = result.LocalizedValues.GetLocalizedStringsForLanguage(currentLanguage).Select(x => x.Value).ToList();
+                }
+                else
+                {
+                    result.Values = propertyDto.Values.Where(x => x != null).Select(x => x.Value.ToString()).ToList();
+                }
+            }
+
             return result;
         }
 
@@ -238,6 +252,16 @@ namespace VirtoCommerce.Storefront.Converters
 
                 result.Terms.Add(string.Concat("vendor:", criteria.VendorId));
             }
+            // Add user groups to terms
+            if (!workContext.CurrentCustomer.UserGroups.IsNullOrEmpty())
+            {
+                if (result.Terms == null)
+                {
+                    result.Terms = new List<string>();
+                }
+                //search products with user_groups defined in customer
+                result.Terms.Add("user_groups:" + string.Join(",", workContext.CurrentCustomer.UserGroups));
+            }
 
             return result;
         }
@@ -267,6 +291,7 @@ namespace VirtoCommerce.Storefront.Converters
                 Take = criteria.PageSize,
                 ResponseGroup = ((int)criteria.ResponseGroup).ToString(),
             };
+
 
             return result;
         }
@@ -497,6 +522,7 @@ namespace VirtoCommerce.Storefront.Converters
                 Outline = product.Outline,
                 ProductId = product.Id,
                 Quantity = 1,
+                InStockQuantity = product.Inventory != null && product.Inventory.InStockQuantity.HasValue ? (int)product.Inventory.InStockQuantity.Value : 0,
                 Variations = product.Variations?.Select(ToProductPromoEntryDto).ToList()
             };
 

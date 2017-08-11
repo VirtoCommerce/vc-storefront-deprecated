@@ -1,5 +1,6 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
+
 storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'customerService', 'storefrontApp.mainContext',
     function ($scope, $location, $window, customerService, mainContext) {
 
@@ -63,6 +64,7 @@ storefrontApp.controller('mainController', ['$scope', '$location', '$window', 'c
                     address.id = addressId;
                     addressId++;
                 });
+                response.data.isContact = response.data.memberType === 'Contact';
                 mainContext.customer = $scope.customer = response.data;
             });
         };

@@ -44,7 +44,7 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public static bool FitsMask(this string fileName, string fileMask)
         {
-            var mask = new Regex("^" + fileMask.Replace(".", "[.]").Replace("*", ".*").Replace("?", ".") + "$", RegexOptions.IgnoreCase);
+            var mask = new Regex("^" + Regex.Escape(fileMask).Replace("\\.", "[.]").Replace("\\*", ".*").Replace("\\?", ".") + "$", RegexOptions.IgnoreCase);
             return mask.IsMatch(fileName);
         }
 

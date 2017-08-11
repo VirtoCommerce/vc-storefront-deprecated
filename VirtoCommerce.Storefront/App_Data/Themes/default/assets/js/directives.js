@@ -11,3 +11,13 @@ storefrontApp.directive('vcContentPlace', ['marketingService', function (marketi
         replace: true
     }
 }]);
+
+storefrontApp.directive('fallbackSrc', function () {
+    return {
+        link: function (scope, element, attrs) {
+            element.on('error', function () {
+                element.attr('src', attrs.fallbackSrc);
+            });
+        }
+    };
+});

@@ -356,7 +356,7 @@ namespace VirtoCommerce.Storefront.Builders
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
 
             //Evaluate taxes for available shipping rates
-            var taxEvalContext = Cart.ToTaxEvalContext();
+            var taxEvalContext = Cart.ToTaxEvalContext(workContext.CurrentStore);
             taxEvalContext.Lines.Clear();
             taxEvalContext.Lines.AddRange(retVal.SelectMany(x => x.ToTaxLines()));
             await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
@@ -375,7 +375,8 @@ namespace VirtoCommerce.Storefront.Builders
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
 
             //Evaluate taxes for available payments 
-            var taxEvalContext = Cart.ToTaxEvalContext();
+            var workContext = _workContextFactory();
+            var taxEvalContext = Cart.ToTaxEvalContext(workContext.CurrentStore);
             taxEvalContext.Lines.Clear();
             taxEvalContext.Lines.AddRange(retVal.SelectMany(x => x.ToTaxLines()));
             await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
@@ -397,6 +398,16 @@ namespace VirtoCommerce.Storefront.Builders
             bool isReadOnlyLineItems = Cart.Items.Any(i => i.IsReadOnly);
             if (!isReadOnlyLineItems)
             {
+                //Get product inventory to fill InStockQuantoty parameter of LineItem
+                var productIds = Cart.Items.Select(i => i.ProductId);
+                var products = await _catalogSearchService.GetProductsAsync(productIds.ToArray(), ItemResponseGroup.ItemLarge);
+
+                foreach (var lineItem in Cart.Items) {
+                    var product = products.FirstOrDefault(p => p.Id == lineItem.ProductId);
+                    if (product != null && product.Inventory != null)
+                        lineItem.InStockQuantity = product.Inventory.InStockQuantity.HasValue ? (int)product.Inventory.InStockQuantity.Value : 0;
+                }
+
                 var evalContext = Cart.ToPromotionEvaluationContext();
                 await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
             }
@@ -404,7 +415,8 @@ namespace VirtoCommerce.Storefront.Builders
 
         public async Task EvaluateTaxesAsync()
         {
-            await _taxEvaluator.EvaluateTaxesAsync(Cart.ToTaxEvalContext(), new[] { Cart });
+            var workContext = _workContextFactory();
+            await _taxEvaluator.EvaluateTaxesAsync(Cart.ToTaxEvalContext(workContext.CurrentStore), new[] { Cart });
         }
 
         public virtual async Task SaveAsync()
@@ -493,7 +505,7 @@ namespace VirtoCommerce.Storefront.Builders
             var cart = new ShoppingCart(currency, language)
             {
                 CustomerId = customer.Id,
-                Name = "Default",
+                Name = cartName,
                 StoreId = store.Id,
                 Language = language,
                 IsAnonymous = !customer.IsRegisteredUser,

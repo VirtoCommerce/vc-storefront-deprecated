@@ -1,0 +1,110 @@
+﻿<script id="storefront.recently-added-list-item-dialog.tpl" type="text/ng-template">
+    <div class="ajaxify-modal is-visible" id="ajaxifyModal" style="opacity: 1;" ng-init='initialize({{ settings.available_lists | json }})'>
+        <button class="ajaxifyCart--close" title="{{ 'cart.general.close_cart' | t }}" ng-click="close()">{{ 'cart.general.close_cart' | t }}</button>
+        <div class="ajaxifyCart--content" id="ajaxifyCart">
+            <div ng-if="!itemAdded" class="product-list-modal-wrapper">
+                <h1 style="margin-top:35px;" ng-bind="selectedList.title"></h1>
+                <h1 ng-if="!selectedList.title">Please select list</h1>
+                <div class="cart-row list-modal-row-fix" ng-repeat="list in lists">
+                    <div ng-class="{'activeList': list.name == selectedList.name, 'disabled' : list.contains }" class="selectedTypeOfList" ng-click="selectList(list)">
+                        <div  class="grid">
+                            <div class="grid-item large--seven-twelfths">
+                                <div class="grid product-list-modal-titleShift">
+                                    <div class="grid-item one-third large--one-quarter">
+                                        <span class="cart-image">
+                                            <span class="add-to-favorite-icon"></span>
+                                        </span>
+                                    </div>
+                                    <div class="list-container">
+                                        <span  class="list-text-title" ng-bind="list.title"></span>
+                                        <span class="list-text-descr" ng-bind="list.description"></span>
+                                        <span ng-if="list.contains" class="list-text-descr-inList">
+                                            {{ 'wishlist.general.list_contains' | t }}
+                                            <i ng-if="list.contains" class="fa fa-check-square " aria-hidden="true"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-row product-list-modal-borders product-list-modal-borders">
+                    <div class="grid">
+                        <div class="grid-item text-right">
+                            <button class="btn" >
+                                <span ng-click="close()">{{ 'wishlist.general.cancel' | t }}</span>
+                            </button>
+                            <button ng-class="{ 'btn-secondary btn-secondary-clearfix' : inProgress }" ng-disabled="selectedList.contains || inProgress || !selectedList.name" class="btn " ng-click="addProductToList()">
+                                <span ng-if="!inProgress">{{ 'wishlist.general.add_to_list' | t }}</span>
+                                <span ng-if="inProgress">{{ 'wishlist.general.adding_to_list' | t }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="itemAdded" class="product-list-modal-wrapper">
+                <div class="cart-row">
+                    <div class="grid">
+
+                        <div class="grid-item large--seven-twelfths">
+                            <div class="grid">
+                                <div class="grid-item one-third large--one-quarter">
+
+                                </div>
+                                <div class="product-list-modal-added-toList grid-item two-thirds large--three-quarters">
+                                    <span ng-bind="'{{ 'wishlist.general.added_to_list' | t }}' + ' ' + selectedList.title"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid-item large--seven-twelfths">
+                            <div class="grid">
+                                <div class="grid-item one-third large--one-quarter">
+                                    <span class="cart-image">
+                                        <img ng-src="{% raw %}{{ dialogData.imageUrl }}{% endraw %}" ng-if="dialogData.imageUrl" />
+                                        <div class="no-product-image" ng-if="!dialogData.imageUrl">
+                                            <img src="{{ 'no-image.svg' | asset_url }}" />
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="grid-item two-thirds large--three-quarters">
+                                    <a ng-bind="dialogData.name"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-item large--five-twelfths medium--two-thirds push--medium--one-third">
+                            <div class="grid">
+                                <div class="grid-item one-half medium-down--one-third text-right">
+                                    <div class="ajaxifyCart--qty" ng-bind="dialogData.quantity"></div>
+                                </div>
+                                <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
+                                    {% if settings.show_prices_with_taxes %}
+                                    <span class="h2" ng-bind="dialogData.placedPriceWithTax.formattedAmount"></span>
+                                    <span style="text-decoration: line-through;" ng-if="dialogData.listPriceWithTax.amount != dialogData.placedPriceWithTax.amount" ng-bind="dialogData.listPriceWithTax.formattedAmount"></span>
+                                    {% else %}
+                                    <span class="h2" ng-bind="dialogData.placedPrice.formattedAmount"></span>
+                                    <span style="text-decoration: line-through;" ng-if="dialogData.listPrice.amount != dialogData.placedPrice.amount" ng-bind="dialogData.listPrice.formattedAmount"></span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-row">
+                    <div class="grid">
+                        <div class="grid-item text-right">
+                            <button ng-click="redirect('{{ 'account#/wishlist' | absolute_url }}')" class="btn" >
+                                <span>{{ 'wishlist.general.view_your_list' | t }}</span>
+                            </button>
+                            <button ng-click="close()" class="btn" >
+                                <span>{{ 'wishlist.general.continue_shopping' | t }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ajaxifyCart-overlay"></div>
+</script>

@@ -1,4 +1,4 @@
-<ul class="site-nav" id="accessibleNav">
+﻿<ul class="site-nav" id="accessibleNav">
     {% unless linklists.main-menu.links.first.url == '/' %}
         <li class="large--hide">
             <a href="{{ '/' | absolute_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
@@ -32,14 +32,20 @@
         </li>
     {% endif %}
     {% if shop.customer_accounts_enabled %}
-        {% if customer %}
-            <li class="customer-navlink large--hide"><a href="{{ '/account' | absolute_url }}">{{ 'layout.customer.view_account' | t }}</a></li>
-            <li class="customer-navlink large--hide">{{ 'layout.customer.log_out' | t | customer_logout_link }}</li>
-        {% else %}
-            <li class="customer-navlink large--hide">{{ 'layout.customer.sign_in' | t | customer_login_link }}</li>
-            {% if shop.customer_accounts_optional %}
-                <li class="customer-navlink large--hide">{{ 'layout.customer.create_account' | t | customer_register_link }}</li>
-            {% endif %}
-        {% endif %}
+        <li class="customer-navlink large--hide" ng-if="customer && customer.isRegisteredUser && customer.operatorUserName" ng-cloak>
+            {{ 'layout.customer.logged_in_on_behalf_of_label' | t }} <a href="{{ 'account' | absolute_url }}" ng-bind="customer.firstName || customer.userName"></a>
+        </li>
+        <li class="customer-navlink large--hide" ng-if="customer && customer.isRegisteredUser && !customer.operatorUserName" ng-cloak>
+            {{ 'layout.customer.logged_in_as_label' | t }} <a href="{{ 'account' | absolute_url }}" ng-bind="customer.firstName || customer.userName"></a>
+        </li>
+        <li class="customer-navlink large--hide" ng-if="customer && customer.isRegisteredUser" ng-cloak>
+            {{ 'layout.customer.log_out' | t | customer_logout_link }}
+        </li>
+        <li class="customer-navlink large--hide" ng-if="customer && !customer.isRegisteredUser" ng-cloak>
+            {{ 'layout.customer.sign_in' | t | customer_login_link }}
+        </li>
+        <li class="customer-navlink large--hide" ng-if="customer && !customer.isRegisteredUser">
+            {{ 'layout.customer.create_account' | t | customer_register_link }}
+        </li>
     {% endif %}
 </ul>

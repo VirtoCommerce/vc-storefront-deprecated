@@ -2,6 +2,8 @@
 storefrontApp.controller('searchBarController', ['$scope', '$timeout', '$window', 'catalogService', function ($scope, $timeout, $window, catalogService) {
     var timer;
 
+    $scope.query = $window.searchQuery;
+
     $scope.getSuggestions = function () {
         if (!$scope.query) {
             return;

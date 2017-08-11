@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using DotLiquid;
 
 namespace VirtoCommerce.LiquidThemeEngine.Extensions
@@ -24,9 +22,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Extensions
             {
                 content = template.Render(parameters);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Trace.TraceError(FlattenException(ex));
+                throw;
             }
             finally
             {

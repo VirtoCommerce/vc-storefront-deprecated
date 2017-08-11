@@ -31,9 +31,12 @@ namespace VirtoCommerce.Storefront.Services
 
             long availableQuantity = 0;
 
-            if (product.TrackInventory && product.Inventory != null)
+            if (product.TrackInventory && product.InventoryAll != null)
             {
-                availableQuantity = Math.Max(0, (product.Inventory.InStockQuantity ?? 0L) - (product.Inventory.ReservedQuantity ?? 0L));
+                foreach (var inventory in product.InventoryAll)
+                {
+                    availableQuantity += Math.Max(0, (inventory.InStockQuantity ?? 0L) - (inventory.ReservedQuantity ?? 0L));
+                }
             }
 
             return Task.FromResult(availableQuantity);

@@ -44,6 +44,16 @@ namespace VirtoCommerce.Storefront.Converters
             return seoDto.JsonConvert<coreDto.SeoInfo>().ToSeoInfo();
         }
 
+        public virtual VirtoCommerce.Storefront.Model.Inventory.FulfillmentCenter ToFulfillmentCenter(storeDto.FulfillmentCenter fulfillmentDto)
+        {
+            var result = new VirtoCommerce.Storefront.Model.Inventory.FulfillmentCenter
+            {
+                Id = fulfillmentDto.Id,
+                Name = fulfillmentDto.Name
+            };
+            return result;
+        }
+
         public virtual DynamicProperty ToDynamicProperty(storeDto.DynamicObjectProperty propertyDto)
         {
             return propertyDto.JsonConvert<coreDto.DynamicObjectProperty>().ToDynamicProperty();
@@ -82,6 +92,16 @@ namespace VirtoCommerce.Storefront.Converters
             if (!storeDto.Settings.IsNullOrEmpty())
             {
                 result.Settings = storeDto.Settings.Where(x => !x.ValueType.EqualsInvariant("SecureString")).Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
+            }
+
+            if (storeDto.FulfillmentCenter != null)
+            {
+                result.PrimaryFullfilmentCenter =  ToFulfillmentCenter(storeDto.FulfillmentCenter);
+                result.FulfilmentCenters.Add(result.PrimaryFullfilmentCenter);
+            }
+            if(!storeDto.FulfillmentCenters.IsNullOrEmpty())
+            {
+                result.FulfilmentCenters.AddRange(storeDto.FulfillmentCenters.Select(x => ToFulfillmentCenter(x)));
             }
 
             result.TrustedGroups = storeDto.TrustedGroups;
