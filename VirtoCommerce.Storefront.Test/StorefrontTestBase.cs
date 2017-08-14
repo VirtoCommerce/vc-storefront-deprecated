@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -18,6 +17,7 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog.Services;
+using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Tax.Services;
 using VirtoCommerce.Storefront.Services;
@@ -125,13 +125,13 @@ namespace VirtoCommerce.Storefront.Test
 
         protected Uri GetApiBaseUri()
         {
-            return new Uri(ConfigurationManager.ConnectionStrings["VirtoCommerceBaseUrl"].ConnectionString);
+            return new Uri(ConfigurationHelper.GetConnectionStringValue("VirtoCommerceBaseUrl"));
         }
 
         protected VirtoCommerceApiRequestHandler GetClientCredentials()
         {
-            var apiAppId = ConfigurationManager.AppSettings["vc-public-ApiAppId"];
-            var apiSecretKey = ConfigurationManager.AppSettings["vc-public-ApiSecretKey"];
+            var apiAppId = ConfigurationHelper.GetAppSettingsValue("vc-public-ApiAppId");
+            var apiSecretKey = ConfigurationHelper.GetAppSettingsValue("vc-public-ApiSecretKey");
             return new VirtoCommerceApiRequestHandler(new HmacCredentials(apiAppId, apiSecretKey), null);
         }
     }

@@ -1,5 +1,5 @@
 {%- if application_settings['VirtoCommerce:Storefront:OptimizeStaticContent'] == 'true' -%}
-        {{ 'bundle/account-styles.min.css?ver=f524cc38f40e' | static_asset_url | script_tag }}
+        {{ 'bundle/account-styles.min.css?ver=d623217e3fcf' | static_asset_url | script_tag }}
 {%- else -%}
-        {{ 'bundle/account-styles.css?ver=f524cc38f40e' | static_asset_url | stylesheet_tag }}
+        {{ 'bundle/account-styles.css?ver=d623217e3fcf' | static_asset_url | stylesheet_tag }}
 {%- endif -%}
