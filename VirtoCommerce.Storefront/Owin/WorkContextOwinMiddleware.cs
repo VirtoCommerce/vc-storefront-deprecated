@@ -9,7 +9,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
-using System.Web.Optimization;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
@@ -96,8 +95,12 @@ namespace VirtoCommerce.Storefront.Owin
 
         protected virtual bool IsBundleRequest(IOwinRequest request)
         {
-            var path = "~" + request.Path;
-            return BundleTable.Bundles.Any(b => b.Path.Equals(path, StringComparison.OrdinalIgnoreCase));
+            var retVal = string.Equals(request.Method, "GET", StringComparison.OrdinalIgnoreCase);
+            if (retVal)
+            {
+                retVal = request.Uri.IsFile || request.Uri.AbsolutePath.Contains("/bundles/");
+            }
+            return retVal;
         }
 
         protected virtual bool IsStaticAssetRequest(IOwinRequest request)

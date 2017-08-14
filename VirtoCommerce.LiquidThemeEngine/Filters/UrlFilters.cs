@@ -178,36 +178,6 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
         }
 
         /// <summary>
-        /// Returns the URL of a global assets that are found on Shopify's servers. 
-        /// In virtocommerce is a same asset folder
-        /// customer.css
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static string ShopifyAssetUrl(string input)
-        {
-            return GlobalAssetUrl(input);
-        }
-
-
-        /// <summary>
-        /// Returns the URL of a global asset. Global assets are kept in a directory on Shopify's servers. Using global assets can improve the load times of your pages.
-        /// In virtocommerce is a same asset folder
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static string GlobalAssetUrl(string input)
-        {
-            string retVal = null;
-            if (input != null)
-            {
-                var themeAdaptor = (ShopifyLiquidThemeEngine)Template.FileSystem;
-                retVal = themeAdaptor.GetGlobalAssetAbsoluteUrl(input);
-            }
-            return retVal;
-        }
-
-        /// <summary>
         /// Returns the URL of a file.
         /// </summary>
         /// <param name="input"></param>

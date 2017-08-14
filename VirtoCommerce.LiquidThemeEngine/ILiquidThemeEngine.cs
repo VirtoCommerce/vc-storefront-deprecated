@@ -8,13 +8,12 @@ namespace VirtoCommerce.LiquidThemeEngine
     public interface ILiquidThemeEngine
     {
         IEnumerable<string> DiscoveryPaths { get; }
-        string ResolveTemplatePath(string templateName, bool searchInGlobalThemeOnly = false);
+        string ResolveTemplatePath(string templateName);
         string RenderTemplateByName(string templateName, Dictionary<string, object> parameters);
         string RenderTemplate(string templateContent, Dictionary<string, object> parameters);
         IDictionary GetSettings(string defaultValue = null);
         JObject ReadLocalization();
-        Stream GetAssetStream(string fileName, bool searchInGlobalThemeOnly = false);
+        Stream GetAssetStream(string fileName);
         string GetAssetAbsoluteUrl(string assetName);
-        string GetGlobalAssetAbsoluteUrl(string assetName);
     }
 }
