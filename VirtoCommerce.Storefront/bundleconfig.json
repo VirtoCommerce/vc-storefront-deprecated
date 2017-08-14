@@ -1,0 +1,56 @@
+﻿[
+    {
+        "outputFileName": "App_Data/Themes/default/assets/static/bundle/scripts.js",
+        "inputFiles": [
+            "App_Data/Themes/default/assets/modernizr.min.js",
+            "App_Data/Themes/default/assets/interactor.js",
+            "App_Data/Themes/default/assets/ideal-image-slider.min.js",
+            "App_Data/Themes/default/assets/ideal-image-slider-bullet-nav.js",
+            "App_Data/Themes/default/assets/ideal-image-slider-captions.js",
+            "App_Data/Themes/default/assets/js/*.js"
+        ]
+    },
+    {
+        "outputFileName": "App_Data/Themes/default/assets/static/bundle/checkout-scripts.js",
+        "inputFiles": [
+            "App_Data/Themes/default/assets/js/app.js",
+            "App_Data/Themes/default/assets/js/services.js",
+            "App_Data/Themes/default/assets/js/directives.js",
+            "App_Data/Themes/default/assets/js/filters.js",
+            "App_Data/Themes/default/assets/js/main.js",
+            "App_Data/Themes/default/assets/js/common-components/*.js",
+            "App_Data/Themes/default/assets/js/checkout/*.js"
+        ]
+    },
+    {
+        "outputFileName": "App_Data/Themes/default/assets/static/bundle/account-scripts.js",
+        "inputFiles": [
+            "App_Data/Themes/default/assets/modernizr.min.js",
+            "App_Data/Themes/default/assets/js/app.js",
+            "App_Data/Themes/default/assets/js/services.js",
+            "App_Data/Themes/default/assets/js/main.js",
+            "App_Data/Themes/default/assets/js/cart.js",
+            "App_Data/Themes/default/assets/js/quote-request.js",
+            "App_Data/Themes/default/assets/js/product-compare.js",
+            "App_Data/Themes/default/assets/js/searchBar.js",
+            "App_Data/Themes/default/assets/js/common-components/*.js",
+            "App_Data/Themes/default/assets/js/account/*.js"
+        ]
+    },
+    {
+        "outputFileName": "App_Data/Themes/default/assets/static/bundle/styles.css",
+        "inputFiles": [
+            "App_Data/Themes/default/assets/storefront.css",
+            "App_Data/Themes/default/assets/common-components.css",
+            "App_Data/Themes/default/assets/ideal-image-slider.css",
+            "App_Data/Themes/default/assets/ideal-image-slider-default-theme.css"
+        ]
+    },
+    {
+        "outputFileName": "App_Data/Themes/default/assets/static/bundle/account-styles.css",
+        "inputFiles": [
+            "App_Data/Themes/default/assets/account-bootstrap.css",
+            "App_Data/Themes/default/assets/common-components.css"
+        ]
+    }
+]

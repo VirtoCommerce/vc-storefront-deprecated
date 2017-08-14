@@ -25,7 +25,7 @@
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate.min.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate-loader-url/angular-translate-loader-url.min.js' | script_tag }}
 	
-	{{ '~/default-theme/checkout/scripts' | script_bundle_tag }}
+    {% include 'bundle/checkout-scripts' %}
 
     {{ content_for_header }}
     <script>

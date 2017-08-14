@@ -1,0 +1,7 @@
+{%- if application_settings['VirtoCommerce:Storefront:OptimizeStaticContent'] == 'true' -%}
+        <!-- inject:Release -->
+        <!-- endinject -->
+{%- else -%}
+        <!-- inject:Debug -->
+        <!-- endinject -->
+{%- endif -%}

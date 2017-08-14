@@ -17,7 +17,7 @@ storefrontApp.directive('fallbackSrc', function () {
         link: function (scope, element, attrs) {
             element.on('error', errorHandler);
 
-            scope.$on('$destroy', () => {
+            scope.$on('$destroy', function() {
                 element.off('error', errorHandler);
             });
 

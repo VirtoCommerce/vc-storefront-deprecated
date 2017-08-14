@@ -22,7 +22,8 @@
 
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
     <!--{{ '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css' | stylesheet_tag }}-->
-    {{ '~/default-theme/account/css' | stylesheet_bundle_tag }}
+    
+    {% include 'bundle/account-styles' %}
 
      {{ 'default.scss.css' | asset_url | stylesheet_tag }}
 
@@ -42,7 +43,7 @@
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate-loader-url/angular-translate-loader-url.min.js' | script_tag }}
 	{{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
 
-    {{ '~/default-theme/account/scripts' | script_bundle_tag }}
+    {% include 'bundle/account-scripts' %}
 
 	{{ 'shop.js' | asset_url | script_tag }}
 
