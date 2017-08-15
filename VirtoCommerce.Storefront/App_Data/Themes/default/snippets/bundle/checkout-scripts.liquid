@@ -1,5 +1,5 @@
 {%- if application_settings['VirtoCommerce:Storefront:OptimizeStaticContent'] == 'true' -%}
-        {{ 'bundle/checkout-scripts.min.js?ver=dd6cbd8d456a' | static_asset_url | script_tag }}
+        {{ 'bundle/checkout-scripts.min.js?ver=919bc6f181a3' | static_asset_url | script_tag }}
 {%- else -%}
-        {{ 'bundle/checkout-scripts.js?ver=dd6cbd8d456a' | static_asset_url | script_tag }}
+        {{ 'bundle/checkout-scripts.js?ver=919bc6f181a3' | static_asset_url | script_tag }}
 {%- endif -%}

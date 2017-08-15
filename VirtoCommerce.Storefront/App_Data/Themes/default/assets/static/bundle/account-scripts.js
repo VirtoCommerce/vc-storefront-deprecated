@@ -1838,3 +1838,4 @@ angular.module('storefront.account')
             cancel: { url: 'storefrontapi/subscriptions/:number/cancel', method: 'POST' }
         });
     }]);
+//# sourceMappingURL=account-scripts.js.map

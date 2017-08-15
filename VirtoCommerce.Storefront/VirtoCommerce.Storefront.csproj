@@ -500,6 +500,13 @@
     <Content Include="App_Data\Themes\default\snippets\bundle\checkout-scripts.liquid" />
     <Content Include="App_Data\Themes\default\snippets\bundle\scripts.liquid" />
     <Content Include="App_Data\Themes\default\snippets\bundle\styles.liquid" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\account-styles.css.map" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\account-styles.min.css.map" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\checkout-scripts.js.map" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\scripts.js.map" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\styles.css.map" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\styles.min.css.map" />
+    <Content Include="App_Data\Themes\default\assets\static\bundle\account-scripts.js.map" />
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

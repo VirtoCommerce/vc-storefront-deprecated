@@ -138,14 +138,20 @@
     display: -moz-flex;
     display: -ms-flex;
     display: -o-flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-flex-wrap: wrap;
-    flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
     margin: 0 -5px;
 }
 
     .cols .col {
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+           -moz-box-sizing: border-box;
+                box-sizing: border-box;
         padding: 0 5px;
         width: 100%;
     }
@@ -210,7 +216,9 @@ select {
     padding: 0 11px;
     position: absolute;
     top: 50%;
-    transform: translateY(3px);
+    -webkit-transform: translateY(3px);
+            transform: translateY(3px);
+    -webkit-transition: all .2s ease-out;
     transition: all .2s ease-out;
 }
 
@@ -218,22 +226,28 @@ select {
     background-color: white;
     border: none;
     border-radius: 4px;
-    box-shadow: 0 0 0 1px #d9d9d9;
-    box-sizing: border-box;
+    -webkit-box-shadow: 0 0 0 1px #d9d9d9;
+            box-shadow: 0 0 0 1px #d9d9d9;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
     font-size: 14px;
     margin: 0;
     padding: 13px 11px;
     width: 100%;
+    -webkit-transition: all .2s ease-out;
     transition: all .2s ease-out;
 }
 
     .vc-form .form-input:focus {
-        box-shadow: 0 0 0 2px #1990c6;
+        -webkit-box-shadow: 0 0 0 2px #1990c6;
+                box-shadow: 0 0 0 2px #1990c6;
     }
 
 .vc-form .form-group.keyuped .form-label {
     opacity: 1;
-    transform: none;
+    -webkit-transform: none;
+            transform: none;
     top: 5px;
 }
 
@@ -242,7 +256,8 @@ select {
 }
 
 .vc-form .form-group.error .form-input {
-    box-shadow: 0 0 0 2px #ff6d6d;
+    -webkit-box-shadow: 0 0 0 2px #ff6d6d;
+            box-shadow: 0 0 0 2px #ff6d6d;
 }
 
 .vc-form .form-error {
@@ -262,7 +277,8 @@ select {
     right: 11px;
     top: 50%;
     width: 21px;
-    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
     pointer-events: none;
 }
 
@@ -274,7 +290,8 @@ select {
     position: absolute;
     right: 11px;
     top: 50%;
-    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
     pointer-events: none;
 }
 
@@ -282,7 +299,9 @@ select {
     background: #1990c6;
     border: none;
     border-radius: 4px;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
     color: #fff;
     cursor: pointer;
     display: inline-block;
@@ -291,6 +310,7 @@ select {
     position: relative;
     text-align: center;
     text-decoration: none;
+    -webkit-transition: background-color .2s ease-in-out, color .2s ease-in-out;
     transition: background-color .2s ease-in-out, color .2s ease-in-out;
 }
 
@@ -311,7 +331,9 @@ select {
             border: 3px solid rgba(255,255,255,.7);
             border-top-color: transparent;
             border-radius: 50%;
-            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+               -moz-box-sizing: border-box;
+                    box-sizing: border-box;
             height: 30px;
             margin: -15px 0 0 -15px;
             left: 50%;
@@ -330,7 +352,8 @@ select {
 
 @keyframes loading {
     100% {
-        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
     }
 }
 
@@ -342,7 +365,8 @@ select {
 .vc-btn:focus,
 .vc-btn:active {
     color: #fff;
-    box-shadow: 0 0 0 2px #136f99 inset;
+    -webkit-box-shadow: 0 0 0 2px #136f99 inset;
+            box-shadow: 0 0 0 2px #136f99 inset;
 }
 
 .vc-form .form-input::-webkit-input-placeholder {
@@ -355,7 +379,8 @@ select {
 
 .vc-form .form-box {
     border-radius: 4px;
-    box-shadow: 0 0 0 1px #d9d9d9;
+    -webkit-box-shadow: 0 0 0 1px #d9d9d9;
+            box-shadow: 0 0 0 1px #d9d9d9;
     color: #737373;
     font-size: 14px;
     margin: 0 0 10px;
@@ -371,9 +396,15 @@ select {
     display: -moz-flex;
     display: -ms-flex;
     display: -o-flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-align-items: center;
-    align-items: center;
+    -webkit-box-align: center;
+       -moz-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     cursor: pointer;
     padding: 18px;
 }
@@ -386,7 +417,9 @@ select {
 .vc-form .form-box .switch {
     border: 1px solid #ccc;
     border-radius: 50%;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
     margin: 0 15px 0 0;
     height: 18px;
     position: relative;
@@ -396,7 +429,9 @@ select {
 .vc-form .form-box .radio:checked ~ .switch::after {
     border: 7px solid #1990c6;
     border-radius: 50%;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
     bottom: -1px;
     content: ' ';
     left: -1px;
@@ -410,6 +445,9 @@ select {
     display: -moz-flex;
     display: -ms-flex;
     display: -o-flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
     border-radius: 3px;
 }
@@ -433,7 +471,10 @@ select {
 
 .vc-form .form-box .name {
     -webkit-flex-grow: 1;
-    flex-grow: 1;
+    -webkit-box-flex: 1;
+       -moz-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
 }
 
 .vc-section-header {
@@ -490,7 +531,9 @@ select {
 
     .vc-product-table .product-img img {
         border-radius: 5px;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+           -moz-box-sizing: border-box;
+                box-sizing: border-box;
         display: block;
         padding: 5px;
         width: 100%;
@@ -543,9 +586,15 @@ select {
     display: -moz-flex;
     display: -ms-flex;
     display: -o-flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-align-items: center;
-    align-items: center;
+    -webkit-box-align: center;
+       -moz-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     color: #717171;
     font-size: 14px;
     padding: 0 0 10px;
@@ -553,7 +602,10 @@ select {
 
 .vc-product-totals .list-name {
     -webkit-flex-grow: 1;
-    flex-grow: 1;
+    -webkit-box-flex: 1;
+       -moz-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
 }
 
 .vc-product-totals .list-price {
@@ -561,9 +613,15 @@ select {
     display: -moz-flex;
     display: -ms-flex;
     display: -o-flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-align-items: center;
-    align-items: center;
+    -webkit-box-align: center;
+       -moz-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 .vc-product-totals .list-currency {
@@ -610,9 +668,15 @@ select {
     display: -moz-flex;
     display: -ms-flex;
     display: -o-flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
     -webkit-align-items: center;
-    align-items: center;
+    -webkit-box-align: center;
+       -moz-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 .vc-product-address .list-action {
@@ -824,7 +888,9 @@ select {
 }
 
 .tooltip {
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
     position: absolute;
     bottom: 130%;
     left: 50%;
@@ -844,7 +910,6 @@ select {
     -webkit-transform: rotateX(20deg) scale(0.8);
     transform: rotateX(20deg) scale(0.8);
     -webkit-transform-origin: center 120%;
-    -ms-transform-origin: center 120%;
     transform-origin: center 120%;
     -webkit-backface-visibility: hidden;
     background-color: rgba(51, 51, 51, 0.9);
@@ -1155,15 +1220,12 @@ select {
 .iis-effect-slide .iis-slide {
 	opacity: 0;
 	-webkit-transition-property: -webkit-transform;
-	   -moz-transition-property: -moz-transform;
-		 -o-transition-property: -o-transform;
+			transition-property: -webkit-transform;
 			transition-property: transform;
+			transition-property: transform, -webkit-transform;
 	-webkit-transition-timing-function: ease-out;
-	   -moz-transition-timing-function: ease-out;
-		 -o-transition-timing-function: ease-out;
 			transition-timing-function: ease-out;
 	-webkit-transform: translateX(0%);
-		-ms-transform: translateX(0%);
 			transform: translateX(0%);
 }
 .iis-effect-slide .iis-current-slide {
@@ -1172,12 +1234,10 @@ select {
 }
 .iis-effect-slide .iis-previous-slide {
 	-webkit-transform: translateX(-100%);
-		-ms-transform: translateX(-100%);
 			transform: translateX(-100%);
 }
 .iis-effect-slide .iis-next-slide {
 	-webkit-transform: translateX(100%);
-		-ms-transform: translateX(100%);
 			transform: translateX(100%);
 }
 .iis-effect-slide.iis-direction-next .iis-previous-slide,
@@ -1192,12 +1252,8 @@ select {
 /* Fade effect */
 .iis-effect-fade .iis-slide {
 	-webkit-transition-property: opacity;
-	   -moz-transition-property: opacity;
-		 -o-transition-property: opacity;
 			transition-property: opacity;
 	-webkit-transition-timing-function: ease-in;
-	   -moz-transition-timing-function: ease-in;
-		 -o-transition-timing-function: ease-in;
 			transition-timing-function: ease-in;
 	opacity: 0;
 }
@@ -1236,11 +1292,8 @@ select {
 	cursor: pointer;
 	opacity: 0;
 	-webkit-transform: translateY(-50%);
-		-ms-transform: translateY(-50%);
 			transform: translateY(-50%);
 	-webkit-transition: 0.3s ease-out;
-	   -moz-transition: 0.3s ease-out;
-		 -o-transition: 0.3s ease-out;
 			transition: 0.3s ease-out;
 }
 .iis-previous-nav {
@@ -1268,8 +1321,6 @@ select {
 	text-align: right;
 	opacity: 0.4;
 	-webkit-transition: 0.3s ease-out;
-	   -moz-transition: 0.3s ease-out;
-		 -o-transition: 0.3s ease-out;
 			transition: 0.3s ease-out;
 }
 .iis-has-captions .iis-bullet-nav { max-width: 42%; }
@@ -1284,8 +1335,6 @@ select {
 	border-radius: 10px;
 	cursor: pointer;
 	-webkit-transition: 0.3s ease-out;
-	   -moz-transition: 0.3s ease-out;
-		 -o-transition: 0.3s ease-out;
 			transition: 0.3s ease-out;
 }
 .iis-bullet-nav a.iis-bullet-active,
@@ -1328,3 +1377,5 @@ select {
 .iis-caption .iis-caption-content a:active {
 	color: #fff;
 }
+
+/*# sourceMappingURL=styles.css.map */
