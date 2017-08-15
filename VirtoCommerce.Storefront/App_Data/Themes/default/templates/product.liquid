@@ -146,15 +146,13 @@
                         <span>{{ 'products.compare_list.add_to_compare' | t }}</span>
                     </button>
                 {% endif %}
-                {% if customer %}
                  <button id="addToWishlist" class="btn btn-clearfix list-btn-alignment" type="button" 
-                         ng-disabled="buttonValid"
+                         ng-show="customer.isRegisteredUser"
+                         ng-disabled="buttonInvalid"
                          ng-click="addProductToWishlist(selectedVariation,$scope.listContains)">
                       <span class="fa fa-file-text list-icon-clearfix"></span>
-                      <span>{{ 'products.list.add_to_myList' | t }}</span>
-                      
-                 </button>
-                {% endif%}
+                      <span>{{ 'products.list.add_to_myList' | t }}</span>                      
+                 </button>                
                 <span id="variantQuantity" class="variant-quantity"></span>
             </form>
             <hr>

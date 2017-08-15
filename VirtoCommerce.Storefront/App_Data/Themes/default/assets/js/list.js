@@ -39,9 +39,8 @@ storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$w
                 list.title = translationIds[titleKey];
                 list.description = translationIds[descriptionKey];
                 });
-
             listService.contains(dialogData.id, list.name).then(function (response) {
-                list.contains = response.data.contains;          
+                list.contains = response.data.contains;
             });            
         });
       
