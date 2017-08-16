@@ -35,6 +35,7 @@ var regex = {
     ext: /\.([^\.]+)$/
 };
 
+var rootPath = 'App_Data/Themes/default/';
 var buildUid = uuid().split('-')[4];
 
 gulp.task('bundle', ['bundle:js', 'bundle:css', 'min:html']);
@@ -42,11 +43,21 @@ gulp.task('bundle', ['bundle:js', 'bundle:css', 'min:html']);
 gulp.task('bundle:js', ['pack:js', 'min:js']);
 gulp.task('bundle:css', ['pack:css', 'min:css']);
 
+function mapSources() {
+    return sourcemaps.mapSources(function (sourcePath, file) {
+        var sourceRootPathEndIndex = sourcePath.indexOf('assets');
+        var sourceRootPath = sourcePath.substring(0, sourceRootPathEndIndex);
+        var relativeRootPath = '../'.repeat((sourceRootPath.match(new RegExp('/', "g")) || []).length) + sourcePath.substring(sourceRootPathEndIndex);
+        return relativeRootPath;
+    });
+}
+
 gulp.task('pack', ['pack:js', 'pack:css']);
 
 function packJs(bundle) {
     return gulp.src(bundle.inputFiles, { base: '.' })
         .pipe(sourcemaps.init())
+        .pipe(mapSources())
         .pipe(concat(bundle.outputFileName));
 }
 
@@ -62,6 +73,7 @@ gulp.task('pack:js', function () {
 function packCss(bundle) {
     return gulp.src(bundle.inputFiles, { base: '.' })
         .pipe(sourcemaps.init())
+        .pipe(mapSources())
         .pipe(concat(bundle.outputFileName))
         .pipe(postcss([
             autoprefixer({
@@ -127,7 +139,7 @@ gulp.task('min:html', function () {
 gulp.task('clean', function () {
     var files = [].concat.apply([], bundleconfig.map(function (bundle) {
         var fileName = bundle.outputFileName;
-        return [fileName, fileName.replace(regex.ext, '.min.$1'), fileName.replace(regex.ext, '.min.$1.map')];
+        return [fileName, fileName.replace(regex.ext, '.$1.map'), fileName.replace(regex.ext, '.min.$1'), fileName.replace(regex.ext, '.min.$1.map')];
     }));
 
     return del(files);
@@ -183,11 +195,11 @@ function defaultOptions(name, tagName, prefix, ignorePath) {
 gulp.task('snippet:js', ['bundle:js'], function () {
     getBundles(regex.js).forEach(function (bundle) {
         return gulp.src('bundle.liquid')
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'script_tag', '', 'App_Data/Themes/default/assets/static/')))
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }).pipe(rename({ extname: '.min.js' })), defaultOptions('Release', 'script_tag', '', 'App_Data/Themes/default/assets/static/')))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'script_tag', '', rootPath + 'assets/static/')))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }).pipe(rename({ extname: '.min.js' })), defaultOptions('Release', 'script_tag', '', rootPath + 'assets/static/')))
             .pipe(replace('?ver=BUILDVERSION', '?ver=' + buildUid))
             .pipe(rename(bundle.outputFileName))
-            .pipe(rename({ dirname: 'App_Data/Themes/default/snippets/bundle', extname: '.liquid' }))
+            .pipe(rename({ dirname: rootPath + 'snippets/bundle', extname: '.liquid' }))
             .pipe(gulp.dest('.'));
     });
 });
@@ -195,11 +207,11 @@ gulp.task('snippet:js', ['bundle:js'], function () {
 gulp.task('snippet:css', ['bundle:css'], function () {
     getBundles(regex.css).forEach(function (bundle) {
         return gulp.src('bundle.liquid')
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'stylesheet_tag', '', 'App_Data/Themes/default/assets/static/')))
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }).pipe(rename({ extname: '.min.css' })), defaultOptions('Release', 'stylesheet_tag', '', 'App_Data/Themes/default/assets/static/')))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'stylesheet_tag', '', rootPath + 'assets/static/')))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }).pipe(rename({ extname: '.min.css' })), defaultOptions('Release', 'stylesheet_tag', '', rootPath + 'assets/static/')))
             .pipe(replace('?ver=BUILDVERSION', '?ver=' + buildUid))
             .pipe(rename(bundle.outputFileName))
-            .pipe(rename({ dirname: 'App_Data/Themes/default/snippets/bundle', extname: '.liquid' }))
+            .pipe(rename({ dirname: rootPath + 'snippets/bundle', extname: '.liquid' }))
             .pipe(gulp.dest('.'));
     });
 });

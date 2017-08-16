@@ -1,8 +1,8 @@
 {
     "version": "1.0.0",
-    "name": "vc-electronics-theme",
-    "author": "Virtocommerce",
-    "description": "Virtocommerce theme for Digitalshop",
+    "name": "vc-default-theme",
+    "author": "VirtoCommerce",
+    "description": "Default theme for Storefront",
     "private": true,
     "tags": [
         "virtocommerce",
@@ -51,8 +51,7 @@
         "merge-stream": "^1.0.1",
         "node-bourbon": "^4.2.8",
         "node-sass": "^4.5.3",
-        "uuid": "^3.0.1",
-        "webpack": "~1.14.0"
+        "uuid": "^3.0.1"
     },
     "homepage": "https://github.com/VirtoCommerce/vc-storefront/",
     "repository": {
