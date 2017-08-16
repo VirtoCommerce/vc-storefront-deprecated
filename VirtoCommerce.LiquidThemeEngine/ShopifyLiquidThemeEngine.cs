@@ -201,12 +201,10 @@ namespace VirtoCommerce.LiquidThemeEngine
                 return null;
 
             var liquidTemplateFileName = string.Format(_liquidTemplateFormat, templateName);
-            var curentThemediscoveryPaths = _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x, liquidTemplateFileName));
+            var curentThemeDiscoveryPaths = _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x, liquidTemplateFileName));
 
             //Try to find template in current theme folder
-            var retVal = curentThemediscoveryPaths.FirstOrDefault(x => _themeBlobProvider.PathExists(x));
-
-            return retVal;
+            return curentThemeDiscoveryPaths.FirstOrDefault(x => _themeBlobProvider.PathExists(x));
         }
 
         /// <summary>

@@ -49,6 +49,31 @@ namespace VirtoCommerce.Storefront.Controllers
                 : HandleStaticFiles(path);
         }
 
+
+        #region Backward compatibility
+
+        // Keep this code for backward compatibility
+        // Replace global assets with usual assets
+
+        /// <summary>
+        /// GET: /themes/global/assets/{*asset}
+        /// Handle global theme assets requests
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetGlobalThemeAssets(string path)
+        {
+            var stream = _themeEngine.GetAssetStream(path);
+            if (stream != null)
+            {
+                return File(stream, MimeMapping.GetMimeMapping(path));
+            }
+            throw new HttpException(404, path);
+        }
+
+        #endregion
+
         /// <summary>
         /// GET: /assets/{*asset}
         /// Handle all static content assets requests

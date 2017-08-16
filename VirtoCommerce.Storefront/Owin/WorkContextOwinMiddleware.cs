@@ -65,7 +65,7 @@ namespace VirtoCommerce.Storefront.Owin
             }
             else
             {
-                if (IsStorefrontRequest(context.Request) && !IsBundleRequest(context.Request))
+                if (IsStorefrontRequest(context.Request))
                 {
                     await ClearCacheIfHasChanges();
                     await HandleStorefrontRequest(context);
@@ -91,16 +91,6 @@ namespace VirtoCommerce.Storefront.Owin
         protected virtual bool IsStorefrontRequest(IOwinRequest request)
         {
             return !OwinIgnorePathsStrings.Any(p => request.Path.StartsWithSegments(p));
-        }
-
-        protected virtual bool IsBundleRequest(IOwinRequest request)
-        {
-            var retVal = string.Equals(request.Method, "GET", StringComparison.OrdinalIgnoreCase);
-            if (retVal)
-            {
-                retVal = request.Uri.IsFile || request.Uri.AbsolutePath.Contains("/bundles/");
-            }
-            return retVal;
         }
 
         protected virtual bool IsStaticAssetRequest(IOwinRequest request)
