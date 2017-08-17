@@ -1,7 +1,7 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService',
-    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService, customerService) {
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService', 'listService',
+    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService, customerService, listService) {
     //TODO: prevent add to cart not selected variation
     // display validator please select property
     // display price range
@@ -74,9 +74,9 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             _.each(_.keys(propertyMap), function (x) {
                 $scope.checkProperty(propertyMap[x][0])
             });
-
             $scope.selectedVariation = product;
-        });
+            compareProductInLists(product.id);
+        });        
     };
 
     function getFlatternDistinctPropertiesMap(variations) {
@@ -122,7 +122,19 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             return _.find(variations, function (x) {
                 return comparePropertyMaps(getVariationPropertyMap(x), selectedPropMap);
         });
-        }
+    }
+
+    function compareProductInLists(productId) {
+        $scope.buttonInvalid = true;
+        var listNames = [{ title: 'shopping' }, { title: 'wish' }];
+        angular.forEach(listNames, function (listName) {
+            listService.contains(productId, listName.title).then(function (result) {
+                if (result && (result.data.contains == false)) {
+                    $scope.buttonInvalid = false;
+                }
+            });
+        })
+    }
 
         //Method called from View when user clicks one property value
     $scope.checkProperty = function (property) {
