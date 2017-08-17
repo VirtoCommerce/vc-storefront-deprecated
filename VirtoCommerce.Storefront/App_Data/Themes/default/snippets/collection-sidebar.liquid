@@ -1,39 +1,37 @@
-{% if settings.collection_sidebar_filters == 'facets' %}
-  {% if collection.all_tags.size > 0 %}
-
+{%- if settings.collection_sidebar_filters == 'facets' -%}
+  {%- if collection.all_tags.size > 0 -%}
     <div class="grid-uniform">
-      {% comment %}
+      {%- comment -%}
         Loop through tag categories
-      {% endcomment %}
-      {% for cat_item in collection.all_tags.groups %}
-        {% comment %}
+      {%- endcomment -%}
+      {%- for cat_item in collection.all_tags.groups -%}
+        {%- comment -%}
           Ignore if tag category is empty
-        {% endcomment %}
-        {% unless cat_item == '' %}
+        {%- endcomment -%}
+        {%- unless cat_item == '' -%}
         <div class="grid-item small--one-half medium--one-third">
           <h3>{{ cat_item }}</h3>
           <ul class="advanced-filters">
-            {% comment %}
+            {%- comment -%}
               Loop through collection tags
-            {% endcomment %}
-            {% for custom_tag in collection.all_tags %}
-              {% if custom_tag.group_label == cat_item %}
-                {% comment %}
+            {%- endcomment -%}
+            {%- for custom_tag in collection.all_tags -%}
+              {%- if custom_tag.group_label == cat_item -%}
+                {%- comment -%}
                   Strip out tag category prefix and add/remove link for tag filtering
-                {% endcomment %}
-                {% if current_tags contains custom_tag %}
+                {%- endcomment -%}
+                {%- if current_tags contains custom_tag -%}
                   <li class="advanced-filter active-filter" data-group="{{ cat_item }}" data-handle="{{ custom_tag.id | handleize }}">{{ custom_tag | link_to_remove_tag: custom_tag }}</li>
-                {% else %}
+                {%- else -%}
                   <li class="advanced-filter" data-group="{{ cat_item }}">{{ custom_tag | link_to_add_tag: custom_tag }}</li>
-                {% endif %}
-              {% endif %}
-            {% endfor %}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
           </ul>
         </div>
-        {% endunless %}
-      {% endfor %}
+        {%- endunless -%}
+      {%- endfor -%}
     </div>
-
     <script>
     $(function() {
       var currentTags = '{{ current_tags }}',
@@ -73,78 +71,68 @@
       });
     });
     </script>
-
-  {% endif %}
-{% else %}
+  {%- endif -%}
+{%- else -%}
   <h3>{{ 'collections.sidebar.shop_by' | t }}</h3>
-  {% if template contains 'collection' and collection.all_tags.size > 0 %}
-
-    {% comment %}
+  {%- if template contains 'collection' and collection.all_tags.size > 0 -%}
+    {%- comment -%}
       Provide a 'catch-all' link at the top of the list,
       we'd check against the collection.handle, product type, and vendor.
-    {% endcomment %}
+    {%- endcomment -%}
     <ul>
-      {% if current_tags %}
+      {%- if current_tags -%}
         <li class="active-filter">
-          {% comment %}
+          {%- comment -%}
             Good for /collections/all collection and regular collections
-          {% endcomment %}
-          {% if collection.handle %}
+          {%- endcomment -%}
+          {%- if collection.handle -%}
             <a href="{{ '/collections/' + collection.handle | absolute_url }}">
               {{ 'collections.sidebar.all' | t }}
-              {% unless collection.title == 'Products' %}
+              {%- unless collection.title == 'Products' -%}
               {{ collection.title }}
-              {% endunless %}
+              {%- endunless -%}
             </a>
-
-          {% comment %}
+          {%- comment -%}
             Good for automatic type collections
-          {% endcomment %}
-          {% elsif collection.current_type %}
+          {%- endcomment -%}
+          {%- elsif collection.current_type -%}
             <a href="{{ collection.current_type | url_for_type }}">{{ 'collections.sidebar.all_collection' | t: collection_title: collection.title }}</a>
-
-          {% comment %}
+          {%- comment -%}
             Good for automatic vendor collections
-          {% endcomment %}
-          {% elsif collection.current_vendor %}
+          {%- endcomment -%}
+          {%- elsif collection.current_vendor -%}
             <a href="{{ collection.current_vendor | url_for_vendor }}">{{ 'collections.sidebar.all_collection' | t: collection_title: collection.title }}</a>
-
-          {% endif %}
+          {%- endif -%}
         </li>
-      {% endif %}
-
-      {% comment %}
+      {%- endif -%}
+      {%- comment -%}
         And for the good stuff, loop through the tags themselves.
         Strip the prepended categories if they happen to exist.
-      {% endcomment %}
-      {% for tag in collection.all_tags %}
-        {% assign is_advanced_tag = false %}
-        {% for cat_item in cat_array %}
-          {% unless cat_item == '' %}
-            {% if tag contains cat_item %}
-              {% assign is_advanced_tag = true %}
-              {% if current_tags contains tag %}
+      {%- endcomment -%}
+      {%- for tag in collection.all_tags -%}
+        {%- assign is_advanced_tag = false -%}
+        {%- for cat_item in cat_array -%}
+          {%- unless cat_item == '' -%}
+            {%- if tag contains cat_item -%}
+              {%- assign is_advanced_tag = true -%}
+              {%- if current_tags contains tag -%}
                 <li class="active-filter">{{ tag | remove: cat_item | remove: '_' }}</li>
-              {% else %}
+              {%- else -%}
                 <li>{{ tag | remove: cat_item | remove: '_' | link_to_tag: tag }}</li>
-              {% endif %}
-            {% endif %}
-
-          {% endunless %}
-        {% endfor %}
-
-        {% if is_advanced_tag == false %}
-          {% if current_tags contains tag %}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endunless -%}
+        {%- endfor -%}
+        {%- if is_advanced_tag == false -%}
+          {%- if current_tags contains tag -%}
             <li class="active-filter">{{ tag }}</li>
-          {% else %}
+          {%- else -%}
             <li>{{ tag | link_to_tag: tag }}</li>
-          {% endif %}
-        {% endif %}
-      {% endfor %}
-
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
     </ul>
-
-  {% else %}
+  {%- else -%}
     <p>{{ 'collections.sidebar.no_tags' | t }}</p>
-  {% endif %}
-{% endif %}
+  {%- endif -%}
+{%- endif -%}
