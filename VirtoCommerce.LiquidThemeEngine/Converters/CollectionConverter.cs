@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
@@ -69,7 +69,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 {
                     workContext.Aggregations.Slice(pageNumber, pageSize, sortInfos);
                     var tags = workContext.Aggregations.Where(a => a.Items != null)
-                                           .SelectMany(a => a.Items.Select(item => ToLiquidTag(item, a.Field, a.Label)));
+                                           .SelectMany(a => a.Items.Select(item => ToLiquidTag(item, a)));
                     return new StaticPagedList<Tag>(tags, workContext.Aggregations);
 
                 }, workContext.Aggregations.PageNumber, workContext.Aggregations.PageSize));

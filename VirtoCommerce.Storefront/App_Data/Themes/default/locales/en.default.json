@@ -1,4 +1,19 @@
-﻿{
+{
+    "tags": {
+        "price": {
+            "label": "Price"
+        },
+        "pricerange": {
+            "less": "Under {{ upper }}",
+            "between": "{{ lower }} to {{ upper }}",
+            "greater": "{{ lower }} & Above"
+        },
+        "range": {
+            "less": "Under {{ upper }}",
+            "between": "{{ lower }} to {{ upper }}",
+            "greater": "{{ lower }} & Up"
+        }
+    },
     "common": {
         "required": "Required",
         "invalid": "Invalid"
@@ -611,7 +626,7 @@
         },
         "list": {
             "add_to_myList": " Add to list"
-        } 
+        }
     },
     "gift_cards": {
         "issued": {

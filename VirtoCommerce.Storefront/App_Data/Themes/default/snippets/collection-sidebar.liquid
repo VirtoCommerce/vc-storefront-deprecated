@@ -10,7 +10,8 @@
         {%- endcomment -%}
         {%- unless cat_item == '' -%}
         <div class="grid-item small--one-half medium--one-third">
-          <h3>{{ cat_item }}</h3>
+          {%- capture group_label %}{% if cat_item == 'price' %}{{ 'tags.price.label' | t }}{% else %}{{ cat_item }} {% endif %}{%- endcapture -%}
+          <h3>{{ group_label | escape }}</h3>
           <ul class="advanced-filters">
             {%- comment -%}
               Loop through collection tags
@@ -20,10 +21,11 @@
                 {%- comment -%}
                   Strip out tag category prefix and add/remove link for tag filtering
                 {%- endcomment -%}
+                {%- include 'tag-label', tag: custom_tag -%}
                 {%- if current_tags contains custom_tag -%}
-                  <li class="advanced-filter active-filter" data-group="{{ cat_item }}" data-handle="{{ custom_tag.id | handleize }}">{{ custom_tag | link_to_remove_tag: custom_tag }}</li>
+                  <li class="advanced-filter active-filter" data-group="{{ cat_item }}" data-handle="{{ custom_tag.id | handleize }}">{{ tag_label | link_to_remove_tag: custom_tag }}</li>
                 {%- else -%}
-                  <li class="advanced-filter" data-group="{{ cat_item }}">{{ custom_tag | link_to_add_tag: custom_tag }}</li>
+                  <li class="advanced-filter" data-group="{{ cat_item }}">{{ tag_label | link_to_add_tag: custom_tag }}</li>
                 {%- endif -%}
               {%- endif -%}
             {%- endfor -%}

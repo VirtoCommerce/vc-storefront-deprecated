@@ -1,0 +1,25 @@
+{%- comment -%}
+
+    Input:
+        separator: string
+        escape: boolean
+    Output:
+        current_tags_joined: string
+
+{%- endcomment -%}
+{%- assign current_tags_joined = '' -%}
+{%- for current_tag in current_tags -%}
+    {%- unless forloop.first -%}
+        {%- assign current_tags_joined = current_tags_joined | append: separator -%}
+    {%- endunless -%}
+    {%- assign tag_label = current_tag -%}
+    {%- for tag in collection.all_tags -%}
+        {%- if current_tag == tag -%}
+            {%- include 'tag-label', tag: tag -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {%- assign current_tags_joined = current_tags_joined | append: tag_label -%}
+{%- endfor -%}
+{%- if escape -%}
+    {%- assign current_tags_joined = current_tags_joined | escape -%}
+{%- endif -%}

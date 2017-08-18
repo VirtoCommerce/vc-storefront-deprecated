@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Markdig;
@@ -140,7 +140,9 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 Value = itemDto.Value,
                 IsApplied = itemDto.IsApplied ?? false,
-                Count = itemDto.Count ?? 0
+                Count = itemDto.Count ?? 0,
+                Lower = itemDto.RequestedLowerBound,
+                Upper = itemDto.RequestedUpperBound,
             };
 
             if (itemDto.Labels != null)

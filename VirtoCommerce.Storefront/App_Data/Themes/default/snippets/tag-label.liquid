@@ -1,0 +1,24 @@
+{%- comment -%}
+
+    Input: tag
+    Output tag_label
+
+    For range and price range tags build label by translating with one of the following keys:
+        tags.range.less
+        tags.range.between
+        tags.range.greater
+
+        tags.pricerange.less
+        tags.pricerange.between
+        tags.pricerange.greater
+
+    For othe tags use tag.label
+
+{%- endcomment -%}
+{%- assign tag_label = tag.label -%}
+{%- if tag.group_type == "range" or tag.group_type == "pricerange" -%}
+    {%- capture tag_lower %}{% if tag.lower %}{% if tag.group_type == "pricerange" %}{{ tag.lower | times: 100 | money_without_decimal_part }}{% else %}{{ tag.lower }}{% endif %}{% endif %}{% endcapture -%}
+    {%- capture tag_upper %}{% if tag.upper %}{% if tag.group_type == "pricerange" %}{{ tag.upper | times: 100 | money_without_decimal_part }}{% else %}{{ tag.upper }}{% endif %}{% endif %}{% endcapture -%}
+    {%- capture tag_label_template -%}tags.{{ tag.group_type }}.{% if tag.lower and tag.upper %}between{% elseif tag.lower %}greater{% elseif tag.upper %}less{% endif %}{% endcapture -%}
+    {%- capture tag_label %}{{ tag_label_template | t: lower: tag_lower, upper: tag_upper }}{% endcapture -%}
+{%- endif -%}

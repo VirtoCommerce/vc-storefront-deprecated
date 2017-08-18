@@ -25,33 +25,28 @@
         snippet/advanced-tag-loop.liquid is required for this to work.
       {%- endcomment -%}
       {%- for tag in current_tags -%}
-        {%- assign is_advanced_tag = false -%}
-        {%- assign additional_tag = true -%}
         {%- if forloop.first -%}
-          {%- assign additional_tag = false -%}
+            {%- assign additional_tag = false -%}
+        {%- else -%}
+            {%- assign additional_tag = true -%}
         {%- endif -%}
         {%- comment -%}
           Track whether the tag gets printed
         {%- endcomment -%}
-        {%- assign found_tag = false -%}
         {%- for cat_item in collection.all_tags -%}
           {%- unless cat_item == '' -%}
             {%- if tag == cat_item -%}
-              {%- assign is_advanced_tag = true -%}
               {%- if additional_tag -%}
                 <span>+</span>
               {%- endif -%}
-              {%- assign found_tag = true -%}
-              <span>{{ cat_item.label }}</span>
+              {%- include 'tag-label', tag: cat_item -%}
+              <span>{{ tag_label | escape }}</span>
             {%- endif -%}
           {%- endunless -%}
         {%- endfor -%}
         {%- comment -%}
           We have a regular tag that wasn't printed, so print it now
         {%- endcomment -%}
-        {%- unless found_tag -%}
-          <!--<span>{{ tag }}</span>-->
-        {%- endunless -%}
       {%- endfor -%}
     {%- else -%}
       <span>{{ collection.title }}</span>

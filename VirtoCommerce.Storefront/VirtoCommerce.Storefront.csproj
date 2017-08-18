@@ -430,6 +430,8 @@
     <Content Include="App_Data\Themes\default\snippets\recently-added-list-item-dialog.liquid">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_Data\Themes\default\snippets\tag-label.liquid" />
+    <Content Include="App_Data\Themes\default\snippets\tags-joined.liquid" />
     <Content Include="App_Data\Themes\default\social\shopify-social.svg" />
     <Content Include="App_Data\Themes\default\social\social-icons.css" />
     <Content Include="App_Data\Themes\default\snippets\notification.liquid" />

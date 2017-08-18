@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="no-touch no-js" ng-app="storefrontApp">
 <head>
     <meta charset="utf-8" />
@@ -10,7 +10,7 @@
     {% endif %}
 
     <title>
-        {{ page_title }}{% if current_tags %}{% assign current_tags_joined = current_tags | join: ', ' %} - {{ 'general.meta.tags' | t: tags: current_tags_joined }}{% endif %}{% if current_page != 1 %} - {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} - {{ shop.name }}{% endunless %}
+        {{ page_title }}{% if current_tags %}{% include 'tags-joined', separator: ', ', escape: true %} - {{ 'general.meta.tags' | t: tags: current_tags_joined }}{% endif %}{% if current_page != 1 %} - {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} - {{ shop.name }}{% endunless %}
     </title>
     {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}" />
