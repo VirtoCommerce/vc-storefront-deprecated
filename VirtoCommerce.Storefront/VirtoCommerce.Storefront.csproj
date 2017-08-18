@@ -411,25 +411,10 @@
     <Content Include="App_Data\Themes\default\assets\star_favorite_add.png" />
     <Content Include="App_Data\Themes\default\assets\star_favorite_remove.png" />
     <Content Include="App_Data\Themes\default\assets\static\bundle\account-scripts.js" />
-    <Content Include="App_Data\Themes\default\assets\static\bundle\account-scripts.min.js">
-      <DependentUpon>account-scripts.js</DependentUpon>
-    </Content>
     <Content Include="App_Data\Themes\default\assets\static\bundle\account-styles.css" />
-    <Content Include="App_Data\Themes\default\assets\static\bundle\account-styles.min.css">
-      <DependentUpon>account-styles.css</DependentUpon>
-    </Content>
     <Content Include="App_Data\Themes\default\assets\static\bundle\checkout-scripts.js" />
-    <Content Include="App_Data\Themes\default\assets\static\bundle\checkout-scripts.min.js">
-      <DependentUpon>checkout-scripts.js</DependentUpon>
-    </Content>
     <Content Include="App_Data\Themes\default\assets\static\bundle\scripts.js" />
-    <Content Include="App_Data\Themes\default\assets\static\bundle\scripts.min.js">
-      <DependentUpon>scripts.js</DependentUpon>
-    </Content>
     <Content Include="App_Data\Themes\default\assets\static\bundle\styles.css" />
-    <Content Include="App_Data\Themes\default\assets\static\bundle\styles.min.css">
-      <DependentUpon>styles.css</DependentUpon>
-    </Content>
     <Content Include="App_Data\Themes\default\assets\status-reduced.svg" />
     <Content Include="App_Data\Themes\default\assets\status-sold-out.svg" />
     <Content Include="App_Data\Themes\default\assets\shopify_common.js" />
