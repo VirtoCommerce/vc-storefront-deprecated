@@ -1,19 +1,19 @@
-﻿/// <binding />
-'use strict';
+﻿/// <binding BeforeBuild='default' Clean='clean' ProjectOpened='watch' />
 
 var gulp = require('gulp'),
 
     inject = require('gulp-inject'),
     filter = require('gulp-filter'),
-    rename = require('gulp-rename'),
     concat = require('gulp-concat'),
-    clean = require('gulp-clean'),
     replace = require('gulp-replace'),
-    merge = require('merge-stream'),
+    rename = require('gulp-rename'),
+    clean = require('gulp-clean'),
     del = require('del'),
+
+    mergestream = require('merge-stream'),
+    sequence = require('run-sequence'),
     util = require('gulp-util'), // preserve to be able output custom messages in future
 
-    bundleconfig = require('./bundleconfig.json'),
     uglify = require('gulp-uglify'),
     bourbon = require('node-bourbon'),
     autoprefixer = require('autoprefixer'),
@@ -25,8 +25,8 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
 
     eslint = require('gulp-eslint'),
-
-    uuid = require('uuid/v4');
+        
+    zip = require('gulp-zip');
 
 var regex = {
     css: /\.css$/,
@@ -36,12 +36,22 @@ var regex = {
 };
 
 var rootPath = 'App_Data/Themes/default/';
-var buildUid = uuid().split('-')[4];
 
-gulp.task('bundle', ['bundle:js', 'bundle:css', 'min:html']);
+function getPackage() {
+    delete require.cache[require.resolve('./package.json')];
+    return require('./package.json');
+}
 
-gulp.task('bundle:js', ['pack:js', 'min:js']);
-gulp.task('bundle:css', ['pack:css', 'min:css']);
+function getBundleConfig() {
+    delete require.cache[require.resolve('./bundleconfig.json')];
+    return require('./bundleconfig.json');
+}
+
+function merge(streams) {
+    return streams.length ? mergestream(streams) : mergestream().end();
+}
+
+gulp.task('min', ['min:js', 'min:css', 'min:html']);
 
 function mapSources() {
     return sourcemaps.mapSources(function (sourcePath, file) {
@@ -52,63 +62,13 @@ function mapSources() {
     });
 }
 
-gulp.task('pack', ['pack:js', 'pack:css']);
-
-function packJs(bundle) {
-    return gulp.src(bundle.inputFiles, { base: '.' })
-        .pipe(sourcemaps.init())
-        .pipe(mapSources())
-        .pipe(concat(bundle.outputFileName));
-}
-
-gulp.task('pack:js', function () {
-    var tasks = getBundles(regex.js).map(function(bundle) {
-        return packJs(bundle)
-            .pipe(sourcemaps.write("."))
-            .pipe(gulp.dest('.'));
-    });
-    return merge(tasks);
-});
-
-function packCss(bundle) {
-    return gulp.src(bundle.inputFiles, { base: '.' })
-        .pipe(sourcemaps.init())
-        .pipe(mapSources())
-        .pipe(concat(bundle.outputFileName))
-        .pipe(postcss([
-            autoprefixer({
-                browsers: [
-                    'Explorer >= 10',
-                    'Edge >= 12',
-                    'Firefox >= 19',
-                    'Chrome >= 20',
-                    'Safari >= 8',
-                    'Opera >= 15',
-                    'iOS >= 8',
-                    'Android >= 4.4',
-                    'ExplorerMobile >= 10',
-                    'last 2 versions'
-                ]
-            })
-        ]));
-}
-
-gulp.task('pack:css', function () {
-    var tasks = getBundles(regex.css).map(function (bundle) {
-        return packCss(bundle)
-            .pipe(sourcemaps.write("."))
-            .pipe(gulp.dest('.'));
-    });
-    return merge(tasks);
-});
-
-gulp.task('min', ['min:js', 'min:css', 'min:html']);
-
 gulp.task('min:js', function () {
     var tasks = getBundles(regex.js).map(function (bundle) {
-        return packJs(bundle)
+        return gulp.src(bundle.inputFiles, { base: '.' })
+            .pipe(sourcemaps.init())
+            .pipe(mapSources())
+            .pipe(concat(bundle.outputFileName))
             .pipe(uglify({ mangle: false }))
-            .pipe(rename({ extname: '.min.js' }))
             .pipe(sourcemaps.write("."))
             .pipe(gulp.dest('.'));
     });
@@ -117,9 +77,27 @@ gulp.task('min:js', function () {
 
 gulp.task('min:css', function () {
     var tasks = getBundles(regex.css).map(function (bundle) {
-        return packCss(bundle)
-            .pipe(postcss([cssnano()]))
-            .pipe(rename({ extname: '.min.css' }))
+        return gulp.src(bundle.inputFiles, { base: '.' })
+            .pipe(sourcemaps.init())
+            .pipe(mapSources())
+            .pipe(concat(bundle.outputFileName))
+            .pipe(postcss([
+                autoprefixer({
+                    browsers: [
+                        'Explorer >= 10',
+                        'Edge >= 12',
+                        'Firefox >= 19',
+                        'Chrome >= 20',
+                        'Safari >= 8',
+                        'Opera >= 15',
+                        'iOS >= 8',
+                        'Android >= 4.4',
+                        'ExplorerMobile >= 10',
+                        'last 2 versions'
+                    ]
+                }),
+                cssnano()
+            ]))
             .pipe(sourcemaps.write("."))
             .pipe(gulp.dest('.'));
     });
@@ -130,28 +108,31 @@ gulp.task('min:html', function () {
     var tasks = getBundles(regex.html).map(function (bundle) {
         return gulp.src(bundle.inputFiles, { base: '.' })
             .pipe(concat(bundle.outputFileName))
-            .pipe(htmlmin({ collapseWhitespace: true, minifyCSS: true, minifyJS: true }))
+            //.pipe(htmlmin({ collapseWhitespace: true, minifyCSS: true, minifyJS: true }))
             .pipe(gulp.dest('.'));
     });
     return merge(tasks);
 });
 
 gulp.task('clean', function () {
-    var files = [].concat.apply([], bundleconfig.map(function (bundle) {
+    var files = [].concat.apply([], getBundleConfig().map(function (bundle) {
         var fileName = bundle.outputFileName;
-        return [fileName, fileName.replace(regex.ext, '.$1.map'), fileName.replace(regex.ext, '.min.$1'), fileName.replace(regex.ext, '.min.$1.map')];
+        return [fileName, fileName.replace(regex.ext, '.$1.map')];
     }));
 
     return del(files);
 });
 
 gulp.task('watch', function () {
+    gulp.watch('./bundleconfig.json', ['min', 'snippet']);
+    gulp.watch('./package.json', ['snippet']);
+
     getBundles(regex.js).forEach(function (bundle) {
-        gulp.watch(bundle.inputFiles, ['bundle:js']);
+        gulp.watch(bundle.inputFiles, ['min:js']);
     });
 
     getBundles(regex.css).forEach(function (bundle) {
-        gulp.watch(bundle.inputFiles, ['bundle:css']);
+        gulp.watch(bundle.inputFiles, ['min:css']);
     });
 
     getBundles(regex.html).forEach(function (bundle) {
@@ -160,20 +141,18 @@ gulp.task('watch', function () {
 });
 
 function getBundles(regexPattern) {
-    return bundleconfig.filter(function (bundle) {
+    return getBundleConfig().filter(function (bundle) {
         return regexPattern.test(bundle.outputFileName);
     });
 }
 
 gulp.task('lint', function () {
-    getBundles(regex.js).forEach(function (bundle) {
-        if (!bundle.disableLint || bundle.disableLint === undefined)
-        {
-            gulp.src(bundle.inputFiles, { base: '.' })
-                .pipe(eslint())
-                .pipe(eslint.format());
-        }
+    var tasks = getBundles(regex.js).filter(function(bundle) { return !bundle.disableLint || bundle.disableLint === undefined }).map(function(bundle) {
+        return gulp.src(bundle.inputFiles, { base: '.' })
+            .pipe(eslint("./.eslintrc.json"))
+            .pipe(eslint.format());
     });
+    return merge(tasks);
 });
 
 function defaultOptions(name, tagName, prefix, ignorePath) {
@@ -187,36 +166,52 @@ function defaultOptions(name, tagName, prefix, ignorePath) {
             return '{{ \'' + filepath + '\' | static_asset_url | ' + tagName + ' }}';
         },
         addPrefix: prefix,
-        addSuffix: '?ver=BUILDVERSION',
+        addSuffix: '?ver=' + name + 'BuildVersion',
         ignorePath: ignorePath
     };
 }
 
-gulp.task('snippet:js', ['bundle:js'], function () {
-    getBundles(regex.js).forEach(function (bundle) {
+gulp.task('snippet:js', function () {
+    var package = getPackage();
+    var tasks = getBundles(regex.js).map(function(bundle) {
         return gulp.src('bundle.liquid')
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'script_tag', '', rootPath + 'assets/static/')))
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }).pipe(rename({ extname: '.min.js' })), defaultOptions('Release', 'script_tag', '', rootPath + 'assets/static/')))
-            .pipe(replace('?ver=BUILDVERSION', '?ver=' + buildUid))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'script_tag', null, rootPath + 'assets/static/')))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Release', 'script_tag', null, rootPath + 'assets/static/')))
+            .pipe(replace('?ver=DebugBuildVersion\'', '?ver=\' + ("now" | date: "%s")'))
+            .pipe(replace('?ver=ReleaseBuildVersion', '?ver=' + package.version))
             .pipe(rename(bundle.outputFileName))
             .pipe(rename({ dirname: rootPath + 'snippets/bundle', extname: '.liquid' }))
             .pipe(gulp.dest('.'));
     });
+    return merge(tasks);
 });
 
-gulp.task('snippet:css', ['bundle:css'], function () {
-    getBundles(regex.css).forEach(function (bundle) {
+gulp.task('snippet:css', function () {
+    var package = getPackage();
+    var tasks = getBundles(regex.css).map(function(bundle) {
         return gulp.src('bundle.liquid')
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'stylesheet_tag', '', rootPath + 'assets/static/')))
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }).pipe(rename({ extname: '.min.css' })), defaultOptions('Release', 'stylesheet_tag', '', rootPath + 'assets/static/')))
-            .pipe(replace('?ver=BUILDVERSION', '?ver=' + buildUid))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'stylesheet_tag', null, rootPath + 'assets/static/')))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Release', 'stylesheet_tag', null, rootPath + 'assets/static/')))
+            .pipe(replace('?ver=DebugBuildVersion\'', '?ver=\' + ("now" | date: "%s")'))
+            .pipe(replace('?ver=ReleaseBuildVersion', '?ver=' + package.version))
             .pipe(rename(bundle.outputFileName))
             .pipe(rename({ dirname: rootPath + 'snippets/bundle', extname: '.liquid' }))
             .pipe(gulp.dest('.'));
     });
+    return merge(tasks);
+});
+
+gulp.task('release', ['min', 'snippet'], function () {
+    util.log("execured release");
+    var package = getPackage();
+    return gulp.src([].concat([rootPath + '/**'], [].concat.apply([], getBundleConfig().map(function (bundle) { return bundle.inputFiles.map(function (inputFile) { return '!' + inputFile; }) }))))
+        .pipe(zip(package.name + '-' + package.version + '.zip'))
+        .pipe(gulp.dest('.'));
 });
 
 gulp.task('snippet', ['snippet:js', 'snippet:css']);
 
 // DEFAULT Tasks
-gulp.task('default', ['lint', 'bundle', 'snippet']);
+gulp.task('default', function(callback) {
+    sequence('lint', ['min', 'snippet'], callback);
+});

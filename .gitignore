@@ -157,6 +157,8 @@ $RECYCLE.BIN/
 
 .vs/
 
+*.zip
+
 VirtoCommerce.Storefront/Areas/*
 VirtoCommerce.Storefront/App_Data/blogs/*
 VirtoCommerce.Storefront/App_Data/Pages/*

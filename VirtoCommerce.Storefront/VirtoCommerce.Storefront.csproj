@@ -492,20 +492,15 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include=".eslintrc.json" />
-    <Content Include="App_Data\Themes\default\assets\static\bundle\account-scripts.min.js.map" />
-    <Content Include="App_Data\Themes\default\assets\static\bundle\checkout-scripts.min.js.map" />
-    <Content Include="App_Data\Themes\default\assets\static\bundle\scripts.min.js.map" />
     <Content Include="App_Data\Themes\default\snippets\bundle\account-scripts.liquid" />
     <Content Include="App_Data\Themes\default\snippets\bundle\account-styles.liquid" />
     <Content Include="App_Data\Themes\default\snippets\bundle\checkout-scripts.liquid" />
     <Content Include="App_Data\Themes\default\snippets\bundle\scripts.liquid" />
     <Content Include="App_Data\Themes\default\snippets\bundle\styles.liquid" />
     <Content Include="App_Data\Themes\default\assets\static\bundle\account-styles.css.map" />
-    <Content Include="App_Data\Themes\default\assets\static\bundle\account-styles.min.css.map" />
     <Content Include="App_Data\Themes\default\assets\static\bundle\checkout-scripts.js.map" />
     <Content Include="App_Data\Themes\default\assets\static\bundle\scripts.js.map" />
     <Content Include="App_Data\Themes\default\assets\static\bundle\styles.css.map" />
-    <Content Include="App_Data\Themes\default\assets\static\bundle\styles.min.css.map" />
     <Content Include="App_Data\Themes\default\assets\static\bundle\account-scripts.js.map" />
     <None Include="AutoRestClients\!readme.txt" />
     <Content Include="favicon.ico" />
@@ -662,6 +657,9 @@
     </Content>
     <Content Include="bundleconfig.json" />
     <Content Include="bundle.liquid" />
+    <Content Include="bundleconfig.json.bindings">
+      <DependentUpon>bundleconfig.json</DependentUpon>
+    </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

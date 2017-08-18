@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "2.21.9",
     "name": "vc-default-theme",
     "author": "VirtoCommerce",
     "description": "Default theme for Storefront",
@@ -47,11 +47,12 @@
         "gulp-uglify": "^2.1.2",
         "gulp-using": "^0.1.1",
         "gulp-util": "^3.0.7",
+        "gulp-zip": "^4.0.0",
         "main-bower-files": "^2.13.1",
         "merge-stream": "^1.0.1",
         "node-bourbon": "^4.2.8",
         "node-sass": "^4.5.3",
-        "uuid": "^3.0.1"
+        "run-sequence": "2.1.0"
     },
     "homepage": "https://github.com/VirtoCommerce/vc-storefront/",
     "repository": {
