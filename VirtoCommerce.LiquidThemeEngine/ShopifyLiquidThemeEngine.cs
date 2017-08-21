@@ -36,28 +36,23 @@ namespace VirtoCommerce.LiquidThemeEngine
     public class ShopifyLiquidThemeEngine : IFileSystem, ILiquidThemeEngine
     {
         private static readonly Regex _isLiquid = new Regex("[{}|]", RegexOptions.Compiled);
-        private const string _globalThemeName = "default";
         private const string _defaultMasterView = "theme";
         private const string _liquidTemplateFormat = "{0}.liquid";
         private static readonly string[] _templatesDiscoveryFolders = { "templates", "snippets", "layout", "assets" };
         private readonly string _themesAssetsRelativeUrl;
-        private readonly string _globalThemeAssetsRelativeUrl;
         private readonly Func<WorkContext> _workContextFactory;
         private readonly Func<IStorefrontUrlBuilder> _storeFrontUrlBuilderFactory;
         private readonly ILocalCacheManager _cacheManager;
         private readonly SassCompilerProxy _saasCompiler = new SassCompilerProxy();
         private readonly IContentBlobProvider _themeBlobProvider;
-        private readonly IContentBlobProvider _globalThemeBlobProvider;
 
-        public ShopifyLiquidThemeEngine(ILocalCacheManager cacheManager, Func<WorkContext> workContextFactory, Func<IStorefrontUrlBuilder> storeFrontUrlBuilderFactory, IContentBlobProvider themeBlobProvider, IContentBlobProvider globalThemeBlobProvider, string themesAssetsRelativeUrl, string globalThemeAssetsRelativeUrl)
+        public ShopifyLiquidThemeEngine(ILocalCacheManager cacheManager, Func<WorkContext> workContextFactory, Func<IStorefrontUrlBuilder> storeFrontUrlBuilderFactory, IContentBlobProvider themeBlobProvider, string themesAssetsRelativeUrl)
         {
             _workContextFactory = workContextFactory;
             _storeFrontUrlBuilderFactory = storeFrontUrlBuilderFactory;
             _themesAssetsRelativeUrl = themesAssetsRelativeUrl;
-            _globalThemeAssetsRelativeUrl = globalThemeAssetsRelativeUrl;
             _cacheManager = cacheManager;
             _themeBlobProvider = themeBlobProvider;
-            _globalThemeBlobProvider = globalThemeBlobProvider;
 
             Liquid.UseRubyDateFormat = true;
             // Register custom tags (Only need to do this once)
@@ -70,7 +65,6 @@ namespace VirtoCommerce.LiquidThemeEngine
             Template.RegisterFilter(typeof(HtmlFilters));
             Template.RegisterFilter(typeof(StringFilters));
             Template.RegisterFilter(typeof(ArrayFilters));
-            Template.RegisterFilter(typeof(BundleFilters));
             Template.RegisterFilter(typeof(MathFilters));
 
             Condition.Operators["contains"] = CommonOperators.ContainsMethod;
@@ -85,14 +79,6 @@ namespace VirtoCommerce.LiquidThemeEngine
                 _cacheManager.Clear();
             };
             _themeBlobProvider.Renamed += (sender, args) =>
-            {
-                _cacheManager.Clear();
-            };
-            _globalThemeBlobProvider.Changed += (sender, args) =>
-            {
-                _cacheManager.Clear();
-            };
-            _globalThemeBlobProvider.Renamed += (sender, args) =>
             {
                 _cacheManager.Clear();
             };
@@ -116,7 +102,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// <summary>
         /// Current theme name
         /// </summary>
-        public string CurrentThemeName => string.IsNullOrEmpty(WorkContext.CurrentStore.ThemeName) ? _globalThemeName : WorkContext.CurrentStore.ThemeName;
+        public string CurrentThemeName => WorkContext.CurrentStore.ThemeName;
 
 
         /// <summary>
@@ -149,9 +135,8 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// Return stream for requested  asset file  (used for search current and base themes assets)
         /// </summary>
         /// <param name="filePath"></param>
-        /// <param name="searchInGlobalThemeOnly"></param>
         /// <returns></returns>
-        public Stream GetAssetStream(string filePath, bool searchInGlobalThemeOnly = false)
+        public Stream GetAssetStream(string filePath)
         {
             Stream retVal = null;
             var filePathWithoutExtension = Path.Combine(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath)).Replace("\\", "/");
@@ -159,26 +144,16 @@ namespace VirtoCommerce.LiquidThemeEngine
             var searchPatterns = new[] { filePath, filePathWithoutExtension, string.Format(_liquidTemplateFormat, filePathWithoutExtension), string.Format(_liquidTemplateFormat, filePath) };
 
             string currentThemeFilePath = null;
-            //search in global theme first 
-            var globalThemeFilePath = searchPatterns.SelectMany(x => _globalThemeBlobProvider.Search("assets", x, true)).FirstOrDefault();
-            if (!searchInGlobalThemeOnly)
+            //try to search in current store theme 
+            if (_themeBlobProvider.PathExists(CurrentThemePath + "\\assets"))
             {
-                //try to search in current store theme 
-                if (_themeBlobProvider.PathExists(CurrentThemePath + "\\assets"))
-                {
-                    currentThemeFilePath = searchPatterns.SelectMany(x => _themeBlobProvider.Search(CurrentThemePath + "\\assets", x, true)).FirstOrDefault();
-                }
+                currentThemeFilePath = searchPatterns.SelectMany(x => _themeBlobProvider.Search(CurrentThemePath + "\\assets", x, true)).FirstOrDefault();
             }
 
             if (currentThemeFilePath != null)
             {
                 retVal = _themeBlobProvider.OpenRead(currentThemeFilePath);
                 filePath = currentThemeFilePath;
-            }
-            else if (globalThemeFilePath != null)
-            {
-                retVal = _globalThemeBlobProvider.OpenRead(globalThemeFilePath);
-                filePath = globalThemeFilePath;
             }
 
             if (retVal != null && filePath.EndsWith(".liquid"))
@@ -219,26 +194,17 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// resolve  template path by it name
         /// </summary>
         /// <param name="templateName"></param>
-        /// <param name="searchInGlobalThemeOnly"></param>
         /// <returns></returns>
-        public string ResolveTemplatePath(string templateName, bool searchInGlobalThemeOnly = false)
+        public string ResolveTemplatePath(string templateName)
         {
             if (WorkContext.CurrentStore == null)
                 return null;
 
             var liquidTemplateFileName = string.Format(_liquidTemplateFormat, templateName);
-            var curentThemediscoveryPaths = _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x, liquidTemplateFileName));
+            var curentThemeDiscoveryPaths = _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x, liquidTemplateFileName));
 
-            //First try to find template in current theme folder
-            var retVal = curentThemediscoveryPaths.FirstOrDefault(x => _themeBlobProvider.PathExists(x));
-            if (searchInGlobalThemeOnly || retVal == null)
-            {
-                //Then try to find in global theme
-                var globalThemeDiscoveyPaths = _templatesDiscoveryFolders.Select(x => Path.Combine(x, liquidTemplateFileName));
-                retVal = globalThemeDiscoveyPaths.FirstOrDefault(x => _globalThemeBlobProvider.PathExists(x));
-            }
-
-            return retVal;
+            //Try to find template in current theme folder
+            return curentThemeDiscoveryPaths.FirstOrDefault(x => _themeBlobProvider.PathExists(x));
         }
 
         /// <summary>
@@ -317,42 +283,35 @@ namespace VirtoCommerce.LiquidThemeEngine
                 var retVal = new DefaultableDictionary(defaultValue);
 
                 //Load all data from current theme config
-                var currentThemeSettings = InnerGetAllSettings(_themeBlobProvider, CurrentThemePath);
-
-                //Load all data from global theme config
-                var resultSettings = InnerGetAllSettings(_globalThemeBlobProvider, string.Empty);
-
-                if (currentThemeSettings != null)
+                var resultSettings = InnerGetAllSettings(_themeBlobProvider, CurrentThemePath);
+                if (resultSettings != null)
                 {
-                    //Merge two configs
-                    resultSettings.Merge(currentThemeSettings, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Merge });
-                }
-
-                //Get actual preset from merged config
-                var currentPreset = resultSettings.GetValue("current");
-                if (currentPreset is JValue)
-                {
-                    var currentPresetName = ((JValue)currentPreset).Value.ToString();
-                    var presets = resultSettings.GetValue("presets") as JObject;
-                    if (presets == null || !presets.Children().Any())
+                    //Get actual preset from merged config
+                    var currentPreset = resultSettings.GetValue("current");
+                    if (currentPreset is JValue)
                     {
-                        throw new StorefrontException("Setting presets not defined");
+                        var currentPresetName = ((JValue) currentPreset).Value.ToString();
+                        var presets = resultSettings.GetValue("presets") as JObject;
+                        if (presets == null || !presets.Children().Any())
+                        {
+                            throw new StorefrontException("Setting presets not defined");
+                        }
+
+                        IList<JProperty> allPresets = presets.Children().Cast<JProperty>().ToList();
+                        resultSettings = allPresets.FirstOrDefault(p => p.Name == currentPresetName).Value as JObject;
+                        if (resultSettings == null)
+                        {
+                            throw new StorefrontException($"Setting preset with name '{currentPresetName}' not found");
+                        }
+                    }
+                    if (currentPreset is JObject)
+                    {
+                        resultSettings = (JObject) currentPreset;
                     }
 
-                    IList<JProperty> allPresets = presets.Children().Cast<JProperty>().ToList();
-                    resultSettings = allPresets.FirstOrDefault(p => p.Name == currentPresetName).Value as JObject;
-                    if (resultSettings == null)
-                    {
-                        throw new StorefrontException($"Setting preset with name '{currentPresetName}' not found");
-                    }
+                    var dict = resultSettings.ToObject<Dictionary<string, object>>().ToDictionary(x => x.Key, x => x.Value);
+                    retVal = new DefaultableDictionary(dict, defaultValue);
                 }
-                if (currentPreset is JObject)
-                {
-                    resultSettings = (JObject)currentPreset;
-                }
-
-                var dict = resultSettings.ToObject<Dictionary<string, object>>().ToDictionary(x => x.Key, x => x.Value);
-                retVal = new DefaultableDictionary(dict, defaultValue);
 
                 return retVal;
             });
@@ -365,20 +324,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// <returns></returns>
         public JObject ReadLocalization()
         {
-            return _cacheManager.Get(GetCacheKey("ReadLocalization"), "LiquidThemeRegion", () =>
-            {
-                //Load first localization from global theme
-                var retVal = InnerReadLocalization(_globalThemeBlobProvider, "", WorkContext.CurrentLanguage) ?? new JObject();
-
-                //Next need merge current theme localization with default
-                var currentThemeLocalization = InnerReadLocalization(_themeBlobProvider, CurrentThemePath, WorkContext.CurrentLanguage);
-                if (currentThemeLocalization != null)
-                {
-                    retVal.Merge(currentThemeLocalization, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Merge });
-                }
-
-                return retVal;
-            });
+            return _cacheManager.Get(GetCacheKey("ReadLocalization"), "LiquidThemeRegion", () => InnerReadLocalization(_themeBlobProvider, CurrentThemePath, WorkContext.CurrentLanguage) ?? new JObject());
         }
 
         /// <summary>
@@ -390,16 +336,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         {
             return UrlBuilder.ToAppAbsolute(_themesAssetsRelativeUrl.TrimEnd('/') + "/" + assetName.TrimStart('/'), WorkContext.CurrentStore, WorkContext.CurrentLanguage);
         }
-
-        /// <summary>
-        /// Get relative url for global assets
-        /// </summary>
-        /// <param name="assetName"></param>
-        /// <returns></returns>
-        public string GetGlobalAssetAbsoluteUrl(string assetName)
-        {
-            return UrlBuilder.ToAppAbsolute(_globalThemeAssetsRelativeUrl.TrimEnd('/') + "/" + assetName.TrimStart('/'), WorkContext.CurrentStore, WorkContext.CurrentLanguage);
-        }
+        
         #endregion
 
         private static JObject InnerReadLocalization(IContentBlobProvider themeBlobProvider, string themePath, Language language)
@@ -471,15 +408,7 @@ namespace VirtoCommerce.LiquidThemeEngine
 
             return _cacheManager.Get(GetCacheKey("ReadTemplateByName", templatePath), "LiquidThemeRegion", () =>
             {
-                // At first, try to find content in current store theme
-                var blobProvider = _themeBlobProvider;
-                if (!blobProvider.PathExists(templatePath))
-                {
-                    // Then search in global theme
-                    blobProvider = _globalThemeBlobProvider;
-                }
-
-                using (var stream = blobProvider.OpenRead(templatePath))
+                using (var stream = _themeBlobProvider.OpenRead(templatePath))
                 {
                     return stream.ReadToString();
                 }

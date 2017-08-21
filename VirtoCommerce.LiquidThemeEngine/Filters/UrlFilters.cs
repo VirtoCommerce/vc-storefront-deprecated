@@ -177,6 +177,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             return retVal;
         }
 
+        #region Backward compatibility
+
+        // Keep this code for backward compatibility
+        // Replace global assets with usual assets
+
         /// <summary>
         /// Returns the URL of a global assets that are found on Shopify's servers. 
         /// In virtocommerce is a same asset folder
@@ -202,10 +207,12 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             if (input != null)
             {
                 var themeAdaptor = (ShopifyLiquidThemeEngine)Template.FileSystem;
-                retVal = themeAdaptor.GetGlobalAssetAbsoluteUrl(input);
+                retVal = themeAdaptor.GetAssetAbsoluteUrl(input);
             }
             return retVal;
         }
+
+        #endregion
 
         /// <summary>
         /// Returns the URL of a file.

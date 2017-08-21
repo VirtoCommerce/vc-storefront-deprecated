@@ -259,8 +259,6 @@ namespace VirtoCommerce.Storefront
             var cmsContentConnectionString = BlobConnectionString.Parse(ConfigurationHelper.GetConnectionStringValue("ContentConnectionString"));
             var themesBasePath = cmsContentConnectionString.RootPath.TrimEnd('/') + "/" + "Themes";
             var staticContentBasePath = cmsContentConnectionString.RootPath.TrimEnd('/') + "/" + "Pages";
-            //Use always file system provider for global theme
-            var globalThemesBlobProvider = new FileSystemContentBlobProvider(ResolveLocalPath("~/App_Data/Themes/default"));
             IContentBlobProvider themesBlobProvider;
             IStaticContentBlobProvider staticContentBlobProvider;
             if ("AzureBlobStorage".Equals(cmsContentConnectionString.Provider, StringComparison.OrdinalIgnoreCase))
@@ -275,7 +273,7 @@ namespace VirtoCommerce.Storefront
             }
             container.RegisterInstance(staticContentBlobProvider);
 
-            var shopifyLiquidEngine = new ShopifyLiquidThemeEngine(localCacheManager, workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>(), themesBlobProvider, globalThemesBlobProvider, "~/themes/assets", "~/themes/global/assets");
+            var shopifyLiquidEngine = new ShopifyLiquidThemeEngine(localCacheManager, workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>(), themesBlobProvider, "~/themes/assets");
             container.RegisterInstance<ILiquidThemeEngine>(shopifyLiquidEngine);
 
             //Register liquid engine
@@ -300,9 +298,6 @@ namespace VirtoCommerce.Storefront
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters, workContextFactory, () => container.Resolve<CommonController>());
             RouteConfig.RegisterRoutes(RouteTable.Routes, container.Resolve<ISeoRouteService>(), workContextFactory, () => container.Resolve<IStorefrontUrlBuilder>());
             AuthConfig.ConfigureAuth(app, () => container.Resolve<IStorefrontUrlBuilder>());
-            var bundleConfig = container.Resolve<BundleConfig>();
-            bundleConfig.Minify = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:OptimizeStaticContent", false);
-            bundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //This special binders need because all these types not contains default ctor and Money with Currency properties
             ModelBinders.Binders.Add(typeof(Model.Cart.Shipment), new CartModelBinder<Model.Cart.Shipment>(workContextFactory));
