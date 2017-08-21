@@ -399,15 +399,16 @@ namespace VirtoCommerce.Storefront.Builders
             if (!isReadOnlyLineItems)
             {
                 //Get product inventory to fill InStockQuantoty parameter of LineItem
-                var productIds = Cart.Items.Select(i => i.ProductId);
-                var products = await _catalogSearchService.GetProductsAsync(productIds.ToArray(), ItemResponseGroup.ItemLarge);
+                var productIds = Cart.Items.Select(i => i.ProductId).ToArray();
+                var cacheKey = "CartBuilder.EvaluatePromotionsAsync:" + Cart.Id + ":" + string.Join(":", productIds);
+                var products = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => await _catalogSearchService.GetProductsAsync(productIds, ItemResponseGroup.Inventory));
 
-                foreach (var lineItem in Cart.Items) {
+                foreach (var lineItem in Cart.Items.ToList())
+                {
                     var product = products.FirstOrDefault(p => p.Id == lineItem.ProductId);
-                    if (product != null && product.Inventory != null)
-                        lineItem.InStockQuantity = product.Inventory.InStockQuantity.HasValue ? (int)product.Inventory.InStockQuantity.Value : 0;
+                    lineItem.InStockQuantity = (int)await _productAvailabilityService.GetAvailableQuantity(product);
                 }
-
+                
                 var evalContext = Cart.ToPromotionEvaluationContext();
                 await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
             }
