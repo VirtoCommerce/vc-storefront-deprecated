@@ -1,5 +1,0 @@
-{%- if application_settings['VirtoCommerce:Storefront:OptimizeStaticContent'] == 'true' -%}
-        {{ 'bundle/checkout-scripts.js?ver=2.21.9' | static_asset_url | script_tag }}
-{%- else -%}
-        {{ 'bundle/checkout-scripts.js?ver=' + ("now" | date: "%s") | static_asset_url | script_tag }}
-{%- endif -%}

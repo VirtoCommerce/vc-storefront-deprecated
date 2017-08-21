@@ -162,9 +162,4 @@ $RECYCLE.BIN/
 VirtoCommerce.Storefront/Areas/*
 VirtoCommerce.Storefront/App_Data/blogs/*
 VirtoCommerce.Storefront/App_Data/Pages/*
-VirtoCommerce.Storefront/App_Data/Themes/*
-!VirtoCommerce.Storefront/App_Data/Themes/default/*
 artifacts/*
-
-/VirtoCommerce.Storefront/node_modules
-/VirtoCommerce.Storefront/bower_components
