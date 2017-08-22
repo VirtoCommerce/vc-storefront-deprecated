@@ -439,7 +439,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Pages\" />
     <Folder Include="Views\ApiWishlist\" />
   </ItemGroup>
   <ItemGroup>
