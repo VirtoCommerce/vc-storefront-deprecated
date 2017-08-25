@@ -62,7 +62,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public string CategoryId { get; set; }
 
         /// <summary>
-        /// All parent categories ids concatenated with ";". E.g. (1;21;344)
+        /// All parent categories ids concatenated with "/". E.g. (1/21/344)
         /// </summary>
         public string Outline { get; set; }
 

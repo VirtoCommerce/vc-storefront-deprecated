@@ -280,5 +280,10 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public decimal? Width { get; set; }
 
         /// <summary>
+        /// All parent categories ids concatenated with "/". E.g. (1/21/344)
+        /// </summary>
+        public string Outline { get; set; }
+
+
     }
 }
