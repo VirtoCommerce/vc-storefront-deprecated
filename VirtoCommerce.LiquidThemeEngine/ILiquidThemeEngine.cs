@@ -14,6 +14,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         IDictionary GetSettings(string defaultValue = null);
         JObject ReadLocalization();
         Stream GetAssetStream(string fileName);
+        string GetAssetHash(string fileName);
         string GetAssetAbsoluteUrl(string assetName);
     }
 }

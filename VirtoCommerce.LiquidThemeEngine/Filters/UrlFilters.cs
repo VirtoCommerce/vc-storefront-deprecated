@@ -309,6 +309,23 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             return BuildAbsoluteUrl(input);
         }
 
+        /// <summary>
+        /// Appends hash of file content as file version to invalidate browser cache when file changed.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string AppendVersion(string input)
+        {
+            if (input == null)
+                return string.Empty;
+
+            var themeEngine = (ShopifyLiquidThemeEngine)Template.FileSystem;
+            var basePath = themeEngine.GetAssetAbsoluteUrl("");
+            var relativePath = input.StartsWith(basePath) ? input.Remove(0, basePath.Length) : input;
+            var hash = themeEngine.GetAssetHash(relativePath);
+            return input.Contains('?') ? $"{input}&v={hash}" : $"{input}?v={hash}";
+        }
+
         private static string BuildOnClickLink(string title, string onclickFormat, params object[] onclickArgs)
         {
             var onClick = string.Format(CultureInfo.InvariantCulture, onclickFormat, onclickArgs);

@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using DotLiquid;
 using DotLiquid.Exceptions;
 using DotLiquid.FileSystems;
@@ -188,6 +190,24 @@ namespace VirtoCommerce.LiquidThemeEngine
             }
 
             return retVal;
+        }
+        
+
+        /// <summary>
+        /// Return hash of requested asset (used for file versioning)
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public string GetAssetHash(string filePath)
+        {
+            return _cacheManager.Get(GetCacheKey("GetAssetHash", filePath), "LiquidThemeRegion", () =>
+            {
+                using (var stream = GetAssetStream(filePath))
+                {
+                    var hashAlgorithm = CryptoConfig.AllowOnlyFipsAlgorithms ? (SHA256) new SHA256CryptoServiceProvider() : new SHA256Managed();
+                    return HttpServerUtility.UrlTokenEncode(hashAlgorithm.ComputeHash(stream));
+                }
+            });
         }
 
         /// <summary>
@@ -405,7 +425,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             {
                 throw new FileSystemException($"The template '{templateName}' was not found. The following locations were searched:<br/>{string.Join("<br/>", DiscoveryPaths)}");
             }
-
+            
             return _cacheManager.Get(GetCacheKey("ReadTemplateByName", templatePath), "LiquidThemeRegion", () =>
             {
                 using (var stream = _themeBlobProvider.OpenRead(templatePath))
