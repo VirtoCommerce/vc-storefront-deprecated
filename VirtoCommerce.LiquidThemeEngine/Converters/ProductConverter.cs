@@ -113,6 +113,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.MeasureUnit = product.MeasureUnit;
             result.Width = product.Width;
             result.Length = product.Length;
+            result.Outline = product.Outline;
 
             if (!product.Associations.IsNullOrEmpty())
             {

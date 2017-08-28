@@ -50,23 +50,6 @@ namespace VirtoCommerce.Storefront.Controllers
         }
 
         /// <summary>
-        /// GET: /themes/global/assets/{*asset}
-        /// Handle global theme assets requests
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult GetGlobalThemeAssets(string path)
-        {
-            var stream = _themeEngine.GetAssetStream(path, searchInGlobalThemeOnly: true);
-            if (stream != null)
-            {
-                return File(stream, MimeMapping.GetMimeMapping(path));
-            }
-            throw new HttpException(404, path);
-        }
-
-        /// <summary>
         /// GET: /assets/{*asset}
         /// Handle all static content assets requests
         /// </summary>

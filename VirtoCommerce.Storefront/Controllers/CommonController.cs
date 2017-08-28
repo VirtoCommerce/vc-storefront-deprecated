@@ -140,6 +140,13 @@ namespace VirtoCommerce.Storefront.Controllers
             return View("NoStore");
         }
 
+        // GET: common/notheme
+        [HttpGet]
+        public ActionResult NoTheme()
+        {
+            return View("NoTheme");
+        }
+
         // GET: /maintenance
         [HttpGet]
         public ActionResult Maintenance()

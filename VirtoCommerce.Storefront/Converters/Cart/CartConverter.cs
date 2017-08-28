@@ -669,7 +669,6 @@ namespace VirtoCommerce.Storefront.Converters
             result.DiscountAmount = product.Price.DiscountAmount;
             result.ProductId = product.Id;
             result.Quantity = quantity;
-            result.InStockQuantity = product.Inventory != null && product.Inventory.InStockQuantity.HasValue ? (int)product.Inventory.InStockQuantity.Value : 0;
             result.IsReccuring = result.PaymentPlan != null;
 
             return result;

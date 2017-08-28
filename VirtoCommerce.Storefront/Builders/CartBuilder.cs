@@ -398,16 +398,15 @@ namespace VirtoCommerce.Storefront.Builders
             bool isReadOnlyLineItems = Cart.Items.Any(i => i.IsReadOnly);
             if (!isReadOnlyLineItems)
             {
-                //Get product inventory to fill InStockQuantoty parameter of LineItem
-                var productIds = Cart.Items.Select(i => i.ProductId);
-                var products = await _catalogSearchService.GetProductsAsync(productIds.ToArray(), ItemResponseGroup.ItemLarge);
+                //Get product inventory to fill InStockQuantity parameter of LineItem
+                var products = await GetCartProductsAsync();
 
-                foreach (var lineItem in Cart.Items) {
+                foreach (var lineItem in Cart.Items.ToList())
+                {
                     var product = products.FirstOrDefault(p => p.Id == lineItem.ProductId);
-                    if (product != null && product.Inventory != null)
-                        lineItem.InStockQuantity = product.Inventory.InStockQuantity.HasValue ? (int)product.Inventory.InStockQuantity.Value : 0;
+                    lineItem.InStockQuantity = (int)await _productAvailabilityService.GetAvailableQuantity(product);
                 }
-
+                
                 var evalContext = Cart.ToPromotionEvaluationContext();
                 await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
             }
@@ -517,9 +516,7 @@ namespace VirtoCommerce.Storefront.Builders
 
         protected virtual async Task ValidateCartItemsAsync()
         {
-            var productIds = Cart.Items.Select(i => i.ProductId).ToArray();
-            var cacheKey = "CartBuilder.ValidateCartItemsAsync:" + Cart.Id + ":" + string.Join(":", productIds);
-            var products = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => await _catalogSearchService.GetProductsAsync(productIds, ItemResponseGroup.ItemWithPrices | ItemResponseGroup.ItemWithDiscounts | ItemResponseGroup.Inventory));
+            var products = await GetCartProductsAsync();
 
             foreach (var lineItem in Cart.Items.ToList())
             {
@@ -643,6 +640,14 @@ namespace VirtoCommerce.Storefront.Builders
             {
                 throw new StorefrontException("Cart not loaded.");
             }
+        }
+
+        protected virtual async Task<Product[]> GetCartProductsAsync()
+        {
+            var productIds = Cart.Items.Select(i => i.ProductId).ToArray();
+            var cacheKey = "CartBuilder.ValidateCartItemsAsync:" + Cart.Id + ":" + string.Join(":", productIds);
+            var products = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => await _catalogSearchService.GetProductsAsync(productIds, ItemResponseGroup.ItemWithPrices | ItemResponseGroup.ItemWithDiscounts | ItemResponseGroup.Inventory));
+            return products;
         }
     }
 }
