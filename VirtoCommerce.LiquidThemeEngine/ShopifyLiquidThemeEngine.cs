@@ -124,10 +124,10 @@ namespace VirtoCommerce.LiquidThemeEngine
         {
             get
             {
-                IEnumerable<string> retVal = _templatesDiscoveryFolders;
+                IEnumerable<string> retVal = Enumerable.Empty<string>();
                 if (WorkContext.CurrentStore != null)
                 {
-                    retVal = retVal.Select(x => Path.Combine(CurrentThemePath, x)).Concat(retVal);
+                    retVal = _templatesDiscoveryFolders.Select(x => Path.Combine(CurrentThemePath, x));
                 }
                 return retVal;
             }

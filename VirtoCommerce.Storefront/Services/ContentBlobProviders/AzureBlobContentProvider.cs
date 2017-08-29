@@ -181,7 +181,7 @@ namespace VirtoCommerce.Storefront.Services
             path = NormalizePath(path);
             //Search pattern may contains part of path /path/*.jpg then nedd add this part to base path
             searchPattern = searchPattern.Replace('\\', '/').TrimStart('/');
-            var subDir = Path.GetDirectoryName(searchPattern);
+            var subDir = NormalizePath(Path.GetDirectoryName(searchPattern));
             if (!string.IsNullOrEmpty(subDir))
             {
                 path = path.TrimEnd('/') + "/" + subDir;
