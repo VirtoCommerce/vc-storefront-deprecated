@@ -5,6 +5,7 @@ using System.Web.Routing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using VirtoCommerce.LiquidThemeEngine;
 using VirtoCommerce.Storefront.Controllers;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Stores;
@@ -64,8 +65,8 @@ namespace VirtoCommerce.Storefront
                         
                         if (filterContext.ActionDescriptor.ActionName != "NoTheme")
                         {
-                            var viewResult = ViewEngines.Engines.FindView(commonControllerContext, "index", null);
-                            if (viewResult.View == null)
+                            var viewResult = ViewEngines.Engines.SingleOrDefault(e => e.GetType() == typeof(DotLiquidThemedViewEngine))?.FindView(commonControllerContext, "index", null, false);
+                            if (viewResult?.View == null)
                             {
                                 filterContext.Result = commonController.NoTheme(viewResult);
                             }

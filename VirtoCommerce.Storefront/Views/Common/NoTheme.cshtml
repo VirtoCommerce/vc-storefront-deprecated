@@ -73,15 +73,18 @@
     <div id="content">
         <h1>Virto Commerce storefront has been successfully deployed</h1>
         <p>Looks like you missed theme :(</p>
-        <p>We looked for 'index' view in the following locations</p>
-        <ul>
-            @foreach (var searchedLocation in Model.SearchedLocations.Select(Path.GetDirectoryName).Distinct().Select(sl => string.IsNullOrEmpty(sl) || !sl.StartsWith("~\\") ? "\\" + sl : sl))
-            {
-                <li>
-                    @Html.DisplayFor(modelItem => searchedLocation)
-                </li>
-            }
-        </ul>
+        @if (Model != null)
+        {
+            <p>We looked for 'index' view in the following locations</p>
+            <ul>
+                @foreach (var searchedLocation in Model.SearchedLocations.Select(Path.GetDirectoryName).Distinct())
+                {
+                    <li>
+                        @Html.DisplayFor(modelItem => searchedLocation)
+                    </li>
+                }
+            </ul>
+        }
         <p>But it simple to fix: follow our instructions to download and correctly configure theme for your storefront.</p>
         <a href="https://github.com/VirtoCommerce/vc-default-theme" class="button" id="btnAdmin">Let's start!</a>
     </div>
