@@ -1,6 +1,8 @@
 ﻿@{
     Layout = null;
- }
+}
+@using VirtoCommerce.Storefront.Model.Common
+@model ViewEngineResult
 
 <!DOCTYPE html>
 <html>
@@ -14,7 +16,7 @@
 
         #feature {
             width: 960px;
-            margin: 95px auto 0 auto;
+            margin: 0 auto 95px auto;
             overflow: auto;
         }
 
@@ -25,7 +27,6 @@
             color: #ffffff;
             float: left;
             width: 460px;
-            margin-top: 68px;
             margin-left: 0px;
             vertical-align: middle;
         }
@@ -71,9 +72,17 @@
 <div id="feature">
     <div id="content">
         <h1>Virto Commerce storefront has been successfully deployed</h1>
-        <p>
-            Looks like you missed theme :( But it simple to fix: just download default!
-        </p>
+        <p>Looks like you missed theme :(</p>
+        <p>We looked for 'index' view in the following locations</p>
+        <ul>
+            @foreach (var searchedLocation in Model.SearchedLocations.Select(Path.GetDirectoryName).Distinct().Select(sl => string.IsNullOrEmpty(sl) || !sl.StartsWith("~\\") ? "\\" + sl : sl))
+            {
+                <li>
+                    @Html.DisplayFor(modelItem => searchedLocation)
+                </li>
+            }
+        </ul>
+        <p>But it simple to fix: follow our instructions to download and correctly configure theme for your storefront.</p>
         <a href="https://github.com/VirtoCommerce/vc-default-theme" class="button" id="btnAdmin">Let's start!</a>
     </div>
 </div>

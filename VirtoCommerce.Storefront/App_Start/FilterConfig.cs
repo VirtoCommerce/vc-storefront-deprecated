@@ -61,9 +61,14 @@ namespace VirtoCommerce.Storefront
                         var commonControllerContext = new ControllerContext(filterContext.RequestContext, commonController);
                         commonControllerContext.RouteData.Values["controller"] = "Common";
                         commonController.ControllerContext = commonControllerContext;
-                        if (filterContext.ActionDescriptor.ActionName != "NoTheme" && ViewEngines.Engines.FindView(commonControllerContext, "index", null).View == null)
+                        
+                        if (filterContext.ActionDescriptor.ActionName != "NoTheme")
                         {
-                            filterContext.Result = commonController.NoTheme();
+                            var viewResult = ViewEngines.Engines.FindView(commonControllerContext, "index", null);
+                            if (viewResult.View == null)
+                            {
+                                filterContext.Result = commonController.NoTheme(viewResult);
+                            }
                         }
                     }
                     if (filterContext.ActionDescriptor.ActionName != "Maintenance" && workContext.CurrentStore.StoreState == StoreStatus.Closed)

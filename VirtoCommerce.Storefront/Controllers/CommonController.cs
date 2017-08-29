@@ -142,9 +142,9 @@ namespace VirtoCommerce.Storefront.Controllers
 
         // GET: common/notheme
         [HttpGet]
-        public ActionResult NoTheme()
+        public ActionResult NoTheme(ViewEngineResult viewResult)
         {
-            return View("NoTheme");
+            return View("NoTheme", viewResult);
         }
 
         // GET: /maintenance
