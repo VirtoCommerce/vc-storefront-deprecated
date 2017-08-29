@@ -159,7 +159,9 @@ $RECYCLE.BIN/
 
 *.zip
 
+artifacts/*
+
 VirtoCommerce.Storefront/Areas/*
 VirtoCommerce.Storefront/App_Data/blogs/*
 VirtoCommerce.Storefront/App_Data/Pages/*
-artifacts/*
+VirtoCommerce.Storefront/App_Data/cms-content/*

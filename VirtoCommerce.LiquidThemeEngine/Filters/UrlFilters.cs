@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -333,17 +333,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             else
             {
                 var tag = tagObject as shopifyModel.Tag;
-
                 if (tag != null)
                 {
                     href = GetCurrentUrlWithTags(action, tag.GroupName, tag.Value);
-                    title = BuildTagActionTitle(action, tag.Label);
-
-                    label = tag.Label;
+                    title = BuildTagActionTitle(action, label);
 
                     if (tag.Count > 0)
                     {
-                        label += string.Format(" ({0})", tag.Count);
+                        label = $"{label} ({tag.Count})";
                     }
                 }
                 else
@@ -365,9 +362,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             switch (action)
             {
                 case TagAction.Remove:
-                    return "Remove tag " + tagLabel;
+                    return $"Remove tag '{tagLabel}'";
                 default:
-                    return "Show products matching tag " + tagLabel;
+                    return $"Show products matching tag '{tagLabel}'";
             }
         }
 

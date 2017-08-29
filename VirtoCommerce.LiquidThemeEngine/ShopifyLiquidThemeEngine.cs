@@ -104,7 +104,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         /// <summary>
         /// Current theme name
         /// </summary>
-        public string CurrentThemeName => WorkContext.CurrentStore.ThemeName;
+        public string CurrentThemeName => !string.IsNullOrEmpty(WorkContext.CurrentStore.ThemeName) ? WorkContext.CurrentStore.ThemeName : "default";
 
 
         /// <summary>
