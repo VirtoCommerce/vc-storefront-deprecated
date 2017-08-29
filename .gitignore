@@ -165,3 +165,4 @@ VirtoCommerce.Storefront/Areas/*
 VirtoCommerce.Storefront/App_Data/blogs/*
 VirtoCommerce.Storefront/App_Data/Pages/*
 VirtoCommerce.Storefront/App_Data/cms-content/*
+/VirtoCommerce.Storefront/App_Data/cms-content
