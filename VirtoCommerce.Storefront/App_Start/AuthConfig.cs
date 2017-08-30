@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -54,22 +53,22 @@ namespace VirtoCommerce.Storefront
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            if (ConfigurationManager.AppSettings.GetValue("OAuth2.Facebook.Enabled", false))
+            if (ConfigurationHelper.GetAppSettingsValue("OAuth2.Facebook.Enabled", false))
             {
                 var facebookOptions = new FacebookAuthenticationOptions
                 {
-                    AppId = ConfigurationManager.AppSettings["OAuth2.Facebook.AppId"],
-                    AppSecret = ConfigurationManager.AppSettings["OAuth2.Facebook.Secret"]
+                    AppId = ConfigurationHelper.GetAppSettingsValue("OAuth2.Facebook.AppId"),
+                    AppSecret = ConfigurationHelper.GetAppSettingsValue("OAuth2.Facebook.Secret"),
                 };
                 app.UseFacebookAuthentication(facebookOptions);
             }
 
-            if (ConfigurationManager.AppSettings.GetValue("OAuth2.Google.Enabled", false))
+            if (ConfigurationHelper.GetAppSettingsValue("OAuth2.Google.Enabled", false))
             {
                 var googleOptions = new GoogleOAuth2AuthenticationOptions
                 {
-                    ClientId = ConfigurationManager.AppSettings["OAuth2.Google.ClientId"],
-                    ClientSecret = ConfigurationManager.AppSettings["OAuth2.Google.Secret"]
+                    ClientId = ConfigurationHelper.GetAppSettingsValue("OAuth2.Google.ClientId"),
+                    ClientSecret = ConfigurationHelper.GetAppSettingsValue("OAuth2.Google.Secret"),
                 };
                 app.UseGoogleAuthentication(googleOptions);
             }

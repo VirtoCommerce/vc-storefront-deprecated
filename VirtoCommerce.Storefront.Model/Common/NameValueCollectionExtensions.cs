@@ -6,8 +6,10 @@ namespace VirtoCommerce.Storefront.Model.Common
 {
     public static class NameValueCollectionExtensions
     {
+        [Obsolete("Use ConfigurationHelper.GetAppSettingsValue()")]
         [CLSCompliant(false)]
-        public static T GetValue<T>(this NameValueCollection nameValuePairs, string configKey, T defaultValue) where T : IConvertible
+        public static T GetValue<T>(this NameValueCollection nameValuePairs, string configKey, T defaultValue)
+                where T : IConvertible
         {
             T result;
 

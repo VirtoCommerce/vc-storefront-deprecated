@@ -9266,10 +9266,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductPromoEntry class.
         /// </summary>
-        public ProductPromoEntry(string code = default(string), int? quantity = default(int?), double? price = default(double?), double? discount = default(double?), string catalogId = default(string), string categoryId = default(string), string productId = default(string), object owner = default(object), string outline = default(string), System.Collections.Generic.IList<ProductPromoEntry> variations = default(System.Collections.Generic.IList<ProductPromoEntry>), System.Collections.Generic.IDictionary<string, string> attributes = default(System.Collections.Generic.IDictionary<string, string>))
+        public ProductPromoEntry(string code = default(string), int? quantity = default(int?), int? inStockQuantity = default(int?), double? price = default(double?), double? discount = default(double?), string catalogId = default(string), string categoryId = default(string), string productId = default(string), object owner = default(object), string outline = default(string), System.Collections.Generic.IList<ProductPromoEntry> variations = default(System.Collections.Generic.IList<ProductPromoEntry>), System.Collections.Generic.IDictionary<string, string> attributes = default(System.Collections.Generic.IDictionary<string, string>))
         {
             Code = code;
             Quantity = quantity;
+            InStockQuantity = inStockQuantity;
             Price = price;
             Discount = discount;
             CatalogId = catalogId;
@@ -9290,6 +9291,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "quantity")]
         public int? Quantity { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "inStockQuantity")]
+        public int? InStockQuantity { get; set; }
 
         /// <summary>
         /// </summary>

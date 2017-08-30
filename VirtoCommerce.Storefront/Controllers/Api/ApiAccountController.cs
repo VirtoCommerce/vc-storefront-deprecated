@@ -108,7 +108,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 contact.Addresses.Clear();
                 if (addresses != null)
                     contact.Addresses.AddRange(addresses);
-                await _customerService.UpdateCustomerAsync(contact);
+                await _customerService.UpdateAddressesAsync(contact);
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);

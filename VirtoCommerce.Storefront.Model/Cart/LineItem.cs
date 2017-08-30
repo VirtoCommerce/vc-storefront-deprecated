@@ -72,6 +72,11 @@ namespace VirtoCommerce.Storefront.Model.Cart
         public int Quantity { get; set; }
 
         /// <summary>
+        /// Gets or Sets InStockQuantity
+        /// </summary>
+        public int InStockQuantity { get; set; }
+
+        /// <summary>
         /// Gets or sets the value of line item warehouse location
         /// </summary>
         public string WarehouseLocation { get; set; }

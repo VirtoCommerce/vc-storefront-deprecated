@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using DotLiquid;
 
 namespace VirtoCommerce.LiquidThemeEngine.Objects
@@ -12,12 +12,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
             Id = string.Concat(GroupName, "_", Value).ToLowerInvariant();
         }
 
+        public string GroupType { get; set; }
         public string GroupName { get; set; }
         public string GroupLabel { get; set; }
         public string Label { get; set; }
         public int Count { get; set; }
         public string Value { get; set; }
         public string Id { get; set; }
+        public string Lower { get; set; }
+        public string Upper { get; set; }
 
         public override string ToString()
         {

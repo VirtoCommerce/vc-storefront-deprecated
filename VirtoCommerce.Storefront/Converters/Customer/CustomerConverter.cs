@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using Omu.ValueInjecter;
 using VirtoCommerce.Storefront.Common;
@@ -20,11 +21,17 @@ namespace VirtoCommerce.Storefront.Converters
             return CustomerConverterInstance.ToCustomerInfo(formModel);
         }
 
+        public static CustomerInfo ToCustomerInfo(this customerDto.Member memberDto)
+        {
+            return CustomerConverterInstance.ToCustomerInfo(memberDto);
+        }
+        
+        [Obsolete]
         public static CustomerInfo ToCustomerInfo(this customerDto.Contact contactDto)
         {
             return CustomerConverterInstance.ToCustomerInfo(contactDto);
         }
-
+        
         public static customerDto.Contact ToCustomerContactDto(this CustomerInfo customer)
         {
             return CustomerConverterInstance.ToCustomerContactDto(customer);
@@ -150,6 +157,51 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
+        public virtual CustomerInfo ToCustomerInfo(customerDto.Member memberDto)
+        {
+            var result = new CustomerInfo();
+            result.InjectFrom<NullableAndEnumValueInjecter>(memberDto);
+            result.IsRegisteredUser = true;
+            result.MemberType = memberDto.MemberType;
+            result.UserGroups = memberDto.Groups;
+            if (memberDto.Addresses != null)
+            {
+                result.Addresses = memberDto.Addresses.Select(ToAddress).ToList();
+            }
+
+            result.DefaultBillingAddress = result.Addresses.FirstOrDefault(a => (a.Type & AddressType.Billing) == AddressType.Billing);
+            result.DefaultShippingAddress = result.Addresses.FirstOrDefault(a => (a.Type & AddressType.Shipping) == AddressType.Shipping);
+            
+            if (!string.IsNullOrEmpty(memberDto.Name))
+            {
+                result.FullName = memberDto.Name;
+
+                var nameParts = memberDto.Name.Split(_nameSeparator, 2);
+
+                if (nameParts.Length > 0)
+                {
+                    result.FirstName = nameParts[0];
+                }
+
+                if (nameParts.Length > 1)
+                {
+                    result.LastName = nameParts[1];
+                }
+            }
+
+            if (memberDto.Emails != null)
+            {
+                result.Email = memberDto.Emails.FirstOrDefault();
+            }
+            if (!memberDto.DynamicProperties.IsNullOrEmpty())
+            {
+                result.DynamicProperties = memberDto.DynamicProperties.Select(ToDynamicProperty).ToList();
+            }
+
+            return result;
+        }
+
+        [Obsolete]
         public virtual CustomerInfo ToCustomerInfo(customerDto.Contact contactDto)
         {
             var result = new CustomerInfo();

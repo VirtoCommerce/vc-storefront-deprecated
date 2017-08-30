@@ -14,6 +14,7 @@ using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Catalog.Services;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer.Services;
+using VirtoCommerce.Storefront.Model.Inventory.Services;
 using VirtoCommerce.Storefront.Model.Pricing.Services;
 using VirtoCommerce.Storefront.Model.Services;
 
@@ -28,6 +29,7 @@ namespace VirtoCommerce.Storefront.Services
         private readonly ICustomerService _customerService;
         private readonly ISubscriptionModuleApiClient _subscriptionApi;
         private readonly IProductAvailabilityService _productAvailabilityService;
+        private readonly IInventoryService _inventoryService;
 
         public CatalogSearchServiceImpl(
             Func<WorkContext> workContextFactory,
@@ -36,7 +38,8 @@ namespace VirtoCommerce.Storefront.Services
             IPricingService pricingService,
             ICustomerService customerService,
             ISubscriptionModuleApiClient subscriptionApi,
-            IProductAvailabilityService productAvailabilityService)
+            IProductAvailabilityService productAvailabilityService,
+            IInventoryService inventoryService)
         {
             _workContextFactory = workContextFactory;
             _catalogModuleApi = catalogModuleApi;
@@ -45,6 +48,7 @@ namespace VirtoCommerce.Storefront.Services
             _customerService = customerService;
             _subscriptionApi = subscriptionApi;
             _productAvailabilityService = productAvailabilityService;
+            _inventoryService = inventoryService;
         }
 
         #region ICatalogSearchService Members
@@ -334,17 +338,7 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual async Task LoadProductInventoriesAsync(List<Product> products, WorkContext workContext)
         {
-            var inventories = await _inventoryModuleApi.InventoryModule.GetProductsInventoriesByPlentyIdsAsync(products.Select(x => x.Id).ToArray());
-            var availFullfilmentCentersIds = workContext.CurrentStore.FulfilmentCenters.Select(x => x.Id).ToArray();
-            foreach (var item in products)
-            {
-                item.InventoryAll = inventories.Where(x => x.ProductId == item.Id).Select(x => x.ToInventory()).Where(x => availFullfilmentCentersIds.Contains(x.FulfillmentCenterId)).ToList();
-                item.Inventory = item.InventoryAll.OrderByDescending(x => Math.Max(0, (x.InStockQuantity ?? 0L) - (x.ReservedQuantity ?? 0L))).FirstOrDefault();
-                if (workContext.CurrentStore.PrimaryFullfilmentCenter != null)
-                {
-                    item.Inventory = item.InventoryAll.FirstOrDefault(x => x.FulfillmentCenterId == workContext.CurrentStore.PrimaryFullfilmentCenter.Id);
-                }
-            }
+            await _inventoryService.EvaluateProductInventoriesAsync(products, workContext);
         }
 
         protected virtual void LoadProductInventories(List<Product> products)

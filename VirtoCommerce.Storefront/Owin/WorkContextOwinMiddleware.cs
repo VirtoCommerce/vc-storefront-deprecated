@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
-using System.Web.Optimization;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
@@ -66,7 +65,7 @@ namespace VirtoCommerce.Storefront.Owin
             }
             else
             {
-                if (IsStorefrontRequest(context.Request) && !IsBundleRequest(context.Request))
+                if (IsStorefrontRequest(context.Request))
                 {
                     await ClearCacheIfHasChanges();
                     await HandleStorefrontRequest(context);
@@ -92,12 +91,6 @@ namespace VirtoCommerce.Storefront.Owin
         protected virtual bool IsStorefrontRequest(IOwinRequest request)
         {
             return !OwinIgnorePathsStrings.Any(p => request.Path.StartsWithSegments(p));
-        }
-
-        protected virtual bool IsBundleRequest(IOwinRequest request)
-        {
-            var path = "~" + request.Path;
-            return BundleTable.Bundles.Any(b => b.Path.Equals(path, StringComparison.OrdinalIgnoreCase));
         }
 
         protected virtual bool IsStaticAssetRequest(IOwinRequest request)
@@ -379,6 +372,10 @@ namespace VirtoCommerce.Storefront.Owin
             if (customer.IsRegisteredUser && !customer.AllowedStores.IsNullOrEmpty()
                 && !customer.AllowedStores.Any(x => string.Equals(x, currentStore.Id, StringComparison.InvariantCultureIgnoreCase)))
             {
+                if (IsAssetRequest(context.Request))
+                {
+                    throw new HttpException((int)HttpStatusCode.Forbidden, "User cannot login to this store.");
+                }
                 context.Authentication.SignOut();
                 context.Authentication.User = new GenericPrincipal(new GenericIdentity(string.Empty), null);
             }
@@ -485,7 +482,7 @@ namespace VirtoCommerce.Storefront.Owin
 
             if (string.IsNullOrEmpty(storeId))
             {
-                storeId = ConfigurationManager.AppSettings["DefaultStore"];
+                storeId = ConfigurationHelper.GetAppSettingsValue("DefaultStore");
             }
 
             var store = stores.FirstOrDefault(s => string.Equals(s.Id, storeId, StringComparison.OrdinalIgnoreCase));
@@ -583,9 +580,9 @@ namespace VirtoCommerce.Storefront.Owin
         {
             var appSettings = new Dictionary<string, object>();
 
-            foreach (var key in ConfigurationManager.AppSettings.AllKeys)
+            foreach (var name in ConfigurationHelper.GetAppSettingsNames())
             {
-                appSettings.Add(key, ConfigurationManager.AppSettings[key]);
+                appSettings.Add(name, ConfigurationHelper.GetAppSettingsValue(name));
             }
 
             return appSettings;
@@ -596,10 +593,10 @@ namespace VirtoCommerce.Storefront.Owin
         {
             return new RequireHttps
             {
-                Enabled = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:RequireHttps:Enabled", false),
-                StatusCode = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:RequireHttps:StatusCode", 308),
-                ReasonPhrase = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:RequireHttps:ReasonPhrase", "Permanent Redirect"),
-                Port = ConfigurationManager.AppSettings.GetValue("VirtoCommerce:Storefront:RequireHttps:Port", 443),
+                Enabled = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:RequireHttps:Enabled", false),
+                StatusCode = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:RequireHttps:StatusCode", 308),
+                ReasonPhrase = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:RequireHttps:ReasonPhrase", "Permanent Redirect"),
+                Port = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:RequireHttps:Port", 443),
             };
         }
 
@@ -607,7 +604,7 @@ namespace VirtoCommerce.Storefront.Owin
         {
             var result = new List<PathString>();
 
-            var owinIgnore = ConfigurationManager.AppSettings["VirtoCommerce:Storefront:OwinIgnore"];
+            var owinIgnore = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:Storefront:OwinIgnore");
 
             if (!string.IsNullOrEmpty(owinIgnore))
             {
@@ -664,9 +661,9 @@ namespace VirtoCommerce.Storefront.Owin
             var country = new Country
             {
                 Name = pair.Key,
-                Code2 = region != null ? region.TwoLetterISORegionName : string.Empty,
-                Code3 = region != null ? region.ThreeLetterISORegionName : string.Empty,
-                RegionType = pair.Value["label"] != null ? pair.Value["label"].ToString() : null
+                Code2 = region?.TwoLetterISORegionName ?? string.Empty,
+                Code3 = region?.ThreeLetterISORegionName ?? string.Empty,
+                RegionType = pair.Value["label"]?.ToString()
             };
 
             var provinceCodes = pair.Value["province_codes"].ToObject<Dictionary<string, string>>();

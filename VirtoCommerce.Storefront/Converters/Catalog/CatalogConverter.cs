@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Markdig;
@@ -140,7 +140,9 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 Value = itemDto.Value,
                 IsApplied = itemDto.IsApplied ?? false,
-                Count = itemDto.Count ?? 0
+                Count = itemDto.Count ?? 0,
+                Lower = itemDto.RequestedLowerBound,
+                Upper = itemDto.RequestedUpperBound,
             };
 
             if (itemDto.Labels != null)
@@ -166,7 +168,8 @@ namespace VirtoCommerce.Storefront.Converters
                 Id = propertyDto.Id,
                 Name = propertyDto.Name,
                 Type = propertyDto.Type,
-                ValueType = propertyDto.ValueType
+                ValueType = propertyDto.ValueType,
+                IsMultivalue = propertyDto.Multivalue ?? false
             };
 
             //Set display names and set current display name for requested language
@@ -204,6 +207,19 @@ namespace VirtoCommerce.Storefront.Converters
             if (result.LocalizedValues.Any())
             {
                 result.Value = result.LocalizedValues.FindWithLanguage(currentLanguage, x => x.Value, result.Value);
+            }
+
+            //Set multivalues
+            if (result.IsMultivalue && propertyDto.Values != null)
+            {
+                if (result.LocalizedValues.Any())
+                {
+                    result.Values = result.LocalizedValues.GetLocalizedStringsForLanguage(currentLanguage).Select(x => x.Value).ToList();
+                }
+                else
+                {
+                    result.Values = propertyDto.Values.Where(x => x != null).Select(x => x.Value.ToString()).ToList();
+                }
             }
 
             return result;
@@ -508,6 +524,7 @@ namespace VirtoCommerce.Storefront.Converters
                 Outline = product.Outline,
                 ProductId = product.Id,
                 Quantity = 1,
+                InStockQuantity = product.Inventory != null && product.Inventory.InStockQuantity.HasValue ? (int)product.Inventory.InStockQuantity.Value : 0,
                 Variations = product.Variations?.Select(ToProductPromoEntryDto).ToList()
             };
 

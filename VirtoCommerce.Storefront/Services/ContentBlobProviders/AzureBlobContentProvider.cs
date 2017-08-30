@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using CacheManager.Core;
 using Microsoft.WindowsAzure.Storage;
@@ -11,7 +14,7 @@ using VirtoCommerce.Storefront.Model.Services;
 
 namespace VirtoCommerce.Storefront.Services
 {
-    public class AzureBlobContentProvider : IContentBlobProvider, IStaticContentBlobProvider
+    public class AzureBlobContentProvider : IContentBlobProvider, IStaticContentBlobProvider, IDisposable
     {
         private readonly CloudBlobClient _cloudBlobClient;
         private readonly CloudStorageAccount _cloudStorageAccount;
@@ -20,6 +23,7 @@ namespace VirtoCommerce.Storefront.Services
         private readonly string _containerName;
         private readonly string _baseDirectoryPath;
         private readonly ICacheManager<object> _cacheManager;
+        private readonly CancellationTokenSource _cancelSource;
 
         public AzureBlobContentProvider(string connectionString, string basePath, ICacheManager<object> cacheManager)
         {
@@ -39,6 +43,60 @@ namespace VirtoCommerce.Storefront.Services
             {
                 _directory = _container.GetDirectoryReference(_baseDirectoryPath);
             }
+
+            _cancelSource = new CancellationTokenSource();
+
+            var enabledTrackChanges = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:AzureBlobStorage:TrackChanges", true);
+            if (enabledTrackChanges)
+            {
+                Task.Run(() => MonitorFileSystemChanges(_cancelSource.Token), _cancelSource.Token);
+            }
+        }
+
+        private void MonitorFileSystemChanges(CancellationToken cancellationToken)
+        {
+            var intetval = ConfigurationHelper.GetAppSettingsValue("VirtoCommerce:AzureBlobStorage:TrackChangesInterval", 5000);
+
+            var latestModifiedDate = DateTimeOffset.UtcNow;
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    var maxModifiedDate = DateTimeOffset.MinValue;
+
+                    foreach (var file in EnumBlobFiles())
+                    {
+                        if (cancellationToken.IsCancellationRequested)
+                            break;
+
+                        if (file.Properties.LastModified.HasValue)
+                        {
+                            if (maxModifiedDate < file.Properties.LastModified)
+                                maxModifiedDate = (DateTimeOffset)file.Properties.LastModified;
+
+                            if (file.Properties.LastModified > latestModifiedDate)
+                            {
+                                RaiseChangedEvent(new FileSystemEventArgs(WatcherChangeTypes.Changed, Path.GetDirectoryName(file.Name), Path.GetFileName(file.Name)));
+                            }
+                        }
+                    }
+
+                    latestModifiedDate = maxModifiedDate;
+                }
+                catch (Exception ex)
+                {
+                    Trace.TraceError(ex.ToString());
+                }
+
+                Thread.Sleep(intetval);
+            }
+        }
+
+        private IEnumerable<CloudBlob> EnumBlobFiles()
+        {
+            return _directory?.ListBlobs(useFlatBlobListing: true).OfType<CloudBlob>()
+                ?? _container.ListBlobs(useFlatBlobListing: true).OfType<CloudBlob>();
         }
 
         #region IContentBlobProvider Members
@@ -54,7 +112,7 @@ namespace VirtoCommerce.Storefront.Services
         {
             if (string.IsNullOrEmpty(path))
             {
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
             }
             path = NormalizePath(path);
             if (_directory != null)
@@ -68,7 +126,7 @@ namespace VirtoCommerce.Storefront.Services
         /// <summary>
         /// Open blob for write by path
         /// </summary>
-        /// <param name="url"></param>
+        /// <param name="path"></param>
         /// <returns>blob stream</returns>
         public virtual Stream OpenWrite(string path)
         {
@@ -123,8 +181,8 @@ namespace VirtoCommerce.Storefront.Services
             path = NormalizePath(path);
             //Search pattern may contains part of path /path/*.jpg then nedd add this part to base path
             searchPattern = searchPattern.Replace('\\', '/').TrimStart('/');
-            var subDir =  Path.GetDirectoryName(searchPattern);
-            if(!string.IsNullOrEmpty(subDir))
+            var subDir = NormalizePath(Path.GetDirectoryName(searchPattern));
+            if (!string.IsNullOrEmpty(subDir))
             {
                 path = path.TrimEnd('/') + "/" + subDir;
                 searchPattern = Path.GetFileName(searchPattern);
@@ -145,7 +203,7 @@ namespace VirtoCommerce.Storefront.Services
                 blobItems = _container.ListBlobs(useFlatBlobListing: recursive);
             }
             // Loop over items within the container and output the length and URI.
-            foreach (IListBlobItem item in blobItems)
+            foreach (var item in blobItems)
             {
                 var block = item as CloudBlockBlob;
                 if (block != null)
@@ -170,7 +228,7 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual string GetRelativeUrl(string url)
         {
-            var absoluteUrl = GetAbsoluteUrl("").ToString();
+            var absoluteUrl = GetAbsoluteUrl("");
             return url.Replace(absoluteUrl, string.Empty);
         }
 
@@ -184,19 +242,49 @@ namespace VirtoCommerce.Storefront.Services
         protected virtual void RaiseChangedEvent(FileSystemEventArgs args)
         {
             var changedEvent = Changed;
-            if (changedEvent != null)
-            {
-                changedEvent(this, args);
-            }
+            changedEvent?.Invoke(this, args);
         }
 
         protected virtual void RaiseRenamedEvent(RenamedEventArgs args)
         {
             var renamedEvent = Renamed;
-            if (renamedEvent != null)
+            renamedEvent?.Invoke(this, args);
+        }
+
+        #region IDisposable Support
+        private bool _disposedValue; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
             {
-                renamedEvent(this, args);
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                    _cancelSource.Cancel();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                _disposedValue = true;
             }
         }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~AzureBlobContentProvider() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

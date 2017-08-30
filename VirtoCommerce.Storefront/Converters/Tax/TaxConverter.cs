@@ -67,6 +67,7 @@ namespace VirtoCommerce.Storefront.Converters
             if (taxContext.Customer != null)
             {
                 retVal.Customer = taxContext.Customer.ToCoreContactDto();
+                retVal.Customer.MemberType = "Contact";
             }
             if (taxContext.Currency != null)
             {
@@ -98,6 +99,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.Type = "";
             result.Address = workContext.CurrentCustomer.DefaultBillingAddress;
             result.Customer = workContext.CurrentCustomer;
+            result.StoreTaxCalculationEnabled = workContext.CurrentStore.TaxCalculationEnabled;
 
             if (products != null)
             {

@@ -4645,8 +4645,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// <param name='respGroup'>
         /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
         /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
-        /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
-        /// 'ItemMedium', 'ItemLarge'
+        /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines',
+        /// 'ReferencedAssociations', 'ItemSmall', 'ItemMedium', 'ItemLarge'
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -4799,8 +4799,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// <param name='respGroup'>
         /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
         /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
-        /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
-        /// 'ItemMedium', 'ItemLarge'
+        /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines',
+        /// 'ReferencedAssociations', 'ItemSmall', 'ItemMedium', 'ItemLarge'
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -5244,8 +5244,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// <param name='respGroup'>
         /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
         /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
-        /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
-        /// 'ItemMedium', 'ItemLarge'
+        /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines',
+        /// 'ReferencedAssociations', 'ItemSmall', 'ItemMedium', 'ItemLarge'
         /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
@@ -6107,8 +6107,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             /// <param name='respGroup'>
             /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
             /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
-            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
-            /// 'ItemMedium', 'ItemLarge'
+            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines',
+            /// 'ReferencedAssociations', 'ItemSmall', 'ItemMedium', 'ItemLarge'
             /// </param>
             public static Product GetProductById(this ICatalogModuleProducts operations, string id, string respGroup = default(string))
             {
@@ -6127,8 +6127,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             /// <param name='respGroup'>
             /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
             /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
-            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
-            /// 'ItemMedium', 'ItemLarge'
+            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines',
+            /// 'ReferencedAssociations', 'ItemSmall', 'ItemMedium', 'ItemLarge'
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -6153,8 +6153,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             /// <param name='respGroup'>
             /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
             /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
-            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
-            /// 'ItemMedium', 'ItemLarge'
+            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines',
+            /// 'ReferencedAssociations', 'ItemSmall', 'ItemMedium', 'ItemLarge'
             /// </param>
             public static System.Collections.Generic.IList<Product> GetProductByIds(this ICatalogModuleProducts operations, System.Collections.Generic.IList<string> ids, string respGroup = default(string))
             {
@@ -6173,8 +6173,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             /// <param name='respGroup'>
             /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
             /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
-            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
-            /// 'ItemMedium', 'ItemLarge'
+            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines',
+            /// 'ReferencedAssociations', 'ItemSmall', 'ItemMedium', 'ItemLarge'
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -6264,8 +6264,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             /// <param name='respGroup'>
             /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
             /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
-            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
-            /// 'ItemMedium', 'ItemLarge'
+            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines',
+            /// 'ReferencedAssociations', 'ItemSmall', 'ItemMedium', 'ItemLarge'
             /// </param>
             public static System.Collections.Generic.IList<Product> GetProductByPlentyIds(this ICatalogModuleProducts operations, System.Collections.Generic.IList<string> ids, string respGroup = default(string))
             {
@@ -6284,8 +6284,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
             /// <param name='respGroup'>
             /// Response group. Possible values include: 'None', 'ItemInfo', 'ItemAssets',
             /// 'ItemProperties', 'ItemAssociations', 'ItemEditorialReviews',
-            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines', 'ItemSmall',
-            /// 'ItemMedium', 'ItemLarge'
+            /// 'Variations', 'Seo', 'Links', 'Inventory', 'Outlines',
+            /// 'ReferencedAssociations', 'ItemSmall', 'ItemMedium', 'ItemLarge'
             /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
@@ -6500,7 +6500,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Response group. Possible values include: 'None', 'ItemInfo',
         /// 'ItemAssets', 'ItemProperties', 'ItemAssociations',
         /// 'ItemEditorialReviews', 'Variations', 'Seo', 'Links',
-        /// 'Inventory', 'Outlines', 'ItemSmall', 'ItemMedium', 'ItemLarge'
+        /// 'Inventory', 'Outlines', 'ReferencedAssociations', 'ItemSmall',
+        /// 'ItemMedium', 'ItemLarge'
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -6528,7 +6529,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Response group. Possible values include: 'None', 'ItemInfo',
         /// 'ItemAssets', 'ItemProperties', 'ItemAssociations',
         /// 'ItemEditorialReviews', 'Variations', 'Seo', 'Links',
-        /// 'Inventory', 'Outlines', 'ItemSmall', 'ItemMedium', 'ItemLarge'
+        /// 'Inventory', 'Outlines', 'ReferencedAssociations', 'ItemSmall',
+        /// 'ItemMedium', 'ItemLarge'
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -6597,7 +6599,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi
         /// Response group. Possible values include: 'None', 'ItemInfo',
         /// 'ItemAssets', 'ItemProperties', 'ItemAssociations',
         /// 'ItemEditorialReviews', 'Variations', 'Seo', 'Links',
-        /// 'Inventory', 'Outlines', 'ItemSmall', 'ItemMedium', 'ItemLarge'
+        /// 'Inventory', 'Outlines', 'ReferencedAssociations', 'ItemSmall',
+        /// 'ItemMedium', 'ItemLarge'
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -8875,7 +8878,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// </summary>
         /// <param name="valueType">Possible values include: 'ShortText',
         /// 'LongText', 'Number', 'DateTime', 'Boolean', 'Integer'</param>
-        public PropertyValue(string id = default(string), string propertyName = default(string), string propertyId = default(string), string languageCode = default(string), string alias = default(string), string valueType = default(string), string valueId = default(string), object value = default(object), bool? isInherited = default(bool?))
+        public PropertyValue(string id = default(string), string propertyName = default(string), string propertyId = default(string), string languageCode = default(string), string alias = default(string), string valueType = default(string), string valueId = default(string), object value = default(object), bool? isInherited = default(bool?), bool? propertyMultivalue = default(bool?))
         {
             Id = id;
             PropertyName = propertyName;
@@ -8886,6 +8889,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
             ValueId = valueId;
             Value = value;
             IsInherited = isInherited;
+            PropertyMultivalue = propertyMultivalue;
         }
 
         /// <summary>
@@ -8934,6 +8938,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
         public bool? IsInherited { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyMultivalue")]
+        public bool? PropertyMultivalue { get; set; }
 
     }
 }
@@ -10577,7 +10586,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Product class.
         /// </summary>
-        public Product(string manufacturerPartNumber = default(string), string gtin = default(string), string code = default(string), string name = default(string), string catalogId = default(string), string categoryId = default(string), string outline = default(string), string path = default(string), System.DateTime? indexingDate = default(System.DateTime?), string titularItemId = default(string), bool? isBuyable = default(bool?), bool? isActive = default(bool?), bool? trackInventory = default(bool?), int? maxQuantity = default(int?), int? minQuantity = default(int?), string productType = default(string), string weightUnit = default(string), double? weight = default(double?), string packageType = default(string), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), bool? enableReview = default(bool?), int? maxNumberOfDownload = default(int?), System.DateTime? downloadExpiration = default(System.DateTime?), string downloadType = default(string), bool? hasUserAgreement = default(bool?), string shippingType = default(string), string taxType = default(string), string vendor = default(string), int? priority = default(int?), string imgSrc = default(string), System.Collections.Generic.IList<Property> properties = default(System.Collections.Generic.IList<Property>), System.Collections.Generic.IList<Image> images = default(System.Collections.Generic.IList<Image>), System.Collections.Generic.IList<Asset> assets = default(System.Collections.Generic.IList<Asset>), System.Collections.Generic.IList<Product> variations = default(System.Collections.Generic.IList<Product>), System.Collections.Generic.IList<CategoryLink> links = default(System.Collections.Generic.IList<CategoryLink>), System.Collections.Generic.IList<EditorialReview> reviews = default(System.Collections.Generic.IList<EditorialReview>), System.Collections.Generic.IList<ProductAssociation> associations = default(System.Collections.Generic.IList<ProductAssociation>), System.Collections.Generic.IList<string> securityScopes = default(System.Collections.Generic.IList<string>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), System.Collections.Generic.IList<Outline> outlines = default(System.Collections.Generic.IList<Outline>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public Product(string manufacturerPartNumber = default(string), string gtin = default(string), string code = default(string), string name = default(string), string catalogId = default(string), string categoryId = default(string), string outline = default(string), string path = default(string), System.DateTime? indexingDate = default(System.DateTime?), string titularItemId = default(string), bool? isBuyable = default(bool?), bool? isActive = default(bool?), bool? trackInventory = default(bool?), int? maxQuantity = default(int?), int? minQuantity = default(int?), string productType = default(string), string weightUnit = default(string), double? weight = default(double?), string packageType = default(string), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), bool? enableReview = default(bool?), int? maxNumberOfDownload = default(int?), System.DateTime? downloadExpiration = default(System.DateTime?), string downloadType = default(string), bool? hasUserAgreement = default(bool?), string shippingType = default(string), string taxType = default(string), string vendor = default(string), int? priority = default(int?), string imgSrc = default(string), System.Collections.Generic.IList<Property> properties = default(System.Collections.Generic.IList<Property>), System.Collections.Generic.IList<Image> images = default(System.Collections.Generic.IList<Image>), System.Collections.Generic.IList<Asset> assets = default(System.Collections.Generic.IList<Asset>), System.Collections.Generic.IList<Product> variations = default(System.Collections.Generic.IList<Product>), System.Collections.Generic.IList<CategoryLink> links = default(System.Collections.Generic.IList<CategoryLink>), System.Collections.Generic.IList<EditorialReview> reviews = default(System.Collections.Generic.IList<EditorialReview>), System.Collections.Generic.IList<ProductAssociation> associations = default(System.Collections.Generic.IList<ProductAssociation>), System.Collections.Generic.IList<ProductAssociation> referencedAssociations = default(System.Collections.Generic.IList<ProductAssociation>), System.Collections.Generic.IList<string> securityScopes = default(System.Collections.Generic.IList<string>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), System.Collections.Generic.IList<Outline> outlines = default(System.Collections.Generic.IList<Outline>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ManufacturerPartNumber = manufacturerPartNumber;
             Gtin = gtin;
@@ -10619,6 +10628,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
             Links = links;
             Reviews = reviews;
             Associations = associations;
+            ReferencedAssociations = referencedAssociations;
             SecurityScopes = securityScopes;
             SeoObjectType = seoObjectType;
             SeoInfos = seoInfos;
@@ -10829,6 +10839,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "associations")]
         public System.Collections.Generic.IList<ProductAssociation> Associations { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "referencedAssociations")]
+        public System.Collections.Generic.IList<ProductAssociation> ReferencedAssociations { get; set; }
 
         /// <summary>
         /// </summary>
@@ -11249,12 +11264,14 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the AggregationItem class.
         /// </summary>
-        public AggregationItem(object value = default(object), int? count = default(int?), bool? isApplied = default(bool?), System.Collections.Generic.IList<AggregationLabel> labels = default(System.Collections.Generic.IList<AggregationLabel>))
+        public AggregationItem(object value = default(object), int? count = default(int?), bool? isApplied = default(bool?), System.Collections.Generic.IList<AggregationLabel> labels = default(System.Collections.Generic.IList<AggregationLabel>), string requestedLowerBound = default(string), string requestedUpperBound = default(string))
         {
             Value = value;
             Count = count;
             IsApplied = isApplied;
             Labels = labels;
+            RequestedLowerBound = requestedLowerBound;
+            RequestedUpperBound = requestedUpperBound;
         }
 
         /// <summary>
@@ -11277,6 +11294,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         [Newtonsoft.Json.JsonProperty(PropertyName = "labels")]
         public System.Collections.Generic.IList<AggregationLabel> Labels { get; set; }
 
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "requestedLowerBound")]
+        public string RequestedLowerBound { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "requestedUpperBound")]
+        public string RequestedUpperBound { get; set; }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -11297,7 +11324,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the ProductSearchCriteria class.
         /// </summary>
-        public ProductSearchCriteria(string objectType = default(string), string currency = default(string), System.Collections.Generic.IList<string> pricelists = default(System.Collections.Generic.IList<string>), NumericRange priceRange = default(NumericRange), System.Collections.Generic.IList<string> classTypes = default(System.Collections.Generic.IList<string>), bool? withHidden = default(bool?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? startDateFrom = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string storeId = default(string), string catalogId = default(string), string outline = default(string), System.Collections.Generic.IList<string> outlines = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string responseGroup = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public ProductSearchCriteria(string objectType = default(string), string currency = default(string), System.Collections.Generic.IList<string> pricelists = default(System.Collections.Generic.IList<string>), NumericRange priceRange = default(NumericRange), System.Collections.Generic.IList<string> classTypes = default(System.Collections.Generic.IList<string>), bool? withHidden = default(bool?), System.DateTime? startDate = default(System.DateTime?), System.DateTime? startDateFrom = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), System.Collections.Generic.IList<string> includeAggregations = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> excludeAggregations = default(System.Collections.Generic.IList<string>), string storeId = default(string), string catalogId = default(string), string outline = default(string), System.Collections.Generic.IList<string> outlines = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> terms = default(System.Collections.Generic.IList<string>), string responseGroup = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
             ObjectType = objectType;
             Currency = currency;
@@ -11308,6 +11335,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
             StartDate = startDate;
             StartDateFrom = startDateFrom;
             EndDate = endDate;
+            IncludeAggregations = includeAggregations;
+            ExcludeAggregations = excludeAggregations;
             StoreId = storeId;
             CatalogId = catalogId;
             Outline = outline;
@@ -11368,6 +11397,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.CatalogModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "endDate")]
         public System.DateTime? EndDate { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "includeAggregations")]
+        public System.Collections.Generic.IList<string> IncludeAggregations { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "excludeAggregations")]
+        public System.Collections.Generic.IList<string> ExcludeAggregations { get; set; }
 
         /// <summary>
         /// </summary>
