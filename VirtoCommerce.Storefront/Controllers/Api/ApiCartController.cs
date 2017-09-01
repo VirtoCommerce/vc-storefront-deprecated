@@ -307,7 +307,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
 
         // POST: storefrontapi/cart/createorder
         [HttpPost]
-        public async Task<ActionResult> CreateOrder(orderModel.BankCardInfo bankCardInfo)
+        public async Task<ActionResult> CreateOrder(orderModel.BankCardInfo bankCardInfo, string token)
         {
             EnsureCartExists();
 
@@ -326,7 +326,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                 var incomingPayment = order.InPayments != null ? order.InPayments.FirstOrDefault() : null;
                 if (incomingPayment != null)
                 {
-                    processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(order.Id, incomingPayment.Id, bankCardInfo);
+                    processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(order.Id, incomingPayment.Id, bankCardInfo, token);
                 }
 
                 await cartBuilder.RemoveCartAsync();

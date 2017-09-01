@@ -932,6 +932,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// <param name='bankCardInfo'>
         /// banking card information
         /// </param>
+        /// <param name='token'>
+        /// extenral payment system token
+        /// </param>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -950,7 +953,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProcessPaymentResult>> ProcessOrderPaymentsWithHttpMessagesAsync(string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProcessPaymentResult>> ProcessOrderPaymentsWithHttpMessagesAsync(string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo), string token = default(string), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (orderId == null)
             {
@@ -970,6 +973,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
                 tracingParameters.Add("orderId", orderId);
                 tracingParameters.Add("paymentId", paymentId);
                 tracingParameters.Add("bankCardInfo", bankCardInfo);
+                tracingParameters.Add("token", token);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "ProcessOrderPayments", tracingParameters);
             }
@@ -978,6 +982,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/order/customerOrders/{orderId}/processPayment/{paymentId}").ToString();
             _url = _url.Replace("{orderId}", System.Uri.EscapeDataString(orderId));
             _url = _url.Replace("{paymentId}", System.Uri.EscapeDataString(paymentId));
+            System.Collections.Generic.List<string> _queryParameters = new System.Collections.Generic.List<string>();
+            if (token != null)
+            {
+                _queryParameters.Add(string.Format("token={0}", System.Uri.EscapeDataString(token)));
+            }
+            if (_queryParameters.Count > 0)
+            {
+                _url += "?" + string.Join("&", _queryParameters);
+            }
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -2501,9 +2514,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             /// <param name='bankCardInfo'>
             /// banking card information
             /// </param>
-            public static ProcessPaymentResult ProcessOrderPayments(this IOrderModule operations, string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo))
+            /// <param name='token'>
+            /// extenral payment system token
+            /// </param>
+            public static ProcessPaymentResult ProcessOrderPayments(this IOrderModule operations, string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo), string token = default(string))
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).ProcessOrderPaymentsAsync(orderId, paymentId, bankCardInfo), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((IOrderModule)s).ProcessOrderPaymentsAsync(orderId, paymentId, bankCardInfo, token), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -2524,12 +2540,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
             /// <param name='bankCardInfo'>
             /// banking card information
             /// </param>
+            /// <param name='token'>
+            /// extenral payment system token
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<ProcessPaymentResult> ProcessOrderPaymentsAsync(this IOrderModule operations, string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<ProcessPaymentResult> ProcessOrderPaymentsAsync(this IOrderModule operations, string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo), string token = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                using (var _result = await operations.ProcessOrderPaymentsWithHttpMessagesAsync(orderId, paymentId, bankCardInfo, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.ProcessOrderPaymentsWithHttpMessagesAsync(orderId, paymentId, bankCardInfo, token, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -2975,6 +2994,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// <param name='bankCardInfo'>
         /// banking card information
         /// </param>
+        /// <param name='token'>
+        /// extenral payment system token
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -2990,7 +3012,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProcessPaymentResult>> ProcessOrderPaymentsWithHttpMessagesAsync(string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<ProcessPaymentResult>> ProcessOrderPaymentsWithHttpMessagesAsync(string orderId, string paymentId, BankCardInfo bankCardInfo = default(BankCardInfo), string token = default(string), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
         /// Create new customer order based on shopping cart.
         /// </summary>
@@ -5641,7 +5663,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the CatalogProduct class.
         /// </summary>
-        public CatalogProduct(string code = default(string), string manufacturerPartNumber = default(string), string gtin = default(string), string name = default(string), string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category), string mainProductId = default(string), CatalogProduct mainProduct = default(CatalogProduct), bool? isBuyable = default(bool?), bool? isActive = default(bool?), bool? trackInventory = default(bool?), System.DateTime? indexingDate = default(System.DateTime?), int? maxQuantity = default(int?), int? minQuantity = default(int?), string productType = default(string), string packageType = default(string), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), bool? enableReview = default(bool?), int? maxNumberOfDownload = default(int?), System.DateTime? downloadExpiration = default(System.DateTime?), string downloadType = default(string), bool? hasUserAgreement = default(bool?), string shippingType = default(string), string taxType = default(string), string vendor = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), int? priority = default(int?), System.Collections.Generic.IList<Property> properties = default(System.Collections.Generic.IList<Property>), System.Collections.Generic.IList<PropertyValue> propertyValues = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<Image> images = default(System.Collections.Generic.IList<Image>), System.Collections.Generic.IList<Asset> assets = default(System.Collections.Generic.IList<Asset>), System.Collections.Generic.IList<CategoryLink> links = default(System.Collections.Generic.IList<CategoryLink>), System.Collections.Generic.IList<CatalogProduct> variations = default(System.Collections.Generic.IList<CatalogProduct>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), System.Collections.Generic.IList<EditorialReview> reviews = default(System.Collections.Generic.IList<EditorialReview>), System.Collections.Generic.IList<ProductAssociation> associations = default(System.Collections.Generic.IList<ProductAssociation>), System.Collections.Generic.IList<Price> prices = default(System.Collections.Generic.IList<Price>), System.Collections.Generic.IList<InventoryInfo> inventories = default(System.Collections.Generic.IList<InventoryInfo>), System.Collections.Generic.IList<Outline> outlines = default(System.Collections.Generic.IList<Outline>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public CatalogProduct(string code = default(string), string manufacturerPartNumber = default(string), string gtin = default(string), string name = default(string), string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category), string mainProductId = default(string), CatalogProduct mainProduct = default(CatalogProduct), bool? isBuyable = default(bool?), bool? isActive = default(bool?), bool? trackInventory = default(bool?), System.DateTime? indexingDate = default(System.DateTime?), int? maxQuantity = default(int?), int? minQuantity = default(int?), string productType = default(string), string packageType = default(string), string weightUnit = default(string), double? weight = default(double?), string measureUnit = default(string), double? height = default(double?), double? length = default(double?), double? width = default(double?), bool? enableReview = default(bool?), int? maxNumberOfDownload = default(int?), System.DateTime? downloadExpiration = default(System.DateTime?), string downloadType = default(string), bool? hasUserAgreement = default(bool?), string shippingType = default(string), string taxType = default(string), string vendor = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), int? priority = default(int?), System.Collections.Generic.IList<Property> properties = default(System.Collections.Generic.IList<Property>), System.Collections.Generic.IList<PropertyValue> propertyValues = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<Image> images = default(System.Collections.Generic.IList<Image>), System.Collections.Generic.IList<Asset> assets = default(System.Collections.Generic.IList<Asset>), System.Collections.Generic.IList<CategoryLink> links = default(System.Collections.Generic.IList<CategoryLink>), System.Collections.Generic.IList<CatalogProduct> variations = default(System.Collections.Generic.IList<CatalogProduct>), string seoObjectType = default(string), System.Collections.Generic.IList<SeoInfo> seoInfos = default(System.Collections.Generic.IList<SeoInfo>), System.Collections.Generic.IList<EditorialReview> reviews = default(System.Collections.Generic.IList<EditorialReview>), System.Collections.Generic.IList<ProductAssociation> associations = default(System.Collections.Generic.IList<ProductAssociation>), System.Collections.Generic.IList<ProductAssociation> referencedAssociations = default(System.Collections.Generic.IList<ProductAssociation>), System.Collections.Generic.IList<Price> prices = default(System.Collections.Generic.IList<Price>), System.Collections.Generic.IList<InventoryInfo> inventories = default(System.Collections.Generic.IList<InventoryInfo>), System.Collections.Generic.IList<Outline> outlines = default(System.Collections.Generic.IList<Outline>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             Code = code;
             ManufacturerPartNumber = manufacturerPartNumber;
@@ -5688,6 +5710,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
             SeoInfos = seoInfos;
             Reviews = reviews;
             Associations = associations;
+            ReferencedAssociations = referencedAssociations;
             Prices = prices;
             Inventories = inventories;
             Outlines = outlines;
@@ -5922,6 +5945,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.OrdersModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "associations")]
         public System.Collections.Generic.IList<ProductAssociation> Associations { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "referencedAssociations")]
+        public System.Collections.Generic.IList<ProductAssociation> ReferencedAssociations { get; set; }
 
         /// <summary>
         /// </summary>
