@@ -172,7 +172,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 retVal = new MemoryStream(Encoding.UTF8.GetBytes(template));
             }
 
-            if (retVal != null && (filePath.Contains(".scss.") || filePath.EndsWith(".scss")))
+            if (retVal != null && (filePath.Contains(".scss.") && filePath.EndsWith(".liquid") || filePath.EndsWith(".scss")))
             {
                 var content = retVal.ReadToString();
                 retVal.Dispose();
