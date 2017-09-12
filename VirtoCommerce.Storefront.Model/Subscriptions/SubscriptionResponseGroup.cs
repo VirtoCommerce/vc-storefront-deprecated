@@ -9,9 +9,9 @@ namespace VirtoCommerce.Storefront.Model.Subscriptions
     [Flags]
     public enum SubscriptionResponseGroup
     {
-        Default,
-        WithOrderPrototype,
-        WithRlatedOrders,
+        Default = 0,
+        WithOrderPrototype = 1,
+        WithRlatedOrders = 1 << 1,
         Full = Default | WithOrderPrototype | WithRlatedOrders
     }
 }
