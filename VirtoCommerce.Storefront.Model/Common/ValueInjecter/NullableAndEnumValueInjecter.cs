@@ -82,7 +82,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             }
             if (result)
             {
-                result = !target.Type.IsArray && !target.Type.IsArray;
+                result = !source.Type.IsArray && !target.Type.IsArray;
             }
 
             if (result)
