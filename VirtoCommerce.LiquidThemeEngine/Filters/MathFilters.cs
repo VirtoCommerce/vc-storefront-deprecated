@@ -47,7 +47,17 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 input = Math.Abs(Convert.ToDouble(input, CultureInfo.InvariantCulture));
             }
             return input;
-        }       
+        }
+
+        public static string Format(object input, string format)
+        {
+            if (input == null)
+                return null;
+            else if (string.IsNullOrWhiteSpace(format))
+                return input.ToString();
+
+            return string.Format("{0:" + format + "}", input);
+        }
 
     }
 }
