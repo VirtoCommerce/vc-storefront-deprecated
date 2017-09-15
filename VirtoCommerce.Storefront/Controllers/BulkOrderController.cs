@@ -51,11 +51,7 @@ namespace VirtoCommerce.Storefront.Controllers
                     return StoreFrontRedirect("~/bulkorder");
                 }
 
-                var notFoundedSkus = await TryAddItemsToCartAsync(items);
-                foreach (var notFoundedSku in notFoundedSkus)
-                {
-                    ModelState.AddModelError(notFoundedSku, notFoundedSku);
-                }
+                await TryAddItemsToCartAsync(items);
 
                 if (ModelState.IsValid)
                 {
@@ -88,11 +84,7 @@ namespace VirtoCommerce.Storefront.Controllers
                     return StoreFrontRedirect("~/bulkorder");
                 }
 
-                var notFoundedSkus = await TryAddItemsToCartAsync(items);
-                foreach (var notFoundedSku in notFoundedSkus)
-                {
-                    ModelState.AddModelError(notFoundedSku, notFoundedSku);
-                }
+                await TryAddItemsToCartAsync(items);
 
                 if (ModelState.IsValid)
                 {
@@ -120,51 +112,62 @@ namespace VirtoCommerce.Storefront.Controllers
             return string.Join(":", "Cart", cart.Id, cart.Name, cart.CustomerId);
         }
 
-        private async Task<string[]> TryAddItemsToCartAsync(BulkOrderItem[] bulkOrderItems)
+        private async Task TryAddItemsToCartAsync(BulkOrderItem[] bulkOrderItems)
         {
-            var skus = bulkOrderItems.Select(i => i.Sku);
-            var productSearchResult = await _catalogSearchService.SearchProductsAsync(new ProductSearchCriteria
+            if (bulkOrderItems != null)
             {
-                PageSize = skus.Count(),
-                Terms = new[] { new Term { Name = "code", Value = string.Join(",", skus) } }
-            });
-
-            foreach (var product in productSearchResult.Products)
-            {
-                var bulkOrderItem = bulkOrderItems.FirstOrDefault(i => i.Sku == product.Sku);
-                if (bulkOrderItem != null)
+                foreach (var item in bulkOrderItems)
                 {
+                    if (item == null)
+                        ModelState.AddModelError("", "bad input format");
+                }
+                var filteredList = bulkOrderItems.Where(x => x !=null).ToList();
+                var skus = filteredList.Select(i => i.Sku);
+                var productSearchResult = await _catalogSearchService.SearchProductsAsync(new ProductSearchCriteria
+                {
+                    PageSize = skus.Count(),
+                    Terms = new[] { new Term { Name = "code", Value = string.Join(",", skus) } }
+                });
+
+                foreach (var product in productSearchResult.Products)
+                {
+                    var bulkOrderItem = filteredList.FirstOrDefault(i => i.Sku == product.Sku);
                     await _cartBuilder.AddItemAsync(product, bulkOrderItem.Quantity);
                 }
-            }
 
-            await _cartBuilder.SaveAsync();
+                await _cartBuilder.SaveAsync();
 
-            var notFoundedSkus = bulkOrderItems.Select(x => x.Sku).Except(productSearchResult.Products.Select(x => x.Sku))
-                                               .Distinct().ToArray();
-            return notFoundedSkus;
-        }
-
-        private BulkOrderItem GetBulkOrderItemFromCsvRecord(string csvRecord)
-        {
-            BulkOrderItem bulkOrderItem = null;
-
-            var splitted = csvRecord.Split(',',';',' ','\t');
-            if (splitted.Length == 2)
-            {
-                int quantity = 0;
-                int.TryParse(splitted[1], out quantity);
-                if (quantity > 0)
+                var notFoundedSkus = filteredList.Select(x => x.Sku).Except(productSearchResult.Products.Select(x => x.Sku)).Distinct().ToArray();
+                foreach (var notFoundedSku in notFoundedSkus)
                 {
-                    bulkOrderItem = new BulkOrderItem
-                    {
-                        Quantity = quantity,
-                        Sku = splitted[0]
-                    };
+                    ModelState.AddModelError(notFoundedSku, notFoundedSku);
                 }
+
             }
 
-            return bulkOrderItem;
+            else ModelState.AddModelError("", "bad input format");
         }
+
+    private BulkOrderItem GetBulkOrderItemFromCsvRecord(string csvRecord)
+    {
+        BulkOrderItem bulkOrderItem = null;
+
+        var splitted = csvRecord.Split(',',';',' ','\t');
+        if (splitted.Length == 2)
+        {
+            int quantity = 0;
+            int.TryParse(splitted[1], out quantity);
+            if (quantity > 0)
+            {
+                bulkOrderItem = new BulkOrderItem
+                {
+                    Quantity = quantity,
+                    Sku = splitted[0]
+                };
+            }
+        }
+
+        return bulkOrderItem;
     }
+}
 }
