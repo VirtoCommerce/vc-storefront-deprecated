@@ -48,6 +48,11 @@ namespace VirtoCommerce.LiquidThemeEngine
         private readonly SassCompilerProxy _saasCompiler = new SassCompilerProxy();
         private readonly IContentBlobProvider _themeBlobProvider;
 
+        static ShopifyLiquidThemeEngine()
+        {
+            Liquid.UseRubyDateFormat = true;
+        }
+
         public ShopifyLiquidThemeEngine(ILocalCacheManager cacheManager, Func<WorkContext> workContextFactory, Func<IStorefrontUrlBuilder> storeFrontUrlBuilderFactory, IContentBlobProvider themeBlobProvider, string themesAssetsRelativeUrl)
         {
             _workContextFactory = workContextFactory;
@@ -56,7 +61,6 @@ namespace VirtoCommerce.LiquidThemeEngine
             _cacheManager = cacheManager;
             _themeBlobProvider = themeBlobProvider;
 
-            Liquid.UseRubyDateFormat = true;
             // Register custom tags (Only need to do this once)
             Template.RegisterFilter(typeof(CommonFilters));
             Template.RegisterFilter(typeof(CommerceFilters));
@@ -172,7 +176,7 @@ namespace VirtoCommerce.LiquidThemeEngine
                 retVal = new MemoryStream(Encoding.UTF8.GetBytes(template));
             }
 
-            if (retVal != null && (filePath.Contains(".scss.") || filePath.EndsWith(".scss")))
+            if (retVal != null && (filePath.Contains(".scss.") && filePath.EndsWith(".liquid") || filePath.EndsWith(".scss")))
             {
                 var content = retVal.ReadToString();
                 retVal.Dispose();

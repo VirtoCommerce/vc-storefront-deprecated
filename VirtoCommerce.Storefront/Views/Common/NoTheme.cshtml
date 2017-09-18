@@ -71,11 +71,11 @@
 <body bgcolor="#00abec">
 <div id="feature">
     <div id="content">
-        <h1>Virto Commerce storefront has been successfully deployed</h1>
-        <p>Looks like you missed theme :(</p>
+        <h1>Virto Commerce Storefront has been successfully deployed</h1>
+        <p>Looks like you are missing a theme :(</p>
         @if (Model != null)
         {
-            <p>We looked for 'index' view in the following locations</p>
+            <p>We looked for a default "index" view in the following locations:</p>
             <ul>
                 @foreach (var searchedLocation in Model.SearchedLocations.Select(Path.GetDirectoryName).Distinct())
                 {
@@ -85,8 +85,8 @@
                 }
             </ul>
         }
-        <p>But it simple to fix: follow our instructions to download and correctly configure theme for your storefront.</p>
-        <a href="https://github.com/VirtoCommerce/vc-default-theme" class="button" id="btnAdmin">Let's start!</a>
+        <p>However, it is simple to fix. Just follow follow our instructions to download and correctly configure theme for your storefront.</p>
+        <a href="https://github.com/VirtoCommerce/vc-default-theme" class="button" id="btnAdmin" target="_blank">Let's start!</a>
     </div>
 </div>
 </body>
