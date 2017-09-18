@@ -119,7 +119,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 foreach (var item in bulkOrderItems)
                 {
                     if (item == null)
-                        ModelState.AddModelError("", "bad input format");
+                        ModelState.AddModelError("", "Bad input format");
                 }
                 var filteredList = bulkOrderItems.Where(x => x !=null).ToList();
                 var skus = filteredList.Select(i => i.Sku);
@@ -145,7 +145,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
             }
 
-            else ModelState.AddModelError("", "bad input format");
+            else ModelState.AddModelError("", "Bad input format");
         }
 
     private BulkOrderItem GetBulkOrderItemFromCsvRecord(string csvRecord)
