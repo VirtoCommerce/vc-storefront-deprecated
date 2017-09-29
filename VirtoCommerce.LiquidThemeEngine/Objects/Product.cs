@@ -46,6 +46,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// the value in a monetary format.
         /// </summary>
         [DataMember]
+        public bool Buyable { get; set; }
+        [DataMember]
+        public bool InStock { get; set; }
+
+        [DataMember]
         public decimal CompareAtPrice { get; set; }
         [DataMember]
         public decimal CompareAtPriceWithTax { get; set; }

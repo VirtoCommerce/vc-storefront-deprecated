@@ -47,6 +47,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 result.Available = product.IsAvailable;
             }
 
+            result.Buyable = product.IsBuyable;
+            result.InStock = product.IsInStock;
             result.CatalogId = product.CatalogId;
             result.CategoryId = product.CategoryId;
 
@@ -157,6 +159,8 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             var result = new Variant();
 
             result.Available = product.IsAvailable;
+            result.Buyable = product.IsBuyable;
+            result.InStock = product.IsInStock;
             result.Barcode = product.Gtin;
             result.CatalogId = product.CatalogId;
             result.CategoryId = product.CategoryId;

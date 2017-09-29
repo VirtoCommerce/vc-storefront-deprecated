@@ -37,6 +37,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         [DataMember]
         public bool Available { get; set; }
 
+        [DataMember]
+        public bool Buyable { get; set; }
+
+        [DataMember]
+        public bool InStock { get; set; }
         /// <summary>
         /// Returns the variant's barcode.
         /// </summary>
