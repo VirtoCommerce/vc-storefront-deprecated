@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Markdig;
@@ -293,7 +293,16 @@ namespace VirtoCommerce.Storefront.Converters
                 Take = criteria.PageSize,
                 ResponseGroup = ((int)criteria.ResponseGroup).ToString(),
             };
-
+            // Add user groups to terms
+            if (!workContext.CurrentCustomer.UserGroups.IsNullOrEmpty())
+            {
+                if (result.Terms == null)
+                {
+                    result.Terms = new List<string>();
+                }
+                //search products with user_groups defined in customer
+                result.Terms.Add("user_groups:" + string.Join(",", workContext.CurrentCustomer.UserGroups));
+            }
 
             return result;
         }
