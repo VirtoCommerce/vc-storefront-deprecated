@@ -31,6 +31,41 @@ namespace VirtoCommerce.Storefront.Test
         }
 
         [Theory]
+        [InlineData(false, false, false, null, null, null, null, 1, false)]
+        [InlineData(true, true, false, null, null, null, null, 1, false)]
+        [InlineData(true, true, true, null, null, null, null, 1, false)]
+        [InlineData(true, true, true, false, null, null, null, 1, false)]
+        [InlineData(true, true, true, true, null, null, null, 1, true)]
+        [InlineData(true, true, true, null, false, null, null, 1, false)]
+        [InlineData(true, true, true, null, true, null, null, 1, true)]
+        [InlineData(true, true, true, false, false, 0L, null, 1, false)]
+        [InlineData(true, true, true, false, false, 1L, null, 1, true)]
+        [InlineData(true, true, true, false, false, 1L, null, 2, true)]
+        [InlineData(true, true, true, false, false, 1L, 0L, 1, true)]
+        [InlineData(true, true, true, false, false, 1L, 1L, 1, false)]
+        [InlineData(true, true, true, false, false, 1L, 2L, 1, false)]
+        public void TestIsInStock(bool isActive, bool isBuyable, bool trackInventory, bool? allowPreorder, bool? allowBackorder, long? inStockQuantity, long? reservedQuantity, long requestedQuantity, bool expectedResult)
+        {
+            var service = GetProductAvailabilityService();
+            var product = CreateProduct(isActive, isBuyable, trackInventory, allowPreorder, allowBackorder, new List<Tuple<long?, long?>> { new Tuple<long?, long?>(inStockQuantity, reservedQuantity) });
+            var inStock = service.IsInStock(product).Result;
+            Assert.Equal(expectedResult, inStock);
+        }
+
+        [Theory]
+        [InlineData(false, false, false, null, null, null, null, 1, false)]
+        [InlineData(true, false, false, null, null, null, null, 1, false)]
+        [InlineData(false, true, true, null, null, null, null, 1, false)]
+        [InlineData(true, true, true, false, null, null, null, 1, true)]
+        public void TestIsBuyable(bool isActive, bool isBuyable, bool trackInventory, bool? allowPreorder, bool? allowBackorder, long? inStockQuantity, long? reservedQuantity, long requestedQuantity, bool expectedResult)
+        {
+            var service = GetProductAvailabilityService();
+            var product = CreateProduct(isActive, isBuyable, trackInventory, allowPreorder, allowBackorder, new List<Tuple<long?, long?>> { new Tuple<long?, long?>(inStockQuantity, reservedQuantity) });
+            var buyable = service.IsBuyable(product);
+            Assert.Equal(expectedResult, buyable);
+        }
+
+        [Theory]
         [InlineData(false, false, false, null, null, null, null, 0L)]
         [InlineData(true, true, false, null, null, null, null, 0L)]
         [InlineData(true, true, true, null, null, null, null, 0L)]

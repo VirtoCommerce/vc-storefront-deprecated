@@ -37,11 +37,18 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         [DataMember]
         public bool Available { get; set; }
 
+        /// <summary>
+        ///  Returns true if a product is buyable
+        /// </summary>
         [DataMember]
         public bool Buyable { get; set; }
 
+        /// <summary>
+        ///  Returns true if a product is instock
+        /// </summary>
         [DataMember]
         public bool InStock { get; set; }
+
         /// <summary>
         /// Returns the variant's barcode.
         /// </summary>
