@@ -495,11 +495,6 @@
     </ItemGroup>
     <Delete Files="@(LibSassFiles)" />
   </Target>
-  <!-- Transform text templates -->
-  <Import Project="$(VSToolsPath)\TextTemplating\Microsoft.TextTemplating.targets" />
-  <PropertyGroup>
-    <TransformOnBuild>true</TransformOnBuild>
-  </PropertyGroup>
   <!-- Transform Web.config -->
   <UsingTask TaskName="TransformXml" AssemblyFile="$(VSToolsPath)\Web\Microsoft.Web.Publishing.Tasks.dll" Condition="Exists('$(VSToolsPath)\Web\Microsoft.Web.Publishing.Tasks.dll')" />
   <PropertyGroup>
