@@ -1,0 +1,72 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="EnvDTE" #> 
+<#@ assembly name="System.Core" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ output extension=".cs" #>
+
+using System.CodeDom.Compiler;
+
+<# foreach (var @namespace in FindTypes("VirtoCommerce.Storefront.AutoRestClients").GroupBy(codeType => codeType.Namespace.FullName, codeType => codeType)) { #>
+
+namespace <#= @namespace.Key #>
+{
+<# foreach (var type in @namespace) { #>
+
+    [GeneratedCode("Microsoft (R) AutoRest Code Generator", "0.17.0.0")]
+    partial <#= type is CodeClass ? "class" : type is CodeStruct ? "struct" : type is CodeInterface ? "interface" : type is CodeEnum ? "enum" : throw new InvalidOperationException() #> <#= type.Name #>
+    { }
+
+<# } #>
+}
+
+<# } #>
+
+<#+
+private Project FindProject()
+{
+    var dte = (this.Host as IServiceProvider).GetService(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
+    var project = dte.Solution.FindProjectItem(this.Host.TemplateFile).ContainingProject as EnvDTE.Project;
+    return project;
+}
+
+private IEnumerable<CodeType> FindTypes(string searchNamespace)
+{    
+    return FindTypes(FindProject().CodeModel.CodeElements, searchNamespace, false);
+}
+
+private IEnumerable<CodeType> FindTypes(CodeElements codeElements, string searchNamespace, bool validNamespace)
+{
+    if (codeElements == null)
+        yield break;
+    foreach (var codeElement in codeElements)
+    {       
+        if (codeElement is CodeNamespace)
+        {
+            var codeNamespace = codeElement as CodeNamespace;
+            if (codeNamespace != null)
+            {
+                IEnumerable<CodeType> codeTypes;
+                if (codeNamespace.FullName.StartsWith(searchNamespace))
+                    codeTypes = FindTypes(codeNamespace.Members, searchNamespace, true);
+                else
+                    codeTypes = FindTypes(codeNamespace.Members, searchNamespace, false);
+                foreach (var codeType in codeTypes)
+                {
+                    yield return codeType;
+                }
+            }
+        }
+        else if (codeElement is CodeType && validNamespace)
+        {
+            var codeType = codeElement as CodeType;
+            if (codeType != null)
+            {
+                yield return codeType;
+            }
+        }
+    }
+}
+#>
