@@ -1,0 +1,14 @@
+{
+  "ServerUri": "https://sonar.virtocommerce.com/",
+  "Organization": {
+    "key": "virtocommerce",
+    "name": "Virto Commerce"
+  },
+  "ProjectKey": "vc-storefront:dev",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AV6-mtgSquoy7YnDo4uM",
+      "ProfileTimestamp": "2017-10-02T23:17:42+05:00"
+    }
+  }
+}

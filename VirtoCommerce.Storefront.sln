@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.Storefront", "VirtoCommerce.Storefront\VirtoCommerce.Storefront.csproj", "{89054B36-0E64-4101-8260-333E6286B94F}"
 EndProject
@@ -10,6 +10,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.Storefront.Model", "VirtoCommerce.Storefront.Model\VirtoCommerce.Storefront.Model.csproj", "{FD2F9490-83EB-40DF-A61B-7E4098D35BD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.Storefront.Test", "VirtoCommerce.Storefront.Test\VirtoCommerce.Storefront.Test.csproj", "{324FEE60-ACD1-427A-9B7D-0DF767E6F96D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{C0F652A8-C92A-4F63-BAA6-F35F8799D4FF}"
+	ProjectSection(SolutionItems) = preProject
+		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
+		SonarQube\vc-storefront_devCSharp.ruleset = SonarQube\vc-storefront_devCSharp.ruleset
+		SonarQube\VCCSharp.ruleset = SonarQube\VCCSharp.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,5 +46,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
+		SolutionGuid = {12DC8F02-EFF2-4790-8AF0-6A6A1611627E}
 	EndGlobalSection
 EndGlobal

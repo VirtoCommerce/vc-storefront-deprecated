@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <CodeAnalysisRuleSet>VirtoCommerce.Storefront.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +44,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>VirtoCommerce.Storefront.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
@@ -351,6 +353,7 @@
     <Compile Include="Converters\CurrencyConverter.cs" />
     <Compile Include="Converters\Quote\QuoteConverter.cs" />
     <Compile Include="Converters\ToolsConverter.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="JsonConverters\MoneyJsonConverter.cs" />
     <Compile Include="JsonConverters\CurrencyJsonConverter.cs" />
     <Compile Include="Owin\OriginalHostRewriterOwinMiddleware.cs" />
@@ -431,6 +434,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="ServerMaintenance.aspx" />
     <Content Include="Views\Common\NoTheme.cshtml" />
+    <Content Include="VirtoCommerce.Storefront.ruleset" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -450,6 +454,11 @@
       <Project>{fd2f9490-83eb-40df-a61b-7e4098d35bd8}</Project>
       <Name>VirtoCommerce.Storefront.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.4.1.3596\analyzers\Google.Protobuf.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.4.1.3596\analyzers\SonarAnalyzer.CSharp.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.4.1.3596\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
