@@ -30,7 +30,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             var result = new Linklist();
             result.InjectFrom<StorefrontModel.Common.NullableAndEnumValueInjecter>(linkList);
 
-            result.Handle = linkList.Name;
+            result.Handle = linkList.Name.Handelize();
             result.Links = linkList.MenuLinks.Select(ml => ToLiquidLink(ml, workContext, urlBuilder)).ToList();
             result.Title = linkList.Name;
 
