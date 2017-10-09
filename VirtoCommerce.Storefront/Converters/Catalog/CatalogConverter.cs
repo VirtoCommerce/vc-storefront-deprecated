@@ -257,12 +257,12 @@ namespace VirtoCommerce.Storefront.Converters
             // Add user groups to terms
             if (!workContext.CurrentCustomer.UserGroups.IsNullOrEmpty())
             {
-                if (result.Terms == null)
+                if (result.UserGroups == null)
                 {
-                    result.Terms = new List<string>();
+                    result.UserGroups = new List<string>();
                 }
                 //search products with user_groups defined in customer
-                result.Terms.Add("user_groups:" + string.Join(",", workContext.CurrentCustomer.UserGroups));
+                result.UserGroups.Add("user_groups:" + string.Join(",", workContext.CurrentCustomer.UserGroups));
             }
 
             return result;
@@ -296,12 +296,12 @@ namespace VirtoCommerce.Storefront.Converters
             // Add user groups to terms
             if (!workContext.CurrentCustomer.UserGroups.IsNullOrEmpty())
             {
-                if (result.Terms == null)
+                if (result.UserGroups == null)
                 {
-                    result.Terms = new List<string>();
+                    result.UserGroups = new List<string>();
                 }
                 //search products with user_groups defined in customer
-                result.Terms.Add("user_groups:" + string.Join(",", workContext.CurrentCustomer.UserGroups));
+                result.UserGroups.Add("user_groups:" + string.Join(",", workContext.CurrentCustomer.UserGroups));
             }
 
             return result;
