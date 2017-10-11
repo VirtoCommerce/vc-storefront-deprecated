@@ -57,6 +57,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
         //POST: /account
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> UpdateAccount(CustomerInfo customer)
         {
             customer.Id = WorkContext.CurrentCustomer.Id;
@@ -100,6 +101,7 @@ namespace VirtoCommerce.Storefront.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> UpdateAddress(string id, shopifyModel.Address formModel)
         {
             var contact = WorkContext.CurrentCustomer;
@@ -205,6 +207,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(Login formModel, string returnUrl)
         {
             if (string.IsNullOrWhiteSpace(formModel.Username))
@@ -375,6 +378,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPassword formModel)
         {
             var user = await _commerceCoreApi.StorefrontSecurity.GetUserByEmailAsync(formModel.Email);
@@ -419,6 +423,7 @@ namespace VirtoCommerce.Storefront.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPassword formModel)
         {
             var userId = GetCookieValue(Request, StorefrontConstants.CustomerIdCookie);
