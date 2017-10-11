@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using VirtoCommerce.Storefront.Model.BulkOrder;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
@@ -119,6 +118,13 @@ namespace VirtoCommerce.Storefront.Model.Cart.Services
         /// </summary>
         /// <returns></returns>
         Task RemoveCartAsync();
+
+        /// <summary>
+        /// Update shopping cart comment
+        /// </summary>
+        /// <param name="comment"></param>
+        /// <returns></returns>
+        Task UpdateCartComment(string comment);
 
         /// <summary>
         /// Fill current captured cart from RFQ

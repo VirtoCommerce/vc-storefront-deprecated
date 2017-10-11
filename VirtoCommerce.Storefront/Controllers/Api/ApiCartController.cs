@@ -13,7 +13,6 @@ using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
-using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.Subscriptions;
@@ -61,6 +60,23 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             var cartBuilder = await LoadOrCreateCartAsync();
 
             return Json(cartBuilder.Cart.ItemsQuantity, JsonRequestBehavior.AllowGet);
+        }
+
+        // PUT: storefrontapi/cart/comment
+        [HttpPut]
+        public async Task<ActionResult> UpdateCartComment(string comment)
+        {
+            EnsureCartExists();
+
+            using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
+            {
+                var cartBuilder = await LoadOrCreateCartAsync();
+
+                await cartBuilder.UpdateCartComment(comment);
+                await cartBuilder.SaveAsync();
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         // POST: storefrontapi/cart/items?id=...&quantity=...

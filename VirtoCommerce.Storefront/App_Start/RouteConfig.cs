@@ -37,13 +37,14 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.Cart.CreateOrder", "storefrontapi/cart/createorder", defaults: new { controller = "ApiCart", action = "CreateOrder" });
             routes.AddStorefrontRoute("API.Cart.UpdatePaymentPlan", "storefrontapi/cart/paymentPlan", new { controller = "ApiCart", action = "AddOrUpdateCartPaymentPlan" }, new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Cart.DeletePaymentPlan", "storefrontapi/cart/paymentPlan", new { controller = "ApiCart", action = "DeleteCartPaymentPlan" }, new { httpMethod = new HttpMethodConstraint("DELETE") });
+            routes.AddStorefrontRoute("API.Cart.SubmitComment", "storefrontapi/cart/comment", new { controller = "ApiCart", action = "UpdateCartComment" });
 
             // API lists
             routes.AddStorefrontRoute("API.Lists.GetListByName", "storefrontapi/lists/{listName}", defaults: new { controller = "ApiLists", action = "GetListByName" });
             routes.AddStorefrontRoute("API.Lists.IsItemContainsInList", "storefrontapi/lists/{listName}/items/{productId}/contains", defaults: new { controller = "ApiLists", action = "IsItemContainsInList" });
             routes.AddStorefrontRoute("API.Lists.AddItemToList", "storefrontapi/lists/{listName}/items", defaults: new { controller = "ApiLists", action = "AddItemToList" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Lists.RemoveItemFromList", "storefrontapi/lists/{listName}/items/{lineItemId}", defaults: new { controller = "ApiLists", action = "RemoveItemFromList" }, constraints: new { httpMethod = new HttpMethodConstraint("DELETE") });
-            
+
             // Catalog API
             routes.AddStorefrontRoute("API.Catalog.SearchProducts", "storefrontapi/catalog/search", defaults: new { controller = "ApiCatalog", action = "SearchProducts" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Catalog.GetProductsByIds", "storefrontapi/products", defaults: new { controller = "ApiCatalog", action = "GetProductsByIds" });
