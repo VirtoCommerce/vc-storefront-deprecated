@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using VirtoCommerce.Storefront.JsonConverters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Quote;
@@ -6,11 +8,16 @@ using Xunit;
 
 namespace VirtoCommerce.Storefront.Test
 {
+    [Trait("Category", "Unit")]
     public class SerializationTests
     {
         private static readonly Language _language = new Language("en-US");
         private static readonly Currency _currency = new Currency(_language, "USD");
-        private static readonly JsonSerializerSettings _settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+        private static readonly JsonSerializerSettings _settings = new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            TypeNameHandling = TypeNameHandling.All
+        };
 
         [Fact]
         public void Money()
@@ -18,6 +25,7 @@ namespace VirtoCommerce.Storefront.Test
             var originalObject = new Money(_currency);
             var expectedJson = JsonConvert.SerializeObject(originalObject, _settings);
 
+            _settings.Converters.Add(new MoneyJsonConverter(new[] { _currency }));
             var deserializedObject = JsonConvert.DeserializeObject<Money>(expectedJson, _settings);
             var actualJson = JsonConvert.SerializeObject(deserializedObject, _settings);
 
@@ -30,6 +38,7 @@ namespace VirtoCommerce.Storefront.Test
             var originalObject = new QuoteRequest(_currency, _language);
             var expectedJson = JsonConvert.SerializeObject(originalObject, _settings);
 
+            _settings.Converters.Add(new MoneyJsonConverter(new[] { _currency }));
             var deserializedObject = JsonConvert.DeserializeObject<QuoteRequest>(expectedJson, _settings);
             var actualJson = JsonConvert.SerializeObject(deserializedObject, _settings);
 

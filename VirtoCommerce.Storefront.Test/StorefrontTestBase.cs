@@ -97,6 +97,11 @@ namespace VirtoCommerce.Storefront.Test
             return new StoreModuleApiClient(GetApiBaseUri(), GetClientCredentials());
         }
 
+        protected ISubscriptionModuleApiClient GetSubscriptionsApiClient()
+        {
+            return new SubscriptionModuleApiClient(GetApiBaseUri(), GetClientCredentials());
+        }
+
         protected ICustomerModuleApiClient GetCustomerApiClient()
         {
             return new CustomerModuleApiClient(GetApiBaseUri(), GetClientCredentials());

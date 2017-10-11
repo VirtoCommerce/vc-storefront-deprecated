@@ -14,6 +14,7 @@ namespace VirtoCommerce.Storefront.Test
     public class ShoppingCartTests : StorefrontTestBase
     {
         [Fact]
+        [Trait("Category", "Integration")]
         public void CreateNewCart_AnonymousUser_CheckThatNewCartCreated()
         {
             var cartBuilder = GetCartBuilder();
@@ -27,13 +28,15 @@ namespace VirtoCommerce.Storefront.Test
             task.Wait();
             Assert.True(cartBuilder.Cart.IsTransient());
 
-            //cartBuilder.SaveAsync().Wait();
+            cartBuilder.SaveAsync().Wait();
             var cart = cartBuilder.Cart;
             Assert.False(cart.IsTransient());
 
             task = cartBuilder.LoadOrCreateNewTransientCartAsync("default", workContext.CurrentStore, anonymousCustomer, workContext.CurrentLanguage, workContext.CurrentCurrency);
             task.Wait();
             Assert.Equal(cart.Id, cartBuilder.Cart.Id);
+
+            cartBuilder.RemoveCartAsync();
         }
 
         [Fact]
@@ -67,17 +70,20 @@ namespace VirtoCommerce.Storefront.Test
             var orderApi = GetOrderApiClient();
             var quoteApi = GetQuoteApiClient();
             var storeApi = GetStoreApiClient();
+            var subscriptionsApi = GetSubscriptionsApiClient();
+            var coreApi = GetCoreApiClient();
 
             var cacheManager = new Mock<ILocalCacheManager>().Object;
             var inventoryService = new Mock<IInventoryService>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
+            var taxEvaluator = new TaxEvaluator(coreApi);
 
             var pricingService = new PricingServiceImpl(pricingApi, null, promotionEvaluator, inventoryService);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, null, cacheManager);
             var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, pricingService, customerService, null, null, inventoryService);
 
-            var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, null, null, null);
+            var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, taxEvaluator, subscriptionsApi, null);
             return retVal;
         }
     }
