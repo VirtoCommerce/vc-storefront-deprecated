@@ -24,5 +24,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// </summary>
         public string Value { get; set; }
 
+        /// <summary>
+        /// Property name in current language
+        /// </summary>
+        public string DisplayName { get; set; }
     }
 }
