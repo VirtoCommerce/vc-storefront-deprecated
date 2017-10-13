@@ -40,24 +40,24 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// </summary>
         [DataMember]
         public bool Available { get; set; }
-        [DataMember]
 
         /// <summary>
         ///  Returns true if a product is buyable
         /// </summary>
-        public bool Buyable { get; set; }
         [DataMember]
+        public bool Buyable { get; set; }
 
         /// <summary>
         ///  Returns true if a product is instock
         /// </summary>
-        public bool InStock { get; set; }
         [DataMember]
+        public bool InStock { get; set; }
 
         /// <summary>
         /// Returns the compare at price. Use one of the money filters to return
         /// the value in a monetary format.
         /// </summary>
+        [DataMember]
         public decimal CompareAtPrice { get; set; }
         [DataMember]
         public decimal CompareAtPriceWithTax { get; set; }
