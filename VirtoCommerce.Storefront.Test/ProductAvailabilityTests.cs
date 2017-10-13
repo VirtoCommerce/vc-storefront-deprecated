@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.Storefront.Model.Catalog;
 using Xunit;
 
 namespace VirtoCommerce.Storefront.Test
 {
+    [Trait("Category", "Unit")]
     public class ProductAvailabilityTests : StorefrontTestBase
     {
         [Theory]
@@ -28,6 +30,40 @@ namespace VirtoCommerce.Storefront.Test
 
             var isAvailable = service.IsAvailable(product, requestedQuantity).Result;
             Assert.Equal(expectedResult, isAvailable);
+        }
+
+        [Theory]
+        [InlineData(false, null, null, null, null, false)]
+        [InlineData(false, null, null, null, null, false)]
+        [InlineData(true, null, null, null, null, false)]
+        [InlineData(true, false, null, null, null, false)]
+        [InlineData(true, true, null, null, null, true)]
+        [InlineData(true, null, false, null, null, false)]
+        [InlineData(true, null, true, null, null, true)]
+        [InlineData(true, false, false, 0L, null, false)]
+        [InlineData(true, false, false, 1L, null, true)]
+        [InlineData(true, false, false, 1L, 0L, true)]
+        [InlineData(true, false, false, 1L, 1L, false)]
+        [InlineData(true, false, false, 1L, 2L, false)]
+        public void TestIsInStock(bool trackInventory, bool? allowPreorder, bool? allowBackorder, long? inStockQuantity, long? reservedQuantity, bool expectedResult)
+        {
+            var service = GetProductAvailabilityService();
+            var product = CreateProduct(true, true, trackInventory, allowPreorder, allowBackorder, new List<Tuple<long?, long?>> { new Tuple<long?, long?>(inStockQuantity, reservedQuantity) });
+            var inStock = service.IsInStock(product).Result;
+            Assert.Equal(expectedResult, inStock);
+        }
+
+        [Theory]
+        [InlineData(false, false, false)]
+        [InlineData(true, false, false)]
+        [InlineData(false, true, false)]
+        [InlineData(true, true, true)]
+        public void TestIsBuyable(bool isActive, bool isBuyable, bool expectedResult)
+        {
+            var service = GetProductAvailabilityService();
+            var product = CreateProduct(isActive, isBuyable, false, null, null, Enumerable.Empty<Tuple<long?, long?>>().ToList());
+            var buyable = service.IsBuyable(product);
+            Assert.Equal(expectedResult, buyable);
         }
 
         [Theory]
