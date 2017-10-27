@@ -262,7 +262,7 @@ namespace VirtoCommerce.Storefront.Converters
                     result.UserGroups = new List<string>();
                 }
                 //search products with user_groups defined in customer
-                result.UserGroups.Add("user_groups:" + string.Join(",", workContext.CurrentCustomer.UserGroups));
+                result.UserGroups.AddRange(workContext.CurrentCustomer.UserGroups);
             }
 
             return result;
@@ -301,7 +301,7 @@ namespace VirtoCommerce.Storefront.Converters
                     result.UserGroups = new List<string>();
                 }
                 //search products with user_groups defined in customer
-                result.UserGroups.Add("user_groups:" + string.Join(",", workContext.CurrentCustomer.UserGroups));
+                result.UserGroups.AddRange(workContext.CurrentCustomer.UserGroups);
             }
 
             return result;
