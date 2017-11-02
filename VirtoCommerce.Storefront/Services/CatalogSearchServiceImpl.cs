@@ -178,7 +178,7 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual async Task<Product[]> GetProductsAsync(IList<string> ids, ItemResponseGroup responseGroup, WorkContext workContext)
         {
-            var productDtos = await _catalogModuleApi.CatalogModuleProducts.GetProductByPlentyIdsAsync(ids, ((int)responseGroup).ToString());
+            var productDtos = await _catalogModuleApi.CatalogModuleProducts.GetProductByPlentyIdsAsync(ids, responseGroup.ToString());
 
             var result = productDtos.Select(x => x.ToProduct(workContext.CurrentLanguage, workContext.CurrentCurrency, workContext.CurrentStore)).ToArray();
             return result;
@@ -324,7 +324,7 @@ namespace VirtoCommerce.Storefront.Services
                                PageNumber = pageNumber,
                                PageSize = pageSize,
                                Outline = categoryAssociation.Category.Outline,
-                               ResponseGroup = ItemResponseGroup.ItemInfo | ItemResponseGroup.ItemWithPrices | ItemResponseGroup.Inventory | ItemResponseGroup.ItemWithVendor
+                               ResponseGroup = ItemResponseGroup.ItemInfo | ItemResponseGroup.ItemWithPrices | ItemResponseGroup.Inventory | ItemResponseGroup.ItemWithVendor | ItemResponseGroup.ItemProperties
                            };
 
                            if (!sortInfos.IsNullOrEmpty())
