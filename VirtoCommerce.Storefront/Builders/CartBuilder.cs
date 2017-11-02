@@ -247,14 +247,23 @@ namespace VirtoCommerce.Storefront.Builders
             }
         }
 
+        public virtual Task UpdateCartComment(string comment)
+        {
+            EnsureCartExists();
+
+            Cart.Comment = comment;
+
+            return Task.FromResult((object)null);
+        }
+
         public virtual async Task MergeWithCartAsync(ShoppingCart cart)
         {
             EnsureCartExists();
-            
+
             //Reset primary keys for all aggregated entities before merge
             //To prevent insertions same Ids for target cart
             var entities = cart.GetFlatObjectsListWithInterface<IEntity>();
-            foreach(var entity in entities)
+            foreach (var entity in entities)
             {
                 entity.Id = null;
             }
@@ -406,7 +415,7 @@ namespace VirtoCommerce.Storefront.Builders
                     var product = products.FirstOrDefault(p => p.Id == lineItem.ProductId);
                     lineItem.InStockQuantity = (int)await _productAvailabilityService.GetAvailableQuantity(product);
                 }
-                
+
                 var evalContext = Cart.ToPromotionEvaluationContext();
                 await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
             }
