@@ -87,6 +87,11 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public bool IsActive { get; set; }
 
         /// <summary>
+        /// Indicating whether this product is instock
+        /// </summary>
+        public bool IsInStock { get; set; }
+
+        /// <summary>
         /// Indicating whether this product inventory is tracked
         /// </summary>
         public bool TrackInventory { get; set; }
