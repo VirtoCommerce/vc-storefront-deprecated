@@ -200,7 +200,7 @@ namespace VirtoCommerce.Storefront
 
             ServicePointManager.UseNagleAlgorithm = false;
 
-            container.RegisterType<System.Net.Http.HttpClientHandler>(new InjectionFactory(c => new System.Net.Http.HttpClientHandler
+            container.RegisterType<System.Net.Http.HttpClientHandler>(new PerRequestLifetimeManager(), new InjectionFactory(c => new System.Net.Http.HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             }));
