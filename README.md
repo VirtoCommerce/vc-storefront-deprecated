@@ -1,4 +1,4 @@
-# VirtoCommerce Storefront
+# VirtoCommerce Storefront for ASP.NET (.NET Framework)
 VirtoCommerce Storefront represents the official online shopping website based on VirtoCommerce Platform. The website is a client application for VC Platform and uses only public APIs while communicating.
 
 Key features:
