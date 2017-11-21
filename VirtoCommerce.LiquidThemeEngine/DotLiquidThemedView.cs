@@ -43,16 +43,17 @@ namespace VirtoCommerce.LiquidThemeEngine
             var formErrors = new FormErrors(viewContext.ViewData.ModelState);
             if (shopifyContext.Form == null)
             {
-                //Set single Form object with errors for shopify compilance
                 shopifyContext.Form = new Form();
-                shopifyContext.Form.PostedSuccessfully = !string.Equals(viewContext.HttpContext.Request.HttpMethod, "GET", StringComparison.InvariantCultureIgnoreCase);
-                if (formErrors.Any())
-                {
-                    shopifyContext.Form.Errors = formErrors;
-                    shopifyContext.Form.PostedSuccessfully = false;
-                }
             }
 
+            //Set single Form object with errors for shopify compilance
+            shopifyContext.Form.PostedSuccessfully = !string.Equals(viewContext.HttpContext.Request.HttpMethod, "GET", StringComparison.InvariantCultureIgnoreCase);
+            if (formErrors.Any())
+            {
+                shopifyContext.Form.Errors = formErrors;
+                shopifyContext.Form.PostedSuccessfully = false;
+            }
+            
             // Copy data from the view context over to DotLiquid
             var parameters = shopifyContext.ToLiquid() as Dictionary<string, object>;
 

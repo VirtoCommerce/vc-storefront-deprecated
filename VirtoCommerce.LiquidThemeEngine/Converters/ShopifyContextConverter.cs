@@ -163,6 +163,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 result.Form = workContext.ContactUsForm.ToShopifyModel();
             }
 
+            if (workContext.Register != null)
+            {
+                result.Form = workContext.Register.ToShopifyModel();
+            }
+
             if (workContext.Login != null)
             {
                 result.Form = workContext.Login.ToShopifyModel();

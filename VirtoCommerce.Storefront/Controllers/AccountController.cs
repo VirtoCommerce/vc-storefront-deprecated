@@ -186,7 +186,7 @@ namespace VirtoCommerce.Storefront.Controllers
             {
                 ModelState.AddModelError("form", result.Errors.First());
             }
-
+            WorkContext.Register = formModel;
             return View("customers/register", WorkContext);
         }
 

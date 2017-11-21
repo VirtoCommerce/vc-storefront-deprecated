@@ -5,6 +5,8 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
 using Owin;
+using Owin.Security.Providers.GitHub;
+using Owin.Security.Providers.StackExchange;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model.Common;
 
@@ -52,6 +54,27 @@ namespace VirtoCommerce.Storefront
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
+
+            if (ConfigurationHelper.GetAppSettingsValue("OAuth2.GitHub.Enabled", false))
+            {
+                var githubOptions = new GitHubAuthenticationOptions
+                {
+                    ClientId = ConfigurationHelper.GetAppSettingsValue("OAuth2.GitHub.ClientId"),
+                    ClientSecret = ConfigurationHelper.GetAppSettingsValue("OAuth2.GitHub.Secret"),
+                };
+                app.UseGitHubAuthentication(githubOptions);
+            }
+
+            if (ConfigurationHelper.GetAppSettingsValue("OAuth2.StackExchange.Enabled", false))
+            {
+                var stackexchangeOptions = new StackExchangeAuthenticationOptions
+                {
+                    ClientId = ConfigurationHelper.GetAppSettingsValue("OAuth2.StackExchange.ClientId"),
+                    ClientSecret = ConfigurationHelper.GetAppSettingsValue("OAuth2.StackExchange.Secret"),
+                    Key = ConfigurationHelper.GetAppSettingsValue("OAuth2.StackExchange.Key"),
+                };
+                app.UseStackExchangeAuthentication(stackexchangeOptions);
+            }
 
             if (ConfigurationHelper.GetAppSettingsValue("OAuth2.Facebook.Enabled", false))
             {
