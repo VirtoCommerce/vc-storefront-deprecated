@@ -29,18 +29,3 @@ Setup your own private Microsoft Cloud environment and evaluate the latest versi
 Developer guide:
 * <a href="https://virtocommerce.com/docs/vc2devguide/deployment/storefront-deployment/storefront-source-code-getting-started" target="_blank">Storefront Source Code Getting Started</a>
 * <a href="https://virtocommerce.com/docs/vc2devguide/working-with-storefront" target="_blank">Working with Storefront</a> tutorials
-
-
-# License
-Copyright (c) Virto Solutions LTD.  All rights reserved.
-
-Licensed under the Virto Commerce Open Software License (the "License"); you
-may not use this file except in compliance with the License. You may
-obtain a copy of the License at
-
-http://virtocommerce.com/opensourcelicense
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-implied.
