@@ -2,8 +2,8 @@ Please provide detailed information about your issue, thank you!
 
 Version info: 
 - Browser version: 
-- Storefront version:
-- Theme version: 
+- Platform version: 
+- Storefront version: 
 
 ### Expected behavior
 
@@ -11,3 +11,5 @@ Version info:
 
 ### Steps to reproduce
 1.
+2.
+3.
