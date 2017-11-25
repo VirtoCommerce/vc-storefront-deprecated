@@ -2,7 +2,8 @@ Please provide detailed information about your issue, thank you!
 
 Version info: 
 - Browser version: 
-- Storefront version:
+- Platform version: 
+- Storefront version: 
 
 ### Expected behavior
 
