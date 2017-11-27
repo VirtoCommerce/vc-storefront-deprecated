@@ -120,7 +120,6 @@
     <Compile Include="Interaction\UserSession.cs" />
     <Compile Include="Inventory\FulfilmentCenter.cs" />
     <Compile Include="Inventory\Services\IInventoryService.cs" />
-    <Compile Include="Logins.cs" />
     <Compile Include="Recommendations\CognitiveRecommendationEvalContext.cs" />
     <Compile Include="Recommendations\IRecommendationsService.cs" />
     <Compile Include="Recommendations\RecommendationEvalContext.cs" />

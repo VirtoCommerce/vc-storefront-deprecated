@@ -318,14 +318,31 @@ namespace VirtoCommerce.Storefront.Controllers
             }
             else
             {
-                currentUser.Logins.Add(new ExternalUserLoginInfo()
-                {
-                    LoginProvider = loginInfo.Login.LoginProvider,
-                    ProviderKey = loginInfo.Login.ProviderKey
-                });
-
-                await _customerService.UpdateCustomerAsync(currentUser);
-                await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, currentUser));
+                if (currentUser != null) {
+                    var applicationUser = _platformApi.Security.GetUserById(currentUser.Id);
+                    if (applicationUser != null)
+                    {
+                        if (applicationUser.Logins == null)
+                        {
+                            applicationUser.Logins = new List<ApplicationUserLogin>();
+                            applicationUser.Logins.Add(new ApplicationUserLogin
+                            {
+                                LoginProvider = loginInfo.Login.LoginProvider,
+                                ProviderKey = loginInfo.Login.ProviderKey
+                            });
+                        }
+                        else
+                        {
+                            applicationUser.Logins.Add(new ApplicationUserLogin
+                            {
+                                LoginProvider = loginInfo.Login.LoginProvider,
+                                ProviderKey = loginInfo.Login.ProviderKey
+                            });
+                        }
+                        await _platformApi.Security.UpdateAsyncAsync(applicationUser);
+                        await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, currentUser));
+                    }
+                }
                 if (currentUser == null)
                 {
                     var newUser = new coreModel.ApplicationUserExtended

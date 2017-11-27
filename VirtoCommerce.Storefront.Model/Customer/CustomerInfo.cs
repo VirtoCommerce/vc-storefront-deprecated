@@ -18,6 +18,7 @@ namespace VirtoCommerce.Storefront.Model.Customer
         {
             Addresses = new List<Address>();
             DynamicProperties = new List<DynamicProperty>();
+            Logins = new List<ExternalUserLoginInfo>();
         }
         /// <summary>
         /// Security account Id
