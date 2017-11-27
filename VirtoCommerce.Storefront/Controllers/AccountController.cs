@@ -315,10 +315,14 @@ namespace VirtoCommerce.Storefront.Controllers
             if (user != null)
             {
                 customer = await GetStorefrontCustomerByUserAsync(user);
+                var identity = CreateClaimsIdentity(customer);
+                _authenticationManager.SignIn(identity);
+
+                await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, customer));
             }
             else
             {
-                if (currentUser != null) {
+                if (currentUser.IsRegisteredUser != false) {
                     var applicationUser = _platformApi.Security.GetUserById(currentUser.Id);
                     if (applicationUser != null)
                     {
@@ -343,7 +347,7 @@ namespace VirtoCommerce.Storefront.Controllers
                         await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, currentUser));
                     }
                 }
-                if (currentUser == null)
+                else
                 {
                     var newUser = new coreModel.ApplicationUserExtended
                     {

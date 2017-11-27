@@ -12,6 +12,7 @@ using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Customer.Services;
 using VirtoCommerce.Storefront.Model.Quote;
+using VirtoCommerce.Storefront.Model.Security;
 
 namespace VirtoCommerce.Storefront.Controllers.Api
 {
@@ -33,6 +34,17 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [AllowAnonymous]
         public ActionResult GetCurrentCustomer()
         {
+            var applicationUser = _platformApi.Security.GetUserById(WorkContext.CurrentCustomer.Id);
+            if (applicationUser != null && applicationUser.Logins !=null) {
+                WorkContext.CurrentCustomer.Logins = new List<ExternalUserLoginInfo>();
+                foreach (var externalLoginData in applicationUser.Logins) {
+                    WorkContext.CurrentCustomer.Logins.Add(new ExternalUserLoginInfo
+                    {
+                        LoginProvider = externalLoginData.LoginProvider,
+                        ProviderKey = externalLoginData.ProviderKey
+                    });
+                }
+            }
             return Json(WorkContext.CurrentCustomer);
         }
 
