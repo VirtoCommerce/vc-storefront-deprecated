@@ -344,7 +344,6 @@ namespace VirtoCommerce.Storefront.Controllers
                             });
                         }
                         await _platformApi.Security.UpdateAsyncAsync(applicationUser);
-                        await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, currentUser));
                     }
                 }
                 else
@@ -389,8 +388,9 @@ namespace VirtoCommerce.Storefront.Controllers
                 var identity = CreateClaimsIdentity(customer);
                 _authenticationManager.SignIn(identity);
 
-                await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, customer));
+              
                 }
+                await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, customer));
             }
             return StoreFrontRedirect(returnUrl);
         }
