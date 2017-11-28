@@ -344,6 +344,7 @@ namespace VirtoCommerce.Storefront.Controllers
                             });
                         }
                         await _platformApi.Security.UpdateAsyncAsync(applicationUser);
+
                     }
                 }
                 else
@@ -383,14 +384,12 @@ namespace VirtoCommerce.Storefront.Controllers
                     else
                     {
                         return new HttpStatusCodeResult(System.Net.HttpStatusCode.InternalServerError);
-                    }         
+                    }
 
-                var identity = CreateClaimsIdentity(customer);
-                _authenticationManager.SignIn(identity);
-
-              
+                    var identity = CreateClaimsIdentity(customer);
+                    _authenticationManager.SignIn(identity);
+                    await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, customer));
                 }
-                await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, customer));
             }
             return StoreFrontRedirect(returnUrl);
         }
