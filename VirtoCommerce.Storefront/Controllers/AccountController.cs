@@ -14,7 +14,6 @@ using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Common;
-using VirtoCommerce.Storefront.Model.Security;
 using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Customer;
 using VirtoCommerce.Storefront.Model.Customer.Services;
@@ -309,43 +308,28 @@ namespace VirtoCommerce.Storefront.Controllers
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
 
-            CustomerInfo customer;
+            CustomerInfo customer = null;
 
             var user = await _commerceCoreApi.StorefrontSecurity.GetUserByLoginAsync(loginInfo.Login.LoginProvider, loginInfo.Login.ProviderKey);
             if (user != null)
             {
                 customer = await GetStorefrontCustomerByUserAsync(user);
-                var identity = CreateClaimsIdentity(customer);
-                _authenticationManager.SignIn(identity);
-
-                await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, customer));
             }
             else
             {
-                if (currentUser.IsRegisteredUser != false) {
+                if (currentUser.IsRegisteredUser == true) {
                     var applicationUser = _platformApi.Security.GetUserById(currentUser.Id);
-                    if (applicationUser != null)
-                    {
                         if (applicationUser.Logins == null)
                         {
                             applicationUser.Logins = new List<ApplicationUserLogin>();
-                            applicationUser.Logins.Add(new ApplicationUserLogin
-                            {
-                                LoginProvider = loginInfo.Login.LoginProvider,
-                                ProviderKey = loginInfo.Login.ProviderKey
-                            });
                         }
-                        else
-                        {
-                            applicationUser.Logins.Add(new ApplicationUserLogin
-                            {
-                                LoginProvider = loginInfo.Login.LoginProvider,
-                                ProviderKey = loginInfo.Login.ProviderKey
-                            });
-                        }
-                        await _platformApi.Security.UpdateAsyncAsync(applicationUser);
 
-                    }
+                        applicationUser.Logins.Add(new ApplicationUserLogin
+                        {
+                            LoginProvider = loginInfo.Login.LoginProvider,
+                            ProviderKey = loginInfo.Login.ProviderKey
+                        });
+                        await _platformApi.Security.UpdateAsyncAsync(applicationUser);
                 }
                 else
                 {
@@ -385,12 +369,14 @@ namespace VirtoCommerce.Storefront.Controllers
                     {
                         return new HttpStatusCodeResult(System.Net.HttpStatusCode.InternalServerError);
                     }
-
-                    var identity = CreateClaimsIdentity(customer);
-                    _authenticationManager.SignIn(identity);
-                    await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, customer));
+                 
                 }
             }
+            var identity = CreateClaimsIdentity(customer);
+            _authenticationManager.SignIn(identity);
+
+            await _userLoginEventPublisher.PublishAsync(new UserLoginEvent(WorkContext, WorkContext.CurrentCustomer, customer));
+
             return StoreFrontRedirect(returnUrl);
         }
 

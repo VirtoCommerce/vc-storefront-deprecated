@@ -16,11 +16,13 @@ using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi;
+using VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.StoreModuleApi;
 using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
+using VirtoCommerce.Storefront.Model.Security;
 using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Catalog;
 using VirtoCommerce.Storefront.Model.Common;
@@ -401,13 +403,19 @@ namespace VirtoCommerce.Storefront.Owin
                         userId = user.Id;
                     }
                 }
-
+                var platformApi = Container.Resolve<IPlatformModuleApiClient>();
+                var applicationUser = platformApi.Security.GetUserById(userId);
                 if (userId != null)
                 {
                     var customerService = Container.Resolve<ICustomerService>();
                     var customer = await customerService.GetCustomerByIdAsync(userId);
                     retVal = customer ?? retVal;
                     retVal.Id = userId;
+                    retVal.Logins = applicationUser.Logins.Select(x => new ExternalUserLoginInfo
+                    {
+                        LoginProvider = x.LoginProvider.ToString(),
+                        ProviderKey = x.ProviderKey.ToString()
+                    }).ToArray();
                     retVal.UserName = identity.Name;
 
                     if (string.IsNullOrEmpty(retVal.FullName))

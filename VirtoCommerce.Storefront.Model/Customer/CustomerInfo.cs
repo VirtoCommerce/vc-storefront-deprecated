@@ -44,7 +44,7 @@ namespace VirtoCommerce.Storefront.Model.Customer
         public string LastName { get; set; }
         public string MiddleName { get; set; }
 
-        public IList<ExternalUserLoginInfo> Logins { get; set; } = new List<ExternalUserLoginInfo>();
+        public IList<ExternalUserLoginInfo> Logins { get; set; }
 
         public string TimeZone { get; set; }
         public string DefaultLanguage { get; set; }
