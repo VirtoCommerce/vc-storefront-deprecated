@@ -159,7 +159,7 @@ namespace VirtoCommerce.Storefront.Owin
                     workContext.CurrentProductSearchCriteria = new ProductSearchCriteria(workContext.CurrentLanguage, workContext.CurrentCurrency, qs);
 
                     //Initialize product response group. Exclude properties meta-information for performance reason (property values will be returned)
-                    workContext.CurrentProductResponseGroup = EnumUtility.SafeParse(qs.Get("resp_group"), ItemResponseGroup.ItemLarge & ~ItemResponseGroup.ItemProperties);
+                    workContext.CurrentProductResponseGroup = EnumUtility.SafeParse(qs.Get("resp_group"), ItemResponseGroup.ItemLarge);
 
                     workContext.PageNumber = qs.Get("page").ToNullableInt();
                     workContext.PageSize = qs.Get("count").ToNullableInt() ?? qs.Get("page_size").ToNullableInt();
