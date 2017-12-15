@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Order;
 using VirtoCommerce.Storefront.Model.Quote;
+using VirtoCommerce.Storefront.Model.Security;
 using VirtoCommerce.Storefront.Model.Subscriptions;
 
 namespace VirtoCommerce.Storefront.Model.Customer
@@ -17,6 +18,7 @@ namespace VirtoCommerce.Storefront.Model.Customer
         {
             Addresses = new List<Address>();
             DynamicProperties = new List<DynamicProperty>();
+            Logins = new List<ExternalUserLoginInfo>();
         }
         /// <summary>
         /// Security account Id
@@ -41,6 +43,8 @@ namespace VirtoCommerce.Storefront.Model.Customer
         /// </summary>
         public string LastName { get; set; }
         public string MiddleName { get; set; }
+
+        public IList<ExternalUserLoginInfo> Logins { get; set; }
 
         public string TimeZone { get; set; }
         public string DefaultLanguage { get; set; }

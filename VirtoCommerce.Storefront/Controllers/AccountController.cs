@@ -301,12 +301,14 @@ namespace VirtoCommerce.Storefront.Controllers
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await _authenticationManager.GetExternalLoginInfoAsync();
+            var currentUser = WorkContext.CurrentCustomer;
+
             if (loginInfo == null)
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
 
-            CustomerInfo customer;
+            CustomerInfo customer = null;
 
             var user = await _commerceCoreApi.StorefrontSecurity.GetUserByLoginAsync(loginInfo.Login.LoginProvider, loginInfo.Login.ProviderKey);
             if (user != null)
@@ -315,44 +317,61 @@ namespace VirtoCommerce.Storefront.Controllers
             }
             else
             {
-                var newUser = new coreModel.ApplicationUserExtended
-                {
-                    Email = loginInfo.Email,
-                    UserName = string.Join("--", loginInfo.Login.LoginProvider, loginInfo.Login.ProviderKey),
-                    UserType = "Customer",
-                    StoreId = WorkContext.CurrentStore.Id,
-                    Logins = new List<coreModel.ApplicationUserLogin>
-                    {
-                        new coreModel.ApplicationUserLogin
+                if (currentUser.IsRegisteredUser == true) {
+                    var applicationUser = _platformApi.Security.GetUserById(currentUser.Id);
+                        if (applicationUser.Logins == null)
+                        {
+                            applicationUser.Logins = new List<ApplicationUserLogin>();
+                        }
+
+                        applicationUser.Logins.Add(new ApplicationUserLogin
                         {
                             LoginProvider = loginInfo.Login.LoginProvider,
                             ProviderKey = loginInfo.Login.ProviderKey
-                        }
-                    }
-                };
-                var result = await _commerceCoreApi.StorefrontSecurity.CreateAsync(newUser);
-
-                if (result.Succeeded == true)
-                {
-                    var storefrontUser = await _commerceCoreApi.StorefrontSecurity.GetUserByNameAsync(newUser.UserName);
-                    await _customerService.CreateCustomerAsync(new CustomerInfo
-                    {
-                        Id = storefrontUser.Id,
-                        UserId = storefrontUser.Id,
-                        UserName = storefrontUser.UserName,
-                        FullName = loginInfo.ExternalIdentity.Name,
-                        IsRegisteredUser = true,
-                        AllowedStores = storefrontUser.AllowedStores
-                    });
-
-                    customer = await GetStorefrontCustomerByUserAsync(storefrontUser);
+                        });
+                        await _platformApi.Security.UpdateAsyncAsync(applicationUser);
                 }
                 else
                 {
-                    return new HttpStatusCodeResult(System.Net.HttpStatusCode.InternalServerError);
+                    var newUser = new coreModel.ApplicationUserExtended
+                    {
+                        Email = loginInfo.Email,
+                        UserName = string.Join("--", loginInfo.Login.LoginProvider, loginInfo.Login.ProviderKey),
+                        UserType = "Customer",
+                        StoreId = WorkContext.CurrentStore.Id,
+                        Logins = new List<coreModel.ApplicationUserLogin>
+                        {
+                            new coreModel.ApplicationUserLogin
+                            {
+                                LoginProvider = loginInfo.Login.LoginProvider,
+                                ProviderKey = loginInfo.Login.ProviderKey
+                            }
+                        }
+                    };
+                    var result = await _commerceCoreApi.StorefrontSecurity.CreateAsync(newUser);
+
+                    if (result.Succeeded == true)
+                    {
+                        var storefrontUser = await _commerceCoreApi.StorefrontSecurity.GetUserByNameAsync(newUser.UserName);
+                        await _customerService.CreateCustomerAsync(new CustomerInfo
+                        {
+                            Id = storefrontUser.Id,
+                            UserId = storefrontUser.Id,
+                            UserName = storefrontUser.UserName,
+                            FullName = loginInfo.ExternalIdentity.Name,
+                            IsRegisteredUser = true,
+                            AllowedStores = storefrontUser.AllowedStores
+                        });
+
+                        customer = await GetStorefrontCustomerByUserAsync(storefrontUser);
+                    }
+                    else
+                    {
+                        return new HttpStatusCodeResult(System.Net.HttpStatusCode.InternalServerError);
+                    }
+                 
                 }
             }
-
             var identity = CreateClaimsIdentity(customer);
             _authenticationManager.SignIn(identity);
 

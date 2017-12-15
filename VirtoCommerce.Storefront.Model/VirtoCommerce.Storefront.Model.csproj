@@ -123,6 +123,7 @@
     <Compile Include="Recommendations\CognitiveRecommendationEvalContext.cs" />
     <Compile Include="Recommendations\IRecommendationsService.cs" />
     <Compile Include="Recommendations\RecommendationEvalContext.cs" />
+    <Compile Include="Security\ExternalUserLoginInfo.cs" />
     <Compile Include="SeoLinksType.cs" />
     <Compile Include="SettingEntry.cs" />
     <Compile Include="LoginProvider.cs" />
