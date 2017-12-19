@@ -26,6 +26,19 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public string Author { get; set; }
 
         /// <summary>
+        /// Returns the first name of the user.
+        /// Use in registration form.
+        /// </summary>
+        public string FirstName { get; set; }
+
+        /// <summary>
+        /// Returns the last name of the user.
+        /// Use in registration form.
+        /// </summary>
+        public string LastName { get; set; }
+
+      
+        /// <summary>
         /// Returns the content of the blog article comment.
         /// Exclusive to form tags with the "article" parameter.
         /// </summary>

@@ -121,6 +121,7 @@
     <Compile Include="Binders\ResetPasswordModelBinder.cs" />
     <Compile Include="Binders\ShopifyModelBinderProvider.cs" />
     <Compile Include="Converters\BlogSearchConverter.cs" />
+    <Compile Include="Converters\RegisterFormConverter.cs" />
     <Compile Include="Converters\TransactionConverter.cs" />
     <Compile Include="Converters\ArticleConverter.cs" />
     <Compile Include="Converters\AttachmentConverter.cs" />

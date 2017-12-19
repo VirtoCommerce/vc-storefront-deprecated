@@ -33,6 +33,9 @@ namespace VirtoCommerce.Storefront.Model
         public NameValueCollection QueryString { get; set; }
 
         public Login Login { get; set; }
+
+        public Register Register { get; set; }
+
         /// <summary>
         /// Current customer
         /// </summary>
