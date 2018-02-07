@@ -430,8 +430,7 @@ namespace VirtoCommerce.Storefront.Builders
         public virtual async Task SaveAsync()
         {
             EnsureCartExists();
-            InvalidateCache();
-
+    
             await EvaluatePromotionsAsync();
             await EvaluateTaxesAsync();
 
@@ -444,6 +443,7 @@ namespace VirtoCommerce.Storefront.Builders
             {
                 await _cartApi.CartModule.UpdateAsync(cart);
             }
+            InvalidateCache();
             cart = await _cartApi.CartModule.GetCartByIdAsync(cart.Id);
             Cart = cart.ToShoppingCart(Cart.Currency, Cart.Language, Cart.Customer);
         }
