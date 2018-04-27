@@ -59,11 +59,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             if (input == null)
                 return null;
 
-            var retVal = input.ToString();
+            // default informs us type object type we don't yet handle
+            string retVal = input.ToString();
+
+#if CSharp_Older_Than_7
             var product = input as shopifyModel.Product;
             var image = input as shopifyModel.Image;
             var variant = input as shopifyModel.Variant;
             var collection = input as shopifyModel.Collection;
+            var lineItem = input as shopifyModel.LineItem;
 
             if (product != null)
             {
@@ -82,6 +86,34 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 retVal = collection.Image != null ? collection.Image.Src : null;
             }
 
+            if ( lineItem != null )
+            {
+                retVal = lineItem.Image != null ? lineItem.Image.Src : null;
+            }
+#else
+            // C# 7 signatures
+            switch (input)
+            {
+                case shopifyModel.Product product:
+                    retVal = product.FeaturedImage != null ? product.FeaturedImage.Src : null;
+                    break;
+                case shopifyModel.Image image:
+                    retVal = image.Src;
+                    break;
+                case shopifyModel.Variant variant:
+                    retVal = variant.FeaturedImage != null ? variant.FeaturedImage.Src : null;
+                    break;
+                case shopifyModel.Collection collection:
+                    retVal = collection.Image != null ? collection.Image.Src : null;
+                    break;
+                case shopifyModel.LineItem lineItem:
+                    retVal = lineItem.Image != null ? lineItem.Image.Src : null;
+                    break;
+                default:
+                    break;
+            }
+
+#endif
             if (!string.IsNullOrEmpty(retVal))
             {
                 if (!string.IsNullOrEmpty(type))
@@ -93,6 +125,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
             }
 
             return retVal;
+
         }
 
         /// <summary>
