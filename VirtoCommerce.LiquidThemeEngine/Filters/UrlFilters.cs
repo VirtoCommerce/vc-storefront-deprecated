@@ -91,7 +91,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Filters
                 retVal = lineItem.Image != null ? lineItem.Image.Src : null;
             }
 #else
-            // C# 7 signatures
+            // C# 7 patterns
             switch (input)
             {
                 case shopifyModel.Product product:
