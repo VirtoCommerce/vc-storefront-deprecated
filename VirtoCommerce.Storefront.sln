@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.Storefront", "VirtoCommerce.Storefront\VirtoCommerce.Storefront.csproj", "{89054B36-0E64-4101-8260-333E6286B94F}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.Storefront.Model", "VirtoCommerce.Storefront.Model\VirtoCommerce.Storefront.Model.csproj", "{FD2F9490-83EB-40DF-A61B-7E4098D35BD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.Storefront.Test", "VirtoCommerce.Storefront.Test\VirtoCommerce.Storefront.Test.csproj", "{324FEE60-ACD1-427A-9B7D-0DF767E6F96D}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{84B19E21-78CC-4A09-95CE-C74FA1534FB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,11 +35,16 @@ Global
 		{324FEE60-ACD1-427A-9B7D-0DF767E6F96D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{324FEE60-ACD1-427A-9B7D-0DF767E6F96D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{324FEE60-ACD1-427A-9B7D-0DF767E6F96D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84B19E21-78CC-4A09-95CE-C74FA1534FB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84B19E21-78CC-4A09-95CE-C74FA1534FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84B19E21-78CC-4A09-95CE-C74FA1534FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84B19E21-78CC-4A09-95CE-C74FA1534FB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
+		SolutionGuid = {1AEEC7ED-B799-45D7-9823-7633D41D9311}
 	EndGlobalSection
 EndGlobal

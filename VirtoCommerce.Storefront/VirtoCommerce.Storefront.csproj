@@ -23,6 +23,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -269,12 +270,15 @@
     <Content Include="App_Data\countries.json" />
     <Content Include="App_Data\x64\LibSass.x64.dll" />
     <Content Include="App_Data\x64\libsassnet.dll" />
-    <Content Include="App_Data\x86\LibSass.x86.dll" />
-    <Content Include="App_Data\x86\libsassnet.dll" />
     <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
+    <None Include=".dockerignore">
+      <DependentUpon>Dockerfile</DependentUpon>
+    </None>
     <None Include="AutoRestClients\!readme.txt" />
+    <Content Include="App_Data\x86\LibSass.x86.dll" />
+    <Content Include="App_Data\x86\libsassnet.dll" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
@@ -419,6 +423,7 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Dockerfile" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -431,6 +436,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="ServerMaintenance.aspx" />
     <Content Include="Views\Common\NoTheme.cshtml" />
+    <None Include="Properties\PublishProfiles\vc-storefront-rf-test - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
