@@ -90,6 +90,12 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         public Image Image { get; set; }
 
         /// <summary>
+        /// Returns an array of the category's images. Use the product_img_url filter to link to the category image.
+        /// </summary>
+        [DataMember]
+        public Image[] Images { get; set; }
+
+        /// <summary>
         /// Returns the URL of the next product in the collection. Returns nil if there is no next product.
         /// </summary>
         [DataMember]
@@ -101,6 +107,11 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
         /// </summary>
         [DataMember]
         public string PreviousProduct { get; set; }
+
+        /// <summary>
+        /// Returns paged collection of all parents collections
+        /// </summary>
+        public Collections Parents { get; set; }
 
         /// <summary>
         /// Returns paged collection of products

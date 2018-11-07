@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Practices.ServiceLocation;
 using VirtoCommerce.Storefront.AutoRestClients.CartModuleApi;
 using VirtoCommerce.Storefront.AutoRestClients.SubscriptionModuleApi;
 using VirtoCommerce.Storefront.Common;
@@ -14,6 +13,7 @@ using VirtoCommerce.Storefront.Model.Cart;
 using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Cart.ValidationErrors;
 using VirtoCommerce.Storefront.Model.Catalog;
+using VirtoCommerce.Storefront.Model.Catalog.Services;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
@@ -38,6 +38,7 @@ namespace VirtoCommerce.Storefront.Builders
         private readonly IPromotionEvaluator _promotionEvaluator;
         private readonly ITaxEvaluator _taxEvaluator;
         private readonly ISubscriptionModuleApiClient _subscriptionApi;
+        private readonly IProductAvailabilityService _productAvailabilityService;
         private const string _cartCacheRegion = "CartRegion";
 
         public CartBuilder(
@@ -46,7 +47,9 @@ namespace VirtoCommerce.Storefront.Builders
             ICatalogSearchService catalogSearchService,
             ILocalCacheManager cacheManager,
             IPromotionEvaluator promotionEvaluator,
-            ITaxEvaluator taxEvaluator, ISubscriptionModuleApiClient subscriptionApi)
+            ITaxEvaluator taxEvaluator,
+            ISubscriptionModuleApiClient subscriptionApi,
+            IProductAvailabilityService productAvailabilityService)
         {
             _cartApi = cartApi;
             _catalogSearchService = catalogSearchService;
@@ -55,6 +58,7 @@ namespace VirtoCommerce.Storefront.Builders
             _promotionEvaluator = promotionEvaluator;
             _taxEvaluator = taxEvaluator;
             _subscriptionApi = subscriptionApi;
+            _productAvailabilityService = productAvailabilityService;
         }
 
         #region ICartBuilder Members
@@ -85,9 +89,9 @@ namespace VirtoCommerce.Storefront.Builders
                 //Load cart payment plan with have same id
                 if (store.SubscriptionEnabled)
                 {
-                    var paymentPlanIds = new string[] { cart.Id }.Concat(cart.Items.Select(x => x.ProductId).Distinct()).ToArray();
+                    var paymentPlanIds = new[] { cart.Id }.Concat(cart.Items.Select(x => x.ProductId).Distinct()).ToArray();
 
-                    var paymentPlans = (await _subscriptionApi.SubscriptionModule.GetPaymentPlanByIdsAsync(paymentPlanIds)).Select(x => x.ToPaymentPlan());
+                    var paymentPlans = (await _subscriptionApi.SubscriptionModule.GetPaymentPlanByIdsAsync(paymentPlanIds)).Select(x => x.ToPaymentPlan()).ToList();
                     cart.PaymentPlan = paymentPlans.FirstOrDefault(x => x.Id == cart.Id);
                     foreach (var lineItem in cart.Items)
                     {
@@ -110,8 +114,12 @@ namespace VirtoCommerce.Storefront.Builders
         {
             EnsureCartExists();
 
-            var lineItem = product.ToLineItem(Cart.Language, quantity);
-            await AddLineItemAsync(lineItem);
+            var isProductAvailable = await _productAvailabilityService.IsAvailable(product, quantity);
+            if (isProductAvailable)
+            {
+                var lineItem = product.ToLineItem(Cart.Language, quantity);
+                await AddLineItemAsync(lineItem);
+            }
         }
 
         public virtual async Task ChangeItemQuantityAsync(string id, int quantity)
@@ -242,6 +250,14 @@ namespace VirtoCommerce.Storefront.Builders
         public virtual async Task MergeWithCartAsync(ShoppingCart cart)
         {
             EnsureCartExists();
+            
+            //Reset primary keys for all aggregated entities before merge
+            //To prevent insertions same Ids for target cart
+            var entities = cart.GetFlatObjectsListWithInterface<IEntity>();
+            foreach(var entity in entities)
+            {
+                entity.Id = null;
+            }
 
             foreach (var lineItem in cart.Items)
             {
@@ -283,6 +299,7 @@ namespace VirtoCommerce.Storefront.Builders
                     {
                         lineItem.ListPrice = lineItem.SalePrice;
                     }
+                    lineItem.DiscountAmount = lineItem.ListPrice - lineItem.SalePrice;
                     lineItem.IsReadOnly = true;
                     lineItem.Id = null;
                     Cart.Items.Add(lineItem);
@@ -302,13 +319,11 @@ namespace VirtoCommerce.Storefront.Builders
                 if (quoteRequest.ShipmentMethod != null)
                 {
                     var availableShippingMethods = await GetAvailableShippingMethodsAsync();
-                    if (availableShippingMethods != null)
+                    var availableShippingMethod = availableShippingMethods?.FirstOrDefault(sm => sm.ShipmentMethodCode == quoteRequest.ShipmentMethod.ShipmentMethodCode);
+
+                    if (availableShippingMethod != null)
                     {
-                        var availableShippingMethod = availableShippingMethods.FirstOrDefault(sm => sm.ShipmentMethodCode == quoteRequest.ShipmentMethod.ShipmentMethodCode);
-                        if (availableShippingMethod != null)
-                        {
-                            shipment = quoteRequest.ShipmentMethod.ToCartShipment(Cart.Currency);
-                        }
+                        shipment = quoteRequest.ShipmentMethod.ToCartShipment(Cart.Currency);
                     }
                 }
                 Cart.Shipments.Add(shipment);
@@ -341,7 +356,7 @@ namespace VirtoCommerce.Storefront.Builders
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
 
             //Evaluate taxes for available shipping rates
-            var taxEvalContext = Cart.ToTaxEvalContext();
+            var taxEvalContext = Cart.ToTaxEvalContext(workContext.CurrentStore);
             taxEvalContext.Lines.Clear();
             taxEvalContext.Lines.AddRange(retVal.SelectMany(x => x.ToTaxLines()));
             await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
@@ -360,7 +375,8 @@ namespace VirtoCommerce.Storefront.Builders
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, retVal);
 
             //Evaluate taxes for available payments 
-            var taxEvalContext = Cart.ToTaxEvalContext();
+            var workContext = _workContextFactory();
+            var taxEvalContext = Cart.ToTaxEvalContext(workContext.CurrentStore);
             taxEvalContext.Lines.Clear();
             taxEvalContext.Lines.AddRange(retVal.SelectMany(x => x.ToTaxLines()));
             await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, retVal);
@@ -378,14 +394,28 @@ namespace VirtoCommerce.Storefront.Builders
         public virtual async Task EvaluatePromotionsAsync()
         {
             EnsureCartExists();
-            var evalContext = Cart.ToPromotionEvaluationContext();
 
-            await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
+            bool isReadOnlyLineItems = Cart.Items.Any(i => i.IsReadOnly);
+            if (!isReadOnlyLineItems)
+            {
+                //Get product inventory to fill InStockQuantity parameter of LineItem
+                var products = await GetCartProductsAsync();
+
+                foreach (var lineItem in Cart.Items.ToList())
+                {
+                    var product = products.FirstOrDefault(p => p.Id == lineItem.ProductId);
+                    lineItem.InStockQuantity = (int)await _productAvailabilityService.GetAvailableQuantity(product);
+                }
+                
+                var evalContext = Cart.ToPromotionEvaluationContext();
+                await _promotionEvaluator.EvaluateDiscountsAsync(evalContext, new IDiscountable[] { Cart });
+            }
         }
 
         public async Task EvaluateTaxesAsync()
         {
-            await _taxEvaluator.EvaluateTaxesAsync(Cart.ToTaxEvalContext(), new[] { Cart });
+            var workContext = _workContextFactory();
+            await _taxEvaluator.EvaluateTaxesAsync(Cart.ToTaxEvalContext(workContext.CurrentStore), new[] { Cart });
         }
 
         public virtual async Task SaveAsync()
@@ -471,23 +501,22 @@ namespace VirtoCommerce.Storefront.Builders
 
         protected virtual ShoppingCart CreateCart(string cartName, Store store, CustomerInfo customer, Language language, Currency currency)
         {
-            var cart = new ShoppingCart(currency, language);
-
-            cart.CustomerId = customer.Id;
-            cart.Name = "Default";
-            cart.StoreId = store.Id;
-            cart.Language = language;
-            cart.IsAnonymous = !customer.IsRegisteredUser;
-            cart.CustomerName = customer.IsRegisteredUser ? customer.UserName : StorefrontConstants.AnonymousUsername;
+            var cart = new ShoppingCart(currency, language)
+            {
+                CustomerId = customer.Id,
+                Name = cartName,
+                StoreId = store.Id,
+                Language = language,
+                IsAnonymous = !customer.IsRegisteredUser,
+                CustomerName = customer.IsRegisteredUser ? customer.UserName : StorefrontConstants.AnonymousUsername
+            };
 
             return cart;
         }
 
         protected virtual async Task ValidateCartItemsAsync()
         {
-            var productIds = Cart.Items.Select(i => i.ProductId).ToArray();
-            var cacheKey = "CartBuilder.ValidateCartItemsAsync:" + Cart.Id + ":" + string.Join(":", productIds);
-            var products = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => await _catalogSearchService.GetProductsAsync(productIds, ItemResponseGroup.ItemWithPrices | ItemResponseGroup.ItemWithDiscounts | ItemResponseGroup.Inventory));
+            var products = await GetCartProductsAsync();
 
             foreach (var lineItem in Cart.Items.ToList())
             {
@@ -501,18 +530,13 @@ namespace VirtoCommerce.Storefront.Builders
                 }
                 else
                 {
-                    if (product.TrackInventory && product.Inventory != null)
+                    var isProductAvailable = await _productAvailabilityService.IsAvailable(product, lineItem.Quantity);
+                    if (!isProductAvailable)
                     {
-                        var availableQuantity = product.Inventory.InStockQuantity;
-                        if (product.Inventory.ReservedQuantity.HasValue)
-                        {
-                            availableQuantity -= product.Inventory.ReservedQuantity.Value;
-                        }
-                        if (availableQuantity.HasValue && lineItem.Quantity > availableQuantity.Value)
-                        {
-                            lineItem.ValidationErrors.Add(new QuantityError(availableQuantity.Value));
-                            lineItem.IsValid = false;
-                        }
+                        lineItem.IsValid = false;
+
+                        var availableQuantity = await _productAvailabilityService.GetAvailableQuantity(product);
+                        lineItem.ValidationErrors.Add(new QuantityError(availableQuantity));
                     }
 
                     var tierPrice = product.Price.GetTierPrice(lineItem.Quantity);
@@ -616,6 +640,14 @@ namespace VirtoCommerce.Storefront.Builders
             {
                 throw new StorefrontException("Cart not loaded.");
             }
+        }
+
+        protected virtual async Task<Product[]> GetCartProductsAsync()
+        {
+            var productIds = Cart.Items.Select(i => i.ProductId).ToArray();
+            var cacheKey = "CartBuilder.ValidateCartItemsAsync:" + Cart.Id + ":" + string.Join(":", productIds);
+            var products = await _cacheManager.GetAsync(cacheKey, "ApiRegion", async () => await _catalogSearchService.GetProductsAsync(productIds, ItemResponseGroup.ItemWithPrices | ItemResponseGroup.ItemWithDiscounts | ItemResponseGroup.Inventory));
+            return products;
         }
     }
 }

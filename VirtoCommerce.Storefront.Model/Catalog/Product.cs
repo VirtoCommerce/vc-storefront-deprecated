@@ -62,7 +62,7 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public string CategoryId { get; set; }
 
         /// <summary>
-        /// All parent categories ids concatenated with ";". E.g. (1;21;344)
+        /// All parent categories ids concatenated with "/". E.g. (1/21/344)
         /// </summary>
         public string Outline { get; set; }
 
@@ -218,9 +218,14 @@ namespace VirtoCommerce.Storefront.Model.Catalog
         public ICollection<ProductPrice> Prices { get; set; }
 
         /// <summary>
-        /// Inventory info
+        /// Inventory for default fulfilment center
         /// </summary>
         public Inventory Inventory { get; set; }
+
+        /// <summary>
+        /// Inventory of all fulfillment centers.
+        /// </summary>
+        public ICollection<Inventory> InventoryAll { get; set; }
 
         /// <summary>
         /// product seo info
@@ -244,6 +249,8 @@ namespace VirtoCommerce.Storefront.Model.Catalog
                 return true;
             }
         }
+
+        public bool IsAvailable { get; set; }
 
         /// <summary>
         /// if the product is sold by subscription only this property contains the recurrence plan

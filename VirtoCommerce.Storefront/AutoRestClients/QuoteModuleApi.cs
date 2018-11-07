@@ -1761,7 +1761,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the QuoteRequestSearchCriteria class.
         /// </summary>
-        public QuoteRequestSearchCriteria(string number = default(string), string keyword = default(string), string customerId = default(string), string storeId = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string status = default(string), string tag = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public QuoteRequestSearchCriteria(string number = default(string), string keyword = default(string), string customerId = default(string), string storeId = default(string), System.DateTime? startDate = default(System.DateTime?), System.DateTime? endDate = default(System.DateTime?), string status = default(string), string tag = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
             Number = number;
             Keyword = keyword;
@@ -1774,6 +1774,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
             ResponseGroup = responseGroup;
             ObjectType = objectType;
             ObjectTypes = objectTypes;
+            ObjectIds = objectIds;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
             Sort = sort;
             SortInfos = sortInfos;
             Skip = skip;
@@ -1834,6 +1837,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
         public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectIds")]
+        public System.Collections.Generic.IList<string> ObjectIds { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3155,10 +3173,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// Initializes a new instance of the Property class.
         /// </summary>
         /// <param name="valueType">Possible values include: 'ShortText',
-        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
+        /// 'LongText', 'Number', 'DateTime', 'Boolean', 'Integer'</param>
         /// <param name="type">Possible values include: 'Product',
         /// 'Variation', 'Category', 'Catalog'</param>
-        public Property(string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category), string name = default(string), bool? required = default(bool?), bool? dictionary = default(bool?), bool? multivalue = default(bool?), bool? multilanguage = default(bool?), string valueType = default(string), string type = default(string), System.Collections.Generic.IList<PropertyAttribute> attributes = default(System.Collections.Generic.IList<PropertyAttribute>), System.Collections.Generic.IList<PropertyDictionaryValue> dictionaryValues = default(System.Collections.Generic.IList<PropertyDictionaryValue>), System.Collections.Generic.IList<PropertyDisplayName> displayNames = default(System.Collections.Generic.IList<PropertyDisplayName>), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public Property(string catalogId = default(string), Catalog catalog = default(Catalog), string categoryId = default(string), Category category = default(Category), string name = default(string), bool? required = default(bool?), bool? dictionary = default(bool?), bool? multivalue = default(bool?), bool? multilanguage = default(bool?), string valueType = default(string), string type = default(string), System.Collections.Generic.IList<PropertyAttribute> attributes = default(System.Collections.Generic.IList<PropertyAttribute>), System.Collections.Generic.IList<PropertyDictionaryValue> dictionaryValues = default(System.Collections.Generic.IList<PropertyDictionaryValue>), System.Collections.Generic.IList<PropertyDisplayName> displayNames = default(System.Collections.Generic.IList<PropertyDisplayName>), System.Collections.Generic.IList<PropertyValidationRule> validationRules = default(System.Collections.Generic.IList<PropertyValidationRule>), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             CatalogId = catalogId;
             Catalog = catalog;
@@ -3174,6 +3192,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
             Attributes = attributes;
             DictionaryValues = dictionaryValues;
             DisplayNames = displayNames;
+            ValidationRules = validationRules;
             IsInherited = isInherited;
             CreatedDate = createdDate;
             ModifiedDate = modifiedDate;
@@ -3229,7 +3248,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'ShortText', 'LongText',
-        /// 'Number', 'DateTime', 'Boolean'
+        /// 'Number', 'DateTime', 'Boolean', 'Integer'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -3255,6 +3274,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "displayNames")]
         public System.Collections.Generic.IList<PropertyDisplayName> DisplayNames { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "validationRules")]
+        public System.Collections.Generic.IList<PropertyValidationRule> ValidationRules { get; set; }
 
         /// <summary>
         /// </summary>
@@ -3487,7 +3511,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// Initializes a new instance of the PropertyValue class.
         /// </summary>
         /// <param name="valueType">Possible values include: 'ShortText',
-        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
+        /// 'LongText', 'Number', 'DateTime', 'Boolean', 'Integer'</param>
         public PropertyValue(string propertyId = default(string), string propertyName = default(string), Property property = default(Property), string alias = default(string), string valueId = default(string), object value = default(object), string valueType = default(string), string languageCode = default(string), bool? isInherited = default(bool?), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             PropertyId = propertyId;
@@ -3538,7 +3562,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'ShortText', 'LongText',
-        /// 'Number', 'DateTime', 'Boolean'
+        /// 'Number', 'DateTime', 'Boolean', 'Integer'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -4111,6 +4135,72 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
         public string LanguageCode { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class PropertyValidationRule
+    {
+        /// <summary>
+        /// Initializes a new instance of the PropertyValidationRule class.
+        /// </summary>
+        public PropertyValidationRule() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PropertyValidationRule class.
+        /// </summary>
+        public PropertyValidationRule(bool? isUnique = default(bool?), int? charCountMin = default(int?), int? charCountMax = default(int?), string regExp = default(string), string propertyId = default(string), Property property = default(Property), string id = default(string))
+        {
+            IsUnique = isUnique;
+            CharCountMin = charCountMin;
+            CharCountMax = charCountMax;
+            RegExp = regExp;
+            PropertyId = propertyId;
+            Property = property;
+            Id = id;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isUnique")]
+        public bool? IsUnique { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "charCountMin")]
+        public int? CharCountMin { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "charCountMax")]
+        public int? CharCountMax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "regExp")]
+        public string RegExp { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "propertyId")]
+        public string PropertyId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "property")]
+        public Property Property { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
     }
 }
@@ -5105,7 +5195,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// <param name="valueType">Possible values include: 'Undefined',
         /// 'ShortText', 'LongText', 'Integer', 'Decimal', 'DateTime',
         /// 'Boolean', 'Html'</param>
-        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
+        public DynamicObjectProperty(string objectId = default(string), System.Collections.Generic.IList<DynamicPropertyObjectValue> values = default(System.Collections.Generic.IList<DynamicPropertyObjectValue>), string name = default(string), string description = default(string), string objectType = default(string), bool? isArray = default(bool?), bool? isDictionary = default(bool?), bool? isMultilingual = default(bool?), bool? isRequired = default(bool?), int? displayOrder = default(int?), string valueType = default(string), System.Collections.Generic.IList<DynamicPropertyName> displayNames = default(System.Collections.Generic.IList<DynamicPropertyName>), System.DateTime? createdDate = default(System.DateTime?), System.DateTime? modifiedDate = default(System.DateTime?), string createdBy = default(string), string modifiedBy = default(string), string id = default(string))
         {
             ObjectId = objectId;
             Values = values;
@@ -5116,6 +5206,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
             IsDictionary = isDictionary;
             IsMultilingual = isMultilingual;
             IsRequired = isRequired;
+            DisplayOrder = displayOrder;
             ValueType = valueType;
             DisplayNames = displayNames;
             CreatedDate = createdDate;
@@ -5169,6 +5260,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.QuoteModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isRequired")]
         public bool? IsRequired { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "displayOrder")]
+        public int? DisplayOrder { get; set; }
 
         /// <summary>
         /// Gets or sets possible values include: 'Undefined', 'ShortText',

@@ -14,6 +14,7 @@ using cartDto = VirtoCommerce.Storefront.AutoRestClients.CartModuleApi.Models;
 using coreDto = VirtoCommerce.Storefront.AutoRestClients.CoreModuleApi.Models;
 using marketingDto = VirtoCommerce.Storefront.AutoRestClients.MarketingModuleApi.Models;
 using platformDto = VirtoCommerce.Storefront.AutoRestClients.PlatformModuleApi.Models;
+using VirtoCommerce.Storefront.Model.Stores;
 
 namespace VirtoCommerce.Storefront.Converters
 {
@@ -42,9 +43,9 @@ namespace VirtoCommerce.Storefront.Converters
             return CartConverterInstance.ToPromotionEvaluationContext(cart);
         }
 
-        public static TaxEvaluationContext ToTaxEvalContext(this ShoppingCart cart)
+        public static TaxEvaluationContext ToTaxEvalContext(this ShoppingCart cart, Store store)
         {
-            return CartConverterInstance.ToTaxEvalContext(cart);
+            return CartConverterInstance.ToTaxEvalContext(cart, store);
         }
 
         public static TaxDetail ToTaxDetail(this cartDto.TaxDetail taxDetail, Currency currency)
@@ -233,7 +234,8 @@ namespace VirtoCommerce.Storefront.Converters
                 result.ShipmentMethodCode = shippingRate.ShippingMethod.Code;
                 if (shippingRate.ShippingMethod.Settings != null)
                 {
-                    result.Settings = shippingRate.ShippingMethod.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
+                    result.Settings = shippingRate.ShippingMethod.Settings.Where(x=> !x.ValueType.EqualsInvariant("SecureString"))
+                                                                          .Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
                 }
             }
 
@@ -261,7 +263,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Id = shipmentMethod.BuildTaxLineId(),
                     Code = shipmentMethod.ShipmentMethodCode,
                     TaxType = shipmentMethod.TaxType,
-                    Amount = shipmentMethod.Total
+                    //Special case when shipment method have 100% discount and need to calculate tax for old value
+                    Amount = shipmentMethod.Total.Amount > 0 ? shipmentMethod.Total : shipmentMethod.Price
                 }
             };
             return retVal.ToArray();
@@ -276,7 +279,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Id = paymentMethod.Code,
                     Code = paymentMethod.Code,
                     TaxType = paymentMethod.TaxType,
-                    Amount = paymentMethod.Total
+                     //Special case when payment method have 100% discount and need to calculate tax for old value
+                    Amount = paymentMethod.Total.Amount > 0 ? paymentMethod.Total : paymentMethod.Price
                 }
             };
             return retVal.ToArray();
@@ -378,7 +382,7 @@ namespace VirtoCommerce.Storefront.Converters
 
             if (paymentMethodDto.Settings != null)
             {
-                retVal.Settings = paymentMethodDto.Settings.Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
+                retVal.Settings = paymentMethodDto.Settings.Where(x => !x.ValueType.EqualsInvariant("SecureString")).Select(x => x.JsonConvert<platformDto.Setting>().ToSettingEntry()).ToList();
             }
 
             retVal.Currency = cart.Currency;
@@ -500,8 +504,8 @@ namespace VirtoCommerce.Storefront.Converters
             {
                 result.Coupon = new Coupon
                 {
-                    Code = cartDto.Coupon.Code,
-                    AppliedSuccessfully = cartDto.Coupon.IsValid ?? false
+                    Code = cartDto.Coupon,
+                    AppliedSuccessfully = !string.IsNullOrEmpty(cartDto.Coupon)
                 };
             }
 
@@ -561,7 +565,7 @@ namespace VirtoCommerce.Storefront.Converters
                 result.LanguageCode = cart.Language.CultureName;
             }
             result.Addresses = cart.Addresses.Select(ToCartAddressDto).ToList();
-            result.Coupon = cart.Coupon != null ? new cartDto.Coupon { Code = cart.Coupon.Code, IsValid = cart.Coupon.AppliedSuccessfully } : null;
+            result.Coupon = cart.Coupon != null ? cart.Coupon.Code : null;
             result.Currency = cart.Currency.Code;
             result.Discounts = cart.Discounts.Select(ToCartDiscountDto).ToList();
             result.HandlingTotal = (double)cart.HandlingTotal.Amount;
@@ -578,7 +582,7 @@ namespace VirtoCommerce.Storefront.Converters
             return result;
         }
 
-        public virtual TaxEvaluationContext ToTaxEvalContext(ShoppingCart cart)
+        public virtual TaxEvaluationContext ToTaxEvalContext(ShoppingCart cart, Store store)
         {
             var result = new TaxEvaluationContext(cart.StoreId);
 
@@ -587,6 +591,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.Currency = cart.Currency;
             result.Type = "Cart";
             result.Customer = cart.Customer;
+            result.StoreTaxCalculationEnabled = store.TaxCalculationEnabled;
 
             foreach (var lineItem in cart.Items)
             {
@@ -596,7 +601,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = lineItem.Sku,
                     Name = lineItem.Name,
                     TaxType = lineItem.TaxType,
-                    Amount = lineItem.ExtendedPrice
+                    //Special case when product have 100% discount and need to calculate tax for old value
+                    Amount = lineItem.ExtendedPrice.Amount > 0 ? lineItem.ExtendedPrice : lineItem.SalePrice
                 });
             }
 
@@ -608,7 +614,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = shipment.ShipmentMethodCode,
                     Name = shipment.ShipmentMethodOption,
                     TaxType = shipment.TaxType,
-                    Amount = shipment.Total
+                    //Special case when shipment have 100% discount and need to calculate tax for old value
+                    Amount = shipment.Total.Amount > 0 ? shipment.Total : shipment.Price
                 };
                 result.Lines.Add(totalTaxLine);
 
@@ -626,7 +633,8 @@ namespace VirtoCommerce.Storefront.Converters
                     Code = payment.PaymentGatewayCode,
                     Name = payment.PaymentGatewayCode,
                     TaxType = payment.TaxType,
-                    Amount = payment.Total
+                    //Special case when shipment have 100% discount and need to calculate tax for old value
+                    Amount = payment.Total.Amount > 0 ? payment.Total : payment.Price
                 };
                 result.Lines.Add(totalTaxLine);
             }
@@ -750,6 +758,7 @@ namespace VirtoCommerce.Storefront.Converters
             result.Discount = (double)lineItem.DiscountTotal.Amount;
             result.Price = (double)lineItem.PlacedPrice.Amount;
             result.Quantity = lineItem.Quantity;
+            result.InStockQuantity = lineItem.InStockQuantity;
             result.Variations = null; // TODO
 
             return result;

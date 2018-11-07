@@ -1695,7 +1695,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.IO.Stream>> DownloadSitemapsZipWithHttpMessagesAsync(string storeId, string baseUrl, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SitemapDownloadNotification>> DownloadSitemapWithHttpMessagesAsync(string storeId, string baseUrl, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (storeId == null)
             {
@@ -1715,7 +1715,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi
                 tracingParameters.Add("storeId", storeId);
                 tracingParameters.Add("baseUrl", baseUrl);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "DownloadSitemapsZip", tracingParameters);
+                Microsoft.Rest.ServiceClientTracing.Enter(_invocationId, this, "DownloadSitemap", tracingParameters);
             }
             // Construct URL
             var _baseUrl = this.Client.BaseUri.AbsoluteUri;
@@ -1765,7 +1765,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi
                 Microsoft.Rest.ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
             }
             cancellationToken.ThrowIfCancellationRequested();
-            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+            _httpResponse = await this.Client.HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
             if (_shouldTrace)
             {
                 Microsoft.Rest.ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
@@ -1798,13 +1798,26 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi
                 throw ex;
             }
             // Create Result
-            var _result = new Microsoft.Rest.HttpOperationResponse<System.IO.Stream>();
+            var _result = new Microsoft.Rest.HttpOperationResponse<SitemapDownloadNotification>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             // Deserialize Response
             if ((int)_statusCode == 200)
             {
-                _result.Body = await _httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<SitemapDownloadNotification>(_responseContent, this.Client.DeserializationSettings);
+                }
+                catch (Newtonsoft.Json.JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new Microsoft.Rest.SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
             }
             if (_shouldTrace)
             {
@@ -2092,9 +2105,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi
             /// </param>
             /// <param name='baseUrl'>
             /// </param>
-            public static System.IO.Stream DownloadSitemapsZip(this ISitemapsModuleApiOperations operations, string storeId, string baseUrl)
+            public static SitemapDownloadNotification DownloadSitemap(this ISitemapsModuleApiOperations operations, string storeId, string baseUrl)
             {
-                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ISitemapsModuleApiOperations)s).DownloadSitemapsZipAsync(storeId, baseUrl), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+                return System.Threading.Tasks.Task.Factory.StartNew(s => ((ISitemapsModuleApiOperations)s).DownloadSitemapAsync(storeId, baseUrl), operations, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskCreationOptions.None, System.Threading.Tasks.TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
             }
 
             /// <param name='operations'>
@@ -2107,11 +2120,12 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async System.Threading.Tasks.Task<System.IO.Stream> DownloadSitemapsZipAsync(this ISitemapsModuleApiOperations operations, string storeId, string baseUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+            public static async System.Threading.Tasks.Task<SitemapDownloadNotification> DownloadSitemapAsync(this ISitemapsModuleApiOperations operations, string storeId, string baseUrl, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
             {
-                var _result = await operations.DownloadSitemapsZipWithHttpMessagesAsync(storeId, baseUrl, null, cancellationToken).ConfigureAwait(false);
-                _result.Request.Dispose();
-                return _result.Body;
+                using (var _result = await operations.DownloadSitemapWithHttpMessagesAsync(storeId, baseUrl, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
             }
 
     }
@@ -2319,7 +2333,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.IO.Stream>> DownloadSitemapsZipWithHttpMessagesAsync(string storeId, string baseUrl, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<SitemapDownloadNotification>> DownloadSitemapWithHttpMessagesAsync(string storeId, string baseUrl, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -2340,13 +2354,16 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SitemapSearchCriteria class.
         /// </summary>
-        public SitemapSearchCriteria(string storeId = default(string), string location = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public SitemapSearchCriteria(string storeId = default(string), string location = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
             StoreId = storeId;
             Location = location;
             ResponseGroup = responseGroup;
             ObjectType = objectType;
             ObjectTypes = objectTypes;
+            ObjectIds = objectIds;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
             Sort = sort;
             SortInfos = sortInfos;
             Skip = skip;
@@ -2377,6 +2394,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
         public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectIds")]
+        public System.Collections.Generic.IList<string> ObjectIds { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2679,12 +2711,13 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SitemapItemRecord class.
         /// </summary>
-        public SitemapItemRecord(string url = default(string), System.DateTime? modifiedDate = default(System.DateTime?), string updateFrequency = default(string), double? priority = default(double?))
+        public SitemapItemRecord(string url = default(string), System.DateTime? modifiedDate = default(System.DateTime?), string updateFrequency = default(string), double? priority = default(double?), System.Collections.Generic.IList<SitemapItemAlternateLinkRecord> alternates = default(System.Collections.Generic.IList<SitemapItemAlternateLinkRecord>))
         {
             Url = url;
             ModifiedDate = modifiedDate;
             UpdateFrequency = updateFrequency;
             Priority = priority;
+            Alternates = alternates;
         }
 
         /// <summary>
@@ -2707,6 +2740,55 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         [Newtonsoft.Json.JsonProperty(PropertyName = "priority")]
         public double? Priority { get; set; }
 
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "alternates")]
+        public System.Collections.Generic.IList<SitemapItemAlternateLinkRecord> Alternates { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class SitemapItemAlternateLinkRecord
+    {
+        /// <summary>
+        /// Initializes a new instance of the SitemapItemAlternateLinkRecord
+        /// class.
+        /// </summary>
+        public SitemapItemAlternateLinkRecord() { }
+
+        /// <summary>
+        /// Initializes a new instance of the SitemapItemAlternateLinkRecord
+        /// class.
+        /// </summary>
+        public SitemapItemAlternateLinkRecord(string url = default(string), string language = default(string), string type = default(string))
+        {
+            Url = url;
+            Language = language;
+            Type = type;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "language")]
+        public string Language { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
     }
 }
 // Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
@@ -2727,12 +2809,15 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the SitemapItemSearchCriteria class.
         /// </summary>
-        public SitemapItemSearchCriteria(string sitemapId = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
+        public SitemapItemSearchCriteria(string sitemapId = default(string), string responseGroup = default(string), string objectType = default(string), System.Collections.Generic.IList<string> objectTypes = default(System.Collections.Generic.IList<string>), System.Collections.Generic.IList<string> objectIds = default(System.Collections.Generic.IList<string>), string searchPhrase = default(string), string languageCode = default(string), string sort = default(string), System.Collections.Generic.IList<SortInfo> sortInfos = default(System.Collections.Generic.IList<SortInfo>), int? skip = default(int?), int? take = default(int?))
         {
             SitemapId = sitemapId;
             ResponseGroup = responseGroup;
             ObjectType = objectType;
             ObjectTypes = objectTypes;
+            ObjectIds = objectIds;
+            SearchPhrase = searchPhrase;
+            LanguageCode = languageCode;
             Sort = sort;
             SortInfos = sortInfos;
             Skip = skip;
@@ -2758,6 +2843,21 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "objectTypes")]
         public System.Collections.Generic.IList<string> ObjectTypes { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "objectIds")]
+        public System.Collections.Generic.IList<string> ObjectIds { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "searchPhrase")]
+        public string SearchPhrase { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "languageCode")]
+        public string LanguageCode { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2816,6 +2916,116 @@ namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "results")]
         public System.Collections.Generic.IList<SitemapItem> Results { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.SitemapsModuleApi.Models
+{
+    using System.Linq;
+
+    public partial class SitemapDownloadNotification
+    {
+        /// <summary>
+        /// Initializes a new instance of the SitemapDownloadNotification
+        /// class.
+        /// </summary>
+        public SitemapDownloadNotification() { }
+
+        /// <summary>
+        /// Initializes a new instance of the SitemapDownloadNotification
+        /// class.
+        /// </summary>
+        public SitemapDownloadNotification(System.DateTime? finished = default(System.DateTime?), long? totalCount = default(long?), long? processedCount = default(long?), long? errorCount = default(long?), System.Collections.Generic.IList<string> errors = default(System.Collections.Generic.IList<string>), string downloadUrl = default(string), string id = default(string), string creator = default(string), System.DateTime? created = default(System.DateTime?), bool? isNew = default(bool?), string notifyType = default(string), string description = default(string), string title = default(string), int? repeatCount = default(int?))
+        {
+            Finished = finished;
+            TotalCount = totalCount;
+            ProcessedCount = processedCount;
+            ErrorCount = errorCount;
+            Errors = errors;
+            DownloadUrl = downloadUrl;
+            Id = id;
+            Creator = creator;
+            Created = created;
+            IsNew = isNew;
+            NotifyType = notifyType;
+            Description = description;
+            Title = title;
+            RepeatCount = repeatCount;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "finished")]
+        public System.DateTime? Finished { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "totalCount")]
+        public long? TotalCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "processedCount")]
+        public long? ProcessedCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "errorCount")]
+        public long? ErrorCount { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "errors")]
+        public System.Collections.Generic.IList<string> Errors { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "downloadUrl")]
+        public string DownloadUrl { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "creator")]
+        public string Creator { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "created")]
+        public System.DateTime? Created { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isNew")]
+        public bool? IsNew { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "notifyType")]
+        public string NotifyType { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "repeatCount")]
+        public int? RepeatCount { get; set; }
 
     }
 }

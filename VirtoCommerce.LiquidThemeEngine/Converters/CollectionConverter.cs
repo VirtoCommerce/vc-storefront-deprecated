@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using PagedList;
 using VirtoCommerce.LiquidThemeEngine.Objects;
@@ -30,7 +30,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
             result.Title = category.Name;
             result.Url = category.Url;
             result.DefaultSortBy = "manual";
-
+            result.Images = category.Images.Select(x => x.ToShopifyModel()).ToArray();
             if (category.PrimaryImage != null)
             {
                 result.Image = ToLiquidImage(category.PrimaryImage);
@@ -43,6 +43,15 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                     category.Products.Slice(pageNumber, pageSize, sortInfos);
                     return new StaticPagedList<Product>(category.Products.Select(x => ToLiquidProduct(x)), category.Products);
                 }, category.Products.PageNumber, category.Products.PageSize);
+            }
+
+            if (category.Parents != null)
+            {
+                result.Parents = new Collections(new MutablePagedList<Collection>((pageNumber, pageSize, sortInfos) =>
+                {
+                    category.Parents.Slice(pageNumber, pageSize, sortInfos);
+                    return new StaticPagedList<Collection>(category.Parents.Select(x => ToLiquidCollection(x, workContext)), category.Parents);
+                }, category.Parents.PageNumber, category.Parents.PageSize));
             }
 
             if (category.Categories != null)
@@ -60,7 +69,7 @@ namespace VirtoCommerce.LiquidThemeEngine.Converters
                 {
                     workContext.Aggregations.Slice(pageNumber, pageSize, sortInfos);
                     var tags = workContext.Aggregations.Where(a => a.Items != null)
-                                           .SelectMany(a => a.Items.Select(item => ToLiquidTag(item, a.Field, a.Label)));
+                                           .SelectMany(a => a.Items.Select(item => ToLiquidTag(item, a)));
                     return new StaticPagedList<Tag>(tags, workContext.Aggregations);
 
                 }, workContext.Aggregations.PageNumber, workContext.Aggregations.PageSize));

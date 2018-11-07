@@ -13,6 +13,7 @@ using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Common.Events;
 using VirtoCommerce.Storefront.Model.Common.Exceptions;
+using VirtoCommerce.Storefront.Model.Marketing;
 using VirtoCommerce.Storefront.Model.Order.Events;
 using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.Subscriptions;
@@ -46,52 +47,58 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpGet]
         public async Task<ActionResult> GetCart()
         {
-            await EnsureCartExistsAsync();
-            await _cartBuilder.ValidateAsync();
-            return Json(_cartBuilder.Cart, JsonRequestBehavior.AllowGet);
+            var cartBuilder = await LoadOrCreateCartAsync();
+            await cartBuilder.ValidateAsync();
+            return Json(cartBuilder.Cart, JsonRequestBehavior.AllowGet);
         }
 
         // GET: storefrontapi/cart/itemscount
         [HttpGet]
         public async Task<ActionResult> GetCartItemsCount()
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
-            return Json(_cartBuilder.Cart.ItemsQuantity, JsonRequestBehavior.AllowGet);
+            var cartBuilder = await LoadOrCreateCartAsync();
+
+            return Json(cartBuilder.Cart.ItemsQuantity, JsonRequestBehavior.AllowGet);
         }
 
         // POST: storefrontapi/cart/items?id=...&quantity=...
         [HttpPost]
         public async Task<ActionResult> AddItemToCart(string id, int quantity = 1)
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
+                var cartBuilder = await LoadOrCreateCartAsync();
+
                 var products = await _catalogSearchService.GetProductsAsync(new[] { id }, Model.Catalog.ItemResponseGroup.ItemLarge);
                 if (products != null && products.Any())
                 {
-                    await _cartBuilder.AddItemAsync(products.First(), quantity);
-                    await _cartBuilder.SaveAsync();
+                    await cartBuilder.AddItemAsync(products.First(), quantity);
+                    await cartBuilder.SaveAsync();
                 }
+                return Json(new { ItemsCount = cartBuilder.Cart.ItemsQuantity });
             }
-            return Json(new { ItemsCount = _cartBuilder.Cart.ItemsQuantity });
         }
 
         // PUT: storefrontapi/cart/items/price?lineItemId=...&newPrice=...
         [HttpPut]
         public async Task<ActionResult> ChangeCartItemPrice(string lineItemId, decimal newPrice)
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                var lineItem = _cartBuilder.Cart.Items.FirstOrDefault(x => x.Id == lineItemId);
+                var cartBuilder = await LoadOrCreateCartAsync();
+
+                var lineItem = cartBuilder.Cart.Items.FirstOrDefault(x => x.Id == lineItemId);
                 if (lineItem != null)
                 {
-                    var newPriceMoney = new Money(newPrice, _cartBuilder.Cart.Currency);
+                    var newPriceMoney = new Money(newPrice, cartBuilder.Cart.Currency);
                     //do not allow to set less price via this API call
                     if (lineItem.ListPrice < newPriceMoney)
                     {
@@ -102,7 +109,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                         lineItem.SalePrice = newPriceMoney;
                     }
                 }
-                await _cartBuilder.SaveAsync();
+                await cartBuilder.SaveAsync();
 
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
@@ -112,17 +119,18 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpPut]
         public async Task<ActionResult> ChangeCartItem(string lineItemId, int quantity)
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
+                var cartBuilder = await LoadOrCreateCartAsync();
 
-                var lineItem = _cartBuilder.Cart.Items.FirstOrDefault(i => i.Id == lineItemId);
+                var lineItem = cartBuilder.Cart.Items.FirstOrDefault(i => i.Id == lineItemId);
                 if (lineItem != null)
                 {
-                    await _cartBuilder.ChangeItemQuantityAsync(lineItemId, quantity);
-                    await _cartBuilder.SaveAsync();
+                    await cartBuilder.ChangeItemQuantityAsync(lineItemId, quantity);
+                    await cartBuilder.SaveAsync();
                 }
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
@@ -132,29 +140,31 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpDelete]
         public async Task<ActionResult> RemoveCartItem(string lineItemId)
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                await _cartBuilder.RemoveItemAsync(lineItemId);
-                await _cartBuilder.SaveAsync();
+                var cartBuilder = await LoadOrCreateCartAsync();
+                await cartBuilder.RemoveItemAsync(lineItemId);
+                await cartBuilder.SaveAsync();
+                return Json(new { ItemsCount = cartBuilder.Cart.ItemsQuantity });
             }
 
-            return Json(new { ItemsCount = _cartBuilder.Cart.ItemsQuantity });
         }
 
         // POST: storefrontapi/cart/clear
         [HttpPost]
         public async Task<ActionResult> ClearCart()
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                await _cartBuilder.ClearAsync();
-                await _cartBuilder.SaveAsync();
+                var cartBuilder = await LoadOrCreateCartAsync();
+                await cartBuilder.ClearAsync();
+                await cartBuilder.SaveAsync();
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -163,9 +173,11 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpGet]
         public async Task<ActionResult> GetCartShipmentAvailShippingMethods(string shipmentId)
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
-            var shippingMethods = await _cartBuilder.GetAvailableShippingMethodsAsync();
+            var cartBuilder = await LoadOrCreateCartAsync();
+
+            var shippingMethods = await cartBuilder.GetAvailableShippingMethodsAsync();
             return Json(shippingMethods, JsonRequestBehavior.AllowGet);
         }
 
@@ -173,9 +185,11 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpGet]
         public async Task<ActionResult> GetCartAvailPaymentMethods()
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
-            var paymentMethods = await _cartBuilder.GetAvailablePaymentMethodsAsync();
+            var cartBuilder = await LoadOrCreateCartAsync();
+
+            var paymentMethods = await cartBuilder.GetAvailablePaymentMethodsAsync();
             return Json(paymentMethods, JsonRequestBehavior.AllowGet);
         }
 
@@ -183,15 +197,17 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpPost]
         public async Task<ActionResult> AddCartCoupon(string couponCode)
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                await _cartBuilder.AddCouponAsync(couponCode);
-                await _cartBuilder.SaveAsync();
+                var cartBuilder = await LoadOrCreateCartAsync();
+
+                await cartBuilder.AddCouponAsync(couponCode);
+                await cartBuilder.SaveAsync();
+                return Json(cartBuilder.Cart.Coupon);
             }
-            return Json(_cartBuilder.Cart.Coupon);
         }
 
 
@@ -199,13 +215,14 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpDelete]
         public async Task<ActionResult> RemoveCartCoupon()
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                await _cartBuilder.RemoveCouponAsync();
-                await _cartBuilder.SaveAsync();
+                var cartBuilder = await LoadOrCreateCartAsync();
+                await cartBuilder.RemoveCouponAsync();
+                await cartBuilder.SaveAsync();
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
@@ -216,17 +233,18 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpPost]
         public async Task<ActionResult> AddOrUpdateCartPaymentPlan(PaymentPlan paymentPlan)
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                paymentPlan.Id = _cartBuilder.Cart.Id;
+                var cartBuilder = await LoadOrCreateCartAsync();
+                paymentPlan.Id = cartBuilder.Cart.Id;
                 var paymentPlanDto = paymentPlan.ToPaymentPlanDto();
 
                 await _subscriptionApi.SubscriptionModule.UpdatePaymentPlanAsync(paymentPlanDto);
                 // await _cartBuilder.SaveAsync();
-                _cartBuilder.Cart.PaymentPlan = paymentPlan;
+                cartBuilder.Cart.PaymentPlan = paymentPlan;
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -235,14 +253,15 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpDelete]
         public async Task<ActionResult> DeleteCartPaymentPlan()
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                await _subscriptionApi.SubscriptionModule.DeletePlansByIdsAsync(new[] { _cartBuilder.Cart.Id });
+                var cartBuilder = await LoadOrCreateCartAsync();
+                await _subscriptionApi.SubscriptionModule.DeletePlansByIdsAsync(new[] { cartBuilder.Cart.Id });
                 // await _cartBuilder.SaveAsync();
-                _cartBuilder.Cart.PaymentPlan = null;
+                cartBuilder.Cart.PaymentPlan = null;
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -252,13 +271,14 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpPost]
         public async Task<ActionResult> AddOrUpdateCartShipment(Shipment shipment)
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                await _cartBuilder.AddOrUpdateShipmentAsync(shipment);
-                await _cartBuilder.SaveAsync();
+                var cartBuilder = await LoadOrCreateCartAsync();
+                await cartBuilder.AddOrUpdateShipmentAsync(shipment);
+                await cartBuilder.SaveAsync();
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
@@ -268,7 +288,8 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpPost]
         public async Task<ActionResult> AddOrUpdateCartPayment(Payment payment)
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
+
             if (payment.Amount.Amount == decimal.Zero)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Valid payment amount is required");
@@ -277,8 +298,9 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                await _cartBuilder.AddOrUpdatePaymentAsync(payment);
-                await _cartBuilder.SaveAsync();
+                var cartBuilder = await LoadOrCreateCartAsync();
+                await cartBuilder.AddOrUpdatePaymentAsync(payment);
+                await cartBuilder.SaveAsync();
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -287,15 +309,17 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         [HttpPost]
         public async Task<ActionResult> CreateOrder(orderModel.BankCardInfo bankCardInfo)
         {
-            await EnsureCartExistsAsync();
+            EnsureCartExists();
 
             //Need lock to prevent concurrent access to same cart
             using (await AsyncLock.GetLockByKey(GetAsyncLockCartKey(WorkContext.CurrentCart)).LockAsync())
             {
-                var order = await _orderApi.OrderModule.CreateOrderFromCartAsync(_cartBuilder.Cart.Id);
+                var cartBuilder = await LoadOrCreateCartAsync();
+
+                var order = await _orderApi.OrderModule.CreateOrderFromCartAsync(cartBuilder.Cart.Id);
 
                 //Raise domain event
-                await _orderPlacedEventPublisher.PublishAsync(new OrderPlacedEvent(order.ToCustomerOrder(WorkContext.AllCurrencies, WorkContext.CurrentLanguage), _cartBuilder.Cart));
+                await _orderPlacedEventPublisher.PublishAsync(new OrderPlacedEvent(order.ToCustomerOrder(WorkContext.AllCurrencies, WorkContext.CurrentLanguage), cartBuilder.Cart));
 
 
                 orderModel.ProcessPaymentResult processingResult = null;
@@ -305,7 +329,7 @@ namespace VirtoCommerce.Storefront.Controllers.Api
                     processingResult = await _orderApi.OrderModule.ProcessOrderPaymentsAsync(order.Id, incomingPayment.Id, bankCardInfo);
                 }
 
-                await _cartBuilder.RemoveCartAsync();
+                await cartBuilder.RemoveCartAsync();
 
                 return Json(new { order, orderProcessingResult = processingResult, paymentMethod = incomingPayment != null ? incomingPayment.PaymentMethod : null });
             }
@@ -317,14 +341,20 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             return string.Join(":", "Cart", cart.Id, cart.Name, cart.CustomerId);
         }
 
-        private async Task EnsureCartExistsAsync()
+        private void EnsureCartExists()
         {
             if (WorkContext.CurrentCart == null)
             {
                 throw new StorefrontException("Cart not found");
             }
-
-            await _cartBuilder.TakeCartAsync(WorkContext.CurrentCart);
+        }
+        private async Task<ICartBuilder> LoadOrCreateCartAsync()
+        {
+            var cart = WorkContext.CurrentCart;
+            //Need to try load fresh cart from cache or service to prevent parallel update conflict
+            //because WorkContext.CurrentCart may contains old cart
+            await _cartBuilder.LoadOrCreateNewTransientCartAsync(cart.Name, WorkContext.CurrentStore, cart.Customer, cart.Language, cart.Currency);
+            return _cartBuilder;
         }
     }
 }

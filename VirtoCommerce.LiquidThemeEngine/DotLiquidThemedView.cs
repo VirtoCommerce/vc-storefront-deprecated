@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using DotLiquid;
+using DotLiquid.Exceptions;
 using VirtoCommerce.LiquidThemeEngine.Converters;
 using VirtoCommerce.LiquidThemeEngine.Objects;
 
@@ -18,10 +19,10 @@ namespace VirtoCommerce.LiquidThemeEngine
         public DotLiquidThemedView(ShopifyLiquidThemeEngine themeAdaptor, string viewName, string masterViewName)
         {
             if (themeAdaptor == null)
-                throw new ArgumentNullException("themeAdaptor");
+                throw new ArgumentNullException(nameof(themeAdaptor));
 
             if (string.IsNullOrEmpty(viewName))
-                throw new ArgumentNullException("viewName");
+                throw new ArgumentNullException(nameof(viewName));
 
             _themeAdaptor = themeAdaptor;
             _viewName = viewName;
@@ -33,7 +34,7 @@ namespace VirtoCommerce.LiquidThemeEngine
         public void Render(ViewContext viewContext, TextWriter writer)
         {
             if (viewContext == null)
-                throw new ArgumentNullException("viewContext");
+                throw new ArgumentNullException(nameof(viewContext));
 
             var shopifyContext = _themeAdaptor.WorkContext.ToShopifyModel(_themeAdaptor.UrlBuilder);
             //Set current template
@@ -44,7 +45,7 @@ namespace VirtoCommerce.LiquidThemeEngine
             {
                 //Set single Form object with errors for shopify compilance
                 shopifyContext.Form = new Form();
-                shopifyContext.Form.PostedSuccessfully = !String.Equals(viewContext.HttpContext.Request.HttpMethod, "GET", StringComparison.InvariantCultureIgnoreCase);
+                shopifyContext.Form.PostedSuccessfully = !string.Equals(viewContext.HttpContext.Request.HttpMethod, "GET", StringComparison.InvariantCultureIgnoreCase);
                 if (formErrors.Any())
                 {
                     shopifyContext.Form.Errors = formErrors;
@@ -79,19 +80,27 @@ namespace VirtoCommerce.LiquidThemeEngine
                     masterViewName = layoutFromTemplate.ToString();
                 }
                 //if layout specified need render with master page
-                if (!String.IsNullOrEmpty(masterViewName))
+                if (!string.IsNullOrEmpty(masterViewName))
                 {
                     var headerTemplate = _themeAdaptor.RenderTemplateByName("content_header", parameters);
 
                     //add special placeholder 'content_for_layout' to content it will be replaced in master page by main content
                     parameters.Add("content_for_layout", viewTemplate);
                     parameters.Add("content_for_header", headerTemplate);
-                    viewTemplate = _themeAdaptor.RenderTemplateByName(masterViewName, parameters);
+
+                    try
+                    {
+                        viewTemplate = _themeAdaptor.RenderTemplateByName(masterViewName, parameters);
+                    }
+                    catch (FileSystemException ex)
+                    {
+                        var message = ex.Message.Replace("<br/>", "\r\n");
+                        throw new InvalidOperationException(message);
+                    }
                 }
             }
 
             writer.Write(viewTemplate);
-
         }
 
         #endregion

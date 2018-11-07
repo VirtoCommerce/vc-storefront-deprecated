@@ -67,8 +67,14 @@ namespace VirtoCommerce.LiquidThemeEngine.Objects
             {
                 foreach (var property in catalogProperties)
                 {
-                    //TODO: Add support multi-values
-                    this.Add(property.Name, property.Value);
+                    if (property.IsMultivalue)
+                    {
+                        this.Add(property.Name, property.Values);
+                    }
+                    else
+                    {
+                        this.Add(property.Name, property.Value);
+                    }
                 }
             }
         }

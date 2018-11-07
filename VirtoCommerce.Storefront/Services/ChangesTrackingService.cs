@@ -50,12 +50,12 @@ namespace VirtoCommerce.Storefront.Services
 
         protected virtual async Task<bool> HasChangesInternal()
         {
-            var response = await _cacheApi.ChangesTracking.GetLastModifiedDateAsync();
+            var response = await _cacheApi.CacheModule.GetLastModifiedDateAsync();
 
             var newTicks = response.LastModifiedDate?.Ticks ?? 0;
             var oldTicks = Interlocked.Exchange(ref _lastModifiedDateTicks, newTicks);
 
-            return newTicks != oldTicks;
+            return newTicks > oldTicks;
         }
     }
 }

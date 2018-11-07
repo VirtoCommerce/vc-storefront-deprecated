@@ -206,9 +206,21 @@ namespace VirtoCommerce.Storefront.Model.Order
 
         public Money SubTotal { get; set; }
         public Money SubTotalWithTax { get; set; }
+
         public Money ShippingTotal { get; set; }
         public Money ShippingTotalWithTax { get; set; }
         public Money ShippingTaxTotal { get; set; }
+        public Money ShippingPrice { get; set; }
+        public Money ShippingPriceWithTax { get; set; }
+
+        public Money PaymentTotal { get; set; }
+        public Money PaymentTotalWithTax { get; set; }
+        public Money PaymentPrice { get; set; }
+        public Money PaymentPriceWithTax { get; set; }
+        public Money PaymentDiscountTotal { get; set; }
+        public Money PaymentDiscountTotalWithTax { get; set; }
+        public Money PaymentTaxTotal { get; set; }
+
         public Money DiscountTotal { get; set; }
         public Money DiscountTotalWithTax { get; set; }
         public Money TaxTotal { get; set; }

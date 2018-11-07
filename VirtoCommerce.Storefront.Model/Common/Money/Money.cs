@@ -143,7 +143,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             if (ReferenceEquals(this, other))
                 return true;
 
-            return ((Currency.Equals(other.Currency)) && (Amount == other.Amount));
+            return ((Currency.Equals(other.Currency)) && (InternalAmount == other.InternalAmount));
         }
 
         public static bool operator ==(Money first, Money second)
@@ -160,26 +160,26 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public static bool operator >(Money first, Money second)
         {
-            return first.Amount > second.ConvertTo(first.Currency).Amount
-              && second.Amount < first.ConvertTo(second.Currency).Amount;
+            return first.InternalAmount > second.ConvertTo(first.Currency).InternalAmount
+              && second.InternalAmount < first.ConvertTo(second.Currency).InternalAmount;
         }
 
         public static bool operator >=(Money first, Money second)
         {
-            return first.Amount >= second.ConvertTo(first.Currency).Amount
-              && second.Amount <= first.ConvertTo(second.Currency).Amount;
+            return first.InternalAmount >= second.ConvertTo(first.Currency).InternalAmount
+              && second.InternalAmount <= first.ConvertTo(second.Currency).InternalAmount;
         }
 
         public static bool operator <=(Money first, Money second)
         {
-            return first.Amount <= second.ConvertTo(first.Currency).Amount
-              && second.Amount >= first.ConvertTo(second.Currency).Amount;
+            return first.InternalAmount <= second.ConvertTo(first.Currency).InternalAmount
+              && second.InternalAmount >= first.ConvertTo(second.Currency).InternalAmount;
         }
 
         public static bool operator <(Money first, Money second)
         {
-            return first.Amount < second.ConvertTo(first.Currency).Amount
-              && second.Amount > first.ConvertTo(second.Currency).Amount;
+            return first.InternalAmount < second.ConvertTo(first.Currency).InternalAmount
+              && second.InternalAmount > first.ConvertTo(second.Currency).InternalAmount;
         }
 
         public int CompareTo(object obj)
@@ -203,22 +203,22 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public static Money operator +(Money first, Money second)
         {
-            return new Money(first.Amount + second.ConvertTo(first.Currency).Amount, first.Currency);
+            return new Money(first.InternalAmount + second.ConvertTo(first.Currency).InternalAmount, first.Currency);
         }
 
         public static Money operator -(Money first, Money second)
         {
-            return new Money(first.Amount - second.ConvertTo(first.Currency).Amount, first.Currency);
+            return new Money(first.InternalAmount - second.ConvertTo(first.Currency).InternalAmount, first.Currency);
         }
 
         public static Money operator *(Money first, Money second)
         {
-            return new Money(first.Amount * second.ConvertTo(first.Currency).Amount, first.Currency);
+            return new Money(first.InternalAmount * second.ConvertTo(first.Currency).InternalAmount, first.Currency);
         }
 
         public static Money operator /(Money first, Money second)
         {
-            return new Money(first.Amount / second.ConvertTo(first.Currency).Amount, first.Currency);
+            return new Money(first.InternalAmount / second.ConvertTo(first.Currency).InternalAmount, first.Currency);
         }
 
         #endregion
@@ -229,7 +229,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             if (ReferenceEquals(money, null))
                 return false;
-            return (money.Amount == value);
+            return (money.InternalAmount == value);
         }
         public static bool operator !=(Money money, long value)
         {
@@ -240,7 +240,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             if (ReferenceEquals(money, null))
                 return false;
-            return (money.Amount == value);
+            return (money.InternalAmount == value);
         }
         public static bool operator !=(Money money, decimal value)
         {
@@ -251,7 +251,7 @@ namespace VirtoCommerce.Storefront.Model.Common
         {
             if (ReferenceEquals(money, null))
                 return false;
-            return (money.Amount == (decimal)value);
+            return (money.InternalAmount == (decimal)value);
         }
         public static bool operator !=(Money money, double value)
         {
@@ -271,7 +271,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             if (money == null)
                 throw new ArgumentNullException(nameof(money));
 
-            return new Money(money.Amount + value, money.Currency);
+            return new Money(money.InternalAmount + value, money.Currency);
         }
 
         public static Money operator -(Money money, long value)
@@ -287,7 +287,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             if (money == null)
                 throw new ArgumentNullException(nameof(money));
 
-            return new Money(money.Amount - value, money.Currency);
+            return new Money(money.InternalAmount - value, money.Currency);
         }
 
         public static Money operator *(Money money, long value)
@@ -303,7 +303,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             if (money == null)
                 throw new ArgumentNullException(nameof(money));
 
-            return new Money(money.Amount * value, money.Currency);
+            return new Money(money.InternalAmount * value, money.Currency);
         }
 
         public static Money operator /(Money money, long value)
@@ -320,7 +320,7 @@ namespace VirtoCommerce.Storefront.Model.Common
             if (money == null)
                 throw new ArgumentNullException(nameof(money));
 
-            return new Money(money.Amount / value, money.Currency);
+            return new Money(money.InternalAmount / value, money.Currency);
         }
 
         #endregion

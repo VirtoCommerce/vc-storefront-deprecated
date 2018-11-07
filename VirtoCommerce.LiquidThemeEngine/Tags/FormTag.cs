@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Helpers;
 using DotLiquid;
 using DotLiquid.Exceptions;
 
@@ -78,6 +79,9 @@ namespace VirtoCommerce.LiquidThemeEngine.Tags
                 result.WriteLine("<form accept-charset=\"UTF-8\" action=\"{0}\" method=\"post\" id=\"{1}\">",
                     HttpUtility.HtmlAttributeEncode(actionAbsoluteUrl),
                     HttpUtility.HtmlAttributeEncode(formName));
+
+                // add anti forgery token
+                result.WriteLine(AntiForgery.GetHtml());
 
                 RenderAll(NodeList, context, result);
 

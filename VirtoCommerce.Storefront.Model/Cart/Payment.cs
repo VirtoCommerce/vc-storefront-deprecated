@@ -130,15 +130,20 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
+            TaxPercentRate = 0m;
             var paymentTaxRate = taxRates.FirstOrDefault(x => x.Line.Id != null && x.Line.Id.EqualsInvariant(Id ?? ""));
             if (paymentTaxRate == null)
             {
                 paymentTaxRate = taxRates.FirstOrDefault(x => x.Line.Code.EqualsInvariant(PaymentGatewayCode));
             }
-            if (paymentTaxRate != null && Total.Amount > 0 && paymentTaxRate.Rate.Amount > 0)
+            if (paymentTaxRate != null && paymentTaxRate.Rate.Amount > 0)
             {
-                TaxPercentRate = TaxRate.TaxPercentRound(paymentTaxRate.Rate.Amount / Total.Amount);
-            }
+                var amount = Total.Amount > 0 ? Total.Amount : Price.Amount;
+                if (amount > 0)
+                {
+                    TaxPercentRate = TaxRate.TaxPercentRound(paymentTaxRate.Rate.Amount / amount);
+                }
+            }            
         }
         #endregion
 

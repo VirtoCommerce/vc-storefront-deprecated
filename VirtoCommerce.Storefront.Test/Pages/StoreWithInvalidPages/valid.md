@@ -1,0 +1,4 @@
+﻿---
+title: Valid Page
+---
+content

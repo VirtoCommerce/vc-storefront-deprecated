@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
+using System.Web.Mvc;
+using VirtoCommerce.LiquidThemeEngine.Filters;
+using VirtoCommerce.Storefront.Common;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
-using VirtoCommerce.Storefront.Model.Services;
 using VirtoCommerce.Storefront.Model.Common;
-using System.Web.Mvc;
-using VirtoCommerce.Storefront.Common;
+using VirtoCommerce.Storefront.Model.Services;
 
 namespace VirtoCommerce.Storefront.Controllers.Api
 {
@@ -23,11 +24,15 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         public async Task<ActionResult> SearchProducts(ProductSearchCriteria searchCriteria)
         {
             var retVal = await _catalogSearchService.SearchProductsAsync(searchCriteria);
+            foreach (var product in retVal.Products)
+            {
+                product.Url = base.UrlBuilder.ToAppAbsolute(product.Url);
+            }
             return Json(new
             {
-                 Products = retVal.Products,
-                 Aggregations = retVal.Aggregations,
-                 MetaData = retVal.Products.GetMetaData()
+                Products = retVal.Products,
+                Aggregations = retVal.Aggregations,
+                MetaData = retVal.Products.GetMetaData()
             });
         }
 
@@ -44,6 +49,10 @@ namespace VirtoCommerce.Storefront.Controllers.Api
         public async Task<ActionResult> SearchCategories(CategorySearchCriteria searchCriteria)
         {
             var retVal = await _catalogSearchService.SearchCategoriesAsync(searchCriteria);
+            foreach (var category in retVal)
+            {
+                category.Url = base.UrlBuilder.ToAppAbsolute(category.Url);
+            }
             return Json(new
             {
                 Categories = retVal,
@@ -58,6 +67,6 @@ namespace VirtoCommerce.Storefront.Controllers.Api
             var retVal = await _catalogSearchService.GetCategoriesAsync(categoryIds, respGroup);
             return Json(retVal);
         }
-      
+
     }
 }

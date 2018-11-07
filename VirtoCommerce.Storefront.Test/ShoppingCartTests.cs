@@ -5,6 +5,7 @@ using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Cart.Services;
 using VirtoCommerce.Storefront.Model.Common;
 using VirtoCommerce.Storefront.Model.Customer;
+using VirtoCommerce.Storefront.Model.Inventory.Services;
 using VirtoCommerce.Storefront.Services;
 using Xunit;
 
@@ -62,21 +63,21 @@ namespace VirtoCommerce.Storefront.Test
             var marketingApi = GetMarketingApiClient();
             var inventoryApi = GetInventoryApiClient();
             var pricingApi = GetPricingApiClient();
-            var searchApi = GetSearchApiClient();
             var customerApi = GetCustomerApiClient();
             var orderApi = GetOrderApiClient();
             var quoteApi = GetQuoteApiClient();
             var storeApi = GetStoreApiClient();
 
             var cacheManager = new Mock<ILocalCacheManager>().Object;
+            var inventoryService = new Mock<IInventoryService>().Object;
             var workContextFactory = new Func<WorkContext>(GetTestWorkContext);
             var promotionEvaluator = new PromotionEvaluator(marketingApi);
 
-            var pricingService = new PricingServiceImpl(pricingApi, null, promotionEvaluator);
+            var pricingService = new PricingServiceImpl(pricingApi, null, promotionEvaluator, inventoryService);
             var customerService = new CustomerServiceImpl(workContextFactory, customerApi, orderApi, quoteApi, storeApi, null, cacheManager);
-            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, searchApi, pricingService, customerService, null);
+            var catalogSearchService = new CatalogSearchServiceImpl(workContextFactory, catalogApi, inventoryApi, pricingService, customerService, null, null, inventoryService);
 
-            var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, null, null);
+            var retVal = new CartBuilder(workContextFactory, cartApi, catalogSearchService, cacheManager, promotionEvaluator, null, null, null);
             return retVal;
         }
     }

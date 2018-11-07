@@ -26,6 +26,7 @@ namespace VirtoCommerce.Storefront.Model.StaticContent
         public string Category { get; set; }
         public string Tag { get; set; }
         public string Author { get; set; }
+        public string[] ExcludedArticleHandles { get; set; }
 
         protected virtual void Parse(NameValueCollection queryString)
         {

@@ -138,15 +138,18 @@ namespace VirtoCommerce.Storefront.Converters.Subscriptions
             result.CurrentPeriodStart = subscriptionDto.CurrentPeriodStart;
             result.CurrentPeriodEnd = subscriptionDto.CurrentPeriodEnd;
 
-            foreach (var relatedOrderDto in subscriptionDto.CustomerOrders)
+            if (subscriptionDto.CustomerOrders != null)
             {
-                var relatedOrder = new CustomerOrder(currency);
-                relatedOrder.Id = relatedOrderDto.Id;
-                relatedOrder.Number = relatedOrderDto.Number;
-                relatedOrder.Total = new Money(relatedOrderDto.Total ?? 0, currency);
-                relatedOrder.CreatedDate = relatedOrderDto.CreatedDate;
-                relatedOrder.Status = relatedOrderDto.Status;
-                result.CustomerOrders.Add(relatedOrder);
+                foreach (var relatedOrderDto in subscriptionDto.CustomerOrders)
+                {
+                    var relatedOrder = new CustomerOrder(currency);
+                    relatedOrder.Id = relatedOrderDto.Id;
+                    relatedOrder.Number = relatedOrderDto.Number;
+                    relatedOrder.Total = new Money(relatedOrderDto.Total ?? 0, currency);
+                    relatedOrder.CreatedDate = relatedOrderDto.CreatedDate;
+                    relatedOrder.Status = relatedOrderDto.Status;
+                    result.CustomerOrders.Add(relatedOrder);
+                }
             }
 
             return result;

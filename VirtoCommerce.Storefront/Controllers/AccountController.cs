@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -126,7 +125,7 @@ namespace VirtoCommerce.Storefront.Controllers
                     origAddress.CopyFrom(formModel, WorkContext.AllCountries);
                 }
 
-                await _customerService.UpdateCustomerAsync(contact);
+                await _customerService.UpdateAddressesAsync(contact);
 
             }
 
@@ -142,13 +141,14 @@ namespace VirtoCommerce.Storefront.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(Register formModel)
         {
             var user = new coreModel.ApplicationUserExtended
             {
                 Email = formModel.Email,
                 Password = formModel.Password,
-                UserName = formModel.Email,
+                UserName = formModel.UserName,
                 UserType = "Customer",
                 StoreId = WorkContext.CurrentStore.Id,
             };
@@ -207,9 +207,9 @@ namespace VirtoCommerce.Storefront.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Login(Login formModel, string returnUrl)
         {
-            if (string.IsNullOrWhiteSpace(formModel.Email))
+            if (string.IsNullOrWhiteSpace(formModel.Username))
             {
-                ModelState.AddModelError("email", "must not be empty");
+                ModelState.AddModelError("user_name", "must not be empty");
             }
 
             if (string.IsNullOrWhiteSpace(formModel.Password))
@@ -222,11 +222,11 @@ namespace VirtoCommerce.Storefront.Controllers
                 return View("customers/login", WorkContext);
             }
 
-            var loginResult = await _commerceCoreApi.StorefrontSecurity.PasswordSignInAsync(formModel.Email, formModel.Password);
+            var loginResult = await _commerceCoreApi.StorefrontSecurity.PasswordSignInAsync(formModel.Username, formModel.Password);
 
             if (string.Equals(loginResult.Status, "success", StringComparison.InvariantCultureIgnoreCase))
             {
-                var user = await _commerceCoreApi.StorefrontSecurity.GetUserByNameAsync(formModel.Email);
+                var user = await _commerceCoreApi.StorefrontSecurity.GetUserByNameAsync(formModel.Username);
                 var customer = await GetStorefrontCustomerByUserAsync(user);
 
                 //Check that it's login on behalf request           
@@ -365,12 +365,19 @@ namespace VirtoCommerce.Storefront.Controllers
             return StoreFrontRedirect("~/");
         }
 
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View("customers/forgot_password", WorkContext);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> ForgotPassword(ForgotPassword formModel)
         {
-            var user = await _commerceCoreApi.StorefrontSecurity.GetUserByNameAsync(formModel.Email);
-
+            var user = await _commerceCoreApi.StorefrontSecurity.GetUserByEmailAsync(formModel.Email);
             if (user != null)
             {
                 string callbackUrl = Url.Action("ResetPassword", "Account",
@@ -383,7 +390,7 @@ namespace VirtoCommerce.Storefront.Controllers
                 ModelState.AddModelError("form", "User not found");
             }
 
-            return StoreFrontRedirect("~/account/login#recover");
+            return View("customers/forgot_password", WorkContext);
         }
 
         [HttpGet]
@@ -504,7 +511,11 @@ namespace VirtoCommerce.Storefront.Controllers
                 throw new ArgumentNullException("user");
             }
 
-            var result = await _customerService.GetCustomerByIdAsync(user.MemberId);
+            CustomerInfo result = null;
+            if (!string.IsNullOrEmpty(user.MemberId))
+            {
+                result = await _customerService.GetCustomerByIdAsync(user.MemberId);
+            }
 
             // User may not have contact record
             if (result == null)

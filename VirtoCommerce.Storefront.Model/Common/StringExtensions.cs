@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -43,7 +44,7 @@ namespace VirtoCommerce.Storefront.Model.Common
 
         public static bool FitsMask(this string fileName, string fileMask)
         {
-            var mask = new Regex("^" + fileMask.Replace(".", "[.]").Replace("*", ".*").Replace("?", ".") + "$", RegexOptions.IgnoreCase);
+            var mask = new Regex("^" + Regex.Escape(fileMask).Replace("\\.", "[.]").Replace("\\*", ".*").Replace("\\?", ".") + "$", RegexOptions.IgnoreCase);
             return mask.IsMatch(fileName);
         }
 
@@ -104,5 +105,45 @@ namespace VirtoCommerce.Storefront.Model.Common
             }
             return str;
         }
+
+        public static string ReplaceLastOccurrence(this string source, string find, string replace)
+        {
+            var place = source.LastIndexOf(find);
+            var result = source;
+            if (place >= 0)
+            {
+                result = source.Remove(place, find.Length).Insert(place, replace);
+            }
+            return result;
+        }
+        /// <summary>
+        /// Add provided suffix to the end of file name
+        /// </summary>
+        /// <param name="originalFileUrl">File url</param>
+        /// <param name="suffix">Suffix</param>
+        /// Example: "1428965138000_1133723.jpg".AddSuffixToFileUrl("grande") 
+        /// Result: 1428965138000_1133723_grande.jpg
+        /// <returns></returns>
+        public static string AddSuffixToFileUrl(this string originalFileUrl, string suffix)
+        {
+            if (originalFileUrl == null)
+            {
+                throw new ArgumentNullException(nameof(originalFileUrl));
+            }
+            var result = originalFileUrl;
+            var fileName = Path.GetFileName(originalFileUrl);
+            if(!string.IsNullOrEmpty(fileName))
+            {
+                var newFileName = Path.GetFileNameWithoutExtension(fileName) + suffix;
+                var extension = Path.GetExtension(fileName);
+                if(!string.IsNullOrEmpty(extension))
+                {
+                    newFileName += extension;
+                }
+                result = result.ReplaceLastOccurrence(fileName, newFileName);
+            }
+            return result;
+        }
+        
     }
 }

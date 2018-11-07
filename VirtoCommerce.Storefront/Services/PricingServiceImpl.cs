@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi;
 using VirtoCommerce.Storefront.Converters;
 using VirtoCommerce.Storefront.Model;
 using VirtoCommerce.Storefront.Model.Catalog;
-using VirtoCommerce.Storefront.Model.Common;
+using VirtoCommerce.Storefront.Model.Inventory.Services;
 using VirtoCommerce.Storefront.Model.Marketing.Services;
 using VirtoCommerce.Storefront.Model.Pricing.Services;
 using VirtoCommerce.Storefront.Model.Tax.Services;
@@ -19,15 +18,18 @@ namespace VirtoCommerce.Storefront.Services
         private readonly IPricingModuleApiClient _pricingApi;
         private readonly ITaxEvaluator _taxEvaluator;
         private readonly IPromotionEvaluator _promotionEvaluator;
+        private readonly IInventoryService _inventoryService;
 
         public PricingServiceImpl(
             IPricingModuleApiClient pricingApi,
             ITaxEvaluator taxEvaluator,
-            IPromotionEvaluator promotionEvaluator)
+            IPromotionEvaluator promotionEvaluator,
+            IInventoryService inventoryService)
         {
             _pricingApi = pricingApi;
             _taxEvaluator = taxEvaluator;
             _promotionEvaluator = promotionEvaluator;
+            _inventoryService = inventoryService;
         }
 
         #region IPricingService Members
@@ -39,9 +41,13 @@ namespace VirtoCommerce.Storefront.Services
 
             var pricesResponse = await _pricingApi.PricingModule.EvaluatePricesAsync(evalContext);
             ApplyProductPricesInternal(products, pricesResponse, workContext);
+
             //Evaluate product discounts
+            //Fill product inventories for getting InStockQuantity data for promotion evaluation
+            await _inventoryService.EvaluateProductInventoriesAsync(products, workContext);
             var promoEvalContext = workContext.ToPromotionEvaluationContext(products);
             await _promotionEvaluator.EvaluateDiscountsAsync(promoEvalContext, products);
+
             //Evaluate product taxes
             var taxEvalContext = workContext.ToTaxEvaluationContext(products);
             await _taxEvaluator.EvaluateTaxesAsync(taxEvalContext, products);

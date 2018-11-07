@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using PagedList;
 using VirtoCommerce.Storefront.AutoRestClients.CustomerModuleApi;
@@ -63,7 +64,7 @@ namespace VirtoCommerce.Storefront.Services
             var retVal = await _cacheManager.GetAsync(string.Format(_customerCacheKeyFormat, customerId), string.Format(_customerCacheRegionFormat, customerId), async () =>
             {
                 //TODO: Make parallels call
-                var contact = await _customerApi.CustomerModule.GetContactByIdAsync(customerId);
+                var contact = await _customerApi.CustomerModule.GetMemberByIdAsync(customerId);
                 CustomerInfo result = null;
                 if (contact != null)
                 {
@@ -85,17 +86,27 @@ namespace VirtoCommerce.Storefront.Services
 
             return retVal;
         }
-
+        
         public virtual async Task CreateCustomerAsync(CustomerInfo customer)
         {
             var contact = customer.ToCustomerContactDto();
             await _customerApi.CustomerModule.CreateContactAsync(contact);
         }
-
+        
         public virtual async Task UpdateCustomerAsync(CustomerInfo customer)
         {
+            if (customer.MemberType != typeof(customerDto.Contact).Name)
+                throw new HttpRequestException("Can't update customer which member type is not " + typeof(customerDto.Contact).Name);
+
             var contact = customer.ToCustomerContactDto();
             await _customerApi.CustomerModule.UpdateContactAsync(contact);
+            //Invalidate cache
+            _cacheManager.ClearRegion(string.Format(_customerCacheRegionFormat, customer.Id));
+        }
+
+        public async Task UpdateAddressesAsync(CustomerInfo customer)
+        {
+            await _customerApi.CustomerModule.UpdateAddessesAsync(customer.Id, customer.Addresses.Select(x => x.ToCustomerAddressDto()).ToList());
             //Invalidate cache
             _cacheManager.ClearRegion(string.Format(_customerCacheRegionFormat, customer.Id));
         }
@@ -123,7 +134,7 @@ namespace VirtoCommerce.Storefront.Services
             var workContext = _workContextFactory();
             var criteria = new customerDto.MembersSearchCriteria
             {
-                Keyword = keyword,
+                SearchPhrase = keyword,
                 DeepSearch = true,
                 Skip = (pageNumber - 1) * pageSize,
                 Take = pageSize
@@ -159,9 +170,8 @@ namespace VirtoCommerce.Storefront.Services
                         address.Name = address.ToString();
                     }
 
-                    await UpdateCustomerAsync(workContext.CurrentCustomer);
+                    await UpdateAddressesAsync(workContext.CurrentCustomer);
                 }
-
             }
         }
         #endregion
@@ -227,10 +237,10 @@ namespace VirtoCommerce.Storefront.Services
         protected virtual IMutablePagedList<Subscription> GetCustomerSubscriptions(CustomerInfo customer)
         {
             var workContext = _workContextFactory();
-            var  subscriptionSearchcriteria = new subscriptionDto.SubscriptionSearchCriteria
+            var subscriptionSearchcriteria = new subscriptionDto.SubscriptionSearchCriteria
             {
                 CustomerId = customer.Id,
-                ResponseGroup = SubscriptionResponseGroup.Full.ToString()               
+                ResponseGroup = SubscriptionResponseGroup.Full.ToString()
             };
 
             Func<int, int, IEnumerable<SortInfo>, IPagedList<Subscription>> subscriptionGetter = (pageNumber, pageSize, sortInfos) =>
@@ -244,9 +254,10 @@ namespace VirtoCommerce.Storefront.Services
                     return new StaticPagedList<Subscription>(searchResult.Subscriptions.Select(x => x.ToSubscription(workContext.AllCurrencies, workContext.CurrentLanguage)), pageNumber, pageSize,
                                                              searchResult.TotalCount.Value);
                 });
-               return retVal;
+                return retVal;
             };
             return new MutablePagedList<Subscription>(subscriptionGetter, 1, SubscriptionSearchCriteria.DefaultPageSize);
         }
     }
 }
+

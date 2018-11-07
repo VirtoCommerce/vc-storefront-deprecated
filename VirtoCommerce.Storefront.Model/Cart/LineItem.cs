@@ -72,6 +72,11 @@ namespace VirtoCommerce.Storefront.Model.Cart
         public int Quantity { get; set; }
 
         /// <summary>
+        /// Gets or Sets InStockQuantity
+        /// </summary>
+        public int InStockQuantity { get; set; }
+
+        /// <summary>
         /// Gets or sets the value of line item warehouse location
         /// </summary>
         public string WarehouseLocation { get; set; }
@@ -290,7 +295,7 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                return ExtendedPriceWithTax - ExtendedPrice;
+                return ExtendedPrice * TaxPercentRate;
             }
         }
 
@@ -311,14 +316,19 @@ namespace VirtoCommerce.Storefront.Model.Cart
 
         public void ApplyTaxRates(IEnumerable<TaxRate> taxRates)
         {
-             var lineItemTaxRate = taxRates.FirstOrDefault(x => x.Line.Id != null && x.Line.Id.EqualsInvariant(Id ?? ""));
+            TaxPercentRate = 0m;
+            var lineItemTaxRate = taxRates.FirstOrDefault(x => x.Line.Id != null && x.Line.Id.EqualsInvariant(Id ?? ""));
             if(lineItemTaxRate == null)
             {
                 lineItemTaxRate = taxRates.FirstOrDefault(x => x.Line.Code != null && x.Line.Code.EqualsInvariant(Sku ?? ""));
             }           
-            if (lineItemTaxRate != null && ExtendedPrice.Amount > 0 && lineItemTaxRate.Rate.Amount > 0)
+            if (lineItemTaxRate != null && lineItemTaxRate.Rate.Amount > 0)
             {
-                TaxPercentRate = TaxRate.TaxPercentRound(lineItemTaxRate.Rate.Amount / ExtendedPrice.Amount);
+                var amount = ExtendedPrice.Amount > 0 ? ExtendedPrice.Amount : SalePrice.Amount;
+                if (amount > 0)
+                {
+                    TaxPercentRate = TaxRate.TaxPercentRound(lineItemTaxRate.Rate.Amount / amount);
+                }
             }
         }
         #endregion

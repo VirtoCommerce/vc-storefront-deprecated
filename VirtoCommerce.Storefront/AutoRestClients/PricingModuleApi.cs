@@ -5579,10 +5579,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// Initializes a new instance of the Property class.
         /// </summary>
         /// <param name="valueType">Possible values include: 'ShortText',
-        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
+        /// 'LongText', 'Number', 'DateTime', 'Boolean', 'Integer'</param>
         /// <param name="type">Possible values include: 'Product',
         /// 'Variation', 'Category', 'Catalog'</param>
-        public Property(bool? isReadOnly = default(bool?), bool? isManageable = default(bool?), bool? isNew = default(bool?), string id = default(string), string catalogId = default(string), string categoryId = default(string), string name = default(string), bool? required = default(bool?), bool? dictionary = default(bool?), bool? multivalue = default(bool?), bool? multilanguage = default(bool?), string valueType = default(string), string type = default(string), System.Collections.Generic.IList<PropertyValue> values = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<PropertyDictionaryValue> dictionaryValues = default(System.Collections.Generic.IList<PropertyDictionaryValue>), System.Collections.Generic.IList<PropertyAttribute> attributes = default(System.Collections.Generic.IList<PropertyAttribute>), System.Collections.Generic.IList<PropertyDisplayName> displayNames = default(System.Collections.Generic.IList<PropertyDisplayName>), bool? isInherited = default(bool?))
+        public Property(bool? isReadOnly = default(bool?), bool? isManageable = default(bool?), bool? isNew = default(bool?), string id = default(string), string catalogId = default(string), string categoryId = default(string), string name = default(string), bool? required = default(bool?), bool? dictionary = default(bool?), bool? multivalue = default(bool?), bool? multilanguage = default(bool?), string valueType = default(string), string type = default(string), System.Collections.Generic.IList<PropertyValue> values = default(System.Collections.Generic.IList<PropertyValue>), System.Collections.Generic.IList<PropertyDictionaryValue> dictionaryValues = default(System.Collections.Generic.IList<PropertyDictionaryValue>), System.Collections.Generic.IList<PropertyAttribute> attributes = default(System.Collections.Generic.IList<PropertyAttribute>), System.Collections.Generic.IList<PropertyDisplayName> displayNames = default(System.Collections.Generic.IList<PropertyDisplayName>), PropertyValidationRule validationRule = default(PropertyValidationRule), bool? isInherited = default(bool?))
         {
             IsReadOnly = isReadOnly;
             IsManageable = isManageable;
@@ -5601,6 +5601,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
             DictionaryValues = dictionaryValues;
             Attributes = attributes;
             DisplayNames = displayNames;
+            ValidationRule = validationRule;
             IsInherited = isInherited;
         }
 
@@ -5661,7 +5662,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'ShortText', 'LongText',
-        /// 'Number', 'DateTime', 'Boolean'
+        /// 'Number', 'DateTime', 'Boolean', 'Integer'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -5695,6 +5696,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
 
         /// <summary>
         /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "validationRule")]
+        public PropertyValidationRule ValidationRule { get; set; }
+
+        /// <summary>
+        /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "isInherited")]
         public bool? IsInherited { get; set; }
 
@@ -5719,8 +5725,8 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// Initializes a new instance of the PropertyValue class.
         /// </summary>
         /// <param name="valueType">Possible values include: 'ShortText',
-        /// 'LongText', 'Number', 'DateTime', 'Boolean'</param>
-        public PropertyValue(string id = default(string), string propertyName = default(string), string propertyId = default(string), string languageCode = default(string), string alias = default(string), string valueType = default(string), string valueId = default(string), string value = default(string), bool? isInherited = default(bool?))
+        /// 'LongText', 'Number', 'DateTime', 'Boolean', 'Integer'</param>
+        public PropertyValue(string id = default(string), string propertyName = default(string), string propertyId = default(string), string languageCode = default(string), string alias = default(string), string valueType = default(string), string valueId = default(string), object value = default(object), bool? isInherited = default(bool?))
         {
             Id = id;
             PropertyName = propertyName;
@@ -5760,7 +5766,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
 
         /// <summary>
         /// Gets or sets possible values include: 'ShortText', 'LongText',
-        /// 'Number', 'DateTime', 'Boolean'
+        /// 'Number', 'DateTime', 'Boolean', 'Integer'
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "valueType")]
         public string ValueType { get; set; }
@@ -5773,7 +5779,7 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "value")]
-        public string Value { get; set; }
+        public object Value { get; set; }
 
         /// <summary>
         /// </summary>
@@ -5928,6 +5934,60 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
 {
     using System.Linq;
 
+    public partial class PropertyValidationRule
+    {
+        /// <summary>
+        /// Initializes a new instance of the PropertyValidationRule class.
+        /// </summary>
+        public PropertyValidationRule() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PropertyValidationRule class.
+        /// </summary>
+        public PropertyValidationRule(string id = default(string), bool? isUnique = default(bool?), int? charCountMin = default(int?), int? charCountMax = default(int?), string regExp = default(string))
+        {
+            Id = id;
+            IsUnique = isUnique;
+            CharCountMin = charCountMin;
+            CharCountMax = charCountMax;
+            RegExp = regExp;
+        }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "isUnique")]
+        public bool? IsUnique { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "charCountMin")]
+        public int? CharCountMin { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "charCountMax")]
+        public int? CharCountMax { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "regExp")]
+        public string RegExp { get; set; }
+
+    }
+}
+// Code generated by Microsoft (R) AutoRest Code Generator 0.17.0.0
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+
+namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
+{
+    using System.Linq;
+
     public partial class Image
     {
         /// <summary>
@@ -5938,8 +5998,9 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Image class.
         /// </summary>
-        public Image(string id = default(string), string relativeUrl = default(string), string url = default(string), string typeId = default(string), string group = default(string), string name = default(string), string languageCode = default(string), bool? isInherited = default(bool?))
+        public Image(int? sortOrder = default(int?), string id = default(string), string relativeUrl = default(string), string url = default(string), string typeId = default(string), string group = default(string), string name = default(string), string languageCode = default(string), bool? isInherited = default(bool?))
         {
+            SortOrder = sortOrder;
             Id = id;
             RelativeUrl = relativeUrl;
             Url = url;
@@ -5949,6 +6010,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
             LanguageCode = languageCode;
             IsInherited = isInherited;
         }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "sortOrder")]
+        public int? SortOrder { get; set; }
 
         /// <summary>
         /// </summary>
@@ -6010,9 +6076,10 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// <summary>
         /// Initializes a new instance of the Asset class.
         /// </summary>
-        public Asset(long? size = default(long?), string mimeType = default(string), string id = default(string), string relativeUrl = default(string), string url = default(string), string typeId = default(string), string group = default(string), string name = default(string), string languageCode = default(string), bool? isInherited = default(bool?))
+        public Asset(long? size = default(long?), string readableSize = default(string), string mimeType = default(string), string id = default(string), string relativeUrl = default(string), string url = default(string), string typeId = default(string), string group = default(string), string name = default(string), string languageCode = default(string), bool? isInherited = default(bool?))
         {
             Size = size;
+            ReadableSize = readableSize;
             MimeType = mimeType;
             Id = id;
             RelativeUrl = relativeUrl;
@@ -6028,6 +6095,11 @@ namespace VirtoCommerce.Storefront.AutoRestClients.PricingModuleApi.Models
         /// </summary>
         [Newtonsoft.Json.JsonProperty(PropertyName = "size")]
         public long? Size { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty(PropertyName = "readableSize")]
+        public string ReadableSize { get; set; }
 
         /// <summary>
         /// </summary>

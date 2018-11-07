@@ -38,6 +38,12 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.Cart.UpdatePaymentPlan", "storefrontapi/cart/paymentPlan", new { controller = "ApiCart", action = "AddOrUpdateCartPaymentPlan" }, new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Cart.DeletePaymentPlan", "storefrontapi/cart/paymentPlan", new { controller = "ApiCart", action = "DeleteCartPaymentPlan" }, new { httpMethod = new HttpMethodConstraint("DELETE") });
 
+            // API lists
+            routes.AddStorefrontRoute("API.Lists.GetListByName", "storefrontapi/lists/{listName}", defaults: new { controller = "ApiLists", action = "GetListByName" });
+            routes.AddStorefrontRoute("API.Lists.IsItemContainsInList", "storefrontapi/lists/{listName}/items/{productId}/contains", defaults: new { controller = "ApiLists", action = "IsItemContainsInList" });
+            routes.AddStorefrontRoute("API.Lists.AddItemToList", "storefrontapi/lists/{listName}/items", defaults: new { controller = "ApiLists", action = "AddItemToList" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
+            routes.AddStorefrontRoute("API.Lists.RemoveItemFromList", "storefrontapi/lists/{listName}/items/{lineItemId}", defaults: new { controller = "ApiLists", action = "RemoveItemFromList" }, constraints: new { httpMethod = new HttpMethodConstraint("DELETE") });
+            
             // Catalog API
             routes.AddStorefrontRoute("API.Catalog.SearchProducts", "storefrontapi/catalog/search", defaults: new { controller = "ApiCatalog", action = "SearchProducts" }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Catalog.GetProductsByIds", "storefrontapi/products", defaults: new { controller = "ApiCatalog", action = "GetProductsByIds" });
@@ -55,6 +61,12 @@ namespace VirtoCommerce.Storefront
             // Marketing API
             routes.AddStorefrontRoute("API.Marketing.GetDynamicContent", "storefrontapi/marketing/dynamiccontent/{placeName}", defaults: new { controller = "ApiMarketing", action = "GetDynamicContent" });
 
+            // Recommendations API
+            routes.AddStorefrontRoute("API.Recommendations.GetRecommendations", "storefrontapi/recommendations", defaults: new { controller = "ApiRecommendations", action = "GetRecommendations" });
+
+            // User actions and events API
+            routes.AddStorefrontRoute("API.UserActions.SaveEventInfo", "storefrontapi/useractions/eventinfo", new { controller = "ApiUserActions", action = "SaveEventInfo" }, new { httpMethod = new HttpMethodConstraint("POST") });
+
             // Account API
             routes.AddStorefrontRoute("API.Account.GetCurrentCustomer", "storefrontapi/account", new { controller = "ApiAccount", action = "GetCurrentCustomer" },
               new { httpMethod = new HttpMethodConstraint("GET") });
@@ -71,8 +83,7 @@ namespace VirtoCommerce.Storefront
             routes.AddStorefrontRoute("API.Orders.CancelPayment", "storefrontapi/orders/{orderNumber}/payments/{paymentNumber}/cancel", new { controller = "ApiOrder", action = "CancelPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Orders.ProcessPayment", "storefrontapi/orders/{orderNumber}/payments/{paymentNumber}/process", new { controller = "ApiOrder", action = "ProcessOrderPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("API.Orders.AddOrUpdateOrderPayment", "storefrontapi/orders/{orderNumber}/payments", new { controller = "ApiOrder", action = "AddOrUpdateOrderPayment" }, new { httpMethod = new HttpMethodConstraint("POST") });
-
-
+            routes.AddStorefrontRoute("API.Orders.GetInvoicePdf", "storefrontapi/orders/{orderNumber}/invoice", new { controller = "ApiOrder", action = "GetInvoicePdf" });
 
             // Quote requests API
             routes.AddStorefrontRoute("API.QuoteRequest.GetItemsCount", "storefrontapi/quoterequests/{number}/itemscount", defaults: new { controller = "ApiQuoteRequest", action = "GetItemsCount" });
@@ -149,8 +160,7 @@ namespace VirtoCommerce.Storefront
 
             // Common
             routes.AddStorefrontRoute("Common.SetCurrency", "common/setcurrency/{currency}", defaults: new { controller = "Common", action = "SetCurrency" });
-            routes.AddStorefrontRoute("Common.ContactUsPost", "contact/{viewName}", defaults: new { controller = "Common", action = "СontactUs", viewName = UrlParameter.Optional }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
-            routes.AddStorefrontRoute("Common.ContactUs", "contact/{viewName}", defaults: new { controller = "Common", action = "СontactUs", viewName = UrlParameter.Optional }, constraints: new { httpMethod = new HttpMethodConstraint("GET") });
+            routes.AddStorefrontRoute("Common.ContactUsPost", "contact/{viewName}", defaults: new { controller = "Common", action = "СontactForm", viewName = UrlParameter.Optional }, constraints: new { httpMethod = new HttpMethodConstraint("POST") });
             routes.AddStorefrontRoute("Common.NoStore", "common/nostore", defaults: new { controller = "Common", action = "NoStore" });
             routes.AddStorefrontRoute("Common.Maintenance", "maintenance", defaults: new { controller = "Common", action = "Maintenance" });
             routes.AddStorefrontRoute("Common.ResetCache", "common/resetcache", defaults: new { controller = "Common", action = "ResetCache" });
@@ -173,7 +183,6 @@ namespace VirtoCommerce.Storefront
             // Assets
             routes.AddStorefrontRoute("ThemeLocalization", "themes/localization.json", defaults: new { controller = "Asset", action = "GetThemeLocalizationJson" });
             routes.AddStorefrontRoute("ThemeAssets", "themes/assets/{*path}", defaults: new { controller = "Asset", action = "GetThemeAssets" });
-            routes.AddStorefrontRoute("GlobalThemeAssets", "themes/global/assets/{*path}", defaults: new { controller = "Asset", action = "GetGlobalThemeAssets" });
             routes.AddStorefrontRoute("StaticContentAssets", "assets/{*path}", defaults: new { controller = "Asset", action = "GetStaticContentAssets" });
 
             // Static content (no cms)

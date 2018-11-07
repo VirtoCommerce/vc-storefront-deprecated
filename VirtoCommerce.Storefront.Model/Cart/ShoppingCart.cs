@@ -279,11 +279,11 @@ namespace VirtoCommerce.Storefront.Model.Cart
         {
             get
             {
-                var itemDiscountTotal = Items.Sum(i => i.DiscountTotal.Amount);
-                var shipmentDiscountTotal = Shipments.Sum(s => s.DiscountAmount.Amount);
-                var paymentDiscountTotal = Payments.Sum(s => s.DiscountAmount.Amount);
+                var itemDiscountTotal = Items.Sum(i => i.DiscountTotal.InternalAmount);
+                var shipmentDiscountTotal = Shipments.Sum(s => s.DiscountAmount.InternalAmount);
+                var paymentDiscountTotal = Payments.Sum(s => s.DiscountAmount.InternalAmount);
 
-                return new Money(DiscountAmount.Amount + itemDiscountTotal + shipmentDiscountTotal + paymentDiscountTotal, Currency);
+                return new Money(DiscountAmount.InternalAmount + itemDiscountTotal + shipmentDiscountTotal + paymentDiscountTotal, Currency);
             }
         }
 
@@ -390,14 +390,12 @@ namespace VirtoCommerce.Storefront.Model.Cart
                 //When a discount is applied to the cart subtotal, the tax calculation has already been applied, and is reflected in the tax subtotal.
                 //Therefore, a discount applying to the cart subtotal will occur after tax.
                 //For instance, if the cart subtotal is $100, and $15 is the tax subtotal, a cart - wide discount of 10 % will yield a total of $105($100 subtotal – $10 discount + $15 tax on the original $100).
-
-                var discount = reward.ToDiscountModel(ExtendedPriceTotal);
-
                 if (reward.IsValid)
                 {
+                    var discount = reward.ToDiscountModel(ExtendedPriceTotal);
                     Discounts.Add(discount);
+                    DiscountAmount = discount.Amount;
                 }
-                DiscountAmount = discount.Amount;
             }
 
             var lineItemRewards = rewards.Where(x => x.RewardType == PromotionRewardType.CatalogItemAmountReward);
@@ -412,10 +410,15 @@ namespace VirtoCommerce.Storefront.Model.Cart
                 shipment.ApplyRewards(shipmentRewards);
             }
 
+            var paymentRewards = rewards.Where(x => x.RewardType == PromotionRewardType.PaymentReward);
+            foreach (var payment in Payments)
+            {
+                payment.ApplyRewards(paymentRewards);
+            }
+
             if (Coupon != null && !string.IsNullOrEmpty(Coupon.Code))
             {
-                Coupon.AppliedSuccessfully = rewards.Any(x => x.IsValid && x.Promotion.Coupons != null
-                                                              && x.Promotion.Coupons.Contains(Coupon.Code, StringComparer.OrdinalIgnoreCase));
+                Coupon.AppliedSuccessfully = rewards.Any(x => x.IsValid && x.Coupon != null);
             }
 
         }
